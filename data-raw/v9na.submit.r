@@ -19,15 +19,8 @@ file.scl <- paste(ver,"par-extract","r",sep=".");
 file.age <- paste(ver,"age","r",sep=".");
 
 # load data
-source(file.dat);
-#smpl.t = time since symptom/fever onset for each participant, max 7 visits
-#logy = log antibody response at each timepoint (max 7) for each of 7 biomarkers for each participant
-#ntest is max number of biomarkers
-#nsmpl = max number of samples per participant
-#nsubj = number of study participants
-#ndim = number of parameters to model(y0, y1, t1, alpha, shape)
-#my.hyp, prec.hyp, omega and wishdf are all parameters to describe the shape of priors for (y0, y1, t1, alpha, shape) 
-
+library(dcm)
+longdata = load_data()
 
 nchains <- 4;                # nr of MC chains to run simultaneously
 nadapt  <- 1000;             # nr of iterations for adaptation

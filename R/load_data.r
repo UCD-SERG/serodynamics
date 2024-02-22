@@ -16,7 +16,7 @@
 #' @examples
 load_data = function(
     datapath = "data/",
-    datafile <- "TypoidCaseData_github_09.30.21.csv"
+    datafile = "TypoidCaseData_github_09.30.21.csv"
 )
 {
   

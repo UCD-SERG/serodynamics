@@ -6,3 +6,6 @@
 .quarto
 */output
 output
+project.Rcheck/
+project*.tar.gz
+project*.tgz
