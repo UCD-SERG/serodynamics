@@ -15,13 +15,15 @@
 #'
 #' @examples
 load_data = function(
-    datapath = "data/",
-    datafile = "TypoidCaseData_github_09.30.21.csv"
+    # datapath = "data/",
+    # datafile = "TypoidCaseData_github_09.30.21.csv"
+    datafile = "d"
 )
 {
   
   
-  raw <- read.csv(paste(datapath,datafile,sep=""),head=TRUE);
+  #raw <- read.csv(paste(datapath,datafile,sep=""),head=TRUE);
+  raw <- d
   id <- raw$index_id;
   age <- raw$age;
   # nsmpl <- raw$nVisits; # not same as nr. observed y
@@ -59,12 +61,19 @@ load_data = function(
                    raw$TimeInDays_visit7);
   
   pr.nm <- c("y0","y1","t1","alpha","shape");
+  
+  ## ka: could this be levels of antigen_iso
   ab.nm <- rbind(c("HlyE","IgA"),c("HlyE","IgG"),
                  c("LPS","IgA"),c("LPS","IgG"),
                  c("MP","IgA"),c("MP","IgG"),c("Vi","IgG"));
   nsubj <- length(id);
+  
+  #define this from the data levels(antigen_iso)
   ntest <- 7;
+  
+  #again defined from data
   maxsmpl <- 7; # maximum nr. samples per subject
+  
   nsmpl <- rep(NA,nsubj+1);
   smpl.t <- array(NA,dim=c(nsubj+1,maxsmpl));
   smpl.y <- array(NA,dim=c(nsubj+1,maxsmpl,ntest));
