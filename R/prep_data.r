@@ -3,14 +3,14 @@
 
 prep_data <- function(dataframe) {
   # Ensure the data has the required columns
-  if (!("antigen_iso" %in% names(dataframe)) || !("visit" %in% names(dataframe))) {
-    stop("Dataframe must contain 'antigen_iso' and 'visit' columns")
+  if (!("antigen_iso" %in% names(dataframe)) || !("visit_num" %in% names(dataframe))) {
+    stop("Dataframe must contain 'antigen_iso' and 'visit_num' columns")
   }
   
 
   
   # Extract unique visits and antigens
-  visits <- unique(dataframe$visit)
+  visits <- unique(dataframe$visit_num)
   antigens <- unique(dataframe$antigen_iso)
   subjects <- unique(dataframe$index_id)
   
@@ -52,7 +52,7 @@ prep_data <- function(dataframe) {
   #     for (k in seq_len(max_antigens)) {
   #       subset <- dataframe[dataframe$index_id == subjects[i] & dataframe$visit == visits[j] & dataframe$antigen_iso == antigens[k], ]
   #       if (nrow(subset) > 0) {
-  #         visit_times[i, j] <- subset$TimeInDays
+  #         visit_times[i, j] <- subset$timeindays
   #         antibody_levels[i, j, k] <- log(max(0.01, subset$result))  # Log-transform and handle zeroes
   #       }
   #     }
@@ -60,14 +60,14 @@ prep_data <- function(dataframe) {
   # }
   for (i in seq_len(num_subjects)) {
     subject_data <- dataframe[dataframe$index_id == subjects[i], ]
-    subject_visits <- unique(subject_data$visit)
+    subject_visits <- unique(subject_data$visit_num)
     nsmpl[i] <- length(subject_visits)  # Number of non-missing visits for this participant
     
     for (j in seq_along(subject_visits)) {
       for (k in seq_len(max_antigens)) {
-        subset <- subject_data[subject_data$visit == subject_visits[j] & subject_data$antigen_iso == antigens[k], ]
+        subset <- subject_data[subject_data$visit_num == subject_visits[j] & subject_data$antigen_iso == antigens[k], ]
         if (nrow(subset) > 0) {
-          visit_times[i, j] <- subset$TimeInDays
+          visit_times[i, j] <- subset$timeindays
           antibody_levels[i, j, k] <- log(max(0.01, subset$result))  # Log-transform and handle zeroes
         }
       }
@@ -105,7 +105,7 @@ prep_data <- function(dataframe) {
     "smpl.t" = visit_times, 
     "logy" = antibody_levels, 
     "ntest" = max_antigens, 
-    "nsmpl" = nsmpl, 
+    "nsmpl" = nsmpl , 
     "nsubj" = num_subjects + 1,
     "ndim" = ndim,
     "mu.hyp" = mu.hyp, 
@@ -113,6 +113,8 @@ prep_data <- function(dataframe) {
     "omega" = omega, 
     "wishdf" = wishdf,
     "prec.logy.hyp" = prec.logy.hyp
+    # "index_id_names" = subjects,
+    # "antigen_names" = antigens
   ))
 }
 
