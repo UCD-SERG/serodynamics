@@ -5,7 +5,7 @@ file.ppc <- paste("./output/",ver,".pred",".rda",sep="");
 
 mcmc.mat <- as.matrix(as.mcmc.list(jags.post));
 nmc <- nrow(mcmc.mat);
-pred.subj <- nsubj+1;
+pred.subj <- longdata$nsubj+1;
 
 extr.var <- function(nam,index){
   var.mc <- c();
@@ -34,9 +34,9 @@ par.mc <- function(parnum,k.subj,k.test){
   return(par);
 }
 
-predpar <- array(NA,dim=c(ntest,ndim,nmc));
-for(k.test in 1:ntest){
-  for(pnum in 1:ndim){
+predpar <- array(NA,dim=c(longdata$ntest,longdata$ndim,nmc));
+for(k.test in 1:longdata$ntest){
+  for(pnum in 1:longdata$ndim){
     predpar[k.test,pnum,] <- extr.var("par",c(pred.subj,k.test,pnum));
   }
 }

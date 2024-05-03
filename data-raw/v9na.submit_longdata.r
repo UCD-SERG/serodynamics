@@ -21,11 +21,16 @@ file.cor <- paste(ver,"corr","r",sep=".");
 file.scl <- paste(ver,"par-extract","r",sep=".");
 file.age <- paste(ver,"age","r",sep=".");
 
+Sys.getenv("HOME")
+
+
+
 
 
 #long data 
 dL <- 
-  read.csv("/Users/kristenaiemjoy/Dropbox/DataAnalysis/EntericFever/SEES Diagnostic Manuscript/Analysis/Source Data/elisa_clean_2023-02-23.csv") %>%
+  #read.csv("/Users/kristenaiemjoy/Dropbox/DataAnalysis/EntericFever/SEES Diagnostic Manuscript/Analysis/Source Data/elisa_clean_2023-02-23.csv") 
+  read.csv(paste0(Sys.getenv("HOME"), "/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Serocalculator/Serocalculator App-Teams/Data/Longitudinal Case Data/Observed Data/elisa_clean_2023-11-01.csv"))
   filter(surgical != 1 | is.na(surgical))  %>%
   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
   mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>% 
@@ -44,11 +49,9 @@ dL <-
 
 
 
-
-
-
-
 longdata <- prep_data(dL)
+
+
 
 nchains <- 4;                # nr of MC chains to run simultaneously
 nadapt  <- 1000;             # nr of iterations for adaptation
@@ -75,6 +78,10 @@ jags.post <- run.jags(model=file.mod,data=longdata,
                       adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
                       n.chains=nchains,
                       monitor=tomonitor,summarise=FALSE);
+
+
+
+
 
 cat("<<< Extract parameter samples >>>\n");
 source(file.ext);
