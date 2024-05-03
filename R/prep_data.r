@@ -20,8 +20,30 @@ prep_data <- function(dataframe) {
   num_subjects <- length(subjects)
 
   # Define arrays with dimensions to accommodate extra dummy subject
-  visit_times <- array(NA, dim = c(num_subjects + 1, max_visits))
-  antibody_levels <- array(NA, dim = c(num_subjects + 1, max_visits, max_antigens))
+  
+  dimnames1 = list(
+    subjects = c(subjects, "newperson"),
+    visit_number = paste0("V", visits)
+  )
+  
+  dims1 = sapply(F = length, X = dimnames1)
+  
+  visit_times <- array(
+    NA, 
+    dim = dims1,
+    dimnames = dimnames1)
+  
+  dimnames2 = list(
+    subjects = c(subjects, "newperson"),
+    visit_number = paste0("V", visits),
+    antigens = antigens
+  )
+  
+  antibody_levels <- array(
+    NA, 
+    dim = c(num_subjects + 1, max_visits, max_antigens),
+    dimnames = dimnames2)
+  
   nsmpl <- integer(num_subjects + 1)  # Array to store the maximum number of samples per participant
   
   # Populate the arrays
