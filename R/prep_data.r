@@ -90,6 +90,7 @@ prep_data <- function(dataframe) {
   
   # Fill parameter arrays
   # log(c(y0,  y1,    t1,  alpha, shape-1))
+  # all biomarkers get the same prior hyperparameters
   for (k.test in 1:max_antigens) {
     mu.hyp[k.test,] <-        c(1.0, 7.0, 1.0, -4.0, -1.0)
     prec.hyp[k.test,,] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))

@@ -68,11 +68,19 @@ initsfunction <- function(chain){
 
 
 
-jags.post <- run.jags(model=file.mod,data=longdata,
-                      inits=initsfunction,method="parallel",
-                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
-                      n.chains=nchains,
-                      monitor=tomonitor,summarise=FALSE);
+jags.post <- run.jags(
+  model = file.mod, 
+  data = longdata, 
+  inits = initsfunction, 
+  method = "parallel", 
+  adapt = nadapt, 
+  burnin = nburnin, 
+  thin = nthin, 
+  sample = nmc, 
+  n.chains = nchains, 
+  monitor = tomonitor, 
+  summarise = FALSE)
+
 
 
 mcmc_list <- as.mcmc.list(jags.post)
