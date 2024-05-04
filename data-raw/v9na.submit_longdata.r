@@ -78,7 +78,7 @@ jags.post <- run.jags(
   thin = nthin, 
   sample = nmc, 
   n.chains = nchains, 
-  monitor = tomonitor, 
+  monitor = c("y0", "y1", "t1", "alpha", "shape"), 
   summarise = FALSE)
 
 
