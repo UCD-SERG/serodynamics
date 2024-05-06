@@ -42,10 +42,9 @@ dL <-
 dL_sub <- dL %>%
   filter(index_id %in% sample(unique(index_id), 20))
 
-
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
-
+priors = prep_priors(n_antigens = attr(longdata, "n_antigens"))
 
 #inputs for jags model
 nchains <- 4;                # nr of MC chains to run simultaneously
@@ -70,7 +69,7 @@ initsfunction <- function(chain){
 
 jags.post <- run.jags(
   model = file.mod, 
-  data = longdata, 
+  data = c(longdata, priors), 
   inits = initsfunction, 
   method = "parallel", 
   adapt = nadapt, 
@@ -83,7 +82,7 @@ jags.post <- run.jags(
 
 
 
-mcmc_list <- as.mcmc.list(jags.post)
+mcmc_list <- jags.post$mcmc
 mcmc_matrix <- as.matrix(mcmc_list)
 mcmc_df <- as.data.frame(mcmc_matrix)
 
