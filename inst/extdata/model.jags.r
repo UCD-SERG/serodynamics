@@ -5,13 +5,17 @@ model {
      # beta is called `mu` in Teunis et al Epidemics 2016; 
      # it is the antibody growth rate during the active infection
      # this expression corresponds to equation 17 in that paper
-     beta[subj, cur_antigen_iso] <- log(y1[subj,cur_antigen_iso] / y0[subj,cur_antigen_iso]) / t1[subj,cur_antigen_iso]
+     beta[subj, cur_antigen_iso] <- 
+       log(
+         y1[subj,cur_antigen_iso] / y0[subj,cur_antigen_iso]
+         ) / 
+       t1[subj,cur_antigen_iso]
      
     # `nsmpl` is the number of observations per `subject` 
    for(obs in 1:nsmpl[subj]) {
       
      # this is `log(y(t))` in the paper, before Gaussian noise is added
-     mu.logy[subj,obs,cur_antigen_iso] <- ifelse(
+     mu.logy[subj, obs, cur_antigen_iso] <- ifelse(
         
         # `step(x)` returns 1 if x >= 0;
         # here we are determining which phase of infection we are in; 
@@ -49,7 +53,8 @@ model {
      # this is the likelihood
      logy[subj,obs,cur_antigen_iso] ~ dnorm(mu.logy[subj,obs,cur_antigen_iso], prec.logy[cur_antigen_iso])
    }
-     
+    
+  # these are random effects 
    y0[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,1])
    y1[subj,cur_antigen_iso]    <- y0[subj,cur_antigen_iso] + exp(par[subj,cur_antigen_iso,2]) # par[,,2] must be log(y1-y0)
    t1[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,3])

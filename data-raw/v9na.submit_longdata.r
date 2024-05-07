@@ -102,8 +102,8 @@ wide_predpar_df <- long_predpar_df %>%
     parameter = as.numeric(sub("^par\\[\\d+,\\d+,(\\d+)\\]", "\\1", Variable))
   ) %>%
   mutate(
-    index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),  
-    antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso)), 
+    index_id = factor(index_id, labels = c(attr(longdata, "ids"), "newperson")),  
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens")), 
                          # parnum: use y0=1; y1=2; t1=3; alpha=4; shape=5
                          # note to self - i dont like that these are not named anywhere....
       parameter = factor(parameter, labels = c("y0", "y1", "t1", "alpha", "r"))) %>%
