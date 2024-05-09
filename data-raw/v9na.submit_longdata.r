@@ -118,7 +118,24 @@ wide_predpar_df <- long_predpar_df %>%
 
 
 
+#Now plot longitudinal antibody decay 
+#devtools::install_github("ucd-serg/serocalculator", force = T)
+library(serocalculator)
 
+
+
+# curve_params <- 
+#   wide_predpar_df
+# 
+# class(curve_params) =
+#   c("curve_params", class(curve_params))
+# 
+# antigen_isos = unique(curve_params$antigen_iso)
+# 
+# attr(curve_params, "antigen_isos") = antigen_isos
+# 
+# 
+# autoplot(curve_params)
 
 
 
