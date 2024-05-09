@@ -4,6 +4,7 @@ devtools::load_all()
 library(dplyr)
 library(tidyverse)
 library(runjags)
+library(coda)
 
 
 #model file
@@ -12,7 +13,7 @@ file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
 
 #long data - TYPHOID 
 dL <-
-  #the raw data is prepared and shared by jessica Seidman
+ the raw data is prepared and shared by jessica Seidman
   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
  filter(surgical != 1 | is.na(surgical))  %>%
   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
@@ -35,7 +36,7 @@ dL <-
 #   group_by(index_id, antigen_iso) %>%                      # Group data by individual
 #   arrange(visit) %>%                          # Sort data by visit within each group
 #   mutate(visit_num = rank(visit, ties.method = "first")) %>%
-#   ungroup() 
+#   ungroup()
 
 
 #subset data for checking
@@ -116,8 +117,24 @@ wide_predpar_df <- long_predpar_df %>%
 
 
 
+#Now plot longitudinal antibody decay 
+#devtools::install_github("ucd-serg/serocalculator", force = T)
+library(serocalculator)
 
 
+
+curve_params <- 
+  wide_predpar_df
+  
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  
+  antigen_isos = unique(curve_params$antigen_iso)
+  
+  attr(curve_params, "antigen_isos") = antigen_isos
+
+
+autoplot(curve_params)
 
 
 
