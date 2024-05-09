@@ -44,7 +44,7 @@ dL_sub <- dL %>%
 
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
-priors = prep_priors(n_antigens = attr(longdata, "n_antigens"))
+priors <- prep_priors(n_antigens = attr(longdata, "n_antigens"))
 
 #inputs for jags model
 nchains <- 4;                # nr of MC chains to run simultaneously
@@ -55,7 +55,7 @@ niter   <- 100;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
-tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
@@ -97,16 +97,13 @@ long_predpar_df$iter <- iterations
 
 wide_predpar_df <- long_predpar_df %>%
   mutate(
-    index_id = as.numeric(sub("^par\\[(\\d+),.*", "\\1", Variable)),
-    antigen_iso = as.numeric(sub("^par\\[\\d+,(\\d+),.*", "\\1", Variable)),
-    parameter = as.numeric(sub("^par\\[\\d+,\\d+,(\\d+)\\]", "\\1", Variable))
+    parameter = sub("^(\\w+)\\[.*", "\\1", Variable),
+    index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Variable)),
+    antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Variable))
   ) %>%
   mutate(
     index_id = factor(index_id, labels = c(attr(longdata, "ids"), "newperson")),  
-    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens")), 
-                         # parnum: use y0=1; y1=2; t1=3; alpha=4; shape=5
-                         # note to self - i dont like that these are not named anywhere....
-      parameter = factor(parameter, labels = c("y0", "y1", "t1", "alpha", "r"))) %>%
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
       mutate(value = exp(value)) %>%
       mutate(value = ifelse(parameter == "r", value+1, value)) %>%
       ## only take the last subject (newperson)
