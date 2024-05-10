@@ -87,7 +87,7 @@ prep_data <- function(dataframe) {
   return(list(
     "smpl.t" = visit_times, 
     "logy" = antibody_levels, 
-    "ntest" = max_antigens, 
+    "n_antigen_isos" = max_antigens, 
     "nsmpl" = nsmpl , 
     "nsubj" = num_subjects + 1
   ))

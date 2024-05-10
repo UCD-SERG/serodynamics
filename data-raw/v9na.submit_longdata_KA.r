@@ -49,7 +49,7 @@ dL_sub <- dL %>%
 
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
-priors <- prep_priors(max_antigens = longdata$ntest)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
 
 #inputs for jags model
