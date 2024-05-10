@@ -12,31 +12,33 @@ file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
 
 
 #long data - TYPHOID 
-dL <-
-# the raw data is prepared and shared by jessica Seidman
-  read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
- filter(surgical != 1 | is.na(surgical))  %>%
-  filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
-  mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>%
-  mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
-  mutate(timeindays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
-  mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months", "Last visit"))) %>%
-  group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
-  ungroup() %>%
-  select(index_id, Country, seapage, bldculres, Hospitalized, antigen_iso, result, TimePeriod,  postreinf, samplenum,  timeindays) %>%
-  rename(age = seapage) %>%
-  rename(visit_num = samplenum)  %>%
-  mutate(timeindays = ifelse(timeindays<0, 0, timeindays)) %>%
-  mutate(visit = ifelse(is.na(visit_num) & TimePeriod == "Baseline", 1, visit_num)) %>%
-  filter(!antigen_iso %in% c("YncE_IgG", "CdtB_IgA", "CdtB_IgG", "MP_IgA", "MP_IgG"))  %>%
-  droplevels()
+# dL <-
+# # the raw data is prepared and shared by jessica Seidman
+#   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
+#  filter(surgical != 1 | is.na(surgical))  %>%
+#   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
+#   mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>%
+#   mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
+#   mutate(timeindays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
+#   mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months", "Last visit"))) %>%
+#   group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
+#   ungroup() %>%
+#   select(index_id, Country, seapage, bldculres, Hospitalized, antigen_iso, result, TimePeriod,  postreinf, samplenum,  timeindays) %>%
+#   rename(age = seapage) %>%
+#   rename(visit_num = samplenum)  %>%
+#   mutate(timeindays = ifelse(timeindays<0, 0, timeindays)) %>%
+#   mutate(visit = ifelse(is.na(visit_num) & TimePeriod == "Baseline", 1, visit_num)) %>%
+#   filter(!antigen_iso %in% c("YncE_IgG", "CdtB_IgA", "CdtB_IgG", "MP_IgA", "MP_IgG"))  %>%
+#   droplevels()
 
 #long data - CHOLERA
-# dL <- read.csv("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Cholera-longitudinal/data/cholera_data_compiled_050324.csv") %>%
-#   group_by(index_id, antigen_iso) %>%                      # Group data by individual
-#   arrange(visit) %>%                          # Sort data by visit within each group
-#   mutate(visit_num = rank(visit, ties.method = "first")) %>%
-#   ungroup()
+dL <- 
+  #read.csv("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Cholera-longitudinal/data/cholera_data_compiled_050324.csv") %>%
+  read_csv(here::here()  %>% fs::path("inst/extdata/cholera_data_compiled_050324.csv")) %>%
+  group_by(index_id, antigen_iso) %>%                      # Group data by individual
+  arrange(visit) %>%                          # Sort data by visit within each group
+  mutate(visit_num = rank(visit, ties.method = "first")) %>%
+  ungroup()
 
 
 #subset data for checking
