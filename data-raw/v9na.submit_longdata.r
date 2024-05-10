@@ -1,14 +1,16 @@
 
 devtools::load_all()
 
+library(serocalculator)
 library(dplyr)
 library(tidyverse)
 library(runjags)
+library(coda)
 
 
 #model file
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.old.R")
 
 #long data - TYPHOID 
 dL <-
@@ -55,7 +57,8 @@ niter   <- 100;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
-tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+#tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+tomonitor <- c("par");
 
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
@@ -120,7 +123,7 @@ wide_predpar_df <- long_predpar_df %>%
 
 #Now plot longitudinal antibody decay 
 #devtools::install_github("ucd-serg/serocalculator", force = T)
-library(serocalculator)
+
 
 
 
