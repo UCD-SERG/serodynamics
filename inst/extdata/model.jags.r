@@ -14,12 +14,12 @@ model {
    t1[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,3])
    alpha[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,4])
    shape[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,5])+1
-   par[subj,cur_antigen_iso,1:ndim] ~ dmnorm(mu.par[cur_antigen_iso,],prec.par[cur_antigen_iso,,])
+   par[subj,cur_antigen_iso,1:n_params] ~ dmnorm(mu.par[cur_antigen_iso,],prec.par[cur_antigen_iso,,])
   }
  }
  for(cur_antigen_iso in 1:n_antigen_isos) {
-  mu.par[cur_antigen_iso,1:ndim] ~ dmnorm(mu.hyp[cur_antigen_iso,],prec.hyp[cur_antigen_iso,,])
-  prec.par[cur_antigen_iso,1:ndim,1:ndim] ~ dwish(omega[cur_antigen_iso,,],wishdf[cur_antigen_iso])
+  mu.par[cur_antigen_iso,1:n_params] ~ dmnorm(mu.hyp[cur_antigen_iso,],prec.hyp[cur_antigen_iso,,])
+  prec.par[cur_antigen_iso,1:n_params,1:n_params] ~ dwish(omega[cur_antigen_iso,,],wishdf[cur_antigen_iso])
   prec.logy[cur_antigen_iso] ~ dgamma(prec.logy.hyp[cur_antigen_iso,1],prec.logy.hyp[cur_antigen_iso,2])
  }
 }

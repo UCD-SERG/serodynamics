@@ -3,10 +3,10 @@
 prep_priors <- function(max_antigens){
   
   # Model parameters
-  ndim <- 5  # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
-  mu.hyp   <- array(NA, dim = c(max_antigens, ndim))
-  prec.hyp <- array(NA, dim = c(max_antigens, ndim, ndim))
-  omega    <- array(NA, dim = c(max_antigens, ndim, ndim))
+  n_params <- 5  # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
+  mu.hyp   <- array(NA, dim = c(max_antigens, n_params))
+  prec.hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
+  omega    <- array(NA, dim = c(max_antigens, n_params, n_params))
   wishdf   <- rep(NA, max_antigens)
   prec.logy.hyp <- array(NA, dim = c(max_antigens, 2))
   
@@ -24,7 +24,7 @@ prep_priors <- function(max_antigens){
   
   # Return results as a list
   return(list(
-    "ndim" = ndim,
+    "n_params" = n_params,
     "mu.hyp" = mu.hyp, 
     "prec.hyp" = prec.hyp,
     "omega" = omega, 
