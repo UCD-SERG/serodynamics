@@ -49,6 +49,7 @@ dL_sub <- dL %>%
 
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
+priors <- prep_priors(max_antigens = longdata$ntest)
 
 
 #inputs for jags model
@@ -74,11 +75,12 @@ initsfunction <- function(chain){
 
 
 
-jags.post <- run.jags(model=file.mod,data=longdata,
+jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
                       inits=initsfunction,method="parallel",
                       adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
                       n.chains=nchains,
                       monitor=tomonitor,summarise=FALSE);
+
 
 
 mcmc_list <- as.mcmc.list(jags.post)
@@ -143,18 +145,18 @@ wide_predpar_df <- mcmc_df %>%
 
 
 
-curve_params <- 
-  wide_predpar_df
-  
-  class(curve_params) =
-  c("curve_params", class(curve_params))
-  
-  antigen_isos = unique(curve_params$antigen_iso)
-  
-  attr(curve_params, "antigen_isos") = antigen_isos
-
-
-autoplot(curve_params)
+# curve_params <-
+#   wide_predpar_df
+# 
+#   class(curve_params) =
+#   c("curve_params", class(curve_params))
+# 
+#   antigen_isos = unique(curve_params$antigen_iso)
+# 
+#   attr(curve_params, "antigen_isos") = antigen_isos
+# 
+# 
+# autoplot(curve_params)
 
 
 
