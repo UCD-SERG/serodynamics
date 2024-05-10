@@ -1,7 +1,7 @@
 
 devtools::load_all()
 
-library(dplyr)
+
 library(tidyverse)
 library(runjags)
 library(coda)
@@ -59,6 +59,7 @@ nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 #pred.subj <- longdata$nsubj + 1;
 tomonitor <- c("par");
 
+#This handles the seed to reproduce the results 
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
   .RNG.seed <- (1:4)[chain];
