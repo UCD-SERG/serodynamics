@@ -119,7 +119,7 @@ wide_predpar_df <- long_predpar_df %>%
 
 
 #Now plot longitudinal antibody decay 
-#devtools::install_github("ucd-serg/serocalculator", force = T)
+#devtools::install_github("ucd-serg/serocalculator")
 library(serocalculator)
 
 
