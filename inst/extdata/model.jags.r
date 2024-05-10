@@ -14,6 +14,7 @@ model {
    t1[subj,test]    <- exp(par[subj,test,3])
    alpha[subj,test] <- exp(par[subj,test,4])
    shape[subj,test] <- exp(par[subj,test,5])+1
+   temp[subj,test] <- par[subj,test,2]
    par[subj,test,1:ndim] ~ dmnorm(mu.par[test,],prec.par[test,,])
   }
  }

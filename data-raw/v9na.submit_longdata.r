@@ -58,7 +58,7 @@ nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
 tomonitor <- c("par");
-
+tomonitor = c("temp", "y1")
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
   .RNG.seed <- (1:4)[chain];
@@ -107,7 +107,9 @@ wide_predpar_df <- long_predpar_df %>%
       filter(index_id == "newperson") %>%
       select(-Variable) %>%
       pivot_wider(names_from = "parameter", values_from="value") %>%
-      rowwise() %>%
+      rowwise()
+
+%>%
       mutate(y1 = y0+y1) %>%
       droplevels() %>%
       ungroup()
