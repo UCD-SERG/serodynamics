@@ -84,12 +84,25 @@ prep_data <- function(dataframe) {
   
   
   # Return results as a list
-  return(list(
-    "smpl.t" = visit_times, 
-    "logy" = antibody_levels, 
-    "n_antigen_isos" = max_antigens, 
-    "nsmpl" = nsmpl , 
-    "nsubj" = num_subjects + 1
-  ))
+  to_return = 
+    list(
+      "smpl.t" = visit_times, 
+      "logy" = antibody_levels, 
+      "n_antigen_isos" = max_antigens, 
+      "nsmpl" = nsmpl , 
+      "nsubj" = num_subjects + 1
+      
+      
+      # "index_id_names" = subjects,
+      # "antigen_names" = antigens
+    ) |> 
+    structure(
+      antigens = antigens,
+      n_antigens = max_antigens,
+      ids = c(subjects, "newperson")
+    )
+  
+  # Return results as a list
+  return(to_return)
 }
 
