@@ -88,7 +88,7 @@ mcmc_list <- as.mcmc.list(jags.post)
 
 mcmc_df <- ggs(mcmc_list)
 
-
+mcmc_df |> filter(is.infinite(value))
 
 
 wide_predpar_df <- mcmc_df %>%
