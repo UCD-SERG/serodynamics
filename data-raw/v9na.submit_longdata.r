@@ -6,7 +6,7 @@ library(dplyr)
 library(tidyverse)
 library(runjags)
 library(coda)
-
+library(ggmcmc)
 
 #model file
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
@@ -40,9 +40,10 @@ dL <-
 #   ungroup() 
 
 
+set.seed(1)
 #subset data for checking
 dL_sub <- dL %>%
-  filter(index_id %in% sample(unique(index_id), 20))
+  filter(index_id %in% sample(unique(index_id), 100))
 
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
@@ -57,8 +58,8 @@ niter   <- 100;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
-#tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
-tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+# tomonitor <- c("par");
 
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
@@ -89,6 +90,7 @@ mcmc_list <- jags.post$mcmc
 mcmc_matrix <- as.matrix(mcmc_list)
 mcmc_df <- as.data.frame(mcmc_matrix)
 
+sapply(F = function(x) any(is.infinite(x)), X = mcmc_df) |> table()
 
 # Adding iteration numbers
 iterations <- rep(1:nrow(mcmc_matrix), each = ncol(mcmc_matrix))
@@ -143,5 +145,26 @@ wide_predpar_df <- long_predpar_df %>%
 
 
 
-
+mcmc_df2 <- ggs(mcmc_list)
+mcmc_df2 |> filter(is.infinite(value))
+wide_predpar_df2 <- mcmc_df2 %>%
+  mutate(
+  parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+) %>%
+  mutate(
+    index_id = factor(index_id, labels = c(attr(longdata, "ids"), "newperson")),
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+  # mutate(value = exp(value)) %>%
+  # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
+  ## only take the last subject (newperson)
+  filter(index_id == "newperson") %>%
+  select(-Parameter) %>%
+  pivot_wider(names_from = "parameter", values_from="value") %>%
+  rowwise() %>%
+  #mutate(y1 = y0+y1) %>%
+  droplevels() %>%
+  ungroup() %>%
+  rename(r = shape)
 
