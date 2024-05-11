@@ -9,8 +9,8 @@ library(coda)
 library(ggmcmc)
 
 #model file
-#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+
 
 #long data - TYPHOID 
 dL <-
@@ -41,10 +41,11 @@ dL <-
 #   mutate(visit_num = rank(visit, ties.method = "first")) %>%
 #   ungroup()
 
+#set seed for reproducibility
 set.seed(54321)
 #subset data for checking
 dL_sub <- dL %>%
-  filter(index_id %in% sample(unique(index_id), 100))
+  filter(index_id %in% sample(unique(index_id), 50))
 
 
 #prepare data for modeline
