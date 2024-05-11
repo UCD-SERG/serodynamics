@@ -44,7 +44,9 @@ prep_data <- function(dataframe) {
     dim = c(num_subjects + 1, max_visits, n_antigens),
     dimnames = dimnames2)
   
-  nsmpl <- integer()  # Array to store the maximum number of samples per participant
+  # Array to store the maximum number of samples per participant:
+  nsmpl <- integer(num_subjects + 1) |> 
+    purrr::set_names(c(subjects, "newperson"))  
   
   # Populate the arrays
   # for (i in seq_len(num_subjects)) {
