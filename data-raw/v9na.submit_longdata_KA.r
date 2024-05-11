@@ -5,12 +5,12 @@ devtools::load_all()
 library(serocalculator)
 library(tidyverse)
 library(runjags)
-library(coda)
+#library(coda)
 library(ggmcmc)
 
 #model file
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
 
 #long data - TYPHOID 
 dL <-
@@ -41,11 +41,10 @@ dL <-
 #   mutate(visit_num = rank(visit, ties.method = "first")) %>%
 #   ungroup()
 
-#set seed for reproducibility
-set.seed(54321)
+
 #subset data for checking
 dL_sub <- dL %>%
-  filter(index_id %in% sample(unique(index_id), 50))
+  filter(index_id %in% sample(unique(index_id), 20))
 
 
 #prepare data for modeline
@@ -89,8 +88,6 @@ mcmc_list <- as.mcmc.list(jags.post)
 mcmc_df <- ggs(mcmc_list)
 
 
-
-
 wide_predpar_df <- mcmc_df %>%
   mutate(
     parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
@@ -98,8 +95,8 @@ wide_predpar_df <- mcmc_df %>%
     antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
   ) %>%
   mutate(
-    index_id = factor(index_id, labels = attr(longdata, "ids")),
-    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+    index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),
+    antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))) %>%
  # mutate(value = exp(value)) %>%
  # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
   ## only take the last subject (newperson)
