@@ -44,7 +44,7 @@ prep_data <- function(dataframe) {
     dim = c(num_subjects + 1, max_visits, n_antigens),
     dimnames = dimnames2)
   
-  nsmpl <- integer(num_subjects + 1)  # Array to store the maximum number of samples per participant
+  nsmpl <- integer()  # Array to store the maximum number of samples per participant
   
   # Populate the arrays
   # for (i in seq_len(num_subjects)) {
@@ -84,7 +84,7 @@ prep_data <- function(dataframe) {
   visit_times[num_subjects + 1, 1:3] <- c(5, 30, 90)
   # Ensure corresponding antibody levels are set to NA (explicitly missing)
   antibody_levels[num_subjects + 1, 1:3, ] <- NA
-  nsmpl[num_subjects + 1] <- 3  # Since we manually add three timepoints for the dummy subject
+  nsmpl["newperson"] <- 3  # Since we manually add three timepoints for the dummy subject
   
   to_return = 
     list(
