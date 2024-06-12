@@ -51,7 +51,7 @@ dL_old <- dL %>% filter(age_years > 5)
 dL_vaccine <- dL %>% filter(cohort == "Vaccinee")
 dL_case <- dL %>% filter(cohort == "Case")
 
-dL_sub <- dL_case
+dL_sub <- dL_young
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
 
@@ -61,7 +61,7 @@ nchains <- 4;                # nr of MC chains to run simultaneously
 nadapt  <- 100;             # nr of iterations for adaptation
 nburnin <- 100;            # nr of iterations to use for burn-in
 nmc     <- 100;             # nr of samples in posterior chains
-niter   <- 100;            # nr of iterations for posterior sample
+niter   <- 1000;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
@@ -175,20 +175,51 @@ autoplot(curve_params)
 # curve_params_vaccine <- curve_params
 curve_params_case <- curve_params
 
+# Putting all params together
+curve_params_young$Type <- "Young"
+curve_params_old$Type <- "Old"
+curve_params_age <- rbind(curve_params_young, curve_params_old)
 
+curve_params_vaccine$Type <- "Vaccine"
+curve_params_case$Type <- "Case"
+curve_params_vax <- rbind(curve_params_vaccine, curve_params_case)
+
+
+# Plotting curves
+ggplot(curve_params_age, aes(x=))
 
 #Plotting curve parameters 
 # At Y =0 
-ggplot(curve_params_case, aes(x=y0)) +
-  geom_density()
-ggplot(curve_params_vaccine, aes(x=y0)) +
-  geom_density()
+ggplot(curve_params_age, aes(x=y0, group=Type, color=Type)) +
+  geom_density()+
+  facet_wrap(~antigen_iso)
+ggplot(curve_params_vax, aes(x=y0, group=Type, color=Type)) +
+  geom_density()+
+  facet_wrap(~antigen_iso)
+
+
+# Plotting curves
+
 # At Y=1
-ggplot(curve_params, aes(x=y1)) +
-  geom_density()
+ggplot(curve_params_age, aes(x=y1, group=Type, color=Type)) +
+  geom_density() +
+  facet_wrap(~antigen_iso) +
+  scale_x_log10()
+ggplot(curve_params_vax, aes(x=y1, group=Type, color=Type)) +
+  geom_density()+
+  facet_wrap(~antigen_iso) +
+  scale_x_log10()
+
 # At t=1
-ggplot(curve_params, aes(x=t1)) +
-  geom_density()
+ggplot(curve_params_age, aes(x=t1, group=Type, color=Type)) +
+  geom_density()+
+  facet_wrap(~antigen_iso)+
+  scale_x_log10()
+ggplot(curve_params_vax, aes(x=t1, group=Type, color=Type)) +
+  geom_density()+
+  facet_wrap(~antigen_iso)+
+  scale_x_log10()
+
 # Alpha
 ggplot(curve_params, aes(x=alpha)) +
   geom_density()
