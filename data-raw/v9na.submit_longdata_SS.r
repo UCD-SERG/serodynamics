@@ -51,7 +51,7 @@ dL_old <- dL %>% filter(age_years > 5)
 dL_vaccine <- dL %>% filter(cohort == "Vaccinee")
 dL_case <- dL %>% filter(cohort == "Case")
 
-dL_sub <- dL_young
+dL_sub <- dL
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
 
@@ -61,12 +61,13 @@ nchains <- 4;                # nr of MC chains to run simultaneously
 nadapt  <- 100;             # nr of iterations for adaptation
 nburnin <- 100;            # nr of iterations to use for burn-in
 nmc     <- 100;             # nr of samples in posterior chains
-niter   <- 1000;            # nr of iterations for posterior sample
+niter   <- 10000;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
 # tomonitor <- c("par");
 tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
 
 
 #This handles the seed to reproduce the results 
@@ -86,37 +87,67 @@ jags.post <- run.jags(model=file.mod,data=longdata,
                       monitor=tomonitor,summarise=FALSE);
 
 # Creating an output for each of the stratum
-jags.post_young <- jags.post
-jags.post_old <- jags.post
-jags.post_vaccine <- jags.post
-jags.post_case <- jags.post
+# jags.post_young <- jags.post
+# jags.post_old <- jags.post
+# jags.post_vaccine <- jags.post
+# jags.post_case <- jags.post
 
+
+### SS Diagonstic code 
+
+# -- Running diagnostics using ggmcmc package
+# -- Compiling into dataframe using ggs()
+visualize_jags <- ggs(jags.post$mcmc)
+
+plot_jags_hist <- function(x) {
+  #Creating loop to output diagnostics
+  params_list <- c(paste0("y0",x), paste0("y1",x), paste0("t1",x), paste0("alpha",x), paste0("shape",x))
+  visualize_jags_sub <- visualize_jags%>%
+    mutate(Parameter_char = as.character(Parameter)) %>%
+    filter(Parameter_char %in% params_list)
+  ## Creating historgrams
+  ggs_histogram(visualize_jags_sub)
+}
+plot_jags_dens <- function(x) {
+  #Creating loop to output diagnostics
+  params_list <- c(paste0("y0",x), paste0("y1",x), paste0("t1",x), paste0("alpha",x), paste0("shape",x))
+  visualize_jags_sub <- visualize_jags%>%
+    mutate(Parameter_char = as.character(Parameter)) %>%
+    filter(Parameter_char %in% params_list)
+  ggs_density(visualize_jags_sub)
+}
+plot_jags_trace <- function(x) {
+  #Creating loop to output diagnostics
+  params_list <- c(paste0("y0",x), paste0("y1",x), paste0("t1",x), paste0("alpha",x), paste0("shape",x))
+  visualize_jags_sub <- visualize_jags%>%
+    mutate(Parameter_char = as.character(Parameter)) %>%
+    filter(Parameter_char %in% params_list)
+  ## Traceplots
+  ggs_traceplot(visualize_jags_sub)
+}
+summ_jags <- function(x) {
+  #Creating loop to output diagnostics
+  params_list <- c(paste0("y0",x), paste0("y1",x), paste0("t1",x), paste0("alpha",x), paste0("shape",x))
+  visualize_jags_sub <- visualize_jags%>%
+    mutate(Parameter_char = as.character(Parameter)) %>%
+    filter(Parameter_char %in% params_list)
+  ### Short summary 
+  ci(visualize_jags_sub)[,c(1:6)]
+}
+
+plot_jags_trace("[3,3]")
+plot_jags_dens("[3,3]")
+plot_jags_hist("[3,3]")
+summ_jags("[3,3]")
+
+####### SS Diagonstic code 
 
 # Look into these lines. Want to be able to work with output in ggplot. 
 # ggmcmc package 
 mcmc_list <- as.mcmc.list(jags.post)
 mcmc_matrix <- as.matrix(mcmc_list)
 mcmc_df <- as.data.frame(mcmc_matrix)
-
-# -- Running diagnostics using ggmcmc package
-# -- Compiling into dataframe using ggs()
-visualize_jags <- ggs(jags.post$mcmc)
-# -- Creating pdf using ggmcmc() command
-ggmcmc(visualize_jags)
-# -- Creating seperate graphs if we would not like to create a whole PDF
-# -- Histograms
-ggs_histogram(visualize_jags)
-# -- Density
-# ggs_density(visualize_jags)
-# -- Traceplot
-# ggs_traceplot(visualize_jags)
-# -- Confidence intervals for parameters
-# ci(visualize_jags)
-
-# -- Model fit
-# ggs_ppmean
-
-
+  
 # Adding iteration numbers
 iterations <- rep(1:nrow(mcmc_matrix), each = ncol(mcmc_matrix))
 
