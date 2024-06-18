@@ -65,7 +65,9 @@ niter   <- 1000;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
-tomonitor <- c("par");
+# tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
 
 #This handles the seed to reproduce the results 
 initsfunction <- function(chain){
@@ -75,7 +77,6 @@ initsfunction <- function(chain){
                  "base::Super-Duper","base::Mersenne-Twister")[chain];
   return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
 }
-
 
 
 jags.post <- run.jags(model=file.mod,data=longdata,
@@ -99,12 +100,12 @@ mcmc_df <- as.data.frame(mcmc_matrix)
 
 # -- Running diagnostics using ggmcmc package
 # -- Compiling into dataframe using ggs()
-# visualize_jags <- ggs(jags.post$mcmc)
+visualize_jags <- ggs(jags.post$mcmc)
 # -- Creating pdf using ggmcmc() command
-# ggmcmc(visualize_jags)
+ggmcmc(visualize_jags)
 # -- Creating seperate graphs if we would not like to create a whole PDF
 # -- Histograms
-# ggs_histogram(visualize_jags)
+ggs_histogram(visualize_jags)
 # -- Density
 # ggs_density(visualize_jags)
 # -- Traceplot
