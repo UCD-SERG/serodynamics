@@ -1,0 +1,122 @@
+---
+title: "Longitudinal analysis of Shigella"
+format: 
+  pdf:
+    number-sections: true
+    number-depth: 2
+    number-offset: [0, 0]
+editor: visual
+output:
+  pdf_document:
+    orientation: landscape
+---
+
+## Introduction
+
+```{r setup, include=FALSE,echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+library(gridExtra)
+library(haven)
+library(knitr)
+library(plotly)
+library(kableExtra)
+library(tidyr)
+library(arsenal)
+library(dplyr)
+library(forcats)
+library(huxtable)
+library(magrittr)
+library(parameters)
+library(kableExtra)
+library(ggplot2)
+library(ggeasy)
+library(scales)
+library(plotly)
+library(patchwork)
+library(tidyverse)
+library(gtsummary)
+library(readxl)
+```
+
+
+### Data description
+- Step 2: Load the Dataset
+
+```{r}
+df <- read_excel("3.8.2024 Compiled Shigella data.xlsx", 
+                      sheet = "Compiled")
+```
+
+- Step 3: Understand the Structure of the Dataset
+
+```{r}
+# View the structure of the dataset
+str(df)
+
+# View the first few rows of the dataset
+head(df)
+
+# View a summary of the dataset
+summary(df)
+```
+
+- Step 4: Handle Missing Values
+
+```{r}
+colSums(is.na(df))
+
+```
+
+
+## Exploratory Data Analysis
+
+```{r}
+# select longitudinal dataset from complied dataset
+
+df_sosar<-df%>%filter(study_name=="SOSAR")
+
+# split the data by isotype
+
+df_sosar_IgA<-df_sosar%>%filter(isotype_name=="IgA")
+
+df_sosar_IgG<-df_sosar%>%filter(isotype_name=="IgG")
+
+
+```
+
+
+### Plotting quantitative response change over time
+
+```{r}
+# plotting how quantitative response change over time within individuals
+
+
+# Check the number of observations per sid
+df_summary_IgA <- df_sosar_IgA %>%
+  group_by(sid) %>%
+  summarize(count = n()) %>%
+  filter(count > 1)
+
+df_summary_IgA
+```
+Checking unique sample identification number (sid) is important. There are 48 sid in this SOSAR study.
+
+```{r}
+# Filter the original dataframe to include only individuals with more than one observation
+df_filtered_IgA <- df_sosar_IgA %>%
+  filter(sid %in% df_summary_IgA$sid)
+
+# Plotting ipab_MFI over time for each individual
+ggplot(df_filtered_IgA, aes(x = timepoint, y = ipab_MFI, group = sid, color = sid)) +
+  geom_line() +
+  geom_point() +
+  labs(title = "Change in ipab_MFI Over Time",
+       x = "Timepoint",
+       y = "ipab_MFI",
+       color = "Individual ID") +
+  theme_minimal()
+```

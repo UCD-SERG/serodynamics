@@ -1,0 +1,216 @@
+---
+title: "Longitudinal analysis of Shigella"
+format: 
+  pdf:
+    number-sections: true
+    number-depth: 2
+    number-offset: [0, 0]
+editor: visual
+output:
+  pdf_document:
+    orientation: landscape
+---
+
+## Introduction
+
+```{r setup, include=FALSE,echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+
+devtools::load_all()
+
+devtools::install_github("ucd-serg/serocalculator")
+library(serocalculator)
+library(tidyverse)
+library(runjags)
+#library(coda)
+library(ggmcmc)
+library(here)
+
+library(gridExtra)
+library(haven)
+library(knitr)
+library(plotly)
+library(kableExtra)
+library(tidyr)
+library(arsenal)
+library(dplyr)
+library(forcats)
+library(huxtable)
+library(magrittr)
+library(parameters)
+library(kableExtra)
+library(ggplot2)
+library(ggeasy)
+library(scales)
+library(plotly)
+library(patchwork)
+library(tidyverse)
+library(gtsummary)
+library(readxl)
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+#model file
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+```
+
+- Model file from this path
+
+
+```{r, echo=FALSE, message=FALSE}
+#long data - CHOLERA
+ dL <- 
+   read_csv(here::here()  %>% fs::path("inst/extdata/cholera_data_compiled_050324.csv")) %>%
+   group_by(index_id, antigen_iso) %>%# Group data by individual
+   arrange(visit) %>%  # Sort data by visit within each group
+   mutate(visit_num = rank(visit, ties.method = "first")) %>%
+   ungroup()
+ 
+```
+
+- In this data manipulation, 'group_by' did sorting and creating new variables will be done separately for each combination of index_id and antigen_iso. 'mutate(visit_num = rank(visit, ties.method = "first"))' created new column visit_num and the first occurrence gets the lower rank. Essentially, visit_num will represent the order of visits within each group.
+
+
+## Body
+
+
+```{r, echo=FALSE, message=FALSE}
+#subset data for checking
+ dL_sub <- dL %>%
+   filter(index_id %in% sample(unique(index_id), 20))
+```
+
+In this code,
+
+- We extracts 20 random unique index_ids from dL.
+
+- Then we filters the rows of dL to keep only those where the index_id is one of the 20 randomly selected index_ids.
+
+- The resulting filtered dataframe is assigned to dL_sub.
+
+
+```{r, echo=FALSE, message=FALSE}
+# Construct the path to "prep_data.r" using here
+prep_data_path <- here::here("R", "prep_data.r")
+prep_priors_path <- here::here("R", "prep_priors.R")
+ 
+# Source the file to load the prep_data function
+source(prep_data_path)
+source(prep_priors_path)
+```
+
+- To use 'prep_data' and 'prep_priors' functions, we need this step
+
+
+```{r, echo=FALSE, message=FALSE}
+#prepare data for modeline
+ longdata <- prep_data(dL_sub)
+ 
+```
+In this 'prep_data' function,
+
+- The function first checks if the input data includes the necessary columns: antigen_iso (for antigen types) and visit_num (for visit numbers). If not, it stops and shows an error. (Column check)
+
+- It then collects all unique visit numbers, antigen types, and subject IDs from the data. Using these, it sets up arrays to store information like when visits occurred and antibody levels for each subject. It also adds a dummy subject to the data for Bayesian inference. (Data extraction and setup)
+
+- The function fills these arrays with the actual data, such as the time of each visit and the antibody levels (log-transformed to handle very small values). For the dummy subject, it adds predefined visit times and sets the antibody levels as missing. (Data population)
+
+
+```{r, echo=FALSE, message=FALSE}
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+```
+In this prep_priors function,
+
+- Initialize Arrays: The function sets up several arrays to store prior information for the model parameters. It creates:
+
+  - mu.hyp: Means of the prior distributions.
+  - prec.hyp: Precision matrices for the prior distributions.
+  - omega: Another set of precision matrices.
+  - wishdf: Degrees of freedom for a Wishart distribution.
+  - prec.logy.hyp: Precision parameters for the log-transformed antibody levels.
+
+- Fill Arrays: It then fills these arrays with predefined values. These values are used to specify prior beliefs about the model parameters, like their means and how much they vary.
+
+- Return Results: Finally, the function returns these arrays in a list so they can be used later in your analysis.
+
+
+
+
+```{r, echo=FALSE, message=FALSE}
+#inputs for jags model
+ nchains <- 4;                # nr of MC chains to run simultaneously
+ nadapt  <- 100;             # nr of iterations for adaptation
+ nburnin <- 100;            # nr of iterations to use for burn-in
+ nmc     <- 100;             # nr of samples in posterior chains
+ niter   <- 100;            # nr of iterations for posterior sample
+ nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
+
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+#This handles the seed to reproduce the results 
+ initsfunction <- function(chain){
+   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
+   .RNG.seed <- (1:4)[chain];
+   .RNG.name <- c("base::Wichmann-Hill","base::Marsaglia-Multicarry",
+                  "base::Super-Duper","base::Mersenne-Twister")[chain];
+   return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
+ }
+
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+ jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
+                       inits=initsfunction,method="parallel",
+                       adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
+                       n.chains=nchains,
+                       monitor=tomonitor,summarise=FALSE);
+
+```
+
+
+
+
+```{r, echo=FALSE, message=FALSE}
+ mcmc_list <- as.mcmc.list(jags.post)
+ 
+ mcmc_df <- ggs(mcmc_list)
+
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+ wide_predpar_df <- mcmc_df %>%
+   mutate(
+     parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+     index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+     antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+   ) %>%
+   mutate(
+     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),
+     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))) %>%
+     filter(index_id == "newperson") %>%
+     select(-Parameter) %>%
+     pivot_wider(names_from = "parameter", values_from="value") %>%
+     rowwise() %>%
+     droplevels() %>%
+     ungroup() %>%
+     rename(r = shape)
+
+```
+
+
+
