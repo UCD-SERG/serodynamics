@@ -40,6 +40,13 @@ library(patchwork)
 library(tidyverse)
 library(gtsummary)
 library(readxl)
+
+library(serocalculator)
+library(runjags)
+library(coda)
+library(ggmcmc)
+library(here)
+
 ```
 
 
@@ -119,4 +126,54 @@ ggplot(df_filtered_IgA, aes(x = timepoint, y = ipab_MFI, group = sid, color = si
        y = "ipab_MFI",
        color = "Individual ID") +
   theme_minimal()
+```
+
+
+
+## Understand the longitudinal antibody decay
+
+
+```{r, echo=FALSE, message=FALSE}
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+# manipulating shigella data for applying dcm code
+dL<-df_sosar%>%select(isotype_name,sid,cohort,age,treatment,timepoint)%>%
+  mutate(index_id=sid,antigen_iso=isotype_name,visit=timepoint)
+
+dL<-dL%>%group_by(index_id, antigen_iso) %>%# Group data by individual
+   arrange(visit) %>%  # Sort data by visit within each group
+   mutate(visit_num = rank(visit, ties.method = "first")) %>%
+   ungroup()
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+#subset data for checking
+dL_sub <- dL %>%
+ filter(index_id %in% sample(unique(index_id), 20))
+```
+
+
+
+```{r, echo=FALSE, message=FALSE}
+# Construct the path to "prep_data.r" using here
+prep_data_path <- here::here("R", "prep_data.r")
+prep_priors_path <- here::here("R", "prep_priors.R")
+
+# Source the file to load the prep_data function
+source(prep_data_path)
+source(prep_priors_path)
+
+#prepare data for modeline
+longdata <- prep_data(dL_sub)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+```
+
+
+```{r, echo=FALSE, message=FALSE}
+
 ```
