@@ -9,13 +9,13 @@ devtools::install_github("ucd-serg/serocalculator")
 library(serocalculator)
 library(tidyverse)
 library(runjags)
-#library(coda)
+library(coda)
 library(ggmcmc)
 library(here)
 
 #model file
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
 
 
 #long data - CHOLERA

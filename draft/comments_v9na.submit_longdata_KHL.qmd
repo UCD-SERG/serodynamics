@@ -155,6 +155,22 @@ In this prep_priors function,
 tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 ```
 
+- Inputs for the JAGS Model
+
+  - nchains: Number of Markov Chains (MC) to run simultaneously. More chains can help check for convergence and ensure a thorough exploration of the posterior distribution.
+  
+  - nadapt: Number of iterations for adaptation. During this phase, the sampler tunes its parameters to improve sampling efficiency.
+  
+  - nburnin: Number of iterations to use for burn-in. These initial samples are discarded to allow the chain to reach the stationary distribution, reducing the effect of starting values.
+  
+  - nmc: Number of samples to collect from the posterior distribution after burn-in and thinning. These samples are used for estimating the posterior distribution.
+  
+  - niter: Number of iterations for the posterior sample. This is the total number of iterations after the burn-in period.
+  
+  - nthin: Thinning interval to reduce autocorrelation. It determines how many iterations to skip between collected samples. Calculated as round(niter / nmc) to achieve the desired number of posterior samples.
+  
+  - tomonitor: Variables to monitor during sampling. These are the parameters of interest (e.g., "y0", "y1", "t1", "alpha", "shape") for which the posterior distributions will be estimated.
+
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -169,6 +185,16 @@ tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 
 ```
 
+Aim: This function sets the initial random number generator (RNG) seed and RNG type for each chain. This ensures that the results can be reproduced by starting with the same random numbers each time.
+
+- The function first checks if the input chain number is between 1 and 4. If not, it stops with an error. This ensures only up to 4 chains are allowed. (Function input)
+
+- Each chain is assigned a unique seed from the numbers 1 to 4. This seed determines the starting point for the random number generator. (Seed assignment)
+
+- Each chain is also assigned a different type of RNG from a predefined list of four types (Wichmann-Hill, Marsaglia-Multicarry, Super-Duper, Mersenne-Twister). (RNG type assignment)
+
+- The function returns a list containing the RNG seed and the RNG type for the given chain. (Return values)
+
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -181,36 +207,119 @@ tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 ```
 
 
+Aim: This code runs a JAGS model to perform Bayesian analysis using the provided model, data, and settings. It collects samples from the posterior distribution of the model parameters.
+
+- Steps:
+
+  - Model File: You provide file.mod containing your JAGS model code.
+  - Data: You use longdata and priors as input data.
+  - Initial Values: Use initsfunction to set reproducible starting points.
+  - Run in Parallel: Set method to "parallel" to speed up the process.
+  - Adaptation: Run 100 adaptation iterations (nadapt=100).
+  - Burn-in: Run 100 burn-in iterations (nburnin=100).
+  - Thinning: Keep every 1st sample (nthin=1).
+  - Sampling: Collect 100 samples from each chain (nmc=100).
+  - Chains: Run 4 chains (nchains=4).
+  - Monitor Parameters: Keep track of y0, y1, t1, alpha, shape.
+  - Summary: Do not summarize results immediately (summarise=FALSE).
+
+- Diagram
+Model File (file.mod)
+       |
+       v
+Data (longdata + priors)
+       |
+       v
+Initialize Chains (initsfunction)
+       |
+       v
+Run in Parallel (method="parallel")
+       |
+       v
+Adaptation (nadapt)
+       |
+       v
+Burn-in (nburnin)
+       |
+       v
+Thinning (nthin)
+       |
+       v
+Sampling (nmc)
+       |
+       v
+Chains (nchains)
+       |
+       v
+Monitor Parameters (tomonitor)
+       |
+       v
+Do Not Summarize (summarise=FALSE)
 
 
 ```{r, echo=FALSE, message=FALSE}
  mcmc_list <- as.mcmc.list(jags.post)
  
- mcmc_df <- ggs(mcmc_list)
-
 ```
 
+Aim: The as.mcmc.list function converts the output from a JAGS model run (jags.post) into a format that is easier to work with for analysis and visualization. Specifically, it converts the output into an MCMC list, which is a standard format for storing Markov Chain Monte Carlo (MCMC) samples in R.
 
+- Steps:
+
+  - Input: The JAGS model run output (jags.post) contains the MCMC samples.
+  - Convert: The as.mcmc.list function converts jags.post into an mcmc.list.
+  - Output: The result is an mcmc.list object, where each element is the samples from one of the chains.
+  
+  
+```{r, echo=FALSE, message=FALSE}
+ mcmc_df <- ggs(mcmc_list)
+```
+
+Aim: The ggs function converts MCMC samples into a data frame format that is specifically designed for easy visualization using ggplot2. It takes the structured samples in the mcmc.list format and reshapes them into a long data frame format.
+
+- Steps:
+
+  - Input: The mcmc_list object contains the MCMC samples organized by chain.
+  - Convert: The ggs function reshapes this into a data frame.
+  - Output: The result is mcmc_df, a data frame with rows for each sample, columns for parameter names, chain numbers, iterations, and sample values.
 
 ```{r, echo=FALSE, message=FALSE}
  wide_predpar_df <- mcmc_df %>%
    mutate(
-     parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
-     index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
-     antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+     parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),  # Extract base parameter name
+     index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),  # Extract index ID
+     antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))  # Extract antigen type
    ) %>%
    mutate(
-     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),
-     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))) %>%
-     filter(index_id == "newperson") %>%
-     select(-Parameter) %>%
-     pivot_wider(names_from = "parameter", values_from="value") %>%
-     rowwise() %>%
-     droplevels() %>%
-     ungroup() %>%
-     rename(r = shape)
-
+     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),  # Convert index_id to factor with labels
+     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))  # Convert antigen_iso to factor with labels
+   ) %>%
+   filter(index_id == "newperson")  # Keep only rows for "newperson"
+   select(-Parameter)  # Remove the original Parameter column
+   pivot_wider(names_from = "parameter", values_from = "value")  # Reshape data to wide format
+   rowwise()  # Process each row independently
+   droplevels()  # Remove unused factor levels
+   ungroup()  # Remove grouping
+   rename(r = shape)  # Rename column from shape to r
 ```
 
+
+Aim: This code processes the MCMC samples data frame (mcmc_df) to extract specific parameter values for a "newperson" and reshapes it into a wide format. The final output is a data frame where each row contains the parameter values for this "newperson".
+
+- Steps:
+
+  - Initial Data Frame: You start with mcmc_df, which contains MCMC samples with columns like Parameter, value, Chain, and Iteration.
+  
+  - Mutate: Extract the base parameter name (parameter), the index ID (index_id), and the antigen type (antigen_iso) from the Parameter column.
+  
+  - Filter: Keep only the rows where index_id is "newperson".
+  
+  - Select: Remove the original Parameter column, as we have extracted its components into new columns.
+  
+  - Pivot Wider: Convert the data from a long format (many rows, few columns) to a wide format (few rows, many columns), where each parameter type becomes a separate column.
+  
+  - Rowwise and Ungroup: Ensure each row is processed independently, then remove any grouping to simplify further operations.
+  
+  - Rename: Rename the column shape to r for clarity or consistency.
 
 
