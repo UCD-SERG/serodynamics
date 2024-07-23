@@ -138,7 +138,7 @@ In this prep_priors function,
 
 - Fill Arrays: It then fills these arrays with predefined values. These values are used to specify prior beliefs about the model parameters, like their means and how much they vary.
 
-- Return Results: Finally, the function returns these arrays in a list so they can be used later in your analysis.
+- Return Results: Finally, the function returns these arrays in a list so they can be used later in our analysis.
 
 
 
@@ -211,8 +211,8 @@ Aim: This code runs a JAGS model to perform Bayesian analysis using the provided
 
 - Steps:
 
-  - Model File: You provide file.mod containing your JAGS model code.
-  - Data: You use longdata and priors as input data.
+  - Model File: We provide file.mod containing our JAGS model code.
+  - Data: We use longdata and priors as input data.
   - Initial Values: Use initsfunction to set reproducible starting points.
   - Run in Parallel: Set method to "parallel" to speed up the process.
   - Adaptation: Run 100 adaptation iterations (nadapt=100).
@@ -308,7 +308,7 @@ Aim: This code processes the MCMC samples data frame (mcmc_df) to extract specif
 
 - Steps:
 
-  - Initial Data Frame: You start with mcmc_df, which contains MCMC samples with columns like Parameter, value, Chain, and Iteration.
+  - Initial Data Frame: We start with mcmc_df, which contains MCMC samples with columns like Parameter, value, Chain, and Iteration.
   
   - Mutate: Extract the base parameter name (parameter), the index ID (index_id), and the antigen type (antigen_iso) from the Parameter column.
   
@@ -327,7 +327,7 @@ Aim: This code processes the MCMC samples data frame (mcmc_df) to extract specif
 ```{r, echo=FALSE, message=FALSE}
 ## For using serocaculator package
 
-# Assuming wide_predpar_df is your data frame
+# Assuming wide_predpar_df is our data frame
 curve_params <- wide_predpar_df
 
 # Set class and attributes for serocalculator
@@ -350,7 +350,7 @@ This code leverages the serocalculator functions to compute and visualize antibo
 
   - autoplot(curve_params) generates a plot showing the antibody decay curves based on the provided model parameters.
 
-The autoplot() function from the serocalculator package is designed to visualize the antibody levels for each antigen, likely generating plots that show the trends over time based on your posterior samples.
+The autoplot() function from the serocalculator package is designed to visualize the antibody levels for each antigen, likely generating plots that show the trends over time based on our posterior samples.
 
 
 ```{r, echo=FALSE, message=FALSE}
@@ -408,7 +408,7 @@ serocourse_plot <- ggplot(serocourse.med, aes(x = t, y = res, color = quantile))
 print(serocourse_plot)
 ```
 
-Aim: The overall purpose of these steps is to take your posterior samples from the JAGS model, calculate the antibody levels over a defined time period, and then summarize and visualize these levels to understand the longitudinal antibody decay.
+Aim: The overall purpose of these steps is to take our posterior samples from the JAGS model, calculate the antibody levels over a defined time period, and then summarize and visualize these levels to understand the longitudinal antibody decay.
 
 - Predict Antibody Dynamics: Use model parameters to predict how antibody levels change over time.
 
@@ -418,15 +418,15 @@ Aim: The overall purpose of these steps is to take your posterior samples from t
 
 - Steps:
 
-  - Define Antibody Calculation Function: ab(t, y0, y1, t1, alpha, shape): This function calculates the antibody level at any given time point t using the parameters y0, y1, t1, alpha, and shape derived from your model. This is crucial because it allows you to translate the parameters into meaningful antibody levels over time.
+  - Define Antibody Calculation Function: ab(t, y0, y1, t1, alpha, shape): This function calculates the antibody level at any given time point t using the parameters y0, y1, t1, alpha, and shape derived from our model. This is crucial because it allows us to translate the parameters into meaningful antibody levels over time.
   
-  - Generate Time Points:Variable (tx2) creates a sequence of time points (from 0.1 to 1000) over which you want to evaluate the antibody levels. These time points ensure that you can plot the decay curve smoothly and comprehensively across a reasonable time span.
+  - Generate Time Points:Variable (tx2) creates a sequence of time points (from 0.1 to 1000) over which we want to evaluate the antibody levels. These time points ensure that we can plot the decay curve smoothly and comprehensively across a reasonable time span.
   
-  - Prepare Data Frame with Time Points: Data Frame (dT) step involves creating a data frame that includes these time points and replicating them for each row in your parameter data. This preparation is necessary for evaluating the antibody levels at each time point for each parameter set from your posterior samples.
+  - Prepare Data Frame with Time Points: Data Frame (dT) step involves creating a data frame that includes these time points and replicating them for each row in our parameter data. This preparation is necessary for evaluating the antibody levels at each time point for each parameter set from our posterior samples.
   
-  - Combine Data and Calculate Antibody Levels: Data Frame (serocourse.full) combines the parameters from your posterior samples with the time points and calculates the corresponding antibody levels using the ab function. This step generates a detailed dataset of predicted antibody levels over time for each sample.
+  - Combine Data and Calculate Antibody Levels: Data Frame (serocourse.full) combines the parameters from our posterior samples with the time points and calculates the corresponding antibody levels using the ab function. This step generates a detailed dataset of predicted antibody levels over time for each sample.
   
-  - Summarize the Serocourse Data: Data Frame (serocourse.med) step summarizes the full dataset by calculating the median, lower (2.5%), and upper (97.5%) quantiles of the antibody levels at each time point. This summarization is important to visualize the central tendency and the uncertainty (confidence intervals) in your antibody decay predictions.
+  - Summarize the Serocourse Data: Data Frame (serocourse.med) step summarizes the full dataset by calculating the median, lower (2.5%), and upper (97.5%) quantiles of the antibody levels at each time point. This summarization is important to visualize the central tendency and the uncertainty (confidence intervals) in our antibody decay predictions.
   
   - Plot the Summarized Data: The final plot shows the median antibody levels with uncertainty intervals (quantiles) over time for each antigen type. This visualization is key for interpreting the antibody decay dynamics and understanding how antibody levels change over time for different antigens, including the uncertainty in these predictions.
   
