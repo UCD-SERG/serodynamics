@@ -224,6 +224,7 @@ Aim: This code runs a JAGS model to perform Bayesian analysis using the provided
   - Summary: Do not summarize results immediately (summarise=FALSE).
 
 - Diagram
+
 Model File (file.mod)
        |
        v
@@ -440,9 +441,5 @@ By following these steps, we ensure a robust and detailed analysis of our longit
 
 ```
 
-
-```{r, echo=FALSE, message=FALSE}
-
-```
 
 
