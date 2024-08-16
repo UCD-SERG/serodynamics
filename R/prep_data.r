@@ -10,7 +10,7 @@ prep_data <- function(dataframe) {
 
   
   # Extract unique visits and antigens
-  visits <- unique(dataframe$visit_num)
+  visits <- sort(unique(as.numeric(dataframe$visit_num)))
   antigens <- unique(dataframe$antigen_iso)
   subjects <- unique(dataframe$index_id)
   
@@ -60,7 +60,7 @@ prep_data <- function(dataframe) {
   # }
   for (i in seq_len(num_subjects)) {
     subject_data <- dataframe[dataframe$index_id == subjects[i], ]
-    subject_visits <- unique(subject_data$visit_num)
+    subject_visits <- sort(unique(subject_data$visit_num))
     nsmpl[i] <- length(subject_visits)  # Number of non-missing visits for this participant
     
     for (j in seq_along(subject_visits)) {
