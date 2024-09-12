@@ -31,7 +31,7 @@ priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
 # Define inputs for JAGS model
 nchains <- 4
-nadapt  <- 100
+nadapt  <- 100 ## Could change to 1000~ iterations
 nburnin <- 100
 nmc     <- 100
 niter   <- 1000
@@ -51,7 +51,8 @@ initsfunction <- function(chain) {
 file.mod <- here::here("inst", "extdata", "model.jags.r")
 
 
-# Suppress warnings during the test
+# Suppress warnings during the test for checking main focus
+
 suppressWarnings({
   # Test using testthat
   test_that("JAGS model gives consistent results with the same RNG inputs", {
