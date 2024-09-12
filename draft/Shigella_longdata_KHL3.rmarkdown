@@ -48,23 +48,35 @@ library(here)
 
 ```
 
+
+
 ## Data description
 
 -   Step 1: Load the Dataset
+
+
 
 ```{r}
 df <- read_excel("3.8.2024 Compiled Shigella datav2.xlsx", 
                       sheet = "Compiled")
 ```
 
+
+
 -   Step 2: Get a Quick Overview of the Data Structure
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 skim(df) # Provides a comprehensive summary including missing values, distribution, and data types
 
 ```
 
+
+
 -   Step 3: Identify and Summarize Missing Values (for the entire dataset and the SOSAR study)
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 missing_summary <- df %>%
@@ -80,9 +92,6 @@ print(missing_summary)
 df_sosar<-df%>%filter(study_name=="SOSAR")
 
 
-df_sosar2<-df_sosar%>%filter(complete.cases(df_sosar$`Actual day`))
-
-
 missing_summary2 <- df_sosar %>%
   summarise(across(everything(), ~sum(is.na(.)))) %>%
   pivot_longer(cols = everything(), names_to = "variable", values_to = "missing_count") %>%
@@ -91,9 +100,13 @@ missing_summary2 <- df_sosar %>%
 print(missing_summary2)
 ```
 
+
+
 ## Exploratory Data Analysis
 
 -   Step 4: Filter Data for the SOSAR Study and Split Data by Isotype
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 # select longitudinal dataset from complied dataset
@@ -105,12 +118,16 @@ df_sosar_IgA<-df_sosar%>%filter(isotype_name=="IgA")
 df_sosar_IgG<-df_sosar%>%filter(isotype_name=="IgG")
 
 ```
+
+
 Verifying the unique sample identification numbers (SIDs) is crucial. There are 48 SIDs in this SOSAR study.
 
 
 \newpage
 
 -   Step 5: Plot Quantitative Response Change Over Time
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 # plotting how quantitative response change over time within individuals
@@ -123,7 +140,6 @@ df_summary_IgA <- df_sosar_IgA %>%
 
 
 ```
-
 
 ```{r, echo=FALSE, message=FALSE}
 # Filter the original dataframe to include only individuals with more than one observation
@@ -142,9 +158,13 @@ ggplot(df_filtered_IgA, aes(x = timepoint, y = ipab_MFI, group = sid, color = si
   theme(legend.position = "none")
 ```
 
+
+
 ## Longitudinal Antibody Decay Modeling
 
 -   Step 6: Prepare Data for JAGS Model
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 file.mod <- here::here("inst", "extdata", "model.jags.r")
@@ -152,7 +172,7 @@ file.mod <- here::here("inst", "extdata", "model.jags.r")
 
 ```{r, echo=FALSE, message=FALSE}
 # manipulating shigella data for applying dcm code
-dL<-df_sosar2%>%select(isotype_name,sid,cohort,age,treatment,timepoint,`Actual day`)%>%
+dL<-df_sosar%>%select(isotype_name,sid,cohort,age,treatment,timepoint,`Actual day`)%>%
   mutate(index_id=sid,antigen_iso=isotype_name,visit=timepoint,timeindays=`Actual day`)
 
 dL<-dL%>%group_by(index_id, antigen_iso) %>%# Group data by individual
@@ -161,7 +181,11 @@ dL<-dL%>%group_by(index_id, antigen_iso) %>%# Group data by individual
    ungroup()
 ```
 
+
+
 -   Step 7: Subset Data for Model Testing
+
+
 
 ```{r}
 #subset data for checking
@@ -169,7 +193,11 @@ dL_sub <- dL %>%
  filter(index_id %in% sample(unique(index_id), 20))
 ```
 
+
+
 -   Step 8: Prepare Data and Priors for JAGS
+
+
 
 ```{r, echo=FALSE, message=FALSE,include=FALSE}
 # Construct the path to "prep_data.r" using here
@@ -185,7 +213,11 @@ longdata <- prep_data(dL_sub)
 priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 ```
 
+
+
 -   Step 9: Run the JAGS Model
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 #inputs for jags model
@@ -212,7 +244,6 @@ initsfunction <- function(chain){
 
 ```
 
-
 ```{r}
 dump_and_quit <- function() {
   dump.frames(to.file = TRUE)
@@ -221,7 +252,6 @@ dump_and_quit <- function() {
 options(error = dump_and_quit)
 
 ```
-
 
 ```{r, echo=FALSE, message=FALSE}
 
@@ -253,16 +283,52 @@ if (inherits(jags.post, "try-error")) {
 ```
 
 
--   Step 10: Covert JAGS Output to MCMC List
+
+
+## Model Fit Evaluation
+
+-   Step 10: Covert JAGS Output to MCMC List and Evaluate Convergence
+
+
 
 ```{r}
 mcmc_list <- as.mcmc.list(jags.post)
 
 mcmc_df <- ggs(mcmc_list)
 
+# Plot trace plots for diagnostics
+traceplot(mcmc_list)
+
+# Calculate R-hat values for convergence
+print(gelman.diag(mcmc_list))
+
+# Plot density plots for posterior distributions
+densplot(mcmc_list)
+
 ```
 
--   Step 11: Prepare Data for Serocalculator Package
+
+
+-   Step 11: Posterior Predictive Checks
+
+
+
+```{r, echo=FALSE, message=FALSE}
+# Compare observed vs. predicted values
+ppc_dens_overlay(y=longdata$y, yrep=as.matrix(mcmc_list[[1]]))
+
+# Additional checks using bayesplot
+mcmc_areas(mcmc_list,pars=tomonitor)
+```
+
+
+
+
+## Antibody Decay and Visualization
+
+-   Step 12: Prepare Data for Serocalculator Package
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 wide_predpar_df <- mcmc_df %>%
@@ -295,9 +361,13 @@ attr(curve_params, "antigen_isos") <- antigen_isos
 
 ```
 
+
+
 \newpage
 
--   Step 12: Plot Longitudinal Antibody Decay
+-   Step 13: Plot Longitudinal Antibody Decay
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 plot.long <- autoplot(curve_params)
@@ -305,7 +375,11 @@ print(plot.long)
 
 ```
 
--   Step 13: Define the Antibody Calculation Function
+
+
+-   Step 14: Define the Antibody Calculation Function
+
+
 
 ```{r}
 ab <- function(t, y0, y1, t1, alpha, shape) {
@@ -320,7 +394,11 @@ ab <- function(t, y0, y1, t1, alpha, shape) {
 
 ```
 
--   Step 14: Generate Time Points for Antibody Levels
+
+
+-   Step 15: Generate Time Points for Antibody Levels
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 # Generate time points
@@ -334,7 +412,11 @@ dT <- data.frame(t = tx2) %>%
 
 ```
 
--   Step 15: Calculate Antibody Levels Over Time
+
+
+-   Step 16: Calculate Antibody Levels Over Time
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 # Combine data and calculate antibody levels
@@ -348,9 +430,13 @@ serocourse.full <- cbind(wide_predpar_df, dT) %>%
 ```
 
 
+
+
 \newpage
 
--   Step 16: Summarize and Plot Antibody Decay Data
+-   Step 17: Summarize and Plot Antibody Decay Data
+
+
 
 ```{r, echo=FALSE, message=FALSE}
 # Summarize the serocourse data
@@ -375,6 +461,8 @@ serocourse_plot <- ggplot(serocourse.med, aes(x = t, y = res, color = quantile))
 
 print(serocourse_plot)
 ```
+
+
 
 If the IgA antibody has a higher high quantile compared to the IgG antibody in the "Longitudinal Antibody Decay with Uncertainty Intervals" plot, it implies the following:
 

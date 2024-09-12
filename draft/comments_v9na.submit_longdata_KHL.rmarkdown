@@ -1,0 +1,106 @@
+---
+title: "Longitudinal analysis of Shigella"
+format: 
+  pdf:
+    number-sections: true
+    number-depth: 2
+    number-offset: [0, 0]
+editor: visual
+output:
+  pdf_document:
+    orientation: landscape
+---
+
+
+
+## Introduction
+
+
+
+```{r setup, include=FALSE,echo=FALSE}
+library(knitr)
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=FALSE, message=FALSE}
+
+devtools::load_all()
+
+devtools::install_github("ucd-serg/serocalculator")
+library(serocalculator)
+library(tidyverse)
+library(runjags)
+#library(coda)
+library(ggmcmc)
+
+library(gridExtra)
+library(haven)
+library(knitr)
+library(plotly)
+library(kableExtra)
+library(tidyr)
+library(arsenal)
+library(dplyr)
+library(forcats)
+library(huxtable)
+library(magrittr)
+library(parameters)
+library(kableExtra)
+library(ggplot2)
+library(ggeasy)
+library(scales)
+library(plotly)
+library(patchwork)
+library(tidyverse)
+library(gtsummary)
+library(readxl)
+```
+
+```{r,message=FALSE}
+#model file
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+```
+
+
+
+- Model file from this path
+
+
+
+
+```{r, echo=FALSE}
+#long data - CHOLERA
+ dL <- 
+   read_csv(here::here()  %>% fs::path("inst/extdata/cholera_data_compiled_050324.csv")) %>%
+   group_by(index_id, antigen_iso) %>%                      # Group data by individual
+   arrange(visit) %>%                          # Sort data by visit within each group
+   mutate(visit_num = rank(visit, ties.method = "first")) %>%
+   ungroup()
+ 
+```
+
+
+
+
+
+## Body
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+```{r, echo=FALSE, message=FALSE}
+
+```
+

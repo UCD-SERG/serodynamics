@@ -49,16 +49,16 @@ library(here)
 
 ```
 
-
 ### Data description
-- Step 2: Load the Dataset
+
+-   Step 2: Load the Dataset
 
 ```{r}
-df <- read_excel("3.8.2024 Compiled Shigella data.xlsx", 
+df <- read_excel("3.8.2024 Compiled Shigella datav2.xlsx", 
                       sheet = "Compiled")
 ```
 
-- Step 3: Understand the Structure of the Dataset
+-   Step 3: Understand the Structure of the Dataset
 
 ```{r}
 # View the structure of the dataset
@@ -71,13 +71,12 @@ head(df)
 summary(df)
 ```
 
-- Step 4: Handle Missing Values
+-   Step 4: Handle Missing Values
 
 ```{r}
 colSums(is.na(df))
 
 ```
-
 
 ## Exploratory Data Analysis
 
@@ -95,7 +94,6 @@ df_sosar_IgG<-df_sosar%>%filter(isotype_name=="IgG")
 
 ```
 
-
 ### Plotting quantitative response change over time
 
 ```{r}
@@ -110,6 +108,7 @@ df_summary_IgA <- df_sosar_IgA %>%
 
 df_summary_IgA
 ```
+
 Checking unique sample identification number (sid) is important. There are 48 sid in this SOSAR study.
 
 ```{r}
@@ -128,20 +127,16 @@ ggplot(df_filtered_IgA, aes(x = timepoint, y = ipab_MFI, group = sid, color = si
   theme_minimal()
 ```
 
-
-
 ## Understand the longitudinal antibody decay
 
-
 ```{r, echo=FALSE, message=FALSE}
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
 ```
-
 
 ```{r, echo=FALSE, message=FALSE}
 # manipulating shigella data for applying dcm code
-dL<-df_sosar%>%select(isotype_name,sid,cohort,age,treatment,timepoint)%>%
-  mutate(index_id=sid,antigen_iso=isotype_name,visit=timepoint)
+dL<-df_sosar%>%select(isotype_name,sid,cohort,age,treatment,timepoint,`Actual day`)%>%
+  mutate(index_id=sid,antigen_iso=isotype_name,visit=timepoint,timeindays=`Actual day`)
 
 dL<-dL%>%group_by(index_id, antigen_iso) %>%# Group data by individual
    arrange(visit) %>%  # Sort data by visit within each group
@@ -149,15 +144,11 @@ dL<-dL%>%group_by(index_id, antigen_iso) %>%# Group data by individual
    ungroup()
 ```
 
-
-
 ```{r, echo=FALSE, message=FALSE}
 #subset data for checking
 dL_sub <- dL %>%
  filter(index_id %in% sample(unique(index_id), 20))
 ```
-
-
 
 ```{r, echo=FALSE, message=FALSE}
 # Construct the path to "prep_data.r" using here
@@ -172,7 +163,6 @@ source(prep_priors_path)
 longdata <- prep_data(dL_sub)
 priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 ```
-
 
 ```{r, echo=FALSE, message=FALSE}
 
