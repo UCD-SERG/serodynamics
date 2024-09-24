@@ -3,3 +3,4 @@
 ^project\.Rcheck$
 ^project.*\.tar\.gz$
 ^project.*\.tgz$
+^data-raw$
