@@ -90,7 +90,7 @@ prep_data <- function(dataframe) {
   visit_times[num_subjects + 1, 1:3] <- c(5, 30, 90)
   # Ensure corresponding antibody levels are set to NA (explicitly missing)
   antibody_levels[num_subjects + 1, 1:3, ] <- NA
-  nsmpl[num_subjects + 1] <- 3  # Since we manually add three timepoints for the dummy subject
+  nsmpl[num_subjects + 1] <- 3  # Since we manually add three time-points for the dummy subject
   
   
   

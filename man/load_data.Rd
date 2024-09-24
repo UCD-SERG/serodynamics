@@ -4,18 +4,18 @@
 \alias{load_data}
 \title{load and format data}
 \usage{
-load_data(datapath = "data/", datafile = "TypoidCaseData_github_09.30.21.csv")
+load_data(datafile = "d")
 }
 \arguments{
-\item{datapath}{}
-
 \item{datafile}{}
+
+\item{datapath}{}
 }
 \value{
 a \code{\link[=list]{list()}} with the following elements:
 \itemize{
 \item \code{smpl.t} = time since symptom/fever onset for each participant, max 7 visits
-\item \code{logy} = log antibody response at each timepoint (max 7) for each of 7 biomarkers for each participant
+\item \code{logy} = log antibody response at each time-point (max 7) for each of 7 biomarkers for each participant
 \item \code{ntest} is max number of biomarkers
 \item \code{nsmpl} = max number of samples per participant
 \item \code{nsubj} = number of study participants
