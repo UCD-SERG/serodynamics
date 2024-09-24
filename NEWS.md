@@ -12,4 +12,4 @@ none yet
 
 ## Developer-facing changes
 
-* Added various github actions (#10)
+* Added various GitHub Actions (#10)
