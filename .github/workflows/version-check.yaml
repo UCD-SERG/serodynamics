@@ -16,7 +16,7 @@ jobs:
     steps:
 
       - name: checkout working HEAD
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           sparse-checkout: |
@@ -24,7 +24,7 @@ jobs:
           path: working
 
       - name: checkout base HEAD
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           sparse-checkout: |
