@@ -10,13 +10,11 @@ jobs:
   version-check:
     if: ${{ github.event_name == 'pull_request' }}
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: read
 
     steps:
 
       - name: checkout working HEAD
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
           sparse-checkout: |
@@ -24,7 +22,7 @@ jobs:
           path: working
 
       - name: checkout base HEAD
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.base.ref }}
           sparse-checkout: |
