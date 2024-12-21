@@ -1,0 +1,621 @@
+---
+title: "Antibody dynamics for Dengue"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Samuel Schildhauer"
+format: pdf
+editor: visual
+---
+
+```{r echo=F, warning=F, message=F, include=F}
+## Data preparation and running Jags
+
+devtools::load_all()
+
+#devtools::install_github("ucd-serg/serocalculator")
+library(serocalculator)
+library(tidyverse)
+library(runjags)
+library(coda)
+library(ggmcmc)
+library(ggbeeswarm)
+library(ggpubr)
+library(table1)
+library(cowplot)
+library(gridExtra)
+
+#model file
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+
+#long data - Dengue
+# Uploading raw data 
+Dengue_Dat_Raw <- read_csv(here::here()  %>% fs::path("inst/extdata/Clean_Data RAT0148_Fever and Annual-02-Feb-2023_Selected_Clean.csv"), locale=locale(encoding="latin1")) 
+
+### Prior cleaning for data set 
+
+##First getting rid of blank data
+Dengue_Dat <- Dengue_Dat_Raw %>%
+  filter(ID != "") %>%
+  rename("DateFirstPosClean"="Date collection First blood sample (S1) MM/DD/YY",
+         "DateSecondPosClean"="Date collection Second blood sample (S2) MM/DD/YY")
+
+Dengue_Dat$DateFirstPosClean <- as.Date(Dengue_Dat$DateFirstPosClean, "%m/%d/%y")
+Dengue_Dat$DateSecondPosClean <- as.Date(Dengue_Dat$DateSecondPosClean, "%m/%d/%y")
+Dengue_Dat$`Date onset fever MM/DD/YY` <- as.Date(Dengue_Dat$`Date onset fever MM/DD/YY`, "%m/%d/%y")
+
+
+## OD Dates are harder to clean because they come in different formats 
+#Splitting the dates into different data sets 
+OD_2007 <- Dengue_Dat %>%
+  select(ID, Date_2007, `OD IgG_2007`) %>%
+  rename("Date"="Date_2007",
+         "OD_IgG"="OD IgG_2007") %>%
+  mutate(Date_cat = "2007")
+OD_2008 <- Dengue_Dat %>%
+  select(ID, Date_2008, `OD IgG_2008`) %>%
+  rename("Date"="Date_2008",
+         "OD_IgG"="OD IgG_2008") %>%
+  mutate(Date_cat = "2008")
+OD_2009 <- Dengue_Dat %>%
+  select(ID, Date_2009, `OD IgG_2009`) %>%
+  rename("Date"="Date_2009",
+         "OD_IgG"="OD IgG_2009")%>%
+  mutate(Date_cat = "2009")
+OD_2010 <- Dengue_Dat %>%
+  select(ID, Date_2010, `OD IgG_2010`) %>%
+  rename("Date"="Date_2010",
+         "OD_IgG"="OD IgG_2010")%>%
+  mutate(Date_cat = "2010")
+## Appending data sets to correct all dates at once
+Date_OD_Dat <- rbind(OD_2007, OD_2008, OD_2009, OD_2010) 
+Date_OD_Dat <- Date_OD_Dat %>%
+  #Taking out where there was no date 
+  filter(is.na(Date)==F) %>%
+  mutate(Date=parse_date_time(Date, orders="dmy")) 
+
+## Making a visit number -- needs to be dynamic because there is a chance that
+# 2009 might have been the first visit 
+Visit_shell <- c(ID=NA, DateVisit=NA, visit=NA)
+# Creating a visit numebr 
+for (i in unique(Date_OD_Dat$ID)) {
+  Assign_visit <- Date_OD_Dat %>% filter(ID==i) %>%
+    mutate(visit=row_number()) %>%
+    select(ID, Date, visit)
+  Visit_shell <- data.frame(rbind(Visit_shell, Assign_visit))
+  # Date_OD_Dat <- data.frame(merge(Date_OD_Dat, Assign_visit, by=c("ID","Date")))
+}
+
+## Putting the data back together
+#First OD back to date
+Date_OD_Dat <- merge(Visit_shell, Date_OD_Dat, by=c("ID","Date"), all.x=T)
+#Prepping DengueDat -- dont need any of the OD or date columns anymore
+Dengue_Dat <- Dengue_Dat %>% select(ID, `Age (yrs)`, `Sex           (Male 1, Female 2)`, `Date onset fever MM/DD/YY`, `Fever (¡C)`, `Fever duration (# days)`, `clinical diagnosis`, DateFirstPosClean, DateSecondPosClean, `Laboratory Place`, `PCR Results`, `IgM Result (S1 sample)`,`IgM Result (S2 sample)`, `IgG Result (S1)`, `IgG Result (S2)`, `Laboratory diagnosis`, `Case #`)
+Dengue_Dat <- merge(Dengue_Dat, Date_OD_Dat, "ID")
+
+## Creating date episode -- which is the first of onset date, spec coll date 1, and spec coll date 2
+Dengue_Dat <- Dengue_Dat %>%
+  mutate(Episode_Date = as_date(ifelse(is.na(`Date onset fever MM/DD/YY`)==T, DateFirstPosClean,
+                               ifelse(is.na(DateFirstPosClean)==T, DateSecondPosClean, `Date onset fever MM/DD/YY`)), origin=origin)) %>%
+  ### Calculating time difference
+  mutate(timeindays = difftime(Date, Episode_Date, units=c("days")))
+
+## Preparing for running through the model 
+# Need to rename some of the columns 
+Dengue_Dat <- Dengue_Dat %>%
+  rename(result=OD_IgG,
+         visit_num = visit) %>%
+  mutate(antigen_iso = "NS1") 
+
+
+### Recoding age groups
+Dengue_Dat <- Dengue_Dat %>%
+  mutate(Age_group = ifelse(`Age (yrs)` < 6, "4-5",
+                            ifelse(`Age (yrs)` >=6 & `Age (yrs)` < 8, "6-7",
+                                   ifelse(`Age (yrs)` >=8 & `Age (yrs)` < 11, "8-10",
+                                          ifelse(`Age (yrs)` >=11 & `Age (yrs)` <= 15, "11-14", NA)))))
+Dengue_Dat$Age_group <- factor(Dengue_Dat$Age_group, levels=c("4-5","6-7","8-10","11-14"))
+### Recoding Sex
+Dengue_Dat <- Dengue_Dat %>%
+  mutate(Sex = ifelse(`Sex           (Male 1, Female 2)` == 1, "Male","Female"))
+### Recoding secondary vs primary infection
+Dengue_Dat$`Laboratory diagnosis` <- Dengue_Dat$`Laboratory diagnosis` %>%
+  gsub("acute secondary dengue infection|Acute secondary dengue infection|Acute Secondary Dengue Infection", "Acute Secondary Infection", .) %>%
+  gsub("Dengue","",.) %>%
+  gsub("Acute Primary  Infection","Acute Primary Infection",.)
+Dengue_Dat$`Laboratory diagnosis`[Dengue_Dat$`Laboratory diagnosis` == " infection"] <- NA
+### Working with symptom data 
+Dengue_Dat <- Dengue_Dat %>%
+  mutate(DHF = ifelse(grepl("DH",`clinical diagnosis`, ignore.case = T),"DHF","No DHF"))
+Dengue_Dat <- Dengue_Dat %>%
+  mutate(Age_cat = ifelse(`Age (yrs)` <= 9, "Lessthan10","10orolder"))
+
+# Renaming more and keeping only variables that we will use 
+Dengue_Dat_final <- Dengue_Dat %>%
+  rename(Fever = `Fever (¡C)`,
+         Fever_duration = `Fever duration (# days)`,
+         Clinical_dx = `clinical diagnosis`,
+         Lab_place = `Laboratory Place`,
+         PCR_Result = `PCR Results`,
+         Laboratory_diagnosis = `Laboratory diagnosis`,
+         index_id = ID) %>%
+  select(index_id, Fever,  Fever_duration, Clinical_dx, DateFirstPosClean, DateSecondPosClean, Lab_place, PCR_Result, Laboratory_diagnosis, Date, visit_num, result, Date_cat, Episode_Date, timeindays, antigen_iso, Age_group, Sex, DHF, Age_cat)
+
+
+```
+
+Background
+
+-   Data provided by Dr. Supawat Chatchen from Mahidol University in Thailand.
+
+-   A large serosurvey for Dengue conducted from 2007-2010 among children aged 4-14 in Muang Ratchaburi, Ratchaburi Province, Thailand.
+
+    -   4 different time periods
+
+        -   Visit 1: Jan-Sep 2007
+
+        -   Visit 2: Jan-Apr 2008
+
+        -   Visit 3: Jul-Nov 2008
+
+        -   Visit 4: May-Oct 2009
+
+    -   Data on incident cases gathered from clinic, therefore we know onset date for all positive dengue cases.
+
+Table 1
+
+```{r warning=F, echo=F, message=F}
+Dengue_Dat_final_pos <- Dengue_Dat_final %>%
+  filter(timeindays > 0) %>%
+  arrange(index_id, visit_num) %>%
+  select(!c(visit_num))
+
+## Making a visit number for the second time-- needs to be dynamic because there is a chance that
+# 2009 might have been the first visit 
+Date_OD_Dat <- Dengue_Dat_final_pos %>%
+  select(index_id, Date)
+Visit_shell <- c(index_id=NA, DateVisit=NA, visit=NA)
+# Creating a visit numebr 
+for (i in unique(Date_OD_Dat$index_id)) {
+  Assign_visit <- Date_OD_Dat %>% filter(index_id==i) %>%
+    mutate(visit=row_number()) %>%
+    select(index_id, Date, visit)
+  Visit_shell <- data.frame(rbind(Visit_shell, Assign_visit))
+  # Date_OD_Dat <- data.frame(merge(Date_OD_Dat, Assign_visit, by=c("ID","Date")))
+}
+
+#Adding this back to 
+Visit_shell <- Visit_shell %>%
+  filter(is.na(index_id)==F) 
+Dengue_Dat_final_pos <- merge(Dengue_Dat_final_pos, Visit_shell, by=c("index_id","Date"))
+Dengue_Dat_final_pos <- Dengue_Dat_final_pos %>%
+  rename(visit_num=visit)
+
+Data_Example <- Dengue_Dat_final_pos %>% 
+  select(index_id, visit_num, timeindays, antigen_iso, DHF, Age_cat, Laboratory_diagnosis)
+
+Table1 <- table1(~ Age_cat + Laboratory_diagnosis +  PCR_Result | DHF , data=Dengue_Dat_final_pos)
+Table1
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+
+### Creating Rjags function
+#Creating a function to run stratified data
+Run_jags_fun <- function(data, strat) {
+strat_list <<- unique(data[[strat]])
+
+for (i in strat_list) {
+dL_sub <- data %>%
+  filter(data[[strat]]==i)
+#set seed for reproducibility
+set.seed(54321)
+#subset data for checking
+# dL_sub <- dL %>%
+#   filter(index_id %in% sample(unique(index_id), 50))
+#prepare data for modeline
+longdata <- prep_data(dL_sub)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+
+#inputs for jags model
+nchains <- 4;                # nr of MC chains to run simultaneously
+nadapt  <- 10;             # nr of iterations for adaptation
+nburnin <- 100;            # nr of iterations to use for burn-in
+nmc     <- 2500;             # nr of samples in posterior chains
+niter   <- 2500;            # nr of iterations for posterior sample
+nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
+
+#pred.subj <- longdata$nsubj + 1;
+#tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
+#This handles the seed to reproduce the results 
+initsfunction <- function(chain){
+  stopifnot(chain %in% (1:4)); # max 4 chains allowed...
+  .RNG.seed <- (1:4)[chain];
+  .RNG.name <- c("base::Wichmann-Hill","base::Marsaglia-Multicarry",
+                 "base::Super-Duper","base::Mersenne-Twister")[chain];
+  return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
+}
+
+jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
+                      inits=initsfunction,method="parallel",
+                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
+                      n.chains=nchains,
+                      monitor=tomonitor,summarise=FALSE);
+mcmc_list <- as.mcmc.list(jags.post)
+mcmc_df <- ggs(mcmc_list)
+#Creating jags.post output for running diagnostics 
+trace_plot <- plot_jags_trace(jags.post)
+assign(paste0("jags.post_",i), jags.post, envir=globalenv())
+assign(paste0("trace_plot_",i), trace_plot, envir=globalenv())
+
+
+wide_predpar_df <- mcmc_df %>%
+  mutate(
+    parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+    index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+    antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+  ) %>%
+  mutate(
+    index_id = factor(index_id, labels = attr(longdata, "ids")),
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+ # mutate(value = exp(value)) %>%
+ # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
+  ## only take the last subject (newperson)
+  filter(index_id == "newperson") %>%
+  select(-Parameter) %>%
+  pivot_wider(names_from = "parameter", values_from="value") %>%
+  rowwise() %>%
+  #mutate(y1 = y0+y1) %>%
+  droplevels() %>%
+  ungroup() %>%
+  rename(r = shape) %>%
+  mutate(stratification=i)
+
+assign(paste0("wide_predpar_",i), data.frame(wide_predpar_df), envir=globalenv())
+
+# wide_prepdar_df_shell <- rbind(wide_predpar_df_shell, wide_predpar_df)
+}
+}
+
+
+
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+# Filter to where only positive time differences 
+
+
+
+### Running Rjags without a stratification 
+#set seed for reproducibility
+set.seed(54321)
+#subset data for checking
+# dL_sub <- dL %>%
+#   filter(index_id %in% sample(unique(index_id), 50))
+
+#prepare data for modeline
+longdata <- prep_data(Dengue_Dat_final_pos)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+
+#inputs for jags model
+nchains <- 4;                # nr of MC chains to run simultaneously
+nadapt  <- 10;             # nr of iterations for adaptation
+nburnin <- 100;            # nr of iterations to use for burn-in
+nmc     <- 2500;             # nr of samples in posterior chains
+niter   <- 2500;            # nr of iterations for posterior sample
+nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
+
+#pred.subj <- longdata$nsubj + 1;
+#tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
+#This handles the seed to reproduce the results 
+initsfunction <- function(chain){
+  stopifnot(chain %in% (1:4)); # max 4 chains allowed...
+  .RNG.seed <- (1:4)[chain];
+  .RNG.name <- c("base::Wichmann-Hill","base::Marsaglia-Multicarry",
+                 "base::Super-Duper","base::Mersenne-Twister")[chain];
+  return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
+}
+
+jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
+                      inits=initsfunction,method="parallel",
+                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
+                      n.chains=nchains,
+                      monitor=tomonitor,summarise=FALSE);
+mcmc_list <- as.mcmc.list(jags.post)
+mcmc_df <- ggs(mcmc_list)
+
+wide_predpar_df_total <- mcmc_df %>%
+  mutate(
+    parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+    index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+    antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+  ) %>%
+  mutate(
+    index_id = factor(index_id, labels = attr(longdata, "ids")),
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+ # mutate(value = exp(value)) %>%
+ # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
+  ## only take the last subject (newperson)
+  filter(index_id == "newperson") %>%
+  select(-Parameter) %>%
+  pivot_wider(names_from = "parameter", values_from="value") %>%
+  rowwise() %>%
+  #mutate(y1 = y0+y1) %>%
+  droplevels() %>%
+  ungroup() %>%
+  rename(r = shape) %>%
+  mutate(stratification=i)
+
+#Now plot longitudinal antibody decay 
+curve_params <- wide_predpar_df_total
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+
+```
+
+Methods: Dengue data was run through jags simulation using the following settings: inputs for jags model: nchains \<- 4; \# nr of MC chains to run simultaneously nadapt \<- 4000; \# nr of iterations for adaptation nburnin \<- 100; \# nr of iterations to use for burn-in nmc \<- 100; \# nr of samples in posterior chains niter \<- 10000; \# nr of iterations for posterior sample nthin \<- round(niter/nmc); \# thinning needed to produce nmc from niter
+
+Data from the "New person" were subset and used for the following figures.
+
+Traceplot of parameters for NS1 antigen
+
+```{r echo=F, warning=F}
+plot_jags_trace(jags.post)
+```
+
+Autocorrelation and effective sample size
+
+```{r}
+autocorr.plot(jags.post)
+```
+
+Density plot of parameters for NS1 antigen
+
+```{r}
+plot_jags_dens(jags.post)
+```
+
+Antibody dynamic curve for Dengue data
+
+```{r echo=F, warning=F, message=F}
+autoplot(curve_params, title="Autoplot Antibody Dynamic Curve for Dengue")
+
+```
+
+Antibody dynamic curve plotted on the log scale
+
+```{r echo=F, warning=F, message=F}
+curve_params %>% autoplot(log_x = TRUE, n_curves = 50, title="")
+
+```
+
+Antibody dynamic curve plotted with median an 95%
+
+```{r echo=F, warning=F, message=F}
+curve_params %>% graph.curve.params() %>% print()
+
+```
+
+Parameter Values for Dengue antibody dynamic curve
+
+```{r echo=F, warning=F, message=F}
+
+curve_params_long <- curve_params %>%
+  gather(Parameter, Value, y0, y1, alpha, r, t1)
+
+
+curve_params_long$Parameter <- factor(curve_params_long$Parameter, levels=c("y0","y1","t1","r","alpha"))
+
+ggplot(curve_params_long, aes(
+  x = antigen_iso,
+  y = Value,
+  color = Parameter
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of antibody decay curve parameters for NS1")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1)) +
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+## Running data with stratifications
+
+## Running function for DHF
+Run_jags_fun(Dengue_Dat_final_pos, "DHF")
+# Putting dataframes back together
+wide_predpar_finalDHF <- rbind(wide_predpar_DHF, `wide_predpar_No DHF`)
+#Now plot longitudinal antibody decay 
+curve_params_DHF <- wide_predpar_finalDHF
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+
+## Running function for Age category
+Run_jags_fun(Dengue_Dat_final_pos, "Age_cat")
+# Putting dataframes back together
+wide_predpar_finalAge <- rbind(wide_predpar_Lessthan10, wide_predpar_10orolder)
+#Now plot longitudinal antibody decay 
+curve_params_Age <- wide_predpar_finalAge
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+  
+## Running function for Primary vs Secondary
+  Dengue_Dat_final_pos <- Dengue_Dat_final_pos %>%
+    mutate(Lab_Dx_cat = ifelse(Laboratory_diagnosis == "Acute Secondary Infection", "Secondary","Primary"))
+Run_jags_fun(Dengue_Dat_final_pos, "Lab_Dx_cat")
+# Putting dataframes back together
+wide_predpar_finaldx <- rbind(wide_predpar_Primary, wide_predpar_Secondary)
+#Now plot longitudinal antibody decay 
+curve_params_dx <- wide_predpar_finaldx
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+  
+  
+
+## Running function for serotypes
+Run_jags_fun(Dengue_Dat_final_pos, "PCR_Result")
+# Putting dataframes back together
+wide_predpar_finaltype <- rbind(wide_predpar_DEN1, wide_predpar_DEN2, wide_predpar_DEN3, wide_predpar_DEN4) 
+#Now plot longitudinal antibody decay 
+curve_params_type <- wide_predpar_finaltype
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos  
+
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+jags_plot_function <- function(data=data, param, strat, label) {
+ggplot(data, aes(
+  x = as.factor(antigen_iso),
+  y = .data[[param]]
+)) +
+  geom_boxplot(aes(color=.data[[strat]]),outlier.colour = NA, fill=NA) +
+  # geom_beeswarm(size = .2, alpha = .3, show.legend = F) +
+  scale_y_log10() +
+  theme_classic() +
+  labs(x = "antigen - isotype") +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1)) +
+  labs(title=paste0("Median value for ", param," stratified by ",label))+
+  stat_compare_means(aes(group=.data[[strat]]), label="p.signif", size=3, hide.ns = T) +
+    scale_color_brewer(palette = "Paired")+
+    guides(shape = guide_legend(override.aes = list(size = 1)))
+}
+
+
+```
+
+Methods: Dengue data set was stratified by DHF vs non-DHF case and \<10 years vs $\ge$ 10 years of age and run through jags simulation using the following inputs: inputs for jags model nchains \<- 4; \# nr of MC chains to run simultaneously nadapt \<- 4000; \# nr of iterations for adaptation nburnin \<- 100; \# nr of iterations to use for burn-in nmc \<- 100; \# nr of samples in posterior chains niter \<- 10000; \# nr of iterations for posterior sample nthin \<- round(niter/nmc); \# thinning needed to produce nmc from niter
+
+```{r echo=F, warning=F, message=F, include=F}
+
+jags_plot_function <- function(data=data, param, strat, label) {
+ggplot(data, aes(
+  x = as.factor(antigen_iso),
+  y = .data[[param]]
+)) +
+  geom_boxplot(aes(color=.data[[strat]]),outlier.colour = NA, fill=NA) +
+  # geom_beeswarm(size = .2, alpha = .3, show.legend = F) +
+  scale_y_log10() +
+  theme_classic() +
+  labs(x = "antigen - isotype") +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1),
+        title = element_text(size=9),
+        axis.title.x = element_blank(),
+        legend.title = element_blank(),
+        legend.position = "top",
+        legend.text = element_text(size=7)) +
+  labs(title=paste0("Median value for ", param))+
+  stat_compare_means(aes(group=.data[[strat]]), label="p.signif", size=3, hide.ns = T) +
+    scale_color_brewer(palette = "Paired")+
+    guides(shape = guide_legend(override.aes = list(size = 1)))
+}
+
+
+
+```
+
+\newpage
+
+**Parameter boxplots and diagnostics stratified by DHF status**
+
+```{r echo=F, warning=F, message=F, fig.height=10, fig.width=9}
+
+# plot_jags_trace(jags.post_DHF)
+# plot_jags_trace(`jags.post_No DHF`)
+
+# knitr::opts_chunk$set(out.height = "\\textheight",  out.width = "\\textwidth")
+
+DHF_y1 <- jags_plot_function(curve_params_DHF, "y1", "stratification", "Dengue hemorrhagic fever status")
+DHF_y0 <- jags_plot_function(curve_params_DHF, "y0", "stratification", "Dengue hemorrhagic fever status")
+DHF_t1 <- jags_plot_function(curve_params_DHF, "t1", "stratification", "Dengue hemorrhagic fever status")
+DHF_r <- jags_plot_function(curve_params_DHF, "r", "stratification", "Dengue hemorrhagic fever status")
+DHF_alpha <- jags_plot_function(curve_params_DHF, "alpha", "stratification", "Dengue hemorrhagic fever status")
+
+plot_grid(DHF_y0, DHF_y1, DHF_t1, DHF_r, DHF_alpha, ncol=2, nrow=3, label_size = "auto")
+# 
+# title <- ggdraw() + 
+#   draw_label(
+#     "Parameter boxplots stratified by DHF status",
+#     fontface = 'bold',
+#     x = 0,
+#     hjust = 0
+#   ) +
+#   theme(
+#     # add margin on the left of the drawing canvas,
+#     # so title is aligned with left edge of first plot
+#     plot.margin = margin(0, 0, 0, 7)
+#   )
+# plot_grid(
+#   title, p,
+#   rel_heights = c(0.1, 1)
+# )
+
+# grid.arrange(DHF_y0, DHF_y1, DHF_alpha, DHF_t1, DHF_alpha)
+```
+
+\newpage
+
+**Parameter boxplots stratified by age group (\<10 years vs 10+ years)**
+
+```{r echo=F, warning=F, message=F, fig.height=10, fig.width=9}
+### Prepping stratification by age
+
+Age_y0 <- jags_plot_function(curve_params_Age, "y0", "stratification", "Age Category")
+Age_y1 <- jags_plot_function(curve_params_Age, "y1", "stratification", "Age Category")
+Age_t1 <- jags_plot_function(curve_params_Age, "t1", "stratification", "Age Category")
+Age_r <- jags_plot_function(curve_params_Age, "r", "stratification", "Age Category")
+Age_alpha <- jags_plot_function(curve_params_Age, "alpha", "stratification", "Age Category")
+
+plot_grid(Age_y0, Age_y1, Age_t1, Age_r, Age_alpha, ncol=2, nrow=3, label_size = "auto")
+
+
+```
+
+\newpage
+
+**Parameter boxplots stratified by diagnosis, primary vs secondary infection**
+
+```{r echo=F, warning=F, message=F, fig.height=10, fig.width=9}
+### Prepping stratification by age
+
+Dx_y0 <- jags_plot_function(curve_params_dx, "y0", "stratification", "Diagnosis")
+Dx_y1 <- jags_plot_function(curve_params_dx, "y1", "stratification", "Diagnosis")
+Dx_t1 <- jags_plot_function(curve_params_dx, "t1", "stratification", "Diagnosis")
+Dx_r <- jags_plot_function(curve_params_dx, "r", "stratification", "Diagnosis")
+Dx_alpha <- jags_plot_function(curve_params_dx, "alpha", "stratification", "Diagnosis")
+
+plot_grid(Dx_y0, Dx_y1, Dx_t1, Dx_r, Dx_alpha, ncol=2, nrow=3, label_size = "auto")
+
+```
+
+\newpage
+
+**Parameter boxplots stratified by diagnosis, primary vs secondary infection**
+
+```{r echo=F, warning=F, message=F, fig.height=10, fig.width=9}
+### Prepping stratification by age
+
+Sero_y0 <- jags_plot_function(curve_params_type, "y0", "stratification", "Serotype")
+Sero_y1 <- jags_plot_function(curve_params_type, "y1", "stratification", "Serotype")
+Sero_t1 <- jags_plot_function(curve_params_type, "t1", "stratification", "Serotype")
+Sero_r <- jags_plot_function(curve_params_type, "r", "stratification", "Serotype")
+Sero_alpha <- jags_plot_function(curve_params_type, "alpha", "stratification", "Serotype")
+
+plot_grid(Sero_y0, Sero_y1, Sero_t1, Sero_r, Sero_alpha, ncol=2, nrow=3, label_size = "auto")
+
+```

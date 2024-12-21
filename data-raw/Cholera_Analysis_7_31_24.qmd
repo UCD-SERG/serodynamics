@@ -1,0 +1,479 @@
+---
+title: "Antibody dynamics for Cholera"
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+author: "Samuel Schildhauer"
+format: pdf
+editor: visual
+---
+
+```{r echo=F, warning=F, message=F, include=F}
+## Data preparation and running Jags
+
+devtools::load_all()
+
+#devtools::install_github("ucd-serg/serocalculator")
+library(serocalculator)
+library(tidyverse)
+library(runjags)
+library(rjags)
+library(coda)
+library(ggmcmc)
+library(ggbeeswarm)
+library(ggpubr)
+library(rethinking)
+
+#model file
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+
+
+#long data - TYPHOID 
+# dL <-
+# # the raw data is prepared and shared by jessica Seidman
+#   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
+#  filter(surgical != 1 | is.na(surgical))  %>%
+#   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
+#   mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>%
+#   mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
+#   mutate(timeindays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
+#   mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months", "Last visit"))) %>%
+#   group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
+#   ungroup() %>%
+#   select(index_id, Country, seapage, bldculres, Hospitalized, antigen_iso, result, TimePeriod,  postreinf, samplenum,  timeindays) %>%
+#   rename(age = seapage) %>%
+#   rename(visit_num = samplenum)  %>%
+#   mutate(timeindays = ifelse(timeindays<0, 0, timeindays)) %>%
+#   mutate(visit = ifelse(is.na(visit_num) & TimePeriod == "Baseline", 1, visit_num)) %>%
+#   filter(!antigen_iso %in% c("YncE_IgG", "CdtB_IgA", "CdtB_IgG", "MP_IgA", "MP_IgG"))  %>%
+#   droplevels()
+#long data - CHOLERA
+dL_cholera <-
+  # read.csv("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Cholera-longitudinal/data/cholera_data_compiled_050324.csv") %>%
+  read_csv(here::here()  %>% fs::path("inst/extdata/cholera_data_compiled_050324.csv")) %>%
+  group_by(index_id, antigen_iso) %>%                      # Group data by individual
+  arrange(visit) %>%                          # Sort data by visit within each group
+  mutate(visit_num = rank(visit, ties.method = "first")) %>%
+  ungroup()
+
+### Creating dummy variables for stratifications 
+dL <- dL_cholera %>%
+  mutate(Age_bin = ifelse(age_years <= 5 , "<6","6+"),
+         Immunity_bin = ifelse(cohort=="Vaccinee" , "Vaccinee","Case"),
+         Age_immune_combo = ifelse(cohort=="Vaccinee" & age_years <= 5, 
+                                   "Vaccinated_5under",
+                                   ifelse(cohort=="Vaccinee" & age_years > 5, 
+                                          "Vaccinated_over5", 
+                                          ifelse(cohort=="Case" & age_years > 5,
+                                                 "Case_over5", 
+                                                 ifelse(cohort=="Case" & age_years <= 5,
+                                                 "Case_5under",NA)))))
+
+
+
+
+```
+
+Running full model, unstratified with the following inputs:
+
+nchains \<- 4; \# nr of MC chains to run simultaneously
+
+nadapt \<- 10000; \# nr of iterations for adaptation
+
+nburnin \<- 100; \# nr of iterations to use for burn-in
+
+nmc \<- 2500; \# nr of samples in posterior chains
+
+niter \<- 5000; \# nr of iterations for posterior sample
+
+nthin \<- round(niter/nmc); \# thinning needed to produce nmc from niter
+
+```{r}
+
+## Standardizing OD values 
+# dL$result <- standardize(dL$result)
+
+# Filtering down to two
+# dL <- dL %>%
+#   filter(antigen_iso %in% c("lpso139o_IgA"))
+
+#set seed for reproducibility
+set.seed(54321)
+#subset data for checking
+# dL_sub <- dL %>%
+#   filter(index_id %in% sample(unique(index_id), 50))
+
+#prepare data for modeline
+longdata <- prep_data(dL)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+
+#inputs for jags model
+nchains <- 4;                # nr of MC chains to run simultaneously
+nadapt  <- 10000;             # nr of iterations for adaptation
+nburnin <- 100;            # nr of iterations to use for burn-in
+nmc     <- 2500;             # nr of samples in posterior chains
+niter   <- 5000;            # nr of iterations for posterior sample
+nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
+
+#pred.subj <- longdata$nsubj + 1;
+#tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
+#This handles the seed to reproduce the results 
+initsfunction <- function(chain){
+  stopifnot(chain %in% (1:4)); # max 4 chains allowed...
+  .RNG.seed <- (1:4)[chain];
+  .RNG.name <- c("base::Wichmann-Hill","base::Marsaglia-Multicarry",
+                 "base::Super-Duper","base::Mersenne-Twister")[chain];
+  return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
+}
+
+jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
+                      inits=initsfunction,method="parallel",
+                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
+                      n.chains=nchains,
+                      monitor=tomonitor,summarise=FALSE);
+mcmc_list <- as.mcmc.list(jags.post)
+mcmc_df <- ggs(mcmc_list)
+
+wide_predpar_df <- mcmc_df %>%
+  mutate(
+    parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+    index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+    antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+  ) %>%
+  mutate(
+    index_id = factor(index_id, labels = attr(longdata, "ids")),
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+ # mutate(value = exp(value)) %>%
+ # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
+  ## only take the last subject (newperson)
+  filter(index_id == "newperson") %>%
+  select(-Parameter) %>%
+  pivot_wider(names_from = "parameter", values_from="value") %>%
+  rowwise() %>%
+  #mutate(y1 = y0+y1) %>%
+  droplevels() %>%
+  ungroup() %>%
+  rename(r = shape) 
+
+
+#Now plot longitudinal antibody decay 
+curve_params <- wide_predpar_df
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+
+```
+
+**Diagnostics of full model**
+
+Note: Program is recommending additional adaptations – unsure how high to go. It sounds like this may be due to a complex model
+
+**Summary**
+
+```{r}
+
+EffSize <- data.frame(effectiveSize(jags.post$mcmc))
+EffSize <- rownames_to_column(EffSize)
+EffSize <- EffSize %>%
+  filter(grepl("159", rowname))
+EffSize
+
+```
+
+**Traceplots**
+
+```{r}
+plot_jags_trace(data=jags.post,iso="lpso139o_IgA")
+# posterior <- coda.samples(jags.post)
+#   effectiveSize(jags.post)
+```
+
+**Number of effective samples**
+
+```{r}
+plot_jags_eff(data=jags.post,iso="lpso139o_IgA")
+
+```
+
+**Density plots**
+
+```{r}
+plot_jags_dens(data=jags.post,iso="lpso139o_IgA")
+```
+
+Running stratified data
+
+```{r}
+
+#Creating a function to run stratified data
+Run_jags_fun <- function(data, strat) {
+strat_list <<- unique(data[[strat]])
+
+for (i in strat_list) {
+dL_sub <- data %>%
+  filter(data[[strat]]==i)
+# dL_sub <- dL %>%
+#   filter(Age_immune_combo=="Case_5under")
+
+#set seed for reproducibility
+set.seed(54321)
+#subset data for checking
+# dL_sub <- dL %>%
+#   filter(index_id %in% sample(unique(index_id), 50))
+
+#prepare data for modeline
+longdata <- prep_data(dL_sub)
+priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+
+#inputs for jags model
+nchains <- 4;                # nr of MC chains to run simultaneously
+nadapt  <- 10000;             # nr of iterations for adaptation
+nburnin <- 100;            # nr of iterations to use for burn-in
+nmc     <- 2500;             # nr of samples in posterior chains
+niter   <- 5000;            # nr of iterations for posterior sample
+nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
+
+#pred.subj <- longdata$nsubj + 1;
+#tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
+
+#This handles the seed to reproduce the results 
+initsfunction <- function(chain){
+  stopifnot(chain %in% (1:4)); # max 4 chains allowed...
+  .RNG.seed <- (1:4)[chain];
+  .RNG.name <- c("base::Wichmann-Hill","base::Marsaglia-Multicarry",
+                 "base::Super-Duper","base::Mersenne-Twister")[chain];
+  return(list(".RNG.seed"=.RNG.seed,".RNG.name"=.RNG.name));
+}
+
+jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
+                      inits=initsfunction,method="parallel",
+                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
+                      n.chains=nchains,
+                      monitor=tomonitor,summarise=FALSE);
+mcmc_list <- as.mcmc.list(jags.post)
+mcmc_df <- ggs(mcmc_list)
+
+wide_predpar_df <- mcmc_df %>%
+  mutate(
+    parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
+    index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
+    antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
+  ) %>%
+  mutate(
+    index_id = factor(index_id, labels = attr(longdata, "ids")),
+    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
+ # mutate(value = exp(value)) %>%
+ # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
+  ## only take the last subject (newperson)
+  filter(index_id == "newperson") %>%
+  select(-Parameter) %>%
+  pivot_wider(names_from = "parameter", values_from="value") %>%
+  rowwise() %>%
+  #mutate(y1 = y0+y1) %>%
+  droplevels() %>%
+  ungroup() %>%
+  rename(r = shape) %>%
+  mutate(stratification=i)
+
+assign(paste0("wide_predpar_",i), data.frame(wide_predpar_df), envir=globalenv())
+
+# wide_prepdar_df_shell <- rbind(wide_predpar_df_shell, wide_predpar_df)
+}
+}
+
+## Running function 
+Run_jags_fun(dL, "Age_immune_combo")
+
+# Putting dataframes back together
+wide_predpar_final <- rbind(wide_predpar_Case_5under, wide_predpar_Case_over5, wide_predpar_Vaccinated_5under, wide_predpar_Vaccinated_over5)
+
+#Now plot longitudinal antibody decay 
+curve_params <- wide_predpar_final
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+```
+
+Methods: Cholera data was run through jags simulation using the following settings: inputs for jags model:
+
+nchains \<- 4; \# nr of MC chains to run simultaneously
+
+nadapt \<- 10000; \# nr of iterations for adaptation
+
+nburnin \<- 100; \# nr of iterations to use for burn-in
+
+nmc \<- 2500; \# nr of samples in posterior chains
+
+niter \<- 2500; \# nr of iterations for posterior sample
+
+nthin \<- round(niter/nmc); \# thinning needed to produce nmc from niter
+
+Data from the "New person" were subset and used for the following figures.
+
+Parameter Values by Antigen Type
+
+```{r echo=F, warning=F, message=F}
+ggplot(curve_params, aes(
+  x = as.factor(antigen_iso),
+  y = alpha
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of parameter alpha by antigen type")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1)) +
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+
+ggplot(curve_params, aes(
+  x = as.factor(antigen_iso),
+  y = r
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of parameter r by antigen type")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1))+
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+
+ggplot(curve_params, aes(
+  x = as.factor(antigen_iso),
+  y = y1
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of parameter y1 by antigen type")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1))+
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+
+
+ggplot(curve_params, aes(
+  x = as.factor(antigen_iso),
+  y = y0
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of parameter y0 by antigen type")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1))+
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+
+ggplot(curve_params, aes(
+  x = as.factor(antigen_iso),
+  y = t1
+)) +
+  # geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+  geom_boxplot(outlier.colour = NA, fill = NA) +
+  scale_y_log10() +
+  theme_linedraw() +
+  labs(x = "antigen - isotype", title="Boxplot of parameter t1 by antigen type")+
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1))+
+  stat_compare_means(label="p.signif", size=3, hide.ns = T) 
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+### Prepping stratification by immunity
+Run_jags_fun(dL, "Immunity_bin")
+# Putting dataframes back together
+wide_predpar_final_immunity <- rbind(wide_predpar_Vaccinee, wide_predpar_Case)
+#Now plot longitudinal antibody decay 
+curve_params_immunity <- wide_predpar_final_immunity
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+```
+
+Methods: Cholera data set was stratified by case vs vaccinee and $$\le 5$$ vs \>5 years of age and run through jags simulation using the following inputs: inputs for jags model nchains \<- 4; \# nr of MC chains to run simultaneously nadapt \<- 2000; \# nr of iterations for adaptation nburnin \<- 100; \# nr of iterations to use for burn-in nmc \<- 100; \# nr of samples in posterior chains niter \<- 1000; \# nr of iterations for posterior sample nthin \<- round(niter/nmc); \# thinning needed to produce nmc from niter
+
+Antibody dynamic plots stratified by immunity status
+
+```{r echo=F, warning=F, message=F}
+
+jags_plot_function <- function(data=data, param, strat, label) {
+ggplot(data, aes(
+  x = as.factor(antigen_iso),
+  y = .data[[param]]
+)) +
+  geom_boxplot(aes(color=.data[[strat]]),outlier.colour = NA, fill=NA) +
+  # geom_beeswarm(size = .2, alpha = .3, show.legend = F) +
+  scale_y_log10() +
+  theme_classic() +
+  labs(x = "antigen - isotype") +
+  theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1)) +
+  labs(title=paste0("Median value for ", param," stratified by ",label))+
+  stat_compare_means(aes(group=.data[[strat]]), label="p.signif", size=3, hide.ns = T) +
+    scale_color_brewer(palette = "Paired")+
+    guides(shape = guide_legend(override.aes = list(size = 1)))
+}
+jags_plot_function(curve_params_immunity, "y1", "stratification", "Immunity Type")
+jags_plot_function(curve_params_immunity, "y0", "stratification", "Immunity Type")
+jags_plot_function(curve_params_immunity, "t1", "stratification", "Immunity Type")
+jags_plot_function(curve_params_immunity, "r", "stratification", "Immunity Type")
+jags_plot_function(curve_params_immunity, "alpha", "stratification", "Immunity Type")
+
+
+```
+
+```{r echo=F, warning=F, message=F, include=F}
+Run_jags_fun(dL, "Age_bin")
+# Putting dataframes back together
+wide_predpar_final_age <- rbind(`wide_predpar_6+`,`wide_predpar_<6`)
+#Now plot longitudinal antibody decay 
+curve_params_age <- wide_predpar_final_age
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+  antigen_isos = unique(curve_params$antigen_iso)
+  attr(curve_params, "antigen_isos") = antigen_isos
+```
+
+Antibody dynamic plots stratified by age group
+
+```{r echo=F, warning=F, message=F}
+### Prepping stratification by age
+
+jags_plot_function(curve_params_age, "y1", "stratification", "Age Category")
+jags_plot_function(curve_params_age, "y0", "stratification", "Age Category")
+jags_plot_function(curve_params_age, "t1", "stratification", "Age Category")
+jags_plot_function(curve_params_age, "r", "stratification", "Age Category")
+jags_plot_function(curve_params_age, "alpha", "stratification", "Age Category")
+```
+
+Antibody dynamic plots stratified by age group and immunity status
+
+```{r echo=F, warning=F, message=F}
+## Curve params for age AND immunity status
+
+jags_plot_function(curve_params, "y1", "stratification", "Age and Immunity Status")
+jags_plot_function(curve_params, "y0", "stratification", "Age and Immunity Status")
+jags_plot_function(curve_params, "t1", "stratification", "Age and Immunity Status")
+jags_plot_function(curve_params, "r", "stratification", "Age and Immunity Status")
+jags_plot_function(curve_params, "alpha", "stratification", "Age and Immunity Status")
+```
+
+Antibody dynamic curves for each stratification
+
+```{r echo=F, warning=F, message=F, include=F}
+# 
+# # autoplot(curve_params)
+# autoplot(curve_params, log_x=T, n_curves=50)
+# # graph.curve.params(curve_params) %>% print()
+# ggplot(curve_params, aes(
+#   x = as.factor(antigen_iso),
+#   y = alpha
+# )) +
+#   geom_beeswarm(size = .2, alpha = .3, aes(color = antigen_iso), show.legend = F) +
+#   geom_boxplot(outlier.colour = NA, fill = NA) +
+#   scale_y_log10() +
+#   theme_linedraw() +
+#   labs(x = "antigen - isotype")+
+#   theme(axis.text.x = element_text(angle=45, hjust=1, vjust=1))
+
+```

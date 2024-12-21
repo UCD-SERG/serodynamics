@@ -1,9 +1,8 @@
 
-
-# Data summary
+#################################### SS diagonstic code begin
 # -- Diagnostics using ggmcmc package
 # -- Compiling into dataframe using ggs()
-plot_jags_summ <- function(data=jags.post,iso=unique(visualize_jags_sub$Iso_type), param=unique(visualize_jags_sub$Parameter_sub)) {
+plot_jags_eff <- function(data=jags.post,iso=unique(visualize_jags_sub$Iso_type), param=unique(visualize_jags_sub$Parameter_sub)) {
   #Creating a ggs object, which is part of the jags package to create diagnostic plots
   visualize_jags <- ggs(data[["mcmc"]])
   
@@ -30,20 +29,22 @@ plot_jags_summ <- function(data=jags.post,iso=unique(visualize_jags_sub$Iso_type
   #Creating a label
   visualize_jags <- visualize_jags %>%
     mutate(Label = paste0(Iso_type,", ",Parameter_sub)) 
-  
+
   #Creating loop to output diagnostics
   visualize_jags_plot <- visualize_jags_sub %>%
     filter(Iso_type %in% iso) %>%
     filter(Parameter_sub %in% param) %>%
     # Changing parameter name to reflect the input 
     mutate(Parameter=paste0("antigen=",Iso_type,", parameter=", Parameter_sub))
-  ### Short summary 
-  # ci(visualize_jags_plot)[,c(1:6)]
-  summary(visualize_jags_plot)
+  ## Creating traceplot
+  effective <- ggs_effective(visualize_jags_plot)
+  effective
 }
 
 #Example call
-# plot_jags_summ(jags.post,"hlya_IgA","y1")
-# plot_jags_summ(jags.post,c("hlya_IgG","hlya_IgA"),"y1")
+# plot_jags_trace(jags.post,"hlya_IgA","y1")
+# plot_jags_trace(jags.post,c("hlya_IgG","hlya_IgA"),"y1")
+
+
 
 

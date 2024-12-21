@@ -43,6 +43,6 @@ plot_jags_hist <- function(data=jags.post,iso=unique(visualize_jags_sub$Iso_type
 
 #Example call
 # plot_jags_hist(jags.post,"hlya_IgA","y1")
-plot_jags_hist(jags.post,c("hlya_IgG","hlya_IgA"),"y1")
+# plot_jags_hist(jags.post,c("hlya_IgG","hlya_IgA"),"y1")
 
 
