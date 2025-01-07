@@ -1,0 +1,20 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+# `{dcm}`
+
+<!-- badges: start -->
+<!-- badges: end -->
+
+The goal of `{dcm}` is to implement methods for modeling longitudinal
+antibody responses to infection.
+
+## Installation
+
+You can install the development version of `{dcm}` from
+[GitHub](https://github.com/) with:
+
+``` r
+# install.packages("pak")
+pak::pak("UCD-SERG/dcm")
+```
