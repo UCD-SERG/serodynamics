@@ -50,6 +50,6 @@ jobs:
             message('PR branch version: ', working_version); \
             compare_version <- desc::desc_get_version('compare/DESCRIPTION'); \
             message('main branch version: ', compare_version); \
-            message('Use `usethis::use_version()` to increment the "dev" version number.') \
+            message('Use `usethis::use_version()` to increment the "dev" version number.'); \
             stopifnot(working_version > compare_version); \
           "
