@@ -46,7 +46,6 @@ jobs:
             local::.
             any::gghalves
             any::ggplot2
-            any::quarto
             any::ggridges
             any::ggbeeswarm
             any::PairedData
@@ -62,5 +61,5 @@ jobs:
             # warnPartialMatchDollar = TRUE,
             warn = 2L
           )
-          quarto::quarto_render("README.qmd")
+          rmarkdown::render("README.Rmd")
         shell: Rscript {0}
