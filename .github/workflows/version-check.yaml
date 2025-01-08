@@ -53,5 +53,5 @@ jobs:
             if (working_version <= compare_version) { \
               message('Call usethis::use_version() in the R Console to increment the "dev" version number.'); \
               stopifnot(working_version > compare_version); \
-            } else message("All set!");
+            } else message("All set!"); \
           "
