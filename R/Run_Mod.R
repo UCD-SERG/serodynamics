@@ -106,6 +106,5 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
 #Example code 
 # Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000)
 # Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
-Dengue_DHF_mod <- Run.mod(data=Dengue_Dat_final_pos, nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat="DHF")
 
 
