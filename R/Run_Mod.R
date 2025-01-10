@@ -1,7 +1,7 @@
 
 ### Function to RunJags
 # Sam Schildhauer
-# 12/20/24
+# 1/10/25
 #Creating a function to run stratified data
 #Setting defaults -- 4 chains, 0 adapts, 0 burns, 100 nmc, 100 iter
 Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat=NA) {
@@ -17,6 +17,9 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
   ## Creating a shell to output results
   jags.out <- data.frame("Iteration"=NA, "Chain"=NA, "Parameter"=NA, "value"=NA, 
                          "Parameter_sub"=NA, "Subject"=NA, "Iso_type"=NA, "Stratification"=NA)
+  
+  ## Creating output list for jags.post
+  jags.post.final <- list()
   
   #For loop for running stratifications
   for (i in strat_list) {
@@ -59,10 +62,10 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
                           adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
                           n.chains=nchains,
                           monitor=tomonitor,summarise=FALSE);
-    #Assigning the raw jags output to an environment object. 
+    #Assigning the raw jags output to a list. 
     # This will include a raw output for the jags.post for each stratification. 
-    assign(paste0("jags.post_",i), jags.post, envir=globalenv())
-    
+    jags.post.final[[i]] <- jags.post  
+
     ## Cleaning the jags output -- much of this has to do with correctly classifying the [x,x] number 
     # included in the outputs
     #ggs works with mcmc objects
@@ -96,12 +99,13 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
   jags.out <- jags.out[complete.cases(jags.out),]
   ## Outputting the finalized jags output as a data frame with the jags output results for each stratification 
   # rbinded.
-  assign(paste0("jags.out"), jags.out, envir=globalenv())
-  
+  jags.out <- list("curve_params"=jags.out,"jags.post"=jags.post.final)
+  jags.out
 } 
 
 #Example code 
-# Run.mod(data=Data set , nchain=4, nadapt=500, nburn=100, nmc=1000, niter=2000)
-# Run.mod(data=Data set , nchain=4, nadapt=500, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
+# Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000)
+# Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
+Dengue_DHF_mod <- Run.mod(data=Dengue_Dat_final_pos, nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat="DHF")
 
 
