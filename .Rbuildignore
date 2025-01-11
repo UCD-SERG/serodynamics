@@ -5,3 +5,4 @@
 ^project.*\.tgz$
 ^data-raw$
 ^README\.Rmd$
+^codecov\.yml$
