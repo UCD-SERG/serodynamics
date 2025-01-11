@@ -17,8 +17,10 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
   ## Creating a shell to output results
   jags.out <- data.frame("Iteration"=NA, "Chain"=NA, "Parameter"=NA, "value"=NA, 
                          "Parameter_sub"=NA, "Subject"=NA, "Iso_type"=NA, "Stratification"=NA)
+  
   ## Creating output list for jags.post
   jags.post.final <- list()
+  
   #For loop for running stratifications
   for (i in strat_list) {
     #Creating if else statement for running the loop
@@ -29,11 +31,13 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
     else {
       dL_sub <- data
     }
+   
     #set seed for reproducibility
     set.seed(54321)
     #prepare data for modeline
     longdata <- prep_data(dL_sub)
     priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+    
     #inputs for jags model
     nchains <- nchain;                # nr of MC chains to run simultaneously
     nadapt  <- nadapt;             # nr of iterations for adaptation

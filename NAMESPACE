@@ -3,3 +3,4 @@
 export(load_data)
 importFrom(dplyr,filter)
 importFrom(ggmcmc,ggs)
+importFrom(stats,complete.cases)

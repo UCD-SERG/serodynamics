@@ -15,7 +15,8 @@ BugReports: https://github.com/UCD-SERG/project/issues
 Imports: 
     dplyr,
     ggmcmc,
-    Hmisc
+    Hmisc,
+    stats
 Suggests: 
     spelling
 Language: en-US
