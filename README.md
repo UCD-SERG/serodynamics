@@ -4,6 +4,9 @@
 # `{dcm}`
 
 <!-- badges: start -->
+
+[![Codecov test
+coverage](https://codecov.io/gh/UCD-SERG/dcm/graph/badge.svg)](https://app.codecov.io/gh/UCD-SERG/dcm)
 <!-- badges: end -->
 
 The goal of `{dcm}` is to implement methods for modeling longitudinal
