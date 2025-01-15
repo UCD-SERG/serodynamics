@@ -4,7 +4,7 @@
 
 ## New features
 
-none yet
+- Function that runs jags with option of stratification included. (#14)
 
 ## Bug fixes
 

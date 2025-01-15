@@ -1,9 +1,31 @@
 
-### Function to RunJags
-# Sam Schildhauer
-# 1/10/25
+#' @title Run Model Jags 
+#' @author Sam Schildhauer
+#' @description
+#'  Run.mod() takes a data frame and adjustable mcmc inputs to run a jags mcmc 
+#'  bayesian model to estimate antibody dynamic curve parameters, including the 
+#'  following: 
+#'  - y0 = baseline antibody concentration 
+#'  - y1 = peak antibody concentration
+#'  - t1 = time to peak 
+#'  - r = shape parameter
+#'  - alpha = decay rate 
+#'  @param name description
+#' January 13, 2025
 #Creating a function to run stratified data
 #Setting defaults -- 4 chains, 0 adapts, 0 burns, 100 nmc, 100 iter
+#' @param data A [base::data.frame()] with the following columns
+#' @param nchain An [integer] between 1 and 4 that specifies the number of mcmc chains to be run per jags model. 
+#' @param nadapt An [integer] specifying the number of adaptations per chain.
+#' @param nburn An [integer] specifying the number of burn ins before sampling.
+#' @param nmc An [integer] specifying
+#' @param niter An [integer] specifying number of iterations.
+#' @param strat A [string] specifying the stratification variable.
+#' @return An [runjags::mcmc]object.
+#' @examples
+#' Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000)
+#' Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
+
 Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat=NA) {
   
   ## Conditionally creating a stratification list to loop through
@@ -25,8 +47,8 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
   for (i in strat_list) {
     #Creating if else statement for running the loop
     if (is.na(strat)==F) {
-      dL_sub <- data %>%
-        filter(data[[strat]]==i)
+      dL_sub <- data |>
+        dplyr::filter(data[[strat]]==i)
     }
     else {
       dL_sub <- data
@@ -72,23 +94,23 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
     jags_unpack <- ggs(jags.post[["mcmc"]])
     #extracting antigen-iso combinations to correctly number then by the order they are estimated by the program. 
     iso_dat <- data.frame(attributes(longdata)$antigens) 
-    iso_dat <- iso_dat %>% mutate(Subnum = as.numeric(row.names(iso_dat)))
+    iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
     ### Working with jags unpacked ggs outputs to clarify parameter and subject
-    jags_unpack <- jags_unpack %>%
-      mutate(Subnum = sub('.*,','',Parameter),
+    jags_unpack <- jags_unpack |>
+      dplyr::mutate(Subnum = sub('.*,','',Parameter),
              Parameter_sub = sub('\\[.*','',Parameter),
-             Subject = sub('\\,.*','',Parameter)) %>%
-      mutate(Subnum = as.numeric(sub("\\].*",'',Subnum)),
+             Subject = sub('\\,.*','',Parameter)) |>
+      dplyr::mutate(Subnum = as.numeric(sub("\\].*",'',Subnum)),
              Subject = sub(".*\\[",'',Subject))
     # Merging isodat in to ensure we are classifying antigen_iso
-    jags_unpack <- left_join(jags_unpack, iso_dat, by="Subnum") 
-    jags_unpack <- jags_unpack %>%
-      rename(c("Iso_type"="attributes.longdata..antigens"))%>%
-      select(!c("Subnum"))
+    jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by="Subnum") 
+    jags_unpack <- jags_unpack |>
+      dplyr::rename(c("Iso_type"="attributes.longdata..antigens")) |>
+      dplyr::select(!c("Subnum"))
     # Setting subset for the "new person" -- setting it to the final sample
     np <- as.character(longdata$nsubj)
-    jags_final <- jags_unpack %>%
-      filter(Subject == np)
+    jags_final <- jags_unpack |>
+      dplyr::filter(Subject == np)
     ## Creating a label for the stratification, if there is one. If not, will add in "None".
     jags_final$Stratification <- i
     ## Creating output 
@@ -103,8 +125,5 @@ Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat
   jags.out
 } 
 
-#Example code 
-# Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000)
-# Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
 
 
