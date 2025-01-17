@@ -2,18 +2,19 @@
 #' @title Run Model Jags 
 #' @author Sam Schildhauer
 #' @description
-#'  Run.mod() takes a data frame and adjustable mcmc inputs to run a jags mcmc 
-#'  bayesian model to estimate antibody dynamic curve parameters, including the 
-#'  following: 
+#'  Run.mod() takes a data frame and adjustable mcmc inputs to [runjags::run.jags()] as an mcmc 
+#'  bayesian model to estimate antibody dynamic curve parameters. The [rjags::jags.model()]
+#'  was adapted from Teunis et al. (2016) modeling seroresponse dynamics to an 
+#'  infection. The antibody dynamic curve includes the following parameters: 
 #'  - y0 = baseline antibody concentration 
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak 
 #'  - r = shape parameter
 #'  - alpha = decay rate 
-#'  @param name description
-#' January 13, 2025
-#Creating a function to run stratified data
-#Setting defaults -- 4 chains, 0 adapts, 0 burns, 100 nmc, 100 iter
+#' @references Teunis PF, van Eijkeren JC, de Graaf WF, Marinović AB, Kretzschmar ME. 
+#' Linking the seroresponse to infection to within-host heterogeneity in antibody production. 
+#' Epidemics. 2016 Sep;16:33-9. doi: 10.1016/j.epidem.2016.04.001. Epub 2016 Apr 28. PMID: 27663789.
+#' @param name description
 #' @param data A [base::data.frame()] with the following columns
 #' @param nchain An [integer] between 1 and 4 that specifies the number of mcmc chains to be run per jags model. 
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
@@ -21,10 +22,30 @@
 #' @param nmc An [integer] specifying
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat A [string] specifying the stratification variable.
-#' @return An [runjags::mcmc]object.
+#' @return An jags.post [list()] object or multiple jags.post [list()] if jags is stratified, as well as a [base::data.frame()]
+#' titled `curve_params` that contains the posterior distribution. The jags.post is 
+#' returned as a [list()] of class [runjags::runjags-class]. 
+#' A curve_params [base::data.frame()] will also be exported with the following attributes
+#'  - `iteration` = number of sampling iterations. 
+#'  - `chain` = number of mcmc chains run; between 1 and 4. 
+#'  - `indexid` = "newperson", indicating posterior distribution. 
+#'  - `antigen_iso` = antibody/antigen type combination being evaluated
+#'  - `alpha` = posterior estimate of decay rate 
+#'  - `r` = posterior estimate of shape parameter
+#'  - `t1` = posterior estimate of time to peak 
+#'  - `y0` = posterior estimate of baseline antibody concentration 
+#'  - `y1` = posterior estimate of peak antibody concentration
+#'  - `stratified variable` = the variable that jags was stratified by
+#'  @export 
 #' @examples
-#' Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000)
-#' Run.mod(data=Data set , nchain=4, nadapt=100, nburn=100, nmc=1000, niter=2000, strat=stratified variable)
+#' Run.mod(
+#'     data=Dataset #The data set input, 
+#'     nchain=4 #Number of mcmc chains to run, 
+#'     nadapt=100 #Number of adaptations to run, 
+#'     nburn=100 #Number of unrecorded samples before sampling begins, 
+#'     nmc=1000, 
+#'     niter=2000 #Number of iterations,
+#'     strat= strat #Variable to be stratified)
 
 Run.mod <- function(data, nchain=4, nadapt=0, nburn=0, nmc=100, niter=100, strat=NA) {
   
