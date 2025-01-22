@@ -35,7 +35,7 @@ jobs:
             echo "Changes found after documenting."
             git --no-pager diff
             echo "$changes"
-            echo "Please update documentation."
+            echo "Please update documentation using the devtools::document() command in R."
             exit 1
           else
             echo "No changes found after documenting."

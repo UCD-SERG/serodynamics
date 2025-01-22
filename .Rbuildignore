@@ -4,3 +4,5 @@
 ^project.*\.tar\.gz$
 ^project.*\.tgz$
 ^data-raw$
+^README\.Rmd$
+^codecov\.yml$
