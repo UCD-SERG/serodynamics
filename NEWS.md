@@ -1,4 +1,4 @@
-# project (development version)
+# dcm (development version)
 
 * Initial CRAN submission.
 
