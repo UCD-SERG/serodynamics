@@ -28,7 +28,7 @@ the number of mcmc chains to be run per jags model.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
-\item{strat}{A \link{string} specifying the stratification variable.}
+\item{strat}{A \link{string} specifying the stratification variable, entered in quotes.}
 
 \item{name}{description}
 }

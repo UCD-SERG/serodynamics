@@ -27,7 +27,7 @@
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying
 #' @param niter An [integer] specifying number of iterations.
-#' @param strat A [string] specifying the stratification variable.
+#' @param strat A [string] specifying the stratification variable, entered in quotes.
 #' @return An jags.post [list()] object or multiple jags.post [list()]
 #' if jags is stratified, as well as a [base::data.frame()]
 #' titled `curve_params` that contains the posterior distribution.
