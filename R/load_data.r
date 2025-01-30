@@ -13,7 +13,6 @@
 #' * `my.hyp`, `prec.hyp`, `omega` and `wishdf` are all parameters to describe the shape of priors for (y0, y1, t1, alpha, shape) 
 #' @export
 #'
-#' @examples
 load_data = function(
     # datapath = "data/",
     # datafile = "TypoidCaseData_github_09.30.21.csv"
