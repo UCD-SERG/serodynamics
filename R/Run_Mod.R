@@ -56,18 +56,20 @@
 #'     niter = 2000, #Number of iterations
 #'     strat = strat) #Variable to be stratified
 
-run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 100, strat = NA) {
+run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, 
+                    nmc = 100, niter = 100, strat = NA) {
 
   ## Conditionally creating a stratification list to loop through
-  if (is.na(strat) == F) {
+  if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
   } else {
     strat_list <- "None"
   }
 
   ## Creating a shell to output results
-  jags_out <- data.frame("Iteration" = NA, "Chain" = NA, "Parameter" = NA, "value" = NA,
-                         "Parameter_sub" = NA, "Subject" = NA, "Iso_type" = NA, "Stratification" = NA)
+  jags_out <- data.frame("Iteration" = NA, "Chain" = NA, "Parameter" = NA, 
+                         "value" = NA, "Parameter_sub" = NA, "Subject" = NA, 
+                         "Iso_type" = NA, "Stratification" = NA)
 
   ## Creating output list for jags.post
   jags_post_final <- list()
@@ -75,17 +77,17 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
   #For loop for running stratifications
   for (i in strat_list) {
     #Creating if else statement for running the loop
-    if (is.na(strat) == F) {
-      dL_sub <- data |>
-      dplyr::filter(data[[strat]]==i)
+    if (is.na(strat) == FALSE) {
+      dl_sub <- data |>
+      dplyr::filter(data[[strat]] == i)
     } else {
-      dL_sub <- data
+      dl_sub <- data
     }
 
     #set seed for reproducibility
     set.seed(54321)
     #prepare data for modeline
-    longdata <- prep_data(dL_sub)
+    longdata <- prep_data(dl_sub)
     priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
     #inputs for jags model
@@ -94,7 +96,7 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
     nburnin <- nburn            # nr of iterations to use for burn-in
     nmc     <- nmc              # nr of samples in posterior chains
     niter   <- niter            # nr of iterations for posterior sample
-    nthin   <- round(niter/nmc) # thinning needed to produce nmc from niter
+    nthin   <- round(niter / nmc) # thinning needed to produce nmc from niter
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
@@ -107,7 +109,7 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
       return(list(".RNG.seed" = .RNG.seed, ".RNG.name" = .RNG.name))
     }
 
-    jags_post <- run.jags(model = file.mod, data = c(longdata, priors),
+    jags_post <- runjags::run.jags(model = file.mod, data = c(longdata, priors),
                           inits = initsfunction, method = "parallel",
                           adapt = nadapt, burnin = nburnin, thin = nthin, sample = nmc,
                           n.chains = nchains,
@@ -120,7 +122,7 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
     # classifying the [x,x] number
     # included in the outputs
     #ggs works with mcmc objects
-    jags_unpack <- ggs(jags.post[["mcmc"]])
+    jags_unpack <- ggs(jags_post[["mcmc"]])
     #extracting antigen-iso combinations to correctly number
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
@@ -129,13 +131,13 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
     jags_unpack <- jags_unpack |>
       dplyr::mutate(Subnum = sub(".*,", "", Parameter),
              Parameter_sub = sub("\\[.*", "", Parameter),
-             Subject = sub("\\,.*","",Parameter)) |>
+             Subject = sub("\\,.*", "", Parameter)) |>
       dplyr::mutate(Subnum = as.numeric(sub("\\].*", "", Subnum)),
              Subject = sub(".*\\[", "", Subject))
     # Merging isodat in to ensure we are classifying antigen_iso
     jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
     jags_unpack <- jags_unpack |>
-      dplyr::rename(c("Iso_type"="attributes.longdata..antigens")) |>
+      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens")) |>
       dplyr::select(!c("Subnum"))
     # Setting subset for the "new person" --setting it to the final sample
     np <- as.character(longdata$nsubj)
@@ -149,8 +151,8 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, nmc = 100, niter = 
 
   }
   # Ensuring output does not have any NAs
-  jags.out <- jags.out[complete.cases(jags.out),]
-  # Outputting the finalized jags output as a data frame with the 
+  jags_out <- jags_out[complete.cases(jags_out), ]
+  # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification
   # rbinded.
   jags_out <- list("curve_params" = jags_out, "jags.post" = jags_post_final)
