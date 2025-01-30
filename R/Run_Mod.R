@@ -56,7 +56,7 @@
 #'     niter = 2000, #Number of iterations
 #'     strat = strat) #Variable to be stratified
 
-run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0, 
+run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0,
                     nmc = 100, niter = 100, strat = NA) {
 
   ## Conditionally creating a stratification list to loop through
@@ -67,8 +67,8 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0,
   }
 
   ## Creating a shell to output results
-  jags_out <- data.frame("Iteration" = NA, "Chain" = NA, "Parameter" = NA, 
-                         "value" = NA, "Parameter_sub" = NA, "Subject" = NA, 
+  jags_out <- data.frame("Iteration" = NA, "Chain" = NA, "Parameter" = NA,
+                         "value" = NA, "Parameter_sub" = NA, "Subject" = NA,
                          "Iso_type" = NA, "Stratification" = NA)
 
   ## Creating output list for jags.post
@@ -79,7 +79,7 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0,
     #Creating if else statement for running the loop
     if (is.na(strat) == FALSE) {
       dl_sub <- data |>
-      dplyr::filter(data[[strat]] == i)
+        dplyr::filter(data[[strat]] == i)
     } else {
       dl_sub <- data
     }
@@ -101,7 +101,7 @@ run_mod <- function(data, nchain = 4, nadapt = 0, nburn = 0,
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
     #This handles the seed to reproduce the results
-    initsfunction <- function(chain){
+    initsfunction <- function(chain) {
       stopifnot(chain %in% (1:4)) # max 4 chains allowed...
       .RNG.seed <- (1:4)[chain]
       .RNG.name <- c("base::Wichmann-Hill", "base::Marsaglia-Multicarry", 
