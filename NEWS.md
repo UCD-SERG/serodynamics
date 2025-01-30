@@ -8,7 +8,7 @@
 
 ## Bug fixes
 
-none yet
+None yet
 
 ## Developer-facing changes
 
