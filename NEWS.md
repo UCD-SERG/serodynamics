@@ -6,7 +6,7 @@
 
 ## New features
 
-none yet
+* Changed package name to serodynamics.
 
 ## Bug fixes
 
