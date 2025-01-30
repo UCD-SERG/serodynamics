@@ -1,4 +1,5 @@
----
+# adapted from https://github.com/RMI-PACTA/actions/blob/main/.github/workflows/R-semver-check.yml
+
 on:
   pull_request:
     branches:
@@ -50,5 +51,8 @@ jobs:
             message('PR branch version: ', working_version); \
             compare_version <- desc::desc_get_version('compare/DESCRIPTION'); \
             message('main branch version: ', compare_version); \
-            stopifnot(working_version > compare_version); \
+            if (working_version <= compare_version) { \
+              message('Call usethis::use_version() in the R Console to increment the "dev" version number.'); \
+              stopifnot(working_version > compare_version); \
+            } else message('All set!'); \
           "
