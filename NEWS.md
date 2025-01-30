@@ -1,10 +1,10 @@
-# dcm (development version)
+# serodynamics (development version)
 
 * Initial CRAN submission.
 
 ## New features
 
-none yet
+* Changed package name to serodynamics. (#19)
 
 ## Bug fixes
 
