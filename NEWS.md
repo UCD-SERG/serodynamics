@@ -1,10 +1,11 @@
-# project (development version)
+# serodynamics (development version)
 
 * Initial CRAN submission.
 
 ## New features
 
-- Function that runs jags with option of stratification included. (#14)
+* Function that runs jags with option of stratification included. (#14)
+* Changed package name to serodynamics. (#19)
 
 ## Bug fixes
 
