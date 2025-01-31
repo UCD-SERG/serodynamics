@@ -22,7 +22,7 @@ file.scl <- paste(ver,"par-extract","r",sep=".");
 file.age <- paste(ver,"age","r",sep=".");
 
 # load data
-library(dcm)
+library(serodynamics)
 
 #long data 
 dL <- readRDS("/cloud/project/data/sees_case_data_long_11012023.rds")

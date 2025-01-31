@@ -4,11 +4,11 @@
 
 ## New features
 
-* Changed package name to serodynamics. (#19)
+* Changed package name to serodynamics. (#19, #20)
 
 ## Bug fixes
 
-none yet
+None yet
 
 ## Developer-facing changes
 
