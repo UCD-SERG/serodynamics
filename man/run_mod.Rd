@@ -6,6 +6,7 @@
 \usage{
 run_mod(
   data,
+  file_mod,
   nchain = 4,
   nadapt = 0,
   nburn = 0,
@@ -15,7 +16,9 @@ run_mod(
 )
 }
 \arguments{
-\item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns}
+\item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
+
+\item{file_mod}{The name of the file that conatins model structure.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of mcmc chains to be run per jags model.}
@@ -24,7 +27,7 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying}
+\item{nmc}{An \link{integer} specifying.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 

@@ -21,12 +21,13 @@
 #' Epidemics. 2016 Sep;16:33-9. doi: 10.1016/j.epidem.2016.04.001.
 #' Epub 2016 Apr 28. PMID: 27663789.
 #' @param name description
-#' @param data A [base::data.frame()] with the following columns
+#' @param data A [base::data.frame()] with the following columns.
+#' @param file_mod The name of the file that conatins model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying
+#' @param nmc An [integer] specifying.
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
 #' A [string] specifying the stratification variable, entered in quotes.
@@ -59,6 +60,7 @@
 #'     strat = strat) #Variable to be stratified
 
 run_mod <- function(data,
+                    file_mod,
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
@@ -127,7 +129,7 @@ run_mod <- function(data,
     }
 
     jags_post <- runjags::run.jags(
-      model = file.mod,
+      model = file_mod,
       data = c(longdata, priors),
       inits = initsfunction,
       method = "parallel",

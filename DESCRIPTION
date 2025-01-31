@@ -15,6 +15,7 @@ Imports:
     dplyr,
     ggmcmc,
     Hmisc,
+    rlang,
     stats
 Suggests: 
     spelling
