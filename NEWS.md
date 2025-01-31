@@ -1,14 +1,17 @@
-# dcm (development version)
+# serodynamics (development version)
 
 * Initial CRAN submission.
 
 ## New features
 
-none yet
+
+* Function that runs jags with option of stratification included. (#14)
+* Changed package name to serodynamics. (#19, #20)
+
 
 ## Bug fixes
 
-none yet
+None yet
 
 ## Developer-facing changes
 
