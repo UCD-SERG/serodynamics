@@ -22,7 +22,7 @@
 #' Epub 2016 Apr 28. PMID: 27663789.
 #' @param name description
 #' @param data A [base::data.frame()] with the following columns.
-#' @param file_mod The name of the file that conatins model structure.
+#' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
