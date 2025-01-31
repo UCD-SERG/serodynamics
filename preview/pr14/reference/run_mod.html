@@ -31,7 +31,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9004</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,6 +74,7 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_mod</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
+<span>  <span class="va">file_mod</span>,</span>
 <span>  nchain <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  nadapt <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  nburn <span class="op">=</span> <span class="fl">0</span>,</span>
@@ -88,7 +89,11 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">base::data.frame()</a></code> with the following columns</p></dd>
+<dd><p>A <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">base::data.frame()</a></code> with the following columns.</p></dd>
+
+
+<dt id="arg-file-mod">file_mod<a class="anchor" aria-label="anchor" href="#arg-file-mod"></a></dt>
+<dd><p>The name of the file that conatins model structure.</p></dd>
 
 
 <dt id="arg-nchain">nchain<a class="anchor" aria-label="anchor" href="#arg-nchain"></a></dt>
@@ -105,7 +110,7 @@ the number of mcmc chains to be run per jags model.</p></dd>
 
 
 <dt id="arg-nmc">nmc<a class="anchor" aria-label="anchor" href="#arg-nmc"></a></dt>
-<dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> specifying</p></dd>
+<dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> specifying.</p></dd>
 
 
 <dt id="arg-niter">niter<a class="anchor" aria-label="anchor" href="#arg-niter"></a></dt>
