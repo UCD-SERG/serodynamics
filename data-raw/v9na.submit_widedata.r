@@ -22,7 +22,7 @@ file.scl <- paste(ver,"par-extract","r",sep=".");
 file.age <- paste(ver,"age","r",sep=".");
 
 # load data
-d <- read_csv("~/Documents/GitHub/dcm/data/TypoidCaseData_github_09.30.21.csv") 
+d <- read_csv("~/Documents/GitHub/serodynamics/data/TypoidCaseData_github_09.30.21.csv") 
 
 
 longdata.dW <- load_data(d)
