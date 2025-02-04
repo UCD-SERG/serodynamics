@@ -1,6 +1,6 @@
 
 
-#' @title Run Model Jags
+#' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
 #'  Run.mod() takes a data frame and adjustable mcmc inputs to
@@ -48,10 +48,11 @@
 #'  - `y0` = posterior estimate of baseline antibody concentration
 #'  - `y1` = posterior estimate of peak antibody concentration
 #'  - `stratified variable` = the variable that jags was stratified by
-#'  @export
+#' @export
 #' @examples
 #' run_mod(
 #'     data = Dataset, #The data set input
+#'     file_mod = file.mod # The model input into the jags sampler
 #'     nchain = 4, #Number of mcmc chains to run
 #'     nadapt = 100, #Number of adaptations to run
 #'     nburn = 100, #Number of unrecorded samples before sampling begins
