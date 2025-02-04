@@ -3,7 +3,7 @@
 #' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  Run.mod() takes a data frame and adjustable mcmc inputs to
+#'  run_mod() takes a data frame and adjustable mcmc inputs to
 #'  [runjags::run.jags()] as an mcmc
 #'  bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()]
