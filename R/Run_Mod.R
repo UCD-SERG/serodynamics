@@ -48,7 +48,7 @@
 #'  - `y0` = posterior estimate of baseline antibody concentration
 #'  - `y1` = posterior estimate of peak antibody concentration
 #'  - `stratified variable` = the variable that jags was stratified by
-#'  @export
+#' @export
 #' @examples
 #' run_mod(
 #'     data = Dataset, #The data set input

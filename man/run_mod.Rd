@@ -54,7 +54,6 @@ the following attributes
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
 \item \verb{stratified variable} = the variable that jags was stratified by
-@export
 }
 }
 \description{

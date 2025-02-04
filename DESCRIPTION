@@ -15,6 +15,7 @@ Imports:
     dplyr,
     ggmcmc,
     Hmisc,
+    rjags,
     rlang,
     stats
 Suggests: 
