@@ -31,7 +31,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9005</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9006</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -61,7 +61,7 @@ alpha = decay rate
     <p>Run.mod() takes a data frame and adjustable mcmc inputs to
 <code>runjags::run.jags()</code> as an mcmc
 bayesian model to estimate antibody dynamic curve parameters.
-The <code>rjags::jags.model()</code>
+The <code><a href="https://rdrr.io/pkg/rjags/man/jags.model.html" class="external-link">rjags::jags.model()</a></code>
 was adapted from Teunis et al. (2016) modeling seroresponse dynamics to an
 infection. The antibody dynamic curve includes the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
@@ -142,8 +142,7 @@ the following attributes</p><ul><li><p><code>iteration</code> = number of sampli
 <li><p><code>t1</code> = posterior estimate of time to peak</p></li>
 <li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = posterior estimate of peak antibody concentration</p></li>
-<li><p><code>stratified variable</code> = the variable that jags was stratified by
-@export</p></li>
+<li><p><code>stratified variable</code> = the variable that jags was stratified by</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
