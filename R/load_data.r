@@ -5,7 +5,7 @@
 #'
 #' @returns a [list()] with the following elements:
 #' * `smpl.t` = time since symptom/fever onset for each participant, max 7 visits
-#' * `logy` = log antibody response at each timepoint (max 7) for each of 7 biomarkers for each participant
+#' * `logy` = log antibody response at each time-point (max 7) for each of 7 biomarkers for each participant
 #' * `ntest` is max number of biomarkers
 #' * `nsmpl` = max number of samples per participant
 #' * `nsubj` = number of study participants
@@ -13,7 +13,6 @@
 #' * `my.hyp`, `prec.hyp`, `omega` and `wishdf` are all parameters to describe the shape of priors for (y0, y1, t1, alpha, shape) 
 #' @export
 #'
-#' @examples
 load_data = function(
     # datapath = "data/",
     # datafile = "TypoidCaseData_github_09.30.21.csv"

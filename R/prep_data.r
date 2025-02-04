@@ -10,7 +10,7 @@ prep_data <- function(dataframe) {
 
   
   # Extract unique visits and antigens
-  visits <- unique(dataframe$visit_num)
+  visits <- sort(unique(as.numeric(dataframe$visit_num)))
   antigens <- unique(dataframe$antigen_iso)
   subjects <- unique(dataframe$index_id)
   
@@ -47,10 +47,15 @@ prep_data <- function(dataframe) {
   nsmpl <- integer(num_subjects + 1)  # Array to store the maximum number of samples per participant
   
   # Populate the arrays
+
   # for (i in seq_len(num_subjects)) {
-  #   for (j in seq_len(max_visits)) {
+  #   subject_data <- dataframe[dataframe$index_id == subjects[i], ]
+  #   subject_visits <- sort(unique(subject_data$visit_num))
+  #   nsmpl[i] <- length(subject_visits)  # Number of non-missing visits for this participant
+  #   
+  #   for (j in seq_along(subject_visits)) {
   #     for (k in seq_len(max_antigens)) {
-  #       subset <- dataframe[dataframe$index_id == subjects[i] & dataframe$visit == visits[j] & dataframe$antigen_iso == antigens[k], ]
+  #       subset <- subject_data[subject_data$visit_num == subject_visits[j] & subject_data$antigen_iso == antigens[k], ]
   #       if (nrow(subset) > 0) {
   #         visit_times[i, j] <- subset$timeindays
   #         antibody_levels[i, j, k] <- log(max(0.01, subset$result))  # Log-transform and handle zeroes
@@ -58,15 +63,22 @@ prep_data <- function(dataframe) {
   #     }
   #   }
   # }
+  
   for (i in seq_len(num_subjects)) {
     subject_data <- dataframe[dataframe$index_id == subjects[i], ]
-    subject_visits <- unique(subject_data$visit_num)
+    subject_visits <- sort(unique(subject_data$visit_num))
     nsmpl[i] <- length(subject_visits)  # Number of non-missing visits for this participant
     
     for (j in seq_along(subject_visits)) {
       for (k in seq_len(max_antigens)) {
         subset <- subject_data[subject_data$visit_num == subject_visits[j] & subject_data$antigen_iso == antigens[k], ]
         if (nrow(subset) > 0) {
+          if (length(subset$timeindays) != 1) {
+            stop(paste("Error at subject:", subjects[i], 
+                       "visit:", subject_visits[j], 
+                       "antigen:", antigens[k], 
+                       "- Number of items in 'timeindays' is not 1."))
+          }
           visit_times[i, j] <- subset$timeindays
           antibody_levels[i, j, k] <- log(max(0.01, subset$result))  # Log-transform and handle zeroes
         }
@@ -78,7 +90,7 @@ prep_data <- function(dataframe) {
   visit_times[num_subjects + 1, 1:3] <- c(5, 30, 90)
   # Ensure corresponding antibody levels are set to NA (explicitly missing)
   antibody_levels[num_subjects + 1, 1:3, ] <- NA
-  nsmpl[num_subjects + 1] <- 3  # Since we manually add three timepoints for the dummy subject
+  nsmpl[num_subjects + 1] <- 3  # Since we manually add three time-points for the dummy subject
   
   
   
