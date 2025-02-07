@@ -154,7 +154,35 @@ distribution will be exported with the following attributes:</p></li>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span></span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:stats’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     filter, lag</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
+<span class="r-in"><span><span class="va">strat1</span> <span class="op">&lt;-</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="va"><a href="https://ucd-serg.github.io/serocalculator/reference/typhoid_curves_nostrat_100.html" class="external-link">typhoid_curves_nostrat_100</a></span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="sim_case_data.html">sim_case_data</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"stratum 2"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">strat2</span> <span class="op">&lt;-</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="va"><a href="https://ucd-serg.github.io/serocalculator/reference/typhoid_curves_nostrat_100.html" class="external-link">typhoid_curves_nostrat_100</a></span> <span class="op">|&gt;</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="sim_case_data.html">sim_case_data</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span> <span class="op">|&gt;</span> </span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>strat <span class="op">=</span> <span class="st">"stratum 1"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">Dataset</span> <span class="op">=</span> <span class="fu"><a href="https://dplyr.tidyverse.org/reference/bind_rows.html" class="external-link">bind_rows</a></span><span class="op">(</span><span class="va">strat1</span>, <span class="va">strat2</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">run_mod</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">Dataset</span>, <span class="co">#The data set input</span></span></span>
+<span class="r-in"><span>    nchain <span class="op">=</span> <span class="fl">4</span>, <span class="co">#Number of mcmc chains to run</span></span></span>
+<span class="r-in"><span>    nadapt <span class="op">=</span> <span class="fl">100</span>, <span class="co">#Number of adaptations to run</span></span></span>
+<span class="r-in"><span>    nburn <span class="op">=</span> <span class="fl">100</span>, <span class="co">#Number of unrecorded samples before sampling begins</span></span></span>
+<span class="r-in"><span>    nmc <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>    niter <span class="op">=</span> <span class="fl">2000</span>, <span class="co">#Number of iterations</span></span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span><span class="op">)</span> <span class="co">#Variable to be stratified</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in loadNamespace(x):</span> there is no package called ‘runjags’</span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
