@@ -15,5 +15,5 @@ None yet
 
 ## Developer-facing changes
 
-* Added various GitHub Actions (#10, #15)
+* Added various GitHub Actions (#10, #15, #18)
 
