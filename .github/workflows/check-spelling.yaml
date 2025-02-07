@@ -25,10 +25,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          needs: |
-            check
-          extra-packages: |
-            any::spelling
+          packages: any::spelling
       
       - name: Run Spelling Check test
         uses: insightsengineering/r-spellcheck-action@v3.0.2
