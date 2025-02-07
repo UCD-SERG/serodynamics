@@ -1,25 +1,18 @@
 
 
-#' @title Run Model Jags
+#' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  Run.mod() takes a data frame and adjustable mcmc inputs to
+#'  run_mod() takes a data frame and adjustable mcmc inputs to
 #'  [runjags::run.jags()] as an mcmc
 #'  bayesian model to estimate antibody dynamic curve parameters.
-#'  The [rjags::jags.model()]
-#'  was adapted from Teunis et al. (2016) modeling seroresponse dynamics to an
+#'  The [rjags::jags.model()] models seroresponse dynamics to an
 #'  infection. The antibody dynamic curve includes the following parameters:
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @references Teunis PF, van Eijkeren JC, de Graaf WF, Marinović AB,
-#' Kretzschmar ME.
-#' Linking the seroresponse to infection to within-host
-#' heterogeneity in antibody production.
-#' Epidemics. 2016 Sep;16:33-9. doi: 10.1016/j.epidem.2016.04.001.
-#' Epub 2016 Apr 28. PMID: 27663789.
 #' @param name description
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
@@ -31,13 +24,11 @@
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
 #' A [string] specifying the stratification variable, entered in quotes.
-#' @return An jags.post [list()] object or multiple jags.post [list()]
-#' if jags is stratified, as well as a [base::data.frame()]
-#' titled `curve_params` that contains the posterior distribution.
-#' The jags.post is
-#' returned as a [list()] of class [runjags::runjags-class].
-#' A curve_params [base::data.frame()] will also be exported with
-#' the following attributes
+#' @return 
+#' - A jags.post [list()] object or multiple jags.post [list()]
+#' if stratified. Returned as a [list()] of class [runjags::runjags-class].
+#' - A [base::data.frame()] titled `curve_params` that contains the posterior 
+#' distribution will be exported with the following attributes:
 #'  - `iteration` = number of sampling iterations.
 #'  - `chain` = number of mcmc chains run; between 1 and 4.
 #'  - `indexid` = "newperson", indicating posterior distribution.
@@ -48,6 +39,13 @@
 #'  - `y0` = posterior estimate of baseline antibody concentration
 #'  - `y1` = posterior estimate of peak antibody concentration
 #'  - `stratified variable` = the variable that jags was stratified by
+#' - A [list] of `attributes` that summarize the jags inputs, including:
+#'  - `class`: Class of the output object.
+#'  - `nChain`: Number of chains run.
+#'  - `nParameters`: The amount of parameters estimated in the model.
+#'  - `nIterations`: Number of iteration specified.
+#'  - `nBurnin`: Number of burn ins. 
+#'  - `nThin`: Thinning number (niter/nmc)
 #' @export
 #' @examples
 #' run_mod(
@@ -150,6 +148,12 @@ run_mod <- function(data,
     # included in the outputs
     #ggs works with mcmc objects
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
+
+    # Adding attributes
+    mod_atts <- attributes(jags_unpack)
+    # Only keeping necesarry attributes
+    mod_atts <- mod_atts[3:8]
+
     #extracting antigen-iso combinations to correctly number
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
@@ -184,6 +188,7 @@ run_mod <- function(data,
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification
   # rbinded.
-  jags_out <- list("curve_params" = jags_out, "jags.post" = jags_post_final)
+  jags_out <- list("curve_params" = jags_out, "jags.post" = jags_post_final,
+                   "attributes" = mod_atts)
   jags_out
 }
