@@ -25,7 +25,7 @@ autoplot.case_data <- function(object, ...) {
                  col = id) +
     ggplot2::geom_point(...) +
     ggplot2::geom_line(...) +
-    ggplot2::facet_wrap(vars(biomarker)) +
+    ggplot2::facet_wrap(ggplot2::vars(biomarker)) +
     ggplot2::guides(color = "none", group = "none") +
     ggplot2::theme_bw() +
     ggplot2::scale_y_log10()
