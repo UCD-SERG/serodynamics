@@ -14,12 +14,16 @@ BugReports: https://github.com/UCD-SERG/serodynamics/issues
 Imports: 
     dplyr,
     ggmcmc,
+    ggplot2,
     Hmisc,
     rjags,
     rlang,
+    serocalculator,
+    ssdtools,
     stats
 Suggests: 
     spelling,
     testthat (>= 3.0.0)
 Language: en-US
 Config/testthat/edition: 3
+Config/needs/test: withr
