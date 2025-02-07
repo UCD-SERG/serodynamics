@@ -28,7 +28,6 @@ jobs:
           needs: |
             check
           extra-packages: |
-            local::.
             any::spelling
       
       - name: Run Spelling Check test
