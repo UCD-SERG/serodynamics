@@ -16,6 +16,7 @@ Imports:
     ggmcmc,
     ggplot2,
     Hmisc,
+    readr,
     rjags,
     rlang,
     serocalculator,
