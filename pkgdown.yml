@@ -2,7 +2,7 @@ pandoc: 3.1.11
 pkgdown: 2.1.1
 pkgdown_sha: ~
 articles: {}
-last_built: 2025-02-04T06:07Z
+last_built: 2025-02-07T05:32Z
 urls:
   reference: https://ucd-serg.github.io/serodynamics/reference
   article: https://ucd-serg.github.io/serodynamics/articles
