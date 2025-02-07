@@ -24,9 +24,9 @@
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
 #' A [string] specifying the stratification variable, entered in quotes.
-#' @return 
+#' @return
 #' - A jags.post [list()] object or multiple jags.post [list()]
-#' if stratified. Returned as a [list()] of class [runjags::runjags-class].
+#' if stratified. Returned as a [list()] of class [runjags::runjags-class]
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior 
 #' distribution will be exported with the following attributes:
 #'  - `iteration` = number of sampling iterations.
@@ -44,7 +44,7 @@
 #'  - `nChain`: Number of chains run.
 #'  - `nParameters`: The amount of parameters estimated in the model.
 #'  - `nIterations`: Number of iteration specified.
-#'  - `nBurnin`: Number of burn ins. 
+#'  - `nBurnin`: Number of burn ins.
 #'  - `nThin`: Thinning number (niter/nmc)
 #' @export
 #' @examples
