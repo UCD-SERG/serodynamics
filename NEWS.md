@@ -4,7 +4,7 @@
 
 ## New features
 
-* Diagnostic function to produce density plots with stratification (#)
+* Diagnostic function to produce density plots with stratification (#27)
 * Added attributes as a return to the run_mod function (#24)
 * exported `run_mod()` function (#22)
 * Function that runs jags with option of stratification included. (#14)

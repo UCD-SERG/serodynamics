@@ -78,7 +78,7 @@ plot_jags_dens <- function(data,
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                  .data$Parameter_sub))
+                                         .data$Parameter_sub))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
