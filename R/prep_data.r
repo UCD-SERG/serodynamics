@@ -1,6 +1,19 @@
 
 
 
+#' prepare data for JAGs
+#'
+#' @param dataframe a [data.frame] containing ...
+#'
+#' @returns a `prepped_jags_data` object (a [list] with extra attributes ...)
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' raw_data <- 
+#'   serocalculator::typhoid_curves_nostrat_100 |>
+#'   sim_case_data(n = 100)
+#'  prepped_data <- prep_data(raw_data) 
 prep_data <- function(dataframe) {
   # Ensure the data has the required columns
   if (!("antigen_iso" %in% names(dataframe)) || !("visit_num" %in% names(dataframe))) {
@@ -12,7 +25,7 @@ prep_data <- function(dataframe) {
   # Extract unique visits and antigens
   visits <- sort(unique(as.numeric(dataframe$visit_num)))
   antigens <- unique(dataframe$antigen_iso)
-  subjects <- unique(dataframe$index_id)
+  subjects <- dataframe |> get_subject_ids()
   
   # Initialize arrays to store the formatted data
   max_visits <- length(visits)
@@ -109,6 +122,7 @@ prep_data <- function(dataframe) {
       # "antigen_names" = antigens
     ) |> 
     structure(
+      class = c("prepped_jags_data", "list"),
       antigens = antigens,
       n_antigens = max_antigens,
       ids = c(subjects, "newperson")

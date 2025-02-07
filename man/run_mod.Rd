@@ -75,14 +75,25 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
+set.seed(1)
+library(dplyr)
+strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 100) |> 
+  mutate(strat = "stratum 2")
+strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 100) |> 
+  mutate(strat = "stratum 1")
+
+Dataset = bind_rows(strat1, strat2)
+
 run_mod(
     data = Dataset, #The data set input
     nchain = 4, #Number of mcmc chains to run
     nadapt = 100, #Number of adaptations to run
     nburn = 100, #Number of unrecorded samples before sampling begins
-    nmc = 1000
+    nmc = 1000,
     niter = 2000, #Number of iterations
-    strat = strat) #Variable to be stratified
+    strat = "strat") #Variable to be stratified
 }
 \author{
 Sam Schildhauer
