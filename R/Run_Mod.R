@@ -48,6 +48,7 @@
 #' @export
 #' @examples
 #' if (!is.element(runjags::findjags(), c("", NULL))) {
+#' library(runjags)
 #' set.seed(1)
 #' library(dplyr)
 #' strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
