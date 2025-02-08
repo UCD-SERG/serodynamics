@@ -1,4 +1,4 @@
-index_id,visit_num,obs_time,iter,antigen_iso,y0,y1,t1,alpha,r,value
+index_id,visit_num,timeindays,iter,antigen_iso,y0,y1,t1,alpha,r,value
 1,1,0,38,HlyE_IgA,3.08854,574.895,2.7356,3.55786e-4,1.87066,3.08854
 1,1,0,38,HlyE_IgG,1.85868,105.684,14.0124,4.38856e-4,1.67167,1.85868
 1,1,0,38,LPS_IgA,1.5176,340.874,3.28229,9.99371e-5,1.9163,1.5176

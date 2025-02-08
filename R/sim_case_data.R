@@ -71,9 +71,14 @@ sim_case_data <- function(
   
   to_return = 
     biomarker_level_data |> 
-    dplyr::rename(index_id = "id") |> 
+    dplyr::rename(
+      index_id = "id",
+      timeindays = "obs_time") |> 
     structure(class = c("case_data", class(biomarker_level_data)),
-              subject_id = "id")
+              subject_id = "index_id",
+              biomarker_var = "antigen_iso",
+              timeindays = "timeindays",
+              value_var = "value")
   
   return(to_return)
 }

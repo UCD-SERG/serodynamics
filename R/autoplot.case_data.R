@@ -17,17 +17,24 @@ ggplot2::autoplot
 #'   sim_case_data(n = 10, max_n_obs = 20, followup_interval = 14) |> 
 #'   autoplot(alpha = .5)
 autoplot.case_data <- function(object, ...) {
-  object |> 
+
+  to_return <- 
+    object |> 
     ggplot2::ggplot() +
-    ggplot2::aes(x = obs_time,
-                 y = value,
-                 group = id,
-                 col = id) +
+    ggplot2::aes(x = .data |> get_timeindays(),
+                 y = .data$value,
+                 group = .data |> get_subject_ids(),
+                 col = .data |> get_subject_ids()) +
     ggplot2::geom_point(...) +
     ggplot2::geom_line(...) +
-    ggplot2::facet_wrap(ggplot2::vars(biomarker)) +
+    ggplot2::facet_wrap(
+      ggplot2::vars(
+        serocalculator:::get_biomarker_names_var(object))) +
     ggplot2::guides(color = "none", group = "none") +
     ggplot2::theme_bw() +
-    ggplot2::scale_y_log10()
-    
+    ggplot2::scale_y_log10() + 
+    ggplot2::xlab("Time since seroconversion (days)")
+  
+  return(to_return)
+  
 }

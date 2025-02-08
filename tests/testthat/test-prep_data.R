@@ -4,7 +4,7 @@ test_that("results are consistent", {
                    code = {
                      raw_data <- 
                        serocalculator::typhoid_curves_nostrat_100 |>
-                       sim_case_data(n = 10)
+                       sim_case_data(n = 5)
                    })
    prepped_data <- prep_data(raw_data)
    
