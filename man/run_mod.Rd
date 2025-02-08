@@ -27,7 +27,7 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying nr of samples in posterior chains}
+\item{nmc}{An \link{integer} specifying number of samples in posterior chains}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
