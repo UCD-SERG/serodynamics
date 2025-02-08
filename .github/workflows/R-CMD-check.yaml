@@ -41,7 +41,7 @@ jobs:
       - name: Install jags (windows-latest)
         if: runner.os == 'Windows'
         run: |
-          curl.exe -o wjags.exe --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          curl.exe -o wjags.exe --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe?ts=gAAAAABnpspPomka5bva5OMtTEfs638c4RfYP9xz15X5J2866TX0_X3tMYQUkmgGqlyoH4vSGAASykY-tqNKRIklsaVKyvU_3A%3D%3D&r=https%3A%2F%2Fsourceforge.net%2Fprojects%2Fmcmc-jags%2Ffiles%2FJAGS%2F4.x%2FWindows%2FJAGS-4.3.1.exe%2Fdownload%3Fuse_mirror%3Dversaweb
           start /wait wjags.exe /S
           del wjags.exe
         shell: cmd
