@@ -20,7 +20,8 @@ Imports:
     runjags,
     serocalculator,
     stats,
-    tibble
+    tibble,
+    utils
 Suggests: 
     Hmisc,
     readr,

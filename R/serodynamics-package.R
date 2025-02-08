@@ -13,5 +13,6 @@
 #' @importFrom runjags run.jags
 #' @importFrom stats complete.cases
 #' @importFrom stats quantile
+#' @importFrom utils read.csv
 ## usethis namespace: end
 NULL
