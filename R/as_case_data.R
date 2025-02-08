@@ -9,7 +9,7 @@
 #' (e.g. "antigen_iso")
 #' @param time_in_days a [character] string naming the column in `data` with
 #' elapsed time since seroconversion
-#' @param value_var a [character] string naming the colunmn in `data`
+#' @param value_var a [character] string naming the column in `data`
 #' with biomarker measurements
 #'
 #' @returns a `case_data` object

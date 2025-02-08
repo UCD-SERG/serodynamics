@@ -21,7 +21,7 @@ as_case_data(
 denoting which biomarker is being reported in \code{value_var}
 (e.g. "antigen_iso")}
 
-\item{value_var}{a \link{character} string naming the colunmn in \code{data}
+\item{value_var}{a \link{character} string naming the column in \code{data}
 with biomarker measurements}
 
 \item{time_in_days}{a \link{character} string naming the column in \code{data} with
