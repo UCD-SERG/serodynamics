@@ -2,6 +2,7 @@ test_that(
   desc = "results are consistent", 
   code = 
     {
+      cli::cli_inform(runjags::findjags())
       skip_if(runjags::findjags() %in% c("", NULL))
       
       set.seed(1)
