@@ -10,8 +10,13 @@ behaviour
 biomarkers
 geoms
 ggproto
+hyp
+isotypes
 mcmc
 newperson
 nmc
+params
+prec
 seroresponse
 unstratified
+wishdf
