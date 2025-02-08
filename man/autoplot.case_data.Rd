@@ -80,6 +80,6 @@ Plot case data
 \examples{
 set.seed(1)
 serocalculator::typhoid_curves_nostrat_100 |>
-  sim_case_data(n = 10, max_n_obs = 20, followup_interval = 14) |>
+  sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14) |>
   autoplot(alpha = .5)
 }

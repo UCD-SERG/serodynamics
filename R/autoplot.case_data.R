@@ -14,7 +14,7 @@ ggplot2::autoplot
 #' @examples
 #' set.seed(1)
 #' serocalculator::typhoid_curves_nostrat_100 |>
-#'   sim_case_data(n = 10, max_n_obs = 20, followup_interval = 14) |>
+#'   sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14) |>
 #'   autoplot(alpha = .5)
 autoplot.case_data <- function(object, ...) {
   to_return <-
@@ -30,7 +30,7 @@ autoplot.case_data <- function(object, ...) {
     ggplot2::geom_line(...) +
     ggplot2::facet_wrap(
       ggplot2::vars(
-        serocalculator:::get_biomarker_names_var(object)
+        .data |> get_biomarker_names()
       )
     ) +
     ggplot2::guides(color = "none", group = "none") +
