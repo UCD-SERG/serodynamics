@@ -31,6 +31,27 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Install jags (windows-latest)
+        if: runner.os == 'Windows'
+        run: |
+          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          echo "Downloaded file size:"
+          dir wjags.exe
+          if (powershell -command "(Get-Item wjags.exe).length -gt 100000") {
+            echo "file seems large enough"
+            powershell -command "Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait"
+          } else {
+            echo "Download failed or incomplete. Please check the URL and retry."
+            exit 1
+          }
+          del wjags.exe
+        shell: cmd
+      
+      - name: Install jags (macOS-latest)
+        if: runner.os == 'macOS'
+        run : |
+              brew install jags
+
       - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
@@ -40,26 +61,6 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - name: Install jags (windows-latest)
-        if: runner.os == 'Windows'
-        run: |
-          curl.exe -L -o wjags.exe --url https://osf.io/download/67a6cb501f46839d5d0c57e9/
-          echo "Downloaded file size:"
-          dir wjags.exe
-          if (powershell -command "(Get-Item wjags.exe).length -gt 100000") {
-            powershell -command "Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait"
-          } else {
-            echo "Download failed or incomplete. Please check the URL and retry."
-            exit 1
-          }
-          del wjags.exe
-        shell: cmd
-
-      - name: Install jags (macOS-latest)
-        if: runner.os == 'macOS'
-        run : |
-              brew install jags
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
