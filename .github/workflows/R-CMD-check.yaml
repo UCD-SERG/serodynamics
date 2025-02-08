@@ -34,16 +34,18 @@ jobs:
       - name: Install jags (windows-latest)
         if: runner.os == 'Windows'
         run: |
-          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          curl.exe -L -o wjags.exe --url https://osf.io/download/67a6cb501f46839d5d0c57e9/
           echo "Downloaded file size:"
           dir wjags.exe
-          if (powershell -command "(Get-Item wjags.exe).length -gt 100000") {
-            echo "file seems large enough"
-            powershell -command "Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait"
-          } else {
-            echo "Download failed or incomplete. Please check the URL and retry."
-            exit 1
-          }
+          powershell -command "
+            if ((Get-Item wjags.exe).length -gt 100000) {
+              echo 'File seems large enough'
+              Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait
+            } else {
+              echo 'Download failed or incomplete. Please check the URL and retry.'
+              exit 1
+            }
+          "
           del wjags.exe
         shell: cmd
       
