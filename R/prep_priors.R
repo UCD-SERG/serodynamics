@@ -1,38 +1,51 @@
-
-
-prep_priors <- function(max_antigens){
-  
+#' @title Prepare priors
+#'
+#' @param max_antigens [integer]: how many antigen-isotypes will be modeled
+#'
+#' @returns a [list] with elements:
+#' "n_params": how many parameters??
+#' - "mu.hyp": ??
+#' - "prec.hyp": ??
+#' - "omega" : ??
+#' - "wishdf": Wishart distribution degrees of freedom
+#' - "prec.logy.hyp": array of hyper-parameters for the precision
+#' (inverse variance) of the biomarkers, on log-scale
+#' @export
+#'
+#' @examples
+#' prep_priors(max_antigens = 2)
+prep_priors <- function(max_antigens) {
   # Model parameters
-  n_params <- 5  # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
-  mu.hyp   <- array(NA, dim = c(max_antigens, n_params))
-  prec.hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
-  omega    <- array(NA, dim = c(max_antigens, n_params, n_params))
-  wishdf   <- rep(NA, max_antigens)
-  prec.logy.hyp <- array(NA, dim = c(max_antigens, 2))
-  
-  # Fill parameter arrays
-  # log(c(y0,  y1,    t1,  alpha, shape-1))
-  for (k.test in 1:max_antigens) {
-    mu.hyp[k.test,] <-        c(1.0, 7.0, 1.0, -4.0, -1.0)
-    prec.hyp[k.test,,] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))
-    omega[k.test,,] <-    diag(c(1.0, 50.0, 1.0, 10.0, 1.0))
-    wishdf[k.test] <- 20
-    prec.logy.hyp[k.test,] <- c(4.0, 1.0)
-  }
-  
-  #test for change
-  
-  # Return results as a list
-  return(list(
-    "n_params" = n_params,
-    "mu.hyp" = mu.hyp, 
-    "prec.hyp" = prec.hyp,
-    "omega" = omega, 
-    "wishdf" = wishdf,
-    "prec.logy.hyp" = prec.logy.hyp
-  ))  
-  
-  
-  
-}
+  n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
+  mu_hyp <- array(NA, dim = c(max_antigens, n_params))
+  prec_hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
+  omega <- array(NA, dim = c(max_antigens, n_params, n_params))
+  wishdf <- rep(NA, max_antigens)
+  prec_logy_hyp <- array(NA, dim = c(max_antigens, 2))
 
+  # Fill parameter arrays
+  # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
+  for (k.test in 1:max_antigens) {
+    mu_hyp[k.test, ] <- c(1.0, 7.0, 1.0, -4.0, -1.0)
+    prec_hyp[k.test, , ] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))
+    omega[k.test, , ] <- diag(c(1.0, 50.0, 1.0, 10.0, 1.0))
+    wishdf[k.test] <- 20
+    prec_logy_hyp[k.test, ] <- c(4.0, 1.0)
+  }
+
+  # test for change
+
+  # Return results as a list
+
+  to_return <- list(
+    "n_params" = n_params,
+    "mu.hyp" = mu_hyp,
+    "prec.hyp" = prec_hyp,
+    "omega" = omega,
+    "wishdf" = wishdf,
+    "prec.logy.hyp" = prec_logy_hyp
+  ) |>
+    structure(class = c("curve_params_priors", "list"))
+
+  return(to_return)
+}
