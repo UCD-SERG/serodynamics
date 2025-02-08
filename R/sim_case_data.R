@@ -46,13 +46,13 @@ sim_case_data <- function(
     dplyr::reframe(
       .by = c("id", "visit_num", "obs_time", "iter"),
       antigen_iso = curve_params |>
-        serocalculator:::get_biomarker_levels()
+        serocalculator::get_biomarker_levels()
     ) |>
     dplyr::left_join(
       curve_params,
       by = c(
         "antigen_iso" =
-          curve_params |> serocalculator:::get_biomarker_names_var(),
+          curve_params |> serocalculator::get_biomarker_names_var(),
         "iter"
       )
     ) |>
