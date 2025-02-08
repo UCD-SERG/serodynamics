@@ -17,8 +17,8 @@ prepare data for JAGs
 }
 \examples{
 set.seed(1)
-raw_data <- 
+raw_data <-
   serocalculator::typhoid_curves_nostrat_100 |>
-  sim_case_data(n = 100)
- prepped_data <- prep_data(raw_data) 
+  sim_case_data(n = 5)
+prepped_data <- prep_data(raw_data)
 }
