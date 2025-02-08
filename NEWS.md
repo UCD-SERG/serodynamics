@@ -4,8 +4,8 @@
 
 ## New features
 
-* Overall cleaning to get checks working (#28)
 * Diagnostic function to produce density plots with stratification (#27)
+* Added `autoplot()` method for `case_data` objects (#28)
 * Added examples for `sim_pop_data()`, `autoplot.case_data()` (#18)
 * Added attributes as a return to the run_mod function (#24)
 * exported `run_mod()` function (#22)
@@ -18,6 +18,7 @@ None yet
 
 ## Developer-facing changes
 
+* Overall cleaning to get checks working (#28)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
 
