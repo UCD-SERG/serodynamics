@@ -9,6 +9,7 @@
 #' @examples
 #'  dist_n_obs = tibble::tibble(n_obs = 1:5, prob = 1/5)
 #'  dist_n_obs |> sim_n_obs(n = 10)
+#' @keywords internal
 sim_n_obs <- function(dist_n_obs, n) {
   sample(
     x = dist_n_obs$n_obs,

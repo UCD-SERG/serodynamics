@@ -21,3 +21,4 @@ Simulate number of longitudinal observations
  dist_n_obs = tibble::tibble(n_obs = 1:5, prob = 1/5)
  dist_n_obs |> sim_n_obs(n = 10)
 }
+\keyword{internal}
