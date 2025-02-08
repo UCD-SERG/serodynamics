@@ -4,6 +4,7 @@
 
 ## New features
 
+* Overall cleaning to get checks working (#28)
 * Added examples for `sim_pop_data()`, `autoplot.case_data()` (#18)
 * Added attributes as a return to the run_mod function (#24)
 * exported `run_mod()` function (#22)
