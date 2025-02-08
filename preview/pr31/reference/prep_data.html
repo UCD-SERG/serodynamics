@@ -61,13 +61,7 @@
 <span class="r-in"><span><span class="va">raw_data</span> <span class="op">&lt;-</span></span></span>
 <span class="r-in"><span>  <span class="fu">serocalculator</span><span class="fu">::</span><span class="va"><a href="https://ucd-serg.github.io/serocalculator/reference/typhoid_curves_nostrat_100.html" class="external-link">typhoid_curves_nostrat_100</a></span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="sim_case_data.html">sim_case_data</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in dplyr::reframe(obs_level_data, .by = c("id", "visit_num", "obs_time",     "iter"), antigen_iso = serocalculator::get_biomarker_levels(curve_params)):</span> <span style="color: #00BBBB;">ℹ</span> In argument: `antigen_iso =</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span>   serocalculator::get_biomarker_levels(curve_params)`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> In group 1: `id = "1"`, `visit_num = 1`, `obs_time = 0`, `iter = 95`.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Caused by error:</span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BBBB00;">!</span> 'get_biomarker_levels' is not an exported object from 'namespace:serocalculator'</span>
 <span class="r-in"><span><span class="va">prepped_data</span> <span class="op">&lt;-</span> <span class="fu">prep_data</span><span class="op">(</span><span class="va">raw_data</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'raw_data' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
