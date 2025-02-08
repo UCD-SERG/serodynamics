@@ -99,7 +99,7 @@ prep_data <- function(dataframe) {
           antibody_levels[i, j, k] <- log(max(
             0.01,
             subset |>
-              serocalculator:::get_value()
+              serocalculator::get_values()
           ))
           # Log-transform and handle zeroes
         }
