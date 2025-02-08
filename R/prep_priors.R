@@ -1,5 +1,19 @@
-
-
+#' @title Prepare priors
+#'
+#' @param max_antigens [integer]: how many antigen-isotypes will be modeled
+#'
+#' @returns a [list] with elements:
+#' "n_params": how many parameters??
+#' - "mu.hyp": ??
+#' - "prec.hyp": ??
+#' - "omega" : ??
+#' - "wishdf": Wishart distribution degrees of freedom
+#' - "prec.logy.hyp": array of hyper-parameters for the precision 
+#' (inverse variance) of the biomarkers, on log-scale
+#' @export
+#'
+#' @examples
+#' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens){
   
   # Model parameters
@@ -23,14 +37,18 @@ prep_priors <- function(max_antigens){
   #test for change
   
   # Return results as a list
-  return(list(
+  
+  to_return = list(
     "n_params" = n_params,
     "mu.hyp" = mu.hyp, 
     "prec.hyp" = prec.hyp,
     "omega" = omega, 
     "wishdf" = wishdf,
     "prec.logy.hyp" = prec.logy.hyp
-  ))  
+  ) |> 
+    structure(class = c("curve_params_priors", "list"))
+  
+  return(to_return)  
   
   
   
