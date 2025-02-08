@@ -1,8 +1,7 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-# jags install guide (doesn't work for windows): 
-# https://forum.posit.co/t/check-standard-yaml-fails-to-install-system-dependencies-on-macos-and-windows/89393
-# see also https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
+# GOT THE JAGS INSTALL FROM:
+# https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
 on:
   push:
     branches: [main, master]

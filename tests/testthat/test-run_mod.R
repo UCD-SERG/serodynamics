@@ -3,8 +3,6 @@ test_that(
   code = 
     {
       library(runjags)
-      cli::cli_inform(runjags::findjags())
-      skip_if(runjags::findjags() %in% c("", NULL))
       
       set.seed(1)
       library(dplyr)
