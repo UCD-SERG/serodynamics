@@ -11,3 +11,5 @@
 ^pkgdown$
 ^\.github$
 ^LICENSE\.md$
+^inst/extdata/sees_case_data_long_11012023\.rds$
+^inst/extdata/elisa_clean_2023-11-01\.csv$

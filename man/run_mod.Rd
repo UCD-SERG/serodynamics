@@ -32,8 +32,6 @@ the number of mcmc chains to be run per jags model.}
 \item{niter}{An \link{integer} specifying number of iterations.}
 
 \item{strat}{A \link{string} specifying the stratification variable, entered in quotes.}
-
-\item{name}{description}
 }
 \value{
 \itemize{
@@ -88,6 +86,7 @@ Dataset = bind_rows(strat1, strat2)
 
 run_mod(
     data = Dataset, #The data set input
+    file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
     nchain = 4, #Number of mcmc chains to run
     nadapt = 100, #Number of adaptations to run
     nburn = 100, #Number of unrecorded samples before sampling begins

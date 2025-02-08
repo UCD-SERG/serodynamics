@@ -16,18 +16,21 @@ Imports:
     dplyr,
     ggmcmc,
     ggplot2,
+    rlang,
+    runjags,
+    serocalculator,
+    stats,
+    tibble
+Suggests: 
     Hmisc,
     readr,
     rjags,
-    rlang,
-    serocalculator,
-    ssdtools,
-    stats,
-    vdiffr
-Suggests: 
     spelling,
+    ssdtools,
     testthat (>= 3.0.0),
-    withr
+    withr,
+    vdiffr,
+    fs
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: withr, vdiffr

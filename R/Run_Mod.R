@@ -13,7 +13,6 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param name description
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
@@ -61,6 +60,7 @@
 #' 
 #' run_mod(
 #'     data = Dataset, #The data set input
+#'     file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
 #'     nchain = 4, #Number of mcmc chains to run
 #'     nadapt = 100, #Number of adaptations to run
 #'     nburn = 100, #Number of unrecorded samples before sampling begins
