@@ -18,7 +18,7 @@
 #' @examples
 #' set.seed(1)
 #' serocalculator::typhoid_curves_nostrat_100 |>
-#'   sim_case_data(n = 5) |> 
+#'   sim_case_data(n = 5) |>
 #'   as_case_data(
 #'     id_var = "index_id",
 #'     biomarker_var = "antigen_iso",
