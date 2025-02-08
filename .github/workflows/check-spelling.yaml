@@ -27,5 +27,5 @@ jobs:
         with:
           packages: any::spelling
       
-      - name: Run Spelling Check test
+      - name: Run Spelling Check Test
         uses: insightsengineering/r-spellcheck-action@v3.0.2
