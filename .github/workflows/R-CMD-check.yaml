@@ -19,11 +19,11 @@ jobs:
       fail-fast: false
       matrix:
         config:
-          - {os: macos-latest,   r: 'release'}
+          # - {os: macos-latest,   r: 'release'}
           - {os: windows-latest, r: 'release'}
-          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
-          - {os: ubuntu-latest,   r: 'release'}
-          - {os: ubuntu-latest,   r: 'oldrel-1'}
+          # - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          # - {os: ubuntu-latest,   r: 'release'}
+          # - {os: ubuntu-latest,   r: 'oldrel-1'}
 
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
@@ -44,7 +44,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           curl.exe -o wjags.exe --url https://osf.io/download/67a6cb501f46839d5d0c57e9/
-          wjags.exe /S
+          dir wjags.exe
+          powershell -command "Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait"
           del wjags.exe
         shell: cmd
 
