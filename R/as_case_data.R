@@ -1,13 +1,13 @@
 #' Convert data into `case_data`
 #'
-#' @param data a [data.frame] 
-#' @param id_var 
+#' @param data a [data.frame]
+#' @param id_var
 #' a [character] string naming the column in `data` denoting participant ID
-#' @param biomarker_var 
-#' a [character] string naming the column in `data` 
-#' denoting which biomarker is being reported in `value_var` 
+#' @param biomarker_var
+#' a [character] string naming the column in `data`
+#' denoting which biomarker is being reported in `value_var`
 #' (e.g. "antigen_iso")
-#' @param time_in_days a [character] string naming the column in `data` with 
+#' @param time_in_days a [character] string naming the column in `data` with
 #' elapsed time since seroconversion
 #' @param value_var a [character] string naming the colunmn in `data`
 #' with biomarker measurements
@@ -16,22 +16,24 @@
 #' @export
 #'
 #' @examples
-#' sim_case_data() |> 
-#'    as_case_data(
-#'      id_var = "index_id",
-#'      biomarker_var = "antigen_iso",
-#'      time_in_days = "timeindays",
-#'      value_var = "value"
-#'    ) 
-#'  
-as_case_data <- function(data,
-                         id_var = "index_id",
-                         biomarker_var = "antigen_iso",
-                         value_var = "value",
-                         time_in_days = "timeindays"
-                         ) {
-  data |> 
-    tibble::as_tibble() |> 
+#' set.seed(1)
+#' serocalculator::typhoid_curves_nostrat_100 |>
+#'   sim_case_data(n = 5) |> 
+#'   as_case_data(
+#'     id_var = "index_id",
+#'     biomarker_var = "antigen_iso",
+#'     time_in_days = "timeindays",
+#'     value_var = "value"
+#'   )
+#'
+as_case_data <- function(
+    data,
+    id_var = "index_id",
+    biomarker_var = "antigen_iso",
+    value_var = "value",
+    time_in_days = "timeindays") {
+  data |>
+    tibble::as_tibble() |>
     structure(
       class = c("case_data", class(data)),
       subject_id = id_var,
