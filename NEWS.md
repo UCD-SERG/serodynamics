@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
 * Added `autoplot()` method for `case_data` objects (#28)
 * Added examples for `sim_pop_data()`, `autoplot.case_data()` (#18)

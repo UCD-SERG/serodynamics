@@ -75,11 +75,10 @@ sim_case_data <- function(
       index_id = "id",
       timeindays = "obs_time"
     ) |>
-    structure(
-      class = c("case_data", class(biomarker_level_data)),
-      subject_id = "index_id",
+    as_case_data(
+      id_var = "index_id",
       biomarker_var = "antigen_iso",
-      timeindays = "timeindays",
+      time_in_days = "timeindays",
       value_var = "value"
     )
 
