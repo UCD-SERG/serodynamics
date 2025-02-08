@@ -47,7 +47,7 @@ prep_data <- function(dataframe) {
     visit_number = paste0("V", visits)
   )
   
-  dims1 <- sapply(F = length, X = dimnames1)
+  dims1 <- sapply(FUN = length, X = dimnames1)
   
   visit_times <- array(
     NA,

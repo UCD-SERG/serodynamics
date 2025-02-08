@@ -7,9 +7,9 @@
 sim_n_obs(dist_n_obs, n)
 }
 \arguments{
-\item{dist_n_obs}{}
+\item{dist_n_obs}{distribution of number of longitudinal observations}
 
-\item{n}{}
+\item{n}{number of participants to simulate}
 }
 \value{
 an \link{integer} \link{vector}

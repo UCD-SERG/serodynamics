@@ -4,12 +4,12 @@
 \alias{load_data}
 \title{load and format data}
 \usage{
-load_data(datafile = "d")
+load_data(datapath = "data/", datafile = "TypoidCaseData_github_09.30.21.csv")
 }
 \arguments{
-\item{datafile}{}
+\item{datapath}{path to data folder}
 
-\item{datapath}{}
+\item{datafile}{data file name}
 }
 \value{
 a \code{\link[=list]{list()}} with the following elements:

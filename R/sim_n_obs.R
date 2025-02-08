@@ -1,7 +1,7 @@
 #' Simulate number of longitudinal observations
 #'
-#' @param dist_n_obs 
-#' @param n 
+#' @param dist_n_obs distribution of number of longitudinal observations
+#' @param n number of participants to simulate
 #'
 #' @returns an [integer] [vector]
 #' @export

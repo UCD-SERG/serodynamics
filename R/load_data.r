@@ -1,7 +1,7 @@
 #' load and format data
 #'
-#' @param datapath 
-#' @param datafile 
+#' @param datapath path to data folder
+#' @param datafile data file name
 #'
 #' @returns a [list()] with the following elements:
 #' * `smpl.t` = time since symptom/fever onset for each participant, max 7 visits
@@ -14,15 +14,15 @@
 #' @export
 #'
 load_data = function(
-    # datapath = "data/",
-    # datafile = "TypoidCaseData_github_09.30.21.csv"
-    datafile = "d"
+    datapath = "data/",
+    datafile = "TypoidCaseData_github_09.30.21.csv"
+    # datafile = "d"
 )
 {
   
   
-  #raw <- read.csv(paste(datapath,datafile,sep=""),head=TRUE);
-  raw <- d
+  raw <- read.csv(paste(datapath,datafile,sep=""), head=TRUE);
+  # raw <- d
   id <- raw$index_id;
   age <- raw$age;
   # nsmpl <- raw$nVisits; # not same as nr. observed y
