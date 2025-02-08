@@ -18,7 +18,7 @@ Imports:
     ggplot2,
     rlang,
     runjags,
-    serocalculator,
+    serocalculator (>= 1.3.0.9022),
     stats,
     tibble,
     utils
@@ -36,3 +36,5 @@ Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: withr, vdiffr
 Config/needs/check: commonmark, xml2
+Remotes:  
+    ucd-serg/serocalculator
