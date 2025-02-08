@@ -37,15 +37,16 @@ jobs:
           curl.exe -L -o wjags.exe --url https://osf.io/download/67a6cb501f46839d5d0c57e9/
           echo "Downloaded file size:"
           dir wjags.exe
-          powershell -command "
-            if ((Get-Item wjags.exe).length -gt 100000) {
+          powershell -command "& {
+            $fileSize = (Get-Item 'wjags.exe').length
+            if ($fileSize -gt 100000) {
               echo 'File seems large enough'
-              Start-Process wjags.exe -ArgumentList '/S' -NoNewWindow -Wait
+              Start-Process 'wjags.exe' -ArgumentList '/S' -NoNewWindow -Wait
             } else {
               echo 'Download failed or incomplete. Please check the URL and retry.'
               exit 1
             }
-          "
+          }"
           del wjags.exe
         shell: cmd
       
