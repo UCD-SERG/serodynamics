@@ -42,7 +42,7 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           curl.exe -o wjags.exe --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
-          wjags.exe /S
+          start /wait wjags.exe /S
           del wjags.exe
         shell: cmd
 
