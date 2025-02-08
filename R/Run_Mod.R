@@ -19,7 +19,7 @@
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying.
+#' @param nmc An [integer] specifying nr of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
 #' A [string] specifying the stratification variable, entered in quotes.
@@ -47,6 +47,7 @@
 #'  - `nThin`: Thinning number (niter/nmc)
 #' @export
 #' @examples
+#' if (!is.element(runjags::findjags(), c("", NULL))) {
 #' set.seed(1)
 #' library(dplyr)
 #' strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
@@ -67,7 +68,7 @@
 #'     nmc = 1000,
 #'     niter = 2000, #Number of iterations
 #'     strat = "strat") #Variable to be stratified
-
+#' }
 run_mod <- function(data,
                     file_mod,
                     nchain = 4,
@@ -98,7 +99,7 @@ run_mod <- function(data,
   ## Creating output list for jags.post
   jags_post_final <- list()
 
-  #For loop for running stratifications
+  # For loop for running stratifications
   for (i in strat_list) {
     #Creating if else statement for running the loop
     if (is.na(strat) == FALSE) {
@@ -108,13 +109,11 @@ run_mod <- function(data,
       dl_sub <- data
     }
 
-    #set seed for reproducibility
-    set.seed(54321)
-    #prepare data for modeline
+    # prepare data for modeline
     longdata <- prep_data(dl_sub)
     priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
-    #inputs for jags model
+    # inputs for jags model
     nchains <- nchain           # nr of MC chains to run simultaneously
     nadapt  <- nadapt           # nr of iterations for adaptation
     nburnin <- nburn            # nr of iterations to use for burn-in
@@ -124,7 +123,7 @@ run_mod <- function(data,
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
-    #This handles the seed to reproduce the results
+    # This handles the seed to reproduce the results
     initsfunction <- function(chain) {
       stopifnot(chain %in% (1:4)) # max 4 chains allowed...
       rng_seed <- (1:4)[chain]

@@ -27,7 +27,7 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying.}
+\item{nmc}{An \link{integer} specifying nr of samples in posterior chains}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
@@ -73,6 +73,7 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
+if (!is.element(runjags::findjags(), c("", NULL))) {
 set.seed(1)
 library(dplyr)
 strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
@@ -93,6 +94,7 @@ run_mod(
     nmc = 1000,
     niter = 2000, #Number of iterations
     strat = "strat") #Variable to be stratified
+}
 }
 \author{
 Sam Schildhauer
