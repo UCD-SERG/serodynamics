@@ -27,13 +27,11 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying.}
+\item{nmc}{An \link{integer} specifying number of samples in posterior chains}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
 \item{strat}{A \link{string} specifying the stratification variable, entered in quotes.}
-
-\item{name}{description}
 }
 \value{
 \itemize{
@@ -75,14 +73,30 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-run_mod(
-    data = Dataset, #The data set input
-    nchain = 4, #Number of mcmc chains to run
-    nadapt = 100, #Number of adaptations to run
-    nburn = 100, #Number of unrecorded samples before sampling begins
-    nmc = 1000
-    niter = 2000, #Number of iterations
-    strat = strat) #Variable to be stratified
+if (!is.element(runjags::findjags(), c("", NULL))) {
+  library(runjags)
+  set.seed(1)
+  library(dplyr)
+  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 2")
+  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 1")
+
+  Dataset <- bind_rows(strat1, strat2)
+
+  run_mod(
+    data = Dataset, # The data set input
+    file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
+    nchain = 4, # Number of mcmc chains to run
+    nadapt = 100, # Number of adaptations to run
+    nburn = 100, # Number of unrecorded samples before sampling begins
+    nmc = 1000,
+    niter = 2000, # Number of iterations
+    strat = "strat"
+  ) # Variable to be stratified
+}
 }
 \author{
 Sam Schildhauer

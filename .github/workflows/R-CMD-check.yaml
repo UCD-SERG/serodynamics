@@ -1,5 +1,7 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# GOT THE JAGS INSTALL FROM:
+# https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
 on:
   push:
     branches: [main, master]
@@ -28,6 +30,19 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Install JAGS (if Windows)
+        if: runner.os == 'Windows'
+        run: |
+          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          wjags.exe /S
+          del wjags.exe
+        shell: cmd
+      
+      - name: Install jags (macOS-latest)
+        if: runner.os == 'macOS'
+        run : |
+              brew install jags
+
       - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
