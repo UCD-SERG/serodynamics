@@ -54,13 +54,10 @@ The antibody dynamic curve includes the following parameters:
 }
 \examples{
 plot_jags_dens(
-    data = [list], #A [serodynamics::run_mod()] [list] output
+    data = jags_out, #A [serodynamics::run_mod()] [list] output.
     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
-    Default are all antigen/antibody combinations.
-    param = "alpha",  #A [string] specifying parameter of interest. Default
-    is all parameters.
-    strat = 4),  #A [string] specifying stratification of interest. Default
-    is all stratifications.
+    param = "alpha",  #A [string] specifying parameter of interest.
+    strat = "strat")  #A [string] specifying stratification of interest.
 }
 \author{
 Sam Schildhauer

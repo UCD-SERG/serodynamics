@@ -32,13 +32,10 @@
 #' @export
 #' @examples
 #' plot_jags_dens(
-#'     data = [list], #A [serodynamics::run_mod()] [list] output
+#'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
 #'     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
-#'     Default are all antigen/antibody combinations.
-#'     param = "alpha",  #A [string] specifying parameter of interest. Default
-#'     is all parameters.
-#'     strat = 4),  #A [string] specifying stratification of interest. Default
-#'     is all stratifications.
+#'     param = "alpha",  #A [string] specifying parameter of interest.
+#'     strat = "strat")  #A [string] specifying stratification of interest.
 
 plot_jags_dens <- function(data,
                            iso = unique(visualize_jags_sub$Iso_type),
@@ -48,7 +45,7 @@ plot_jags_dens <- function(data,
   attributes_jags <- data[["attributes"]]
 
   if (is.na(strat)) {
-    stratification <- c("No stratification")
+    stratification <- "No stratification"
   } else {
     stratification <- unique(visualize_jags$Stratification)
   }
@@ -73,7 +70,7 @@ plot_jags_dens <- function(data,
       # Will not loop through parameters, as we may want each to show on the
       # same plot by default.
       visualize_jags_plot <- visualize_jags_plot |>
-        dplry::filter(.data$Parameter_sub %in% param)
+        dplyr::filter(.data$Parameter_sub %in% param)
 
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
