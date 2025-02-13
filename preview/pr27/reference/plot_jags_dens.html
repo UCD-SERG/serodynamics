@@ -31,7 +31,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9009</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9012</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -125,7 +125,13 @@ input.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">plot_jags_dens</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    data <span class="op">=</span> <span class="va">jags_out</span>, <span class="co">#A [serodynamics::run_mod()] [list] output.</span></span></span>
+<span class="r-in"><span>    iso <span class="op">=</span> <span class="st">"hlya_IgG"</span>, <span class="co">#A [string] specifying antigen/antibody of interest.</span></span></span>
+<span class="r-in"><span>    param <span class="op">=</span> <span class="st">"alpha"</span>,  <span class="co">#A [string] specifying parameter of interest.</span></span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span><span class="op">)</span>  <span class="co">#A [string] specifying stratification of interest.</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'jags_out' not found</span>
+</code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
