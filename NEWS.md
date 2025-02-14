@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added participant IDs as names to `nsmpl` element of `prep_data()` output (#34)
 * Added `initsfunction()` to API
 * Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
