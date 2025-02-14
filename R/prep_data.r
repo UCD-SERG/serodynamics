@@ -71,18 +71,6 @@ prep_data <- function(dataframe) {
   nsmpl <- integer(num_subjects + 1) |> 
     purrr::set_names(c(subjects, "newperson"))  
   
-  # Populate the arrays
-  # for (i in seq_len(num_subjects)) {
-  #   for (j in seq_len(max_visits)) {
-  #     for (k in seq_len(n_antigens)) {
-  #       subset <- dataframe[dataframe$index_id == subjects[i] & dataframe$visit == visits[j] & dataframe$antigen_iso == antigens[k], ]
-  #       if (nrow(subset) > 0) {
-  #         visit_times[i, j] <- subset$timeindays
-  #         antibody_levels[i, j, k] <- log(max(0.01, subset$result))  # Log-transform and handle zeroes
-  #       }
-  #     }
-  #   }
-  # }
   for (cur_subject in subjects) {
     subject_data <- dataframe |> filter(index_id == cur_subject)
     subject_visits <- unique(subject_data$visit_num)
