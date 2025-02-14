@@ -7,6 +7,7 @@
 #' @param dist_n_obs distribution of number of observations ([tibble::tbl_df])
 #' @param followup_interval [integer]
 #' @param followup_variance [integer]
+#' @param antigen_isos [character] [vector]: which antigen isotypes to simulate
 #'
 #' @returns a `case_data` object
 #' @export
