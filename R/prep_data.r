@@ -72,7 +72,7 @@ prep_data <- function(dataframe) {
     purrr::set_names(c(subjects, "newperson"))  
   
   for (cur_subject in subjects) {
-    subject_data <- dataframe |> filter(index_id == cur_subject)
+    subject_data <- dataframe |> filter(.data$index_id == cur_subject)
     subject_visits <- unique(subject_data$visit_num)
     nsmpl[cur_subject] <- length(subject_visits)  # Number of non-missing visits for this participant
     
@@ -81,8 +81,8 @@ prep_data <- function(dataframe) {
         subset <- 
           subject_data |> 
           filter(
-            visit_num == cur_visit,
-            antigen_iso == cur_antigen)
+            .data$visit_num == cur_visit,
+            .data$antigen_iso == cur_antigen)
         
         if (nrow(subset) > 0) {
           if (length(subset |> get_timeindays()) != 1) {
