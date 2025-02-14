@@ -33,6 +33,8 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/CONTRIBUTING.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/LICENSE-text.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/LICENSE.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/articles/dobson.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/articles/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/authors.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr33/news/index.html</loc></url>
@@ -77,6 +79,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/as_case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/autoplot.case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/index.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/reference/initsfunction.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/load_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/prep_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/prep_priors.html</loc></url>
