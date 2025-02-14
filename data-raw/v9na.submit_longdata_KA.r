@@ -1,20 +1,20 @@
 
 devtools::load_all()
 
+#devtools::install_github("ucd-serg/serocalculator")
 library(serocalculator)
 library(tidyverse)
 library(runjags)
-library(coda)
+#library(coda)
 library(ggmcmc)
 
-
 #model file
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-#file.mod <- here::here()  %>% fs::path("inst/extdata/model.old.R")
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
 
 #long data - TYPHOID 
 dL <-
-  #the raw data is prepared and shared by jessica Seidman
+# the raw data is prepared and shared by jessica Seidman
   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
  filter(surgical != 1 | is.na(surgical))  %>%
   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
@@ -33,13 +33,15 @@ dL <-
   droplevels()
 
 #long data - CHOLERA
-# dL <- read.csv("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Cholera-longitudinal/data/cholera_data_compiled_050324.csv") %>%
+# dL <- 
+#   #read.csv("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Cholera-longitudinal/data/cholera_data_compiled_050324.csv") %>%
+#   read_csv(here::here()  %>% fs::path("inst/extdata/cholera_data_compiled_050324.csv")) %>%
 #   group_by(index_id, antigen_iso) %>%                      # Group data by individual
 #   arrange(visit) %>%                          # Sort data by visit within each group
 #   mutate(visit_num = rank(visit, ties.method = "first")) %>%
-#   ungroup() 
+#   ungroup()
 
-set.seed(1234)
+
 #subset data for checking
 dL_sub <- dL %>%
   filter(index_id %in% sample(unique(index_id), 20))
@@ -57,9 +59,10 @@ niter   <- 100;            # nr of iterations for posterior sample
 nthin   <- round(niter/nmc); # thinning needed to produce nmc from niter
 
 #pred.subj <- longdata$nsubj + 1;
-tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 #tomonitor <- c("par");
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape");
 
+#This handles the seed to reproduce the results 
 initsfunction <- function(chain){
   stopifnot(chain %in% (1:4)); # max 4 chains allowed...
   .RNG.seed <- (1:4)[chain];
@@ -99,8 +102,6 @@ wide_predpar_df <- mcmc_df %>%
   mutate(
     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),
     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))) %>%
-  # mutate(value = exp(value)) %>%
-  # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
   ## only take the last subject (newperson)
   filter(index_id == "newperson") %>%
   select(-Parameter) %>%
@@ -115,27 +116,18 @@ wide_predpar_df <- mcmc_df %>%
 
 
 
-#Now plot longitudinal antibody decay 
-#devtools::install_github("ucd-serg/serocalculator", force = T)
+curve_params <-
+  wide_predpar_df
+
+  class(curve_params) =
+  c("curve_params", class(curve_params))
+
+  antigen_isos = unique(curve_params$antigen_iso)
+
+  attr(curve_params, "antigen_isos") = antigen_isos
 
 
-
-
-# curve_params <- 
-#   wide_predpar_df
-# 
-# class(curve_params) =
-#   c("curve_params", class(curve_params))
-# 
-# antigen_isos = unique(curve_params$antigen_iso)
-# 
-# attr(curve_params, "antigen_isos") = antigen_isos
-# 
-# 
-# autoplot(curve_params)
-
-
-
+autoplot(curve_params)
 
 
 

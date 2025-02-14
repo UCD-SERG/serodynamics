@@ -3,3 +3,16 @@
 ^project\.Rcheck$
 ^project.*\.tar\.gz$
 ^project.*\.tgz$
+^data-raw$
+^README\.Rmd$
+^codecov\.yml$
+^_pkgdown\.yml$
+^docs$
+^pkgdown$
+^\.github$
+^LICENSE\.md$
+^inst/extdata/sees_case_data_long_11012023\.rds$
+^inst/extdata/elisa_clean_2023-11-01\.csv$
+^\.lintr$
+^TypoidCaseData_Real_WIDE_ALL SITES_07\.26\.21\.csv$
+^inst/extdata/TypoidCaseData_Real_WIDE_ALL SITES_07\.26\.21\.csv$

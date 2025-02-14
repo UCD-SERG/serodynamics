@@ -1,44 +1,67 @@
-
-
-
+#' prepare data for JAGs
+#'
+#' @param dataframe a [data.frame] containing ...
+#'
+#' @returns a `prepped_jags_data` object (a [list] with extra attributes ...)
+#' @export
+#'
+#' @examples
+#' set.seed(1)
+#' raw_data <-
+#'   serocalculator::typhoid_curves_nostrat_100 |>
+#'   sim_case_data(n = 5)
+#' prepped_data <- prep_data(raw_data)
 prep_data <- function(dataframe) {
   # Ensure the data has the required columns
-  if (!("antigen_iso" %in% names(dataframe)) || !("visit_num" %in% names(dataframe))) {
+  columns_missing <-
+    !("antigen_iso" %in% names(dataframe)) ||
+    !("visit_num" %in% names(dataframe))
+
+  if (columns_missing) {
     stop("Dataframe must contain 'antigen_iso' and 'visit_num' columns")
   }
-  
-  
-  
   # Extract unique visits and antigens
-  visits <- unique(dataframe$visit_num)
-  antigens <- unique(dataframe$antigen_iso)
-  subjects <- unique(dataframe$index_id)
-  
+  visits <-
+    dataframe$visit_num |>
+    as.numeric() |>
+    unique() |>
+    sort()
+
+  antigens <-
+    dataframe$antigen_iso |>
+    unique()
+
+  subjects <-
+    dataframe |>
+    get_subject_ids() |>
+    unique()
+
   # Initialize arrays to store the formatted data
   max_visits <- length(visits)
   n_antigens <- length(antigens)
   num_subjects <- length(subjects)
   
   # Define arrays with dimensions to accommodate extra dummy subject
-  
-  dimnames1 = list(
+
+  dimnames1 <- list(
     subjects = c(subjects, "newperson"),
     visit_number = visits
   )
-  
-  dims1 = sapply(F = length, X = dimnames1)
-  
+
+  dims1 <- sapply(FUN = length, X = dimnames1)
+
   visit_times <- array(
-    NA, 
+    NA,
     dim = dims1,
-    dimnames = dimnames1)
-  
-  dimnames2 = list(
+    dimnames = dimnames1
+  )
+
+  dimnames2 <- list(
     subjects = c(subjects, "newperson"),
     visit_number = visits,
     antigens = antigens
   )
-  
+
   antibody_levels <- array(
     NA, 
     dim = c(num_subjects + 1, max_visits, n_antigens),
@@ -74,14 +97,28 @@ prep_data <- function(dataframe) {
             antigen_iso == cur_antigen)
         
         if (nrow(subset) > 0) {
+          if (length(subset |> get_timeindays()) != 1) {
+            cli::cli_abort(
+              c(
+                "Error at subject: {subjects[i]}, ",
+                "visit: {subject_visits[j]},",
+                "antigen: {antigens[k]}",
+                "- # of items in {.var {get_timeindays_var(subset)}} != 1."
+              )
+            )
+          }
           visit_times[cur_subject, cur_visit] <- subset$timeindays
-          antibody_levels[cur_subject, cur_visit, cur_antigen] <- 
-            log(max(0.01, subset$result))  # Log-transform and handle zeroes
+          antibody_levels[cur_subject, cur_visit, cur_antigen] <-  log(max(
+            0.01,
+            subset |>
+              serocalculator::get_values()
+          ))
+          # Log-transform and handle zeroes
         }
       }
     }
   }
-  
+
   # Add missing observation for Bayesian inference
   visit_times[num_subjects + 1, 1:3] <- c(5, 30, 90)
   # Ensure corresponding antibody levels are set to NA (explicitly missing)
@@ -95,12 +132,9 @@ prep_data <- function(dataframe) {
       "n_antigen_isos" = n_antigens, 
       "nsmpl" = nsmpl , 
       "nsubj" = num_subjects + 1
-      
-      
-      # "index_id_names" = subjects,
-      # "antigen_names" = antigens
     ) |> 
     structure(
+      class = c("prepped_jags_data", "list"),
       antigens = antigens,
       n_antigens = n_antigens,
       ids = subjects
@@ -110,4 +144,3 @@ prep_data <- function(dataframe) {
   return(to_return)
   
 }
-

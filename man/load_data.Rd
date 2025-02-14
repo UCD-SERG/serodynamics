@@ -4,25 +4,32 @@
 \alias{load_data}
 \title{load and format data}
 \usage{
-load_data(datafile = "d")
+load_data(
+  datapath = "inst/extdata/",
+  datafile = "TypoidCaseData_github_09.30.21.csv"
+)
 }
 \arguments{
-\item{datafile}{}
+\item{datapath}{path to data folder}
 
-\item{datapath}{}
+\item{datafile}{data file name}
 }
 \value{
-a \code{\link[=list]{list()}} with the following elements:
+a \link{list} with the following elements:
 \itemize{
-\item \code{smpl.t} = time since symptom/fever onset for each participant, max 7 visits
-\item \code{logy} = log antibody response at each timepoint (max 7) for each of 7 biomarkers for each participant
+\item \code{smpl.t} = time since symptom/fever onset for each participant,
+max 7 visits
+\item \code{logy} = log antibody response at each time-point (max 7)
+for each of 7 biomarkers for each participant
 \item \code{ntest} is max number of biomarkers
 \item \code{nsmpl} = max number of samples per participant
 \item \code{nsubj} = number of study participants
 \item \code{ndim} = number of parameters to model(y0, y1, t1, alpha, shape)
-\item \code{my.hyp}, \code{prec.hyp}, \code{omega} and \code{wishdf} are all parameters to describe the shape of priors for (y0, y1, t1, alpha, shape)
+\item \code{my.hyp}, \code{prec.hyp}, \code{omega} and \code{wishdf}
+are all parameters to describe the shape of priors
+for (y0, y1, t1, alpha, shape)
 }
 }
 \description{
-load and format data
+to add
 }

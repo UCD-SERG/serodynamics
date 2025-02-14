@@ -1,0 +1,9 @@
+url: https://ucd-serg.github.io/serodynamics/
+template:
+  bootstrap: 5
+
+development:
+  mode: auto
+
+search:
+  exclude: ['preview/']
