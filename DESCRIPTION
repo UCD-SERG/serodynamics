@@ -35,6 +35,8 @@ Suggests:
     vdiffr,
     fs,
     here,
+    knitr,
+    rmarkdown,
     stringr
 Language: en-US
 Config/testthat/edition: 3
@@ -42,3 +44,4 @@ Config/needs/test: withr, vdiffr, here
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
+VignetteBuilder: knitr

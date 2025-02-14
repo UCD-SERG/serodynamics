@@ -4,7 +4,8 @@
 
 ## New features
 
-* Added `postprocess_jags_output()` to API
+* Added `postprocess_jags_output()` to API (#33)
+* Added `initsfunction()` to API (#37)
 * Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
 * Added `autoplot()` method for `case_data` objects (#28)
@@ -20,6 +21,7 @@ None yet
 
 ## Developer-facing changes
 
+* Added `dobson.Rmd` minimal vignette (#36)
 * Overall cleaning to get checks working (#28)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
