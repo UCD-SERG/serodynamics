@@ -71,10 +71,10 @@ jobs:
         run: |
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
-                    configure.args="--configure-args='--with-jags-include=/opt/homebrew/opt/jags/include/JAGS        
-                                              --with-jags-lib=/opt/homebrew/opt/jags/lib'
-                            ",
-                            verbose = TRUE
+                    configure.args=c(
+                    "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
+                    "--with-jags-lib=/opt/homebrew/opt/jags/lib",
+                            verbose = TRUE)
                       )
            library(rjags)
            library(runjags)
