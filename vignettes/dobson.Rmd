@@ -6,7 +6,7 @@ vignette: >
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
+  
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -23,12 +23,13 @@ runjags::findJAGS()
 
 ```{r "run-dobson-model"}
 
-data1 = rbinom(n = 91, size = 1, prob = .6)
-jags.post0 <- run.jags(
+data1 <- rbinom(n = 91, size = 1, prob = .6)
+jags_post0 <- run.jags(
   model = fs::path_package("serodynamics", "extdata/model.dobson.jags"),
   data = list(r = data1, N = length(data1)),
-  monitor = "p")
+  monitor = "p"
+)
 
-jags.post0$mcmc |> as.array() |> head()
+jags_post0$mcmc |> as.array() |> head()
 ```
 
