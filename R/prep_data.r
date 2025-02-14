@@ -45,7 +45,7 @@ prep_data <- function(dataframe) {
 
   dimnames1 <- list(
     subjects = c(subjects, "newperson"),
-    visit_number = visits
+    visit_number = paste0("V", visits)
   )
 
   dims1 <- sapply(FUN = length, X = dimnames1)
@@ -58,7 +58,7 @@ prep_data <- function(dataframe) {
 
   dimnames2 <- list(
     subjects = c(subjects, "newperson"),
-    visit_number = visits,
+    visit_number = paste0("V", visits),
     antigens = antigens
   )
 
@@ -125,7 +125,7 @@ prep_data <- function(dataframe) {
       class = c("prepped_jags_data", "list"),
       antigens = antigens,
       n_antigens = n_antigens,
-      ids = subjects
+      ids = c(subjects, "newperson")
     )
   
   # Return results as a list
