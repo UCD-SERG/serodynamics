@@ -75,6 +75,10 @@
 <span><span class="co">#&gt; Linked to JAGS 4.3.2</span></span>
 <span><span class="co">#&gt; Loaded modules: basemod,bugs</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
+<span><span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/findjags.html" class="external-link">findJAGS</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "/usr/bin/jags"</span></span></code></pre></div>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
 <span><span class="va">data1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">91</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span></span>
 <span><span class="va">jags.post0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span><span class="st">"serodynamics"</span>, <span class="st">"extdata/model.dobson.jags.R"</span><span class="op">)</span>,</span>
@@ -97,12 +101,12 @@
 <span><span class="va">jags.post0</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       chain</span></span>
 <span><span class="co">#&gt; iter        [,1]      [,2]</span></span>
-<span><span class="co">#&gt;   5001 0.6739890 0.7194968</span></span>
-<span><span class="co">#&gt;   5002 0.6728067 0.6975046</span></span>
-<span><span class="co">#&gt;   5003 0.6689037 0.5663387</span></span>
-<span><span class="co">#&gt;   5004 0.6813102 0.6521991</span></span>
-<span><span class="co">#&gt;   5005 0.7151979 0.6889640</span></span>
-<span><span class="co">#&gt;   5006 0.7233990 0.7302144</span></span></code></pre></div>
+<span><span class="co">#&gt;   5001 0.7549247 0.5820467</span></span>
+<span><span class="co">#&gt;   5002 0.6471139 0.6415364</span></span>
+<span><span class="co">#&gt;   5003 0.7181943 0.6621430</span></span>
+<span><span class="co">#&gt;   5004 0.5916287 0.6868742</span></span>
+<span><span class="co">#&gt;   5005 0.7152732 0.7315741</span></span>
+<span><span class="co">#&gt;   5006 0.6056644 0.6846157</span></span></code></pre></div>
   </main>
 </div>
 
