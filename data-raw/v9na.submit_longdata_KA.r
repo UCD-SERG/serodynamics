@@ -9,7 +9,7 @@ library(runjags)
 library(ggmcmc)
 
 #model file
-#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags")
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
 
 #long data - TYPHOID 

@@ -11,7 +11,7 @@ library(coda)
 library(ggmcmc)
 
 #model file
-file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags")
 
 #long data - TYPHOID 
 dL <-

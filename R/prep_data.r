@@ -99,7 +99,7 @@ prep_data <- function(dataframe) {
               )
             )
           }
-          visit_times[cur_subject, cur_visit] <- subset$timeindays
+          visit_times[cur_subject, cur_visit] <- subset |> get_timeindays()
           antibody_levels[cur_subject, cur_visit, cur_antigen] <- log(max(
             0.01,
             subset |>
