@@ -14,10 +14,6 @@ knitr::opts_chunk$set(
 )
 ```
 
-```{r setup}
-devtools::load_all()
-```
-
 ```{r}
 data1 = rbinom(n = 91, size = 1, prob = .6)
 jags.post0 <- run.jags(
