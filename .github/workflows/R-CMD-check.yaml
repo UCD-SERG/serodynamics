@@ -43,6 +43,7 @@ jobs:
         run: |
           brew install pkg-config
           brew install jags
+          brew upgrade
 
       - name: Install JAGS (Ubuntu)
         if: runner.os == 'Linux'
