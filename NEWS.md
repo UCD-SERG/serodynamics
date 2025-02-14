@@ -19,6 +19,9 @@ None yet
 
 ## Developer-facing changes
 
+* Clarified `prep_data()` internals using `{dplyr}` (#34)
+* Removed ".R" suffix from jags model files 
+to prevent them from getting linted as R files (#34)
 * Overall cleaning to get checks working (#28)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
