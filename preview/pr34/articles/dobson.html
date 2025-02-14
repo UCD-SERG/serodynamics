@@ -79,11 +79,12 @@
 <span><span class="co">#&gt; [1] "/usr/bin/jags"</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="va">data1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">91</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span></span>
-<span><span class="va">jags.post0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span>
+<span><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">91</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span></span>
+<span><span class="va">jags_post0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span>
 <span>  model <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span><span class="st">"serodynamics"</span>, <span class="st">"extdata/model.dobson.jags"</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">data1</span>, N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>  monitor <span class="op">=</span> <span class="st">"p"</span><span class="op">)</span></span>
+<span>  monitor <span class="op">=</span> <span class="st">"p"</span></span>
+<span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning: No initial value blocks found and n.chains not specified: 2 chains</span></span>
 <span><span class="co">#&gt; were used</span></span>
 <span><span class="co">#&gt; Warning: No initial values were provided - JAGS will use the same initial</span></span>
@@ -98,15 +99,15 @@
 <span><span class="co">#&gt; Calculating the Gelman-Rubin statistic for 1 variables....</span></span>
 <span><span class="co">#&gt; Finished running the simulation</span></span>
 <span></span>
-<span><span class="va">jags.post0</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">jags_post0</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       chain</span></span>
 <span><span class="co">#&gt; iter        [,1]      [,2]</span></span>
-<span><span class="co">#&gt;   5001 0.7009951 0.5925267</span></span>
-<span><span class="co">#&gt;   5002 0.7370373 0.6065682</span></span>
-<span><span class="co">#&gt;   5003 0.6174635 0.6376582</span></span>
-<span><span class="co">#&gt;   5004 0.6928023 0.6235208</span></span>
-<span><span class="co">#&gt;   5005 0.5688377 0.7106659</span></span>
-<span><span class="co">#&gt;   5006 0.7218742 0.6196642</span></span></code></pre></div>
+<span><span class="co">#&gt;   5001 0.6724392 0.7009073</span></span>
+<span><span class="co">#&gt;   5002 0.6292050 0.7009839</span></span>
+<span><span class="co">#&gt;   5003 0.7204953 0.6373903</span></span>
+<span><span class="co">#&gt;   5004 0.6546158 0.5863224</span></span>
+<span><span class="co">#&gt;   5005 0.6262466 0.7131900</span></span>
+<span><span class="co">#&gt;   5006 0.6436315 0.7002396</span></span></code></pre></div>
   </main>
 </div>
 
