@@ -19,6 +19,7 @@ None yet
 
 ## Developer-facing changes
 
+* Added `dobson.Rmd` minimal vignette (#36)
 * Overall cleaning to get checks working (#28)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
