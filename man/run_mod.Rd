@@ -83,9 +83,9 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
     mutate(strat = "stratum 1")
-
+  
   Dataset <- bind_rows(strat1, strat2)
-
+  
   run_mod(
     data = Dataset, # The data set input
     file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
