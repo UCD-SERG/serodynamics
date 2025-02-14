@@ -7,7 +7,7 @@ on:
     branches: [main, master]
   pull_request:
 
-name: R-CMD-check
+name: R-CMD-check.yaml
 
 jobs:
   R-CMD-check:
@@ -85,5 +85,4 @@ jobs:
       - uses: r-lib/actions/check-r-package@HEAD
         with:
           upload-snapshots: true
-          error-on: '"warning"'
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
