@@ -35,7 +35,9 @@ Suggests:
     tidyverse,
     withr,
     vdiffr,
-    fs
+    fs,
+    knitr,
+    rmarkdown
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: withr, vdiffr
