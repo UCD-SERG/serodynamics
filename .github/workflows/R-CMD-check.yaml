@@ -70,6 +70,7 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
                     configure.args="--configure-args='--with-jags-include=/opt/homebrew/opt/jags/include/JAGS        
                                               --with-jags-lib=/opt/homebrew/opt/jags/lib'
                             ",
