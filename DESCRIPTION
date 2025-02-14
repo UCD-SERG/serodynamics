@@ -32,10 +32,11 @@ Suggests:
     testthat (>= 3.0.0),
     withr,
     vdiffr,
-    fs
+    fs,
+    here
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: withr, vdiffr
+Config/needs/test: withr, vdiffr, here
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
