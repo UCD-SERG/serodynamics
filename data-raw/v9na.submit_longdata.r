@@ -12,7 +12,6 @@ library(ggmcmc)
 
 #model file
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
-#file.mod <- here::here()  %>% fs::path("inst/extdata/model.old.R")
 
 #long data - TYPHOID 
 dL <-
@@ -130,30 +129,4 @@ curve_params <-
 
 
 autoplot(curve_params)
-
-
-
-
-mcmc_df2 <- ggs(mcmc_list)
-mcmc_df2 |> filter(is.infinite(value))
-wide_predpar_df2 <- mcmc_df2 %>%
-  mutate(
-  parameter = sub("^(\\w+)\\[.*", "\\1", Parameter),
-index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", Parameter)),
-antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", Parameter))
-) %>%
-  mutate(
-    index_id = factor(index_id, labels = c(attr(longdata, "ids"), "newperson")),
-    antigen_iso = factor(antigen_iso, labels = attr(longdata, "antigens"))) %>%
-  # mutate(value = exp(value)) %>%
-  # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
-  ## only take the last subject (newperson)
-  filter(index_id == "newperson") %>%
-  select(-Parameter) %>%
-  pivot_wider(names_from = "parameter", values_from="value") %>%
-  rowwise() %>%
-  #mutate(y1 = y0+y1) %>%
-  droplevels() %>%
-  ungroup() %>%
-  rename(r = shape)
 
