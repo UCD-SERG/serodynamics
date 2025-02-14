@@ -71,6 +71,7 @@ jobs:
         run: |
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
+                    type = "source",
                     configure.args=c(
                     "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
                     "--with-jags-lib=/opt/homebrew/opt/jags/lib",
