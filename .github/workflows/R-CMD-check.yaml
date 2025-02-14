@@ -60,12 +60,22 @@ jobs:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
+          
       - uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: any::rcmdcheck
           needs: check
-
+      
+      - name: "install rjags Mac"
+        if: runner.os == 'macOS'
+        run: |
+          devtools::install_url("http://sourceforge.net/projects/mcmc-jags/files/rjags/4/rjags_4-16.tar.gz",
+                    args="--configure-args='--with-jags-include=/opt/homebrew/opt/jags/include/JAGS        
+                                              --with-jags-lib=/opt/homebrew/opt/jags/lib'
+                            "
+                      )
+        shell: Rscript {0}
+      
       - uses: r-lib/actions/check-r-package@HEAD
         with:
           upload-snapshots: true
