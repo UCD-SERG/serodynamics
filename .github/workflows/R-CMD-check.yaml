@@ -69,11 +69,15 @@ jobs:
       - name: "install rjags Mac"
         if: runner.os == 'macOS'
         run: |
-          devtools::install_url("http://sourceforge.net/projects/mcmc-jags/files/rjags/4/rjags_4-16.tar.gz",
-                    args="--configure-args='--with-jags-include=/opt/homebrew/opt/jags/include/JAGS        
+          install.packages("rjags",
+                    configure.args="--configure-args='--with-jags-include=/opt/homebrew/opt/jags/include/JAGS        
                                               --with-jags-lib=/opt/homebrew/opt/jags/lib'
-                            "
+                            ",
+                            verbose = TRUE
                       )
+           library(rjags)
+           library(runjags)
+           runjags::findJAGS()
         shell: Rscript {0}
       
       - uses: r-lib/actions/check-r-package@HEAD
