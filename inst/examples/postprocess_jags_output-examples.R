@@ -20,21 +20,11 @@ nthin <- round(niter / nmc)
 # thinning needed to produce nmc from niter
 
 tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
-# This handles the seed to reproduce the results
-initsfunction <- function(chain) {
-  stopifnot(chain %in% (1:4)) # max 4 chains allowed...
-  .RNG.seed <- (1:4)[chain]
-  .RNG.name <- c(
-    "base::Wichmann-Hill", "base::Marsaglia-Multicarry",
-    "base::Super-Duper", "base::Mersenne-Twister"
-  )[chain]
-  return(list(".RNG.seed" = .RNG.seed, ".RNG.name" = .RNG.name))
-}
 
-file.mod <- here::here("inst", "extdata", "model.jags.r")
+file.mod <- here::here("inst", "extdata", "model.jags")
 
 set.seed(11325)
-jags.post <- run.jags(
+jags.post <- runjags::run.jags(
   model = file.mod,
   data = c(prepped_data, priors),
   inits = initsfunction,

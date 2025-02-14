@@ -3,6 +3,7 @@
 
 ## usethis namespace: start
 #' @importFrom dplyr .data
+#' @importFrom dplyr all_of
 #' @importFrom dplyr filter
 #' @importFrom dplyr mutate
 #' @importFrom dplyr reframe

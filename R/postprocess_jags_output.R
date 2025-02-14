@@ -1,6 +1,10 @@
 #' Postprocess JAGS output
 #'
 #' @param jags_output output from [runjags::run.jags()]
+#' @param ids IDs of individuals being sampled 
+#' (JAGS discards this information, so it has to be re-attached)
+#' @param antigen_isos names of biomarkers being modeled 
+#' (JAGS discards this information, so it has to be re-attached)
 #'
 #' @returns a [tibble::tbl_df]
 #' @export
