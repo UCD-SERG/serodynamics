@@ -42,6 +42,7 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sim_case_data</span><span class="op">(</span></span>
 <span>  <span class="va">n</span>,</span>
 <span>  <span class="va">curve_params</span>,</span>
+<span>  antigen_isos <span class="op">=</span> <span class="fu"><a href="https://ucd-serg.github.io/serocalculator/reference/get_biomarker_levels.html" class="external-link">get_biomarker_levels</a></span><span class="op">(</span><span class="va">curve_params</span><span class="op">)</span>,</span>
 <span>  max_n_obs <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  dist_n_obs <span class="op">=</span> <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>n_obs <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="va">max_n_obs</span>, prob <span class="op">=</span> <span class="fl">1</span><span class="op">/</span><span class="va">max_n_obs</span><span class="op">)</span>,</span>
 <span>  followup_interval <span class="op">=</span> <span class="fl">7</span>,</span>
