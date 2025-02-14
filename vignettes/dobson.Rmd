@@ -25,7 +25,7 @@ runjags::findJAGS()
 
 data1 = rbinom(n = 91, size = 1, prob = .6)
 jags.post0 <- run.jags(
-  model = fs::path_package("serodynamics", "extdata/model.dobson.jags.R"),
+  model = fs::path_package("serodynamics", "extdata/model.dobson.jags"),
   data = list(r = data1, N = length(data1)),
   monitor = "p")
 
