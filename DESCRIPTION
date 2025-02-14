@@ -31,10 +31,13 @@ Suggests:
     testthat (>= 3.0.0),
     withr,
     vdiffr,
-    fs
+    fs,
+    knitr,
+    rmarkdown
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: withr, vdiffr
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
+VignetteBuilder: knitr
