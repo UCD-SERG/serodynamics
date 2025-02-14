@@ -15,7 +15,7 @@ file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
 
 #long data - TYPHOID 
 dL <-
-# the raw data is prepared and shared by jessica Seidman
+# the raw data is prepared and shared by JS
   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
  filter(surgical != 1 | is.na(surgical))  %>%
   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
