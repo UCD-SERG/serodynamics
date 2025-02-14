@@ -4,8 +4,8 @@
 #'
 #' @returns a [tibble::tbl_df]
 #' @export
-#'
-postprocess_jags_output <- function(jags_output) {
+#' @example inst/examples/postprocess_jags_output-examples.R
+postprocess_jags_output <- function(jags_output, ids, antigen_isos) {
   mcmc_list <- coda::as.mcmc.list(jags_output)
 
   mcmc_df <- ggmcmc::ggs(mcmc_list)
@@ -22,9 +22,9 @@ postprocess_jags_output <- function(jags_output) {
     ) |>
     mutate(
       index_id = .data$index_id |>
-        factor(labels = c(unique(.data$index_id), "newperson")),
+        factor(labels = ids),
       antigen_iso = .data$antigen_iso |>
-        factor(labels = unique(.data$antigen_iso))
+        factor(labels = antigen_isos)
     ) |>
     filter(.data$index_id == "newperson") |>
     select(-all_of("Parameter")) |>

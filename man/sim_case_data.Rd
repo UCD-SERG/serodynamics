@@ -7,6 +7,7 @@
 sim_case_data(
   n,
   curve_params,
+  antigen_isos = get_biomarker_levels(curve_params),
   max_n_obs = 10,
   dist_n_obs = tibble::tibble(n_obs = 1:max_n_obs, prob = 1/max_n_obs),
   followup_interval = 7,
