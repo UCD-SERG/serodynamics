@@ -21,6 +21,7 @@ Imports:
     serocalculator (>= 1.3.0.9022),
     stats,
     tibble,
+    tidyr,
     utils
 Suggests: 
     Hmisc,

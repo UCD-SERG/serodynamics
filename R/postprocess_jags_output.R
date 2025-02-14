@@ -13,20 +13,29 @@ postprocess_jags_output <- function(jags_output) {
   wide_predpar_df <- mcmc_df |>
     mutate(
       parameter = sub("^(\\w+)\\[.*", "\\1", .data$Parameter),
-      index_id = as.numeric(sub("^\\w+\\[(\\d+),.*", "\\1", .data$Parameter)),
-      antigen_iso = as.numeric(sub("^\\w+\\[\\d+,(\\d+).*", "\\1", .data$Parameter))
+      index_id =
+        sub("^\\w+\\[(\\d+),.*", "\\1", .data$Parameter) |>
+        as.numeric(),
+      antigen_iso =
+        sub("^\\w+\\[\\d+,(\\d+).*", "\\1", .data$Parameter) |>
+        as.numeric()
     ) |>
     mutate(
-      index_id = factor(index_id, labels = c(unique(dL_clean$index_id), "newperson")),
-      antigen_iso = factor(antigen_iso, labels = unique(dL_clean$antigen_iso))
+      index_id = .data$index_id |>
+        factor(labels = c(unique(.data$index_id), "newperson")),
+      antigen_iso = .data$antigen_iso |>
+        factor(labels = unique(.data$antigen_iso))
     ) |>
-    filter(index_id == "newperson") |>
-    select(-Parameter) |>
-    pivot_wider(names_from = "parameter", values_from = "value") |>
+    filter(.data$index_id == "newperson") |>
+    select(-all_of("Parameter")) |>
+    tidyr::pivot_wider(
+      names_from = "parameter",
+      values_from = "value"
+    ) |>
     rowwise() |>
     droplevels() |>
     ungroup() |>
-    rename(r = shape)
+    rename("r" = "shape")
 
   # Assuming wide_predpar_df is your data frame
   curve_params <- wide_predpar_df
@@ -38,10 +47,23 @@ postprocess_jags_output <- function(jags_output) {
 
   to_return <- curve_params |>
     mutate(
-      iter = Iteration,
-      chain = Chain,
+      iter = .data$Iteration,
+      chain = .data$Chain,
     ) |>
-    select(antigen_iso, iter, chain, y0, y1, t1, alpha, r)
+    select(
+      all_of(
+        c(
+          "antigen_iso",
+          "iter",
+          "chain",
+          "y0",
+          "y1",
+          "t1",
+          "alpha",
+          "r"
+        )
+      )
+    )
 
   return(to_return)
 }
