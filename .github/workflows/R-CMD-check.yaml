@@ -63,7 +63,7 @@ jobs:
           
       - uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
-          extra-packages: any::rcmdcheck, r-lib/devtools
+          extra-packages: any::rcmdcheck
           needs: check
       
       - name: "install rjags Mac"
