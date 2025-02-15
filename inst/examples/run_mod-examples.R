@@ -11,7 +11,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   dataset <- bind_rows(strat1, strat2)
 
-  run_mod(
+  fitted_model <- run_mod(
     data = dataset, # The data set input
     file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
     nchain = 4, # Number of mcmc chains to run
