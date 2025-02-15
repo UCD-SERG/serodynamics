@@ -46,3 +46,6 @@ curve_params <- jags_post |> postprocess_jags_output(
   ids = attr(prepped_data, "ids"),
   antigen_isos = attr(prepped_data, "antigens")
 )
+
+print(curve_params)
+
