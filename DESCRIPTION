@@ -42,7 +42,7 @@ Suggests:
     stringr
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: withr, vdiffr, here
+Config/needs/test: withr, vdiffr, here, readr
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
