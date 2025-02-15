@@ -47,5 +47,5 @@ jags_output |>
   structure(
     ids = attr(prepped_data, "ids"),
     antigen_isos = attr(prepped_data, "antigens")
-  ) |> 
+  ) |>
   readr::write_rds(file = "tests/testthat/fixtures/example_runjags_output.rds")
