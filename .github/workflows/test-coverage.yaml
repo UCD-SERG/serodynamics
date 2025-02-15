@@ -59,6 +59,7 @@ jobs:
           name: coverage- test-failures
           path: ${{ runner.temp }}/package
       
+      # following https://app.codecov.io/gh/UCD-SERG/serodynamics/tests/new
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
         uses: codecov/test-results-action@v1
