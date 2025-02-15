@@ -7,8 +7,8 @@ test_that(
     )
 
     curve_params <- jags_output |> postprocess_jags_output(
-      ids = attr(prepped_data, "ids"),
-      antigen_isos = attr(prepped_data, "antigens")
+      ids = attr(jags_output, "ids"),
+      antigen_isos = attr(jags_output, "antigen_isos")
     )
 
     curve_params |> ssdtools:::expect_snapshot_data(name = "curve-params")
