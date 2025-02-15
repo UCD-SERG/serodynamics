@@ -56,7 +56,7 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: coverage- test-failures
+          name: coverage-test-failures
           path: ${{ runner.temp }}/package
       
       # following https://app.codecov.io/gh/UCD-SERG/serodynamics/tests/new
