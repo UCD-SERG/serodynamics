@@ -1,9 +1,13 @@
 set.seed(1)
 raw_data <-
   serocalculator::typhoid_curves_nostrat_100 |>
-  dplyr::filter(antigen_iso |> stringr::str_starts(pattern = "HlyE")) |> 
-  sim_case_data(n = 5,
-                antigen_isos = c("HlyE_IgA", "HlyE_IgG"))
+  dplyr::filter(
+    antigen_iso |> stringr::str_starts(pattern = "HlyE")
+  ) |>
+  sim_case_data(
+    n = 5,
+    antigen_isos = c("HlyE_IgA", "HlyE_IgG")
+  )
 prepped_data <- prep_data(raw_data)
 priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 nchains <- 2
@@ -21,11 +25,11 @@ nthin <- round(niter / nmc)
 
 tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
-file.mod <- fs::path_package("serodynamics", "extdata/model.jags")
+file_mod <- fs::path_package("serodynamics", "extdata/model.jags")
 
 set.seed(11325)
-jags.post <- runjags::run.jags(
-  model = file.mod,
+jags_post <- runjags::run.jags(
+  model = file_mod,
   data = c(prepped_data, priors),
   inits = initsfunction,
   method = "parallel",
@@ -38,6 +42,7 @@ jags.post <- runjags::run.jags(
   summarise = FALSE
 )
 
-curve_params <- jags.post |> postprocess_jags_output(
+curve_params <- jags_post |> postprocess_jags_output(
   ids = attr(prepped_data, "ids"),
-  antigen_isos = attr(prepped_data, "antigens"))
+  antigen_isos = attr(prepped_data, "antigens")
+)

@@ -37,7 +37,8 @@ sim_case_data <- function(
   if (length(missing_antigen_isos) != 0) {
     cli::cli_abort(
       c(
-        "Some biomarkers in {.arg antigen_isos} are missing from `curve_params`: ",
+        "Some biomarkers in {.arg antigen_isos} 
+        are missing from `curve_params`: ",
         "{.str {missing_antigen_isos}}"
       )
     )
