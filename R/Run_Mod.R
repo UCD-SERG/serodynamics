@@ -99,19 +99,6 @@ run_mod <- function(data,
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
-    # This handles the seed to reproduce the results
-    initsfunction <- function(chain) {
-      stopifnot(chain %in% (1:4)) # max 4 chains allowed...
-      rng_seed <- (1:4)[chain]
-      rng_name <- c(
-        "base::Wichmann-Hill",
-        "base::Marsaglia-Multicarry",
-        "base::Super-Duper",
-        "base::Mersenne-Twister"
-      )[chain]
-      return(list(".RNG.seed" = rng_seed, ".RNG.name" = rng_name))
-    }
-
     jags_post <- runjags::run.jags(
       model = file_mod,
       data = c(longdata, priors),

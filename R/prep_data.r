@@ -88,24 +88,32 @@ prep_data <- function(dataframe) {
             .data$antigen_iso == cur_antigen
           )
 
-        if (nrow(subset) > 0) {
-          if (length(subset |> get_timeindays()) != 1) {
-            cli::cli_abort(
-              c(
-                "Error at subject: {subjects[i]}, ",
-                "visit: {subject_visits[j]},",
-                "antigen: {antigens[k]}",
-                "- # of items in {.var {get_timeindays_var(subset)}} != 1."
-              )
+        if (nrow(subset) == 0) {
+          cli::cli_alert(
+            c(
+              "No observations for ",
+              "subject: {subjects[i]}, ",
+              "visit: {subject_visits[j]},",
+              "antigen: {antigens[k]}."
             )
-          }
+          )
+        } else if (nrow(subset) > 1) {
+          cli::cli_abort(
+            c(
+              "Multiple records for ",
+              "subject: {subjects[i]}, ",
+              "visit: {subject_visits[j]},",
+              "antigen: {antigens[k]}"
+            )
+          )
+        } else {
           visit_times[cur_subject, cur_visit] <- subset |> get_timeindays()
+          # Log-transform and handle zeroes:
           antibody_levels[cur_subject, cur_visit, cur_antigen] <- log(max(
             0.01,
             subset |>
               serocalculator::get_values()
           ))
-          # Log-transform and handle zeroes
         }
       }
     }

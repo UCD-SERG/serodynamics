@@ -4,8 +4,10 @@
 
 ## New features
 
+* Added `postprocess_jags_output()` to API (#33)
+* Added `initsfunction()` to API (#37)
 * Added participant IDs as names to `nsmpl` element of `prep_data()` output (#34)
-* Added `initsfunction()` to API
+* Added `initsfunction()` to API (#37)
 * Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
 * Added `autoplot()` method for `case_data` objects (#28)
