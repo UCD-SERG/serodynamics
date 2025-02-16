@@ -23,10 +23,6 @@ Imports:
     tibble,
     utils
 Suggests: 
-    spelling,
-    testthat (>= 3.0.0)
-Language: en-US
-Config/testthat/edition: 3
     Hmisc,
     readr,
     rjags,
@@ -36,6 +32,8 @@ Config/testthat/edition: 3
     withr,
     vdiffr,
     fs
+Language: en-US
+Config/testthat/edition: 3
 Config/needs/test: withr, vdiffr
 Config/needs/check: commonmark, xml2
 Remotes: 
