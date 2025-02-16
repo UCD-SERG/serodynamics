@@ -40,25 +40,15 @@
 plot_jags_dens <- function(data,
                            iso = unique(visualize_jags_sub$Iso_type),
                            param = unique(visualize_jags_sub$Parameter_sub),
-                           strat = NA) {
+                           strat = unique(visualize_jags$Stratification)) {
   visualize_jags <- data[["curve_params"]]
   attributes_jags <- data[["attributes"]]
 
-  if (is.na(strat)) {
-    stratification <- "No stratification"
-  } else {
-    stratification <- unique(visualize_jags$Stratification)
-  }
-
   dens_strat_list <- list()
-  for (i in stratification) {
+  for (i in strat) {
 
-    if (i == "No stratification") {
-      visualize_jags_sub <- visualize_jags
-    } else {
       visualize_jags_sub <- visualize_jags |>
         dplyr::filter(.data$Stratification == i)
-    }
 
     # Creating open list to store ggplots
     density_out <- list()
@@ -75,12 +65,14 @@ plot_jags_dens <- function(data,
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter_sub))
+                                         .data$Parameter_sub, ", strat = ",
+                                         i))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating density plot
-      densplot <- ggmcmc::ggs_density(visualize_jags_plot)
+      densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
+        theme_bw()
       density_out[[j]] <- densplot
     }
     dens_strat_list[[i]] <- density_out
