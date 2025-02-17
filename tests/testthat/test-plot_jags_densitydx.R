@@ -27,10 +27,13 @@ test_that(
         niter = 100, #Number of iterations
         strat = "strat" #Variable to be stratified
         
-        plot_jags_dens(results)
+        results <- plot_jags_dens(results)
       ) |> 
         suppressWarnings()
     }
-  ) |> 
+  ) |>
+    # Testing for any errors
     expect_no_error()
+    # Test to ensure output is a ggplot object
+    expect_true(is.ggplot(results))
 })

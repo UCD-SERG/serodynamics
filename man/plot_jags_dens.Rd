@@ -8,7 +8,7 @@ plot_jags_dens(
   data,
   iso = unique(visualize_jags_sub$Iso_type),
   param = unique(visualize_jags_sub$Parameter_sub),
-  strat = NA
+  strat = unique(visualize_jags$Stratification)
 )
 }
 \arguments{
@@ -34,12 +34,12 @@ entered in quotes.}
 \item{name}{description}
 }
 \value{
-A \link{list} of [] objects producing density plots for all the specified
+A \link{list} of \link{ggplot} objects producing density plots for all the specified
 input.
 }
 \description{
-plot_jags_dens() takes a \link{list} output from the \code{\link[=run_mod]{run_mod()}}
-function to create density plots for each chain run in the mcmc estimation.
+plot_jags_dens() takes a \link{list} output from \code{\link[=run_mod]{run_mod()}}
+to create density plots for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified.
 Antigen/antibody combinations and stratifications will vary by analysis.
@@ -53,11 +53,36 @@ The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
+if (!is.element(runjags::findjags(), c("", NULL))) {
+  library(runjags)
+  library(ggmcmc)
+  set.seed(1)
+  library(dplyr)
+  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 2")
+  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 1")
+
+  Dataset <- bind_rows(strat1, strat2)
+
+  jags_out <- run_mod(
+    data = Dataset, # The data set input
+    file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
+    nchain = 4, # Number of mcmc chains to run
+    nadapt = 100, # Number of adaptations to run
+    nburn = 100, # Number of unrecorded samples before sampling begins
+    nmc = 1000,
+    niter = 2000, # Number of iterations
+    strat = "strat"
+  ) # Variable to be stratified
 plot_jags_dens(
     data = jags_out, #A [serodynamics::run_mod()] [list] output.
     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
     param = "alpha",  #A [string] specifying parameter of interest.
     strat = "strat")  #A [string] specifying stratification of interest.
+    }
 }
 \author{
 Sam Schildhauer

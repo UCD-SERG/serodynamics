@@ -27,7 +27,7 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [string] to produce plots of specific stratification
 #' entered in quotes.
-#' @return A [list] of [] objects producing density plots for all the specified
+#' @return A [list] of [ggplot] objects producing density plots for all the specified
 #' input.
 #' @export
 #' @examples
@@ -60,6 +60,7 @@
 #'     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
 #'     param = "alpha",  #A [string] specifying parameter of interest.
 #'     strat = "strat")  #A [string] specifying stratification of interest.
+#'     }
 
 plot_jags_dens <- function(data,
                            iso = unique(visualize_jags_sub$Iso_type),
