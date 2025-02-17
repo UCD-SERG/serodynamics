@@ -23,6 +23,7 @@ None yet
 
 ## Developer-facing changes
 
+* Added snapshot test for `run_mod()`
 * Clarified `prep_data()` internals using `{dplyr}` (#34)
 * Removed ".R" suffix from jags model files 
 to prevent them from getting linted as R files (#34)
