@@ -14,22 +14,18 @@ test_that(
 
     dataset <- bind_rows(strat1, strat2)
 
-    withr::with_seed(
-      1,
-      code = {
-        results <- run_mod(
-          data = dataset, # The data set input
-          file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-          nchain = 2, # Number of mcmc chains to run
-          nadapt = 100, # Number of adaptations to run
-          nburn = 100, # Number of unrecorded samples before sampling begins
-          nmc = 100,
-          niter = 100, # Number of iterations
-          strat = "strat" # Variable to be stratified
-        ) |>
-          suppressWarnings()
-      }
+    results <- run_mod(
+      data = dataset, # The data set input
+      file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+      nchain = 2, # Number of mcmc chains to run
+      nadapt = 100, # Number of adaptations to run
+      nburn = 100, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
+      strat = "strat" # Variable to be stratified
     ) |>
-      expect_no_error()
+      suppressWarnings() |>
+      magrittr::use_series("curve_params") |>
+      ssdtools:::expect_snapshot_data("strat-curve-params")
   }
 )
