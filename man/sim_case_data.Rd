@@ -7,6 +7,7 @@
 sim_case_data(
   n,
   curve_params,
+  antigen_isos = get_biomarker_levels(curve_params),
   max_n_obs = 10,
   dist_n_obs = tibble::tibble(n_obs = 1:max_n_obs, prob = 1/max_n_obs),
   followup_interval = 7,
@@ -18,6 +19,8 @@ sim_case_data(
 
 \item{curve_params}{a \code{curve_params}
 object from \link[serocalculator:as_curve_params]{serocalculator::as_curve_params}, assumed to be unstratified}
+
+\item{antigen_isos}{\link{character} \link{vector}: which antigen isotypes to simulate}
 
 \item{max_n_obs}{maximum number of observations}
 
