@@ -46,10 +46,7 @@ Config/needs/test: withr, vdiffr, here, readr
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
-<<<<<<< HEAD
 Depends: 
     R (>= 3.5)
 LazyData: true
-=======
 VignetteBuilder: knitr
->>>>>>> main
