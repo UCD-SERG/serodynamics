@@ -4,7 +4,7 @@
 
 ## New features
 
-* Added SEES data set data folder ()
+* Added SEES data set data folder (#41)
 * Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
 * Added `autoplot()` method for `case_data` objects (#28)
