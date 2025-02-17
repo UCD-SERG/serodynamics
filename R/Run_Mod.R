@@ -1,43 +1,31 @@
-
-
-#' @title Run Model Jags
+#' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  Run.mod() takes a data frame and adjustable mcmc inputs to
+#'  run_mod() takes a data frame and adjustable mcmc inputs to
 #'  [runjags::run.jags()] as an mcmc
 #'  bayesian model to estimate antibody dynamic curve parameters.
-#'  The [rjags::jags.model()]
-#'  was adapted from Teunis et al. (2016) modeling seroresponse dynamics to an
+#'  The [rjags::jags.model()] models seroresponse dynamics to an
 #'  infection. The antibody dynamic curve includes the following parameters:
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @references Teunis PF, van Eijkeren JC, de Graaf WF, Marinović AB,
-#' Kretzschmar ME.
-#' Linking the seroresponse to infection to within-host
-#' heterogeneity in antibody production.
-#' Epidemics. 2016 Sep;16:33-9. doi: 10.1016/j.epidem.2016.04.001.
-#' Epub 2016 Apr 28. PMID: 27663789.
-#' @param name description
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying.
+#' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
 #' A [string] specifying the stratification variable, entered in quotes.
-#' @return An jags.post [list()] object or multiple jags.post [list()]
-#' if jags is stratified, as well as a [base::data.frame()]
-#' titled `curve_params` that contains the posterior distribution.
-#' The jags.post is
-#' returned as a [list()] of class [runjags::runjags-class].
-#' A curve_params [base::data.frame()] will also be exported with
-#' the following attributes
+#' @return
+#' - A jags.post [list()] object or multiple jags.post [list()]
+#' if stratified. Returned as a [list()] of class [runjags::runjags-class]
+#' - A [base::data.frame()] titled `curve_params` that contains the posterior
+#' distribution will be exported with the following attributes:
 #'  - `iteration` = number of sampling iterations.
 #'  - `chain` = number of mcmc chains run; between 1 and 4.
 #'  - `indexid` = "newperson", indicating posterior distribution.
@@ -48,17 +36,15 @@
 #'  - `y0` = posterior estimate of baseline antibody concentration
 #'  - `y1` = posterior estimate of peak antibody concentration
 #'  - `stratified variable` = the variable that jags was stratified by
+#' - A [list] of `attributes` that summarize the jags inputs, including:
+#'  - `class`: Class of the output object.
+#'  - `nChain`: Number of chains run.
+#'  - `nParameters`: The amount of parameters estimated in the model.
+#'  - `nIterations`: Number of iteration specified.
+#'  - `nBurnin`: Number of burn ins.
+#'  - `nThin`: Thinning number (niter/nmc)
 #' @export
-#' @examples
-#' run_mod(
-#'     data = Dataset, #The data set input
-#'     nchain = 4, #Number of mcmc chains to run
-#'     nadapt = 100, #Number of adaptations to run
-#'     nburn = 100, #Number of unrecorded samples before sampling begins
-#'     nmc = 1000
-#'     niter = 2000, #Number of iterations
-#'     strat = strat) #Variable to be stratified
-
+#' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
                     file_mod,
                     nchain = 4,
@@ -89,44 +75,29 @@ run_mod <- function(data,
   ## Creating output list for jags.post
   jags_post_final <- list()
 
-  #For loop for running stratifications
+  # For loop for running stratifications
   for (i in strat_list) {
-    #Creating if else statement for running the loop
+    # Creating if else statement for running the loop
     if (is.na(strat) == FALSE) {
       dl_sub <- data |>
-        dplyr::filter(data[[strat]] == i)
+        dplyr::filter(.data[[strat]] == i)
     } else {
       dl_sub <- data
     }
 
-    #set seed for reproducibility
-    set.seed(54321)
-    #prepare data for modeline
+    # prepare data for modeline
     longdata <- prep_data(dl_sub)
     priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
-    #inputs for jags model
-    nchains <- nchain           # nr of MC chains to run simultaneously
-    nadapt  <- nadapt           # nr of iterations for adaptation
-    nburnin <- nburn            # nr of iterations to use for burn-in
-    nmc     <- nmc              # nr of samples in posterior chains
-    niter   <- niter            # nr of iterations for posterior sample
-    nthin   <- round(niter / nmc) # thinning needed to produce nmc from niter
+    # inputs for jags model
+    nchains <- nchain # nr of MC chains to run simultaneously
+    nadapt <- nadapt # nr of iterations for adaptation
+    nburnin <- nburn # nr of iterations to use for burn-in
+    nmc <- nmc # nr of samples in posterior chains
+    niter <- niter # nr of iterations for posterior sample
+    nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
-
-    #This handles the seed to reproduce the results
-    initsfunction <- function(chain) {
-      stopifnot(chain %in% (1:4)) # max 4 chains allowed...
-      rng_seed <- (1:4)[chain]
-      rng_name <- c(
-        "base::Wichmann-Hill",
-        "base::Marsaglia-Multicarry",
-        "base::Super-Duper",
-        "base::Mersenne-Twister"
-      )[chain]
-      return(list(".RNG.seed" = rng_seed, ".RNG.name" = rng_name))
-    }
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -141,16 +112,22 @@ run_mod <- function(data,
       monitor = tomonitor,
       summarise = FALSE
     )
-    #Assigning the raw jags output to a list.
+    # Assigning the raw jags output to a list.
     # This will include a raw output for the jags.post for each stratification.
     jags_post_final[[i]] <- jags_post
 
     ## Cleaning the jags output -- much of this has to do with correctly
     # classifying the [x,x] number
     # included in the outputs
-    #ggs works with mcmc objects
+    # ggs works with mcmc objects
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
-    #extracting antigen-iso combinations to correctly number
+
+    # Adding attributes
+    mod_atts <- attributes(jags_unpack)
+    # Only keeping necesarry attributes
+    mod_atts <- mod_atts[3:8]
+
+    # extracting antigen-iso combinations to correctly number
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
@@ -161,8 +138,10 @@ run_mod <- function(data,
         Parameter_sub = sub("\\[.*", "", .data$Parameter),
         Subject = sub("\\,.*", "", .data$Parameter)
       ) |>
-      dplyr::mutate(Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
-                    Subject = sub(".*\\[", "", .data$Subject))
+      dplyr::mutate(
+        Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
+        Subject = sub(".*\\[", "", .data$Subject)
+      )
     # Merging isodat in to ensure we are classifying antigen_iso
     jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
     jags_unpack <- jags_unpack |>
@@ -177,13 +156,15 @@ run_mod <- function(data,
     jags_final$Stratification <- i
     ## Creating output
     jags_out <- data.frame(rbind(jags_out, jags_final))
-
   }
   # Ensuring output does not have any NAs
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification
   # rbinded.
-  jags_out <- list("curve_params" = jags_out, "jags.post" = jags_post_final)
+  jags_out <- list(
+    "curve_params" = jags_out, "jags.post" = jags_post_final,
+    "attributes" = mod_atts
+  )
   jags_out
 }

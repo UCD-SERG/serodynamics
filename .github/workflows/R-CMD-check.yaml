@@ -1,11 +1,13 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# GOT THE JAGS INSTALL FROM:
+# https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
 on:
   push:
     branches: [main, master]
   pull_request:
 
-name: R-CMD-check
+name: R-CMD-check.yaml
 
 jobs:
   R-CMD-check:
@@ -28,22 +30,59 @@ jobs:
       R_KEEP_PKG_SOURCE: yes
 
     steps:
+      - name: Install JAGS (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          wjags.exe /S
+          del wjags.exe
+        shell: cmd
+      
+      - name: Install JAGS (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew install pkg-config
+          brew install jags
+          brew upgrade
+
+      - name: Install JAGS (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jags
+          
       - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-pandoc@v2
 
-      - uses: r-lib/actions/setup-r@v2
+      - uses: r-lib/actions/setup-r@HEAD
         with:
           r-version: ${{ matrix.config.r }}
           http-user-agent: ${{ matrix.config.http-user-agent }}
           use-public-rspm: true
-
-      - uses: r-lib/actions/setup-r-dependencies@v2
+          
+      - uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: any::rcmdcheck
           needs: check
-
-      - uses: r-lib/actions/check-r-package@v2
+      
+      - name: "install rjags Mac"
+        if: runner.os == 'macOS'
+        run: |
+          install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
+                    type = "source",
+                    configure.args=c(
+                    "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
+                    "--with-jags-lib=/opt/homebrew/opt/jags/lib",
+                            verbose = TRUE)
+                      )
+           library(rjags)
+           library(runjags)
+           runjags::findJAGS()
+        shell: Rscript {0}
+      
+      - uses: r-lib/actions/check-r-package@HEAD
         with:
           upload-snapshots: true
           error-on: '"warning"'
