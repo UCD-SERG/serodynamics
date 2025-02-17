@@ -2,8 +2,8 @@
 #' @title Density Plot Diagnostics
 #' @author Sam Schildhauer
 #' @description
-#'  plot_jags_dens() takes a [list] output from the [serodynamics::run_mod()]
-#'  function to create density plots for each chain run in the mcmc estimation.
+#'  plot_jags_dens() takes a [list] output from [serodynamics::run_mod()]
+#'  to create density plots for each chain run in the mcmc estimation.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
 #'  and stratifications, unless otherwise specified.
 #'  Antigen/antibody combinations and stratifications will vary by analysis.
@@ -31,6 +31,30 @@
 #' input.
 #' @export
 #' @examples
+#' if (!is.element(runjags::findjags(), c("", NULL))) {
+#'   library(runjags)
+#'   library(ggmcmc)
+#'   set.seed(1)
+#'   library(dplyr)
+#'   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+#'     sim_case_data(n = 100) |>
+#'     mutate(strat = "stratum 2")
+#'   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+#'     sim_case_data(n = 100) |>
+#'     mutate(strat = "stratum 1")
+#'
+#'   Dataset <- bind_rows(strat1, strat2)
+#'
+#'   jags_out <- run_mod(
+#'     data = Dataset, # The data set input
+#'     file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
+#'     nchain = 4, # Number of mcmc chains to run
+#'     nadapt = 100, # Number of adaptations to run
+#'     nburn = 100, # Number of unrecorded samples before sampling begins
+#'     nmc = 1000,
+#'     niter = 2000, # Number of iterations
+#'     strat = "strat"
+#'   ) # Variable to be stratified
 #' plot_jags_dens(
 #'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
 #'     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
