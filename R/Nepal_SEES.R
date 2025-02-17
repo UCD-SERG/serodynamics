@@ -21,4 +21,3 @@
 #'  \item{result}{Continuous variable describing ELISA result}
 #' }
 #' @source Link to SEES study?
-
