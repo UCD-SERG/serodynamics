@@ -5,7 +5,7 @@
 #' A subset of data from the SEES project highlighting Typhoid longitudinal
 #' data from Nepal.
 #'
-#' @format ## `Nepal_SEES`
+#' @format ## `nepal_SEES`
 #' A [base:data.frame()] with 904 rows and 8 columns:
 #' \describe{
 #'  \item{Country}{Country name}
@@ -21,5 +21,4 @@
 #'  \item{result}{Continuous variable describing ELISA result}
 #' }
 #' @source Link to SEES study?
-#'
-#'
+
