@@ -4,7 +4,7 @@
 
 ## New features
 
-* Added SEES data set data folder (#41)
+* Added SEES data set data folder and documentation (#41)
 * Added `postprocess_jags_output()` to API (#33)
 * Added `initsfunction()` to API (#37)
 * Added participant IDs as names to `nsmpl` element of `prep_data()` output (#34)
