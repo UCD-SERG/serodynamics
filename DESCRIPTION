@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9012
+Version: 0.0.0.9015
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -13,31 +13,43 @@ URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serody
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
 Imports: 
     cli,
+    coda,
     dplyr,
     ggmcmc,
     ggplot2,
+    purrr,
     rlang,
     runjags,
     serocalculator (>= 1.3.0.9022),
     stats,
     tibble,
+    tidyr,
     utils
 Suggests: 
     Hmisc,
+    knitr,
     readr,
-    rjags,
     spelling,
     ssdtools,
     testthat (>= 3.0.0),
+    tidyverse,
     withr,
     vdiffr,
-    fs
+    fs,
+    here,
+    rjags,
+    rmarkdown,
+    stringr
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: withr, vdiffr
+Config/needs/test: withr, vdiffr, here, readr
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
+<<<<<<< HEAD
 Depends: 
     R (>= 3.5)
 LazyData: true
+=======
+VignetteBuilder: knitr
+>>>>>>> main
