@@ -5,7 +5,7 @@
 #' A subset of data from the SEES project highlighting Typhoid longitudinal
 #' data from Nepal.
 #'
-#' @format ## `nepal_SEES`
+#' @format ## `nepal_sees`
 #' A [base:data.frame()] with 904 rows and 8 columns:
 #' \describe{
 #'  \item{Country}{Country name}
