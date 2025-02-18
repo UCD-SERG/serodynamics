@@ -27,8 +27,8 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [string] to produce plots of specific stratification
 #' entered in quotes.
-#' @return A [list] of [ggplot] objects producing density plots for all the specified
-#' input.
+#' @return A [list] of [ggplot] objects producing density plots for all the
+#' specified input.
 #' @export
 #' @examples
 #' if (!is.element(runjags::findjags(), c("", NULL))) {
@@ -72,8 +72,8 @@ plot_jags_dens <- function(data,
   dens_strat_list <- list()
   for (i in strat) {
 
-      visualize_jags_sub <- visualize_jags |>
-        dplyr::filter(.data$Stratification == i)
+    visualize_jags_sub <- visualize_jags |>
+      dplyr::filter(.data$Stratification == i)
 
     # Creating open list to store ggplots
     density_out <- list()
@@ -97,7 +97,7 @@ plot_jags_dens <- function(data,
                                            attributes_jags)
       # Creating density plot
       densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
-        theme_bw()
+        ggplot2::theme_bw()
       density_out[[j]] <- densplot
     }
     dens_strat_list[[i]] <- density_out
