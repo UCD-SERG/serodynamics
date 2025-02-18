@@ -72,11 +72,23 @@ jobs:
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
                     type = "source",
-                    configure.args=c(
-                    "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
-                    "--with-jags-lib=/opt/homebrew/opt/jags/lib",
-                            verbose = TRUE)
-                      )
+                    configure.args = c(
+                      "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
+                      "--with-jags-lib=/opt/homebrew/opt/jags/lib"),
+                    verbose = TRUE)
+                      
+           library(rjags)
+           library(runjags)
+           runjags::findJAGS()
+        shell: Rscript {0}
+        
+      - name: "install rjags not-mac"
+        if: runner.os != 'macOS'
+        run: |
+          install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
+                    type = "source",
+                    verbose = TRUE)
            library(rjags)
            library(runjags)
            runjags::findJAGS()
