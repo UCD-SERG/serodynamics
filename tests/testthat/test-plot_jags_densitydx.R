@@ -28,14 +28,16 @@ test_that(
         niter = 100, #Number of iterations
         strat = "strat"
         ) #Variable to be stratified
-        results <- plot_jags_dens(results) |> #Running diagnostic
+        results <- plot_jags_dens(results) |> #Running diagnostic plots
 suppressWarnings()
   }
 ) |>
 # Testing for any errors
-  expect_no_error() |>
-# Test to ensure output is a ggplot object
-  expect_true(is.ggplot(results))
+  expect_no_error() 
+# Test to ensure output is a list object
+  expect_true(is.list(results))
+  # Test to ensure that a piece of the list is a ggplot object
+  expect_true(is.gglot(results$`stratum 1`$HlyE_IgA))
   }
 )
 
