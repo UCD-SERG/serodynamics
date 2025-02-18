@@ -91,13 +91,15 @@ plot_jags_dens <- function(data,
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                          .data$Parameter_sub, ", strat = ",
-                                         i))
+                                         i),
+                      value = log(value)) 
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating density plot
       densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
-        ggplot2::theme_bw()
+        ggplot2::theme_bw() +
+        ggplot2::labs(x = "log(value)")
       density_out[[j]] <- densplot
     }
     dens_strat_list[[i]] <- density_out
