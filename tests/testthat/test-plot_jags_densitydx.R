@@ -17,7 +17,7 @@ test_that(
 
     withr::with_seed(
       1,
-    code = {
+      code = {
         results <- run_mod(
           data = dataset, #The data set input
           file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
@@ -34,9 +34,9 @@ test_that(
     ) |>
       # Testing for any errors
       expect_no_error()
-      # Test to ensure output is a list object
-      expect_true(is.list(results))
-      # Test to ensure that a piece of the list is a ggplot object
-      expect_true(is.ggplot(results$`stratum 1`$HlyE_IgA))
+    # Test to ensure output is a list object
+    expect_true(is.list(results))
+    # Test to ensure that a piece of the list is a ggplot object
+    expect_true(is.ggplot(results$`stratum 1`$HlyE_IgA))
   }
 )
