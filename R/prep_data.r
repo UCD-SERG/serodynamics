@@ -1,8 +1,8 @@
 #' prepare data for JAGs
 #'
 #' @param dataframe a [data.frame] containing ...
-#' @param biomarker_column 
-#' [character] string indicating 
+#' @param biomarker_column
+#' [character] string indicating
 #' which column contains antigen-isotype names
 #' @param verbose whether to produce verbose messaging
 #'
@@ -18,17 +18,17 @@
 prep_data <- function(
     dataframe,
     biomarker_column = get_biomarker_names_var(dataframe),
-    verbose = FALSE
-) {
+    verbose = FALSE) {
   # Ensure the data has the required columns
   columns_missing <-
     !("antigen_iso" %in% names(dataframe)) |
     !("visit_num" %in% names(dataframe))
-  
+
   if (columns_missing) {
     cli::cli_abort(
-      message = 
-        "{.arg dataframe} must contain 'antigen_iso' and 'visit_num' columns")
+      message =
+        "{.arg dataframe} must contain 'antigen_iso' and 'visit_num' columns"
+    )
   }
   # Extract unique visits and antigens
   visits <-
@@ -36,63 +36,63 @@ prep_data <- function(
     as.numeric() |>
     unique() |>
     sort()
-  
+
   antigens <-
     dataframe$antigen_iso |>
     unique()
-  
+
   subjects <-
     dataframe |>
     serocalculator::ids() |>
     unique()
-  
+
   # Initialize arrays to store the formatted data
   max_visits <- length(visits)
   n_antigens <- length(antigens)
   num_subjects <- length(subjects)
-  
+
   # Define arrays with dimensions to accommodate extra dummy subject
-  
+
   dimnames1 <- list(
     subjects = c(subjects, "newperson"),
     visit_number = paste0("V", visits)
   )
-  
+
   dims1 <- sapply(FUN = length, X = dimnames1)
-  
+
   visit_times <- array(
     NA,
     dim = dims1,
     dimnames = dimnames1
   )
-  
+
   dimnames2 <- list(
     subjects = c(subjects, "newperson"),
     visit_number = paste0("V", visits),
     antigens = antigens
   )
-  
+
   antibody_levels <- array(
     NA,
     dim = c(num_subjects + 1, max_visits, n_antigens),
     dimnames = dimnames2
   )
-  
+
   # Array to store the maximum number of samples per participant:
   nsmpl <- integer(num_subjects + 1) |>
     purrr::set_names(c(subjects, "newperson"))
-  
+
   ids_varname <- serocalculator::ids_varname(dataframe)
-  
+
   for (cur_subject in subjects) {
-    subject_data <- 
-      dataframe |> 
+    subject_data <-
+      dataframe |>
       dplyr::filter(.data[[ids_varname]] == cur_subject)
     subject_visits <- unique(subject_data$visit_num)
     # Number of non-missing visits for this participant:
     nsmpl[cur_subject] <- length(subject_visits)
-    
-    
+
+
     for (cur_visit in subject_visits) {
       for (cur_antigen in antigens) {
         subset <-
@@ -101,17 +101,16 @@ prep_data <- function(
             .data$visit_num == cur_visit,
             .data$antigen_iso == cur_antigen
           )
-        
+
         if (nrow(subset) == 1) {
-          visit_times[cur_subject, cur_visit] <- 
+          visit_times[cur_subject, cur_visit] <-
             subset |> get_timeindays()
           # Log-transform and handle zeroes:
-          antibody_levels[cur_subject, cur_visit, cur_antigen] <- 
+          antibody_levels[cur_subject, cur_visit, cur_antigen] <-
             subset |>
-            serocalculator::get_values() |> 
-            max(0.01) |> 
+            serocalculator::get_values() |>
+            max(0.01) |>
             log()
-          
         } else if (nrow(subset) > 1) {
           cli::cli_abort(
             c(
@@ -136,14 +135,14 @@ prep_data <- function(
       }
     }
   }
-  
+
   # Add missing observation for Bayesian inference
   visit_times[num_subjects + 1, 1:3] <- c(5, 30, 90)
   # Ensure corresponding antibody levels are set to NA (explicitly missing)
   antibody_levels[num_subjects + 1, 1:3, ] <- NA
   # Since we manually add three timepoints for the dummy subject:
   nsmpl["newperson"] <- 3
-  
+
   to_return <-
     list(
       "smpl.t" = visit_times,
@@ -158,7 +157,7 @@ prep_data <- function(
       n_antigens = n_antigens,
       ids = c(subjects, "newperson")
     )
-  
+
   # Return results as a list
   return(to_return)
 }
