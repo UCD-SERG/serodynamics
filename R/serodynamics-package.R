@@ -16,6 +16,7 @@
 #' @importFrom rlang .data
 #' @importFrom runjags run.jags
 #' @importFrom serocalculator get_biomarker_names
+#' @importFrom serocalculator get_values
 #' @importFrom serocalculator ids
 #' @importFrom serocalculator ids_varname
 #' @importFrom stats complete.cases

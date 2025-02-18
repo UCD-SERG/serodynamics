@@ -6,6 +6,7 @@ ggplot2::autoplot
 #'
 #' @param log_x whether to log-transform the x-axis
 #' @param object a `case_data` object
+#' @param log_y whetehr to log-transform the y-axis
 #'
 #' @inheritDotParams ggplot2::geom_point
 #' @inheritDotParams ggplot2::geom_line
@@ -14,7 +15,10 @@ ggplot2::autoplot
 #' @export
 #'
 #' @example inst/examples/examples-autoplot.case_data.R
-autoplot.case_data <- function(object, log_x = FALSE, ...) {
+autoplot.case_data <- function(object,
+                               log_y = TRUE,
+                               log_x = FALSE,
+                               ...) {
   ids_varname <- serocalculator::ids_varname(object)
   values_varname <- serocalculator::get_values_var(object)
   time_varname <- get_timeindays_var(object)
@@ -34,8 +38,37 @@ autoplot.case_data <- function(object, log_x = FALSE, ...) {
     ggplot2::facet_wrap(ggplot2::vars(.data[[biomarkers_varname]])) +
     ggplot2::guides(color = "none", group = "none") +
     ggplot2::theme_bw() +
-    ggplot2::scale_y_log10(labels = scales::label_comma()) +
-    ggplot2::xlab("Time since seroconversion (days)")
+    ggplot2::xlab("Time since seroconversion (days)") +
+    ggplot2::labs(y = "Antibody response value")
+
+  if (log_y) {
+    min_nonzero_val <-
+      object |>
+      get_values() |>
+      purrr::keep(~ . > 0) |>
+      min()
+
+    max_val <-
+      object |>
+      get_values() |>
+      max()
+
+    breaks1 <- c(0, 10^seq(
+      min_nonzero_val |> log10() |> floor(),
+      max_val |> log10() |> ceiling()
+    ))
+
+    to_return <-
+      to_return +
+      ggplot2::scale_y_continuous(
+        labels = scales::label_comma(),
+        transform = scales::pseudo_log_trans(
+          sigma = min_nonzero_val / 10,
+          base = 10
+        ),
+        breaks = breaks1
+      )
+  }
 
   if (log_x) {
     to_return <-
