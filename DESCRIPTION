@@ -20,6 +20,7 @@ Imports:
     purrr,
     rlang,
     runjags,
+    scales,
     serocalculator,
     stats,
     tibble,
