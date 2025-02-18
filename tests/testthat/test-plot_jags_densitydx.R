@@ -1,22 +1,22 @@
 
 test_that(
-  desc="results are consistent with ggplot output", 
+  desc = "results are consistent with ggplot output",
   code = {
     library(runjags)
 
     set.seed(1)
-  library(dplyr)
-  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
-  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
+    library(dplyr)
+    strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+      sim_case_data(n = 100) |>
+      mutate(strat = "stratum 2")
+    strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+      sim_case_data(n = 100) |>
+      mutate(strat = "stratum 1")
 
     dataset <- bind_rows(strat1, strat2)
 
     withr::with_seed(
-    1,
+      1,
     code = {
         results <- run_mod(
           data = dataset, #The data set input
@@ -27,16 +27,16 @@ test_that(
           nmc = 100,
           niter = 100, #Number of iterations
           strat = "strat"
-          ) #Variable to be stratified
+        ) #Variable to be stratified
         results <- plot_jags_dens(results) |> #Running diagnostic plots
           suppressWarnings()
       }
-) |>
-    # Testing for any errors
-    expect_no_error()
-    # Test to ensure output is a list object
-    expect_true(is.list(results))
-    # Test to ensure that a piece of the list is a ggplot object
-    expect_true(is.ggplot(results$`stratum 1`$HlyE_IgA))
+    ) |>
+      # Testing for any errors
+      expect_no_error()
+      # Test to ensure output is a list object
+      expect_true(is.list(results))
+      # Test to ensure that a piece of the list is a ggplot object
+      expect_true(is.ggplot(results$`stratum 1`$HlyE_IgA))
   }
 )
