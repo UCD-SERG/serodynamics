@@ -163,7 +163,8 @@ run_mod <- function(data,
   # jags output results for each stratification
   # rbinded.
   jags_out <- list(
-    "curve_params" = jags_out, "jags.post" = jags_post_final,
+    "curve_params" = jags_out,
+    "jags.post" = jags_post_final,
     "attributes" = mod_atts
   )
   jags_out
