@@ -82,7 +82,7 @@ jobs:
            runjags::findJAGS()
         shell: Rscript {0}
         
-        - name: "install rjags not-mac"
+      - name: "install rjags not-mac"
         if: runner.os != 'macOS'
         run: |
           install.packages("rjags",
