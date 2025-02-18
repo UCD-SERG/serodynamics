@@ -69,7 +69,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   jags_out <- run_mod(
     data = Dataset, # The data set input
-    file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
+    file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
     nchain = 4, # Number of mcmc chains to run
     nadapt = 100, # Number of adaptations to run
     nburn = 100, # Number of unrecorded samples before sampling begins

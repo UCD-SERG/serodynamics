@@ -12,6 +12,7 @@
 #' @importFrom dplyr select
 #' @importFrom dplyr ungroup
 #' @importFrom ggmcmc ggs
+#' @importFrom ggplot2 theme_bw
 #' @importFrom rlang .data
 #' @importFrom runjags run.jags
 #' @importFrom stats complete.cases
