@@ -15,6 +15,7 @@ geoms
 ggproto
 hyp
 iso
+isotype
 isotypes
 mcmc
 newperson

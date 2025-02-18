@@ -12,7 +12,7 @@ test_that(
 
     test_obj <- test_obj |>
       as_case_data(
-        id_var = "index_id",
+        id_var = "id",
         biomarker_var = "antigen_iso",
         time_in_days = "timeindays",
         value_var = "value"

@@ -1,6 +1,10 @@
 #' prepare data for JAGs
 #'
 #' @param dataframe a [data.frame] containing ...
+#' @param biomarker_column
+#' [character] string indicating
+#' which column contains antigen-isotype names
+#' @param verbose whether to produce verbose messaging
 #'
 #' @returns a `prepped_jags_data` object (a [list] with extra attributes ...)
 #' @export
@@ -11,14 +15,20 @@
 #'   serocalculator::typhoid_curves_nostrat_100 |>
 #'   sim_case_data(n = 5)
 #' prepped_data <- prep_data(raw_data)
-prep_data <- function(dataframe) {
+prep_data <- function(
+    dataframe,
+    biomarker_column = get_biomarker_names_var(dataframe),
+    verbose = FALSE) {
   # Ensure the data has the required columns
   columns_missing <-
     !("antigen_iso" %in% names(dataframe)) |
     !("visit_num" %in% names(dataframe))
 
   if (columns_missing) {
-    stop("Dataframe must contain 'antigen_iso' and 'visit_num' columns")
+    cli::cli_abort(
+      message =
+        "{.arg dataframe} must contain 'antigen_iso' and 'visit_num' columns"
+    )
   }
   # Extract unique visits and antigens
   visits <-
@@ -33,7 +43,7 @@ prep_data <- function(dataframe) {
 
   subjects <-
     dataframe |>
-    get_subject_ids() |>
+    serocalculator::ids() |>
     unique()
 
   # Initialize arrays to store the formatted data
@@ -72,8 +82,12 @@ prep_data <- function(dataframe) {
   nsmpl <- integer(num_subjects + 1) |>
     purrr::set_names(c(subjects, "newperson"))
 
+  ids_varname <- serocalculator::ids_varname(dataframe)
+
   for (cur_subject in subjects) {
-    subject_data <- dataframe |> filter(.data$index_id == cur_subject)
+    subject_data <-
+      dataframe |>
+      dplyr::filter(.data[[ids_varname]] == cur_subject)
     subject_visits <- unique(subject_data$visit_num)
     # Number of non-missing visits for this participant:
     nsmpl[cur_subject] <- length(subject_visits)
@@ -88,32 +102,35 @@ prep_data <- function(dataframe) {
             .data$antigen_iso == cur_antigen
           )
 
-        if (nrow(subset) == 0) {
-          cli::cli_alert(
-            c(
-              "No observations for ",
-              "subject: {subjects[i]}, ",
-              "visit: {subject_visits[j]},",
-              "antigen: {antigens[k]}."
-            )
-          )
+        if (nrow(subset) == 1) {
+          visit_times[cur_subject, cur_visit] <-
+            subset |> get_timeindays()
+          # Log-transform and handle zeroes:
+          antibody_levels[cur_subject, cur_visit, cur_antigen] <-
+            subset |>
+            serocalculator::get_values() |>
+            max(0.01) |>
+            log()
         } else if (nrow(subset) > 1) {
           cli::cli_abort(
             c(
               "Multiple records for ",
-              "subject: {subjects[i]}, ",
-              "visit: {subject_visits[j]},",
-              "antigen: {antigens[k]}"
+              "subject: {cur_subject}, ",
+              "visit: {cur_visit}, ",
+              "antigen: {cur_antigen}"
             )
           )
         } else {
-          visit_times[cur_subject, cur_visit] <- subset |> get_timeindays()
-          # Log-transform and handle zeroes:
-          antibody_levels[cur_subject, cur_visit, cur_antigen] <- log(max(
-            0.01,
-            subset |>
-              serocalculator::get_values()
-          ))
+          if (verbose) {
+            cli::cli_inform(
+              c(
+                "No observations for ",
+                "subject: {cur_subject}, ",
+                "visit: {cur_visit}, ",
+                "antigen: {cur_antigen}."
+              )
+            )
+          }
         }
       }
     }
