@@ -84,11 +84,11 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     sim_case_data(n = 100) |>
     mutate(strat = "stratum 1")
 
-  Dataset <- bind_rows(strat1, strat2)
+  dataset <- bind_rows(strat1, strat2)
 
-  run_mod(
-    data = Dataset, # The data set input
-    file_mod = fs::path_package("serodynamics", "extdata/model.jags.r"),
+  fitted_model <- run_mod(
+    data = dataset, # The data set input
+    file_mod = serodynamics_example("model.jags"),
     nchain = 4, # Number of mcmc chains to run
     nadapt = 100, # Number of adaptations to run
     nburn = 100, # Number of unrecorded samples before sampling begins

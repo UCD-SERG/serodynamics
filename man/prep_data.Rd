@@ -4,10 +4,19 @@
 \alias{prep_data}
 \title{prepare data for JAGs}
 \usage{
-prep_data(dataframe)
+prep_data(
+  dataframe,
+  biomarker_column = get_biomarker_names_var(dataframe),
+  verbose = FALSE
+)
 }
 \arguments{
 \item{dataframe}{a \link{data.frame} containing ...}
+
+\item{biomarker_column}{\link{character} string indicating
+which column contains antigen-isotype names}
+
+\item{verbose}{whether to produce verbose messaging}
 }
 \value{
 a \code{prepped_jags_data} object (a \link{list} with extra attributes ...)
