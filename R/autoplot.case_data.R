@@ -18,7 +18,7 @@ autoplot.case_data <- function(object, log_x = FALSE, ...) {
   ids_varname <- serocalculator::ids_varname(object)
   values_varname <- serocalculator::get_values_var(object)
   time_varname <- get_timeindays_var(object)
-  biomarkers_varname <- 
+  biomarkers_varname <-
     serocalculator::get_biomarker_names_var(object)
   to_return <-
     object |>
@@ -38,10 +38,10 @@ autoplot.case_data <- function(object, log_x = FALSE, ...) {
     ggplot2::xlab("Time since seroconversion (days)")
 
   if (log_x) {
-    to_return <- 
-      to_return + 
+    to_return <-
+      to_return +
       ggplot2::scale_x_log10(labels = scales::label_comma())
   }
-  
+
   return(to_return)
 }
