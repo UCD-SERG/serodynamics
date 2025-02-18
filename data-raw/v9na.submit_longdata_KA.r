@@ -9,12 +9,12 @@ library(runjags)
 library(ggmcmc)
 
 #model file
-#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.r")
+#file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags")
 file.mod <- here::here()  %>% fs::path("inst/extdata/model.jags.2.r")
 
 #long data - TYPHOID 
 dL <-
-# the raw data is prepared and shared by jessica Seidman
+# the raw data is prepared and shared by JS
   read_csv(here::here()  %>% fs::path("inst/extdata/elisa_clean_2023-11-01.csv")) %>%
  filter(surgical != 1 | is.na(surgical))  %>%
   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
@@ -46,11 +46,9 @@ dL <-
 dL_sub <- dL %>%
   filter(index_id %in% sample(unique(index_id), 20))
 
-
 #prepare data for modeline
 longdata <- prep_data(dL_sub)
-priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
-
+priors <- prep_priors(n_antigens = attr(longdata, "n_antigens"))
 
 #inputs for jags model
 nchains <- 4;                # nr of MC chains to run simultaneously
@@ -75,11 +73,18 @@ initsfunction <- function(chain){
 
 
 
-jags.post <- run.jags(model=file.mod,data=c(longdata, priors),
-                      inits=initsfunction,method="parallel",
-                      adapt=nadapt,burnin=nburnin,thin=nthin,sample=nmc,
-                      n.chains=nchains,
-                      monitor=tomonitor,summarise=FALSE);
+jags.post <- run.jags(
+  model = file.mod, 
+  data = c(longdata, priors), 
+  inits = initsfunction, 
+  method = "parallel", 
+  adapt = nadapt, 
+  burnin = nburnin, 
+  thin = nthin, 
+  sample = nmc, 
+  n.chains = nchains, 
+  monitor = tomonitor, 
+  summarise = FALSE)
 
 
 
@@ -97,8 +102,6 @@ wide_predpar_df <- mcmc_df %>%
   mutate(
     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),
     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso))) %>%
- # mutate(value = exp(value)) %>%
- # mutate(value = ifelse(parameter == "r", value+1, value)) %>%
   ## only take the last subject (newperson)
   filter(index_id == "newperson") %>%
   select(-Parameter) %>%
@@ -109,38 +112,6 @@ wide_predpar_df <- mcmc_df %>%
   ungroup() %>%
   rename(r = shape)
 
-
-
-
-# wide_predpar_df <- long_predpar_df %>%
-#   mutate(
-#     index_id = as.numeric(sub("^par\\[(\\d+),.*", "\\1", Variable)),
-#     antigen_iso = as.numeric(sub("^par\\[\\d+,(\\d+),.*", "\\1", Variable)),
-#     parameter = as.numeric(sub("^par\\[\\d+,\\d+,(\\d+)\\]", "\\1", Variable))
-#   ) %>%
-#   mutate(
-#     index_id = factor(index_id, labels = c(unique(dL_sub$index_id), "newperson")),  
-#     antigen_iso = factor(antigen_iso, labels = unique(dL_sub$antigen_iso)), 
-#                          # parnum: use y0=1; y1=2; t1=3; alpha=4; shape=5
-#                          # note to self - i dont like that these are not named anywhere....
-#       parameter = factor(parameter, labels = c("y0", "y1", "t1", "alpha", "r"))) %>%
-#       mutate(value = exp(value)) %>%
-#       mutate(value = ifelse(parameter == "r", value+1, value)) %>%
-#       ## only take the last subject (newperson)
-#       filter(index_id == "newperson") %>%
-#       select(-Variable) %>%
-#       pivot_wider(names_from = "parameter", values_from="value") %>%
-#       rowwise() %>%
-#       mutate(y1 = y0+y1) %>%
-#       droplevels() %>%
-#       ungroup()
-
-
-
-
-
-
-#Now plot longitudinal antibody decay 
 
 
 

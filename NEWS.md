@@ -5,6 +5,10 @@
 ## New features
 
 * Diagnostic function to produce density plots with stratification (#27)
+* Added `postprocess_jags_output()` to API (#33)
+* Added `initsfunction()` to API (#37)
+* Added participant IDs as names to `nsmpl` element of `prep_data()` output (#34)
+* Added `initsfunction()` to API (#37)
 * Added `as_case_data()` to API (#31)
 * Added `prep_priors()` to API (#30)
 * Added `autoplot()` method for `case_data` objects (#28)
@@ -20,6 +24,10 @@ None yet
 
 ## Developer-facing changes
 
+* Clarified `prep_data()` internals using `{dplyr}` (#34)
+* Removed ".R" suffix from jags model files 
+to prevent them from getting linted as R files (#34)
+* Added `dobson.Rmd` minimal vignette (#36)
 * Overall cleaning to get checks working (#28)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
