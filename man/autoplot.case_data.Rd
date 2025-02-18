@@ -4,10 +4,12 @@
 \alias{autoplot.case_data}
 \title{Plot case data}
 \usage{
-\method{autoplot}{case_data}(object, log_x = FALSE, ...)
+\method{autoplot}{case_data}(object, log_y = TRUE, log_x = FALSE, ...)
 }
 \arguments{
 \item{object}{a \code{case_data} object}
+
+\item{log_y}{whetehr to log-transform the y-axis}
 
 \item{log_x}{whether to log-transform the x-axis}
 
