@@ -47,6 +47,6 @@ Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
 Depends: 
-    R (>= 3.5)
+    R (>= 4.1.0)
 LazyData: true
 VignetteBuilder: knitr
