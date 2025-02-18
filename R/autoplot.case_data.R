@@ -11,28 +11,25 @@ ggplot2::autoplot
 #' @returns a [ggplot2::ggplot]
 #' @export
 #'
-#' @examples
-#' set.seed(1)
-#' serocalculator::typhoid_curves_nostrat_100 |>
-#'   sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14) |>
-#'   autoplot(alpha = .5)
+#' @example inst/examples/examples-autoplot.case_data.R
 autoplot.case_data <- function(object, ...) {
+  ids_varname <- serocalculator::ids_varname(object)
+  values_varname <- serocalculator::get_values_var(object)
+  time_varname <- get_timeindays_var(object)
+  biomarkers_varname <- 
+    serocalculator::get_biomarker_names_var(object)
   to_return <-
     object |>
     ggplot2::ggplot() +
     ggplot2::aes(
-      x = .data |> get_timeindays(),
-      y = .data$value,
-      group = .data |> get_subject_ids(),
-      col = .data |> get_subject_ids()
+      x = .data[[time_varname]],
+      y = .data[[values_varname]],
+      group = .data[[ids_varname]],
+      col = .data[[ids_varname]]
     ) +
     ggplot2::geom_point(...) +
     ggplot2::geom_line(...) +
-    ggplot2::facet_wrap(
-      ggplot2::vars(
-        .data |> get_biomarker_names()
-      )
-    ) +
+    ggplot2::facet_wrap(ggplot2::vars(.data[[biomarkers_varname]])) +
     ggplot2::guides(color = "none", group = "none") +
     ggplot2::theme_bw() +
     ggplot2::scale_y_log10() +

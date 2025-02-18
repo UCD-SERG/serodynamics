@@ -2,27 +2,29 @@ test_that(
   desc = "results are consistent",
   code = {
     library(runjags)
-
-    set.seed(1)
-    library(dplyr)
-    strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-      sim_case_data(n = 100) |>
-      mutate(strat = "stratum 2")
-    strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-      sim_case_data(n = 100) |>
-      mutate(strat = "stratum 1")
-
-    dataset <- bind_rows(strat1, strat2)
-
+    dataset <- serodynamics_example(
+      "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
+    ) |> 
+      readr::read_csv() |> 
+      dplyr::mutate(
+        .by = person_id,
+        visit_num = dplyr::row_number()) |> 
+      as_case_data(
+        id_var = "person_id",
+        biomarker_var = "antigen_iso",
+        value_var = "result",
+        time_in_days = "dayssincefeveronset"
+      )
+    
     results <- run_mod(
       data = dataset, # The data set input
-      file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+      file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
       nadapt = 100, # Number of adaptations to run
       nburn = 100, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "strat" # Variable to be stratified
+      strat = "bldculres" # Variable to be stratified
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params") |>

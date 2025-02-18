@@ -34,9 +34,9 @@ as_case_data <- function(
     time_in_days = "timeindays") {
   data |>
     tibble::as_tibble() |>
+    serocalculator::set_id(id_var) |> 
     structure(
       class = c("case_data", class(data)),
-      subject_id = id_var,
       biomarker_var = biomarker_var,
       timeindays = time_in_days,
       value_var = value_var

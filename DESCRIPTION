@@ -17,11 +17,10 @@ Imports:
     dplyr,
     ggmcmc,
     ggplot2,
-    magrittr,
     purrr,
     rlang,
     runjags,
-    serocalculator (>= 1.3.0.9022),
+    serocalculator,
     stats,
     tibble,
     tidyr,
@@ -42,7 +41,14 @@ Suggests:
     stringr
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: withr, vdiffr, here, readr, ssdtools
+Config/needs/test: 
+    withr, 
+    vdiffr, 
+    here, 
+    readr, 
+    ssdtools, 
+    magrittr, 
+    readr
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator

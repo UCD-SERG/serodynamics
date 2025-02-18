@@ -13,7 +13,8 @@
 #' @export
 #' @examples
 #' serodynamics_example()
-#' serodynamics_example("example_pop_data.csv")
+#' serodynamics_example(
+#'   "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv")
 serodynamics_example <- function(file = NULL) {
   if (is.null(file)) {
     dir(fs::path_package("extdata", package = "serodynamics"))
