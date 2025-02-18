@@ -21,7 +21,7 @@ Imports:
     rlang,
     runjags,
     scales,
-    serocalculator,
+    serocalculator (>= 1.3.0.9029),
     stats,
     tibble,
     tidyr,
