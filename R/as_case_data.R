@@ -20,7 +20,7 @@
 #' serocalculator::typhoid_curves_nostrat_100 |>
 #'   sim_case_data(n = 5) |>
 #'   as_case_data(
-#'     id_var = "index_id",
+#'     id_var = "id",
 #'     biomarker_var = "antigen_iso",
 #'     time_in_days = "timeindays",
 #'     value_var = "value"
@@ -34,9 +34,9 @@ as_case_data <- function(
     time_in_days = "timeindays") {
   data |>
     tibble::as_tibble() |>
+    serocalculator::set_id_var(id_var) |>
     structure(
       class = c("case_data", class(data)),
-      subject_id = id_var,
       biomarker_var = biomarker_var,
       timeindays = time_in_days,
       value_var = value_var

@@ -13,7 +13,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   fitted_model <- run_mod(
     data = dataset, # The data set input
-    file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+    file_mod = serodynamics_example("model.jags"),
     nchain = 4, # Number of mcmc chains to run
     nadapt = 100, # Number of adaptations to run
     nburn = 100, # Number of unrecorded samples before sampling begins

@@ -21,15 +21,19 @@ library(runjags)
 runjags::findJAGS()
 ```
 
-```{r "run-dobson-model"}
+```{r "run-dobson-model", warn = FALSE, message = FALSE, }
 
+set.seed(1)
 data1 <- rbinom(n = 91, size = 1, prob = .6)
 jags_post0 <- run.jags(
-  model = fs::path_package("serodynamics", "extdata/model.dobson.jags"),
+  n.chains = 2,
+  inits = initsfunction,
+  model = serodynamics_example("model.dobson.jags"),
   data = list(r = data1, N = length(data1)),
   monitor = "p"
 )
-
-jags_post0$mcmc |> as.array() |> head()
 ```
 
+```{R}
+jags_post0$mcmc |> as.array() |> head()
+```
