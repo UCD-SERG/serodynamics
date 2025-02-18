@@ -34,8 +34,8 @@ entered in quotes.}
 \item{name}{description}
 }
 \value{
-A \link{list} of \link{ggplot} objects producing density plots for all the specified
-input.
+A \link{list} of \link{ggplot} objects producing density plots for all the
+specified input.
 }
 \description{
 plot_jags_dens() takes a \link{list} output from \code{\link[=run_mod]{run_mod()}}
