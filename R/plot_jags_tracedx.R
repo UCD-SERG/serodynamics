@@ -106,5 +106,3 @@ plot_jags_trace <- function(data,
   }
   trace_strat_list
 }
-
-plot_jags_trace(Stratified, iso="ctb_IgA",)
