@@ -27,7 +27,12 @@ test_that(
       strat = "bldculres" # Variable to be stratified
     ) |>
       suppressWarnings() |>
-      magrittr::use_series("curve_params") |>
+      magrittr::use_series("curve_params")
+    
+    results |> 
+      expect_snapshot_value(style = "serialize")
+    
+    results |>
       ssdtools:::expect_snapshot_data("strat-curve-params")
   }
 )
