@@ -6,7 +6,7 @@ ggplot2::autoplot
 #'
 #' @param log_x whether to log-transform the x-axis
 #' @param object a `case_data` object
-#' @param log_y whetehr to log-transform the y-axis
+#' @param log_y whether to log-transform the y-axis
 #'
 #' @inheritDotParams ggplot2::geom_point
 #' @inheritDotParams ggplot2::geom_line

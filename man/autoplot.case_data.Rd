@@ -9,7 +9,7 @@
 \arguments{
 \item{object}{a \code{case_data} object}
 
-\item{log_y}{whetehr to log-transform the y-axis}
+\item{log_y}{whether to log-transform the y-axis}
 
 \item{log_x}{whether to log-transform the x-axis}
 
