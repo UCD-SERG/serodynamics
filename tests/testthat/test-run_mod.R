@@ -19,6 +19,7 @@ test_that(
     withr::with_seed(
       1,
       code = {
+        set.seed(1)
         results <- run_mod(
           data = dataset, # The data set input
           file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
@@ -46,6 +47,7 @@ test_that(
 test_that(
   desc = "results are consistent",
   code = {
+    set.seed(1)
     library(runjags)
     dataset <- serodynamics_example(
       "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
@@ -86,6 +88,7 @@ test_that(
 test_that(
   desc = "results are consistent without stratification",
   code = {
+    set.seed(1)
     library(runjags)
     dataset <- serodynamics_example(
       "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
