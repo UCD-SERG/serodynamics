@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9015</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9016</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,16 +79,15 @@
 <span><span class="co">#&gt; [1] "/usr/bin/jags"</span></span></code></pre></div>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
 <span><span class="va">data1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Binomial.html" class="external-link">rbinom</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">91</span>, size <span class="op">=</span> <span class="fl">1</span>, prob <span class="op">=</span> <span class="fl">.6</span><span class="op">)</span></span>
 <span><span class="va">jags_post0</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span>
-<span>  model <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span><span class="st">"serodynamics"</span>, <span class="st">"extdata/model.dobson.jags"</span><span class="op">)</span>,</span>
+<span>  n.chains <span class="op">=</span> <span class="fl">2</span>,</span>
+<span>  inits <span class="op">=</span> <span class="va">initsfunction</span>,</span>
+<span>  model <span class="op">=</span> <span class="fu"><a href="../reference/serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.dobson.jags"</span><span class="op">)</span>,</span>
 <span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">data1</span>, N <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">data1</span><span class="op">)</span><span class="op">)</span>,</span>
 <span>  monitor <span class="op">=</span> <span class="st">"p"</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Warning: No initial value blocks found and n.chains not specified: 2 chains</span></span>
-<span><span class="co">#&gt; were used</span></span>
-<span><span class="co">#&gt; Warning: No initial values were provided - JAGS will use the same initial</span></span>
-<span><span class="co">#&gt; values for all chains</span></span>
 <span><span class="co">#&gt; Compiling rjags model...</span></span>
 <span><span class="co">#&gt; Calling the simulation using the rjags method...</span></span>
 <span><span class="co">#&gt; Note: the model did not require adaptation</span></span>
@@ -97,17 +96,17 @@
 <span><span class="co">#&gt; Simulation complete</span></span>
 <span><span class="co">#&gt; Calculating summary statistics...</span></span>
 <span><span class="co">#&gt; Calculating the Gelman-Rubin statistic for 1 variables....</span></span>
-<span><span class="co">#&gt; Finished running the simulation</span></span>
-<span></span>
-<span><span class="va">jags_post0</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Finished running the simulation</span></span></code></pre></div>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">jags_post0</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/array.html" class="external-link">as.array</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt;       chain</span></span>
 <span><span class="co">#&gt; iter        [,1]      [,2]</span></span>
-<span><span class="co">#&gt;   5001 0.6578161 0.6468694</span></span>
-<span><span class="co">#&gt;   5002 0.6764805 0.5291273</span></span>
-<span><span class="co">#&gt;   5003 0.6727984 0.6142010</span></span>
-<span><span class="co">#&gt;   5004 0.5996768 0.7227574</span></span>
-<span><span class="co">#&gt;   5005 0.5906257 0.6686365</span></span>
-<span><span class="co">#&gt;   5006 0.6629567 0.6071388</span></span></code></pre></div>
+<span><span class="co">#&gt;   5001 0.5846868 0.5503324</span></span>
+<span><span class="co">#&gt;   5002 0.5766205 0.5624546</span></span>
+<span><span class="co">#&gt;   5003 0.6519825 0.6281445</span></span>
+<span><span class="co">#&gt;   5004 0.5982584 0.6042740</span></span>
+<span><span class="co">#&gt;   5005 0.6118631 0.5834004</span></span>
+<span><span class="co">#&gt;   5006 0.5656352 0.6063249</span></span></code></pre></div>
   </main>
 </div>
 
