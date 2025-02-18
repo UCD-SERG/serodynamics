@@ -37,6 +37,6 @@ test_that(
     # Test to ensure output is a list object
     expect_true(is.list(results))
     # Test to ensure that a piece of the list is a ggplot object
-    expect_true(is.ggplot(results$`stratum 1`$HlyE_IgA))
+    expect_true(ggplot2::is.ggplot(results$`stratum 1`$HlyE_IgA))
   }
 )
