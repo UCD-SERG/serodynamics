@@ -39,7 +39,9 @@ Suggests:
     here,
     rjags,
     rmarkdown,
-    stringr
+    stringr,
+    magrittr,
+    ssdtools
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: 

@@ -4,10 +4,12 @@
 \alias{autoplot.case_data}
 \title{Plot case data}
 \usage{
-\method{autoplot}{case_data}(object, ...)
+\method{autoplot}{case_data}(object, log_x = FALSE, ...)
 }
 \arguments{
 \item{object}{a \code{case_data} object}
+
+\item{log_x}{whether to log-transform the x-axis}
 
 \item{...}{
   Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_path]{ggplot2::geom_line}}
