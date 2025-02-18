@@ -92,7 +92,7 @@ plot_jags_dens <- function(data,
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                          .data$Parameter_sub, ", strat = ",
                                          i),
-                      value = log(value)) 
+                      value = log(.data$value))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
