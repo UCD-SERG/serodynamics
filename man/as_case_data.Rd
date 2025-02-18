@@ -38,7 +38,7 @@ set.seed(1)
 serocalculator::typhoid_curves_nostrat_100 |>
   sim_case_data(n = 5) |>
   as_case_data(
-    id_var = "index_id",
+    id_var = "id",
     biomarker_var = "antigen_iso",
     time_in_days = "timeindays",
     value_var = "value"

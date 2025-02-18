@@ -26,7 +26,7 @@ nthin <- round(niter / nmc)
 
 tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
-model_file <- fs::path_package("serodynamics", "extdata/model.jags")
+model_file <- serodynamics_example("model.jags")
 
 set.seed(11325)
 jags_output <- run.jags(

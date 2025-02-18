@@ -4,10 +4,14 @@
 \alias{autoplot.case_data}
 \title{Plot case data}
 \usage{
-\method{autoplot}{case_data}(object, ...)
+\method{autoplot}{case_data}(object, log_y = TRUE, log_x = FALSE, ...)
 }
 \arguments{
 \item{object}{a \code{case_data} object}
+
+\item{log_y}{whether to log-transform the y-axis}
+
+\item{log_x}{whether to log-transform the x-axis}
 
 \item{...}{
   Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_path]{ggplot2::geom_line}}
@@ -79,7 +83,10 @@ Plot case data
 }
 \examples{
 set.seed(1)
-serocalculator::typhoid_curves_nostrat_100 |>
-  sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14) |>
+sim_case_data <-
+  serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14)
+
+sim_case_data |>
   autoplot(alpha = .5)
 }
