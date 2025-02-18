@@ -72,5 +72,4 @@ curve_params <- jags_post |> postprocess_jags_output(
 )
 
 print(curve_params)
-
 }
