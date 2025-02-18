@@ -21,17 +21,39 @@ library(runjags)
 runjags::findJAGS()
 ```
 
-```{r "run-dobson-model"}
+```{r "run-dobson-model", warn = FALSE, message = FALSE, }
 
+initsfunction <- function(chain) {
+  stopifnot(chain %in% (1:4)) # max 4 chains allowed...
+  rng_seed <- (1:4)[chain]
+  rng_name <- c(
+    "base::Wichmann-Hill", "base::Marsaglia-Multicarry",
+    "base::Super-Duper", "base::Mersenne-Twister"
+  )[chain]
+  return(list(".RNG.seed" = rng_seed, ".RNG.name" = rng_name))
+}
+
+
+# inits1 <- list(m=1, c=1, precision=1,
+# .RNG.name="base::Super-Duper", .RNG.seed=1)
+# inits2 <- list(m=0.1, c=10, precision=1,
+# .RNG.name="base::Wichmann-Hill", .RNG.seed=2)
+# initfunction <- function(chain) return(switch(chain,
+# 	"1"=list(m=-10), "2"=list(m=10)))
+set.seed(1)
 data1 <- rbinom(n = 91, size = 1, prob = .6)
 set.seed(1)
 jags_post0 <- run.jags(
+  n.chains = 2,
+  # inits = initsfunction(1:2),
+  # inits=list(inits1,inits2),
   inits = initsfunction,
   model = serodynamics_example("model.dobson.jags"),
   data = list(r = data1, N = length(data1)),
   monitor = "p"
 )
-
-jags_post0$mcmc |> as.array() |> head()
 ```
 
+```{R}
+jags_post0$mcmc |> as.array() |> head()
+```
