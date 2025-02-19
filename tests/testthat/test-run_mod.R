@@ -1,7 +1,6 @@
 test_that(
   desc = "results are consistent with simulated data",
   code = {
-    skip_on_os(c("windows", "linux"))
     library(runjags)
     
     set.seed(1)
@@ -49,7 +48,6 @@ test_that(
 test_that(
   desc = "results are consistent with SEES data",
   code = {
-    skip_on_os(c("windows", "linux"))
     set.seed(1)
     library(runjags)
     dataset <- serodynamics_example(
@@ -87,7 +85,6 @@ test_that(
 test_that(
   desc = "results are consistent with unstratified SEES data",
   code = {
-    skip_on_os(c("windows", "linux"))
     set.seed(1)
     library(runjags)
     dataset <- serodynamics_example(
