@@ -53,12 +53,31 @@ jobs:
           name: coverage-test-failures
           path: ${{ runner.temp }}/package
 
-      - uses: codecov/codecov-action@v4
+      # copied from https://github.com/dieghernan/nominatimlite/actions/runs/12116366823/workflow
+      - name: Create Junit Report
+        if: always()
+        run: |
+          test_out <- path.expand(file.path(getwd(), "junit.xml"))
+          testthat::test_local(reporter = testthat::JunitReporter$new(test_out))
+        shell: Rscript {0}
+      
+      # following https://app.codecov.io/gh/UCD-SERG/serodynamics/tests/new
+      - name: Upload test results to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/test-results-action@HEAD
         with:
           # Fail if error if not on PR, or if on PR and token is given
           fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
-          file: ./cobertura.xml
-          plugin: noop
+          file: ./junit.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+      - uses: codecov/codecov-action@v5
+        with:
+          # Fail if error if not on PR, or if on PR and token is given
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
+          # v5 renamed from `file` and `plugin`; see https://github.com/codecov/codecov-action?tab=readme-ov-file#migration-guide
+          files: ./cobertura.xml
+          plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
