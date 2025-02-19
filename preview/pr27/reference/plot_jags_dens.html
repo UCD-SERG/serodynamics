@@ -78,9 +78,9 @@ The antibody dynamic curve includes the following parameters:</p><ul><li><p>y0 =
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_jags_dens</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  iso <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">visualize_jags_sub</span><span class="op">$</span><span class="va">Iso_type</span><span class="op">)</span>,</span>
-<span>  param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">visualize_jags_sub</span><span class="op">$</span><span class="va">Parameter_sub</span><span class="op">)</span>,</span>
-<span>  strat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">visualize_jags</span><span class="op">$</span><span class="va">Stratification</span><span class="op">)</span></span>
+<span>  iso <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">curve_params</span><span class="op">$</span><span class="va">Iso_type</span><span class="op">)</span>,</span>
+<span>  param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">curve_params</span><span class="op">$</span><span class="va">Parameter_sub</span><span class="op">)</span>,</span>
+<span>  strat <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">.data</span><span class="op">$</span><span class="va">curve_params</span><span class="op">$</span><span class="va">Stratification</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -112,10 +112,6 @@ entered with quotes. Options include:</p><ul><li><p><code>alpha</code> = posteri
 <dd><p>Specify string to produce plots of specific stratification
 entered in quotes.</p></dd>
 
-
-<dt id="arg-name">name<a class="anchor" aria-label="anchor" href="#arg-name"></a></dt>
-<dd><p>description</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -146,18 +142,18 @@ specified input.</p>
 <span class="r-in"><span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_mod.html">run_mod</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">Dataset</span>, <span class="co"># The data set input</span></span></span>
 <span class="r-in"><span>    file_mod <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span><span class="st">"serodynamics"</span>, <span class="st">"extdata/model.jags"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    nchain <span class="op">=</span> <span class="fl">4</span>, <span class="co"># Number of mcmc chains to run</span></span></span>
+<span class="r-in"><span>    nchain <span class="op">=</span> <span class="fl">2</span>, <span class="co"># Number of mcmc chains to run</span></span></span>
 <span class="r-in"><span>    nadapt <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of adaptations to run</span></span></span>
 <span class="r-in"><span>    nburn <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of unrecorded samples before sampling begins</span></span></span>
-<span class="r-in"><span>    nmc <span class="op">=</span> <span class="fl">1000</span>,</span></span>
-<span class="r-in"><span>    niter <span class="op">=</span> <span class="fl">2000</span>, <span class="co"># Number of iterations</span></span></span>
+<span class="r-in"><span>    nmc <span class="op">=</span> <span class="fl">500</span>,</span></span>
+<span class="r-in"><span>    niter <span class="op">=</span> <span class="fl">1000</span>, <span class="co"># Number of iterations</span></span></span>
 <span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="co"># Variable to be stratified</span></span></span>
 <span class="r-in"><span><span class="fu">plot_jags_dens</span><span class="op">(</span></span></span>
 <span class="r-in"><span>    data <span class="op">=</span> <span class="va">jags_out</span>, <span class="co">#A [serodynamics::run_mod()] [list] output.</span></span></span>
-<span class="r-in"><span>    iso <span class="op">=</span> <span class="st">"hlya_IgG"</span>, <span class="co">#A [string] specifying antigen/antibody of interest.</span></span></span>
+<span class="r-in"><span>    iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span>, <span class="co">#A [string] specifying antigen/antibody of interest.</span></span></span>
 <span class="r-in"><span>    param <span class="op">=</span> <span class="st">"alpha"</span>,  <span class="co">#A [string] specifying parameter of interest.</span></span></span>
-<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span><span class="op">)</span>  <span class="co">#A [string] specifying stratification of interest.</span></span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"stratum 1"</span><span class="op">)</span>  <span class="co">#A [string] specifying stratification of interest.</span></span></span>
 <span class="r-in"><span>    <span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: dplyr</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
@@ -175,10 +171,10 @@ specified input.</p>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     extract</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Loading required package: ggplot2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Feb 18 15:08:18 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Feb 19 15:01:09 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -199,8 +195,8 @@ specified input.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
@@ -210,10 +206,10 @@ specified input.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Feb 18 15:09:04 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Feb 19 15:01:26 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -234,20 +230,21 @@ specified input.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $strat</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $strat$hlya_IgG</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in combine_vars(data, params$plot_env, vars, drop = params$drop):</span> Faceting variables must have at least one value.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`stratum 1`</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $`stratum 1`$HlyE_IgA</span>
+<span class="r-plt img"><img src="plot_jags_dens-1.png" alt="" width="700" height="433"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
