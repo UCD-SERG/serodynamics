@@ -13,12 +13,6 @@ test_that(
       mutate(strat = "stratum 1")
 
     dataset <- bind_rows(strat1, strat2)
-    dataset <- readr::read_csv(here::here() |>
-                                 fs::path("/inst/extdata/SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv")) |>
-      as_case_data(id_var = "person_id", 
-                   biomarker_var = "antigen_iso",
-                   value_var = "result",
-                   time_in_days = "dayssincefeveronset")
 
     withr::with_seed(
       1,
