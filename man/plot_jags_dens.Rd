@@ -6,9 +6,9 @@
 \usage{
 plot_jags_dens(
   data,
-  iso = unique(visualize_jags_sub$Iso_type),
-  param = unique(visualize_jags_sub$Parameter_sub),
-  strat = unique(visualize_jags$Stratification)
+  iso = unique(.data$curve_params$Iso_type),
+  param = unique(.data$curve_params$Parameter_sub),
+  strat = unique(.data$curve_params$Stratification)
 )
 }
 \arguments{
@@ -30,8 +30,6 @@ entered with quotes. Options include:
 
 \item{strat}{Specify \link{string} to produce plots of specific stratification
 entered in quotes.}
-
-\item{name}{description}
 }
 \value{
 A \link{list} of \link{ggplot} objects producing density plots for all the
@@ -70,18 +68,18 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
   jags_out <- run_mod(
     data = Dataset, # The data set input
     file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-    nchain = 4, # Number of mcmc chains to run
+    nchain = 2, # Number of mcmc chains to run
     nadapt = 100, # Number of adaptations to run
     nburn = 100, # Number of unrecorded samples before sampling begins
-    nmc = 1000,
-    niter = 2000, # Number of iterations
+    nmc = 500,
+    niter = 1000, # Number of iterations
     strat = "strat"
   ) # Variable to be stratified
 plot_jags_dens(
     data = jags_out, #A [serodynamics::run_mod()] [list] output.
-    iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
+    iso = "HlyE_IgA", #A [string] specifying antigen/antibody of interest.
     param = "alpha",  #A [string] specifying parameter of interest.
-    strat = "strat")  #A [string] specifying stratification of interest.
+    strat = "stratum 1")  #A [string] specifying stratification of interest.
     }
 }
 \author{

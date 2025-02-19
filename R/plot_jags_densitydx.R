@@ -13,7 +13,6 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param name description
 #' @param data A [base::list()] outputted from run_mod().
 #' @param iso Specify [string] to produce plots of only a specific
 #' antigen/antibody combination, entered with quotes. Default outputs all
@@ -48,24 +47,24 @@
 #'   jags_out <- run_mod(
 #'     data = Dataset, # The data set input
 #'     file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-#'     nchain = 4, # Number of mcmc chains to run
+#'     nchain = 2, # Number of mcmc chains to run
 #'     nadapt = 100, # Number of adaptations to run
 #'     nburn = 100, # Number of unrecorded samples before sampling begins
-#'     nmc = 1000,
-#'     niter = 2000, # Number of iterations
+#'     nmc = 500,
+#'     niter = 1000, # Number of iterations
 #'     strat = "strat"
 #'   ) # Variable to be stratified
 #' plot_jags_dens(
 #'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "hlya_IgG", #A [string] specifying antigen/antibody of interest.
+#'     iso = "HlyE_IgA", #A [string] specifying antigen/antibody of interest.
 #'     param = "alpha",  #A [string] specifying parameter of interest.
-#'     strat = "strat")  #A [string] specifying stratification of interest.
+#'     strat = "stratum 1")  #A [string] specifying stratification of interest.
 #'     }
 
 plot_jags_dens <- function(data,
-                           iso = unique(.data$Iso_type),
-                           param = unique(.data$Parameter_sub),
-                           strat = unique(.data$$Stratification)) {
+                           iso = unique(.data$curve_params$Iso_type),
+                           param = unique(.data$curve_params$Parameter_sub),
+                           strat = unique(.data$curve_params$Stratification)) {
   visualize_jags <- data[["curve_params"]]
   attributes_jags <- data[["attributes"]]
 
