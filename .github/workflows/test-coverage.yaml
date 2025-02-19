@@ -45,6 +45,14 @@ jobs:
           find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
+      - name: Upload artifacts
+        if: failure()
+        uses: actions/upload-artifact@v4
+        # https://github.com/actions/upload-artifact?tab=readme-ov-file
+        with:
+          name: coverage-test-failures
+          path: ${{ runner.temp }}/package
+
       - uses: codecov/codecov-action@v4
         with:
           # Fail if error if not on PR, or if on PR and token is given
@@ -54,10 +62,3 @@ jobs:
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - name: Upload artifacts
-        if: failure()
-        uses: actions/upload-artifact@v4
-        # https://github.com/actions/upload-artifact?tab=readme-ov-file
-        with:
-          name: coverage-test-failures
-          path: ${{ runner.temp }}/package
