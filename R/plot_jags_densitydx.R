@@ -63,9 +63,9 @@
 #'     }
 
 plot_jags_dens <- function(data,
-                           iso = unique(visualize_jags_sub$Iso_type),
-                           param = unique(visualize_jags_sub$Parameter_sub),
-                           strat = unique(visualize_jags$Stratification)) {
+                           iso = unique(.data$Iso_type),
+                           param = unique(.data$Parameter_sub),
+                           strat = unique(.data$$Stratification)) {
   visualize_jags <- data[["curve_params"]]
   attributes_jags <- data[["attributes"]]
 
