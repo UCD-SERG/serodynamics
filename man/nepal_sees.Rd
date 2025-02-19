@@ -7,7 +7,7 @@
 \format{
 \subsection{\code{nepal_sees}}{
 
-A \code{\link[=base:data.frame]{base:data.frame()}} with 904 rows and 8 columns:
+A \code{\link[base:data.frame]{base::data.frame()}} with 904 rows and 8 columns:
 \describe{
 \item{Country}{Country name}
 \item{person_id}{ID identifying a study participant}

@@ -6,7 +6,7 @@
 #' data from Nepal.
 #'
 #' @format ## `nepal_sees`
-#' A [base:data.frame()] with 904 rows and 8 columns:
+#' A [base::data.frame()] with 904 rows and 8 columns:
 #' \describe{
 #'  \item{Country}{Country name}
 #'  \item{person_id}{ID identifying a study participant}
@@ -20,5 +20,6 @@
 #'  since symptom onset}
 #'  \item{result}{Continuous variable describing ELISA result}
 #' }
-#' @source Link to SEES study?
+#' @source reference study: https://www.thelancet.com/journals/lanmic/article
+#' /PIIS2666-5247(22)00114-8/fulltext
 "nepal_sees"
