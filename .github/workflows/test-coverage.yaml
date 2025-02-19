@@ -75,8 +75,9 @@ jobs:
         with:
           # Fail if error if not on PR, or if on PR and token is given
           fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
-          file: ./cobertura.xml
-          plugin: noop
+          # renamed from `file` and `plugin`; see https://github.com/codecov/codecov-action?tab=readme-ov-file#migration-guide
+          files: ./cobertura.xml
+          plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
 
