@@ -24,7 +24,8 @@ since symptom onset}
 }
 }
 \source{
-Link to SEES study?
+reference study: https://www.thelancet.com/journals/lanmic/article
+/PIIS2666-5247(22)00114-8/fulltext
 }
 \usage{
 nepal_sees
