@@ -35,7 +35,7 @@ as_case_data <- function(
   data |>
     tibble::as_tibble() |>
     dplyr::mutate(
-      .by = id_var,
+      .by = all_of(c(id_var, biomarker_var)),
       visit_num = dplyr::row_number()
     ) |>
     serocalculator::set_id_var(id_var) |>
