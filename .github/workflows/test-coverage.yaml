@@ -34,12 +34,14 @@ jobs:
             clean = FALSE,
             install_path = file.path(normalizePath(Sys.getenv("RUNNER_TEMP"), winslash = "/"), "package")
           )
+          print(cov)
           covr::to_cobertura(cov)
         shell: Rscript {0}
 
       - uses: codecov/codecov-action@v4
         with:
-          fail_ci_if_error: ${{ github.event_name != 'pull_request' && true || false }}
+          # Fail if error if not on PR, or if on PR and token is given
+          fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
           file: ./cobertura.xml
           plugin: noop
           disable_search: true
@@ -52,16 +54,10 @@ jobs:
           find '${{ runner.temp }}/package' -name 'testthat.Rout*' -exec cat '{}' \; || true
         shell: bash
 
-      - name: Upload test results
+      - name: Upload artifacts
         if: failure()
         uses: actions/upload-artifact@v4
+        # https://github.com/actions/upload-artifact?tab=readme-ov-file
         with:
           name: coverage-test-failures
           path: ${{ runner.temp }}/package
-      
-      # following https://app.codecov.io/gh/UCD-SERG/serodynamics/tests/new
-      - name: Upload test results to Codecov
-        if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@v1
-        with:
-          token: ${{ secrets.CODECOV_TOKEN }}

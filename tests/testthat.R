@@ -9,4 +9,6 @@
 library(testthat)
 library(serodynamics)
 
-test_check("serodynamics")
+test_check("serodynamics",
+           stop_on_warning = TRUE,
+           stop_on_error = TRUE)
