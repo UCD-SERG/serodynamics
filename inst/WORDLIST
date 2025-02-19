@@ -4,6 +4,7 @@ Codecov
 JAGs
 Lifecycle
 ORCID
+PIIS
 Postprocess
 Schildhauer
 bayesian
@@ -11,12 +12,15 @@ behaviour
 biomarker
 biomarkers
 dobson
+fulltext
 geoms
 ggproto
+https
 hyp
 iso
 isotype
 isotypes
+lanmic
 mcmc
 newperson
 nmc
@@ -24,5 +28,7 @@ params
 prec
 seroconversion
 seroresponse
+thelancet
 unstratified
 wishdf
+www
