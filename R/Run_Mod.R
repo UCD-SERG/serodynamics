@@ -20,7 +20,8 @@
 #' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat
-#' A [string] specifying the stratification variable, entered in quotes.
+#' A [character] string specifying the stratification variable, 
+#' entered in quotes.
 #' @return
 #' - A jags.post [list()] object or multiple jags.post [list()]
 #' if stratified. Returned as a [list()] of class [runjags::runjags-class]
