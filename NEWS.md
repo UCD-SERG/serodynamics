@@ -5,6 +5,7 @@
 ## New features
 
 * Diagnostic function to produce density plots with stratification (#27)
+* Added SEES data set data folder and documentation (#41)
 * `as_case_data()` now creates column `visit_num` (#47, #50)
 * Added `postprocess_jags_output()` to API (#33)
 * Added `initsfunction()` to API (#37)
@@ -34,3 +35,6 @@ to prevent them from getting linted as R files (#34)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
 
+# serodynamics 0.0.0
+
+Started development.
