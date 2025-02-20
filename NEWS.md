@@ -34,3 +34,6 @@ to prevent them from getting linted as R files (#34)
 * Added units tests for `prep_data()`, `sim_case_data()` (#18)
 * Added various GitHub Actions (#10, #15, #18)
 
+# serodynamics 0.0.0
+
+Started development.
