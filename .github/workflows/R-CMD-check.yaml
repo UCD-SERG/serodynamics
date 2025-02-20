@@ -80,6 +80,7 @@ jobs:
            library(rjags)
            library(runjags)
            runjags::findJAGS()
+           runjags::testjags()
         shell: Rscript {0}
         
       - name: "install rjags not-mac"
@@ -92,6 +93,7 @@ jobs:
            library(rjags)
            library(runjags)
            runjags::findJAGS()
+           runjags::testjags()
         shell: Rscript {0}
       
       - uses: r-lib/actions/check-r-package@HEAD
