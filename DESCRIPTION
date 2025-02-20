@@ -4,7 +4,7 @@ Version: 0.0.0.9018
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
-    person("Samuel", "Schildhauer", role = "aut"),
+    person("Samuel", "Schildhauer", role = c("aut", "cre")),
     person("Kwan Ho", "Lee", role = "ctb"),
     person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
     person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
