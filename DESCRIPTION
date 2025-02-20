@@ -30,6 +30,7 @@ Suggests:
     Hmisc,
     knitr,
     readr,
+    rlist,
     spelling,
     testthat (>= 3.0.0),
     tidyverse,
@@ -51,7 +52,8 @@ Config/needs/test:
     readr, 
     ssdtools, 
     magrittr, 
-    readr
+    readr,
+    rlist
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
