@@ -57,11 +57,11 @@
 #' plot_jags_dens(
 #'     data = jags_out, #A [serodynamics::run_mod()] [base::list()] output.
 #'     iso = "HlyE_IgA", #A [base::character()] string specifying
-#'     antigen/antibody of interest.
+#'     #nantigen/antibody of interest.
 #'     param = "alpha",  #A [base::character()] string specifying parameter of
-#'     interest.
+#'     # interest.
 #'     strat = "stratum 1")  #A [base::character()] string specifying
-#'     stratification of interest.
+#'     # stratification of interest.
 #'     }
 
 plot_jags_dens <- function(data,
