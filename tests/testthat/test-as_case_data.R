@@ -19,7 +19,11 @@ test_that(
       )
 
     test_obj |>
+      attributes() |>
+      listr::list_remove("row.names") |>
       expect_snapshot_value(style = "deparse")
+    
+    test_obj |> ssdtools:::expect_snapshot_data(name = "sim-data")
   }
 )
 
@@ -40,6 +44,10 @@ test_that(
       )
     
     dataset |>
+      attributes() |>
+      listr::list_remove("row.names") |>
       expect_snapshot_value(style = "deparse")
+    
+    dataset |> ssdtools:::expect_snapshot_data(name = "sees-data")
   }
 )
