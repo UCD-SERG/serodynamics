@@ -52,7 +52,7 @@ Config/needs/test:
     ssdtools, 
     magrittr, 
     readr,
-    listr,
+    rlist,
     testthat (>= 3.0.0)
 Config/needs/check: commonmark, xml2
 Remotes: 
