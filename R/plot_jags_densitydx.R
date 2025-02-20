@@ -14,20 +14,20 @@
 #'  - r = shape parameter
 #'  - alpha = decay rate
 #' @param data A [base::list()] outputted from run_mod().
-#' @param iso Specify [string] to produce plots of only a specific
-#' antigen/antibody combination, entered with quotes. Default outputs all
-#' antigen/antibody combinations.
-#' @param param Specify [string] to produce plots of only a specific parameter,
-#' entered with quotes. Options include:
+#' @param iso Specify [base::character()] string to produce plots of only a
+#' specific antigen/antibody combination, entered with quotes. Default outputs
+#' all antigen/antibody combinations.
+#' @param param Specify [base::character()] string to produce plots of only a
+#' specific parameter, entered with quotes. Options include:
 #' - `alpha` = posterior estimate of decay rate
 #' - `r` = posterior estimate of shape parameter
 #' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
-#' @param strat Specify [string] to produce plots of specific stratification
-#' entered in quotes.
-#' @return A [list] of [ggplot] objects producing density plots for all the
-#' specified input.
+#' @param strat Specify [base::character()] string to produce plots of specific
+#' stratification entered in quotes.
+#' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
+#' plots for all the specified input.
 #' @export
 #' @examples
 #' if (!is.element(runjags::findjags(), c("", NULL))) {
@@ -55,10 +55,13 @@
 #'     strat = "strat"
 #'   ) # Variable to be stratified
 #' plot_jags_dens(
-#'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "HlyE_IgA", #A [string] specifying antigen/antibody of interest.
-#'     param = "alpha",  #A [string] specifying parameter of interest.
-#'     strat = "stratum 1")  #A [string] specifying stratification of interest.
+#'     data = jags_out, #A [serodynamics::run_mod()] [base::list()] output.
+#'     iso = "HlyE_IgA", #A [base::character()] string specifying
+#'     antigen/antibody of interest.
+#'     param = "alpha",  #A [base::character()] string specifying parameter of
+#'     interest.
+#'     strat = "stratum 1")  #A [base::character()] string specifying
+#'     stratification of interest.
 #'     }
 
 plot_jags_dens <- function(data,

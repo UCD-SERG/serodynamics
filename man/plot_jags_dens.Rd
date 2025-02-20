@@ -14,12 +14,12 @@ plot_jags_dens(
 \arguments{
 \item{data}{A \code{\link[base:list]{base::list()}} outputted from run_mod().}
 
-\item{iso}{Specify \link{string} to produce plots of only a specific
-antigen/antibody combination, entered with quotes. Default outputs all
-antigen/antibody combinations.}
+\item{iso}{Specify \code{\link[base:character]{base::character()}} string to produce plots of only a
+specific antigen/antibody combination, entered with quotes. Default outputs
+all antigen/antibody combinations.}
 
-\item{param}{Specify \link{string} to produce plots of only a specific parameter,
-entered with quotes. Options include:
+\item{param}{Specify \code{\link[base:character]{base::character()}} string to produce plots of only a
+specific parameter, entered with quotes. Options include:
 \itemize{
 \item \code{alpha} = posterior estimate of decay rate
 \item \code{r} = posterior estimate of shape parameter
@@ -28,12 +28,12 @@ entered with quotes. Options include:
 \item \code{y1} = posterior estimate of peak antibody concentration
 }}
 
-\item{strat}{Specify \link{string} to produce plots of specific stratification
-entered in quotes.}
+\item{strat}{Specify \code{\link[base:character]{base::character()}} string to produce plots of specific
+stratification entered in quotes.}
 }
 \value{
-A \link{list} of \link{ggplot} objects producing density plots for all the
-specified input.
+A \code{\link[base:list]{base::list()}} of \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} objects producing density
+plots for all the specified input.
 }
 \description{
 plot_jags_dens() takes a \link{list} output from \code{\link[=run_mod]{run_mod()}}
