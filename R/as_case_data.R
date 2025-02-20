@@ -40,7 +40,7 @@ as_case_data <- function(
     ) |>
     serocalculator::set_id_var(id_var) |>
     structure(
-      class = c("case_data", class(data)),
+      class = union("case_data", class(data)),
       biomarker_var = biomarker_var,
       timeindays = time_in_days,
       value_var = value_var
