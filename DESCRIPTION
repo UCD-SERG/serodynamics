@@ -53,8 +53,7 @@ Config/needs/test:
     ssdtools, 
     magrittr, 
     readr,
-    rlist,
-    testthat (>= 3.0.0)
+    rlist
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
