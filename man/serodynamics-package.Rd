@@ -18,7 +18,19 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: First Last \email{first.last@example.com} (\href{https://orcid.org/YOUR-ORCID-ID}{ORCID})
+\strong{Maintainer}: Samuel Schildhauer
+
+Authors:
+\itemize{
+  \item Peter Teunis \email{p.teunis@emory.edu} (Author of the method and original code.) [copyright holder]
+  \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu}
+  \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu}
+}
+
+Other contributors:
+\itemize{
+  \item Kwan Ho Lee [contributor]
+}
 
 }
 \keyword{internal}
