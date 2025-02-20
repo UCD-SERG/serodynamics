@@ -6,9 +6,9 @@
 \usage{
 plot_jags_dens(
   data,
-  iso = unique(.data$curve_params$Iso_type),
-  param = unique(.data$curve_params$Parameter_sub),
-  strat = unique(.data$curve_params$Stratification)
+  iso = unique(data$curve_params$Iso_type),
+  param = unique(data$curve_params$Parameter_sub),
+  strat = unique(data$curve_params$Stratification)
 )
 }
 \arguments{
