@@ -3,25 +3,22 @@ test_that(
   code = {
     skip_on_os(c("windows", "linux"))
     library(runjags)
-    
-    set.seed(1)
+    withr::local_seed(1)
     library(dplyr)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
                     antigen_isos = "HlyE_IgA") |>
       mutate(strat = "stratum 2")
-    set.seed(2)
+    withr::local_seed(2)
     strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
                     antigen_isos = "HlyE_IgA") |>
       mutate(strat = "stratum 1")
-    
     dataset <- bind_rows(strat1, strat2)
-    
     withr::with_seed(
       1,
       code = {
-        set.seed(1)
+        withr::local_seed(1)
         results <- run_mod(
           data = dataset, # The data set input
           file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
@@ -36,7 +33,9 @@ test_that(
           magrittr::use_series("curve_params")
         
         results |>
-          expect_snapshot_value(style = "serialize")
+          attributes() |>
+          rlist::list.remove("row.names") |>
+          expect_snapshot_value(style = "deparse")
         
         results |>
           ssdtools:::expect_snapshot_data("sim-strat-curve-params")
@@ -50,16 +49,12 @@ test_that(
   desc = "results are consistent with SEES data",
   code = {
     skip_on_os(c("windows", "linux"))
-    set.seed(1)
+    withr::local_seed(1)
     library(runjags)
     dataset <- serodynamics_example(
       "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
     ) |>
       readr::read_csv() |>
-      dplyr::mutate(
-        .by = person_id,
-        visit_num = dplyr::row_number()
-      ) |>
       as_case_data(
         id_var = "person_id",
         biomarker_var = "antigen_iso",
@@ -81,7 +76,9 @@ test_that(
       magrittr::use_series("curve_params")
 
     results |>
-      expect_snapshot_value(style = "serialize")
+      attributes() |>
+      rlist::list.remove("row.names") |>
+      expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("strat-curve-params")
@@ -92,7 +89,7 @@ test_that(
   desc = "results are consistent with unstratified SEES data",
   code = {
     skip_on_os(c("windows", "linux"))
-    set.seed(1)
+    withr::local_seed(1)
     library(runjags)
     dataset <- serodynamics_example(
       "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
@@ -123,7 +120,9 @@ test_that(
       magrittr::use_series("curve_params")
 
     results |>
-      expect_snapshot_value(style = "serialize")
+      attributes() |>
+      rlist::list.remove("row.names") |>
+      expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("nostrat-curve-params")
