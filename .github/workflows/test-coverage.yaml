@@ -46,7 +46,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: any::covr, any::xml2
-          needs: coverage
+          needs: test, coverage
       
       - name: "install rjags Mac"
         if: runner.os == 'macOS'
