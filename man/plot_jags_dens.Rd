@@ -76,10 +76,13 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     strat = "strat"
   ) # Variable to be stratified
 plot_jags_dens(
-    data = jags_out, #A [serodynamics::run_mod()] [list] output.
-    iso = "HlyE_IgA", #A [string] specifying antigen/antibody of interest.
-    param = "alpha",  #A [string] specifying parameter of interest.
-    strat = "stratum 1")  #A [string] specifying stratification of interest.
+    data = jags_out, #A [serodynamics::run_mod()] [base::list()] output.
+    iso = "HlyE_IgA", #A [base::character()] string specifying
+    antigen/antibody of interest.
+    param = "alpha",  #A [base::character()] string specifying parameter of
+    interest.
+    strat = "stratum 1")  #A [base::character()] string specifying
+    stratification of interest.
     }
 }
 \author{
