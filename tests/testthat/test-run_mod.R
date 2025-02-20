@@ -33,7 +33,9 @@ test_that(
           magrittr::use_series("curve_params")
         
         results |>
-          expect_snapshot_value(style = "serialize")
+          attributes() |>
+          rlist::list.remove("row.names") |>
+          expect_snapshot_value(style = "deparse")
         
         results |>
           ssdtools:::expect_snapshot_data("sim-strat-curve-params")
@@ -74,7 +76,9 @@ test_that(
       magrittr::use_series("curve_params")
 
     results |>
-      expect_snapshot_value(style = "serialize")
+      attributes() |>
+      rlist::list.remove("row.names") |>
+      expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("strat-curve-params")
@@ -116,7 +120,9 @@ test_that(
       magrittr::use_series("curve_params")
 
     results |>
-      expect_snapshot_value(style = "serialize")
+      attributes() |>
+      rlist::list.remove("row.names") |>
+      expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("nostrat-curve-params")
