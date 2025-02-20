@@ -19,7 +19,7 @@ reference:
   - load_data
   - as_case_data
   - prep_data
-  title: Model diagnostics
+- title: Model diagnostics
   contents:
   - plot_jags_dens
 - title: Visualize data
