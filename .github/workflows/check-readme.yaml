@@ -40,17 +40,7 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          pak-version: devel
-          upgrade: "TRUE"
-          extra-packages: |
-            local::.
-            any::gghalves
-            any::ggplot2
-            any::ggridges
-            any::ggbeeswarm
-            any::PairedData
-            any::metaviz
-            any::metaplus
+          extra-packages: local::.
 
       - name: Render README
         run: |

@@ -1,9 +1,21 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
+<<<<<<< HEAD
 Version: 0.0.0.9019
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
+=======
+Version: 0.0.0.9018
+Authors@R: c(
+    person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
+           comment = "Author of the method and original code."),
+    person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre")),
+    person("Kwan Ho", "Lee", role = "ctb"),
+    person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
+    person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
+  )
+>>>>>>> 38ca69b7fb978e47939504fbbf5d8e83e5efe1ad
 Description: What the package does (one paragraph).
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -57,4 +69,7 @@ Config/needs/test:
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
+Depends: 
+    R (>= 4.1.0)
+LazyData: true
 VignetteBuilder: knitr
