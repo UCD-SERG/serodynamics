@@ -64,7 +64,7 @@ jobs:
       - uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: any::rcmdcheck
-          needs: check
+          needs: test, check
       
       - name: "install rjags Mac"
         if: runner.os == 'macOS'
@@ -80,6 +80,7 @@ jobs:
            library(rjags)
            library(runjags)
            runjags::findJAGS()
+           runjags::testjags()
         shell: Rscript {0}
         
       - name: "install rjags not-mac"
@@ -92,6 +93,7 @@ jobs:
            library(rjags)
            library(runjags)
            runjags::findJAGS()
+           runjags::testjags()
         shell: Rscript {0}
       
       - uses: r-lib/actions/check-r-package@HEAD
