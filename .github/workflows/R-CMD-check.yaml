@@ -99,5 +99,6 @@ jobs:
       - uses: r-lib/actions/check-r-package@HEAD
         with:
           upload-snapshots: true
-          error-on: '"warning"'
+          # see `rcmdcheck::rcmdcheck()` `error_on` argument
+          error-on: '"note"'
           build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
