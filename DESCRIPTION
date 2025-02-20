@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9017
+Version: 0.0.0.9018
 Authors@R: 
     person("First", "Last", , "first.last@example.com", role = c("aut", "cre"),
            comment = c(ORCID = "YOUR-ORCID-ID"))
@@ -57,4 +57,7 @@ Config/needs/test:
 Config/needs/check: commonmark, xml2
 Remotes: 
     ucd-serg/serocalculator
+Depends: 
+    R (>= 4.1.0)
+LazyData: true
 VignetteBuilder: knitr

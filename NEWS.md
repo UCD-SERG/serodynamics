@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added SEES data set data folder and documentation (#41)
 * `as_case_data()` now creates column `visit_num` (#47, #50)
 * Added `postprocess_jags_output()` to API (#33)
 * Added `initsfunction()` to API (#37)
