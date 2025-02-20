@@ -18,7 +18,7 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Samuel Schildhauer
+\strong{Maintainer}: Samuel Schildhauer \email{sschildhauer@ucdavis.edu}
 
 Authors:
 \itemize{
