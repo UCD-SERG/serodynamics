@@ -34,9 +34,13 @@ as_case_data <- function(
     time_in_days = "timeindays") {
   data |>
     tibble::as_tibble() |>
+    dplyr::mutate(
+      .by = all_of(c(id_var, biomarker_var)),
+      visit_num = dplyr::row_number()
+    ) |>
     serocalculator::set_id_var(id_var) |>
     structure(
-      class = c("case_data", class(data)),
+      class = union("case_data", class(data)),
       biomarker_var = biomarker_var,
       timeindays = time_in_days,
       value_var = value_var
