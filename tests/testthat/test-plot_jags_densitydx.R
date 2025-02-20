@@ -26,9 +26,9 @@ test_that(
           nmc = 100,
           niter = 100, #Number of iterations
           strat = "strat"
-        ) #Variable to be stratified
-        results <- plot_jags_dens(results) |> #Running diagnostic plots
+        )  |>
           suppressWarnings()
+        results <- plot_jags_dens(results)
       }
     ) |>
       # Testing for any errors
