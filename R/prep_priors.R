@@ -32,7 +32,7 @@ prep_priors <- function(max_antigens) {
   prec_logy_hyp <- array(NA, dim = c(max_antigens, 2))
 
   # Fill parameter arrays
-  the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
+ # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
   for (k.test in 1:max_antigens) {
     mu_hyp[k.test, ] <- c(1.0, 7.0, 1.0, -4.0, -1.0)
     prec_hyp[k.test, , ] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))
