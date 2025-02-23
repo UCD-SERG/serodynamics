@@ -13,18 +13,18 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param data A [base::list()] outputted from run_mod().
-#' @param iso Specify [base::character()] string to produce plots of only a
+#' @param data A [list] outputted from run_mod().
+#' @param iso Specify [character] string to produce plots of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
-#' @param param Specify [base::character()] string to produce plots of only a
+#' @param param Specify [character] string to produce plots of only a
 #' specific parameter, entered with quotes. Options include:
 #' - `alpha` = posterior estimate of decay rate
 #' - `r` = posterior estimate of shape parameter
 #' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
-#' @param strat Specify [base::character()] string to produce plots of specific
+#' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
 #' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
 #' plots for all the specified input.
@@ -55,12 +55,12 @@
 #'     strat = "strat"
 #'   ) # Variable to be stratified
 #' plot_jags_dens(
-#'     data = jags_out, #A [serodynamics::run_mod()] [base::list()] output.
-#'     iso = "HlyE_IgA", #A [base::character()] string specifying
+#'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
+#'     iso = "HlyE_IgA", #A [character] string specifying
 #'     #nantigen/antibody of interest.
-#'     param = "alpha",  #A [base::character()] string specifying parameter of
+#'     param = "alpha",  #A [character] string specifying parameter of
 #'     # interest.
-#'     strat = "stratum 1")  #A [base::character()] string specifying
+#'     strat = "stratum 1")  #A [character] string specifying
 #'     # stratification of interest.
 #'     }
 
