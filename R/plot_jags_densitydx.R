@@ -1,5 +1,7 @@
 
-#' @title Density Plot Diagnostics
+#' @title Model diagnostics
+#' contents:
+#'  - plot_jags_dens
 #' @author Sam Schildhauer
 #' @description
 #'  plot_jags_dens() takes a [list] output from [serodynamics::run_mod()]
