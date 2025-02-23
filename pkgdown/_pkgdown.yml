@@ -19,9 +19,6 @@ reference:
   - load_data
   - as_case_data
   - prep_data
-- title: Model diagnostics
-  contents:
-  - plot_jags_dens
 - title: Visualize data
   contents:
   - autoplot.case_data
@@ -32,6 +29,9 @@ reference:
 - title: Model seroreponse
   contents:
   - run_mod
+- title: Model diagnostics
+  contents:
+  - plot_jags_dens
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
