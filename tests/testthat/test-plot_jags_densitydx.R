@@ -17,7 +17,7 @@ test_that(
     withr::with_seed(
       1,
       code = {
-        results <- run_mod(
+        test_typhoid_data <- run_mod(
           data = dataset, #The data set input
           file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
           nchain = 2, #Number of mcmc chains to run
@@ -36,6 +36,6 @@ test_that(
     # Test to ensure output is a list object
     expect_true(is.list(results))
     # Test to ensure that a piece of the list is a ggplot object
-    expect_true(ggplot2::is.ggplot(results$`stratum 1`$HlyE_IgA))
+    vdiffr::expect_doppelganger(results$`stratum 1`$HlyE_IgA)
   }
 )
