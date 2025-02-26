@@ -12,13 +12,13 @@ plot_jags_dens(
 )
 }
 \arguments{
-\item{data}{A \code{\link[base:list]{base::list()}} outputted from run_mod().}
+\item{data}{A \link{list} outputted from run_mod().}
 
-\item{iso}{Specify \code{\link[base:character]{base::character()}} string to produce plots of only a
+\item{iso}{Specify \link{character} string to produce plots of only a
 specific antigen/antibody combination, entered with quotes. Default outputs
 all antigen/antibody combinations.}
 
-\item{param}{Specify \code{\link[base:character]{base::character()}} string to produce plots of only a
+\item{param}{Specify \link{character} string to produce plots of only a
 specific parameter, entered with quotes. Options include:
 \itemize{
 \item \code{alpha} = posterior estimate of decay rate
@@ -28,7 +28,7 @@ specific parameter, entered with quotes. Options include:
 \item \code{y1} = posterior estimate of peak antibody concentration
 }}
 
-\item{strat}{Specify \code{\link[base:character]{base::character()}} string to produce plots of specific
+\item{strat}{Specify \link{character} string to produce plots of specific
 stratification entered in quotes.}
 }
 \value{
@@ -76,12 +76,12 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     strat = "strat"
   ) # Variable to be stratified
 plot_jags_dens(
-    data = jags_out, #A [serodynamics::run_mod()] [base::list()] output.
-    iso = "HlyE_IgA", #A [base::character()] string specifying
+    data = jags_out, #A [serodynamics::run_mod()] [list] output.
+    iso = "HlyE_IgA", #A [character] string specifying
     #nantigen/antibody of interest.
-    param = "alpha",  #A [base::character()] string specifying parameter of
+    param = "alpha",  #A [character] string specifying parameter of
     # interest.
-    strat = "stratum 1")  #A [base::character()] string specifying
+    strat = "stratum 1")  #A [character] string specifying
     # stratification of interest.
     }
 }
