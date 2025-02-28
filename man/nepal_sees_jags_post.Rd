@@ -11,28 +11,9 @@ A jags.post \link{list} object or multiple jags.post \link{list}
 if stratified. Returned as a \link{list} of class \link[runjags:runjags-class]{runjags::runjags}
 \describe{
 \item{curve_params}{A \link{data.frame} titled \code{curve_params} that contains the
-posterior distribution will be exported with the following attributes:
-\itemize{
-\item \code{iteration} = number of sampling iterations.
-\item \code{chain} = number of mcmc chains run; between 1 and 4.
-\item \code{indexid} = "newperson", indicating posterior distribution.
-\item \code{antigen_iso} = antibody/antigen type combination being evaluated
-\item \code{alpha} = posterior estimate of decay rate
-\item \code{r} = posterior estimate of shape parameter
-\item \code{t1} = posterior estimate of time to peak
-\item \code{y0} = posterior estimate of baseline antibody concentration
-\item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable that jags was stratified by}
+posterior distribution}
 \item{jags.post}{An object with class \link[runjags:runjags-package]{runjags::runjags}}
-\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs,
-including:
-\item \code{class}: Class of the output object.
-\item \code{nChain}: Number of chains run.
-\item \code{nParameters}: The amount of parameters estimated in the model.
-\item \code{nIterations}: Number of iteration specified.
-\item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc)}
-}
+\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
 }
 }
 }
