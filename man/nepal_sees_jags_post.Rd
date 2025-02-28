@@ -37,6 +37,7 @@ including:
 }
 }
 }
+}
 \source{
 reference study: \url{https://doi.org/10.1016/S2666-5247(22)00114-8}
 }
