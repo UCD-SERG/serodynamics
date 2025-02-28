@@ -22,8 +22,7 @@ posterior distribution will be exported with the following attributes:
 \item \code{t1} = posterior estimate of time to peak
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable that jags was stratified by
-}
+\item \verb{stratified variable} = the variable that jags was stratified by}
 \item{jags.post}{An object with class \link[runjags:runjags-package]{runjags::runjags}}
 \item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs,
 including:
@@ -32,8 +31,7 @@ including:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc)
-}
+\item \code{nThin}: Thinning number (niter/nmc)}
 }
 }
 }
@@ -45,7 +43,8 @@ reference study: \url{https://doi.org/10.1016/S2666-5247(22)00114-8}
 nepal_sees_jags_post
 }
 \description{
-An \code{\link[=run_mod]{run_mod()}} output using sees_nepal data as input, stratifying
-by bldculres, which is the diagnosis type (typhoid or paratyphoid).
+An \code{\link[=run_mod]{run_mod()}} output using sees_nepal data as input,
+stratifying by bldculres, which is the diagnosis type (typhoid or
+paratyphoid).
 }
 \keyword{datasets}

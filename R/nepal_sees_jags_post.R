@@ -21,8 +21,7 @@
 #'  - `t1` = posterior estimate of time to peak
 #'  - `y0` = posterior estimate of baseline antibody concentration
 #'  - `y1` = posterior estimate of peak antibody concentration
-#'  - `stratified variable` = the variable that jags was stratified by
-#'  }
+#'  - `stratified variable` = the variable that jags was stratified by}
 #'  \item{jags.post}{An object with class [runjags::runjags]}
 #'  \item{attributes}{A [list] of `attributes` that summarize the jags inputs,
 #'  including:
@@ -31,8 +30,7 @@
 #'  - `nParameters`: The amount of parameters estimated in the model.
 #'  - `nIterations`: Number of iteration specified.
 #'  - `nBurnin`: Number of burn ins.
-#'  - `nThin`: Thinning number (niter/nmc)
-#'  }
+#'  - `nThin`: Thinning number (niter/nmc)}
 #'  }
 #' @source reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
 "nepal_sees_jags_post"
