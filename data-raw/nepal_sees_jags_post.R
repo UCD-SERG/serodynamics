@@ -20,5 +20,7 @@ nepal_sees_jags_post <- run_mod(
   niter = 1000, # Number of iterations
   strat = "bldculres" # Stratification
 ) 
+# Jags post was taken out to minimize size of file.
+nepal_sees_jags_post$jags.post <- NULL
 
 usethis::use_data(nepal_sees_jags_post, overwrite = TRUE)
