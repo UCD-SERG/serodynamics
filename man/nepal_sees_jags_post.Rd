@@ -7,12 +7,10 @@
 \format{
 \subsection{\code{nepal_sees_jags_post}}{
 
-A jags.post \link{list} object or multiple jags.post \link{list}
-if stratified. Returned as a \link{list} of class \link[runjags:runjags-class]{runjags::runjags}
+A \link{list} consisting of the following named elements:
 \describe{
 \item{curve_params}{A \link{data.frame} titled \code{curve_params} that contains the
 posterior distribution}
-\item{jags.post}{An object with class \link[runjags:runjags-package]{runjags::runjags}}
 \item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
 }
 }
