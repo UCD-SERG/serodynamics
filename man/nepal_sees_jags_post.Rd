@@ -22,8 +22,10 @@ reference study: \url{https://doi.org/10.1016/S2666-5247(22)00114-8}
 nepal_sees_jags_post
 }
 \description{
-A \code{\link[=run_mod]{run_mod()}} output using sees_nepal data as input,
-stratifying by bldculres, which is the diagnosis type (typhoid or
+A \code{\link[=run_mod]{run_mod()}} output
+using the \link{nepal_sees} example data set as input
+and stratifying by column \code{"bldculres"},
+which is the diagnosis type (typhoid or
 paratyphoid).
 }
 \keyword{datasets}
