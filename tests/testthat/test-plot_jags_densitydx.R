@@ -4,7 +4,6 @@ test_that(
   code = {
     library(runjags)
     library(dplyr)
-    library(here)
     set.seed(1)
 
     data <- serodynamics::nepal_sees_jags_post
