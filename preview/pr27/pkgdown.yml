@@ -3,7 +3,7 @@ pkgdown: 2.1.1.9000
 pkgdown_sha: c368449915114c062dd25cb6b3f623f149f90c8c
 articles:
   dobson: dobson.html
-last_built: 2025-03-02T15:33Z
+last_built: 2025-03-02T15:36Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr27/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr27/articles
