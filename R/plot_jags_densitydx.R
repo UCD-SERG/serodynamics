@@ -33,34 +33,18 @@
 #' if (!is.element(runjags::findjags(), c("", NULL))) {
 #'   library(runjags)
 #'   library(ggmcmc)
-#'   set.seed(1)
 #'   library(dplyr)
-#'   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-#'     sim_case_data(n = 100) |>
-#'     mutate(strat = "stratum 2")
-#'   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-#'     sim_case_data(n = 100) |>
-#'     mutate(strat = "stratum 1")
+#'   set.seed(1)
 #'
-#'   Dataset <- bind_rows(strat1, strat2)
+#'   data <- serodynamics::nepal_sees_jags_post
 #'
-#'   jags_out <- run_mod(
-#'     data = Dataset, # The data set input
-#'     file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-#'     nchain = 2, # Number of mcmc chains to run
-#'     nadapt = 100, # Number of adaptations to run
-#'     nburn = 100, # Number of unrecorded samples before sampling begins
-#'     nmc = 500,
-#'     niter = 1000, # Number of iterations
-#'     strat = "strat"
-#'   ) # Variable to be stratified
 #' plot_jags_dens(
-#'     data = jags_out, #A [serodynamics::run_mod()] [list] output.
+#'     data = data, #A [serodynamics::run_mod()] [list] output.
 #'     iso = "HlyE_IgA", #A [character] string specifying
 #'     #nantigen/antibody of interest.
 #'     param = "alpha",  #A [character] string specifying parameter of
 #'     # interest.
-#'     strat = "stratum 1")  #A [character] string specifying
+#'     strat = "typhi")  #A [character] string specifying
 #'     # stratification of interest.
 #'     }
 
