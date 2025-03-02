@@ -22,7 +22,7 @@ reference study: \url{https://doi.org/10.1016/S2666-5247(22)00114-8}
 nepal_sees_jags_post
 }
 \description{
-An \code{\link[=run_mod]{run_mod()}} output using sees_nepal data as input,
+A \code{\link[=run_mod]{run_mod()}} output using sees_nepal data as input,
 stratifying by bldculres, which is the diagnosis type (typhoid or
 paratyphoid).
 }

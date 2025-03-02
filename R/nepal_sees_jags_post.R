@@ -2,7 +2,7 @@
 #'
 #' SEES Typhoid run_mod jags output
 #'
-#' An [serodynamics::run_mod()] output using sees_nepal data as input, 
+#' A [serodynamics::run_mod()] output using sees_nepal data as input, 
 #' stratifying by bldculres, which is the diagnosis type (typhoid or
 #' paratyphoid).
 #'
