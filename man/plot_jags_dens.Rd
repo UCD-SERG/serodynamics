@@ -55,7 +55,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
   library(runjags)
   library(ggmcmc)
   library(dplyr)
-  set.seed(1)
 
   data <- serodynamics::nepal_sees_jags_post
 
