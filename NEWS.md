@@ -6,6 +6,7 @@
 
 * Diagnostic function to produce density plots with stratification (#27)
 * Added SEES data set data folder and documentation (#41)
+* Fixing SEES data and added jags_post for SEES (#63)
 * `as_case_data()` now creates column `visit_num` (#47, #50)
 * Added `postprocess_jags_output()` to API (#33)
 * Added `initsfunction()` to API (#37)
