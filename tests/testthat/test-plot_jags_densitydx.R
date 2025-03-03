@@ -6,7 +6,7 @@ test_that(
     library(dplyr)
     set.seed(1)
 
-    data <- serodynamics::nepal_sees_jags_post %>%
+    data <- serodynamics::nepal_sees_jags_post |>
       suppressWarnings()
 
     withr::with_seed(
