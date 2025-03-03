@@ -1,9 +1,9 @@
 pandoc: 3.1.11
 pkgdown: 2.1.1.9000
-pkgdown_sha: c368449915114c062dd25cb6b3f623f149f90c8c
+pkgdown_sha: 7cf401f44a970ea13744fcdd883248552c68ff9d
 articles:
   dobson: dobson.html
-last_built: 2025-03-02T15:36Z
+last_built: 2025-03-03T02:34Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr27/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr27/articles
