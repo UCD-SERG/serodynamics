@@ -29,6 +29,9 @@ reference:
 - title: Model seroreponse
   contents:
   - run_mod
+- title: Model diagnostics
+  contents:
+  - plot_jags_dens
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
