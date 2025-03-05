@@ -9,7 +9,6 @@ bayesian
 behaviour
 biomarker
 biomarkers
-bldculres
 dobson
 geoms
 ggproto
@@ -18,7 +17,6 @@ iso
 isotype
 isotypes
 mcmc
-nepal
 newperson
 nmc
 params
@@ -27,6 +25,7 @@ sd
 seroconversion
 serocourse
 seroresponse
+strat
 stratifications
 unstratified
 wishdf
