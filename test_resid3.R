@@ -64,11 +64,14 @@ jags_unpack_paratyphi<-ggmcmc::ggs(nepal_sees_jags_post$jags.post$paratyphi$mcmc
 # Extract subject ID and antigen_iso from Parameter column
 jags_processed <- jags_unpack_paratyphi %>%
   mutate(
-    Parameter_clean = str_extract(Parameter, "^[a-z]+"),  # Extract parameter name (y0, y1, alpha, shape, t1)
+    Parameter_clean = str_extract(Parameter, "^[a-zA-Z0-9]+"),  # Extract full parameter name (e.g., t1, y0, alpha)
     Subject = as.numeric(str_extract(Parameter, "(?<=\\[)\\d+")),  # Extract subject ID
     antigen_iso = as.numeric(str_extract(Parameter, "(?<=,)\\d+(?=\\])"))  # Extract antigen_iso (1 = IgA, 2 = IgG)
   ) %>%
   filter(!is.na(Parameter_clean))  # Remove any rows where extraction failed
+
+# Problem: There are 44 subjects, how should I do?
+
 
 # Compute median for each parameter per subject and antigen type
 param_medians <- jags_processed %>%
