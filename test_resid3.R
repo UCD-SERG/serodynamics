@@ -62,7 +62,7 @@ jags_unpack_paratyphi<-ggmcmc::ggs(nepal_sees_jags_post$jags.post$paratyphi$mcmc
 
 
 # Extract subject ID and antigen_iso from Parameter column
-jags_processed <- jags_unpack_paratyphi %>%
+jags_processed_paratyphi <- jags_unpack_paratyphi %>%
   mutate(
     Parameter_clean = str_extract(Parameter, "^[a-zA-Z0-9]+"),  # Extract full parameter name (e.g., t1, y0, alpha)
     Subject = as.numeric(str_extract(Parameter, "(?<=\\[)\\d+")),  # Extract subject ID
@@ -71,21 +71,53 @@ jags_processed <- jags_unpack_paratyphi %>%
   filter(!is.na(Parameter_clean))  # Remove any rows where extraction failed
 
 # Problem: There are 44 subjects, how should I do?
+jags_filtered_paratyphi <- jags_processed_paratyphi %>%
+  filter(Subject <= max(jags_processed_paratyphi$Subject, na.rm = TRUE))  # Keep only actual subjects
 
 
 # Compute median for each parameter per subject and antigen type
-param_medians <- jags_processed %>%
+param_medians_paratyphi <- jags_filtered_paratyphi %>%
   group_by(Subject, antigen_iso, Parameter_clean) %>%
   summarize(median_value = median(value), .groups = "drop")
 
 # Reshape into wide format (one row per subject-antigen pair, with five parameters as columns)
-param_medians_wide <- param_medians %>%
+param_medians_wide_paratyphi <- param_medians_paratyphi %>%
   pivot_wider(names_from = Parameter_clean, values_from = median_value)
 
 # View the final structured dataframe
-head(param_medians_wide)
-
-
+head(param_medians_wide_paratyphi)
 
 
 ## Typhi-->145 subjects
+jags_processed_typhi <- jags_unpack_typhi %>%
+  mutate(
+    Parameter_clean = str_extract(Parameter, "^[a-zA-Z0-9]+"),  # Extract full parameter name (e.g., t1, y0, alpha)
+    Subject = as.numeric(str_extract(Parameter, "(?<=\\[)\\d+")),  # Extract subject ID
+    antigen_iso = as.numeric(str_extract(Parameter, "(?<=,)\\d+(?=\\])"))  # Extract antigen_iso (1 = IgA, 2 = IgG)
+  ) %>%
+  filter(!is.na(Parameter_clean))  # Remove any rows where extraction failed
+
+# Problem: There are 44 subjects, how should I do?
+jags_filtered_typhi <- jags_processed_typhi %>%
+  filter(Subject <= max(jags_processed_typhi$Subject, na.rm = TRUE)-1)  # Keep only actual subjects
+
+
+# Compute median for each parameter per subject and antigen type
+param_medians_typhi <- jags_filtered_typhi %>%
+  group_by(Subject, antigen_iso, Parameter_clean) %>%
+  summarize(median_value = median(value), .groups = "drop")
+
+# Reshape into wide format (one row per subject-antigen pair, with five parameters as columns)
+param_medians_wide_typhi <- param_medians_typhi %>%
+  pivot_wider(names_from = Parameter_clean, values_from = median_value)
+
+# View the final structured dataframe
+head(param_medians_wide_typhi)
+################################################################################
+### Using this 5 median parameters to plot predicted curve
+
+
+
+
+################################################################################
+### Based on predicted curve, get predicted_result for each timeindays
