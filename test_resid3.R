@@ -206,12 +206,14 @@ param_medians_wide_paratyphi <- param_medians_wide_paratyphi %>%
 
 # Step 3: Update the original dataset to match subjects
 # Convert antigen_iso to character in both datasets for consistent join
-data_paratyphi_update <- data_paratyphi_update %>%
+data_paratyphi_update <- 
+  data_paratyphi|>
   mutate(antigen_iso = case_when(
     antigen_iso == 1 ~ "HlyE_IgA",
     antigen_iso == 2 ~ "HlyE_IgG",
     TRUE ~ as.character(antigen_iso)  # Ensure all are character type
-  ))
+  ))|>
+  left_join(subject_mapping,by=c("id"))
 
 # Ensure antigen_iso in param_medians_wide_paratyphi is also character
 param_medians_wide_paratyphi <- param_medians_wide_paratyphi %>%
