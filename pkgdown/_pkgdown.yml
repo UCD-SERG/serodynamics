@@ -1,0 +1,43 @@
+url: https://ucd-serg.github.io/serodynamics/
+template:
+  bootstrap: 5
+  light-switch: true
+
+development:
+  mode: auto
+
+search:
+  exclude: ['preview/']
+  
+reference:
+- title: Simulate case data
+  contents:
+  - sim_case_data
+- title: Prepare data for analysis
+  contents:
+  - serodynamics_example
+  - load_data
+  - as_case_data
+  - prep_data
+- title: Visualize data
+  contents:
+  - autoplot.case_data
+- title: Prepare auxiliary JAGS inputs
+  contents:
+  - prep_priors
+  - initsfunction
+- title: Model seroreponse
+  contents:
+  - run_mod
+- title: Model diagnostics
+  contents:
+  - plot_jags_dens
+- title: Postprocess JAGS output
+  contents:
+  - postprocess_jags_output
+- title: Example data sets
+  contents:
+  - serodynamics_example
+  - nepal_sees
+  - nepal_sees_jags_post
+  

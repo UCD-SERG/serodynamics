@@ -2,7 +2,7 @@
 % Please edit documentation in R/Run_Mod.R
 \name{run_mod}
 \alias{run_mod}
-\title{Run Model Jags}
+\title{Run Jags Model}
 \usage{
 run_mod(
   data,
@@ -27,23 +27,19 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying.}
+\item{nmc}{An \link{integer} specifying number of samples in posterior chains}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
-\item{strat}{A \link{string} specifying the stratification variable, entered in quotes.}
-
-\item{name}{description}
+\item{strat}{A \link{character} string specifying the stratification variable,
+entered in quotes.}
 }
 \value{
-An jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
-if jags is stratified, as well as a \code{\link[base:data.frame]{base::data.frame()}}
-titled \code{curve_params} that contains the posterior distribution.
-The jags.post is
-returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}.
-A curve_params \code{\link[base:data.frame]{base::data.frame()}} will also be exported with
-the following attributes
 \itemize{
+\item A jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
+if stratified. Returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}
+\item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
+distribution will be exported with the following attributes:
 \item \code{iteration} = number of sampling iterations.
 \item \code{chain} = number of mcmc chains run; between 1 and 4.
 \item \code{indexid} = "newperson", indicating posterior distribution.
@@ -54,14 +50,20 @@ the following attributes
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
 \item \verb{stratified variable} = the variable that jags was stratified by
+\item A \link{list} of \code{attributes} that summarize the jags inputs, including:
+\item \code{class}: Class of the output object.
+\item \code{nChain}: Number of chains run.
+\item \code{nParameters}: The amount of parameters estimated in the model.
+\item \code{nIterations}: Number of iteration specified.
+\item \code{nBurnin}: Number of burn ins.
+\item \code{nThin}: Thinning number (niter/nmc)
 }
 }
 \description{
-Run.mod() takes a data frame and adjustable mcmc inputs to
+run_mod() takes a data frame and adjustable mcmc inputs to
 \code{\link[runjags:run.jags]{runjags::run.jags()}} as an mcmc
 bayesian model to estimate antibody dynamic curve parameters.
-The \code{\link[rjags:jags.model]{rjags::jags.model()}}
-was adapted from Teunis et al. (2016) modeling seroresponse dynamics to an
+The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
 infection. The antibody dynamic curve includes the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
@@ -72,22 +74,30 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-run_mod(
-    data = Dataset, #The data set input
-    nchain = 4, #Number of mcmc chains to run
-    nadapt = 100, #Number of adaptations to run
-    nburn = 100, #Number of unrecorded samples before sampling begins
-    nmc = 1000
-    niter = 2000, #Number of iterations
-    strat = strat) #Variable to be stratified
+if (!is.element(runjags::findjags(), c("", NULL))) {
+  library(runjags)
+  set.seed(1)
+  library(dplyr)
+  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 2")
+  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    mutate(strat = "stratum 1")
+
+  dataset <- bind_rows(strat1, strat2)
+
+  fitted_model <- run_mod(
+    data = dataset, # The data set input
+    file_mod = serodynamics_example("model.jags"),
+    nchain = 4, # Number of mcmc chains to run
+    nadapt = 100, # Number of adaptations to run
+    nburn = 100, # Number of unrecorded samples before sampling begins
+    nmc = 1000,
+    niter = 2000, # Number of iterations
+    strat = "strat"
+  ) # Variable to be stratified
 }
-\references{
-Teunis PF, van Eijkeren JC, de Graaf WF, Marinović AB,
-Kretzschmar ME.
-Linking the seroresponse to infection to within-host
-heterogeneity in antibody production.
-Epidemics. 2016 Sep;16:33-9. doi: 10.1016/j.epidem.2016.04.001.
-Epub 2016 Apr 28. PMID: 27663789.
 }
 \author{
 Sam Schildhauer
