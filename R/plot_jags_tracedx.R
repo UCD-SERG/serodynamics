@@ -48,9 +48,9 @@
 #'     }
 
 plot_jags_trace <- function(data,
-                           iso = unique(data$curve_params$Iso_type),
-                           param = unique(data$curve_params$Parameter_sub),
-                           strat = unique(data$curve_params$Stratification)) {
+                            iso = unique(data$curve_params$Iso_type),
+                            param = unique(data$curve_params$Parameter_sub),
+                            strat = unique(data$curve_params$Stratification)) {
   visualize_jags <- data[["curve_params"]]
   attributes_jags <- data[["attributes"]]
 
