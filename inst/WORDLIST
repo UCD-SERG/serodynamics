@@ -9,8 +9,8 @@ bayesian
 behaviour
 biomarker
 biomarkers
-bldculres
 dobson
+dotplots
 geoms
 ggproto
 hyp
@@ -18,11 +18,11 @@ iso
 isotype
 isotypes
 mcmc
-nepal
 newperson
 nmc
 params
 prec
+rhat
 sd
 seroconversion
 serocourse
