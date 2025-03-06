@@ -2,7 +2,7 @@
 #' @title Rhat Plot Diagnostics
 #' @author Sam Schildhauer
 #' @description
-#'  plot_jags_rhat() takes a [list] output from [serodynamics::run_mod()]
+#'  plot_jags_Rhat() takes a [list] output from [serodynamics::run_mod()]
 #'  to produce dotplots of potential scale reduction factors (Rhat) for each
 #'  chain run in the mcmc estimation. Rhat values analyze the spread of chains
 #'  compared to pooled values with a goal of observing rhat < 1.10 for
@@ -85,7 +85,7 @@ plot_jags_rhat <- function(data,
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating rhat dotplots
-      rhatplot <- ggmcmc::ggs_rhat(visualize_jags_plot) +
+      rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
         ggplot2::theme_bw() 
       rhat_out[[j]] <- rhatplot
     }
