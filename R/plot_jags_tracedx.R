@@ -85,7 +85,7 @@ plot_jags_trace <- function(data,
       traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
         ggplot2::theme_bw() +
         ggplot2::labs(x = "log(value)") +
-        theme(legend.position = "bottom")
+        ggplot2::theme(legend.position = "bottom")
       trace_out[[j]] <- traceplot
     }
     trace_strat_list[[i]] <- trace_out
