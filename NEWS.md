@@ -4,6 +4,7 @@
 
 ## New features
 
+* Diagnostic function to produce rhat dotplots with stratification ()
 * Diagnostic function to produce density plots with stratification (#27)
 * Added SEES data set data folder and documentation (#41)
 * Fixing SEES data and added jags_post for SEES (#63)
