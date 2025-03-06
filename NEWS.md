@@ -4,6 +4,8 @@
 
 ## New features
 
+* Diagnostic function to produce effective sample size plots with
+stratification (#27)
 * Diagnostic function to produce density plots with stratification (#27)
 * Added SEES data set data folder and documentation (#41)
 * Fixing SEES data and added jags_post for SEES (#63)
