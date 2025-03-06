@@ -13,7 +13,7 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param data A [list] outputted from run_mod().
+#' @param data A [list] outputted from [run_mod()].
 #' @param iso Specify [character] string to produce plots of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
@@ -26,7 +26,7 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @return A [base::list()] of [ggplot2::ggplot()] objects producing trace
+#' @return A [list] of [ggplot2::ggplot] objects producing trace
 #' plots for all the specified input.
 #' @export
 #' @examples
