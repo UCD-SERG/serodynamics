@@ -58,14 +58,12 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   data <- serodynamics::nepal_sees_jags_post
 
+# Specifying isotype, parameter, and stratification for traceplot.
 plot_jags_trace(
-    data = data, #A [serodynamics::run_mod()] [list] output.
-    iso = "HlyE_IgA", #A [character] string specifying
-    #nantigen/antibody of interest.
-    param = "alpha",  #A [character] string specifying parameter of
-    # interest.
-    strat = "typhi")  #A [character] string specifying
-    # stratification of interest.
+    data = data,
+    iso = "HlyE_IgA",
+    param = "alpha",
+    strat = "typhi")
     }
 }
 \author{
