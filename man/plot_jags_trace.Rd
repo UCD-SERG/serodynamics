@@ -12,7 +12,7 @@ plot_jags_trace(
 )
 }
 \arguments{
-\item{data}{A \link{list} outputted from run_mod().}
+\item{data}{A \link{list} outputted from \code{\link[=run_mod]{run_mod()}}.}
 
 \item{iso}{Specify \link{character} string to produce plots of only a
 specific antigen/antibody combination, entered with quotes. Default outputs
@@ -32,7 +32,7 @@ specific parameter, entered with quotes. Options include:
 stratification entered in quotes.}
 }
 \value{
-A \code{\link[base:list]{base::list()}} of \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} objects producing trace
+A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects producing trace
 plots for all the specified input.
 }
 \description{
