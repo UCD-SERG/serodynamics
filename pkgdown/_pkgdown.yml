@@ -32,7 +32,7 @@ reference:
 - title: Model diagnostics
   contents:
   - plot_jags_dens
-  - plot_jags_rhat
+  - plot_jags_Rhat
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
