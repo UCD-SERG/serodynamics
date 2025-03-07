@@ -27,28 +27,13 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @return A [base::list()] of [ggplot2::ggplot()] objects showing the 
+#' @return A [list] of [ggplot2::ggplot] objects showing the 
 #' proportion of effective samples taken/total samples taken for all parameter
 #' iso combinations. The estimate with the highest proportion of effective
 #' samples taken will be listed first.
 #' @export
-#' @examples
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'   library(runjags)
-#'   library(ggmcmc)
-#'   library(dplyr)
-#'
-#'   data <- serodynamics::nepal_sees_jags_post
-#'
-#' plot_jags_effect(
-#'     data = data, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "HlyE_IgA", #A [character] string specifying
-#'     #nantigen/antibody of interest.
-#'     param = "alpha",  #A [character] string specifying parameter of
-#'     # interest.
-#'     strat = "typhi")  #A [character] string specifying
-#'     # stratification of interest.
-#'     }
+#' @example inst/examples/examples-autoplot.case_data.R
+
 
 plot_jags_effect <- function(data,
                              iso = unique(data$curve_params$Iso_type),

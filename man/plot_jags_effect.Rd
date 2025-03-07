@@ -32,7 +32,7 @@ specific parameter, entered with quotes. Options include:
 stratification entered in quotes.}
 }
 \value{
-A \code{\link[base:list]{base::list()}} of \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} objects showing the
+A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects showing the
 proportion of effective samples taken/total samples taken for all parameter
 iso combinations. The estimate with the highest proportion of effective
 samples taken will be listed first.
@@ -54,22 +54,13 @@ The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
-  library(ggmcmc)
-  library(dplyr)
+set.seed(1)
+sim_case_data <-
+  serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 5, max_n_obs = 20, followup_interval = 14)
 
-  data <- serodynamics::nepal_sees_jags_post
-
-plot_jags_effect(
-    data = data, #A [serodynamics::run_mod()] [list] output.
-    iso = "HlyE_IgA", #A [character] string specifying
-    #nantigen/antibody of interest.
-    param = "alpha",  #A [character] string specifying parameter of
-    # interest.
-    strat = "typhi")  #A [character] string specifying
-    # stratification of interest.
-    }
+sim_case_data |>
+  autoplot(alpha = .5)
 }
 \author{
 Sam Schildhauer
