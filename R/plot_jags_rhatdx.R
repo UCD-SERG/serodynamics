@@ -32,23 +32,7 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
 #' values for all the specified input.
 #' @export
-#' @examples
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'   library(runjags)
-#'   library(ggmcmc)
-#'   library(dplyr)
-#'
-#'   data <- serodynamics::nepal_sees_jags_post
-#'
-#' plot_jags_rhat(
-#'     data = data, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "HlyE_IgA", #A [character] string specifying
-#'     #nantigen/antibody of interest.
-#'     param = "alpha",  #A [character] string specifying parameter of
-#'     # interest.
-#'     strat = "typhi")  #A [character] string specifying
-#'     # stratification of interest.
-#'     }
+#' @examples inst/examples/examples-dx_rhat.R
 
 plot_jags_rhat <- function(data,
                            iso = unique(data$curve_params$Iso_type),
