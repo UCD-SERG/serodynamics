@@ -34,7 +34,7 @@
 #' @export
 #' @example inst/examples/examples-plot_jags_rhatdx.R
 
-plot_jags_rhat <- function(data,
+plot_jags_Rhat <- function(data,
                            iso = unique(data$curve_params$Iso_type),
                            param = unique(data$curve_params$Parameter_sub),
                            strat = unique(data$curve_params$Stratification)) {
