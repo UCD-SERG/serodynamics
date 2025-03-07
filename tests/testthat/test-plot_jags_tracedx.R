@@ -3,8 +3,6 @@ test_that(
   desc = "results are consistent with traceplot ggplot output",
   code = {
     skip_if(getRversion() < "4.4.1") # 4.3.3 had issues
-    library(runjags)
-    library(dplyr)
 
     data <- serodynamics::nepal_sees_jags_post |>
       suppressWarnings()
