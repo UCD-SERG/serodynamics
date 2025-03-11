@@ -4,7 +4,12 @@
 #'
 #' @returns a [list] with elements:
 #' "n_params": how many parameters??
-#' - "mu.hyp": ??
+#' - "mu.hyp": The antibody dynamic curve includes the following parameters:
+#'    - y0 = baseline antibody concentration
+#'    - y1 = peak antibody concentration
+#'    - t1 = time to peak
+#'    - r = shape parameter
+#'    - alpha = decay rate
 #' - "prec.hyp": ??
 #' - "omega" : ??
 #' - "wishdf": Wishart distribution degrees of freedom
