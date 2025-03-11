@@ -32,7 +32,7 @@ specific parameter, entered with quotes. Options include:
 stratification entered in quotes.}
 }
 \value{
-A \code{\link[base:list]{base::list()}} of \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} objects producing density
+A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects producing density
 plots for all the specified input.
 }
 \description{
@@ -51,22 +51,7 @@ The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
-  library(ggmcmc)
-  library(dplyr)
-
-  data <- serodynamics::nepal_sees_jags_post
-
-plot_jags_dens(
-    data = data, #A [serodynamics::run_mod()] [list] output.
-    iso = "HlyE_IgA", #A [character] string specifying
-    #nantigen/antibody of interest.
-    param = "alpha",  #A [character] string specifying parameter of
-    # interest.
-    strat = "typhi")  #A [character] string specifying
-    # stratification of interest.
-    }
+inst/examples/examples-plot_jags_densitydx.R
 }
 \author{
 Sam Schildhauer
