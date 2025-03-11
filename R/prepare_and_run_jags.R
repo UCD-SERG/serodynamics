@@ -20,7 +20,7 @@ prepare_and_run_jags <- function(file_path = NULL,
   library(readr)
   library(fs)  # Ensure `fs` is loaded
   
-  # 🔹 Step 1: Locate Dataset File Automatically
+  # Step 1: Locate Dataset File Automatically
   if (is.null(file_path)) {
     file_path <- system.file("extdata", "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv", package = "serodynamics")
     
@@ -30,12 +30,12 @@ prepare_and_run_jags <- function(file_path = NULL,
     }
   }
   
-  # 🔹 Step 2: Check if file exists
+  # Step 2: Check if file exists
   if (!file.exists(file_path)) {
     stop("Error: Dataset file not found. Ensure it is in 'inst/extdata/'.")
   }
   
-  # 🔹 Step 3: Read dataset
+  # Step 3: Read dataset
   nepal_sees <- read_csv(file_path)
   
   # Convert to case data format
@@ -45,20 +45,20 @@ prepare_and_run_jags <- function(file_path = NULL,
                  value_var = "result",
                  time_in_days = "dayssincefeveronset")
   
-  # 🔹 Step 4: Extract subjects with visit_num = 5
+  # Step 4: Extract subjects with visit_num = 5
   subset_data <- dataset %>% filter(visit_num == 5)
   id_antigen_pairs <- subset_data %>% select(id, antigen_iso) %>% distinct()
   
-  # 🔹 Step 5: Filter for subjects with at least 5 visits
+  # Step 5: Filter for subjects with at least 5 visits
   filtered_dataset <- dataset %>%
     semi_join(id_antigen_pairs, by = c("id", "antigen_iso")) %>%
     filter(visit_num >= 1 & visit_num <= 5)
   
-  # 🔹 Step 6: Extract a single subject (e.g., sees_npl_128)
+  # Step 6: Extract a single subject (e.g., sees_npl_128)
   dat <- filtered_dataset %>%
     filter(id == "sees_npl_128")
   
-  # 🔹 Step 7: Run JAGS model
+  # Step 7: Run JAGS model
   jags_post <- run_mod(
     data = dat, 
     file_mod = file_mod,  # Now automatically assigned
