@@ -26,26 +26,10 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
+#' @return A [list] of [ggplot2::ggplot] objects producing density
 #' plots for all the specified input.
 #' @export
-#' @examples
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'   library(runjags)
-#'   library(ggmcmc)
-#'   library(dplyr)
-#'
-#'   data <- serodynamics::nepal_sees_jags_post
-#'
-#' plot_jags_dens(
-#'     data = data, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "HlyE_IgA", #A [character] string specifying
-#'     #nantigen/antibody of interest.
-#'     param = "alpha",  #A [character] string specifying parameter of
-#'     # interest.
-#'     strat = "typhi")  #A [character] string specifying
-#'     # stratification of interest.
-#'     }
+#' @examples inst/examples/examples-plot_jags_densitydx.R
 
 plot_jags_dens <- function(data,
                            iso = unique(data$curve_params$Iso_type),
@@ -76,18 +60,23 @@ plot_jags_dens <- function(data,
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                          .data$Parameter_sub, ", strat = ",
-                                         i),
-                      value = log(.data$value))
+                                         i))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating density plot
       densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(x = "log(value)")
+        ggplot2::labs(x = "log(value)") +
+        ggplot2::scale_x_log10()
       density_out[[j]] <- densplot
     }
+    
     dens_strat_list[[i]] <- density_out
   }
+  #Printing only one plot if only one exists.
+  if (length(dens_strat_list) == 1) {
+    dens_strat_list <- dens_strat_list[[1]][[iso]]
+  } 
   dens_strat_list
 }
