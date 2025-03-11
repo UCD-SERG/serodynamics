@@ -60,19 +60,23 @@ plot_jags_trace <- function(data,
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                          .data$Parameter_sub, ", strat = ",
-                                         i),
-                      value = log(.data$value))
+                                         i))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating density plot
       traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(x = "log(value)") +
-        ggplot2::theme(legend.position = "bottom")
+        ggplot2::labs(x = "iterations", y = "log(value)") +
+        ggplot2::theme(legend.position = "bottom") +
+        ggplot2::scale_y_log10()
       trace_out[[j]] <- traceplot
     }
     trace_strat_list[[i]] <- trace_out
   }
+  #Printing only one plot if only one exists.
+  if (length(trace_strat_list) == 1) {
+    trace_strat_list <- trace_strat_list[[1]][[iso]]
+  } 
   trace_strat_list
 }
