@@ -29,21 +29,7 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing trace
 #' plots for all the specified input.
 #' @export
-#' @examples
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'   library(runjags)
-#'   library(ggmcmc)
-#'   library(dplyr)
-#'
-#'   data <- serodynamics::nepal_sees_jags_post
-#'
-#'# Specifying isotype, parameter, and stratification for traceplot.
-#' plot_jags_trace(
-#'     data = data,
-#'     iso = "HlyE_IgA",
-#'     param = "alpha",
-#'     strat = "typhi")
-#'     }
+#' @example inst/examples/examples-plot_jags_tracedx.R
 
 plot_jags_trace <- function(data,
                             iso = unique(data$curve_params$Iso_type),
@@ -90,3 +76,4 @@ plot_jags_trace <- function(data,
   }
   trace_strat_list
 }
+
