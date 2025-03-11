@@ -60,7 +60,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   plot_jags_Rhat(data = data,
                  iso = "HlyE_IgA",
-                 param = "alpha",
                  strat = "typhi")
 }
 }
