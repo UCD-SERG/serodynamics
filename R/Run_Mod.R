@@ -53,7 +53,12 @@ run_mod <- function(data,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
-                    strat = NA) {
+                    strat = NA,
+                    mu_hyp = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                    prec_hyp = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                    omega = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                    wishdf = 20,
+                    prec_logy_hyp = c(4.0, 1.0)) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])

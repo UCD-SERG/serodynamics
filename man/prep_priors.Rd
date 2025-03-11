@@ -4,7 +4,7 @@
 \alias{prep_priors}
 \title{Prepare priors}
 \usage{
-prep_priors(max_antigens)
+prep_priors(max_antigens, mu_hyp, prec_hyp, omega, wishdf, prec_logy_hyp)
 }
 \arguments{
 \item{max_antigens}{\link{integer}: how many antigen-isotypes will be modeled}
@@ -13,7 +13,14 @@ prep_priors(max_antigens)
 a \link{list} with elements:
 "n_params": how many parameters??
 \itemize{
-\item "mu.hyp": ??
+\item "mu.hyp": The antibody dynamic curve includes the following parameters:
+\itemize{
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item r = shape parameter
+\item alpha = decay rate
+}
 \item "prec.hyp": ??
 \item "omega" : ??
 \item "wishdf": Wishart distribution degrees of freedom

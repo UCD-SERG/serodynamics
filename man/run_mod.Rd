@@ -12,7 +12,12 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  mu_hyp = c(1, 7, 1, -4, -1),
+  prec_hyp = c(1, 1e-05, 1, 0.001, 1),
+  omega = c(1, 50, 1, 10, 1),
+  wishdf = 20,
+  prec_logy_hyp = c(4, 1)
 )
 }
 \arguments{

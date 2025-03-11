@@ -20,11 +20,11 @@
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
-                        mu_hyp <- c(1.0, 7.0, 1.0, -4.0, -1.0),
-                        prec_hyp <- c(1.0, 0.00001, 1.0, 0.001, 1.0),
-                        omega <- c(1.0, 50.0, 1.0, 10.0, 1.0),
-                        wishdf <- 20,
-                        prec_logy_hyp <- c(4.0, 1.0)) {
+                        mu_hyp,
+                        prec_hyp,
+                        omega,
+                        wishdf,
+                        prec_logy_hyp) {
   # Model parameters
   n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
