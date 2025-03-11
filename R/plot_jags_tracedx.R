@@ -76,4 +76,3 @@ plot_jags_trace <- function(data,
   }
   trace_strat_list
 }
-
