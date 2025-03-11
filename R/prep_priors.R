@@ -14,7 +14,12 @@
 #'
 #' @examples
 #' prep_priors(max_antigens = 2)
-prep_priors <- function(max_antigens) {
+prep_priors <- function(max_antigens,
+                        mu_hyp <- c(1.0, 7.0, 1.0, -4.0, -1.0),
+                        prec_hyp <- c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                        omega <- c(1.0, 50.0, 1.0, 10.0, 1.0),
+                        wishdf <- 20,
+                        prec_logy_hyp <- c(4.0, 1.0)) {
   # Model parameters
   n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
@@ -26,11 +31,11 @@ prep_priors <- function(max_antigens) {
   # Fill parameter arrays
   # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
   for (k.test in 1:max_antigens) {
-    mu_hyp[k.test, ] <- c(1.0, 7.0, 1.0, -4.0, -1.0)
-    prec_hyp[k.test, , ] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))
-    omega[k.test, , ] <- diag(c(1.0, 50.0, 1.0, 10.0, 1.0))
-    wishdf[k.test] <- 20
-    prec_logy_hyp[k.test, ] <- c(4.0, 1.0)
+    mu_hyp[k.test, ] <- mu_hyp
+    prec_hyp[k.test, , ] <- diag(prec_hyp)
+    omega[k.test, , ] <- diag(omega)
+    wishdf[k.test] <- wishdf
+    prec_logy_hyp[k.test, ] <- prec_logy_hyp 
   }
 
   # test for change
