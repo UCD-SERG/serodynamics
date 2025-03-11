@@ -8,12 +8,8 @@ if (interactive() && commandArgs()[1] == "RStudio")
   pacman::p_load(
     devtools,
     rsconnect,
-    dplyr,
-    lubridate,
-    magrittr,
     conflicted,
-    reprex,
-    golem
+    reprex
   )
   # suppressMessages(require(devtools)) # loads usethis
   # suppressMessages(require(rsconnect)) # loads rsconnect
