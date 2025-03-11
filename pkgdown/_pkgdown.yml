@@ -40,4 +40,10 @@ reference:
   - serodynamics_example
   - nepal_sees
   - nepal_sees_jags_post
+- title: Modeling Functions  
+  contents:
+      - prepare_and_run_jags  
+      - process_antibody_predictions  
+      - plot_predicted_curve  
+      - process_jags_output
   
