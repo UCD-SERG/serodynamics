@@ -76,7 +76,7 @@ plot_jags_effect <- function(data,
     eff_strat_list[[i]] <- eff_out
   }
   #Printing only one plot if only one exists.
-  if (length(eff_strat_list) == 1) {
+  if (sum(lengths(eff_strat_list)) == 1) {
     eff_strat_list <- eff_strat_list[[1]][[iso]]
   } 
   eff_strat_list
