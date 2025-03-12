@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9020
+Version: 0.0.0.9022
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -20,7 +20,7 @@ Imports:
     cli,
     coda,
     dplyr,
-    ggmcmc,
+    ggmcmc (>= 1.5.1.1),
     ggplot2,
     purrr,
     rlang,
@@ -60,8 +60,9 @@ Config/needs/test:
     readr,
     rlist
 Config/needs/check: commonmark, xml2
-Remotes: 
-    ucd-serg/serocalculator
+Remotes:  
+    ucd-serg/serocalculator,
+    xfim/ggmcmc
 Depends: 
     R (>= 4.1.0)
 LazyData: true
