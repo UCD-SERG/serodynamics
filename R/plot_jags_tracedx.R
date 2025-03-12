@@ -29,7 +29,6 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing trace
 #' plots for all the specified input.
 #' @export
-#' @example inst/examples/examples-plot_jags_tracedx.R
 
 plot_jags_trace <- function(data,
                             iso = unique(data$curve_params$Iso_type),
