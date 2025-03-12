@@ -32,6 +32,7 @@ reference:
 - title: Model diagnostics
   contents:
   - plot_jags_dens
+  - plot_jags_trace
   - plot_jags_effect
 - title: Postprocess JAGS output
   contents:
