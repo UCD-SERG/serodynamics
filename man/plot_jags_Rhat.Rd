@@ -54,14 +54,13 @@ The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
 
-  data <- serodynamics::nepal_sees_jags_post
+data <- serodynamics::nepal_sees_jags_post
 
-  plot_jags_Rhat(data = data,
-                 iso = "HlyE_IgA",
-                 strat = "typhi")
-}
+plot_jags_Rhat(data = data,
+               iso = "HlyE_IgA",
+               strat = "typhi")
+
 }
 \author{
 Sam Schildhauer
