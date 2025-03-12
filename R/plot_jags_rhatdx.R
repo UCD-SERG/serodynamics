@@ -73,11 +73,11 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
         ggplot2::theme_bw() 
       rhat_out[[j]] <- rhatplot
     }
-    #Printing only one plot if only one exists.
-    if (sum(lengths(rhat_strat_list)) == 1) {
-      rhat_strat_list <- rhat_strat_list[[1]][[iso]]
-    } 
     rhat_strat_list[[i]] <- rhat_out
   }
+  #Printing only one plot if only one exists.
+  if (sum(lengths(rhat_strat_list)) == 1) {
+    rhat_strat_list <- rhat_strat_list[[1]][[iso]]
+  } 
   rhat_strat_list
 }
