@@ -69,7 +69,7 @@ plot_jags_trace <- function(data,
         ggplot2::theme_bw() +
         ggplot2::labs(x = "iterations", y = "parameter value") +
         ggplot2::theme(legend.position = "bottom") +
-        ggplot2::scale_y_log10()
+        ggplot2::scale_y_log10(labels = scales::label_comma())
       trace_out[[j]] <- traceplot
     }
     trace_strat_list[[i]] <- trace_out
