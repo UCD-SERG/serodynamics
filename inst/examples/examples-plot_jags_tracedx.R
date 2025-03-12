@@ -1,6 +1,4 @@
 
-if (!is.element(runjags::findjags(), c("", NULL))) {
-
   data <- serodynamics::nepal_sees_jags_post
 
   # Specifying isotype, parameter, and stratification for traceplot.
@@ -9,4 +7,4 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
                   iso = "HlyE_IgA",
                   param = "alpha",
                   strat = "typhi")
-}
+
