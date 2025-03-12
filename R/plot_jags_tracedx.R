@@ -75,7 +75,7 @@ plot_jags_trace <- function(data,
     trace_strat_list[[i]] <- trace_out
   }
   #Printing only one plot if only one exists.
-  if (length(trace_strat_list) == 1) {
+  if (sum(lengths(trace_strat_list) == 1)) {
     trace_strat_list <- trace_strat_list[[1]][[iso]]
   } 
   trace_strat_list
