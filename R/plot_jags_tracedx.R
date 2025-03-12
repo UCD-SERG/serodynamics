@@ -67,7 +67,7 @@ plot_jags_trace <- function(data,
       # Creating density plot
       traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(x = "iterations", y = "log(value)") +
+        ggplot2::labs(x = "iterations", y = "parameter value") +
         ggplot2::theme(legend.position = "bottom") +
         ggplot2::scale_y_log10()
       trace_out[[j]] <- traceplot
