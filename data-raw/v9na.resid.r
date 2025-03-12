@@ -1,6 +1,6 @@
 library(Hmisc);
-source("graph-func.r");
-source("minticks.r");
+source("data-raw/graph-func.r");
+source("data-raw/minticks.r");
 
 file.pmc <- paste("./output/",ver,".mcmc",".rda",sep="");
 file.pdf <- paste("./output/",ver,".graph",".pdf",sep="");
