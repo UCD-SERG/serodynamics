@@ -6,15 +6,20 @@
 #' @param file_path Path to the dataset file. If `NULL`, automatically searches for the correct path.
 #' @param file_mod Path to the JAGS model file (default is set automatically).
 #' @param strat A character string specifying the stratification variable (default: `"bldculres"`).
+#' @param id The subject ID to filter the dataset (default: `NULL`).
+#' @param antigen_iso The antigen identifier to filter the dataset (default: `NULL`).
 #' @return A [list] containing:
-#' - `dat`: The extracted dataset for the selected subject.
-#' - `jags_post`: The JAGS model output.
+#' - `dat`: The extracted dataset for the selected subject and antigen.
+#' - `nepal_sees_jags_post`: The JAGS model output for the selected subject and antigen.
+#' - `nepal_sees_jags_post2`: The JAGS model output for the entire dataset.
 #' @export
 #' @example inst/examples/examples-prepare_and_run_jags.R
 
 prepare_and_run_jags <- function(file_path = NULL,
                                  file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-                                 strat = "bldculres") {
+                                 strat = "bldculres",
+                                 id = NULL,
+                                 antigen_iso = NULL) {
   
   library(dplyr)
   library(readr)
@@ -45,23 +50,19 @@ prepare_and_run_jags <- function(file_path = NULL,
                  value_var = "result",
                  time_in_days = "dayssincefeveronset")
   
-  # Step 4: Extract subjects with visit_num = 5
-  subset_data <- dataset %>% filter(visit_num == 5)
-  id_antigen_pairs <- subset_data %>% select(id, antigen_iso) %>% distinct()
+  # Step 4: Extract specific subject and antigen data
+  dat <- dataset %>%
+    filter(id == !!id, antigen_iso == !!antigen_iso)
   
-  # Step 5: Filter for subjects with at least 5 visits
-  filtered_dataset <- dataset %>%
-    semi_join(id_antigen_pairs, by = c("id", "antigen_iso")) %>%
-    filter(visit_num >= 1 & visit_num <= 5)
+  # Check if the dataset has at least 5 observations
+  if (nrow(dat) < 5) {
+    warning("Warning: The selected subject-antigen pair has fewer than 5 observations. The JAGS model may not run correctly.")
+  }
   
-  # Step 6: Extract a single subject (e.g., sees_npl_128)
-  dat <- filtered_dataset %>%
-    filter(id == "sees_npl_128")
-  
-  # Step 7: Run JAGS model
-  jags_post <- run_mod(
+  # Step 5: Run JAGS model for the specific subject and antigen
+  nepal_sees_jags_post <- run_mod(
     data = dat, 
-    file_mod = file_mod,  # Now automatically assigned
+    file_mod = file_mod,  
     nchain = 2,
     nadapt = 100,
     nburn = 100,
@@ -70,5 +71,19 @@ prepare_and_run_jags <- function(file_path = NULL,
     strat = strat
   )
   
-  return(list(dat = dat, jags_post = jags_post))  # Return both dataset and model output
+  # Step 6: Run JAGS model for the entire dataset
+  nepal_sees_jags_post2 <- run_mod(
+    data = dataset,
+    file_mod = file_mod,  
+    nchain = 2,
+    nadapt = 100,
+    nburn = 100,
+    nmc = 500,
+    niter = 1000,
+    strat = strat
+  )
+  
+  return(list(dat = dat, 
+              nepal_sees_jags_post = nepal_sees_jags_post, 
+              nepal_sees_jags_post2 = nepal_sees_jags_post2))
 }
