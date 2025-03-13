@@ -10,6 +10,7 @@
 #' @param antigen_iso The antigen identifier to filter the dataset (default: `NULL`).
 #' @return A [list] containing:
 #' - `dat`: The extracted dataset for the selected subject and antigen.
+#' - `dataset`: The full processed dataset.
 #' - `nepal_sees_jags_post`: The JAGS model output for the selected subject and antigen.
 #' - `nepal_sees_jags_post2`: The JAGS model output for the entire dataset.
 #' @export
@@ -84,6 +85,7 @@ prepare_and_run_jags <- function(file_path = NULL,
   )
   
   return(list(dat = dat, 
+              dataset = dataset,
               nepal_sees_jags_post = nepal_sees_jags_post, 
               nepal_sees_jags_post2 = nepal_sees_jags_post2))
 }
