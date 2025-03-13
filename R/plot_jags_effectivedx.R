@@ -32,6 +32,7 @@
 #' iso combinations. The estimate with the highest proportion of effective
 #' samples taken will be listed first.
 #' @export
+#' @example inst/examples/examples-plot_jags_effectivedx.R
 
 
 plot_jags_effect <- function(data,
