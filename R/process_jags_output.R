@@ -64,8 +64,12 @@ process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, an
   param_medians_wide <- param_medians %>%
     pivot_wider(names_from = Parameter_clean, values_from = median_value)
   
-  # If only running until step 7, return the wide-format result now.
+  # If only running until step 7, add the 'id' column from the input argument and return
   if (run_until == 7) {
+    if (!is.null(id)) {
+      param_medians_wide <- param_medians_wide %>%
+        mutate(id = id)
+    }
     return(param_medians_wide)
   }
   
@@ -90,3 +94,4 @@ process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, an
   
   return(param_medians_wide_pick)
 }
+
