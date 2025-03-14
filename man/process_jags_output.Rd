@@ -4,15 +4,27 @@
 \alias{process_jags_output}
 \title{Process JAGS Output to Extract Parameter Medians}
 \usage{
-process_jags_output(jags_post, remove_last_subject = TRUE)
+process_jags_output(
+  jags_post,
+  dataset,
+  run_until = 9,
+  id = NULL,
+  antigen_iso = NULL
+)
 }
 \arguments{
 \item{jags_post}{A \link{list} output from \code{serodynamics::run_mod()}, containing posterior samples.}
 
-\item{remove_last_subject}{Logical; whether to remove the last subject (default: TRUE).}
+\item{dataset}{A \link{dataframe} containing subject and antigen information.}
+
+\item{run_until}{An integer specifying the step until which the function should run (default: 9).}
+
+\item{id}{An optional parameter specifying the subject ID for filtering (required if run_until = 9).}
+
+\item{antigen_iso}{An optional parameter specifying the antigen ID for filtering (required if run_until = 9).}
 }
 \value{
-A tibble with median parameter estimates for each subject.
+A tibble with median parameter estimates for each subject and antigen.
 }
 \description{
 This function extracts posterior parameter samples from a JAGS model run and computes
@@ -33,15 +45,52 @@ The antibody dynamic curve includes:
 # Ensure JAGS is available before running
 if (!is.element(runjags::findjags(), c("", NULL))) {
   
-  # Run JAGS model first
-  results <- prepare_and_run_jags()
-  jags_post <- results$jags_post
+  # ---------------------------------------------------------------------------
+  # Step 1: Run JAGS Model via prepare_and_run_jags()
+  # ---------------------------------------------------------------------------
+  # Prepare the dataset and run the JAGS models by specifying the subject and antigen.
+  results <- prepare_and_run_jags(
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
   
-  # Process JAGS output to extract median parameter estimates
-  param_medians <- process_jags_output(jags_post, remove_last_subject = TRUE)
+  # Extract outputs from the results list:
+  # - jags_post_subject: JAGS output for the specific subject-antigen pair.
+  # - jags_post_full: JAGS output for the entire dataset.
+  # - dataset: The full processed dataset.
+  jags_post_subject <- results$nepal_sees_jags_post
+  jags_post_full    <- results$nepal_sees_jags_post2
+  dataset           <- results$dataset
   
-  # Display processed medians
-  print(head(param_medians))
+  # ---------------------------------------------------------------------------
+  # Step 2: Process JAGS Output to Extract Median Parameter Estimates
+  # ---------------------------------------------------------------------------
+  # (a) Partial processing: Run until step 7 (wide-format pivot only)
+  param_medians_partial <- process_jags_output(
+    jags_post   = jags_post_subject,
+    dataset     = dataset,
+    run_until   = 7,
+    id          = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
+  
+  # (b) Full processing: Run until step 9 (includes subject mapping & filtering)
+  param_medians_full <- process_jags_output(
+    jags_post   = jags_post_full,
+    dataset     = dataset,
+    run_until   = 9,
+    id          = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
+  
+  # ---------------------------------------------------------------------------
+  # Step 3: Display Processed Median Parameter Estimates
+  # ---------------------------------------------------------------------------
+  cat("Partial Processing (run_until = 7):\n")
+  print(head(param_medians_partial))
+  
+  cat("Full Processing (run_until = 9):\n")
+  print(head(param_medians_full))
 }
 }
 \author{

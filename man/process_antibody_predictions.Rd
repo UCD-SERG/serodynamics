@@ -5,20 +5,26 @@
 \title{Process Antibody Predictions and Compute Residuals}
 \usage{
 process_antibody_predictions(
-  dat,
+  dat2,
   param_medians_wide,
   file_mod,
-  strat = "bldculres"
+  strat = "bldculres",
+  id,
+  antigen_iso
 )
 }
 \arguments{
-\item{dat}{The observed dataset.}
-
 \item{param_medians_wide}{A tibble with median parameter estimates from \code{process_jags_output()}.}
 
 \item{file_mod}{Path to the JAGS model file.}
 
 \item{strat}{A character string specifying the stratification variable (default: \code{"bldculres"}).}
+
+\item{id}{A character string specifying the subject ID to filter the dataset.}
+
+\item{antigen_iso}{A character string specifying the antigen identifier to filter the dataset.}
+
+\item{dat}{The observed dataset.}
 }
 \value{
 A tibble with processed JAGS posterior medians for re-running the model.
@@ -33,16 +39,52 @@ and prepares the dataset for model re-running. It also restores necessary attrib
 # Ensure JAGS is available before running
 if (!is.element(runjags::findjags(), c("", NULL))) {
   
-  # Run JAGS model & process output
-  results <- prepare_and_run_jags()
-  dat <- results$dat
-  jags_post <- results$jags_post
-  param_medians <- process_jags_output(jags_post, remove_last_subject = TRUE)
+  # ---------------------------------------------------------------------------
+  # Step 1: Prepare Dataset & Run JAGS Model
+  # ---------------------------------------------------------------------------
+  # This step filters the dataset for the subject "sees_npl_128" and antigen "HlyE_IgA"
+  # and runs two JAGS models (subject-specific and full dataset models).
+  results <- prepare_and_run_jags(
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
   
-  # Generate predicted antibody response
-  predictions <- process_antibody_predictions(dat, param_medians)
+  # Extract the filtered dataset (dat) and the full dataset (dataset)
+  dat <- results$dat         # Filtered data for subject "sees_npl_128" & antigen "HlyE_IgA"
+  dataset <- results$dataset   # The full dataset
   
-  # Display results
+  # ---------------------------------------------------------------------------
+  # Step 2: Process JAGS Output to Extract Median Parameters
+  # ---------------------------------------------------------------------------
+  # Here we process the full dataset JAGS output to obtain median parameter estimates.
+  param_medians <- process_jags_output(
+    jags_post = results$nepal_sees_jags_post2,  # Full dataset model output
+    dataset = dataset,
+    run_until = 9,                             # Run full processing (steps 1-9)
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
+  
+  # ---------------------------------------------------------------------------
+  # Step 3: Generate Predictions & Re-run JAGS Based on Residuals
+  # ---------------------------------------------------------------------------
+  # The process_antibody_predictions() function computes predicted antibody responses,
+  # calculates residuals, prepares a modified dataset (using absolute residuals),
+  # re-runs the JAGS model, and finally processes the new output.
+  predictions <- process_antibody_predictions(
+    dat2 = dataset,                          # Pass the full dataset as dat2
+    param_medians_wide = param_medians,      # Use median parameters from the full model
+    file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+    strat = "bldculres",
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
+  
+  # ---------------------------------------------------------------------------
+  # Step 4: Display Results
+  # ---------------------------------------------------------------------------
+  # Print the first few rows of the new median parameter estimates obtained from the
+  # residual-based model re-run.
   print(head(predictions))
 }
 }

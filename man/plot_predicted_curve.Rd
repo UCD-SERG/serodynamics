@@ -4,16 +4,37 @@
 \alias{plot_predicted_curve}
 \title{Generate Predicted Antibody Response Curves}
 \usage{
-plot_predicted_curve(param_medians_wide, dat = NULL)
+plot_predicted_curve(
+  param_medians_wide,
+  param_medians_wide2 = NULL,
+  dat = NULL,
+  legend_obs = "Observed Data",
+  legend_mod1 = "",
+  legend_mod2 = ""
+)
 }
 \arguments{
-\item{param_medians_wide}{A tibble with median parameter estimates.}
+\item{param_medians_wide}{A tibble with median parameter estimates (first model).}
+
+\item{param_medians_wide2}{(Optional) A tibble with median parameter estimates (second model).
+Alternatively, if this tibble contains observed data (e.g., with a column "dayssincefeveronset"),
+it will be treated as the observed data, and only one predicted curve will be plotted.}
 
 \item{dat}{(Optional) A tibble with observed antibody response data.
 It must contain \code{dayssincefeveronset}, \code{result}, \code{id}, and \code{antigen_iso}.}
+
+\item{legend_obs}{A character string for the observed data legend label (default: "Observed Data").}
+
+\item{legend_mod1}{A character string for the first model's legend label (default: "").
+If empty, no legend key is shown.}
+
+\item{legend_mod2}{A character string for the second model's legend label (default: "").
+If empty, no legend key is shown.}
 }
 \value{
-A ggplot object displaying predicted antibody response curves with optional observed data.
+A ggplot object displaying predicted antibody response curves.
+If two parameter sets are provided, the first is plotted in red and the second in green.
+Observed data (if provided) are shown in blue.
 }
 \description{
 Uses median parameter estimates to plot predicted antibody response curves.
@@ -21,28 +42,25 @@ If observed data is provided, it overlays the observed values as points and
 connects them with lines.
 }
 \examples{
-# Example usage of plot_predicted_curve()
-
 # Ensure JAGS is available before running
 if (!is.element(runjags::findjags(), c("", NULL))) {
-  
-  # Step 1: Prepare dataset & Run JAGS model
-  jags_results <- prepare_and_run_jags()
-  
-  # Extract results
-  dat <- jags_results$dat
-  nepal_sees_jags_post <- jags_results$jags_post
-  
-  # Step 2: Process JAGS output
-  param_medians_wide_128 <- process_jags_output(nepal_sees_jags_post, remove_last_subject = TRUE)
-  
-  # Step 3: Generate predicted antibody response curve **without observed data**
+
+  # Prepare dataset & Run JAGS Model
+  jags_results <- prepare_and_run_jags(
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
+
+  # Process JAGS output (step 7)
+  param_medians_wide_128 <- process_jags_output(
+    jags_post   = jags_results$nepal_sees_jags_post,
+    dataset     = jags_results$dataset,
+    run_until   = 7
+  )
+
+  # Generate and print predicted antibody response curve
   plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
-  print(plot_pred_only)  # Display predicted curve
-  
-  # Step 4: Generate predicted curve **with observed data overlaid**
-  plot_with_observed <- plot_predicted_curve(param_medians_wide_128, dat = dat)
-  print(plot_with_observed)  # Display observed + predicted curve
+  print(plot_pred_only)
 }
 
 }

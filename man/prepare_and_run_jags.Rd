@@ -5,23 +5,31 @@
 \title{Prepare Dataset and Run JAGS Model}
 \usage{
 prepare_and_run_jags(
-  file_path = "inst/extdata/SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv",
+  file_path = NULL,
   file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-  strat = "bldculres"
+  strat = "bldculres",
+  id = NULL,
+  antigen_iso = NULL
 )
 }
 \arguments{
-\item{file_path}{Path to the dataset file (default: \code{"inst/extdata/SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"}).}
+\item{file_path}{Path to the dataset file. If \code{NULL}, automatically searches for the correct path.}
 
 \item{file_mod}{Path to the JAGS model file (default is set automatically).}
 
 \item{strat}{A character string specifying the stratification variable (default: \code{"bldculres"}).}
+
+\item{id}{The subject ID to filter the dataset (default: \code{NULL}).}
+
+\item{antigen_iso}{The antigen identifier to filter the dataset (default: \code{NULL}).}
 }
 \value{
 A \link{list} containing:
 \itemize{
-\item \code{dat}: The extracted dataset for the selected subject.
-\item \code{jags_post}: The JAGS model output.
+\item \code{dat}: The extracted dataset for the selected subject and antigen.
+\item \code{dataset}: The full processed dataset.
+\item \code{nepal_sees_jags_post}: The JAGS model output for the selected subject and antigen.
+\item \code{nepal_sees_jags_post2}: The JAGS model output for the entire dataset.
 }
 }
 \description{
@@ -33,15 +41,24 @@ Reads the dataset, extracts required subjects, and runs the JAGS model.
 # Ensure JAGS is available before running
 if (!is.element(runjags::findjags(), c("", NULL))) {
   
-  # Run function to prepare dataset & execute JAGS model
-  results <- prepare_and_run_jags()
+  # Run function to prepare dataset and execute the JAGS models
+  results <- prepare_and_run_jags(
+    id = "sees_npl_128",
+    antigen_iso = "HlyE_IgA"
+  )
   
   # Extract outputs
-  dat <- results$dat
-  jags_post <- results$jags_post
+  dat <- results$dat                   # Filtered data for the selected subject-antigen pair
+  dataset <- results$dataset           # The full processed dataset
+  jags_post <- results$nepal_sees_jags_post     # JAGS output for the selected subject-antigen pair
+  jags_post2 <- results$nepal_sees_jags_post2   # JAGS output for the entire dataset
   
-  # Display summary of JAGS output
+  # Display summaries of the JAGS model outputs
+  print("Summary of subject-specific JAGS output:")
   print(summary(jags_post))
+  
+  print("Summary of full dataset JAGS output:")
+  print(summary(jags_post2))
 }
 }
 \author{
