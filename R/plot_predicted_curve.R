@@ -20,23 +20,29 @@
 #' If two parameter sets are provided, the first is plotted in red and the second in green.
 #' Observed data (if provided) are shown in blue.
 #' @export
-#' @example 
-#' # Using both full and partial median parameter sets with custom legend labels:
-#' plot_typhi_curves3 <- plot_predicted_curve(param_medians_full, param_medians_partial, dat,
-#'                                            legend_obs = "Observed Data",
-#'                                            legend_mod1 = "", 
-#'                                            legend_mod2 = "")
-#' print(plot_typhi_curves3)
+#' 
+#' @examples
+#' # Ensure JAGS is available before running
+#' if (!is.element(runjags::findjags(), c("", NULL))) {
 #'
-#' # Using only one median parameter set (partial) with observed data
-#' plot_typhi_curves <- plot_predicted_curve(param_medians_partial, dat,
-#'                                            legend_obs = "Observed Data")
-#' print(plot_typhi_curves)
+#'   # Prepare dataset & Run JAGS Model
+#'   jags_results <- prepare_and_run_jags(
+#'     id = "sees_npl_128",
+#'     antigen_iso = "HlyE_IgA"
+#'   )
 #'
-#' # Using only one median parameter set (full) with observed data
-#' plot_typhi_curves2 <- plot_predicted_curve(param_medians_full, dat,
-#'                                             legend_obs = "Observed Data")
-#' print(plot_typhi_curves2)
+#'   # Process JAGS output (step 7)
+#'   param_medians_wide_128 <- process_jags_output(
+#'     jags_post   = jags_results$nepal_sees_jags_post,
+#'     dataset     = jags_results$dataset,
+#'     run_until   = 7
+#'   )
+#'
+#'   # Generate and print predicted antibody response curve
+#'   plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
+#'   print(plot_pred_only)
+#' }
+#'
 
 plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL, dat = NULL,
                                  legend_obs = "Observed Data",
