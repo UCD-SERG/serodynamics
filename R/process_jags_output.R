@@ -22,10 +22,6 @@
 
 process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, antigen_iso = NULL) {
   
-  library(dplyr)
-  library(tidyr)
-  library(stringr)
-  library(ggmcmc)
   
   # Step 1: Filter dataset based on target_strat (bldculres == "typhi")
   data_typhi <- dataset %>% 
