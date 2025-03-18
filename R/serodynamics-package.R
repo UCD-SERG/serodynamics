@@ -6,6 +6,7 @@
 #' @importFrom dplyr all_of
 #' @importFrom dplyr filter
 #' @importFrom dplyr mutate
+#' @importFrom dplyr n
 #' @importFrom dplyr reframe
 #' @importFrom dplyr rename
 #' @importFrom dplyr rowwise

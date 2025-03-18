@@ -4,7 +4,11 @@
 
 ## New features
 
+
 * Added `process_jags_model()` for modeling antibody response curves and assessing model fit (#68)
+* Diagnostic trace plot function with strat (#64)
+* Diagnostic function to produce effective sample size plots with
+stratification (#66)
 * Diagnostic function to produce density plots with stratification (#27)
 * Added SEES data set data folder and documentation (#41)
 * Fixing SEES data and added jags_post for SEES (#63)
