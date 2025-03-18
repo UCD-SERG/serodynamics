@@ -3,6 +3,8 @@
 #' @description
 #' This function processes antibody predictions using JAGS posterior medians, computes residuals,
 #' and prepares the dataset for model re-running. It also restores necessary attributes for compatibility.
+#' 
+#' @importFrom rlang .env        
 #'
 #' @param dat The observed dataset.
 #' @param param_medians_wide A tibble with median parameter estimates from `process_jags_output()`.

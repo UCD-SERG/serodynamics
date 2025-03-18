@@ -4,6 +4,8 @@
 #' Uses median parameter estimates to plot predicted antibody response curves.
 #' If observed data is provided, it overlays the observed values as points and
 #' connects them with lines.
+#' 
+#' @importFrom stringr str_extract
 #'
 #' @param param_medians_wide A tibble with median parameter estimates (first model).
 #' @param param_medians_wide2 (Optional) A tibble with median parameter estimates (second model).

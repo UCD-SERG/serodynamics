@@ -11,6 +11,9 @@
 #' - r = shape parameter
 #' - alpha = decay rate
 #' 
+#' @importFrom stringr str_extract   
+#' @importFrom rlang .env            
+#' 
 #' @param jags_post A [list] output from `serodynamics::run_mod()`, containing posterior samples.
 #' @param dataset A [dataframe] containing subject and antigen information.
 #' @param run_until An integer specifying the step until which the function should run (default: 9).
