@@ -48,7 +48,7 @@ test_that(
     # ---------------------------------------------------------------------------
     # The expected output should be a tibble with these columns:
     # "Subject", "antigen_iso", "y0", "y1", "t1", "alpha", "shape", and "id"
-    expect_true(tibble::is_tibble(predictions), info = "Output should be a tibble")
+    expect_s3_class(predictions, "tbl_df")
     required_cols <- c("Subject", "antigen_iso", "y0", "y1", "t1", "alpha", "shape", "id")
     expect_true(all(required_cols %in% colnames(predictions)), info = "Output missing required columns")
   }
