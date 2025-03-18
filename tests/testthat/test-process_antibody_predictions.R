@@ -50,7 +50,7 @@ test_that(
     # "Subject", "antigen_iso", "y0", "y1", "t1", "alpha", "shape", and "id"
     expect_s3_class(predictions, "tbl_df")
     required_cols <- c("Subject", "antigen_iso", "y0", "y1", "t1", "alpha", "shape", "id")
-    expect_true(all(required_cols %in% colnames(predictions)), info = "Output missing required columns")
+    expect_contains(object = colnames(predictions), expected = required_cols)
   }
 )
 
