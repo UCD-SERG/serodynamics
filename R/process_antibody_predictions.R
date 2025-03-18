@@ -16,9 +16,6 @@
 
 process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, strat = "bldculres", id, antigen_iso) {
   
-  library(dplyr)
-  library(tidyr)
-  
   # Step 1: Create mapping for id
   unique_ids <- unique(dat2$id)
   subject_mapping <- data.frame(
