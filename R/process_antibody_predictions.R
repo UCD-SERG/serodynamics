@@ -15,7 +15,6 @@
 #' @return A tibble with processed JAGS posterior medians for re-running the model.
 #' @export
 #' @example inst/examples/examples-process_antibody_predictions.R
-
 process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, strat = "bldculres", id, antigen_iso) {
   
   # Step 1: Create mapping for id
@@ -27,12 +26,12 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
   
   # Step 2: Update dataset and join subject mapping
   dat_update <- dat2 %>%
-    mutate(antigen_iso = case_when(
+    dplyr::mutate(antigen_iso = dplyr::case_when(
       antigen_iso == 1 ~ "HlyE_IgA",
       antigen_iso == 2 ~ "HlyE_IgG",
       TRUE ~ as.character(antigen_iso)
     )) %>%
-    left_join(subject_mapping, by = "id")
+    dplyr::left_join(subject_mapping, by = "id")
   
   # Step 3: Define the antibody decay function
   ab <- function(t, y0, y1, t1, alpha, shape) {
@@ -45,30 +44,29 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
   
   # Step 4: Filter specific subject using the input arguments
   dat_update <- dat_update %>% 
-    filter(id == .env$id, antigen_iso == .env$antigen_iso)
+    dplyr::filter(id == .env$id, antigen_iso == .env$antigen_iso)
   
   # Step 5: Compute predicted results
   dat_update <- dat_update %>%
-    left_join(param_medians_wide, by = c("id", "antigen_iso")) %>%
-    rowwise() %>%
-    mutate(predicted_result = ab(dayssincefeveronset, y0, y1, t1, alpha, shape)) %>%
-    ungroup()
+    dplyr::left_join(param_medians_wide, by = c("id", "antigen_iso")) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(predicted_result = ab(dayssincefeveronset, y0, y1, t1, alpha, shape)) %>%
+    dplyr::ungroup()
   
   # Step 6: Compute residuals and reorganize data
   dat_resid <- dat_update %>%
-    mutate(
+    dplyr::mutate(
       residual = result - predicted_result,       # Regular residual
       abs_residual = abs(result - predicted_result) # Absolute residual
     ) %>%
-    select(Country, id, sample_id, bldculres, antigen_iso, studyvisit, 
-           dayssincefeveronset, visit_num, result, predicted_result, residual, abs_residual)
+    dplyr::select(Country, id, sample_id, bldculres, antigen_iso, studyvisit, 
+                  dayssincefeveronset, visit_num, result, predicted_result, residual, abs_residual)
   
   # Step 7: Prepare data for run_mod by keeping only abs_residual as result
   dat_resid_modified <- dat_resid %>%
-    select(id, Country, sample_id, bldculres, antigen_iso, studyvisit, 
-           dayssincefeveronset, visit_num, abs_residual) %>%
-    rename(result = abs_residual)  # Ensure 'id' is explicitly retained
-  
+    dplyr::select(id, Country, sample_id, bldculres, antigen_iso, studyvisit, 
+                  dayssincefeveronset, visit_num, abs_residual) %>%
+    dplyr::rename(result = abs_residual)  # Ensure 'id' is explicitly retained
   
   # Step 8: Restore attributes
   restore_attributes <- function(dat_target, dat_reference) {
@@ -82,7 +80,7 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
     return(dat_target)
   }
   
-  dat_resid_modified <- restore_attributes(dat_resid_modified, dat)
+  dat_resid_modified <- restore_attributes(dat_resid_modified, dat2)
   
   # Step 9: Run JAGS model again using processed data
   jags_post2 <- run_mod(

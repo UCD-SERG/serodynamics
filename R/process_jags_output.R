@@ -25,35 +25,34 @@
 
 process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, antigen_iso = NULL) {
   
-  
   # Step 1: Filter dataset based on target_strat (bldculres == "typhi")
   data_typhi <- dataset %>% 
-    filter(bldculres == "typhi")
+    dplyr::filter(bldculres == "typhi")
   
-  # Step 2: Unpack JAGS posterior samples
-  jags_unpack <- ggs(jags_post$jags.post$typhi$mcmc)
+  # Step 2: Unpack JAGS posterior samples using ggmcmc::ggs
+  jags_unpack <- ggmcmc::ggs(jags_post$jags.post$typhi$mcmc)
   
   # Step 3: Extract subject ID and antigen_iso from Parameter column
   jags_processed <- jags_unpack %>%
-    mutate(
-      Parameter_clean = str_extract(Parameter, "^[a-zA-Z0-9]+"),
-      Subject = as.numeric(str_extract(Parameter, "(?<=\\[)\\d+")),         # Extract subject number inside brackets
-      antigen_iso = as.numeric(str_extract(Parameter, "(?<=,)\\d+(?=\\])"))  # Extract antigen_iso between comma and ]
+    dplyr::mutate(
+      Parameter_clean = stringr::str_extract(Parameter, "^[a-zA-Z0-9]+"),
+      Subject = as.numeric(stringr::str_extract(Parameter, "(?<=\\[)\\d+")),         # Extract subject number inside brackets
+      antigen_iso = as.numeric(stringr::str_extract(Parameter, "(?<=,)\\d+(?=\\])"))  # Extract antigen_iso between comma and ]
     ) %>%
-    filter(!is.na(Parameter_clean))  # Remove rows where extraction failed
+    dplyr::filter(!is.na(Parameter_clean))  # Remove rows where extraction failed
   
   # Step 4: Remove last subject (if applicable)
   jags_processed <- jags_processed %>%
-    filter(Subject <= max(Subject, na.rm = TRUE) - 1)
+    dplyr::filter(Subject <= max(Subject, na.rm = TRUE) - 1)
   
   # Step 5: Compute median for each parameter per subject and antigen type
   param_medians <- jags_processed %>%
-    group_by(Subject, antigen_iso, Parameter_clean) %>%
-    summarize(median_value = median(value), .groups = "drop")
+    dplyr::group_by(Subject, antigen_iso, Parameter_clean) %>%
+    dplyr::summarize(median_value = median(value), .groups = "drop")
   
   # Step 6: Convert antigen_iso numeric values to character names
   param_medians <- param_medians %>%
-    mutate(antigen_iso = case_when(
+    dplyr::mutate(antigen_iso = dplyr::case_when(
       antigen_iso == 1 ~ "HlyE_IgA",
       antigen_iso == 2 ~ "HlyE_IgG",
       TRUE ~ as.character(antigen_iso)
@@ -61,13 +60,13 @@ process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, an
   
   # Step 7: Reshape into wide format
   param_medians_wide <- param_medians %>%
-    pivot_wider(names_from = Parameter_clean, values_from = median_value)
+    tidyr::pivot_wider(names_from = Parameter_clean, values_from = median_value)
   
   # If only running until step 7, add the 'id' column from the input argument and return
   if (run_until == 7) {
     if (!is.null(id)) {
       param_medians_wide <- param_medians_wide %>%
-        mutate(id = id)
+        dplyr::mutate(id = id)
     }
     return(param_medians_wide)
   }
@@ -85,12 +84,11 @@ process_jags_output <- function(jags_post, dataset, run_until = 9, id = NULL, an
   )
   
   param_medians_wide <- param_medians_wide %>%
-    left_join(subject_mapping, by = "Subject")
+    dplyr::left_join(subject_mapping, by = "Subject")
   
   # Step 9: Filter by the specified `id` and `antigen_iso`
   param_medians_wide_pick <- param_medians_wide %>%
-    filter(id == .env$id, antigen_iso == .env$antigen_iso)
+    dplyr::filter(id == .env$id, antigen_iso == .env$antigen_iso)
   
   return(param_medians_wide_pick)
 }
-

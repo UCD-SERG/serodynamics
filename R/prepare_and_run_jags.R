@@ -22,10 +22,6 @@ prepare_and_run_jags <- function(file_path = NULL,
                                  id = NULL,
                                  antigen_iso = NULL) {
   
-  library(dplyr)
-  library(readr)
-  library(fs)  # Ensure `fs` is loaded
-  
   # Step 1: Locate Dataset File Automatically
   if (is.null(file_path)) {
     file_path <- system.file("extdata", "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv", package = "serodynamics")
@@ -41,19 +37,18 @@ prepare_and_run_jags <- function(file_path = NULL,
     stop("Error: Dataset file not found. Ensure it is in 'inst/extdata/'.")
   }
   
-  # Step 3: Read dataset
-  nepal_sees <- read_csv(file_path)
+  # Step 3: Read dataset using readr::read_csv
+  nepal_sees <- readr::read_csv(file_path)
   
-  # Convert to case data format
+  # Convert to case data format (assuming as_case_data() is defined in our package)
   dataset <- nepal_sees |>
     as_case_data(id_var = "person_id",
                  biomarker_var = "antigen_iso",
                  value_var = "result",
                  time_in_days = "dayssincefeveronset")
   
-  # Step 4: Extract specific subject and antigen data
-  dat <- dataset %>%
-    filter(id == !!id, antigen_iso == !!antigen_iso)
+  # Step 4: Extract specific subject and antigen data using dplyr::filter
+  dat <- dplyr::filter(dataset, id == !!id, antigen_iso == !!antigen_iso)
   
   # Check if the dataset has at least 5 observations
   if (nrow(dat) < 5) {

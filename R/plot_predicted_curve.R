@@ -45,15 +45,10 @@
 #'   print(plot_pred_only)
 #' }
 #'
-
 plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL, dat = NULL,
                                  legend_obs = "Observed Data",
                                  legend_mod1 = "",
                                  legend_mod2 = "") {
-  
-  library(dplyr)
-  library(tidyr)
-  library(ggplot2)
   
   # If the second argument appears to be observed data (has "dayssincefeveronset"),
   # then treat it as 'dat' and set param_medians_wide2 to NULL.
@@ -76,80 +71,78 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
   
   # Compute predicted curves for the first median parameter set (mod1)
   dT1 <- data.frame(t = tx2) %>%
-    mutate(ID = row_number()) %>%
-    pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
-    slice(rep(1:n(), each = nrow(param_medians_wide)))
+    dplyr::mutate(ID = dplyr::row_number()) %>%
+    tidyr::pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
+    dplyr::slice(rep(1:nrow(.), each = nrow(param_medians_wide)))
   
   serocourse_all1 <- cbind(param_medians_wide, dT1) %>%
-    pivot_longer(cols = starts_with("time"), values_to = "t") %>%
-    select(-name) %>%
-    rowwise() %>%
-    mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
-    ungroup() %>%
-    mutate(id = as.factor(Subject))
+    tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
+    dplyr::select(-name) %>%
+    dplyr::rowwise() %>%
+    dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
+    dplyr::ungroup() %>%
+    dplyr::mutate(id = as.factor(Subject))
   
   # Compute predicted curves for the second median parameter set (mod2), if provided
   if (!is.null(param_medians_wide2)) {
     dT2 <- data.frame(t = tx2) %>%
-      mutate(ID = row_number()) %>%
-      pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
-      slice(rep(1:n(), each = nrow(param_medians_wide2)))
+      dplyr::mutate(ID = dplyr::row_number()) %>%
+      tidyr::pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
+      dplyr::slice(rep(1:nrow(.), each = nrow(param_medians_wide2)))
     
     serocourse_all2 <- cbind(param_medians_wide2, dT2) %>%
-      pivot_longer(cols = starts_with("time"), values_to = "t") %>%
-      select(-name) %>%
-      rowwise() %>%
-      mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
-      ungroup() %>%
-      mutate(id = as.factor(Subject))
+      tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
+      dplyr::select(-name) %>%
+      dplyr::rowwise() %>%
+      dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
+      dplyr::ungroup() %>%
+      dplyr::mutate(id = as.factor(Subject))
   }
   
   # Initialize the base plot
-  p <- ggplot() +
-    theme_minimal() +
-    labs(x = "Days since fever onset", y = "ELISA units", color = "Data Type") +
-    theme(legend.position = "right")
+  p <- ggplot2::ggplot() +
+    ggplot2::theme_minimal() +
+    ggplot2::labs(x = "Days since fever onset", y = "ELISA units", color = "Data Type") +
+    ggplot2::theme(legend.position = "right")
   
   # Add predicted curve for the first median parameter set (mod1)
   if (legend_mod1 != "") {
-    # Map color so that a legend key appears
-    p <- p + geom_line(data = serocourse_all1,
-                       aes(x = t, y = res, group = id, color = "mod1"),
-                       alpha = 0.3, show.legend = TRUE)
+    p <- p + ggplot2::geom_line(data = serocourse_all1,
+                                ggplot2::aes(x = t, y = res, group = id, color = "mod1"),
+                                alpha = 0.3, show.legend = TRUE)
   } else {
-    # Fixed color and no legend
-    p <- p + geom_line(data = serocourse_all1,
-                       aes(x = t, y = res, group = id),
-                       color = "red", alpha = 0.3, show.legend = FALSE)
+    p <- p + ggplot2::geom_line(data = serocourse_all1,
+                                ggplot2::aes(x = t, y = res, group = id),
+                                color = "red", alpha = 0.3, show.legend = FALSE)
   }
   
   # Add predicted curve for the second median parameter set (mod2), if provided
   if (!is.null(param_medians_wide2)) {
     if (legend_mod2 != "") {
-      p <- p + geom_line(data = serocourse_all2,
-                         aes(x = t, y = res, group = id, color = "mod2"),
-                         alpha = 0.3, show.legend = TRUE)
+      p <- p + ggplot2::geom_line(data = serocourse_all2,
+                                  ggplot2::aes(x = t, y = res, group = id, color = "mod2"),
+                                  alpha = 0.3, show.legend = TRUE)
     } else {
-      p <- p + geom_line(data = serocourse_all2,
-                         aes(x = t, y = res, group = id),
-                         color = "green", alpha = 0.3, show.legend = FALSE)
+      p <- p + ggplot2::geom_line(data = serocourse_all2,
+                                  ggplot2::aes(x = t, y = res, group = id),
+                                  color = "green", alpha = 0.3, show.legend = FALSE)
     }
   }
   
   # Overlay observed data if provided (always map color to get a legend key)
   if (!is.null(dat)) {
     observed_data <- dat %>%
-      rename(t = dayssincefeveronset, res = result) %>%
-      select(id, t, res, antigen_iso) %>%
-      mutate(id = as.factor(id))
+      dplyr::rename(t = dayssincefeveronset, res = result) %>%
+      dplyr::select(id, t, res, antigen_iso) %>%
+      dplyr::mutate(id = as.factor(id))
     
     p <- p +
-      geom_point(data = observed_data,
-                 aes(x = t, y = res, group = id, color = "observed"),
-                 size = 2, show.legend = TRUE) +
-      geom_line(data = observed_data,
-                aes(x = t, y = res, group = id, color = "observed"),
-                linewidth = 1, show.legend = TRUE)
+      ggplot2::geom_point(data = observed_data,
+                          ggplot2::aes(x = t, y = res, group = id, color = "observed"),
+                          size = 2, show.legend = TRUE) +
+      ggplot2::geom_line(data = observed_data,
+                         ggplot2::aes(x = t, y = res, group = id, color = "observed"),
+                         linewidth = 1, show.legend = TRUE)
   }
   
   # Construct the color scale manually based on which legend items are active.
@@ -164,15 +157,13 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
     color_vals["mod2"] <- "green"
     color_labels["mod2"] <- legend_mod2
   }
-  # Always include observed data
   if (!is.null(dat)) {
     color_vals["observed"] <- "blue"
     color_labels["observed"] <- legend_obs
   }
   
-  # If at least one mapped legend exists, add the manual scale.
   if (length(color_vals) > 0) {
-    p <- p + scale_color_manual(values = color_vals, labels = color_labels)
+    p <- p + ggplot2::scale_color_manual(values = color_vals, labels = color_labels)
   }
   
   return(p)
