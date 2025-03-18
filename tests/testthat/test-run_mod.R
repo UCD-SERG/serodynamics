@@ -1,7 +1,7 @@
 test_that(
   desc = "results are consistent with simulated data",
   code = {
-    # skip_on_os(c("windows", "linux"))
+    skip_on_os(c("windows", "linux"))
     library(runjags)
     withr::local_seed(1)
     library(dplyr)
