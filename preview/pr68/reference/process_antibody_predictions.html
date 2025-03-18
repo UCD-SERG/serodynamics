@@ -53,10 +53,12 @@ and prepares the dataset for model re-running. It also restores necessary attrib
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">process_antibody_predictions</span><span class="op">(</span></span>
-<span>  <span class="va">dat</span>,</span>
+<span>  <span class="va">dat2</span>,</span>
 <span>  <span class="va">param_medians_wide</span>,</span>
 <span>  <span class="va">file_mod</span>,</span>
-<span>  strat <span class="op">=</span> <span class="st">"bldculres"</span></span>
+<span>  strat <span class="op">=</span> <span class="st">"bldculres"</span>,</span>
+<span>  <span class="va">id</span>,</span>
+<span>  <span class="va">antigen_iso</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -64,11 +66,7 @@ and prepares the dataset for model re-running. It also restores necessary attrib
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-dat">dat<a class="anchor" aria-label="anchor" href="#arg-dat"></a></dt>
-<dd><p>The observed dataset.</p></dd>
-
-
-<dt id="arg-param-medians-wide">param_medians_wide<a class="anchor" aria-label="anchor" href="#arg-param-medians-wide"></a></dt>
+<dl><dt id="arg-param-medians-wide">param_medians_wide<a class="anchor" aria-label="anchor" href="#arg-param-medians-wide"></a></dt>
 <dd><p>A tibble with median parameter estimates from <code><a href="process_jags_output.html">process_jags_output()</a></code>.</p></dd>
 
 
@@ -78,6 +76,18 @@ and prepares the dataset for model re-running. It also restores necessary attrib
 
 <dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
 <dd><p>A character string specifying the stratification variable (default: <code>"bldculres"</code>).</p></dd>
+
+
+<dt id="arg-id">id<a class="anchor" aria-label="anchor" href="#arg-id"></a></dt>
+<dd><p>A character string specifying the subject ID to filter the dataset.</p></dd>
+
+
+<dt id="arg-antigen-iso">antigen_iso<a class="anchor" aria-label="anchor" href="#arg-antigen-iso"></a></dt>
+<dd><p>A character string specifying the antigen identifier to filter the dataset.</p></dd>
+
+
+<dt id="arg-dat">dat<a class="anchor" aria-label="anchor" href="#arg-dat"></a></dt>
+<dd><p>The observed dataset.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -96,16 +106,52 @@ and prepares the dataset for model re-running. It also restores necessary attrib
 <span class="r-in"><span><span class="co"># Ensure JAGS is available before running</span></span></span>
 <span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/findjags.html" class="external-link">findjags</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  </span></span>
-<span class="r-in"><span>  <span class="co"># Run JAGS model &amp; process output</span></span></span>
-<span class="r-in"><span>  <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_and_run_jags.html">prepare_and_run_jags</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">dat</span></span></span>
-<span class="r-in"><span>  <span class="va">jags_post</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">jags_post</span></span></span>
-<span class="r-in"><span>  <span class="va">param_medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="process_jags_output.html">process_jags_output</a></span><span class="op">(</span><span class="va">jags_post</span>, remove_last_subject <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Step 1: Prepare Dataset &amp; Run JAGS Model</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># This step filters the dataset for the subject "sees_npl_128" and antigen "HlyE_IgA"</span></span></span>
+<span class="r-in"><span>  <span class="co"># and runs two JAGS models (subject-specific and full dataset models).</span></span></span>
+<span class="r-in"><span>  <span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="prepare_and_run_jags.html">prepare_and_run_jags</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"sees_npl_128"</span>,</span></span>
+<span class="r-in"><span>    antigen_iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span>  </span></span>
-<span class="r-in"><span>  <span class="co"># Generate predicted antibody response</span></span></span>
-<span class="r-in"><span>  <span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu">process_antibody_predictions</span><span class="op">(</span><span class="va">dat</span>, <span class="va">param_medians</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="co"># Extract the filtered dataset (dat) and the full dataset (dataset)</span></span></span>
+<span class="r-in"><span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">dat</span>         <span class="co"># Filtered data for subject "sees_npl_128" &amp; antigen "HlyE_IgA"</span></span></span>
+<span class="r-in"><span>  <span class="va">dataset</span> <span class="op">&lt;-</span> <span class="va">results</span><span class="op">$</span><span class="va">dataset</span>   <span class="co"># The full dataset</span></span></span>
 <span class="r-in"><span>  </span></span>
-<span class="r-in"><span>  <span class="co"># Display results</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Step 2: Process JAGS Output to Extract Median Parameters</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Here we process the full dataset JAGS output to obtain median parameter estimates.</span></span></span>
+<span class="r-in"><span>  <span class="va">param_medians</span> <span class="op">&lt;-</span> <span class="fu"><a href="process_jags_output.html">process_jags_output</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    jags_post <span class="op">=</span> <span class="va">results</span><span class="op">$</span><span class="va">nepal_sees_jags_post2</span>,  <span class="co"># Full dataset model output</span></span></span>
+<span class="r-in"><span>    dataset <span class="op">=</span> <span class="va">dataset</span>,</span></span>
+<span class="r-in"><span>    run_until <span class="op">=</span> <span class="fl">9</span>,                             <span class="co"># Run full processing (steps 1-9)</span></span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"sees_npl_128"</span>,</span></span>
+<span class="r-in"><span>    antigen_iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Step 3: Generate Predictions &amp; Re-run JAGS Based on Residuals</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># The process_antibody_predictions() function computes predicted antibody responses,</span></span></span>
+<span class="r-in"><span>  <span class="co"># calculates residuals, prepares a modified dataset (using absolute residuals),</span></span></span>
+<span class="r-in"><span>  <span class="co"># re-runs the JAGS model, and finally processes the new output.</span></span></span>
+<span class="r-in"><span>  <span class="va">predictions</span> <span class="op">&lt;-</span> <span class="fu">process_antibody_predictions</span><span class="op">(</span></span></span>
+<span class="r-in"><span>    dat2 <span class="op">=</span> <span class="va">dataset</span>,                          <span class="co"># Pass the full dataset as dat2</span></span></span>
+<span class="r-in"><span>    param_medians_wide <span class="op">=</span> <span class="va">param_medians</span>,      <span class="co"># Use median parameters from the full model</span></span></span>
+<span class="r-in"><span>    file_mod <span class="op">=</span> <span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/path_package.html" class="external-link">path_package</a></span><span class="op">(</span><span class="st">"serodynamics"</span>, <span class="st">"extdata/model.jags"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"bldculres"</span>,</span></span>
+<span class="r-in"><span>    id <span class="op">=</span> <span class="st">"sees_npl_128"</span>,</span></span>
+<span class="r-in"><span>    antigen_iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Step 4: Display Results</span></span></span>
+<span class="r-in"><span>  <span class="co"># ---------------------------------------------------------------------------</span></span></span>
+<span class="r-in"><span>  <span class="co"># Print the first few rows of the new median parameter estimates obtained from the</span></span></span>
+<span class="r-in"><span>  <span class="co"># residual-based model re-run.</span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">predictions</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="font-weight: bold;">Rows: </span><span style="color: #0000BB;">904</span> <span style="font-weight: bold;">Columns: </span><span style="color: #0000BB;">8</span></span>
@@ -119,7 +165,7 @@ and prepares the dataset for model re-running. It also restores necessary attrib
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Mar 12 01:30:48 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 18 17:39:23 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -151,7 +197,115 @@ and prepares the dataset for model re-running. It also restores necessary attrib
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'NA' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 18 17:39:24 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 690</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 384</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 14802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 18 17:39:30 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 4771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 18 17:39:35 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 206</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 1 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Subject antigen_iso    alpha shape    t1    y0    y1 id          </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span>       1 HlyE_IgA    0.000<span style="text-decoration: underline;">180</span>  1.38  2.26  5.19  56.4 sees_npl_128</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
