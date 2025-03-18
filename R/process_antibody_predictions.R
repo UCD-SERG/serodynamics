@@ -65,10 +65,10 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
   
   # Step 7: Prepare data for run_mod by keeping only abs_residual as result
   dat_resid_modified <- dat_resid %>%
-    select(-result, -predicted_result, -residual) %>%
-    rename(result = abs_residual) %>%
-    select(Country, id, sample_id, bldculres, antigen_iso, studyvisit, 
-           dayssincefeveronset, result, visit_num)
+    select(id, Country, sample_id, bldculres, antigen_iso, studyvisit, 
+           dayssincefeveronset, visit_num, abs_residual) %>%
+    rename(result = abs_residual)  # Ensure 'id' is explicitly retained
+  
   
   # Step 8: Restore attributes
   restore_attributes <- function(dat_target, dat_reference) {
@@ -98,6 +98,11 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
   
   # Step 10: Process JAGS output for re-run model; here we run until step 7 so that an id column is added
   param_medians_wide_2 <- process_jags_output(jags_post2, dataset = dat2, run_until = 7)
+  
+  # Ensure that the final output has an 'id' column by adding it if missing
+  if (!("id" %in% colnames(param_medians_wide_2))) {
+    param_medians_wide_2$id <- id
+  }
   
   return(param_medians_wide_2)
 }
