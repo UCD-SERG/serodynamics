@@ -50,8 +50,6 @@ The antibody dynamic curve includes the following parameters:
 \item alpha = decay rate
 }
 }
-<<<<<<< HEAD
-=======
 \examples{
 
 data <- serodynamics::nepal_sees_jags_post
@@ -62,7 +60,6 @@ plot_jags_trace(
                 iso = "HlyE_IgA",
                 strat = "typhi")
 }
->>>>>>> main
 \author{
 Sam Schildhauer
 }
