@@ -1,8 +1,6 @@
 linters: linters_with_defaults(
-  line_length_linter = lintr::line_length_linter(120),  # Allow up to 120 characters
-  return_linter = NULL,
-  trailing_whitespace_linter = NULL,
-  pipe_consistency_linter(pipe = "|>")
-)
+   return_linter = NULL,
+   trailing_whitespace_linter = NULL,
+   pipe_consistency_linter(pipe = "|>"))
 encoding: "UTF-8"
 
