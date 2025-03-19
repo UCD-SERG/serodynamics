@@ -1,5 +1,5 @@
 print("starting  package .Rprofile")
-
+Sys.setlocale(category = "LC_COLLATE", locale = "en_US.UTF-8")
 if (interactive() && commandArgs()[1] == "RStudio")
 {
   message('loading packages')
