@@ -68,7 +68,7 @@ plot_jags_dens <- function(data,
       densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
         ggplot2::theme_bw() +
         ggplot2::labs(x = "parameter value") +
-        ggplot2::scale_x_log10()
+        ggplot2::scale_x_log10(labels = scales::label_comma())
       density_out[[j]] <- densplot
     }
     
