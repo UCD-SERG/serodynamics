@@ -29,7 +29,7 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing density
 #' plots for all the specified input.
 #' @export
-#' @examples inst/examples/examples-plot_jags_densitydx.R
+#' @example inst/examples/examples-plot_jags_densitydx.R
 
 plot_jags_dens <- function(data,
                            iso = unique(data$curve_params$Iso_type),
