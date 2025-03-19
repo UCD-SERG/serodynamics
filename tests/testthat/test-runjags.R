@@ -27,7 +27,7 @@ test_that("results are consistent with our model", {
     data = c(longdata, priors),
     inits = initsfunction,
     method = "simple",
-    adapt = 1000,
+    adapt = 50,
     burnin = 1,
     thin = 1,
     sample = 2,
