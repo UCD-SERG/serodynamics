@@ -19,7 +19,7 @@ test_that("results are consistent with our model", {
   longdata <- prep_data(strat1, add_newperson = FALSE)
   priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
   
-  tomonitor <- c("y0", "y1", "t1", "alpha", "r")
+  tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
   set.seed(1)
   jags_post <- runjags::run.jags(
     model = serodynamics_example("model.jags"),
@@ -27,15 +27,18 @@ test_that("results are consistent with our model", {
     inits = initsfunction,
     method = "rjags",
     adapt = 1000,
-    burnin = 1,
+    burnin = 0,
     thin = 1,
     sample = 100,
-    n.chains = 1,
+    n.chains = 2,
     monitor = tomonitor,
     summarise = TRUE
   ) |> 
     suppressWarnings()
-  plot(jags_post, vars = "y1[1,1]", plot.type = "trace")
+  plot(jags_post, 
+       layout = c(3,2),
+       vars = c("y0[1,1]", "y1[1,1]", "t1[1,1]", "alpha[1,1]", "shape[1,1]"), 
+       plot.type = "trace")
   samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
     dplyr::filter(Iteration %in% 1:2) |> 
