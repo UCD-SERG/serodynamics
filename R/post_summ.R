@@ -34,8 +34,6 @@
 #' data <- serodynamics::nepal_sees_jags_post
 #' post_summ(data = data)
 
-post_summ(data = data)
-
 post_summ <- function(data,
                       iso = unique(data$curve_params$Iso_type),
                       param = unique(data$curve_params$Parameter_sub),
