@@ -35,7 +35,7 @@ test_that("results are consistent with our model", {
     summarise = TRUE
   ) |> 
     suppressWarnings()
-  plot(jags_post, vars = "y1[1,1]")
+  plot(jags_post, vars = "y1[1,1]", plot.type = "trace")
   samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
     dplyr::filter(Iteration %in% 1:2) |> 
