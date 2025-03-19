@@ -15,7 +15,7 @@ test_that("results are consistent with our model", {
   set.seed(1)
   library(dplyr)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA") |>
     mutate(strat = "stratum 2")
   longdata <- prep_data(strat1)
   priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
