@@ -1,7 +1,7 @@
 test_that("results are consistent", {
   
   # set.seed(1)
-  results <- runjags:::example_runjags()
+  results <- runjags:::example_runjags(sample = 100)
   results |> plot(vars = "c", plot.type = "trace")
   results[["mcmc"]] |> 
     ggmcmc::ggs() |> 
