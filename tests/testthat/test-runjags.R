@@ -39,6 +39,14 @@ test_that("results are consistent with our model", {
     summarise = TRUE
   ) |> 
     suppressWarnings()
+  
+  jags_post$end.state |> 
+    as.character() |> 
+    stringr::str_split(pattern = "\n") |> 
+    unlist() |> 
+    head(1) |> 
+    expect_snapshot()
+  
   plot(jags_post, 
        layout = c(5,2),
        vars = c("y0[1,1]", "y1[1,1]", "t1[1,1]", "alpha[1,1]", "shape[1,1]",
@@ -57,6 +65,6 @@ test_that("results are consistent with our model", {
   # running this on posit cloud (linux), the first discrepancy 
   # occurs at iteration 19, when person 6's model changes.
   # windows and mac agree when adapt = 0, but when adapt = 1000,
-  # all three operating systems differ
+  # all three operating systems differ, even though jags_post$end.state[".RNG.state"]) matches
   
 })
