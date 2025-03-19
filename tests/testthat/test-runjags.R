@@ -65,6 +65,7 @@ test_that("results are consistent with our model", {
   # running this on posit cloud (linux), the first discrepancy 
   # occurs at iteration 19, when person 6's model changes.
   # windows and mac agree when adapt = 0, but when adapt = 1000,
-  # all three operating systems differ, even though jags_post$end.state[".RNG.state"]) matches
+  # all three operating systems differ, 
+  # even though jags_post$end.state[".RNG.state"]) matches
   
 })
