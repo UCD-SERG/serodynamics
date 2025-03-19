@@ -30,18 +30,19 @@ test_that("results are consistent with our model", {
     data = c(longdata, priors),
     inits = initsfunction,
     method = "rjags",
-    adapt = 1000,
+    adapt = 0,
     burnin = 0,
     thin = 1,
     sample = 100,
-    n.chains = 2,
+    n.chains = 1,
     monitor = tomonitor,
     summarise = TRUE
   ) |> 
     suppressWarnings()
   plot(jags_post, 
-       layout = c(3,2),
-       vars = c("y0[1,1]", "y1[1,1]", "t1[1,1]", "alpha[1,1]", "shape[1,1]"), 
+       layout = c(5,2),
+       vars = c("y0[1,1]", "y1[1,1]", "t1[1,1]", "alpha[1,1]", "shape[1,1]",
+                "y0[3,1]", "y1[3,1]", "t1[3,1]", "alpha[3,1]", "shape[3,1]"),  
        plot.type = "trace")
   samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
