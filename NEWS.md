@@ -4,6 +4,7 @@
 
 ## New features
 
+* Updating density diagnostic function (#71)
 * Diagnostic trace plot function with strat (#64)
 * Diagnostic function to produce effective sample size plots with
 stratification (#66)
