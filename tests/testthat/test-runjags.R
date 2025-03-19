@@ -37,9 +37,10 @@ test_that("results are consistent with our model", {
   ) |> 
     suppressWarnings()
   
-  jags_post[["mcmc"]] |> 
+  samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
-    dplyr::filter(Iteration %in% 1) |> 
+    dplyr::filter(Iteration %in% 1)
+  samples |> 
     ssdtools:::expect_snapshot_data(name = "example-head")
   
 })
