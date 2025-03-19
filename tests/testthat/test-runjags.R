@@ -27,10 +27,10 @@ test_that("results are consistent with our model", {
     data = c(longdata, priors),
     inits = initsfunction,
     method = "simple",
-    adapt = 100,
-    burnin = 100,
+    adapt = 1000,
+    burnin = 1,
     thin = 1,
-    sample = 1,
+    sample = 2,
     n.chains = 1,
     monitor = tomonitor,
     summarise = FALSE
@@ -39,7 +39,9 @@ test_that("results are consistent with our model", {
   
   samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
-    dplyr::filter(Iteration %in% 1)
+    dplyr::filter(Iteration %in% 1:2) |> 
+    print()
+  
   samples |> 
     ssdtools:::expect_snapshot_data(name = "kinetics")
   
