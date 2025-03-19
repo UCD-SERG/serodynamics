@@ -1,6 +1,6 @@
 set.seed(1)
 strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-  sim_case_data(n = 20, antigen_isos = "HlyE_IgA") |>
+  sim_case_data(n = 9, antigen_isos = "HlyE_IgA") |>
   mutate(strat = "stratum 2")
 longdata <- prep_data(strat1, add_newperson = FALSE)
 priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
