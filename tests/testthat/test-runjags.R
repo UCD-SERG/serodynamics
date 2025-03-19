@@ -54,4 +54,7 @@ test_that("results are consistent with our model", {
     # dplyr::filter(Iteration %in% c(1, 2, max(Iteration))) |> 
     ssdtools:::expect_snapshot_data(name = "kinetics")
   
+  # running this on posit cloud (linux), the first discrepancy 
+  # occurs at iteration 19, when person 6's model changes.
+  
 })
