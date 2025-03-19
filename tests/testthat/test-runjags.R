@@ -44,12 +44,14 @@ test_that("results are consistent with our model", {
        vars = c("y0[1,1]", "y1[1,1]", "t1[1,1]", "alpha[1,1]", "shape[1,1]",
                 "y0[3,1]", "y1[3,1]", "t1[3,1]", "alpha[3,1]", "shape[3,1]"),  
        plot.type = "trace")
+  
   samples <- jags_post[["mcmc"]] |> 
     ggmcmc::ggs() |> 
-    dplyr::filter(Iteration %in% 1:2) |> 
     print()
   
   samples |> 
+    dplyr::arrange(Iteration) |> 
+    # dplyr::filter(Iteration %in% c(1, 2, max(Iteration))) |> 
     ssdtools:::expect_snapshot_data(name = "kinetics")
   
 })
