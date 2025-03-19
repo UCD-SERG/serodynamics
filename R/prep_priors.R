@@ -20,28 +20,46 @@
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
-                        priors = list ()) {
+                        priors = list ()){
   #Setting defaults for list)
   defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
                    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
                    wishdf_param = 20,
                    prec_logy_hyp_param = c(4.0, 1.0))
-  if (is.na(priors) == F) {
+  if (sum(is.na(priors)) < 5) {
+    ## Testing for mu_hyp_param
     if (length(priors$mu_hyp_param) == 5) {
       defaults$mu_hyp_param <- priors$mu_hyp_param
-    } else if{
-      
+    } else if (length(priors$mu_hyp_param) != 5) {
+      stop("Need to specify 5 priors for mu_hyp_param")
     }
-    if (length(priors$mu_hyp_param) == 5) {
-      defaults$mu_hyp_param <- priors$mu_hyp_param
+    ## Testing for prec_hyp_param
+    if (length(priors$prec_hyp_param) == 5) {
+      defaults$prec_hyp_param <- priors$prec_hyp_param
+    } else if (length(priors$prec_hyp_param) != 5) {
+      stop("Need to specify 5 priors for prec_hyp_param")
     }
-    if (length(priors$mu_hyp_param) == 5) {
+    ## Testing for omega_param
+    if (length(priors$omega_param) == 5) {
+      defaults$omega_param <- priors$omega_param
+    } else if (length(priors$omega_param) != 5) {
+      stop("Need to specify 5 priors for omega_param")
+    }
+    ## Testing for wishdf_param
+    if (length(priors$mu_hyp_param) == 1) {
       defaults$mu_hyp_param <- priors$mu_hyp_param
+    } else if (length(priors$mu_hyp_param) != 1) {
+      stop("Need to specify 1 prior for omega_param")
+    }
+    ## Testing for prec_logy_hyp_param
+    if (length(priors$prec_logy_hyp_param) == 2) {
+      defaults$prec_logy_hyp_param <- priors$prec_logy_hyp_param
+    } else if (length(priors$prec_logy_hyp_param) != 5) {
+      stop("Need to specify 2 priors for prec_logy_hyp_param")
     }
   }
-  
-  
+
   # Model parameters
   n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
