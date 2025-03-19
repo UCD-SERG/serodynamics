@@ -11,6 +11,7 @@ test_that(
     jags_post0 <- run.jags(
       n.chains = 2,
       inits = initsfunction,
+      method = "parallel",
       model = serodynamics_example("model.dobson.jags"),
       data = list(r = data1, N = length(data1)),
       monitor = "p",
