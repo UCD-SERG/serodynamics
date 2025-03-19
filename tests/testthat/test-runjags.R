@@ -5,7 +5,7 @@ test_that("results are consistent", {
   results |> plot(vars = "c", plot.type = "trace")
   results[["mcmc"]] |> 
     ggmcmc::ggs() |> 
-    dplyr::filter(Iteration %in% 1:2) |> 
+    # dplyr::filter(Iteration %in% 1:2) |> 
     ssdtools:::expect_snapshot_data(name = "example-head")
 })
 
