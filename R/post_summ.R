@@ -30,9 +30,8 @@
 #' @return A [data.frame] summarizing estimate mean, standard deviation (SD), 
 #' median, and quantiles (2.5%, 25.0%, 50.0%, 75.0%, 97.5%).
 #' @export
-#' @example 
-#' data <- serodynamics::nepal_sees_jags_post
-#' post_summ(data = data)
+#' @examples
+#' post_summ(data = serodynamics::nepal_sees_jags_post)
 
 post_summ <- function(data,
                       iso = unique(data$curve_params$Iso_type),
