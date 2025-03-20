@@ -55,5 +55,5 @@ post_summ <- function(data,
                      `50.0%` = quantile(.data$value, 0.50), 
                      `75.0%` = quantile(.data$value, 0.75), 
                      `97.5%` = quantile(.data$value, 0.975))
-  as_tibble(summarize_jags)
+  dplyr::as_tibble(summarize_jags)
 }
