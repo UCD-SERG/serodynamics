@@ -61,16 +61,18 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
 
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter_sub, ", strat = ",
-                                         i),
+        dplyr::mutate(Parameter = paste0(.data$Parameter_sub),
                       value = log(.data$value))
       # Assigning attributes, which are needed to run ggs_rhat
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating rhat dotplots
       rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
-        ggplot2::theme_bw() 
+        ggplot2::theme_bw() +
+        ggplot2::labs(title = ifelse(j == "None", 
+                                     paste0("Rhat value: ag/iso = ", j),
+                            paste0("Rhat value: ag/iso = ", 
+                                   j,"; strata =  ", i)))
       rhat_out[[j]] <- rhatplot
     }
     rhat_strat_list[[i]] <- rhat_out
