@@ -10,6 +10,6 @@ test_that(
     results <- post_summ(data) |> expect_no_error()
       
     # Test to ensure output is a list object:
-    expect_true(is.data.frame(results))
+    testthat::expect_snapshot(results)
   }
 )
