@@ -1,5 +1,5 @@
 
-#' @title Table of Summary of Jags Post Estimates
+#' @title Summary Table of Jags Posterior Estimates
 #' @author Sam Schildhauer
 #' @description
 #'  `post_summ()` takes a [list] output from [serodynamics::run_mod()]

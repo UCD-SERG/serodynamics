@@ -2,7 +2,7 @@
 % Please edit documentation in R/post_summ.R
 \name{post_summ}
 \alias{post_summ}
-\title{Table of Summary of Jags Post Estimates}
+\title{Summary Table of Jags Posterior Estimates}
 \usage{
 post_summ(
   data,
