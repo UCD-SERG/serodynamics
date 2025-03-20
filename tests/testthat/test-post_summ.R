@@ -9,7 +9,7 @@ test_that(
     # Testing for any errors:
     results <- post_summ(data) |> expect_no_error()
       
-    # Test to ensure output is a list object:
+    # Snapshot test to ensure results are consistent:
     testthat::expect_snapshot(results)
   }
 )
