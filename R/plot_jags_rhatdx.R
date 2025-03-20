@@ -71,8 +71,8 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
         ggplot2::theme_bw() +
         ggplot2::labs(title = ifelse(j == "None", 
                                      paste0("Rhat value: ag/iso = ", j),
-                            paste0("Rhat value: ag/iso = ", 
-                                   j,"; strata =  ", i)))
+                                     paste0("Rhat value: ag/iso = ", 
+                                            j, "; strata =  ", i)))
       rhat_out[[j]] <- rhatplot
     }
     rhat_strat_list[[i]] <- rhat_out
