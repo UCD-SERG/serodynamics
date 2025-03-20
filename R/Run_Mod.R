@@ -25,7 +25,7 @@
 #' @return
 #' - A jags.post [list] object or multiple jags.post [list]
 #' if stratified. Returned as a [list] of class [runjags::sr_mod_list]
-#' - A [base::data.frame] titled `curve_params` that contains the posterior
+#' - A [data.frame] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
 #'  - `iteration` = number of sampling iterations.
 #'  - `chain` = number of mcmc chains run; between 1 and 4.

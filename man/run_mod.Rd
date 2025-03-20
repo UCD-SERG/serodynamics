@@ -36,9 +36,9 @@ entered in quotes.}
 }
 \value{
 \itemize{
-\item A jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
-if stratified. Returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}
-\item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
+\item A jags.post \link{list} object or multiple jags.post \link{list}
+if stratified. Returned as a \link{list} of class \link[runjags:sr_mod_list]{runjags::sr_mod_list}
+\item A \link{data.frame} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
 \item \code{iteration} = number of sampling iterations.
 \item \code{chain} = number of mcmc chains run; between 1 and 4.
