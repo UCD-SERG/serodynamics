@@ -61,7 +61,7 @@ Config/needs/test:
     readr,
     rlist
 Config/needs/check: commonmark, xml2
-Remotes:  
+Remotes: 
     ucd-serg/serocalculator,
     xfim/ggmcmc
 Depends: 

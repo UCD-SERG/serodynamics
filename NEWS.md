@@ -5,7 +5,9 @@
 ## New features
 
 
+
 * Added `process_jags_model()` for modeling antibody response curves and assessing model fit (#68)
+* Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)
 * Diagnostic function to produce effective sample size plots with
 stratification (#66)
