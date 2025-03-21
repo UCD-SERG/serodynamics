@@ -3,13 +3,10 @@ test_that(
   code = {
     skip_if(getRversion() < "4.4.1")
     
-    # Run JAGS using the specified subject and antigen
-    results <- prepare_and_run_jags(
-      id = "sees_npl_128",
-      antigen_iso = "HlyE_IgA"
-    )
+    # Load the pre-saved JAGS output for subject sees_npl_128 and antigen HlyE_IgA.
+    results <- readRDS(testthat::test_path("fixtures", "jags_results_128.rds"))
     
-    # For testing, we use the subject-specific JAGS output and the full dataset for mapping
+    # Use the subject-specific JAGS output from the fixture.
     jags_post <- results$nepal_sees_jags_post
     
     # Extract median parameter estimates using partial processing (run_until = 7)
@@ -21,15 +18,14 @@ test_that(
       antigen_iso = "HlyE_IgA"
     )
     
-    # Validate output is not empty
+    # Validate output is not empty.
     expect_true(nrow(param_medians) > 0, info = "param_medians should not be empty")
     
     # Ensure all necessary columns exist.
-    # Note: We expect a column named 'shape' for the shape parameter.
     required_columns <- c("Subject", "antigen_iso", "y0", "y1", "t1", "alpha", "shape")
     expect_true(all(required_columns %in% colnames(param_medians)), info = "Missing required columns")
     
-    # Ensure no missing values in the extracted parameters
+    # Ensure no missing values in the extracted parameters.
     expect_true(all(complete.cases(param_medians)), info = "Missing values in extracted parameters")
   }
 )
