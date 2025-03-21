@@ -38,6 +38,9 @@ reference:
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
+- title: Summarize seroresponse model estimates
+  contents:
+  - post_summ
 - title: Example data sets
   contents:
   - serodynamics_example
