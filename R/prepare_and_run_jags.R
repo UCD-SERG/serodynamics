@@ -48,7 +48,7 @@ prepare_and_run_jags <- function(file_path = NULL,
                  time_in_days = "dayssincefeveronset")
   
   # Step 4: Extract specific subject and antigen data using dplyr::filter
-  dat <- dplyr::filter(dataset, id == !!id, antigen_iso == !!antigen_iso)
+  dat <- dplyr::filter(dataset, .data$id == !!id, .data$antigen_iso == !!antigen_iso)
   
   # Check if the dataset has at least 5 observations
   if (nrow(dat) < 5) {

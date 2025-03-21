@@ -22,29 +22,21 @@
 #' If two parameter sets are provided, the first is plotted in red and the second in green.
 #' Observed data (if provided) are shown in blue.
 #' @export
-#' 
 #' @examples
-#' # Ensure JAGS is available before running
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'
-#'   # Prepare dataset & Run JAGS Model
+#' \dontrun{
+#'   # Ensure JAGS is available before running
 #'   jags_results <- prepare_and_run_jags(
 #'     id = "sees_npl_128",
 #'     antigen_iso = "HlyE_IgA"
 #'   )
-#'
-#'   # Process JAGS output (step 7)
 #'   param_medians_wide_128 <- process_jags_output(
 #'     jags_post   = jags_results$nepal_sees_jags_post,
 #'     dataset     = jags_results$dataset,
 #'     run_until   = 7
 #'   )
-#'
-#'   # Generate and print predicted antibody response curve
 #'   plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
 #'   print(plot_pred_only)
 #' }
-#'
 plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL, dat = NULL,
                                  legend_obs = "Observed Data",
                                  legend_mod1 = "",
@@ -79,9 +71,9 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
     tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
     dplyr::select(-name) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
+    dplyr::mutate(res = ab(.data$t, .data$y0, .data$y1, .data$t1, .data$alpha, .data$shape)) %>%
     dplyr::ungroup() %>%
-    dplyr::mutate(id = as.factor(Subject))
+    dplyr::mutate(id = as.factor(.data$Subject))
   
   # Compute predicted curves for the second median parameter set (mod2), if provided
   if (!is.null(param_medians_wide2)) {
@@ -94,9 +86,9 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
       tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
       dplyr::select(-name) %>%
       dplyr::rowwise() %>%
-      dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
+      dplyr::mutate(res = ab(.data$t, .data$y0, .data$y1, .data$t1, .data$alpha, .data$shape)) %>%
       dplyr::ungroup() %>%
-      dplyr::mutate(id = as.factor(Subject))
+      dplyr::mutate(id = as.factor(.data$Subject))
   }
   
   # Initialize the base plot
@@ -108,11 +100,11 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
   # Add predicted curve for the first median parameter set (mod1)
   if (legend_mod1 != "") {
     p <- p + ggplot2::geom_line(data = serocourse_all1,
-                                ggplot2::aes(x = t, y = res, group = id, color = "mod1"),
+                                ggplot2::aes(x = .data$t, y = .data$res, group = .data$id, color = "mod1"),
                                 alpha = 0.3, show.legend = TRUE)
   } else {
     p <- p + ggplot2::geom_line(data = serocourse_all1,
-                                ggplot2::aes(x = t, y = res, group = id),
+                                ggplot2::aes(x = .data$t, y = .data$res, group = .data$id),
                                 color = "red", alpha = 0.3, show.legend = FALSE)
   }
   
@@ -120,11 +112,11 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
   if (!is.null(param_medians_wide2)) {
     if (legend_mod2 != "") {
       p <- p + ggplot2::geom_line(data = serocourse_all2,
-                                  ggplot2::aes(x = t, y = res, group = id, color = "mod2"),
+                                  ggplot2::aes(x = .data$t, y = .data$res, group = .data$id, color = "mod2"),
                                   alpha = 0.3, show.legend = TRUE)
     } else {
       p <- p + ggplot2::geom_line(data = serocourse_all2,
-                                  ggplot2::aes(x = t, y = res, group = id),
+                                  ggplot2::aes(x = .data$t, y = .data$res, group = .data$id),
                                   color = "green", alpha = 0.3, show.legend = FALSE)
     }
   }
@@ -132,16 +124,16 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
   # Overlay observed data if provided (always map color to get a legend key)
   if (!is.null(dat)) {
     observed_data <- dat %>%
-      dplyr::rename(t = dayssincefeveronset, res = result) %>%
-      dplyr::select(id, t, res, antigen_iso) %>%
-      dplyr::mutate(id = as.factor(id))
+      dplyr::rename(t = .data$dayssincefeveronset, res = .data$result) %>%
+      dplyr::select(.data$id, t, res, .data$antigen_iso) %>%
+      dplyr::mutate(id = as.factor(.data$id))
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
-                          ggplot2::aes(x = t, y = res, group = id, color = "observed"),
+                          ggplot2::aes(x = .data$t, y = .data$res, group = .data$id, color = "observed"),
                           size = 2, show.legend = TRUE) +
       ggplot2::geom_line(data = observed_data,
-                         ggplot2::aes(x = t, y = res, group = id, color = "observed"),
+                         ggplot2::aes(x = .data$t, y = .data$res, group = .data$id, color = "observed"),
                          linewidth = 1, show.legend = TRUE)
   }
   

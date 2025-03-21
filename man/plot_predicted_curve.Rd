@@ -42,27 +42,20 @@ If observed data is provided, it overlays the observed values as points and
 connects them with lines.
 }
 \examples{
-# Ensure JAGS is available before running
-if (!is.element(runjags::findjags(), c("", NULL))) {
-
-  # Prepare dataset & Run JAGS Model
+\dontrun{
+  # Ensure JAGS is available before running
   jags_results <- prepare_and_run_jags(
     id = "sees_npl_128",
     antigen_iso = "HlyE_IgA"
   )
-
-  # Process JAGS output (step 7)
   param_medians_wide_128 <- process_jags_output(
     jags_post   = jags_results$nepal_sees_jags_post,
     dataset     = jags_results$dataset,
     run_until   = 7
   )
-
-  # Generate and print predicted antibody response curve
   plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
   print(plot_pred_only)
 }
-
 }
 \author{
 Kwan Ho Lee
