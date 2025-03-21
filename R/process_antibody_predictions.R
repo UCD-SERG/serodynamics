@@ -44,29 +44,29 @@ process_antibody_predictions <- function(dat2, param_medians_wide, file_mod, str
   
   # Step 4: Filter specific subject using the input arguments
   dat_update <- dat_update %>% 
-    dplyr::filter(.data$id == .env$id, .data$antigen_iso == .env$antigen_iso)
+    dplyr::filter(id == .env$id, antigen_iso == .env$antigen_iso)
   
   # Step 5: Compute predicted results
   dat_update <- dat_update %>%
     dplyr::left_join(param_medians_wide, by = c("id", "antigen_iso")) %>%
     dplyr::rowwise() %>%
-    dplyr::mutate(predicted_result = ab(.data$dayssincefeveronset, .data$y0, .data$y1, .data$t1, .data$alpha, .data$shape)) %>%
+    dplyr::mutate(predicted_result = ab(dayssincefeveronset, y0, y1, t1, alpha, shape)) %>%
     dplyr::ungroup()
   
   # Step 6: Compute residuals and reorganize data
   dat_resid <- dat_update %>%
     dplyr::mutate(
-      residual = .data$result - .data$predicted_result,
-      abs_residual = abs(.data$result - .data$predicted_result)
+      residual = result - predicted_result,       # Regular residual
+      abs_residual = abs(result - predicted_result) # Absolute residual
     ) %>%
-    dplyr::select(.data$Country, .data$id, .data$sample_id, .data$bldculres, .data$antigen_iso, .data$studyvisit, 
-                  .data$dayssincefeveronset, .data$visit_num, .data$result, .data$predicted_result, .data$residual, .data$abs_residual)
+    dplyr::select(Country, id, sample_id, bldculres, antigen_iso, studyvisit, 
+                  dayssincefeveronset, visit_num, result, predicted_result, residual, abs_residual)
   
   # Step 7: Prepare data for run_mod by keeping only abs_residual as result
   dat_resid_modified <- dat_resid %>%
-    dplyr::select(.data$id, .data$Country, .data$sample_id, .data$bldculres, .data$antigen_iso, .data$studyvisit, 
-                  .data$dayssincefeveronset, .data$visit_num, .data$abs_residual) %>%
-    dplyr::rename(result = .data$abs_residual)
+    dplyr::select(id, Country, sample_id, bldculres, antigen_iso, studyvisit, 
+                  dayssincefeveronset, visit_num, abs_residual) %>%
+    dplyr::rename(result = abs_residual)  # Ensure 'id' is explicitly retained
   
   # Step 8: Restore attributes
   restore_attributes <- function(dat_target, dat_reference) {
