@@ -4,7 +4,7 @@
 
 ## New features
 
-* Adding class assignment to run_mod output (#)
+* Adding class assignment to run_mod output (#76)
 * Diagnostic trace plot function with strat (#64)
 * Diagnostic function to produce effective sample size plots with
 stratification (#66)
