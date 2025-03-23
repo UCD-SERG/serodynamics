@@ -1,8 +1,15 @@
 
+<<<<<<< HEAD
 #' @title Table of Summary of Jags Post Estimates
 #' @author Sam Schildhauer
 #' @description
 #'  post_summ() takes a [list] output from [serodynamics::run_mod()]
+=======
+#' @title Summary Table of Jags Posterior Estimates
+#' @author Sam Schildhauer
+#' @description
+#'  `post_summ()` takes a [list] output from [serodynamics::run_mod()]
+>>>>>>> main
 #'  to summary table for parameter, antigen/antibody, and stratification
 #'  combination.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
@@ -14,7 +21,11 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
+<<<<<<< HEAD
 #' @param data A [list] outputted from run_mod().
+=======
+#' @param data A [list] outputted from [run_mod()].
+>>>>>>> main
 #' @param iso Specify [character] string to produce tables of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
@@ -47,6 +58,7 @@ post_summ <- function(data,
   summarize_jags <- summarize_jags |>
     dplyr::group_by(.data$Iso_type, .data$Parameter_sub, 
                     .data$Stratification) |>
+<<<<<<< HEAD
     dplyr::summarize(Mean = round(mean(.data$value), 3), 
                      SD = round(stats::sd(.data$value), 3), 
                      Median = round(stats::median(.data$value), 3), 
@@ -56,4 +68,15 @@ post_summ <- function(data,
                      `75.0%` = round(quantile(.data$value, 0.75), 3), 
                      `97.5%` = round(quantile(.data$value, 0.975), 3))
   summarize_jags
+=======
+    dplyr::summarize(Mean = mean(.data$value), 
+                     SD = stats::sd(.data$value), 
+                     Median = stats::median(.data$value), 
+                     `2.5%` = quantile(.data$value, 0.025), 
+                     `25.0%` = quantile(.data$value, 0.25), 
+                     `50.0%` = quantile(.data$value, 0.50), 
+                     `75.0%` = quantile(.data$value, 0.75), 
+                     `97.5%` = quantile(.data$value, 0.975))
+  dplyr::as_tibble(summarize_jags)
+>>>>>>> main
 }
