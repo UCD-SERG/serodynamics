@@ -1,15 +1,8 @@
 
-<<<<<<< HEAD
-#' @title Table of Summary of Jags Post Estimates
-#' @author Sam Schildhauer
-#' @description
-#'  post_summ() takes a [list] output from [serodynamics::run_mod()]
-=======
 #' @title Summary Table of Jags Posterior Estimates
 #' @author Sam Schildhauer
 #' @description
 #'  `post_summ()` takes a [list] output from [serodynamics::run_mod()]
->>>>>>> main
 #'  to summary table for parameter, antigen/antibody, and stratification
 #'  combination.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
@@ -21,11 +14,7 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-<<<<<<< HEAD
-#' @param data A [list] outputted from run_mod().
-=======
 #' @param data A [list] outputted from [run_mod()].
->>>>>>> main
 #' @param iso Specify [character] string to produce tables of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
