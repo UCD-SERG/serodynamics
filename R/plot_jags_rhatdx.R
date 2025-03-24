@@ -32,10 +32,7 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
 #' values for all the specified input.
 #' @export
-<<<<<<< HEAD
-=======
 #' @example inst/examples/examples-plot_jags_rhatdx.R
->>>>>>> main
 
 plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                            iso = unique(data$curve_params$Iso_type),
