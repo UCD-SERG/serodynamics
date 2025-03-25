@@ -1,0 +1,215 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## load packages and data
+```{r}
+today <- format( Sys.Date(), "%m%d%y")
+library(tidyverse)
+load_all()
+
+
+#load SEES data and prepare 
+d0 <- 
+  read.csv("~/Documents/GitHub/serodynamics/inst/extdata/elisa_clean_2024-06-05.csv") %>%
+  filter(surgical != 1 | is.na(surgical)) %>%
+  filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
+  mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>% 
+  mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
+  mutate(TimeInDays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
+  mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months"))) %>%
+  mutate(visit = as.numeric(TimePeriod)) %>%
+  group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
+  ungroup() %>%
+  filter(antigen =="HlyE" | antigen == "LPS") %>%
+  select(index_id, Country, seapage, bldculres, Hospitalized, antigen_iso, result, TimePeriod,  postreinf, samplenum,  TimeInDays, reinf_obs) %>%
+  mutate(postreinf= ifelse(is.na(postreinf), 0, postreinf)) %>%
+  rename(age = seapage) %>%
+  rename(visit = samplenum)  %>%
+  janitor::clean_names() %>%
+    mutate(agecat = case_when(age < 5 ~ "0-4",
+                              age >= 5 & age < 15 ~ "5-14",
+                              age >= 15 ~ "16+")) 
+
+
+#all <- d0 %>% mutate(reinfec_pop = "all data")
+
+
+#reinf_rem <- d0 %>% filter(postreinf != 1) %>% mutate(reinfec_pop = "reinf removed")
+
+
+
+
+
+
+```
+
+
+
+## make longitudinal data "case_data"object
+```{r}
+
+df <- as_case_data(d0,
+                   id_var = "index_id",
+                   biomarker_var = "antigen_iso",
+                   value_var = "result",
+                   time_in_days = "time_in_days")
+
+
+
+```
+
+## Run model
+```{r}
+
+mod <- run_mod(data = df,
+                file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+                nchain = 4,
+                nadapt = 2000,
+                nburn = 1000,
+                nmc = 2500,
+                niter = 5000)
+
+#mcmc data frame
+mcmc_df <- mod$curve_params %>%
+  select(-Parameter) %>%
+  rename(parameter = Parameter_sub,
+         antigen_iso = Iso_type)
+
+#make wide and export
+mcmc_df_wide <- mcmc_df  %>%
+  mutate(id = paste0(Chain, ".", Iteration)) %>%
+  select(-Chain, -Iteration, -Stratification, -Subject) %>%
+  pivot_wider(names_from = "parameter", values_from = "value", id_cols = c("id", "antigen_iso")) %>%
+  rename(r = shape)
+
+write_rds(mcmc_df_wide, paste0("mcmc_all_data_with_reinf", "_", today, ".rds"))
+
+#parameter summary
+mcmc_param <- mcmc_df %>%
+  group_by(antigen_iso, parameter) %>%
+  summarise(med = median(value),
+            iqr_low = quantile(value, 0.25),
+            iqr_upper = quantile(value, 0.75))
+
+#write_rds(mcmc_param, paste0("mcmc_sum_reinfec_rem", today, ".rds"))
+
+
+
+
+
+```
+
+
+## Diagnostics
+```{r}
+
+plot_jags_Rhat(mod)
+
+plot_jags_trace(mod)
+
+```
+
+
+## Serocourse
+
+```{r}
+
+
+
+table(mcmc_df_full$Stratification)
+names(mcmc_df_full)
+
+
+%>% mutate(reinfec_pop = "all data")
+
+mcmc_df_reinrem <- mcmc_df %>% mutate(reinfec_pop = "reinf removed")
+
+mcmc_df <- bind_rows(mcmc_df_full, mcmc_df_reinrem)
+
+
+##SEROCOURSE SUMMARIES
+
+
+wide_predpar_df <- mcmc_df  %>%
+      pivot_wider(names_from = "parameter", values_from="value") %>%
+      rowwise() %>%
+      #mutate(y1 = y0+y1) %>%
+      droplevels() %>%
+      ungroup() %>%
+      rename(r = shape)
+
+
+
+
+# Generate a sequence of time points
+tx2 <- 10^seq(-1, 3, 0.025)
+
+# Function to apply the ab0 function to a row of curve_params
+apply_ab0 <- function(row) {
+  y_values <- serocalculator:::ab0(tx2, curve_params = row)  # Apply ab0 function over time points
+
+  # Create a data frame with the results
+  decay_curve <- data.frame(
+    t = tx2,
+    y = y_values,
+    Iteration = row$Iteration,
+    Chain = row$Chain,
+    antigen_iso = row$antigen_iso)
+
+  return(decay_curve)
+}
+
+
+
+serocourse <- wide_predpar_df %>%
+  rowwise() %>%  # Treat each row independently.
+  mutate(decay_curve = list(
+    tibble(
+      t = tx2,
+      y = serocalculator:::ab0(tx2, curve_params = cur_data())
+    )
+  )) %>%
+  ungroup() %>%
+  unnest(decay_curve) %>%  # Expand the list-column into rows.
+  mutate(id = paste0(Chain, "_", Iteration)) 
+
+
+
+
+
+serocourse_sum <- serocourse %>%
+  summarise(
+    res.med  = quantile(y, 0.5),
+    res.low  = quantile(y, 0.025),
+    res.high = quantile(y, 0.975), .by = c("antigen_iso", "t", "reinfec_pop")
+  ) %>%
+  pivot_longer(names_to = "quantile", cols = c("res.med", "res.low", "res.high"), names_prefix = "res.", values_to = "res")
+
+# write_rds(serocourse_sum, paste0("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Melioidosis_ISO_DORIM/clean data/sercourse_sum_", mthd, "_", read_norm, "_", today, ".rds"))
+
+
+
+ggplot(serocourse_sum %>% filter(quantile == "med"), aes(x=t, y=res, color = reinfec_pop)) +
+  geom_line() +
+  scale_x_continuous(limits = c(0, 500)) +
+  #scale_y_continuous(limits = c(0,4)) +
+ # scale_y_log10() +
+  facet_wrap(~antigen_iso) +
+  theme_linedraw() +
+  theme(
+    axis.line = element_line(),
+    plot.title = element_text(size = 20, face = "bold")
+  ) +
+  labs(
+    x = "Days since admission",
+    y = "Antibody Concentration",
+    title = "Decay Curves by Antigen"
+  )
+
+
+
+
+
+```

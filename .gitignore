@@ -10,6 +10,8 @@ project.Rcheck/
 project*.tar.gz
 project*.tgz
 elisa_clean_2023-11-01.csv
+mcmc_all_data_with_reinf_032525.rds
+mcmc_raw_reinfec_rem_032425.rds
 cholera_data_compiled_050324.csv
 inst/doc
 docs
