@@ -84,7 +84,7 @@ mcmc_df_wide <- mcmc_df  %>%
   pivot_wider(names_from = "parameter", values_from = "value", id_cols = c("id", "antigen_iso")) %>%
   rename(r = shape)
 
-write_rds(mcmc_df_wide, paste0("mcmc_all_data_with_reinf", "_", today, ".rds"))
+#write_rds(mcmc_df_wide, paste0("mcmc_all_data_with_reinf", "_", today, ".rds"))
 
 #parameter summary
 mcmc_param <- mcmc_df %>%
@@ -117,17 +117,6 @@ plot_jags_trace(mod)
 ```{r}
 
 
-
-
-mcmc_df_full <- mcmc_df %>% mutate(reinfec_pop = "all data")
-
-mcmc_df_reinrem <- curves <-
-   "https://osf.io/download/rtw5k/" %>%
-   serocalculator::load_curve_params()
-  
-  mcmc_df %>% mutate(reinfec_pop = "reinf removed")
-
-mcmc_df <- bind_rows(mcmc_df_full, mcmc_df_reinrem)
 
 
 ##SEROCOURSE SUMMARIES
