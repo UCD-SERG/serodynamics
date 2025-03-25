@@ -118,13 +118,14 @@ plot_jags_trace(mod)
 
 
 
-table(mcmc_df_full$Stratification)
-names(mcmc_df_full)
 
+mcmc_df_full <- mcmc_df %>% mutate(reinfec_pop = "all data")
 
-%>% mutate(reinfec_pop = "all data")
-
-mcmc_df_reinrem <- mcmc_df %>% mutate(reinfec_pop = "reinf removed")
+mcmc_df_reinrem <- curves <-
+   "https://osf.io/download/rtw5k/" %>%
+   serocalculator::load_curve_params()
+  
+  mcmc_df %>% mutate(reinfec_pop = "reinf removed")
 
 mcmc_df <- bind_rows(mcmc_df_full, mcmc_df_reinrem)
 
