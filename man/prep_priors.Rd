@@ -8,28 +8,56 @@ prep_priors(max_antigens, priors = list())
 }
 \arguments{
 \item{max_antigens}{\link{integer}: how many antigen-isotypes will be modeled}
+
+\item{priors}{a \link{list} with optional elements:
+\itemize{
+\item "mu_hyp_param": hyperpriors for estimate parameters. If specified must
+be 5 values long.
+\itemize{
+\item y0 = baseline antibody concentration (default = 1.0)
+\item y1 = peak antibody concentration (default = 7.0)
+\item t1 = time to peak (default = 1.0)
+\item r = shape parameter (default = -4.0)
+\item alpha = decay rate (default = -1.0)
+}
+\item "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified must
+5 values long.
+\itemize{
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+}
+\item "omega_param" : ??
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}
+\item "wishdf_param": Wishart distribution degrees of freedom (default = 20.0)
+\item "prec_logy_hyp_param": array of hyper-parameters for the precision.
+(inverse variance) of the biomarkers, on log-scale
+\itemize{
+\item defaults = 4.0, 1.0
+}
+}}
 }
 \value{
 a \link{list} with elements:
 "n_params": how many parameters??
 \itemize{
-\item "mu.hyp": The antibody dynamic curve includes the following parameters:
-\itemize{
-\item y0 = baseline antibody concentration
-\item y1 = peak antibody concentration
-\item t1 = time to peak
-\item r = shape parameter
-\item alpha = decay rate
-}
-\item "prec.hyp": ??
+\item "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
+\item "prec.hyp": Precision corresponding to mu_hyp_param.
 \item "omega" : ??
-\item "wishdf": Wishart distribution degrees of freedom
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}
+\item "wishdf": Wishart distribution degrees of freedom (default = 20.0)
 \item "prec.logy.hyp": array of hyper-parameters for the precision
+\itemize{
+\item defaults = 4.0, 1.0
 (inverse variance) of the biomarkers, on log-scale
 }
 }
+}
 \description{
-Prepare priors
+Takes a \link{list} input to allow for modifiable priors. Priors can be specified
+as an option in run_mod.
 }
 \examples{
 prep_priors(max_antigens = 2)
