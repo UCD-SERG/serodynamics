@@ -57,21 +57,13 @@ nepal_sees_jags_post <- jags_results$nepal_sees_jags_post
 nepal_sees_jags_post2 <- jags_results$nepal_sees_jags_post2
 
 # Process JAGS output (partial and full processing)
-param_medians_partial <- process_jags_output(
-  jags_post = nepal_sees_jags_post,
-  dataset = dataset,
-  run_until = 7,
-  id = "sees_npl_128",
-  antigen_iso = "HlyE_IgA"
-)
+param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
 
-param_medians_full <- process_jags_output(
-  jags_post = nepal_sees_jags_post2,
-  dataset = dataset,
-  run_until = 9,
-  id = "sees_npl_128",
-  antigen_iso = "HlyE_IgA"
-)
+basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
+param_medians_full <- 
+  finalize_jags_output(basic_result, 
+                       dataset, id = "sees_npl_128", 
+                       antigen_iso = "HlyE_IgA")
 
 # Generate predicted curve plot (using full processing)
 plot <- plot_predicted_curve(
