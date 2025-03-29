@@ -95,7 +95,8 @@ prep_priors <- function(max_antigens,
       }
     }
   }
- 
+  
+  
   # Model parameters
   n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
@@ -116,7 +117,7 @@ prep_priors <- function(max_antigens,
 
   # Return results as a list
 
-  to_return <- list(
+  prepped_priors <- list(
     "n_params" = n_params,
     "mu.hyp" = mu_hyp,
     "prec.hyp" = prec_hyp,
@@ -125,6 +126,7 @@ prep_priors <- function(max_antigens,
     "prec.logy.hyp" = prec_logy_hyp
   ) |>
     structure(class = c("curve_params_priors", "list"))
+  to_return <- list("prepped_priors" = prepped_priors, "used_priors" = defaults)
 
   return(to_return)
 }
