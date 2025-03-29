@@ -4,7 +4,7 @@
 
 ## New features
 
-* Making prep_priors modifiable (#)
+* Making prep_priors modifiable (#78)
 * Diagnostic function to produce R-hat dotplots with stratification (#67)
 * Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)
