@@ -12,8 +12,8 @@
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
-#' - "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified must
-#'    5 values long.
+#' - "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
+#' must 5 values long.
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 #' - "omega_param" : ?? 
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
@@ -35,7 +35,7 @@
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
-                        priors = list()){
+                        priors = list()) {
   #Setting defaults for list
   defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
@@ -50,9 +50,9 @@ prep_priors <- function(max_antigens,
       if (length(priors[["mu_hyp_param"]]) == 5) {
         #Reassigning default to specified prior
         defaults[["mu_hyp_param"]] <- priors[["mu_hyp_param"]]
-        } else if (length(priors[["mu_hyp_param"]]) != 5) {
-          stop("Need to specify 5 priors for mu_hyp_param")
-        }
+      } else if (length(priors[["mu_hyp_param"]]) != 5) {
+        stop("Need to specify 5 priors for mu_hyp_param")
+      }
     }
     #prec_hyp_param
     if ((sum(names(priors) %in% "prec_hyp_param")) > 0) {
@@ -60,9 +60,9 @@ prep_priors <- function(max_antigens,
       if (length(priors[["prec_hyp_param"]]) == 5) {
         #Reassigning default to specified prior
         defaults[["prec_hyp_param"]] <- priors[["prec_hyp_param"]]
-        } else if (length(priors[["mu_hyp_param"]]) != 5) {
-          stop("Need to specify 5 priors for prec_hyp_param")
-        }
+      } else if (length(priors[["mu_hyp_param"]]) != 5) {
+        stop("Need to specify 5 priors for prec_hyp_param")
+      }
     }
     #omega_hyp_param
     if ((sum(names(priors) %in% "omega_param")) > 0) {
