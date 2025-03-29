@@ -89,7 +89,7 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
+    priorspec <- serodynamics:::prep_priors(max_antigens = longdata$n_antigen_isos,
                              ...)
 
     # inputs for jags model
