@@ -1,6 +1,7 @@
 CMD
 CodeFactor
 Codecov
+Hyperpriors
 JAGs
 Lifecycle
 Postprocess
@@ -15,12 +16,14 @@ dotplots
 geoms
 ggproto
 hyp
+hyperpriors
 iso
 isotype
 isotypes
 mcmc
 newperson
 nmc
+param
 params
 prec
 rhat
@@ -30,6 +33,5 @@ serocourse
 seroresponse
 strat
 stratifications
-summ
 unstratified
 wishdf

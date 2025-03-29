@@ -12,7 +12,8 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  ...
 )
 }
 \arguments{
