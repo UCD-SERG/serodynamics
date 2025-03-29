@@ -89,7 +89,7 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priors <- prep_priors(max_antigens = longdata$n_antigen_isos,
+    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
                           ...)
 
     # inputs for jags model
@@ -104,7 +104,7 @@ run_mod <- function(data,
 
     jags_post <- runjags::run.jags(
       model = file_mod,
-      data = c(longdata, priors),
+      data = c(longdata, priorspec[["prepped_priors"]]),
       inits = initsfunction,
       method = "parallel",
       adapt = nadapt,
@@ -168,7 +168,8 @@ run_mod <- function(data,
   jags_out <- list(
     "curve_params" = jags_out,
     "jags.post" = jags_post_final,
-    "attributes" = mod_atts
+    "attributes" = mod_atts,
+    "priors" = priorspec[["used_priors"]]
   )
   jags_out
 }
