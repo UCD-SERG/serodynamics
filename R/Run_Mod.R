@@ -59,7 +59,7 @@
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod,
+                    file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
