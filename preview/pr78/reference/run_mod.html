@@ -81,13 +81,14 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">run_mod</span><span class="op">(</span></span>
 <span>  <span class="va">data</span>,</span>
-<span>  <span class="va">file_mod</span>,</span>
+<span>  file_mod <span class="op">=</span> <span class="fu"><a href="serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span>,</span>
 <span>  nchain <span class="op">=</span> <span class="fl">4</span>,</span>
 <span>  nadapt <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  nburn <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  nmc <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">priors</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -126,8 +127,24 @@ the number of mcmc chains to be run per jags model.</p></dd>
 
 
 <dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable,
+<dd><p>#' A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable,
 entered in quotes.</p></dd>
+
+
+<dt id="arg-priors">priors<a class="anchor" aria-label="anchor" href="#arg-priors"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": hyperpriors for estimate parameters. If specified must
+be 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 7.0, t1 = 1.0, r = -4.0, alpha = -1.0</p></li>
+</ul></li>
+<li><p>"prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
+must 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
+</ul></li>
+<li><p>"omega_param" : ??</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
+</ul></li>
+<li><p>"wishdf_param": Wishart distribution degrees of freedom (default = 20.0)</p></li>
+<li><p>"prec_logy_hyp_param": array of hyper-parameters for the precision.
+(inverse variance) of the biomarkers, on log-scale</p><ul><li><p>defaults = 4.0, 1.0</p></li>
+</ul></li>
+</ul></dd>
 
 </dl></div>
     <div class="section level2">
@@ -189,7 +206,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 20:09:20 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 20:52:20 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -224,7 +241,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 20:10:04 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 20:53:05 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -250,6 +267,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>

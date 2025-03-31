@@ -88,48 +88,64 @@
 <span class="r-in"><span>    antigen_isos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"HlyE_IgA"</span>, <span class="st">"HlyE_IgG"</span><span class="op">)</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">prepped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="prep_data.html">prep_data</a></span><span class="op">(</span><span class="va">raw_data</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="prep_priors.html">prep_priors</a></span><span class="op">(</span>max_antigens <span class="op">=</span> <span class="va">prepped_data</span><span class="op">$</span><span class="va">n_antigen_isos</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">nchains</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
-<span class="r-in"><span><span class="co"># nr of MC chains to run simultaneously</span></span></span>
-<span class="r-in"><span><span class="va">nadapt</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span></span>
-<span class="r-in"><span><span class="co"># nr of iterations for adaptation</span></span></span>
-<span class="r-in"><span><span class="va">nburnin</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
-<span class="r-in"><span><span class="co"># nr of iterations to use for burn-in</span></span></span>
-<span class="r-in"><span><span class="va">nmc</span> <span class="op">&lt;-</span> <span class="fl">100</span></span></span>
-<span class="r-in"><span><span class="co"># nr of samples in posterior chains</span></span></span>
-<span class="r-in"><span><span class="va">niter</span> <span class="op">&lt;-</span> <span class="fl">200</span></span></span>
-<span class="r-in"><span><span class="co"># nr of iterations for posterior sample</span></span></span>
-<span class="r-in"><span><span class="va">nthin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">niter</span> <span class="op">/</span> <span class="va">nmc</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="co"># thinning needed to produce nmc from niter</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">tomonitor</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y0"</span>, <span class="st">"y1"</span>, <span class="st">"t1"</span>, <span class="st">"alpha"</span>, <span class="st">"shape"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">jags_post</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_mod.html">run_mod</a></span><span class="op">(</span>data <span class="op">=</span> <span class="va">raw_data</span>, nchain <span class="op">=</span> <span class="fl">2</span>, nadapt <span class="op">=</span> <span class="fl">1000</span>, nburn <span class="op">=</span> <span class="fl">100</span>, </span></span>
+<span class="r-in"><span>                     nmc <span class="op">=</span> <span class="fl">100</span>, niter <span class="op">=</span> <span class="fl">200</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 20:52:13 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 42</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">file_mod</span> <span class="op">&lt;-</span> <span class="fu"><a href="serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span></span></span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">11325</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">jags_post</span> <span class="op">&lt;-</span> <span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  model <span class="op">=</span> <span class="va">file_mod</span>,</span></span>
-<span class="r-in"><span>  data <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">prepped_data</span>, <span class="va">priors</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  inits <span class="op">=</span> <span class="va">initsfunction</span>,</span></span>
-<span class="r-in"><span>  method <span class="op">=</span> <span class="st">"parallel"</span>,</span></span>
-<span class="r-in"><span>  adapt <span class="op">=</span> <span class="va">nadapt</span>,</span></span>
-<span class="r-in"><span>  burnin <span class="op">=</span> <span class="va">nburnin</span>,</span></span>
-<span class="r-in"><span>  thin <span class="op">=</span> <span class="va">nthin</span>,</span></span>
-<span class="r-in"><span>  sample <span class="op">=</span> <span class="va">nmc</span>,</span></span>
-<span class="r-in"><span>  n.chains <span class="op">=</span> <span class="va">nchains</span>,</span></span>
-<span class="r-in"><span>  monitor <span class="op">=</span> <span class="va">tomonitor</span>,</span></span>
-<span class="r-in"><span>  summarise <span class="op">=</span> <span class="cn">FALSE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> 'list' object cannot be coerced to type 'double'</span>
-<span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">curve_params</span> <span class="op">&lt;-</span> <span class="va">jags_post</span> <span class="op">|&gt;</span> <span class="fu">postprocess_jags_output</span><span class="op">(</span></span></span>
+<span class="r-in"><span><span class="va">curve_params</span> <span class="op">&lt;-</span> <span class="va">jags_post</span><span class="op">$</span><span class="va">jags.post</span><span class="op">$</span><span class="va">None</span><span class="op">$</span><span class="va">mcmc</span> <span class="op">|&gt;</span> <span class="fu">postprocess_jags_output</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">prepped_data</span>, <span class="st">"ids"</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  antigen_isos <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">prepped_data</span>, <span class="st">"antigens"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'jags_post' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">curve_params</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'curve_params' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 400 × 8</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    antigen_iso  iter chain    y0     y1    t1    alpha     r</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;fct&gt;</span>       <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;int&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 1</span> HlyE_IgA        1     1 1.39   77.1  10.7  0.002<span style="text-decoration: underline;">02</span>   1.50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 2</span> HlyE_IgA        2     1 0.772  23.3  10.4  0.000<span style="text-decoration: underline;">669</span>  1.38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 3</span> HlyE_IgA        3     1 1.01   19.2   3.23 0.000<span style="text-decoration: underline;">132</span>  1.52</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 4</span> HlyE_IgA        4     1 1.13    1.39  7.88 0.000<span style="text-decoration: underline;">579</span>  1.49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 5</span> HlyE_IgA        5     1 1.54   83.6   6.11 0.000<span style="text-decoration: underline;">722</span>  1.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 6</span> HlyE_IgA        6     1 1.19  420.    8.36 0.003<span style="text-decoration: underline;">30</span>   1.32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 7</span> HlyE_IgA        7     1 1.03    5.44  7.98 0.000<span style="text-decoration: underline;">382</span>  1.41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 8</span> HlyE_IgA        8     1 1.40    3.24 11.0  0.001<span style="text-decoration: underline;">04</span>   1.69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;"> 9</span> HlyE_IgA        9     1 1.01   12.4   7.19 0.000<span style="text-decoration: underline;">357</span>  1.54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">10</span> HlyE_IgA       10     1 1.12    2.18  6.46 0.000<span style="text-decoration: underline;">973</span>  1.51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># ℹ 390 more rows</span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
