@@ -33,8 +33,32 @@ the number of mcmc chains to be run per jags model.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
-\item{strat}{A \link{character} string specifying the stratification variable,
+\item{strat}{#' A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{priors}{A \link{list} with optional elements:
+\itemize{
+\item "mu_hyp_param": hyperpriors for estimate parameters. If specified must
+be 5 values long.
+\itemize{
+\item defaults: y0 = 1.0, y1 = 7.0, t1 = 1.0, r = -4.0, alpha = -1.0
+}
+\item "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
+must 5 values long.
+\itemize{
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+}
+\item "omega_param" : ??
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}
+\item "wishdf_param": Wishart distribution degrees of freedom (default = 20.0)
+\item "prec_logy_hyp_param": array of hyper-parameters for the precision.
+(inverse variance) of the biomarkers, on log-scale
+\itemize{
+\item defaults = 4.0, 1.0
+}
+}}
 }
 \value{
 \itemize{
