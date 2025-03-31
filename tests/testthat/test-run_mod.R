@@ -3,6 +3,7 @@ test_that(
   code = {
     skip_on_os(c("windows", "linux"))
     library(runjags)
+    library(rlist)
     withr::local_seed(1)
     library(dplyr)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
@@ -51,10 +52,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics_example(
-      "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
-    ) |>
-      readr::read_csv() |>
+    dataset <- serodynamics::nepal_sees |>
       as_case_data(
         id_var = "person_id",
         biomarker_var = "antigen_iso",
@@ -91,10 +89,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics_example(
-      "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
-    ) |>
-      readr::read_csv() |>
+    dataset <- serodynamics::nepal_sees |>
       dplyr::mutate(
         .by = person_id,
         visit_num = dplyr::row_number()
