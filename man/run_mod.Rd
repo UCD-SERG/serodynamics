@@ -13,8 +13,7 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
-  priors,
-  ...
+  priors
 )
 }
 \arguments{

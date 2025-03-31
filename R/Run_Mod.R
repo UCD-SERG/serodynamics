@@ -66,8 +66,7 @@ run_mod <- function(data,
                     nmc = 100,
                     niter = 100,
                     strat = NA, 
-                    priors,
-                    ...) {
+                    priors) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
