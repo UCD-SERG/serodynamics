@@ -4,7 +4,7 @@
 \alias{prep_priors}
 \title{Prepare priors}
 \usage{
-prep_priors(max_antigens, priors = list())
+prep_priors(max_antigens, priors = NA)
 }
 \arguments{
 \item{max_antigens}{\link{integer}: how many antigen-isotypes will be modeled}

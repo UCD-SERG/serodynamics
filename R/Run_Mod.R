@@ -66,7 +66,7 @@ run_mod <- function(data,
                     nmc = 100,
                     niter = 100,
                     strat = NA, 
-                    priors) {
+                    priors = NA) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
@@ -103,7 +103,7 @@ run_mod <- function(data,
     longdata <- prep_data(dl_sub)
     priorspec <- serodynamics:::prep_priors(max_antigens = 
                                               longdata$n_antigen_isos,
-                                            ...)
+                                            priors = priors)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
