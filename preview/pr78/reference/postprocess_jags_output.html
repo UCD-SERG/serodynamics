@@ -89,7 +89,6 @@
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">prepped_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="prep_data.html">prep_data</a></span><span class="op">(</span><span class="va">raw_data</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="prep_priors.html">prep_priors</a></span><span class="op">(</span>max_antigens <span class="op">=</span> <span class="va">prepped_data</span><span class="op">$</span><span class="va">n_antigen_isos</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in prep_priors(max_antigens = prepped_data$n_antigen_isos):</span> could not find function "prep_priors"</span>
 <span class="r-in"><span><span class="va">nchains</span> <span class="op">&lt;-</span> <span class="fl">2</span></span></span>
 <span class="r-in"><span><span class="co"># nr of MC chains to run simultaneously</span></span></span>
 <span class="r-in"><span><span class="va">nadapt</span> <span class="op">&lt;-</span> <span class="fl">1000</span></span></span>
@@ -121,7 +120,7 @@
 <span class="r-in"><span>  monitor <span class="op">=</span> <span class="va">tomonitor</span>,</span></span>
 <span class="r-in"><span>  summarise <span class="op">=</span> <span class="cn">FALSE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'priors' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in FUN(X[[i]], ...):</span> 'list' object cannot be coerced to type 'double'</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">curve_params</span> <span class="op">&lt;-</span> <span class="va">jags_post</span> <span class="op">|&gt;</span> <span class="fu">postprocess_jags_output</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  ids <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">prepped_data</span>, <span class="st">"ids"</span><span class="op">)</span>,</span></span>
