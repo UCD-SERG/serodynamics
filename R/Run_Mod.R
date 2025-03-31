@@ -115,7 +115,7 @@ run_mod <- function(data,
     )
     # Assigning the raw jags output to a list.
     # This will include a raw output for the jags.post for each stratification.
-    jags_post_final[[i]] <- jags_post
+    # jags_post_final[[i]] <- jags_post
 
     ## Cleaning the jags output -- much of this has to do with correctly
     # classifying the [x,x] number
@@ -150,8 +150,8 @@ run_mod <- function(data,
       dplyr::select(!c("Subnum"))
     # Setting subset for the "new person" --setting it to the final sample
     np <- as.character(longdata$nsubj)
-    jags_final <- jags_unpack |>
-      dplyr::filter(.data$Subject == np)
+    # jags_final <- jags_unpack |>
+    #   dplyr::filter(.data$Subject == np)
     ## Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
@@ -165,7 +165,7 @@ run_mod <- function(data,
   # rbinded.
   jags_out <- list(
     "curve_params" = jags_out,
-    "jags.post" = jags_post_final,
+    # "jags.post" = jags_post_final,
     "attributes" = mod_atts
   )
   jags_out
