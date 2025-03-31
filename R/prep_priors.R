@@ -45,7 +45,7 @@ prep_priors <- function(max_antigens,
                    prec_logy_hyp_param = c(4.0, 1.0))
 
   # Checking to see if priors are specified and using them if so.
-  if (hasArg(priors)) { # were priors specified?
+  if (methods::hasArg(priors)) { # were priors specified?
     #mu_hyp_param
     if ((sum(names(priors) %in% "mu_hyp_param")) > 0) {
       #Testing to see if 5 elements, will create error if not
