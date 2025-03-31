@@ -32,6 +32,7 @@
 #' - "prec.logy.hyp": array of hyper-parameters for the precision
 #'    - defaults = 4.0, 1.0
 #' (inverse variance) of the biomarkers, on log-scale
+#' @export
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
