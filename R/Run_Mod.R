@@ -145,13 +145,13 @@ run_mod <- function(data,
       )
     # Merging isodat in to ensure we are classifying antigen_iso
     jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
-    jags_unpack <- jags_unpack |>
-      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens")) |>
-      dplyr::select(!c("Subnum"))
-    # Setting subset for the "new person" --setting it to the final sample
-    np <- as.character(longdata$nsubj)
-    # jags_final <- jags_unpack |>
-    #   dplyr::filter(.data$Subject == np)
+    ids <- data.frame(attr(longdata, "ids")) |>
+      mutate(Subject = as.character(row_number()))
+    jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
+    jags_final <- jags_unpack |>
+      dplyr::select(!c("Subnum", "Subject")) |>
+      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
+                      "Subject" = "attr.longdata...ids.."))
     ## Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
@@ -165,7 +165,6 @@ run_mod <- function(data,
   # rbinded.
   jags_out <- list(
     "curve_params" = jags_out,
-    # "jags.post" = jags_post_final,
     "attributes" = mod_atts
   )
   jags_out
