@@ -23,8 +23,6 @@
 #' A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @return
-#' - A jags.post [list()] object or multiple jags.post [list()]
-#' if stratified. Returned as a [list()] of class [runjags::runjags-class]
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
 #'  - `iteration` = number of sampling iterations.
