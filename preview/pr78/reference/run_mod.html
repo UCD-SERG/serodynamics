@@ -131,15 +131,21 @@ entered in quotes.</p></dd>
 
 
 <dt id="arg-priors">priors<a class="anchor" aria-label="anchor" href="#arg-priors"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": hyperpriors for estimate parameters. If specified must
-be 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 7.0, t1 = 1.0, r = -4.0, alpha = -1.0</p></li>
+<dd><p>a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": hyperpriors for estimate parameters. If specified must
+be 5 values long.</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
+<li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
+<li><p>t1 = time to peak (default = 1.0)</p></li>
+<li><p>r = shape parameter (default = -4.0)</p></li>
+<li><p>alpha = decay rate (default = -1.0)</p></li>
 </ul></li>
 <li><p>"prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
 must 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
 </ul></li>
-<li><p>"omega_param" : ??</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
+<li><p>"omega_param": Variance of random effects. If specified
+must 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
 </ul></li>
-<li><p>"wishdf_param": Wishart distribution degrees of freedom (default = 20.0)</p></li>
+<li><p>"wishdf_param": Wishart distribution degrees of freedom.</p><ul><li><p>default = 20.0</p></li>
+</ul></li>
 <li><p>"prec_logy_hyp_param": array of hyper-parameters for the precision.
 (inverse variance) of the biomarkers, on log-scale</p><ul><li><p>defaults = 4.0, 1.0</p></li>
 </ul></li>
@@ -205,7 +211,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 22:16:46 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr  1 03:51:29 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -231,6 +237,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -239,7 +246,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Mar 31 22:17:30 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr  1 03:52:12 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
