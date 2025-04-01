@@ -135,7 +135,7 @@ run_mod <- function(data,
     # Merging isodat in to ensure we are classifying antigen_iso
     jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
     ids <- data.frame(attr(longdata, "ids")) |>
-      mutate(Subject = as.character(row_number()))
+      mutate(Subject = as.character(dplyr::row_number()))
     jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
     jags_final <- jags_unpack |>
       dplyr::select(!c("Subnum", "Subject")) |>
