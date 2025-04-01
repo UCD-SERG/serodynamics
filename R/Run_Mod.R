@@ -111,14 +111,8 @@ run_mod <- function(data,
       monitor = tomonitor,
       summarise = FALSE
     )
-    # Assigning the raw jags output to a list.
-    # This will include a raw output for the jags.post for each stratification.
-    # jags_post_final[[i]] <- jags_post
 
-    ## Cleaning the jags output -- much of this has to do with correctly
-    # classifying the [x,x] number
-    # included in the outputs
-    # ggs works with mcmc objects
+    # Unpacking and cleaning mcmc output.
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
 
     # Adding attributes
@@ -130,7 +124,7 @@ run_mod <- function(data,
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
-    ### Working with jags unpacked ggs outputs to clarify parameter and subject
+    # Working with jags unpacked ggs outputs to clarify parameter and subject
     jags_unpack <- jags_unpack |>
       dplyr::mutate(
         Subnum = sub(".*,", "", .data$Parameter),
@@ -150,7 +144,7 @@ run_mod <- function(data,
       dplyr::select(!c("Subnum", "Subject")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject" = "attr.longdata...ids.."))
-    ## Creating a label for the stratification, if there is one.
+    # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
     ## Creating output
