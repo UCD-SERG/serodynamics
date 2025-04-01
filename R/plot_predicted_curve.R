@@ -1,135 +1,212 @@
-#' @title Generate Predicted Antibody Response Curves
-#' @author Kwan Ho Lee
+#' @title Generate Predicted Antibody Response Curves (Median + 95% CI)
 #' @description
-#' Uses median parameter estimates to plot predicted antibody response curves.
-#' If observed data is provided, it overlays the observed values as points and
-#' connects them with lines.
-#' 
-#' @importFrom stringr str_extract
+#' Plots a single median antibody response curve with a 95% credible interval ribbon,
+#' using full posterior samples. Optionally overlays observed data, moves the legend to the bottom,
+#' provides options to apply log10 transformation on the y- and x-axes, and to show all individual
+#' sampled curves.
 #'
-#' @param param_medians_wide A tibble with median parameter estimates (first model).
-#' @param param_medians_wide2 (Optional) A tibble with median parameter estimates (second model).
-#' Alternatively, if this tibble contains observed data (e.g., with a column "dayssincefeveronset"),
-#' it will be treated as the observed data, and only one predicted curve will be plotted.
-#' @param dat (Optional) A tibble with observed antibody response data.
-#' It must contain `dayssincefeveronset`, `result`, `id`, and `antigen_iso`.
-#' @param legend_obs A character string for the observed data legend label (default: "Observed Data").
-#' @param legend_mod1 A character string for the first model's legend label (default: "").
-#' If empty, no legend key is shown.
-#' @param legend_mod2 A character string for the second model's legend label (default: "").
-#' If empty, no legend key is shown.
-#' @return A ggplot object displaying predicted antibody response curves.  
-#' If two parameter sets are provided, the first is plotted in red and the second in green.
-#' Observed data (if provided) are shown in blue.
+#' @param param_medians_wide A tibble with full posterior parameter samples (first model).
+#' @param param_medians_wide2 (Optional) A tibble with full posterior parameter samples (second model).
+#'   If this tibble contains observed data (with "dayssincefeveronset"), it will be treated as the
+#'   observed data, and only one model is plotted.
+#' @param dat (Optional) A tibble with observed antibody response data. Must contain:
+#'   - `dayssincefeveronset`
+#'   - `result`
+#'   - `id`
+#'   - `antigen_iso`
+#' @param legend_obs Label for observed data in the legend.
+#' @param legend_mod1 Label for the first model in the legend.
+#' @param legend_mod2 Label for the second model in the legend.
+#' @param show_quantiles Logical; if TRUE (default), plots the 2.5%, 50%, and 97.5% quantiles.
+#' @param log_scale Logical; if TRUE, applies a log10 transformation to the y-axis.
+#' @param log_x Logical; if TRUE, applies a log10 transformation to the x-axis.
+#' @param show_all_curves Logical; if TRUE, overlays all individual sampled curves.
+#' @param alpha_samples Numeric; transparency level for individual curves (default = 0.3).
+#'
+#' @return A ggplot object displaying predicted antibody response curves with a median curve
+#' and a 95% credible interval band.
 #' @export
-#' 
+#'
 #' @examples
-#' # Ensure JAGS is available before running
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'
-#'   # Prepare dataset & Run JAGS Model
-#'   jags_results <- prepare_and_run_jags(
-#'     id = "sees_npl_128",
-#'     antigen_iso = "HlyE_IgA"
-#'   )
-#'
-#'   # Process JAGS output (step 7)
-#'   param_medians_wide_128 <- process_jags_output(
-#'     jags_post   = jags_results$nepal_sees_jags_post,
-#'     dataset     = jags_results$dataset,
-#'     run_until   = 7
-#'   )
-#'
-#'   # Generate and print predicted antibody response curve
-#'   plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
-#'   print(plot_pred_only)
-#' }
-#'
-plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL, dat = NULL,
+#' # Run JAGS model for subject sees_npl_128 (HlyE_IgA)
+#' jags_results <- prepare_and_run_jags(
+#'   id = "sees_npl_128",
+#'   antigen_iso = "HlyE_IgA"
+#' )
+#' 
+#' # Extract results
+#' dat <- jags_results$dat
+#' dataset <- jags_results$dataset
+#' nepal_sees_jags_post <- jags_results$nepal_sees_jags_post
+#' nepal_sees_jags_post2 <- jags_results$nepal_sees_jags_post2
+#' 
+#' # Process JAGS output (partial and full processing)
+#' param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
+#' basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
+#' param_medians_full <- finalize_jags_output(basic_result, dataset, 
+#'                                            id = "sees_npl_128", 
+#'                                            antigen_iso = "HlyE_IgA")
+#' 
+#' # Generate predicted antibody response curves using median-based parameters
+#' plot_pred_only <- plot_predicted_curve(param_medians_wide = param_medians_full,
+#'                                        param_medians_wide2 = param_medians_partial,
+#'                                        dat = dat)
+#' print(plot_pred_only)
+#' 
+#' # Alternatively, generate curves using full MCMC samples with log10 transformations on both axes,
+#' # and overlay all individual sampled curves.
+#' full_samples <- process_jags_samples(nepal_sees_jags_post2, dataset,
+#'                                      id = "sees_npl_128",
+#'                                      antigen_iso = "HlyE_IgA")
+#' plot_full <- plot_predicted_curve(param_medians_wide = full_samples,
+#'                                   dat = dat,
+#'                                   legend_obs = "Observed Data",
+#'                                   legend_mod1 = "Full Model Predictions",
+#'                                   show_quantiles = TRUE,
+#'                                   log_scale = TRUE,
+#'                                   log_x = TRUE,
+#'                                   show_all_curves = TRUE)
+#' print(plot_full)
+plot_predicted_curve <- function(param_medians_wide,
+                                 param_medians_wide2 = NULL,
+                                 dat = NULL,
                                  legend_obs = "Observed Data",
-                                 legend_mod1 = "",
-                                 legend_mod2 = "") {
+                                 legend_mod1 = "Model 1 Predictions",
+                                 legend_mod2 = "Model 2 Predictions",
+                                 show_quantiles = TRUE,
+                                 log_scale = FALSE,
+                                 log_x = FALSE,
+                                 show_all_curves = FALSE,
+                                 alpha_samples = 0.3) {
   
-  # If the second argument appears to be observed data (has "dayssincefeveronset"),
-  # then treat it as 'dat' and set param_medians_wide2 to NULL.
+  # If the second argument is actually observed data, treat it as 'dat'
   if (!is.null(param_medians_wide2) && "dayssincefeveronset" %in% names(param_medians_wide2)) {
     dat <- param_medians_wide2
     param_medians_wide2 <- NULL
   }
   
-  # Define the time sequence for prediction
-  tx2 <- seq(0, 1200, by = 5)  
+  # Ensure Subject column exists in each model's data
+  if (!"Subject" %in% names(param_medians_wide)) {
+    param_medians_wide <- param_medians_wide %>%
+      dplyr::mutate(Subject = "subject1")
+  }
+  if (!is.null(param_medians_wide2) && !"Subject" %in% names(param_medians_wide2)) {
+    param_medians_wide2 <- param_medians_wide2 %>%
+      dplyr::mutate(Subject = "subject2")
+  }
+  
+  # Add sample_id if not present (to identify individual samples)
+  if (!"sample_id" %in% names(param_medians_wide)) {
+    param_medians_wide <- param_medians_wide %>%
+      dplyr::mutate(sample_id = dplyr::row_number())
+  }
+  if (!is.null(param_medians_wide2) && !"sample_id" %in% names(param_medians_wide2)) {
+    param_medians_wide2 <- param_medians_wide2 %>%
+      dplyr::mutate(sample_id = dplyr::row_number())
+  }
+  
+  # Define time points for prediction
+  tx2 <- seq(0, 1200, by = 5)
   
   # Antibody response model function
   ab <- function(t, y0, y1, t1, alpha, shape) {
     beta <- log(y1 / y0) / t1
-    yt <- ifelse(t <= t1, 
-                 y0 * exp(beta * t),
-                 (y1^(1 - shape) - (1 - shape) * alpha * (t - t1))^(1 / (1 - shape)))
-    return(yt)
+    if (t <= t1) {
+      y0 * exp(beta * t)
+    } else {
+      (y1^(1 - shape) - (1 - shape) * alpha * (t - t1))^(1 / (1 - shape))
+    }
   }
   
-  # Compute predicted curves for the first median parameter set (mod1)
+  ## --- Prepare data for Model 1 ---
   dT1 <- data.frame(t = tx2) %>%
     dplyr::mutate(ID = dplyr::row_number()) %>%
     tidyr::pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
-    dplyr::slice(rep(1:nrow(.), each = nrow(param_medians_wide)))
+    dplyr::slice(rep(1:dplyr::n(), each = nrow(param_medians_wide)))
   
   serocourse_all1 <- cbind(param_medians_wide, dT1) %>%
     tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
     dplyr::select(-name) %>%
     dplyr::rowwise() %>%
     dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(id = as.factor(Subject))
+    dplyr::ungroup()
   
-  # Compute predicted curves for the second median parameter set (mod2), if provided
+  ## --- Prepare data for Model 2 (if provided) ---
   if (!is.null(param_medians_wide2)) {
     dT2 <- data.frame(t = tx2) %>%
       dplyr::mutate(ID = dplyr::row_number()) %>%
       tidyr::pivot_wider(names_from = ID, values_from = t, names_prefix = "time") %>%
-      dplyr::slice(rep(1:nrow(.), each = nrow(param_medians_wide2)))
+      dplyr::slice(rep(1:dplyr::n(), each = nrow(param_medians_wide2)))
     
     serocourse_all2 <- cbind(param_medians_wide2, dT2) %>%
       tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") %>%
       dplyr::select(-name) %>%
       dplyr::rowwise() %>%
       dplyr::mutate(res = ab(t, y0, y1, t1, alpha, shape)) %>%
-      dplyr::ungroup() %>%
-      dplyr::mutate(id = as.factor(Subject))
+      dplyr::ungroup()
   }
   
-  # Initialize the base plot
+  # Base ggplot object with legend at the bottom.
   p <- ggplot2::ggplot() +
     ggplot2::theme_minimal() +
-    ggplot2::labs(x = "Days since fever onset", y = "ELISA units", color = "Data Type") +
-    ggplot2::theme(legend.position = "right")
+    ggplot2::labs(x = "Days since fever onset", y = "ELISA units") +
+    ggplot2::theme(legend.position = "bottom")
   
-  # Add predicted curve for the first median parameter set (mod1)
-  if (legend_mod1 != "") {
-    p <- p + ggplot2::geom_line(data = serocourse_all1,
-                                ggplot2::aes(x = t, y = res, group = id, color = "mod1"),
-                                alpha = 0.3, show.legend = TRUE)
-  } else {
-    p <- p + ggplot2::geom_line(data = serocourse_all1,
-                                ggplot2::aes(x = t, y = res, group = id),
-                                color = "red", alpha = 0.3, show.legend = FALSE)
-  }
-  
-  # Add predicted curve for the second median parameter set (mod2), if provided
-  if (!is.null(param_medians_wide2)) {
-    if (legend_mod2 != "") {
-      p <- p + ggplot2::geom_line(data = serocourse_all2,
-                                  ggplot2::aes(x = t, y = res, group = id, color = "mod2"),
-                                  alpha = 0.3, show.legend = TRUE)
-    } else {
-      p <- p + ggplot2::geom_line(data = serocourse_all2,
-                                  ggplot2::aes(x = t, y = res, group = id),
-                                  color = "green", alpha = 0.3, show.legend = FALSE)
+  # If show_all_curves is TRUE, overlay all individual sampled curves.
+  if (show_all_curves) {
+    p <- p +
+      ggplot2::geom_line(data = serocourse_all1,
+                         ggplot2::aes(x = t, y = res, group = sample_id),
+                         color = "gray", alpha = 0.2)
+    if (!is.null(param_medians_wide2)) {
+      p <- p +
+        ggplot2::geom_line(data = serocourse_all2,
+                           ggplot2::aes(x = t, y = res, group = sample_id),
+                           color = "gray", alpha = 0.2)
     }
   }
   
-  # Overlay observed data if provided (always map color to get a legend key)
+  # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
+  if (show_quantiles) {
+    sum1 <- serocourse_all1 %>%
+      dplyr::group_by(t) %>%
+      dplyr::summarise(
+        res.med  = stats::quantile(res, probs = 0.50, na.rm = TRUE),
+        res.low  = stats::quantile(res, probs = 0.025, na.rm = TRUE),
+        res.high = stats::quantile(res, probs = 0.975, na.rm = TRUE),
+        .groups  = "drop"
+      )
+    
+    p <- p +
+      ggplot2::geom_ribbon(data = sum1,
+                           ggplot2::aes(x = t, ymin = res.low, ymax = res.high, fill = "mod1"),
+                           alpha = 0.2, inherit.aes = FALSE) +
+      ggplot2::geom_line(data = sum1,
+                         ggplot2::aes(x = t, y = res.med, color = "mod1"),
+                         size = 1, inherit.aes = FALSE)
+  }
+  
+  # --- Summarize & Plot Model 2 (Median + 95% Ribbon) ---
+  if (!is.null(param_medians_wide2) && show_quantiles) {
+    sum2 <- serocourse_all2 %>%
+      dplyr::group_by(t) %>%
+      dplyr::summarise(
+        res.med  = stats::quantile(res, probs = 0.50, na.rm = TRUE),
+        res.low  = stats::quantile(res, probs = 0.025, na.rm = TRUE),
+        res.high = stats::quantile(res, probs = 0.975, na.rm = TRUE),
+        .groups  = "drop"
+      )
+    
+    p <- p +
+      ggplot2::geom_ribbon(data = sum2,
+                           ggplot2::aes(x = t, ymin = res.low, ymax = res.high, fill = "mod2"),
+                           alpha = 0.2, inherit.aes = FALSE) +
+      ggplot2::geom_line(data = sum2,
+                         ggplot2::aes(x = t, y = res.med, color = "mod2"),
+                         size = 1, inherit.aes = FALSE)
+  }
+  
+  # --- Overlay Observed Data (if provided) ---
   if (!is.null(dat)) {
     observed_data <- dat %>%
       dplyr::rename(t = dayssincefeveronset, res = result) %>%
@@ -145,25 +222,37 @@ plot_predicted_curve <- function(param_medians_wide, param_medians_wide2 = NULL,
                          linewidth = 1, show.legend = TRUE)
   }
   
-  # Construct the color scale manually based on which legend items are active.
-  color_vals <- c()
-  color_labels <- c()
+  # --- Construct Unified Legend (use only the color legend and suppress the fill legend) ---
+  color_vals <- c("mod1" = "red")
+  color_labels <- c("mod1" = legend_mod1)
+  fill_vals  <- c("mod1" = "red")
+  fill_labels <- c("mod1" = legend_mod1)
   
-  if (legend_mod1 != "") {
-    color_vals["mod1"] <- "red"
-    color_labels["mod1"] <- legend_mod1
-  }
-  if (!is.null(param_medians_wide2) && legend_mod2 != "") {
+  if (!is.null(param_medians_wide2)) {
     color_vals["mod2"] <- "green"
     color_labels["mod2"] <- legend_mod2
+    fill_vals["mod2"] <- "green"
+    fill_labels["mod2"] <- legend_mod2
   }
   if (!is.null(dat)) {
     color_vals["observed"] <- "blue"
     color_labels["observed"] <- legend_obs
   }
   
-  if (length(color_vals) > 0) {
-    p <- p + ggplot2::scale_color_manual(values = color_vals, labels = color_labels)
+  p <- p +
+    ggplot2::scale_color_manual(values = color_vals,
+                                labels = color_labels,
+                                name = "Data Type") +
+    ggplot2::scale_fill_manual(values = fill_vals,
+                               labels = fill_labels,
+                               guide = "none")
+  
+  # --- Optionally add log10 scales for y and/or x ---
+  if (log_scale) {
+    p <- p + ggplot2::scale_y_log10()
+  }
+  if (log_x) {
+    p <- p + ggplot2::scale_x_log10()
   }
   
   return(p)
