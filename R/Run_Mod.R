@@ -21,19 +21,7 @@
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat #' A [character] string specifying the stratification variable, 
 #' entered in quotes.
-#' @param priors A [list] with optional elements:
-#' - "mu_hyp_param": hyperpriors for estimate parameters. If specified must
-#'    be 5 values long.
-#'    - defaults: y0 = 1.0, y1 = 7.0, t1 = 1.0, r = -4.0, alpha = -1.0
-#' - "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
-#' must 5 values long.
-#'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-#' - "omega_param" : ?? 
-#'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-#' - "wishdf_param": Wishart distribution degrees of freedom (default = 20.0)
-#' - "prec_logy_hyp_param": array of hyper-parameters for the precision.
-#'    (inverse variance) of the biomarkers, on log-scale
-#'    - defaults = 4.0, 1.0
+#' @inheritParams prep_priors 
 #' @return
 #' - A jags.post [list()] object or multiple jags.post [list()]
 #' if stratified. Returned as a [list()] of class [runjags::runjags-class]
