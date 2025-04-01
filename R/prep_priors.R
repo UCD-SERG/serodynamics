@@ -37,7 +37,7 @@
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
                         priors = NA) {
-  #Setting defaults for list
+  # Setting defaults for list
   defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
                    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
@@ -46,51 +46,51 @@ prep_priors <- function(max_antigens,
 
   # Checking to see if priors are specified and using them if so.
   if (methods::hasArg(priors)) { # were priors specified?
-    #mu_hyp_param
+    # mu_hyp_param
     if ((sum(names(priors) %in% "mu_hyp_param")) > 0) {
-      #Testing to see if 5 elements, will create error if not
+      # Testing to see if 5 elements, will create error if not
       if (length(priors[["mu_hyp_param"]]) == 5) {
-        #Reassigning default to specified prior
+        # Reassigning default to specified prior
         defaults[["mu_hyp_param"]] <- priors[["mu_hyp_param"]]
       } else if (length(priors[["mu_hyp_param"]]) != 5) {
         stop("Need to specify 5 priors for mu_hyp_param")
       }
     }
-    #prec_hyp_param
+    # prec_hyp_param
     if ((sum(names(priors) %in% "prec_hyp_param")) > 0) {
-      #Testing to see if 5 elements, will create error if not
+      # Testing to see if 5 elements, will create error if not
       if (length(priors[["prec_hyp_param"]]) == 5) {
-        #Reassigning default to specified prior
+        # Reassigning default to specified prior
         defaults[["prec_hyp_param"]] <- priors[["prec_hyp_param"]]
       } else if (length(priors[["mu_hyp_param"]]) != 5) {
         stop("Need to specify 5 priors for prec_hyp_param")
       }
     }
-    #omega_hyp_param
+    # omega_hyp_param
     if ((sum(names(priors) %in% "omega_param")) > 0) {
-      #Testing to see if 5 elements, will create error if not
+      # Testing to see if 5 elements, will create error if not
       if (length(priors[["omega_param"]]) == 5) {
-        #Reassigning default to specified prior
+        # Reassigning default to specified prior
         defaults[["omega_param"]] <- priors[["omega_param"]]
       } else if (length(priors[["omega_param"]]) != 5) {
         stop("Need to specify 5 priors for omega_param")
       }
     }
-    #wishdf_param
+    # wishdf_param
     if ((sum(names(priors) %in% "wishdf_param")) > 0) {
-      #Testing to see if 5 elements, will create error if not
+      # Testing to see if 5 elements, will create error if not
       if (length(priors[["wishdf_param"]]) == 1) {
-        #Reassigning default to specified prior
+        # Reassigning default to specified prior
         defaults[["wishdf_param"]] <- priors[["wishdf_param"]]
       } else if (length(priors[["wishdf_param"]]) != 1) {
         stop("Need to specify 5 priors for wishdf_param")
       }
     }
-    #prec_logy_hyp_param
+    # prec_logy_hyp_param
     if ((sum(names(priors) %in% "prec_logy_hyp_param")) > 0) {
-      #Testing to see if 5 elements, will create error if not
+      # Testing to see if 5 elements, will create error if not
       if (length(priors[["prec_logy_hyp_param"]]) == 2) {
-        #Reassigning default to specified prior
+        # Reassigning default to specified prior
         defaults[["prec_logy_hyp_param"]] <- priors[["prec_logy_hyp_param"]]
       } else if (length(priors[["wishdf_param"]]) != 2) {
         stop("Need to specify 5 priors for prec_logy_hyp_param")
@@ -128,7 +128,7 @@ prep_priors <- function(max_antigens,
     "prec.logy.hyp" = prec_logy_hyp
   ) |>
     structure(class = c("curve_params_priors", "list"))
-  #Creating two objects in a list, one will be used in run_mod and the other
+  # Creating two objects in a list, one will be used in run_mod and the other
   # will be attached to run_mod output as an attribute. 
   to_return <- list("prepped_priors" = prepped_priors, "used_priors" = defaults)
 
