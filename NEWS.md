@@ -4,6 +4,8 @@
 
 ## New features
 
+* Taking jags.post out of run_mod output. Including all subects in 
+  curve_params (#)
 * Diagnostic function to produce R-hat dotplots with stratification (#67)
 * Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)
