@@ -58,7 +58,8 @@ plot_jags_dens <- function(data,
   for (i in strat) {
 
     visualize_jags_sub <- visualize_jags |>
-      dplyr::filter(.data$Stratification == i)
+      dplyr::filter(.data$Stratification == i) |>
+      dplyr::filter(.data$Subject == "newperson")
 
     # Creating open list to store ggplots
     density_out <- list()
