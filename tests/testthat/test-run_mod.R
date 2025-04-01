@@ -3,7 +3,7 @@ test_that(
   code = {
     skip_on_os(c("windows", "linux"))
     library(runjags)
-    library(rlist)
+    withr::local_package("rlist")
     withr::local_seed(1)
     library(dplyr)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
