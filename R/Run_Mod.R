@@ -19,7 +19,7 @@
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
-#' @param strat #' A [character] string specifying the stratification variable, 
+#' @param strat A [character] string specifying the stratification variable, 
 #' entered in quotes.
 #' @inheritParams prep_priors 
 #' @return
