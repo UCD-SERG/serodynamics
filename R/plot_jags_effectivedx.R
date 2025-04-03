@@ -73,9 +73,9 @@ plot_jags_effect <- function(data,
         ggplot2::theme_bw()  +
         ggplot2::labs(title = "Effective sample size",
                       subtitle =  ifelse(j == "None", 
-                                     paste0("ag/iso = ", j),
-                                     paste0("ag/iso = ", 
-                                            j, "; strata =  ", i)),
+                                         paste0("ag/iso = ", j),
+                                         paste0("ag/iso = ", 
+                                                j, "; strata =  ", i)),
                       x = "Proportion of effective samples") 
       eff_out[[j]] <- eff
     }
