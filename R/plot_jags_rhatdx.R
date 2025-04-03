@@ -76,7 +76,8 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                                          paste0("ag/iso = ", 
                                                 j, "; strata =  ", i)),
                       x = "Rhat value") +
-        scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", "y0"))
+        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                             "y0"))
       rhat_out[[j]] <- rhatplot
     }
     rhat_strat_list[[i]] <- rhat_out

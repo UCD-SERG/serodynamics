@@ -77,7 +77,8 @@ plot_jags_effect <- function(data,
                                          paste0("ag/iso = ", 
                                                 j, "; strata =  ", i)),
                       x = "Proportion of effective samples") +
-        scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", "y0"))
+        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                             "y0"))
       eff_out[[j]] <- eff
     }
     eff_strat_list[[i]] <- eff_out
