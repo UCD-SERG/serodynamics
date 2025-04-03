@@ -115,11 +115,11 @@ all antigen/antibody combinations.</p></dd>
 
 <dt id="arg-param">param<a class="anchor" aria-label="anchor" href="#arg-param"></a></dt>
 <dd><p>Specify <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string to produce plots of only a
-specific parameter, entered with quotes. Options include:</p><ul><li><p><code>alpha</code> = posterior estimate of decay rate</p></li>
-<li><p><code>r</code> = posterior estimate of shape parameter</p></li>
-<li><p><code>t1</code> = posterior estimate of time to peak</p></li>
-<li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
+specific parameter, entered with quotes. Options include:</p><ul><li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = posterior estimate of peak antibody concentration</p></li>
+<li><p><code>t1</code> = posterior estimate of time to peak</p></li>
+<li><p><code>r</code> = posterior estimate of shape parameter</p></li>
+<li><p><code>alpha</code> = posterior estimate of decay rate</p></li>
 </ul></dd>
 
 
@@ -146,7 +146,7 @@ values for all the specified input.</p>
 <span class="r-in"><span><span class="fu">plot_jags_Rhat</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>               iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
 <span class="r-in"><span>               strat <span class="op">=</span> <span class="st">"typhi"</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_jags_Rhat-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", "y0")):</span> could not find function "scale_y_discrete"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
