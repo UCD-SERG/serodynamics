@@ -41,18 +41,18 @@
 <polyline points='462.57,545.11 462.57,22.78 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
 <polyline points='577.09,545.11 577.09,22.78 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
 <polyline points='691.62,545.11 691.62,22.78 ' style='stroke-width: 1.07; stroke: #EBEBEB; stroke-linecap: butt;' />
-<circle cx='240.49' cy='484.84' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='251.50' cy='384.40' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='269.04' cy='283.95' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='294.33' cy='183.50' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
-<circle cx='638.05' cy='83.05' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='691.62' cy='484.84' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='691.62' cy='283.95' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='691.62' cy='183.50' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='691.62' cy='384.40' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
+<circle cx='691.62' cy='83.05' r='1.95' style='stroke-width: 0.71; fill: #000000;' />
 <rect x='210.62' y='22.78' width='503.90' height='522.33' style='stroke-width: 1.07; stroke: #333333;' />
 </g>
 <g clip-path='url(#cpMC4wMHw3MjAuMDB8MC4wMHw1NzYuMDA=)'>
 <text x='205.69' y='487.87' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='185.17px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = alpha, strat = typhi</text>
-<text x='205.69' y='387.42' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='187.62px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = shape, strat = typhi</text>
-<text x='205.69' y='286.98' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='170.98px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = t1, strat = typhi</text>
-<text x='205.69' y='186.53' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='172.94px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = y0, strat = typhi</text>
+<text x='205.69' y='387.42' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='172.94px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = y0, strat = typhi</text>
+<text x='205.69' y='286.98' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='187.62px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = shape, strat = typhi</text>
+<text x='205.69' y='186.53' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='170.98px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = t1, strat = typhi</text>
 <text x='205.69' y='86.08' text-anchor='end' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='172.94px' lengthAdjust='spacingAndGlyphs'>iso = HlyE_IgA, parameter = y1, strat = typhi</text>
 <polyline points='207.88,484.84 210.62,484.84 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />
 <polyline points='207.88,384.40 210.62,384.40 ' style='stroke-width: 1.07; stroke: #333333; stroke-linecap: butt;' />

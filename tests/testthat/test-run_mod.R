@@ -51,10 +51,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics_example(
-      "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
-    ) |>
-      readr::read_csv() |>
+    dataset <- serodynamics::nepal_sees |>
       as_case_data(
         id_var = "person_id",
         biomarker_var = "antigen_iso",
@@ -66,10 +63,10 @@ test_that(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
-      nadapt = 100, # Number of adaptations to run
-      nburn = 100, # Number of unrecorded samples before sampling begins
-      nmc = 10,
-      niter = 10, # Number of iterations
+      nadapt = 10, # Number of adaptations to run
+      nburn = 10, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
       strat = "bldculres" # Variable to be stratified
     ) |>
       suppressWarnings() |>
@@ -91,14 +88,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics_example(
-      "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
-    ) |>
-      readr::read_csv() |>
-      dplyr::mutate(
-        .by = person_id,
-        visit_num = dplyr::row_number()
-      ) |>
+    dataset <- serodynamics::nepal_sees |>
       as_case_data(
         id_var = "person_id",
         biomarker_var = "antigen_iso",
@@ -110,10 +100,10 @@ test_that(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
-      nadapt = 100, # Number of adaptations to run
-      nburn = 100, # Number of unrecorded samples before sampling begins
-      nmc = 10,
-      niter = 10, # Number of iterations
+      nadapt = 10, # Number of adaptations to run
+      nburn = 10, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
       strat = NA # Variable to be stratified
     ) |>
       suppressWarnings() |>
