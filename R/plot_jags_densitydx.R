@@ -29,23 +29,7 @@
 #' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
 #' plots for all the specified input.
 #' @export
-#' @examples
-#' if (!is.element(runjags::findjags(), c("", NULL))) {
-#'   library(runjags)
-#'   library(ggmcmc)
-#'   library(dplyr)
-#'
-#'   data <- serodynamics::nepal_sees_jags_post
-#'
-#' plot_jags_dens(
-#'     data = data, #A [serodynamics::run_mod()] [list] output.
-#'     iso = "HlyE_IgA", #A [character] string specifying
-#'     #nantigen/antibody of interest.
-#'     param = "alpha",  #A [character] string specifying parameter of
-#'     # interest.
-#'     strat = "typhi")  #A [character] string specifying
-#'     # stratification of interest.
-#'     }
+#' @example inst/examples/examples-plot_jags_densitydx.R
 
 plot_jags_dens <- function(data,
                            iso = unique(data$curve_params$Iso_type),
