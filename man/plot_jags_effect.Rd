@@ -55,7 +55,7 @@ The antibody dynamic curve includes the following parameters:
 }
 \examples{
 
-data <- serodynamics::nepal_sees_jags_post
+data <- serodynamics::nepal_sees_jags_output
 
 plot_jags_effect(data = data,
                  iso = "HlyE_IgA",
