@@ -56,9 +56,9 @@ data <- serodynamics::nepal_sees_jags_output
 
 # Specifying isotype, parameter, and stratification for traceplot.
 plot_jags_dens(
-                data = data,
-                iso = "HlyE_IgA",
-                strat = "typhi")
+               data = data,
+               iso = "HlyE_IgA",
+               strat = "typhi")
 }
 \author{
 Sam Schildhauer
