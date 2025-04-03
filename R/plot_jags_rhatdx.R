@@ -70,10 +70,12 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
       # Creating rhat dotplots
       rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(title = ifelse(j == "None", 
-                                     paste0("Rhat value: ag/iso = ", j),
-                                     paste0("Rhat value: ag/iso = ", 
-                                            j, "; strata =  ", i)))
+        ggplot2::labs(title = "Rhat value",
+                      subtitle =  ifelse(j == "None", 
+                                         paste0("ag/iso = ", j),
+                                         paste0("ag/iso = ", 
+                                                j, "; strata =  ", i)),
+                      x = "Rhat value") 
       rhat_out[[j]] <- rhatplot
     }
     rhat_strat_list[[i]] <- rhat_out
