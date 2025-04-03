@@ -21,11 +21,11 @@ all antigen/antibody combinations.}
 \item{param}{Specify \link{character} string to produce plots of only a
 specific parameter, entered with quotes. Options include:
 \itemize{
-\item \code{alpha} = posterior estimate of decay rate
-\item \code{r} = posterior estimate of shape parameter
-\item \code{t1} = posterior estimate of time to peak
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
+\item \code{t1} = posterior estimate of time to peak
+\item \code{r} = posterior estimate of shape parameter
+\item \code{alpha} = posterior estimate of decay rate
 }}
 
 \item{strat}{Specify \link{character} string to produce plots of specific
