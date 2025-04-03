@@ -52,7 +52,7 @@ The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-post_summ(data = serodynamics::nepal_sees_jags_post)
+post_summ(data = serodynamics::nepal_sees_jags_ouput)
 }
 \author{
 Sam Schildhauer
