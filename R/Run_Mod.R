@@ -74,6 +74,9 @@ run_mod <- function(data,
     "Stratification" = NA
   )
 
+  ## Creating output list for jags.post
+  jags_post_final <- list()
+
   # For loop for running stratifications
   for (i in strat_list) {
     # Creating if else statement for running the loop
