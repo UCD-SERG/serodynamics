@@ -162,16 +162,16 @@ run_mod <- function(data,
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
   if (with_post == TRUE) {
-  jags_out <- list(
-    "curve_params" = jags_out,
-    "jags.post" = jags_post_final,
-    "attributes" = mod_atts
-  )
+    jags_out <- list(
+      "curve_params" = jags_out,
+      "jags.post" = jags_post_final,
+      "attributes" = mod_atts
+    )
   } else { 
     jags_out <- list(
       "curve_params" = jags_out,
       "attributes" = mod_atts
     )
-    }
+  }
   jags_out
 }
