@@ -24,7 +24,7 @@ linters <- linters_with_defaults(
   )
 )
 
-rm(extra_undesirable_functions) # prevents a warning from lintr:::read_settings
+rm(extra_undesirable_functions) # prevents a warning from lintr::read_settings
 
 exclusions <- list(
   `data-raw` = list(
