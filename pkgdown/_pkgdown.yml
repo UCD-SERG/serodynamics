@@ -32,11 +32,15 @@ reference:
 - title: Model diagnostics
   contents:
   - plot_jags_dens
+  - plot_jags_Rhat
   - plot_jags_trace
   - plot_jags_effect
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
+- title: Summarize seroresponse model estimates
+  contents:
+  - post_summ
 - title: Example data sets
   contents:
   - serodynamics_example
