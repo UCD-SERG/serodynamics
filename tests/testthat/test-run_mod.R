@@ -2,10 +2,8 @@ test_that(
   desc = "results are consistent with simulated data",
   code = {
     skip_on_os(c("windows", "linux"))
-    library(runjags)
     withr::local_package("rlist")
     withr::local_seed(1)
-    library(dplyr)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
                     antigen_isos = "HlyE_IgA") |>
@@ -51,7 +49,6 @@ test_that(
   code = {
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
-    library(runjags)
     dataset <- serodynamics::nepal_sees |>
       as_case_data(
         id_var = "person_id",
@@ -88,7 +85,6 @@ test_that(
   code = {
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
-    library(runjags)
     dataset <- serodynamics::nepal_sees |>
       dplyr::mutate(
         .by = person_id,
