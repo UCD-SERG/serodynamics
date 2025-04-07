@@ -12,7 +12,8 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  with_post = FALSE
 )
 }
 \arguments{
@@ -31,7 +32,11 @@ the number of mcmc chains to be run per jags model.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
-\item{strat}{A \link{character} string specifying the stratification variable,
+\item{strat}{A \link{logical} value specifying the column name to stratify.}
+
+\item{with_post}{A \link{logical} value specifying if raw jags post objects
+should be included in the output. Note: These objects can be large.
+A \link{character} string specifying the stratification variable,
 entered in quotes.}
 }
 \value{

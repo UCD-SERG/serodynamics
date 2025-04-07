@@ -19,7 +19,9 @@
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
-#' @param strat
+#' @param strat A [logical] value specifying the column name to stratify.
+#' @param with_post A [logical] value specifying if raw jags post objects
+#' should be included in the output. Note: These objects can be large.
 #' A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @return
@@ -51,7 +53,8 @@ run_mod <- function(data,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
-                    strat = NA) {
+                    strat = NA,
+                    with_post = FALSE) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
@@ -108,6 +111,10 @@ run_mod <- function(data,
       monitor = tomonitor,
       summarise = FALSE
     )
+    # Assigning the raw jags output to a list.
+    # This will include a raw output for the jags.post for each stratification
+    # and will only be included if specified. 
+    jags_post_final[[i]] <- jags_post
 
     # Unpacking and cleaning mcmc output.
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
@@ -150,11 +157,18 @@ run_mod <- function(data,
   # Ensuring output does not have any NAs
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
-  # jags output results for each stratification
-  # rbinded.
+  # jags output results for each stratification rbinded.
+  if (with_post == TRUE) {
   jags_out <- list(
     "curve_params" = jags_out,
+    "jags.post" = jags_post_final,
     "attributes" = mod_atts
   )
+  } else { 
+    jags_out <- list(
+      "curve_params" = jags_out,
+      "attributes" = mod_atts
+    )
+    }
   jags_out
 }
