@@ -40,25 +40,25 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                            strat = unique(data$curve_params$Stratification)) {
   visualize_jags <- data[["curve_params"]]
   attributes_jags <- data[["attributes"]]
-
+  
   rhat_strat_list <- list()
   for (i in strat) {
-
+    
     visualize_jags_sub <- visualize_jags |>
       dplyr::filter(.data$Stratification == i)
-
+    
     # Creating open list to store ggplots
     rhat_out <- list()
     # Looping through the isos
     for (j in iso) {
       visualize_jags_plot <- visualize_jags_sub |>
         dplyr::filter(.data$Iso_type == j)
-
+      
       # Will not loop through parameters, as we may want each to show on the
       # same plot by default.
       visualize_jags_plot <- visualize_jags_plot |>
         dplyr::filter(.data$Parameter_sub %in% param)
-
+      
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = .data$Parameter_sub,

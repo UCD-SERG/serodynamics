@@ -6,13 +6,14 @@
 \usage{
 run_mod(
   data,
-  file_mod,
+  file_mod = serodynamics_example("model.jags"),
   nchain = 4,
   nadapt = 0,
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  priors = NA
 )
 }
 \arguments{
@@ -33,6 +34,38 @@ the number of mcmc chains to be run per jags model.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{priors}{a \link{list} with optional elements:
+\itemize{
+\item "mu_hyp_param": hyperpriors for estimate parameters. If specified must
+be 5 values long.
+\itemize{
+\item y0 = baseline antibody concentration (default = 1.0)
+\item y1 = peak antibody concentration (default = 7.0)
+\item t1 = time to peak (default = 1.0)
+\item r = shape parameter (default = -4.0)
+\item alpha = decay rate (default = -1.0)
+}
+\item "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
+must 5 values long.
+\itemize{
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+}
+\item "omega_param": Variance of random effects. If specified
+must 5 values long.
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}
+\item "wishdf_param": Wishart distribution degrees of freedom.
+\itemize{
+\item default = 20.0
+}
+\item "prec_logy_hyp_param": array of hyper-parameters for the precision.
+(inverse variance) of the biomarkers, on log-scale
+\itemize{
+\item defaults = 4.0, 1.0
+}
+}}
 }
 \value{
 \itemize{

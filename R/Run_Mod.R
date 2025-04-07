@@ -19,9 +19,9 @@
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
-#' @param strat
-#' A [character] string specifying the stratification variable,
+#' @param strat A [character] string specifying the stratification variable, 
 #' entered in quotes.
+#' @inheritParams prep_priors 
 #' @return
 #' - A jags.post [list()] object or multiple jags.post [list()]
 #' if stratified. Returned as a [list()] of class [runjags::runjags-class]
@@ -47,13 +47,14 @@
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod,
+                    file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
-                    strat = NA) {
+                    strat = NA, 
+                    priors = NA) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
@@ -88,7 +89,9 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+    priorspec <- prep_priors(max_antigens = 
+                               longdata$n_antigen_isos,
+                             priors = priors)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -102,7 +105,7 @@ run_mod <- function(data,
 
     jags_post <- runjags::run.jags(
       model = file_mod,
-      data = c(longdata, priors),
+      data = c(longdata, priorspec[["prepped_priors"]]),
       inits = initsfunction,
       method = "parallel",
       adapt = nadapt,
@@ -166,7 +169,8 @@ run_mod <- function(data,
   jags_out <- list(
     "curve_params" = jags_out,
     "jags.post" = jags_post_final,
-    "attributes" = mod_atts
+    "attributes" = mod_atts,
+    "priors" = priorspec[["used_priors"]]
   )
   jags_out
 }
