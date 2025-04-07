@@ -29,6 +29,8 @@ undesirable_functions <-
     ),
     
     structure = NULL
+    # see https://github.com/r-lib/lintr/pull/2227 and 
+    # rebuttal https://github.com/r-lib/lintr/pull/2227#issuecomment-1800302675
     
   )
 
