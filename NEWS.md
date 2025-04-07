@@ -32,7 +32,10 @@ None yet
 
 ## Developer-facing changes
 
-* Set shortcut pipe to be base pipe.
+* Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
+* Reformatted `.lintr` as R file (following 
+https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389) (#81)
+* Set shortcut pipe to be base pipe (#80)
 * Added snapshot test for `run_mod()`
 * Clarified `prep_data()` internals using `{dplyr}` (#34)
 * Removed ".R" suffix from jags model files 
