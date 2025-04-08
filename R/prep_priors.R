@@ -55,7 +55,7 @@ prep_priors <- function(max_antigens,
         # Reassigning default to specified prior
         defaults[["mu_hyp_param"]] <- priors[["mu_hyp_param"]]
       } else if (length(priors[["mu_hyp_param"]]) != 5) {
-        cli::cli_abort("Need to specify 5 priors for mu_hyp_param")
+        cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
       }
     }
     # prec_hyp_param
@@ -65,7 +65,7 @@ prep_priors <- function(max_antigens,
         # Reassigning default to specified prior
         defaults[["prec_hyp_param"]] <- priors[["prec_hyp_param"]]
       } else if (length(priors[["mu_hyp_param"]]) != 5) {
-        cli::cli_abort("Need to specify 5 priors for prec_hyp_param")
+        cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
       }
     }
     # omega_hyp_param
@@ -75,7 +75,7 @@ prep_priors <- function(max_antigens,
         # Reassigning default to specified prior
         defaults[["omega_param"]] <- priors[["omega_param"]]
       } else if (length(priors[["omega_param"]]) != 5) {
-        cli::cli_abort("Need to specify 5 priors for omega_param")
+        cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
       }
     }
     # wishdf_param
@@ -85,7 +85,7 @@ prep_priors <- function(max_antigens,
         # Reassigning default to specified prior
         defaults[["wishdf_param"]] <- priors[["wishdf_param"]]
       } else if (length(priors[["wishdf_param"]]) != 1) {
-        cli::cli_abort("Need to specify 1 prior for wishdf_param")
+        cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
       }
     }
     # prec_logy_hyp_param
@@ -95,7 +95,8 @@ prep_priors <- function(max_antigens,
         # Reassigning default to specified prior
         defaults[["prec_logy_hyp_param"]] <- priors[["prec_logy_hyp_param"]]
       } else if (length(priors[["wishdf_param"]]) != 2) {
-        cli::cli_abort("Need to specify 2 priors for prec_logy_hyp_param")
+        cli::cli_abort("Need to specify 2 priors for
+                       {.arg prec_logy_hyp_param}")
       }
     }
   }
