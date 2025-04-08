@@ -1,8 +1,4 @@
-dataset <- serodynamics::nepal_sees |>
-  as_case_data(id_var = "person_id",
-               biomarker_var = "antigen_iso",
-               value_var = "result",
-               time_in_days = "dayssincefeveronset")
+dataset <- serodynamics::nepal_sees 
 
 nepal_sees_jags_output <- run_mod(
   data = dataset, # The data set input
