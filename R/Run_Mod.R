@@ -19,11 +19,13 @@
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying number of samples in posterior chains
 #' @param niter An [integer] specifying number of iterations.
-#' @param strat A [logical] value specifying the column name to stratify.
+#' @param strat A [character] string specifying the stratification variable,
+#' entered in quotes.
 #' @param with_post A [logical] value specifying if raw jags post objects
 #' should be included in the output. Note: These objects can be large.
-#' A [character] string specifying the stratification variable,
-#' entered in quotes.
+#' @param include_subs A [logical] value specifying if posterior distributions
+#' should be included for all subjects. A value of [FALSE] will only include
+#' the predictive distribution.
 #' @return
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
@@ -54,7 +56,8 @@ run_mod <- function(data,
                     nmc = 100,
                     niter = 100,
                     strat = NA,
-                    with_post = FALSE) {
+                    with_post = FALSE,
+                    include_subs = FALSE) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat) == FALSE) {
     strat_list <- unique(data[[strat]])
@@ -161,6 +164,14 @@ run_mod <- function(data,
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
+  # Logical argument to include posterior of all subjects or just the
+  # predictive distribution (new person).
+  if (include_subs == FALSE) {
+    jags_out <- jags_out |>
+      filter(Subject == "newperson")
+  }
+
+  # Logical argument to keep the raw jags post or not.
   if (with_post == TRUE) {
     jags_out <- list(
       "curve_params" = jags_out,
