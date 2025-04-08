@@ -27,7 +27,8 @@ test_that(
           nburn = 100, # Number of unrecorded samples before sampling begins
           nmc = 10,
           niter = 10, # Number of iterations
-          strat = "strat" # Variable to be stratified
+          strat = "strat", # Variable to be stratified
+          include_subs = TRUE
         ) |>
           suppressWarnings() |>
           magrittr::use_series("curve_params")
@@ -51,13 +52,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics::nepal_sees |>
-      as_case_data(
-        id_var = "person_id",
-        biomarker_var = "antigen_iso",
-        value_var = "result",
-        time_in_days = "dayssincefeveronset"
-      )
+    dataset <- serodynamics::nepal_sees 
 
     results <- run_mod(
       data = dataset, # The data set input
@@ -67,7 +62,8 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres" # Variable to be stratified
+      strat = "bldculres", # Variable to be stratified
+      include_subs = TRUE
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params")
@@ -88,13 +84,7 @@ test_that(
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     library(runjags)
-    dataset <- serodynamics::nepal_sees |>
-      as_case_data(
-        id_var = "person_id",
-        biomarker_var = "antigen_iso",
-        value_var = "result",
-        time_in_days = "dayssincefeveronset"
-      )
+    dataset <- serodynamics::nepal_sees 
 
     results <- run_mod(
       data = dataset, # The data set input
@@ -104,7 +94,8 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = NA # Variable to be stratified
+      strat = NA, # Variable to be stratified
+      include_subs = TRUE
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params")
