@@ -168,7 +168,7 @@ run_mod <- function(data,
   # predictive distribution (new person).
   if (include_subs == FALSE) {
     jags_out <- jags_out |>
-      filter(Subject == "newperson")
+      filter(.data$Subject == "newperson")
   }
 
   # Logical argument to keep the raw jags post or not.
