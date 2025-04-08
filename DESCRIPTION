@@ -47,7 +47,8 @@ Suggests:
     rmarkdown,
     stringr,
     magrittr,
-    ssdtools
+    ssdtools,
+    rex
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: 
