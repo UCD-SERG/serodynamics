@@ -21,21 +21,24 @@ be 5 values long.
 \item alpha = decay rate (default = -1.0)
 }
 \item "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
-must 5 values long.
+must be 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
-\item "omega_param": Variance of random effects. If specified
-must 5 values long.
+\item "omega_param": Diagonal entries of the scale matrix hyper-parameter of
+the Wishart hyper-prior on the precision matrix of the person-specific
+random effects. If specified must be 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }
-\item "wishdf_param": Wishart distribution degrees of freedom.
+\item "wishdf_param": Wishart distribution degrees of freedom. If specified,
+must be 1 value long.
 \itemize{
 \item default = 20.0
 }
 \item "prec_logy_hyp_param": array of hyper-parameters for the precision.
-(inverse variance) of the biomarkers, on log-scale
+(inverse variance) of the biomarkers, on log-scale. If specified, must be
+2 values long.
 \itemize{
 \item defaults = 4.0, 1.0
 }
