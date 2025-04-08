@@ -8,7 +8,8 @@ nepal_sees_jags_output <- run_mod(
   nburn = 100, # Number of unrecorded samples before sampling begins
   nmc = 500,
   niter = 1000, # Number of iterations
-  strat = "bldculres" # Stratification
+  strat = "bldculres", # Stratification
+  include_subs = TRUE
 )
 
 usethis::use_data(nepal_sees_jags_output, overwrite = TRUE)
