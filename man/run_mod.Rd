@@ -51,8 +51,9 @@ must 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
-\item "omega_param": Variance of random effects. If specified
-must 5 values long.
+\item "omega_param": Diagonal entries of the scale matrix hyper-parameter for
+the Wishart hyper-prior on the precision matrix of the person-specific
+random effects. If specified, must 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }

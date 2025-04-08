@@ -13,6 +13,35 @@ prepped_data <- prep_data(raw_data)
 jags_post <- run_mod(data = raw_data, nchain = 2, nadapt = 1000, nburn = 100, 
                      nmc = 100, niter = 200)
 
+priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
+nchains <- 2
+# nr of MC chains to run simultaneously
+nadapt <- 1000
+# nr of iterations for adaptation
+nburnin <- 100
+# nr of iterations to use for burn-in
+nmc <- 100
+# nr of samples in posterior chains
+niter <- 200
+# nr of iterations for posterior sample
+nthin <- round(niter / nmc)
+# thinning needed to produce nmc from niter
+file_mod <- serodynamics_example("model.jags")
+tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
+jags_post <- runjags::run.jags(
+  model = file_mod,
+  data = c(prepped_data, priors$prepped_priors),
+  inits = initsfunction,
+  method = "parallel",
+  adapt = nadapt,
+  burnin = nburnin,
+  thin = nthin,
+  sample = nmc,
+  n.chains = nchains,
+  monitor = tomonitor,
+  summarise = FALSE
+)
+
 curve_params <- jags_post$jags.post$None$mcmc |> postprocess_jags_output(
   ids = attr(prepped_data, "ids"),
   antigen_isos = attr(prepped_data, "antigens")

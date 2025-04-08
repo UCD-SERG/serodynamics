@@ -25,8 +25,9 @@ must 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
-\item "omega_param": Variance of random effects. If specified
-must 5 values long.
+\item "omega_param": Diagonal entries of the scale matrix hyper-parameter for
+the Wishart hyper-prior on the precision matrix of the person-specific
+random effects. If specified, must 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }
@@ -47,7 +48,11 @@ a \link{list} with elements:
 \itemize{
 \item "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
 \item "prec.hyp": Precision corresponding to mu_hyp_param.
-\item "omega" : ??
+\item "omega" : a three-dimensional \link{numeric} \link{array} containing the
+"scale matrix" hyper-parameters of the Wishart hyper-priors
+on the person-specific random effects, for each antigen-isotype.
+The first dimension corresponds to the antigen isotypes and has length equal to \code{max_antigens},
+and the latter two dimensions correspond to the model parameters and each have length equal to \code{n_params}
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }

@@ -15,8 +15,9 @@
 #' - "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
 #' must 5 values long.
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-#' - "omega_param": Variance of random effects. If specified
-#' must 5 values long.
+#' - "omega_param": Diagonal entries of the scale matrix hyper-parameter for 
+#' the Wishart hyper-prior on the precision matrix of the person-specific 
+#' random effects. If specified, must 5 values long.
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 #' - "wishdf_param": Wishart distribution degrees of freedom.
 #'    - default = 20.0
@@ -28,7 +29,11 @@
 #' "n_params": how many parameters??
 #' - "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
 #' - "prec.hyp": Precision corresponding to mu_hyp_param.
-#' - "omega" : ?? 
+#' - "omega" : a three-dimensional [numeric] [array] containing the 
+#' "scale matrix" hyper-parameters of the Wishart hyper-priors 
+#' on the person-specific random effects, for each antigen-isotype.
+#' The first dimension corresponds to the antigen isotypes and has length equal to `max_antigens`,
+#' and the latter two dimensions correspond to the model parameters and each have length equal to `n_params`
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 #' - "wishdf": Wishart distribution degrees of freedom (default = 20.0)
 #' - "prec.logy.hyp": array of hyper-parameters for the precision
@@ -132,7 +137,7 @@ prep_priors <- function(max_antigens,
     structure(class = c("curve_params_priors", "list"))
   # Creating two objects in a list, one will be used in run_mod and the other
   # will be attached to run_mod output as an attribute. 
-  to_return <- list("prepped_priors" = prepped_priors, "used_priors" = defaults)
+  to_return <- prepped_priors |> structure("used_priors" = defaults)
 
   return(to_return)
 }
