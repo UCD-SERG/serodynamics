@@ -88,7 +88,8 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  nmc <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  with_post <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  include_subs <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -126,14 +127,19 @@ the number of mcmc chains to be run per jags model.</p></dd>
 
 
 <dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying the column name to stratify.</p></dd>
+<dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable,
+entered in quotes.</p></dd>
 
 
 <dt id="arg-with-post">with_post<a class="anchor" aria-label="anchor" href="#arg-with-post"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying if raw jags post objects
-should be included in the output. Note: These objects can be large.
-A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable,
-entered in quotes.</p></dd>
+should be included in the output. Note: These objects can be large.</p></dd>
+
+
+<dt id="arg-include-subs">include_subs<a class="anchor" aria-label="anchor" href="#arg-include-subs"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying if posterior distributions
+should be included for all subjects. A value of <a href="https://rdrr.io/r/base/logical.html" class="external-link">FALSE</a> will only include
+the predictive distribution.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -201,7 +207,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr  8 22:41:51 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr  9 00:24:27 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -236,7 +242,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr  8 22:42:37 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr  9 00:25:12 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -262,6 +268,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
