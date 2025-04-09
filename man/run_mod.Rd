@@ -13,7 +13,8 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
-  with_post = FALSE
+  with_post = FALSE,
+  include_subs = FALSE
 )
 }
 \arguments{
@@ -32,12 +33,15 @@ the number of mcmc chains to be run per jags model.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
-\item{strat}{A \link{logical} value specifying the column name to stratify.}
+\item{strat}{A \link{character} string specifying the stratification variable,
+entered in quotes.}
 
 \item{with_post}{A \link{logical} value specifying if raw jags post objects
-should be included in the output. Note: These objects can be large.
-A \link{character} string specifying the stratification variable,
-entered in quotes.}
+should be included in the output. Note: These objects can be large.}
+
+\item{include_subs}{A \link{logical} value specifying if posterior distributions
+should be included for all subjects. A value of \link{FALSE} will only include
+the predictive distribution.}
 }
 \value{
 \itemize{
