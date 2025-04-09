@@ -1,0 +1,195 @@
+---
+title: "Serodynamics Analysis for Multiple Subjects"
+author: "Kwan Ho Lee"
+date: "`r Sys.Date()`"
+format: html
+jupyter: false
+---
+
+# Introduction
+
+This document demonstrates the full workflow using the **serodynamics** package. In this analysis, we run JAGS models for three different subjects:
+
+-   **sees_npl_128 (HlyE_IgA)**
+-   **sees_npl_131 (HlyE_IgA)**
+-   **sees_npl_133 (HlyE_IgG)**
+
+For each subject, we process the JAGS output to extract median parameter estimates and generate predicted antibody response curve plots.
+
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+devtools::document()
+library(serodynamics)
+library(dplyr)
+library(fs)
+library(DT)
+```
+
+# Run Models for Each Subject
+
+```{r,echo=FALSE, message=FALSE, warning=FALSE}
+dataset <- nepal_sees |>
+  as_case_data(id_var = "person_id",
+               biomarker_var = "antigen_iso",
+               value_var = "result",
+               time_in_days = "dayssincefeveronset")
+
+# Optionally filter the dataset for visit 5
+filtered_dataset <- dataset %>% 
+  filter(visit_num == 5)%>%
+  select(Country,id,antigen_iso,visit_num)
+
+DT::datatable(filtered_dataset, options = list(pageLength = 5, scrollX = TRUE))
+
+```
+
+## Subject: sees_npl_128 (HlyE_IgA)
+
+```{r,echo=FALSE, message=FALSE, warning=FALSE,results='hide'}
+# Run JAGS model for subject sees_npl_128
+jags_results <- prepare_and_run_jags(
+  id = "sees_npl_128",
+  antigen_iso = "HlyE_IgA"
+)
+
+# Extract results
+dat <- jags_results$dat
+dataset <- jags_results$dataset
+nepal_sees_jags_post <- jags_results$nepal_sees_jags_post
+nepal_sees_jags_post2 <- jags_results$nepal_sees_jags_post2
+
+# Process JAGS output (partial and full processing)
+param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
+
+basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
+param_medians_full <- 
+  finalize_jags_output(basic_result, 
+                       dataset, 
+                       id = "sees_npl_128", 
+                       antigen_iso = "HlyE_IgA")
+
+
+
+full_samples <- process_jags_samples(nepal_sees_jags_post2, 
+                                     dataset,
+                                     id = "sees_npl_128",
+                                     antigen_iso = "HlyE_IgA")
+
+```
+
+## Mapping Internal Subject to Original ID
+
+```{r,echo=FALSE, message=FALSE}
+# Filter the dataset for "typhi" cases
+data_typhi <- dataset %>% 
+  dplyr::filter(bldculres == "typhi")
+
+# Create a mapping: original id to internal Subject number
+unique_ids <- unique(data_typhi$id)
+subject_mapping <- data.frame(
+  id = unique_ids,
+  Subject = seq_along(unique_ids)
+)
+
+# Join the mapping to basic_result so you see the original id
+basic_result_with_id <- basic_result %>%
+  dplyr::left_join(subject_mapping, by = "Subject")
+
+# Display the result
+DT::datatable(basic_result_with_id, options = list(pageLength = 10, scrollX = TRUE))
+
+```
+
+## Display Specific MCMC Sample Parameters (1000 samples of sees_npl_128 (HlyE_IgA))
+
+```{r,echo=FALSE, message=FALSE}
+DT::datatable(full_samples, options = list(pageLength = 10, scrollX = TRUE))
+
+```
+\newpage
+
+# Plotting Predicted Antibody Response Curves
+
+Below are three versions of the predicted antibody response curves:
+
+-   [**plot**]{.underline}: A plot using median parameters from param_medians_full and partial parameters.
+
+-   [**plot2**]{.underline}: A plot using full MCMC samples (without log scale).
+
+-   [**plot3**]{.underline}: A plot using full MCMC samples with a log10 scale on the y-axis.
+
+
+\newpage
+
+## Generate Plots
+
+Below are three versions of the plot:
+
+```{r,echo=FALSE, message=FALSE, warning=FALSE,results='hide'}
+
+# Generate predicted curve plot (using full processing)
+plot <- plot_predicted_curve(
+  param_medians_wide = param_medians_full, 
+  param_medians_wide2 = param_medians_partial, 
+  dat = dat,
+  legend_obs = "Observed Data",
+  legend_mod1 = "Model Full Predictions",
+  legend_mod2 = "Model Partial Predictions"
+)
+
+# Plot using full MCMC samples (linear x-axis) with individual curves.
+plot2 <- plot_predicted_curve(
+  param_medians_wide = full_samples,
+  dat = dat,
+  legend_obs = "Observed Data",
+  legend_mod1 = "Full Model Predictions",
+  show_quantiles = TRUE,
+  log_scale = FALSE,
+  log_x = FALSE,
+  show_all_curves = TRUE
+)
+
+# Plot using full MCMC samples (log10 x- and y-axis) with individual curves.
+plot3 <- plot_predicted_curve(
+  param_medians_wide = full_samples,
+  dat = dat,
+  legend_obs = "Observed Data",
+  legend_mod1 = "Full Model Predictions",
+  show_quantiles = TRUE,
+  log_scale = TRUE,
+  log_x = TRUE,
+  show_all_curves = TRUE
+)
+
+```
+
+### Plot
+
+```{r,echo=FALSE, message=FALSE}
+plot
+```
+
+Shows the predicted curve using the median parameters from the full and partial processing.
+
+\newpage
+
+### Plot2
+
+```{r,echo=FALSE, message=FALSE}
+plot2
+```
+
+Displays the median curve along with the 95% credible interval (ribbon) derived from the full MCMC samples on a linear scale.
+
+\newpage
+
+### Plot3
+
+```{r,echo=FALSE, message=FALSE}
+plot3
+```
+
+The same as Plot2 but with a log10-transformed y-axis, which can help visualize differences when antibody levels span several orders of magnitude.
+
+## Interpretation
+
+In Plot3, the 95% credible band appears broad, particularly at later times, suggesting substantial uncertainty in long-term antibody decay—likely driven by parameters such as the decay rate (α) and the shape parameter. This broad interval indicates that, given the data, a wide range of decay trajectories is plausible. However, a narrow credible band does not necessarily imply a good fit to the data. To properly assess model fit, we could use Bayesian goodness-of-fit metrics such as posterior predictive checks (which packages like ggs may already provide) to compare the observed data with data simulated from the model's posterior.

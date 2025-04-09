@@ -62,8 +62,15 @@ param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
 basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
 param_medians_full <- 
   finalize_jags_output(basic_result, 
-                       dataset, id = "sees_npl_128", 
+                       dataset, 
+                       id = "sees_npl_128", 
                        antigen_iso = "HlyE_IgA")
+
+full_samples <- process_jags_samples(nepal_sees_jags_post2, 
+                                     dataset,
+                                     id = "sees_npl_128",
+                                     antigen_iso = "HlyE_IgA")
+
 
 # Generate predicted curve plot (using full processing)
 plot <- plot_predicted_curve(
@@ -72,13 +79,24 @@ plot <- plot_predicted_curve(
   dat = dat,
   legend_obs = "Observed Data",
   legend_mod1 = "Model Full Predictions",
-  legend_mod2 = "Model Partial Predictions"
+  legend_mod2 = "Model Partial Predictions",
+  show_quantiles = TRUE
+)
+
+plot2 <- plot_predicted_curve(
+  param_medians_wide = full_samples,
+  dat = dat,
+  legend_obs = "Observed Data",
+  legend_mod1 = "Full Model Predictions",
+  show_quantiles = TRUE,
+  log_scale = TRUE
 )
 
 ```
 
 ```{r,echo=FALSE, message=FALSE}
 plot
+plot2
 ```
 
 ```{r,echo=FALSE, message=FALSE, warning=FALSE,results='hide'}

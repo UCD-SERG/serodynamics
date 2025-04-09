@@ -2,68 +2,101 @@
 % Please edit documentation in R/plot_predicted_curve.R
 \name{plot_predicted_curve}
 \alias{plot_predicted_curve}
-\title{Generate Predicted Antibody Response Curves}
+\title{Generate Predicted Antibody Response Curves (Median + 95\% CI)}
 \usage{
 plot_predicted_curve(
   param_medians_wide,
   param_medians_wide2 = NULL,
   dat = NULL,
   legend_obs = "Observed Data",
-  legend_mod1 = "",
-  legend_mod2 = ""
+  legend_mod1 = "Model 1 Predictions",
+  legend_mod2 = "Model 2 Predictions",
+  show_quantiles = TRUE,
+  log_scale = FALSE,
+  log_x = FALSE,
+  show_all_curves = FALSE,
+  alpha_samples = 0.3
 )
 }
 \arguments{
-\item{param_medians_wide}{A tibble with median parameter estimates (first model).}
+\item{param_medians_wide}{A tibble with full posterior parameter samples (first model).}
 
-\item{param_medians_wide2}{(Optional) A tibble with median parameter estimates (second model).
-Alternatively, if this tibble contains observed data (e.g., with a column "dayssincefeveronset"),
-it will be treated as the observed data, and only one predicted curve will be plotted.}
+\item{param_medians_wide2}{(Optional) A tibble with full posterior parameter samples (second model).
+If this tibble contains observed data (with "dayssincefeveronset"), it will be treated as the
+observed data, and only one model is plotted.}
 
-\item{dat}{(Optional) A tibble with observed antibody response data.
-It must contain \code{dayssincefeveronset}, \code{result}, \code{id}, and \code{antigen_iso}.}
+\item{dat}{(Optional) A tibble with observed antibody response data. Must contain:
+\itemize{
+\item \code{dayssincefeveronset}
+\item \code{result}
+\item \code{id}
+\item \code{antigen_iso}
+}}
 
-\item{legend_obs}{A character string for the observed data legend label (default: "Observed Data").}
+\item{legend_obs}{Label for observed data in the legend.}
 
-\item{legend_mod1}{A character string for the first model's legend label (default: "").
-If empty, no legend key is shown.}
+\item{legend_mod1}{Label for the first model in the legend.}
 
-\item{legend_mod2}{A character string for the second model's legend label (default: "").
-If empty, no legend key is shown.}
+\item{legend_mod2}{Label for the second model in the legend.}
+
+\item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%, and 97.5\% quantiles.}
+
+\item{log_scale}{Logical; if TRUE, applies a log10 transformation to the y-axis.}
+
+\item{log_x}{Logical; if TRUE, applies a log10 transformation to the x-axis.}
+
+\item{show_all_curves}{Logical; if TRUE, overlays all individual sampled curves.}
+
+\item{alpha_samples}{Numeric; transparency level for individual curves (default = 0.3).}
 }
 \value{
-A ggplot object displaying predicted antibody response curves.
-If two parameter sets are provided, the first is plotted in red and the second in green.
-Observed data (if provided) are shown in blue.
+A ggplot object displaying predicted antibody response curves with a median curve
+and a 95\% credible interval band.
 }
 \description{
-Uses median parameter estimates to plot predicted antibody response curves.
-If observed data is provided, it overlays the observed values as points and
-connects them with lines.
+Plots a single median antibody response curve with a 95\% credible interval ribbon,
+using full posterior samples. Optionally overlays observed data, moves the legend to the bottom,
+provides options to apply log10 transformation on the y- and x-axes, and to show all individual
+sampled curves.
 }
 \examples{
-# Ensure JAGS is available before running
-if (!is.element(runjags::findjags(), c("", NULL))) {
+# Run JAGS model for subject sees_npl_128 (HlyE_IgA)
+jags_results <- prepare_and_run_jags(
+  id = "sees_npl_128",
+  antigen_iso = "HlyE_IgA"
+)
 
-  # Prepare dataset & Run JAGS Model
-  jags_results <- prepare_and_run_jags(
-    id = "sees_npl_128",
-    antigen_iso = "HlyE_IgA"
-  )
+# Extract results
+dat <- jags_results$dat
+dataset <- jags_results$dataset
+nepal_sees_jags_post <- jags_results$nepal_sees_jags_post
+nepal_sees_jags_post2 <- jags_results$nepal_sees_jags_post2
 
-  # Process JAGS output (step 7)
-  param_medians_wide_128 <- process_jags_output(
-    jags_post   = jags_results$nepal_sees_jags_post,
-    dataset     = jags_results$dataset,
-    run_until   = 7
-  )
+# Process JAGS output (partial and full processing)
+param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
+basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
+param_medians_full <- finalize_jags_output(basic_result, dataset, 
+                                           id = "sees_npl_128", 
+                                           antigen_iso = "HlyE_IgA")
 
-  # Generate and print predicted antibody response curve
-  plot_pred_only <- plot_predicted_curve(param_medians_wide_128)
-  print(plot_pred_only)
-}
+# Generate predicted antibody response curves using median-based parameters
+plot_pred_only <- plot_predicted_curve(param_medians_wide = param_medians_full,
+                                       param_medians_wide2 = param_medians_partial,
+                                       dat = dat)
+print(plot_pred_only)
 
-}
-\author{
-Kwan Ho Lee
+# Alternatively, generate curves using full MCMC samples with log10 transformations on both axes,
+# and overlay all individual sampled curves.
+full_samples <- process_jags_samples(nepal_sees_jags_post2, dataset,
+                                     id = "sees_npl_128",
+                                     antigen_iso = "HlyE_IgA")
+plot_full <- plot_predicted_curve(param_medians_wide = full_samples,
+                                  dat = dat,
+                                  legend_obs = "Observed Data",
+                                  legend_mod1 = "Full Model Predictions",
+                                  show_quantiles = TRUE,
+                                  log_scale = TRUE,
+                                  log_x = TRUE,
+                                  show_all_curves = TRUE)
+print(plot_full)
 }
