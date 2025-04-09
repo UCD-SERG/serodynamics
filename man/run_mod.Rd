@@ -12,7 +12,9 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  with_post = FALSE,
+  include_subs = FALSE
 )
 }
 \arguments{
@@ -33,11 +35,16 @@ the number of mcmc chains to be run per jags model.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{with_post}{A \link{logical} value specifying if raw jags post objects
+should be included in the output. Note: These objects can be large.}
+
+\item{include_subs}{A \link{logical} value specifying if posterior distributions
+should be included for all subjects. A value of \link{FALSE} will only include
+the predictive distribution.}
 }
 \value{
 \itemize{
-\item A jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
-if stratified. Returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
 \item \code{iteration} = number of sampling iterations.

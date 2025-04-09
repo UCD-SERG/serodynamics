@@ -6,7 +6,7 @@ test_that(
     library(runjags)
     library(dplyr)
 
-    data <- serodynamics::nepal_sees_jags_post |>
+    data <- serodynamics::nepal_sees_jags_output |>
       suppressWarnings()
 
     # Testing for any errors:

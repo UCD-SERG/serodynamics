@@ -31,7 +31,7 @@
 #' median, and quantiles (2.5%, 25.0%, 50.0%, 75.0%, 97.5%).
 #' @export
 #' @examples
-#' post_summ(data = serodynamics::nepal_sees_jags_post)
+#' post_summ(data = serodynamics::nepal_sees_jags_output)
 
 post_summ <- function(data,
                       iso = unique(data$curve_params$Iso_type),
@@ -42,7 +42,8 @@ post_summ <- function(data,
   summarize_jags <- summarize_jags |>
     filter(.data$Iso_type %in% iso) |>
     filter(.data$Parameter_sub %in% param) |>
-    filter(.data$Stratification %in% strat)
+    filter(.data$Stratification %in% strat)  |>
+    dplyr::filter(.data$Subject == "newperson")
 
   summarize_jags <- summarize_jags |>
     dplyr::group_by(.data$Iso_type, .data$Parameter_sub, 
