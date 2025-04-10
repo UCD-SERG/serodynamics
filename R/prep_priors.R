@@ -31,7 +31,12 @@
 #' "n_params": how many parameters??
 #' - "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
 #' - "prec.hyp": Precision corresponding to mu_hyp_param.
-#' - "omega" : ?? 
+#' - "omega" : a three-dimensional [numeric] [array] containing the 
+#' "scale matrix" hyper-parameters of the Wishart hyper-priors 
+#' on the person-specific random effects, for each antigen-isotype.
+#' The first dimension corresponds to the antigen isotypes and has length
+#' equal to `max_antigens`, and the latter two dimensions correspond to the
+#' model parameters and each have length equal to `n_params`
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 #' - "wishdf": Wishart distribution degrees of freedom (default = 20.0)
 #' - "prec.logy.hyp": array of hyper-parameters for the precision
