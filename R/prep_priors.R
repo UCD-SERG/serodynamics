@@ -141,7 +141,7 @@ prep_priors <- function(max_antigens,
     structure(class = c("curve_params_priors", "list"))
   # Creating two objects in a list, one will be used in run_mod and the other
   # will be attached to run_mod output as an attribute. 
-  to_return <- list("prepped_priors" = prepped_priors, "used_priors" = defaults)
+  to_return <- prepped_priors |> structure("used_priors" = defaults)
 
   return(to_return)
 }
