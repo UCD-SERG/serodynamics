@@ -9,7 +9,11 @@ nepal_sees_jags_output <- run_mod(
   nmc = 500,
   niter = 1000, # Number of iterations
   strat = "bldculres", # Stratification
+  post_
   include_subs = TRUE
 )
+
+# Filtering to keep only 2 subjects + newperson
+
 
 usethis::use_data(nepal_sees_jags_output, overwrite = TRUE)
