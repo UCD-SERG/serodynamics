@@ -6,7 +6,7 @@
 #' using the [nepal_sees] example data set as input
 #' and stratifying by column `"bldculres"`, 
 #' which is the diagnosis type (typhoid or
-#' paratyphoid).
+#' paratyphoid). Keeping only the newperson, sees_npl_1, sees_npl_2.
 #'
 #' @format ## `nepal_sees_jags_output`
 #' A [list] consisting of the following named elements:
