@@ -131,23 +131,32 @@ entered in quotes.</p></dd>
 
 
 <dt id="arg-priors">priors<a class="anchor" aria-label="anchor" href="#arg-priors"></a></dt>
-<dd><p>a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": hyperpriors for estimate parameters. If specified must
+<dd><p>a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors for parameter
+fixed effects.
+If specified must
 be 5 values long.</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
 <li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
 <li><p>t1 = time to peak (default = 1.0)</p></li>
 <li><p>r = shape parameter (default = -4.0)</p></li>
 <li><p>alpha = decay rate (default = -1.0)</p></li>
 </ul></li>
-<li><p>"prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
-must 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
+<li><p>"prec_hyp_param": Corresponds to diagonal entries representing the
+precision <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameter for person-specific fixed effects.
+Creates an <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each with 2 x 5 values.
+If specified must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
 </ul></li>
-<li><p>"omega_param": Variance of random effects. If specified
-must 5 values long.</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
+<li><p>"omega_param": Corresponds to diagonal entries representing the
+precision <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of Wishart hyper-priors for person-specific random effects.
+Creates an <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each with 2 x 5 values.
+If specified must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
 </ul></li>
-<li><p>"wishdf_param": Wishart distribution degrees of freedom.</p><ul><li><p>default = 20.0</p></li>
+<li><p>"wishdf_param": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> specifying Wishart distribution degrees of
+freedom. Creates a <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> measuring 1 x 2. If specified, must be 1 value
+long.</p><ul><li><p>default = 20.0</p></li>
 </ul></li>
-<li><p>"prec_logy_hyp_param": array of hyper-parameters for the precision.
-(inverse variance) of the biomarkers, on log-scale</p><ul><li><p>defaults = 4.0, 1.0</p></li>
+<li><p>"prec_logy_hyp_param": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision.
+(inverse variance) of the biomarkers, on log-scale. If specified, must be
+2 values long.</p><ul><li><p>defaults = 4.0, 1.0</p></li>
 </ul></li>
 </ul></dd>
 
@@ -211,72 +220,50 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Apr  7 23:43:42 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Apr 14 22:48:24 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 3020</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 44517</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RUNTIME ERROR:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Compilation error on line 60.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Unknown variable n_params</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Either supply values for this variable with the data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> or define it  on the left hand side of a relation.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't set RNG name. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't set initial values. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't initialize. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adaptation skipped: model is not in adaptive mode.</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 2000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . No model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump CODA output. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump samplers. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Apr  7 23:44:26 2025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 2555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 39309</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: the model did not require adaptation</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in runjags.readin(directory = startinfo$directory, silent.jags = silent.jags,     target.adapt = adapt, target.burnin = burnin, target.iters = sample,     n.chains = length(inits), monitor = monitor, method = method,     method.options = method.options, suspended = FALSE, read.monitor = read.monitor,     sub.samples = FALSE, sub.chains = if (runjags.getOption("partial.import") &amp;&amp;         !combine) TRUE else FALSE, force.read = length(noread.monitor) &gt;         0):</span> All the simulations appear to have crashed - check the model output in failed.jags() for clues</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
