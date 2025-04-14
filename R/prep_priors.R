@@ -5,7 +5,7 @@
 #' 
 #' @param max_antigens [integer]: how many antigen-isotypes will be modeled
 #' @param priors a [list] with optional elements:
-#' - "mu_hyp_param": A [matrix] of hyperpriors for estimate parameters
+#' - "mu_hyp_param": A [matrix] of hyperpriors for parameter
 #' fixed effects.
 #' If specified must
 #'    be 5 values long.
@@ -14,26 +14,26 @@
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
-#' - "prec_hyp_param": Diagonal entries of the scale [matrix] hyper-parameter of
-#' the precision [matrix] of person-specific fixed effects. Creates an [array]
-#' with 5 [matrix], each with 2 x 5 values.
+#' - "prec_hyp_param": Corresponds to diagonal entries representing the
+#' precision [matrix] of hyper-parameter for person-specific fixed effects.
+#' Creates an [array] with 5 [matrix], each with 2 x 5 values.
 #' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-#' - "omega_param": Diagonal entries of the scale [matrix] hyper-parameter of
-#' the Wishart hyper-prior on the precision matrix of the person-specific
-#' random effects. Creates an [array] with 5 matrices, each with 2 x 5 values.
-#' If specified must be 5 values long.
+#' - "omega_param": Corresponds to diagonal entries representing the
+#' precision [matrix] of Wishart hyper-priors for person-specific random effects.
+#' Creates an [array] with 5 [matrix], each with 2 x 5 values.
+#' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 #' - "wishdf_param": A [vector] specifying Wishart distribution degrees of
 #' freedom. Creates a [vector] measuring 1 x 2. If specified, must be 1 value
 #' long.
 #'    - default = 20.0
-#' - "prec_logy_hyp_param": [matrix] of hyper-parameters for the precision.
+#' - "prec_logy_hyp_param": A [matrix] of hyper-parameters for the precision.
 #'    (inverse variance) of the biomarkers, on log-scale. If specified, must be
 #'    2 values long.
 #'    - defaults = 4.0, 1.0
 #'
-#' @returns a [list] with elements:
+#' @returns A [list] with elements:
 #' "n_params": how many parameters??
 #' - "mu.hyp": A [matrix] of hyperpriors for y0, y1, t1, r, and alpha. 
 #' - "prec.hyp": A three-dimensional [numeric] [array] containing the 

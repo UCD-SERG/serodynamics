@@ -11,7 +11,7 @@ prep_priors(max_antigens, priors = NA)
 
 \item{priors}{a \link{list} with optional elements:
 \itemize{
-\item "mu_hyp_param": A \link{matrix} of hyperpriors for estimate parameters
+\item "mu_hyp_param": A \link{matrix} of hyperpriors for parameter
 fixed effects.
 If specified must
 be 5 values long.
@@ -22,17 +22,17 @@ be 5 values long.
 \item r = shape parameter (default = -4.0)
 \item alpha = decay rate (default = -1.0)
 }
-\item "prec_hyp_param": Diagonal entries of the scale \link{matrix} hyper-parameter of
-the precision \link{matrix} of person-specific fixed effects. Creates an \link{array}
-with 5 \link{matrix}, each with 2 x 5 values.
+\item "prec_hyp_param": Corresponds to diagonal entries representing the
+precision \link{matrix} of hyper-parameter for person-specific fixed effects.
+Creates an \link{array} with 5 \link{matrix}, each with 2 x 5 values.
 If specified must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
-\item "omega_param": Diagonal entries of the scale \link{matrix} hyper-parameter of
-the Wishart hyper-prior on the precision matrix of the person-specific
-random effects. Creates an \link{array} with 5 matrices, each with 2 x 5 values.
-If specified must be 5 values long.
+\item "omega_param": Corresponds to diagonal entries representing the
+precision \link{matrix} of Wishart hyper-priors for person-specific random effects.
+Creates an \link{array} with 5 \link{matrix}, each with 2 x 5 values.
+If specified must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }
@@ -42,7 +42,7 @@ long.
 \itemize{
 \item default = 20.0
 }
-\item "prec_logy_hyp_param": \link{matrix} of hyper-parameters for the precision.
+\item "prec_logy_hyp_param": A \link{matrix} of hyper-parameters for the precision.
 (inverse variance) of the biomarkers, on log-scale. If specified, must be
 2 values long.
 \itemize{
@@ -51,7 +51,7 @@ long.
 }}
 }
 \value{
-a \link{list} with elements:
+A \link{list} with elements:
 "n_params": how many parameters??
 \itemize{
 \item "mu.hyp": A \link{matrix} of hyperpriors for y0, y1, t1, r, and alpha.
