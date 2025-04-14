@@ -11,7 +11,9 @@ prep_priors(max_antigens, priors = NA)
 
 \item{priors}{a \link{list} with optional elements:
 \itemize{
-\item "mu_hyp_param": hyperpriors for estimate parameters. If specified must
+\item "mu_hyp_param": A \link{matrix} of hyperpriors for estimate parameters
+fixed effects.
+If specified must
 be 5 values long.
 \itemize{
 \item y0 = baseline antibody concentration (default = 1.0)
@@ -20,23 +22,27 @@ be 5 values long.
 \item r = shape parameter (default = -4.0)
 \item alpha = decay rate (default = -1.0)
 }
-\item "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
-must be 5 values long.
+\item "prec_hyp_param": Diagonal entries of the scale \link{matrix} hyper-parameter of
+the precision \link{matrix} of person-specific fixed effects. Creates an \link{array}
+with 5 \link{matrix}, each with 2 x 5 values.
+If specified must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
-\item "omega_param": Diagonal entries of the scale matrix hyper-parameter of
+\item "omega_param": Diagonal entries of the scale \link{matrix} hyper-parameter of
 the Wishart hyper-prior on the precision matrix of the person-specific
-random effects. If specified must be 5 values long.
+random effects. Creates an \link{array} with 5 matrices, each with 2 x 5 values.
+If specified must be 5 values long.
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }
-\item "wishdf_param": Wishart distribution degrees of freedom. If specified,
-must be 1 value long.
+\item "wishdf_param": A \link{vector} specifying Wishart distribution degrees of
+freedom. Creates a \link{vector} measuring 1 x 2. If specified, must be 1 value
+long.
 \itemize{
 \item default = 20.0
 }
-\item "prec_logy_hyp_param": array of hyper-parameters for the precision.
+\item "prec_logy_hyp_param": \link{matrix} of hyper-parameters for the precision.
 (inverse variance) of the biomarkers, on log-scale. If specified, must be
 2 values long.
 \itemize{
@@ -48,18 +54,18 @@ must be 1 value long.
 a \link{list} with elements:
 "n_params": how many parameters??
 \itemize{
-\item "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
-\item "prec.hyp": Precision corresponding to mu_hyp_param.
-\item "omega" : ??
-\itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-}
-\item "wishdf": Wishart distribution degrees of freedom (default = 20.0)
-\item "prec.logy.hyp": array of hyper-parameters for the precision
-\itemize{
-\item defaults = 4.0, 1.0
-(inverse variance) of the biomarkers, on log-scale
-}
+\item "mu.hyp": A \link{matrix} of hyperpriors for y0, y1, t1, r, and alpha.
+\item "prec.hyp": A three-dimensional \link{numeric} \link{array} containing the
+"scale matrix" hyper-parameters for precision corresponding to mu_hyp_param.
+\item "omega" : A three-dimensional \link{numeric} \link{array} containing the
+"scale matrix" hyper-parameters of the Wishart hyper-priors
+on the person-specific random effects, for each antigen-isotype.
+The first dimension corresponds to the antigen isotypes and has length
+equal to \code{max_antigens}, and the latter two dimensions correspond to the
+model parameters and each have length equal to \code{n_params}.
+\item "wishdf": A \link{vector} specifying Wishart distribution degrees of freedom.
+\item "prec.logy.hyp": A \link{matrix} of hyper-parameters for the precision
+(inverse variance) of the biomarkers, on log-scale.
 }
 }
 \description{

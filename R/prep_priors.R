@@ -5,43 +5,48 @@
 #' 
 #' @param max_antigens [integer]: how many antigen-isotypes will be modeled
 #' @param priors a [list] with optional elements:
-#' - "mu_hyp_param": hyperpriors for estimate parameters. If specified must
+#' - "mu_hyp_param": A [matrix] of hyperpriors for estimate parameters
+#' fixed effects.
+#' If specified must
 #'    be 5 values long.
 #'    - y0 = baseline antibody concentration (default = 1.0)
 #'    - y1 = peak antibody concentration (default = 7.0)
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
-#' - "prec_hyp_param": Precision corresponding to mu_hyp_param. If specified
-#' must be 5 values long.
+#' - "prec_hyp_param": Diagonal entries of the scale [matrix] hyper-parameter of
+#' the precision [matrix] of person-specific fixed effects. Creates an [array]
+#' with 5 [matrix], each with 2 x 5 values.
+#' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-#' - "omega_param": Diagonal entries of the scale matrix hyper-parameter of
+#' - "omega_param": Diagonal entries of the scale [matrix] hyper-parameter of
 #' the Wishart hyper-prior on the precision matrix of the person-specific
-#' random effects. If specified must be 5 values long.
+#' random effects. Creates an [array] with 5 matrices, each with 2 x 5 values.
+#' If specified must be 5 values long.
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-#' - "wishdf_param": Wishart distribution degrees of freedom. If specified,
-#' must be 1 value long.
+#' - "wishdf_param": A [vector] specifying Wishart distribution degrees of
+#' freedom. Creates a [vector] measuring 1 x 2. If specified, must be 1 value
+#' long.
 #'    - default = 20.0
-#' - "prec_logy_hyp_param": array of hyper-parameters for the precision.
+#' - "prec_logy_hyp_param": [matrix] of hyper-parameters for the precision.
 #'    (inverse variance) of the biomarkers, on log-scale. If specified, must be
 #'    2 values long.
 #'    - defaults = 4.0, 1.0
 #'
 #' @returns a [list] with elements:
 #' "n_params": how many parameters??
-#' - "mu.hyp": Hyperpriors for y0, y1, t1, r, and alpha.
-#' - "prec.hyp": Precision corresponding to mu_hyp_param.
-#' - "omega" : a three-dimensional [numeric] [array] containing the 
+#' - "mu.hyp": A [matrix] of hyperpriors for y0, y1, t1, r, and alpha. 
+#' - "prec.hyp": A three-dimensional [numeric] [array] containing the 
+#' "scale matrix" hyper-parameters for precision corresponding to mu_hyp_param.
+#' - "omega" : A three-dimensional [numeric] [array] containing the 
 #' "scale matrix" hyper-parameters of the Wishart hyper-priors 
 #' on the person-specific random effects, for each antigen-isotype.
 #' The first dimension corresponds to the antigen isotypes and has length
 #' equal to `max_antigens`, and the latter two dimensions correspond to the
-#' model parameters and each have length equal to `n_params`
-#'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-#' - "wishdf": Wishart distribution degrees of freedom (default = 20.0)
-#' - "prec.logy.hyp": array of hyper-parameters for the precision
-#'    - defaults = 4.0, 1.0
-#' (inverse variance) of the biomarkers, on log-scale
+#' model parameters and each have length equal to `n_params`.
+#' - "wishdf": A [vector] specifying Wishart distribution degrees of freedom.
+#' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
+#' (inverse variance) of the biomarkers, on log-scale.
 #' @export
 #' @examples
 #' prep_priors(max_antigens = 2)
