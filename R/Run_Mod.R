@@ -105,7 +105,7 @@ run_mod <- function(data,
 
     jags_post <- runjags::run.jags(
       model = file_mod,
-      data = c(longdata, priorspec[["prepped_priors"]]),
+      data = c(longdata, priorspec),
       inits = initsfunction,
       method = "parallel",
       adapt = nadapt,
