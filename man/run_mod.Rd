@@ -56,7 +56,8 @@ If specified must be 5 values long:
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }
 \item "omega_param": Corresponds to diagonal entries representing the
-precision \link{matrix} of Wishart hyper-priors for person-specific random effects.
+precision \link{matrix} of Wishart hyper-priors for person-specific random
+effects.
 Creates an \link{array} with 5 \link{matrix}, each with 2 x 5 values.
 If specified must be 5 values long:
 \itemize{
