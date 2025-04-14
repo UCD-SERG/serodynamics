@@ -10,7 +10,8 @@
 A \link{list} consisting of the following named elements:
 \describe{
 \item{curve_params}{A \link{data.frame} titled \code{curve_params} that contains the
-posterior distribution}
+posterior distribution for the predictive distribution (newperson) and
+two modeled subject (sees_npl_1, sees_npl_2)}
 \item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
 }
 }
@@ -26,6 +27,6 @@ A \code{\link[=run_mod]{run_mod()}} output
 using the \link{nepal_sees} example data set as input
 and stratifying by column \code{"bldculres"},
 which is the diagnosis type (typhoid or
-paratyphoid).
+paratyphoid). Keeping only the newperson, sees_npl_1, sees_npl_2.
 }
 \keyword{datasets}
