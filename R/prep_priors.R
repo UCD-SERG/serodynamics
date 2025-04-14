@@ -20,7 +20,8 @@
 #' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 #' - "omega_param": Corresponds to diagonal entries representing the
-#' precision [matrix] of Wishart hyper-priors for person-specific random effects.
+#' precision [matrix] of Wishart hyper-priors for person-specific random
+#' effects.
 #' Creates an [array] with 5 [matrix], each with 2 x 5 values.
 #' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
