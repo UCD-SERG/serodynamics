@@ -4,6 +4,7 @@ author: "Kwan Ho Lee"
 institute: "UC Davis"
 date: today
 format: 
+  html: default
   beamer:
     theme: Madrid
     slide-level: 2
