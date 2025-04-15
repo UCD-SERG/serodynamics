@@ -55,11 +55,11 @@ run_mod <- function(data,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
-                    strat = NA,
+                    strat = FALSE,
                     with_post = FALSE,
                     include_subs = FALSE) {
   ## Conditionally creating a stratification list to loop through
-  if (is.na(strat) == FALSE) {
+  if (!strat) {
     strat_list <- unique(data[[strat]])
   } else {
     strat_list <- "None"
@@ -83,7 +83,7 @@ run_mod <- function(data,
   # For loop for running stratifications
   for (i in strat_list) {
     # Creating if else statement for running the loop
-    if (is.na(strat) == FALSE) {
+    if (!strat) {
       dl_sub <- data |>
         dplyr::filter(.data[[strat]] == i)
     } else {
