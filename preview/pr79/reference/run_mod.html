@@ -87,7 +87,7 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  nburn <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  nmc <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  strat <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  include_subs <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -132,14 +132,14 @@ entered in quotes.</p></dd>
 
 
 <dt id="arg-with-post">with_post<a class="anchor" aria-label="anchor" href="#arg-with-post"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying if raw jags post objects
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether raw <code>jags.post</code> objects
 should be included in the output. Note: These objects can be large.</p></dd>
 
 
 <dt id="arg-include-subs">include_subs<a class="anchor" aria-label="anchor" href="#arg-include-subs"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying if posterior distributions
-should be included for all subjects. A value of <a href="https://rdrr.io/r/base/logical.html" class="external-link">FALSE</a> will only include
-the predictive distribution.</p></dd>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether posterior
+distributions should be included for all subjects. A value of <a href="https://rdrr.io/r/base/logical.html" class="external-link">FALSE</a> will
+only include the predictive distribution.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -204,75 +204,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> The following objects are masked from ‘package:base’:</span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span>     intersect, setdiff, setequal, union</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 15 02:03:50 2025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 3020</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 44517</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 15 02:04:40 2025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 2555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 535</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 39309</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in !strat:</span> invalid argument type</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
