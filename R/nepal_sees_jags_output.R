@@ -15,7 +15,7 @@
 #'   posterior predictive distribution of the person-specific parameters for a
 #'   "new person" with no observed data (`Subject = "newperson"`) and posterior
 #'   distributions of the person-specific parameters for two arbitrarily-chosen
-#'   subjects (`"sees_npl_1"` and`"sees_npl_2"`)}}
+#'   subjects (`"sees_npl_1"` and`"sees_npl_2"`)}
 #'  \item{attributes}{A [list] of `attributes` that summarize the jags inputs}
 #' }
 #' @source reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
