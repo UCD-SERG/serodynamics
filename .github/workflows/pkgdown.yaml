@@ -103,6 +103,8 @@ jobs:
           subdir <- "${{ env.subdir }}"
           pkg <- pkgdown::as_pkgdown(".")
           
+          quarto install tinytex
+          
           # build articles verbose
           pkgdown::build_articles(quiet = FALSE)
           
