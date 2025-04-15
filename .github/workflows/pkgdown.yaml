@@ -102,7 +102,10 @@ jobs:
         run: |
           subdir <- "${{ env.subdir }}"
           pkg <- pkgdown::as_pkgdown(".")
-
+          
+          # build articles verbose
+          pkgdown::build_articles(quiet = FALSE)
+          
           # Deploy pkgdown site to branch
           pkgdown::deploy_to_branch(subdir = if (nzchar(subdir)) subdir, clean = nzchar(subdir))
 
