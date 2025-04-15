@@ -12,7 +12,7 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = FALSE,
+  strat = NA,
   with_post = FALSE,
   include_subs = FALSE
 )
