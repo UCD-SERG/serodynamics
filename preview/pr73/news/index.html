@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9025</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9027</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,7 +76,10 @@
 </div>
 <div class="section level3">
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>
-<ul><li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
+<ul><li>Added <code>lintr::undesirable_function_linter()</code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
+<li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
 </li>
 <li>Clarified <code><a href="../reference/prep_data.html">prep_data()</a></code> internals using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
 <li>Removed “.R” suffix from jags model files to prevent them from getting linted as R files (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
