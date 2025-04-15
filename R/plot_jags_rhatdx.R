@@ -71,10 +71,7 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
       rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
         ggplot2::theme_bw() +
         ggplot2::labs(title = "Rhat value",
-                      subtitle =  ifelse(j == "None", 
-                                         paste0("ag/iso = ", j),
-                                         paste0("ag/iso = ", 
-                                                j, "; strata =  ", i)),
+                      subtitle = plot_title_fun(i, j),
                       x = "Rhat value") +
         ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
                                              "y0"))
