@@ -6,6 +6,11 @@
 \usage{
 plot_title_fun(i, j)
 }
+\arguments{
+\item{i}{input strata}
+
+\item{j}{input ag/iso combination}
+}
 \description{
 Plotting title for diagnostic functions
 }

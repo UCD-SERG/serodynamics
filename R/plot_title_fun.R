@@ -1,4 +1,7 @@
 #' Plotting title for diagnostic functions
+#' 
+#' @param i input strata 
+#' @param j input ag/iso combination
 
 plot_title_fun <- function(i, j) {
   subtitle <-  ifelse(j == "None", 
