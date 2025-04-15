@@ -71,6 +71,11 @@ jobs:
           extra-packages: |
             local::.
             r-lib/pkgdown
+            
+      - name: "Install tinytex"
+        run: |
+          quarto install tinytex
+          
 
       # If events is a PR, set subdir to 'preview/pr<pr_number>'
       - name: "[PR] Set documentation subdirectory"
@@ -102,8 +107,6 @@ jobs:
         run: |
           subdir <- "${{ env.subdir }}"
           pkg <- pkgdown::as_pkgdown(".")
-          
-          quarto install tinytex
           
           # build articles verbose
           pkgdown::build_articles(quiet = FALSE)
