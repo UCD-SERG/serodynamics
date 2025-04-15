@@ -51,6 +51,7 @@ snake_case_ACRO = rex::rex(
 linters <- lintr::linters_with_defaults(
   return_linter = NULL,
   trailing_whitespace_linter = NULL,
+  lintr::redundant_equals_linter(),
   lintr::pipe_consistency_linter(pipe = "|>"),
   lintr::object_name_linter(
     regexes = c(snake_case_ACRO = snake_case_ACRO)
