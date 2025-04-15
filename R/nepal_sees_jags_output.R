@@ -12,7 +12,7 @@
 #' A [list] consisting of the following named elements:
 #' \describe{
 #'  \item{curve_params}{A [data.frame] titled `curve_params` that contains the
-#'   osterior predictive distribution of the person-specific parameters for a
+#'   posterior predictive distribution of the person-specific parameters for a
 #'   "new person" with no observed data (`Subject = "newperson"`) and posterior
 #'   distributions of the person-specific parameters for two arbitrarily-chosen
 #'   subjects (`"sees_npl_1"` and`"sees_npl_2"`)}}
