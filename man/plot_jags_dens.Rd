@@ -54,7 +54,7 @@ The antibody dynamic curve includes the following parameters:
 
 data <- serodynamics::nepal_sees_jags_output
 
-# Specifying isotype, parameter, and stratification for traceplot.
+# Specifying isotype and stratification for traceplot.
 plot_jags_dens(
                data = data,
                iso = "HlyE_IgA",

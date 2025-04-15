@@ -36,12 +36,12 @@ the number of mcmc chains to be run per jags model.}
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
 
-\item{with_post}{A \link{logical} value specifying if raw jags post objects
+\item{with_post}{A \link{logical} value specifying whether raw \code{jags.post} objects
 should be included in the output. Note: These objects can be large.}
 
-\item{include_subs}{A \link{logical} value specifying if posterior distributions
-should be included for all subjects. A value of \link{FALSE} will only include
-the predictive distribution.}
+\item{include_subs}{A \link{logical} value specifying whether posterior
+distributions should be included for all subjects. A value of \link{FALSE} will
+only include the predictive distribution.}
 }
 \value{
 \itemize{
