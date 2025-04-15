@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added Beamer presentation files (`Beamer_Antibody_Kinetics.qmd`, `.pdf`) (#88)
 * Diagnostic function to produce R-hat dotplots with stratification (#67)
 * Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)
