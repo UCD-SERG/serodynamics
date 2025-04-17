@@ -4,55 +4,60 @@
 #' as an option in run_mod.
 #' 
 #' @param max_antigens [integer]: how many antigen-isotypes will be modeled
-#' @param priors a [list] with optional elements:
-#' - "mu_hyp_param": A [matrix] of hyperpriors for parameter
-#' fixed effects.
-#' If specified must
-#'    be 5 values long.
+#' @param mu_hyp_param A [numeric] [vector] of 5 values representing the mean of
+#' the hyperprior distribution of the population mean of the random
+#' person-specific seroresponse curve parameters.
+#' If specified must be 5 values long representing the following parameters:
 #'    - y0 = baseline antibody concentration (default = 1.0)
 #'    - y1 = peak antibody concentration (default = 7.0)
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
-#' - "prec_hyp_param": Corresponds to diagonal entries representing the
-#' precision [matrix] of hyper-parameter for person-specific fixed effects.
-#' Creates an [array] with 5 [matrix], each with 2 x 5 values.
+#' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
+#' diagonal entries representing the precision matrix of the hyperprior
+#' distribution of the person-specific seroresponse curve parameters.
 #' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-#' - "omega_param": Corresponds to diagonal entries representing the
-#' precision [matrix] of Wishart hyper-priors for person-specific random
-#' effects.
-#' Creates an [array] with 5 [matrix], each with 2 x 5 values.
+#' @param omega_param A [numeric] [vector] of 5 values corresponding to diagonal
+#' entries representing the precision matrix of Wishart hyper-priors for
+#' person-specific random effects.
 #' If specified must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-#' - "wishdf_param": A [vector] specifying Wishart distribution degrees of
-#' freedom. Creates a [vector] measuring 1 x 2. If specified, must be 1 value
-#' long.
+#' @param wishdf_param A [numeric] [vector] of 1 value specifying Wishart
+#' distribution degrees of freedom.
+#' If specified, must be 1 value long.
 #'    - default = 20.0
-#' - "prec_logy_hyp_param": A [matrix] of hyper-parameters for the precision.
-#'    (inverse variance) of the biomarkers, on log-scale. If specified, must be
-#'    2 values long.
+#' @param prec_logy_hyp_param A [numeric] [vector] of 2 values corresponding to
+#' the hyper-parameters for the precision (inverse variance) of the biomarkers,
+#' on log-scale. If specified, must be 2 values long.
 #'    - defaults = 4.0, 1.0
 #'
 #' @returns A [list] with elements:
-#' "n_params": how many parameters??
-#' - "mu.hyp": A [matrix] of hyperpriors for y0, y1, t1, r, and alpha. 
-#' - "prec.hyp": A three-dimensional [numeric] [array] containing the 
-#' "scale matrix" hyper-parameters for precision corresponding to mu_hyp_param.
-#' - "omega" : A three-dimensional [numeric] [array] containing the 
-#' "scale matrix" hyper-parameters of the Wishart hyper-priors 
-#' on the person-specific random effects, for each antigen-isotype.
-#' The first dimension corresponds to the antigen isotypes and has length
-#' equal to `max_antigens`, and the latter two dimensions correspond to the
-#' model parameters and each have length equal to `n_params`.
-#' - "wishdf": A [vector] specifying Wishart distribution degrees of freedom.
+#' - "n_params": Corresponds to the 5 parameters being estimated.
+#' - "mu.hyp": A [matrix] of hyperpriors with dimensions [max_antigens] x 5,
+#' representing the mean of the hyperprior distribution: y0, y1, t1, r, and
+#' alpha).
+#' - "prec.hyp": A three-dimensional [numeric] [array] with 5 [matrix], each
+#' with dimensions [max_antigens] x 5, representing precision matrix of the
+#' hyperprior distribution
+#' - "omega" : A three-dimensional [numeric] [array] with 5 [matrix],each
+#' with dimensions [max_antigens] x 5, representign the precision matrix of
+#' Wishart hyper-priors
+#' - "wishdf": A [vector] of 2 values specifying Wishart distribution degrees
+#' of freedom.
 #' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
-#' (inverse variance) of the biomarkers, on log-scale.
+#' (inverse variance) of the biomarkers, on log-scale, measuring
+#' [max_antigens] x 2.
 #' @export
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
-                        priors = NA) {
+                        mu_hyp_param = NA,
+                        prec_hyp_param = NA,
+                        omega_param = NA,
+                        wishdf_param = NA,
+                        prec_logy_hyp_param = NA){
+  
   # Setting defaults for list
   defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
@@ -61,61 +66,59 @@ prep_priors <- function(max_antigens,
                    prec_logy_hyp_param = c(4.0, 1.0))
 
   # Checking to see if priors are specified and using them if so.
-  if (methods::hasArg(priors)) { # were priors specified?
+  if (methods::hasArg(mu_hyp_param)) { # were priors specified?
     # mu_hyp_param
-    if ((sum(names(priors) %in% "mu_hyp_param")) > 0) {
       # Testing to see if 5 elements, will create error if not
       if (length(priors[["mu_hyp_param"]]) == 5) {
         # Reassigning default to specified prior
-        defaults[["mu_hyp_param"]] <- priors[["mu_hyp_param"]]
-      } else if (length(priors[["mu_hyp_param"]]) != 5) {
+        defaults[["mu_hyp_param"]] <- mu_hyp_param
+      } else if (length(mu_hyp_param) != 5) {
         cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
       }
     }
     # prec_hyp_param
-    if ((sum(names(priors) %in% "prec_hyp_param")) > 0) {
+  if (methods::hasArg(prec_hyp_param)) { # were priors specified?
       # Testing to see if 5 elements, will create error if not
-      if (length(priors[["prec_hyp_param"]]) == 5) {
+      if (length(prec_hyp_param) == 5) {
         # Reassigning default to specified prior
-        defaults[["prec_hyp_param"]] <- priors[["prec_hyp_param"]]
-      } else if (length(priors[["mu_hyp_param"]]) != 5) {
+        defaults[["prec_hyp_param"]] <- prec_hyp_param
+      } else if (length(mu_hyp_param) != 5) {
         cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
       }
     }
     # omega_hyp_param
-    if ((sum(names(priors) %in% "omega_param")) > 0) {
+  if (methods::hasArg(omega_hyp_param)) { # were priors specified?
       # Testing to see if 5 elements, will create error if not
-      if (length(priors[["omega_param"]]) == 5) {
+      if (length(omega_param) == 5) {
         # Reassigning default to specified prior
-        defaults[["omega_param"]] <- priors[["omega_param"]]
-      } else if (length(priors[["omega_param"]]) != 5) {
+        defaults[["omega_param"]] <- omega_param
+      } else if (length(omega_param) != 5) {
         cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
       }
     }
     # wishdf_param
-    if ((sum(names(priors) %in% "wishdf_param")) > 0) {
+  if (methods::hasArg(wishdf_param)) { # were priors specified?
       # Testing to see if 5 elements, will create error if not
-      if (length(priors[["wishdf_param"]]) == 1) {
+      if (length(wishdf_param) == 1) {
         # Reassigning default to specified prior
-        defaults[["wishdf_param"]] <- priors[["wishdf_param"]]
-      } else if (length(priors[["wishdf_param"]]) != 1) {
+        defaults[["wishdf_param"]] <- wishdf_param
+      } else if (length(wishdf_param) != 1) {
         cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
       }
     }
     # prec_logy_hyp_param
-    if ((sum(names(priors) %in% "prec_logy_hyp_param")) > 0) {
+  if (methods::hasArg(prec_logy_hyp_param)) { # were priors specified?
       # Testing to see if 5 elements, will create error if not
-      if (length(priors[["prec_logy_hyp_param"]]) == 2) {
+      if (length(prec_logy_hyp_param) == 2) {
         # Reassigning default to specified prior
-        defaults[["prec_logy_hyp_param"]] <- priors[["prec_logy_hyp_param"]]
-      } else if (length(priors[["wishdf_param"]]) != 2) {
+        defaults[["prec_logy_hyp_param"]] <- prec_logy_hyp_param
+      } else if (length(wishdf_param) != 2) {
         cli::cli_abort("Need to specify 2 priors for
                        {.arg prec_logy_hyp_param}")
       }
     }
-  }
-  
-  
+
+
   # Model parameters
   n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
