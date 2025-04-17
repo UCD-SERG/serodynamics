@@ -52,7 +52,14 @@ as an option in run_mod.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_priors</span><span class="op">(</span><span class="va">max_antigens</span>, priors <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_priors</span><span class="op">(</span></span>
+<span>  <span class="va">max_antigens</span>,</span>
+<span>  mu_hyp_param <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  prec_hyp_param <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  omega_param <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  wishdf_param <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  prec_logy_hyp_param <span class="op">=</span> <span class="cn">NA</span></span>
+<span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -63,53 +70,65 @@ as an option in run_mod.</p>
 <dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a>: how many antigen-isotypes will be modeled</p></dd>
 
 
-<dt id="arg-priors">priors<a class="anchor" aria-label="anchor" href="#arg-priors"></a></dt>
-<dd><p>a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with optional elements:</p><ul><li><p>"mu_hyp_param": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors for parameter
-fixed effects.
-If specified must
-be 5 values long.</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
+<dt id="arg-mu-hyp-param">mu_hyp_param<a class="anchor" aria-label="anchor" href="#arg-mu-hyp-param"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the mean of
+the hyperprior distribution of the population mean of the random
+person-specific seroresponse curve parameters.
+If specified must be 5 values long representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
 <li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
 <li><p>t1 = time to peak (default = 1.0)</p></li>
 <li><p>r = shape parameter (default = -4.0)</p></li>
 <li><p>alpha = decay rate (default = -1.0)</p></li>
-</ul></li>
-<li><p>"prec_hyp_param": Corresponds to diagonal entries representing the
-precision <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameter for person-specific fixed effects.
-Creates an <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each with 2 x 5 values.
+</ul></dd>
+
+
+<dt id="arg-prec-hyp-param">prec_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-hyp-param"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
+diagonal entries representing the precision matrix of the hyperprior
+distribution of the person-specific seroresponse curve parameters.
 If specified must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
-</ul></li>
-<li><p>"omega_param": Corresponds to diagonal entries representing the
-precision <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of Wishart hyper-priors for person-specific random
-effects.
-Creates an <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each with 2 x 5 values.
+</ul></dd>
+
+
+<dt id="arg-omega-param">omega_param<a class="anchor" aria-label="anchor" href="#arg-omega-param"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to diagonal
+entries representing the precision matrix of Wishart hyper-priors for
+person-specific random effects.
 If specified must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
-</ul></li>
-<li><p>"wishdf_param": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> specifying Wishart distribution degrees of
-freedom. Creates a <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> measuring 1 x 2. If specified, must be 1 value
-long.</p><ul><li><p>default = 20.0</p></li>
-</ul></li>
-<li><p>"prec_logy_hyp_param": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision.
-(inverse variance) of the biomarkers, on log-scale. If specified, must be
-2 values long.</p><ul><li><p>defaults = 4.0, 1.0</p></li>
-</ul></li>
+</ul></dd>
+
+
+<dt id="arg-wishdf-param">wishdf_param<a class="anchor" aria-label="anchor" href="#arg-wishdf-param"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying Wishart
+distribution degrees of freedom.
+If specified, must be 1 value long.</p><ul><li><p>default = 20.0</p></li>
+</ul></dd>
+
+
+<dt id="arg-prec-logy-hyp-param">prec_logy_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-logy-hyp-param"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values corresponding to
+the hyper-parameters for the precision (inverse variance) of the biomarkers,
+on log-scale. If specified, must be 2 values long.</p><ul><li><p>defaults = 4.0, 1.0</p></li>
 </ul></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with elements:
-"n_params": how many parameters??</p><ul><li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors for y0, y1, t1, r, and alpha.</p></li>
-<li><p>"prec.hyp": A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> containing the
-"scale matrix" hyper-parameters for precision corresponding to mu_hyp_param.</p></li>
-<li><p>"omega" : A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> containing the
-"scale matrix" hyper-parameters of the Wishart hyper-priors
-on the person-specific random effects, for each antigen-isotype.
-The first dimension corresponds to the antigen isotypes and has length
-equal to <code>max_antigens</code>, and the latter two dimensions correspond to the
-model parameters and each have length equal to <code>n_params</code>.</p></li>
-<li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> specifying Wishart distribution degrees of freedom.</p></li>
+    <p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with elements:</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated.</p></li>
+<li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors with dimensions max_antigens x 5,
+representing the mean of the hyperprior distribution: y0, y1, t1, r, and
+alpha).</p></li>
+<li><p>"prec.hyp": A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each
+with dimensions max_antigens x 5, representing precision matrix of the
+hyperprior distribution</p></li>
+<li><p>"omega" : A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>,each
+with dimensions max_antigens x 5, representign the precision matrix of
+Wishart hyper-priors</p></li>
+<li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values specifying Wishart distribution degrees
+of freedom.</p></li>
 <li><p>"prec.logy.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision
-(inverse variance) of the biomarkers, on log-scale.</p></li>
+(inverse variance) of the biomarkers, on log-scale, measuring
+max_antigens x 2.</p></li>
 </ul></div>
 
     <div class="section level2">
