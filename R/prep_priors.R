@@ -56,7 +56,7 @@ prep_priors <- function(max_antigens,
                         prec_hyp_param = NA,
                         omega_param = NA,
                         wishdf_param = NA,
-                        prec_logy_hyp_param = NA){
+                        prec_logy_hyp_param = NA) {
   
   # Setting defaults for list
   defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
@@ -68,55 +68,54 @@ prep_priors <- function(max_antigens,
   # Checking to see if priors are specified and using them if so.
   if (methods::hasArg(mu_hyp_param)) { # were priors specified?
     # mu_hyp_param
-      # Testing to see if 5 elements, will create error if not
-      if (length(priors[["mu_hyp_param"]]) == 5) {
-        # Reassigning default to specified prior
-        defaults[["mu_hyp_param"]] <- mu_hyp_param
-      } else if (length(mu_hyp_param) != 5) {
-        cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
-      }
+    # Testing to see if 5 elements, will create error if not
+    if (length(priors[["mu_hyp_param"]]) == 5) {
+      # Reassigning default to specified prior
+      defaults[["mu_hyp_param"]] <- mu_hyp_param
+    } else if (length(mu_hyp_param) != 5) {
+      cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
     }
-    # prec_hyp_param
+  }
+  # prec_hyp_param
   if (methods::hasArg(prec_hyp_param)) { # were priors specified?
-      # Testing to see if 5 elements, will create error if not
-      if (length(prec_hyp_param) == 5) {
-        # Reassigning default to specified prior
-        defaults[["prec_hyp_param"]] <- prec_hyp_param
-      } else if (length(mu_hyp_param) != 5) {
-        cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
-      }
+    # Testing to see if 5 elements, will create error if not
+    if (length(prec_hyp_param) == 5) {
+      # Reassigning default to specified prior
+      defaults[["prec_hyp_param"]] <- prec_hyp_param
+    } else if (length(mu_hyp_param) != 5) {
+      cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
     }
-    # omega_hyp_param
-  if (methods::hasArg(omega_hyp_param)) { # were priors specified?
-      # Testing to see if 5 elements, will create error if not
-      if (length(omega_param) == 5) {
-        # Reassigning default to specified prior
-        defaults[["omega_param"]] <- omega_param
-      } else if (length(omega_param) != 5) {
-        cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
-      }
+  }
+  # omega_hyp_param
+  if (methods::hasArg(omega_param)) { # were priors specified?
+    # Testing to see if 5 elements, will create error if not
+    if (length(omega_param) == 5) {
+      # Reassigning default to specified prior
+      defaults[["omega_param"]] <- omega_param
+    } else if (length(omega_param) != 5) {
+      cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
     }
-    # wishdf_param
+  }
+  # wishdf_param
   if (methods::hasArg(wishdf_param)) { # were priors specified?
-      # Testing to see if 5 elements, will create error if not
-      if (length(wishdf_param) == 1) {
-        # Reassigning default to specified prior
-        defaults[["wishdf_param"]] <- wishdf_param
-      } else if (length(wishdf_param) != 1) {
-        cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
-      }
+    # Testing to see if 5 elements, will create error if not
+    if (length(wishdf_param) == 1) {
+      # Reassigning default to specified prior
+      defaults[["wishdf_param"]] <- wishdf_param
+    } else if (length(wishdf_param) != 1) {
+      cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
     }
-    # prec_logy_hyp_param
+  }
+  # prec_logy_hyp_param
   if (methods::hasArg(prec_logy_hyp_param)) { # were priors specified?
-      # Testing to see if 5 elements, will create error if not
-      if (length(prec_logy_hyp_param) == 2) {
-        # Reassigning default to specified prior
-        defaults[["prec_logy_hyp_param"]] <- prec_logy_hyp_param
-      } else if (length(wishdf_param) != 2) {
-        cli::cli_abort("Need to specify 2 priors for
-                       {.arg prec_logy_hyp_param}")
-      }
+    # Testing to see if 5 elements, will create error if not
+    if (length(prec_logy_hyp_param) == 2) {
+      # Reassigning default to specified prior
+      defaults[["prec_logy_hyp_param"]] <- prec_logy_hyp_param
+    } else if (length(wishdf_param) != 2) {
+      cli::cli_abort("Need to specify 2 priors for {.arg prec_logy_hyp_param}")
     }
+  }
 
 
   # Model parameters
