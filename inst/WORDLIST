@@ -1,7 +1,6 @@
 CMD
 CodeFactor
 Codecov
-Hyperpriors
 JAGs
 Lifecycle
 Postprocess
@@ -16,6 +15,7 @@ dotplots
 geoms
 ggproto
 hyp
+hyperprior
 hyperpriors
 iso
 isotype
@@ -23,9 +23,9 @@ isotypes
 mcmc
 newperson
 nmc
-param
 params
 prec
+representign
 rhat
 sd
 seroconversion
