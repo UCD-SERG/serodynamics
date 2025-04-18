@@ -3,8 +3,8 @@
 #' Takes a [list] input to allow for modifiable priors. Priors can be specified
 #' as an option in run_mod.
 #' 
-#' @param max_antigens An [integer] specifying how many antigen-isotypes will be
-#' modeled
+#' @param max_antigens An [numeric] [vector] specifying how many
+#' antigen-isotypes will be modeled
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the mean of
 #' the hyperprior distribution of the population mean of the random
 #' person-specific seroresponse curve parameters.
