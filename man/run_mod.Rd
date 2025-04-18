@@ -40,7 +40,7 @@ the number of mcmc chains to be run per jags model.}
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
 
-\item{max_antigens}{An \link{numeric} \link{vector} specifying how many
+\item{max_antigens}{A \link{numeric} \link{vector} specifying how many
 antigen-isotypes will be modeled}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the mean of
