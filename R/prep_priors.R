@@ -69,7 +69,7 @@ prep_priors <- function(max_antigens,
   if (methods::hasArg(mu_hyp_param)) { # were priors specified?
     # mu_hyp_param
     # Testing to see if 5 elements, will create error if not
-    if (length(priors[["mu_hyp_param"]]) == 5) {
+    if (length(mu_hyp_param) == 5) {
       # Reassigning default to specified prior
       defaults[["mu_hyp_param"]] <- mu_hyp_param
     } else if (length(mu_hyp_param) != 5) {
