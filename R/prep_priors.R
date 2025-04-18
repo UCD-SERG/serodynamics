@@ -66,7 +66,7 @@ prep_priors <- function(max_antigens,
                    prec_logy_hyp_param = c(4.0, 1.0))
 
   # Checking to see if priors are specified and using them if so.
-  if (methods::hasArg(mu_hyp_param)) { # were priors specified?
+  if (!anyNA(mu_hyp_param)) { # were priors specified?
     # mu_hyp_param
     # Testing to see if 5 elements, will create error if not
     if (length(mu_hyp_param) == 5) {
@@ -77,7 +77,7 @@ prep_priors <- function(max_antigens,
     }
   }
   # prec_hyp_param
-  if (methods::hasArg(prec_hyp_param)) { # were priors specified?
+  if (!anyNA(prec_hyp_param)) { # were priors specified?
     # Testing to see if 5 elements, will create error if not
     if (length(prec_hyp_param) == 5) {
       # Reassigning default to specified prior
@@ -87,7 +87,7 @@ prep_priors <- function(max_antigens,
     }
   }
   # omega_hyp_param
-  if (methods::hasArg(omega_param)) { # were priors specified?
+  if (!anyNA(omega_param)) { # were priors specified?
     # Testing to see if 5 elements, will create error if not
     if (length(omega_param) == 5) {
       # Reassigning default to specified prior
@@ -97,7 +97,7 @@ prep_priors <- function(max_antigens,
     }
   }
   # wishdf_param
-  if (methods::hasArg(wishdf_param)) { # were priors specified?
+  if (!anyNA(wishdf_param)) { # were priors specified?
     # Testing to see if 5 elements, will create error if not
     if (length(wishdf_param) == 1) {
       # Reassigning default to specified prior
@@ -107,7 +107,7 @@ prep_priors <- function(max_antigens,
     }
   }
   # prec_logy_hyp_param
-  if (methods::hasArg(prec_logy_hyp_param)) { # were priors specified?
+  if (!anyNA(prec_logy_hyp_param)) { # were priors specified?
     # Testing to see if 5 elements, will create error if not
     if (length(prec_logy_hyp_param) == 2) {
       # Reassigning default to specified prior

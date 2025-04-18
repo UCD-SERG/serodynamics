@@ -13,3 +13,4 @@ test_that("priors are modifiable", {
               prec_logy_hyp_param = c(4.0, 1.0)) |>
     expect_snapshot_value(style = "deparse")
 })
+
