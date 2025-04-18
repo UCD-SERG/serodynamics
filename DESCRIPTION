@@ -22,7 +22,6 @@ Imports:
     dplyr,
     ggmcmc (>= 1.5.1.1),
     ggplot2,
-    methods,
     purrr,
     rlang,
     runjags,
