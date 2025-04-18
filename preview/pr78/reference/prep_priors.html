@@ -116,15 +116,15 @@ on log-scale. If specified, must be 2 values long.</p><ul><li><p>defaults = 4.0,
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with elements:</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated.</p></li>
-<li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors with dimensions max_antigens x 5,
-representing the mean of the hyperprior distribution: y0, y1, t1, r, and
-alpha).</p></li>
+<li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors with dimensions
+max_antigens x 5, representing the mean of the hyperprior
+distribution: y0, y1, t1, r, and alpha).</p></li>
 <li><p>"prec.hyp": A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>, each
-with dimensions max_antigens x 5, representing precision matrix of the
-hyperprior distribution</p></li>
+with dimensions max_antigens x 5, representing precision
+matrix of the hyperprior distribution</p></li>
 <li><p>"omega" : A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>,each
-with dimensions max_antigens x 5, representign the precision matrix of
-Wishart hyper-priors</p></li>
+with dimensions max_antigens x 5, representign the precision
+matrix of Wishart hyper-priors</p></li>
 <li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values specifying Wishart distribution degrees
 of freedom.</p></li>
 <li><p>"prec.logy.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision
