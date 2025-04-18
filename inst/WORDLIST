@@ -15,6 +15,8 @@ dotplots
 geoms
 ggproto
 hyp
+hyperprior
+hyperpriors
 iso
 isotype
 isotypes
@@ -23,6 +25,7 @@ newperson
 nmc
 params
 prec
+representign
 rhat
 sd
 seroconversion
@@ -30,6 +33,5 @@ serocourse
 seroresponse
 strat
 stratifications
-summ
 unstratified
 wishdf
