@@ -88,6 +88,7 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  nmc <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  <span class="va">max_antigens</span>,</span>
 <span>  mu_hyp_param <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  prec_hyp_param <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  omega_param <span class="op">=</span> <span class="cn">NA</span>,</span>
@@ -132,6 +133,10 @@ the number of mcmc chains to be run per jags model.</p></dd>
 <dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable,
 entered in quotes.</p></dd>
+
+
+<dt id="arg-max-antigens">max_antigens<a class="anchor" aria-label="anchor" href="#arg-max-antigens"></a></dt>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a>: how many antigen-isotypes will be modeled</p></dd>
 
 
 <dt id="arg-mu-hyp-param">mu_hyp_param<a class="anchor" aria-label="anchor" href="#arg-mu-hyp-param"></a></dt>
@@ -235,7 +240,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Apr 18 21:41:44 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Apr 18 22:01:42 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -270,7 +275,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Apr 18 21:42:31 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Apr 18 22:02:30 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
