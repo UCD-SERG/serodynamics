@@ -63,15 +63,15 @@ on log-scale. If specified, must be 2 values long.
 A \link{list} with elements:
 \itemize{
 \item "n_params": Corresponds to the 5 parameters being estimated.
-\item "mu.hyp": A \link{matrix} of hyperpriors with dimensions \link{max_antigens} x 5,
-representing the mean of the hyperprior distribution: y0, y1, t1, r, and
-alpha).
+\item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
+\link{max_antigens} x 5, representing the mean of the hyperprior
+distribution: y0, y1, t1, r, and alpha).
 \item "prec.hyp": A three-dimensional \link{numeric} \link{array} with 5 \link{matrix}, each
-with dimensions \link{max_antigens} x 5, representing precision matrix of the
-hyperprior distribution
+with dimensions \link{max_antigens} x 5, representing precision
+matrix of the hyperprior distribution
 \item "omega" : A three-dimensional \link{numeric} \link{array} with 5 \link{matrix},each
-with dimensions \link{max_antigens} x 5, representign the precision matrix of
-Wishart hyper-priors
+with dimensions \link{max_antigens} x 5, representign the precision
+matrix of Wishart hyper-priors
 \item "wishdf": A \link{vector} of 2 values specifying Wishart distribution degrees
 of freedom.
 \item "prec.logy.hyp": A \link{matrix} of hyper-parameters for the precision

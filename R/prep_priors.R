@@ -35,20 +35,20 @@
 #'
 #' @returns A [list] with elements:
 #' - "n_params": Corresponds to the 5 parameters being estimated.
-#' - "mu.hyp": A [matrix] of hyperpriors with dimensions [max_antigens] x 5,
-#' representing the mean of the hyperprior distribution: y0, y1, t1, r, and
-#' alpha).
+#' - "mu.hyp": A [matrix] of hyperpriors with dimensions
+#' [serodynamics::max_antigens] x 5, representing the mean of the hyperprior
+#' distribution: y0, y1, t1, r, and alpha).
 #' - "prec.hyp": A three-dimensional [numeric] [array] with 5 [matrix], each
-#' with dimensions [max_antigens] x 5, representing precision matrix of the
-#' hyperprior distribution
+#' with dimensions [serodynamics::max_antigens] x 5, representing precision
+#' matrix of the hyperprior distribution
 #' - "omega" : A three-dimensional [numeric] [array] with 5 [matrix],each
-#' with dimensions [max_antigens] x 5, representign the precision matrix of
-#' Wishart hyper-priors
+#' with dimensions [serodynamics::max_antigens] x 5, representign the precision
+#' matrix of Wishart hyper-priors
 #' - "wishdf": A [vector] of 2 values specifying Wishart distribution degrees
 #' of freedom.
 #' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
 #' (inverse variance) of the biomarkers, on log-scale, measuring
-#' [max_antigens] x 2.
+#' [serodynamics::max_antigens] x 2.
 #' @export
 #' @examples
 #' prep_priors(max_antigens = 2)
