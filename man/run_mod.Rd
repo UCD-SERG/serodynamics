@@ -13,6 +13,7 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
+  max_antigens,
   mu_hyp_param = NA,
   prec_hyp_param = NA,
   omega_param = NA,
@@ -38,6 +39,8 @@ the number of mcmc chains to be run per jags model.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{max_antigens}{\link{integer}: how many antigen-isotypes will be modeled}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the mean of
 the hyperprior distribution of the population mean of the random
