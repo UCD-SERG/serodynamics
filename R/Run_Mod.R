@@ -60,10 +60,10 @@ run_mod <- function(data,
                     wishdf_param = NA,
                     prec_logy_hyp_param = NA) {
   ## Conditionally creating a stratification list to loop through
-  if (is.na(strat) == FALSE) {
-    strat_list <- unique(data[[strat]])
-  } else {
+  if (is.na(strat)) {
     strat_list <- "None"
+  } else {
+    strat_list <- unique(data[[strat]])
   }
 
   ## Creating a shell to output results
@@ -84,18 +84,22 @@ run_mod <- function(data,
   # For loop for running stratifications
   for (i in strat_list) {
     # Creating if else statement for running the loop
-    if (is.na(strat) == FALSE) {
+    if (is.na(strat)) {
+      dl_sub <- data
+    } else {
       dl_sub <- data |>
         dplyr::filter(.data[[strat]] == i)
-    } else {
-      dl_sub <- data
     }
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = 
                                longdata$n_antigen_isos,
-                             priors = priors)
+                             mu_hyp_param = mu_hyp_param,
+                             prec_hyp_param = prec_hyp_param,
+                             omega_param = omega_param,
+                             wishdf_param = wishdf_param,
+                             prec_logy_hyp_param = prec_logy_hyp_param)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
