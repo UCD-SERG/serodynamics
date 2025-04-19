@@ -20,6 +20,7 @@ on:
       - '_quarto.yml'
       - '.github/workflows/pkgdown.yaml'
       - 'Readme.md'
+      - 'Contributing.md'
   push:
     tags:
       - 'v[0-9]+.[0-9]+.[0-9]+'         # build on version tags
