@@ -13,7 +13,7 @@ A \link{list} consisting of the following named elements:
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (\code{Subject = "newperson"}) and posterior
 distributions of the person-specific parameters for two arbitrarily-chosen
-subjects (\code{"sees_npl_1"} and\code{"sees_npl_2"})}
+subjects (\code{"sees_npl_1"} and \code{"sees_npl_2"})}
 \item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
 }
 }
@@ -29,6 +29,6 @@ A \code{\link[=run_mod]{run_mod()}} output
 using the \link{nepal_sees} example data set as input
 and stratifying by column \code{"bldculres"},
 which is the diagnosis type (typhoid or
-paratyphoid). Keeping only IDs "newperson", "sees_npl_1", "sees_npl_2".
+paratyphoid). Keeping only IDs \code{"newperson"}, \code{"sees_npl_1"}, \code{"sees_npl_2"}.
 }
 \keyword{datasets}
