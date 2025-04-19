@@ -1,6 +1,6 @@
-# Contributing to serocalculator
+# Contributing to this project
 
-This document outlines how to propose a change to `{serocalculator}`.
+This document outlines how to propose a change to this project.
 For a detailed discussion on contributing to this and other packages, 
 please see the [tidyverse](https://www.tidyverse.org/)'s
 [development contributing guide](https://rstd.io/tidy-contrib) 
@@ -26,7 +26,7 @@ See the tidyverse guide on [how to create a great issue](https://code-review.tid
 
 ### Pull request process
 
-* [ ] Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("UCD-SERG/serocalculator", fork = TRUE)`.
+* [ ] Fork the package and clone onto your computer. If you haven't done this before, we recommend using `usethis::create_from_github("UCD-SERG/serodynamics", fork = TRUE)`.
 
 * [ ] Install all development dependencies with `devtools::install_dev_deps()`, and then make sure the package passes R CMD check by running `devtools::check()`. 
     If R CMD check doesn't pass cleanly, it's a good idea to ask for help before continuing. 
@@ -64,6 +64,6 @@ and [design principles](https://design.tidyverse.org/).
 
 ## Code of Conduct
 
-Please note that the serocalculator project is released with a
+Please note that the serodynamics project is released with a
 [Contributor Code of Conduct](CODE_OF_CONDUCT.md). By contributing to this
 project you agree to abide by its terms.
