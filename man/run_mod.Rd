@@ -12,7 +12,9 @@ run_mod(
   nburn = 0,
   nmc = 100,
   niter = 100,
-  strat = NA
+  strat = NA,
+  with_post = FALSE,
+  include_subs = FALSE
 )
 }
 \arguments{
@@ -33,8 +35,19 @@ the number of mcmc chains to be run per jags model.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post}
+component
+should be included as an element of the \link{list} object returned by \code{run_mod()}
+(see \code{Value} section below for details).
+Note: These objects can be large.}
+
+\item{include_subs}{A \link{logical} value specifying whether posterior
+distributions should be included for all subjects. A value of \link{FALSE} will
+only include the predictive distribution.}
 }
 \value{
+A list containing the following elements:
 \itemize{
 \item A jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
 if stratified. Returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}
