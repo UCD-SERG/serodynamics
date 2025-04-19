@@ -36,7 +36,8 @@ the number of mcmc chains to be run per jags model.}
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
 
-\item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post} component
+\item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post}
+component
 should be included as an element of the \link{list} object returned by \code{run_mod()}
 (see \code{Value} section below for details).
 Note: These objects can be large.}
