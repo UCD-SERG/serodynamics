@@ -21,8 +21,10 @@
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
-#' @param with_post A [logical] value specifying whether raw `jags.post` objects
-#' should be included in the output. Note: These objects can be large.
+#' @param with_post A [logical] value specifying whether a raw `jags.post` component
+#' should be included as an element of the [list] object returned by `run_mod()` 
+#' (see `Value` section below for details).
+#' Note: These objects can be large.
 #' @param include_subs A [logical] value specifying whether posterior
 #' distributions should be included for all subjects. A value of [FALSE] will
 #' only include the predictive distribution.
