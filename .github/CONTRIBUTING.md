@@ -14,7 +14,8 @@ You can find the `.R` file that generates the `.Rd` by reading the comment in th
 If you want to make a bigger change, it's a good idea to first file an issue and make sure someone from the team agrees that it’s needed. 
 If you’ve found a bug, please file an issue that illustrates the bug with a minimal 
 [reprex](https://www.tidyverse.org/help/#reprex) (this will also help you write a unit test, if needed).
-See our guide on [how to create a great issue](https://code-review.tidyverse.org/issues/) for more advice.
+See the tidyverse guide on [how to create a great issue](https://code-review.tidyverse.org/issues/) for more advice.
+
 
 ### Pull request process
 
@@ -27,6 +28,9 @@ See our guide on [how to create a great issue](https://code-review.tidyverse.org
 *   Make your changes, commit to git, and then create a PR by running `usethis::pr_push()`, and following the prompts in your browser.
     The title of your PR should briefly describe the change.
     The body of your PR should contain `Fixes #issue-number`.
+Please ensure your edits conform to the tidyverse 
+[style guide](https://style.tidyverse.org/) and
+[design principles](https://design.tidyverse.org/),
 
 *  For user-facing changes, add a bullet to the top of `NEWS.md` (i.e. just below the first header). Follow the style described in <https://style.tidyverse.org/news.html>.
 
