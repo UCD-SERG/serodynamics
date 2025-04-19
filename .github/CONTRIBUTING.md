@@ -1,12 +1,19 @@
 # Contributing to serocalculator
 
-This outlines how to propose a change to serocalculator.
-For a detailed discussion on contributing to this and other tidyverse packages, please see the [development contributing guide](https://rstd.io/tidy-contrib) and our [code review principles](https://code-review.tidyverse.org/).
+This document outlines how to propose a change to `{serocalculator}`.
+For a detailed discussion on contributing to this and other packages, 
+please see the [tidyverse](https://www.tidyverse.org/)'s
+[development contributing guide](https://rstd.io/tidy-contrib) 
+and [code review principles](https://code-review.tidyverse.org/).
 
 ## Fixing typos
 
-You can fix typos, spelling mistakes, or grammatical errors in the documentation directly using the GitHub web interface, as long as the changes are made in the _source_ file. 
-This generally means you'll need to edit [roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) in an `.R`, not a `.Rd` file. 
+You can fix typos, spelling mistakes, or grammatical errors in the documentation 
+directly using the GitHub web interface, 
+as long as the changes are made in the _source_ file. 
+This generally means you'll need to edit 
+[roxygen2 comments](https://roxygen2.r-lib.org/articles/roxygen2.html) 
+in an `.R`, not a `.Rd` file. 
 You can find the `.R` file that generates the `.Rd` by reading the comment in the first line.
 
 ## Bigger changes
