@@ -14,3 +14,4 @@ plot_title_fun(i, j)
 \description{
 Plotting title for diagnostic functions
 }
+\keyword{internal}

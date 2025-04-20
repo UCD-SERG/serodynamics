@@ -2,6 +2,7 @@
 #' 
 #' @param i input strata 
 #' @param j input antigen/iso combination
+#' @keywords internal
 
 plot_title_fun <- function(i, j) {
   subtitle <-  ifelse(j == "None", 
