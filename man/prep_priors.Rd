@@ -14,7 +14,7 @@ prep_priors(
 )
 }
 \arguments{
-\item{max_antigens}{A \link{numeric} \link{vector} specifying how many
+\item{max_antigens}{An \link{integer} specifying how many
 antigen-isotypes will be modeled}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the mean of
