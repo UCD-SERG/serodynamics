@@ -45,7 +45,7 @@ antigen-isotypes will be modeled}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the mean of
 the hyperprior distribution of the population mean of the random
 person-specific seroresponse curve parameters.
-If specified must be 5 values long representing the following parameters:
+If specified, must be 5 values long, representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration (default = 1.0)
 \item y1 = peak antibody concentration (default = 7.0)
@@ -55,20 +55,22 @@ If specified must be 5 values long representing the following parameters:
 }}
     \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
 diagonal entries representing the precision matrix of the hyperprior
-distribution of the person-specific seroresponse curve parameters.
-If specified must be 5 values long:
+distributions of the population means of the seroresponse curve parameters
+(reused for each antigen-isotype).
+If specified, must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 }}
-    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to diagonal
-entries representing the precision matrix of Wishart hyper-priors for
-person-specific random effects.
-If specified must be 5 values long:
+    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
+diagonal entries of the (diagonal) scale matrix of the Wishart hyperprior
+distributions of the person-specific random effects' precision matrices.
+If specified, must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 }}
-    \item{\code{wishdf_param}}{A \link{numeric} \link{vector} of 1 value specifying Wishart
-distribution degrees of freedom.
+    \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
+of freedom for the Wishart hyperprior distributions of the random effects'
+precision matrices.
 If specified, must be 1 value long.
 \itemize{
 \item default = 20.0
