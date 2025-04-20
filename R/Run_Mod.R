@@ -93,11 +93,7 @@ run_mod <- function(data,
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = 
                                longdata$n_antigen_isos,
-                             mu_hyp_param = mu_hyp_param,
-                             prec_hyp_param = prec_hyp_param,
-                             omega_param = omega_param,
-                             wishdf_param = wishdf_param,
-                             prec_logy_hyp_param = prec_logy_hyp_param)
+                             ...)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
