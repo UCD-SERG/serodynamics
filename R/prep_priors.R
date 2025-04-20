@@ -57,69 +57,32 @@
 #' @examples
 #' prep_priors(max_antigens = 2)
 prep_priors <- function(max_antigens,
-                        mu_hyp_param = NA,
-                        prec_hyp_param = NA,
-                        omega_param = NA,
-                        wishdf_param = NA,
-                        prec_logy_hyp_param = NA) {
-  
-  # Setting defaults for list
-  defaults <- list(mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-                   prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-                   omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-                   wishdf_param = 20,
-                   prec_logy_hyp_param = c(4.0, 1.0))
+                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                        prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                        omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                        wishdf_param = 20,
+                        prec_logy_hyp_param = c(4.0, 1.0)) {
 
-  # Checking to see if priors are specified and using them if so.
-  if (!anyNA(mu_hyp_param)) { # were priors specified?
-    # mu_hyp_param
-    # Testing to see if 5 elements, will create error if not
-    if (length(mu_hyp_param) == 5) {
-      # Reassigning default to specified prior
-      defaults[["mu_hyp_param"]] <- mu_hyp_param
-    } else if (length(mu_hyp_param) != 5) {
-      cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
-    }
+  # Ensuring the length of specified priors is correct.
+  # mu_hyp_param
+  if (length(mu_hyp_param) != 5) {
+    cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
   }
   # prec_hyp_param
-  if (!anyNA(prec_hyp_param)) { # were priors specified?
-    # Testing to see if 5 elements, will create error if not
-    if (length(prec_hyp_param) == 5) {
-      # Reassigning default to specified prior
-      defaults[["prec_hyp_param"]] <- prec_hyp_param
-    } else if (length(mu_hyp_param) != 5) {
-      cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
-    }
+  if (length(mu_hyp_param) != 5) {
+    cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
   }
   # omega_hyp_param
-  if (!anyNA(omega_param)) { # were priors specified?
-    # Testing to see if 5 elements, will create error if not
-    if (length(omega_param) == 5) {
-      # Reassigning default to specified prior
-      defaults[["omega_param"]] <- omega_param
-    } else if (length(omega_param) != 5) {
-      cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
-    }
+  if (length(omega_param) != 5) {
+    cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
   }
   # wishdf_param
-  if (!anyNA(wishdf_param)) { # were priors specified?
-    # Testing to see if 5 elements, will create error if not
-    if (length(wishdf_param) == 1) {
-      # Reassigning default to specified prior
-      defaults[["wishdf_param"]] <- wishdf_param
-    } else if (length(wishdf_param) != 1) {
-      cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
-    }
+  if (length(wishdf_param) != 1) {
+    cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
   }
   # prec_logy_hyp_param
-  if (!anyNA(prec_logy_hyp_param)) { # were priors specified?
-    # Testing to see if 5 elements, will create error if not
-    if (length(prec_logy_hyp_param) == 2) {
-      # Reassigning default to specified prior
-      defaults[["prec_logy_hyp_param"]] <- prec_logy_hyp_param
-    } else if (length(wishdf_param) != 2) {
-      cli::cli_abort("Need to specify 2 priors for {.arg prec_logy_hyp_param}")
-    }
+  if (length(prec_logy_hyp_param) != 2) {
+    cli::cli_abort("Need to specify 2 priors for {.arg prec_logy_hyp_param}")
   }
 
 
@@ -134,11 +97,11 @@ prep_priors <- function(max_antigens,
   # Fill parameter arrays
   # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
   for (k.test in 1:max_antigens) {
-    mu_hyp[k.test, ] <- defaults[["mu_hyp_param"]]
-    prec_hyp[k.test, , ] <- diag(defaults[["prec_hyp_param"]])
-    omega[k.test, , ] <- diag(defaults[["omega_param"]])
-    wishdf[k.test] <- defaults[["wishdf_param"]]
-    prec_logy_hyp[k.test, ] <- defaults[["prec_logy_hyp_param"]] 
+    mu_hyp[k.test, ] <- mu_hyp_param
+    prec_hyp[k.test, , ] <- diag(prec_hyp_param)
+    omega[k.test, , ] <- diag(omega_param)
+    wishdf[k.test] <- wishdf_param
+    prec_logy_hyp[k.test, ] <- prec_logy_hyp_param
   }
 
   # Return results as a list
@@ -151,10 +114,19 @@ prep_priors <- function(max_antigens,
     "wishdf" = wishdf,
     "prec.logy.hyp" = prec_logy_hyp
   ) |>
-    structure(class = c("curve_params_priors", "list"))
+    structure(
+      class = c("curve_params_priors", "list"),
+      "used_priors" = as.list(environment())
+    )
   # Creating two objects in a list, one will be used in run_mod and the other
   # will be attached to run_mod output as an attribute. 
-  to_return <- prepped_priors |> structure("used_priors" = defaults)
+  prepped_priors <- prepped_priors |> 
+    structure("used_priors" = list(
+                                   mu_hyp_param = mu_hyp_param,
+                                   prec_hyp_param = prec_hyp_param,
+                                   omega_param = omega_param,
+                                   wishdf_param = wishdf_param,
+                                   prec_logy_hyp_param = prec_logy_hyp_param))
 
-  return(to_return)
+  return(prepped_priors)
 }
