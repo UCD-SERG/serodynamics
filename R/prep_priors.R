@@ -35,7 +35,9 @@
 #' on log-scale. If specified, must be 2 values long.
 #'    - defaults = 4.0, 1.0
 #'
-#' @returns A [list] with elements:
+#' @returns A "curve_params_priors" object 
+#' (a subclass of [list] with the inputs to `prep_priors()` attached 
+#' as an [attributes] entry named `"used_priors"`).
 #' - "n_params": Corresponds to the 5 parameters being estimated.
 #' - "mu.hyp": A [matrix] of hyperpriors with dimensions
 #' number of antigens x 5 (number of parameters), representing the mean of the

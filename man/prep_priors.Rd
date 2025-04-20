@@ -6,11 +6,11 @@
 \usage{
 prep_priors(
   max_antigens,
-  mu_hyp_param = NA,
-  prec_hyp_param = NA,
-  omega_param = NA,
-  wishdf_param = NA,
-  prec_logy_hyp_param = NA
+  mu_hyp_param = c(1, 7, 1, -4, -1),
+  prec_hyp_param = c(1, 1e-05, 1, 0.001, 1),
+  omega_param = c(1, 50, 1, 10, 1),
+  wishdf_param = 20,
+  prec_logy_hyp_param = c(4, 1)
 )
 }
 \arguments{
@@ -62,7 +62,9 @@ on log-scale. If specified, must be 2 values long.
 }}
 }
 \value{
-A \link{list} with elements:
+A "curve_params_priors" object
+(a subclass of \link{list} with the inputs to \code{prep_priors()} attached
+as an \link{attributes} entry named \code{"used_priors"}).
 \itemize{
 \item "n_params": Corresponds to the 5 parameters being estimated.
 \item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
