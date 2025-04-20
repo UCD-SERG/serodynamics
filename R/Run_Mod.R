@@ -44,6 +44,7 @@
 #'  - `nIterations`: Number of iteration specified.
 #'  - `nBurnin`: Number of burn ins.
 #'  - `nThin`: Thinning number (niter/nmc)
+#' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -55,11 +56,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     max_antigens,
-                    mu_hyp_param = NA,
-                    prec_hyp_param = NA,
-                    omega_param = NA,
-                    wishdf_param = NA,
-                    prec_logy_hyp_param = NA) {
+                    ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
