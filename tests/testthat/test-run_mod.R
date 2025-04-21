@@ -2,7 +2,6 @@ test_that(
   desc = "results are consistent with simulated data",
   code = {
     skip_on_os(c("windows", "linux"))
-    # withr::local_package("rlist")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
