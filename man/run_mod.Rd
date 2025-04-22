@@ -49,7 +49,8 @@ only include the predictive distribution.}
 \value{
 A \link{list} containing the following elements:
 \itemize{
-\item A jags.post \link{list} returned as class \link[runjags:runjags-class]{runjags::runjags}.
+\item \code{"jags.post"}: a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags}
+objects (one per stratum).
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
 \itemize{
