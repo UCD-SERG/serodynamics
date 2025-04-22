@@ -29,7 +29,7 @@
 #' @param include_subs A [logical] value specifying whether posterior
 #' distributions should be included for all subjects. A value of [FALSE] will
 #' only include the predictive distribution.
-#' @returns A list containing the following elements:
+#' @returns A [list] containing the following elements:
 #' - A jags.post [list()] object or multiple jags.post [list()]
 #' if stratified. Returned as a [list()] of class [runjags::runjags-class]
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
