@@ -30,7 +30,7 @@
 #' distributions should be included for all subjects. A value of [FALSE] will
 #' only include the predictive distribution.
 #' @returns A [list] containing the following elements:
-#' - A jags.post [list] returned as class [runjags::runjags-class].
+#' - `"jags.post"`: a [list] containing one or more [runjags::runjags-class] objects (one per stratum)
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
 #'   - `iteration` = number of sampling iterations.
