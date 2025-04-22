@@ -22,14 +22,14 @@ run_mod(
 
 \item{file_mod}{The name of the file that contains model structure.}
 
-\item{nchain}{An \link{integer} between 1 and 4 that specifies
+\item{nchain}{An \link{integer} between 1 and 4 that specifies.
 the number of mcmc chains to be run per jags model.}
 
 \item{nadapt}{An \link{integer} specifying the number of adaptations per chain.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying number of samples in posterior chains}
+\item{nmc}{An \link{integer} specifying number of samples in posterior chains.}
 
 \item{niter}{An \link{integer} specifying number of iterations.}
 
@@ -54,16 +54,16 @@ objects (one per stratum).
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
 \itemize{
-\item \code{iteration} = number of sampling iterations.
-\item \code{chain} = number of mcmc chains run; between 1 and 4.
-\item \code{indexid} = "newperson", indicating posterior distribution.
+\item \code{iteration} = number of sampling iterations
+\item \code{chain} = number of mcmc chains run; between 1 and 4
+\item \code{indexid} = "newperson", indicating posterior distribution
 \item \code{antigen_iso} = antibody/antigen type combination being evaluated
 \item \code{alpha} = posterior estimate of decay rate
 \item \code{r} = posterior estimate of shape parameter
 \item \code{t1} = posterior estimate of time to peak
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable that jags was stratified by
+\item \verb{stratified variable} = the variable used to stratify jags model
 }
 \item A \link{list} of \code{attributes} that summarize the jags inputs, including:
 \itemize{
@@ -72,7 +72,7 @@ distribution will be exported with the following attributes:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc)
+\item \code{nThin}: Thinning number (niter/nmc).
 }
 }
 }

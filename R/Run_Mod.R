@@ -13,11 +13,11 @@
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
-#' @param nchain An [integer] between 1 and 4 that specifies
+#' @param nchain An [integer] between 1 and 4 that specifies.
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying number of samples in posterior chains
+#' @param nmc An [integer] specifying number of samples in posterior chains.
 #' @param niter An [integer] specifying number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
@@ -34,23 +34,23 @@
 #' objects (one per stratum).
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
-#'   - `iteration` = number of sampling iterations.
-#'   - `chain` = number of mcmc chains run; between 1 and 4.
-#'   - `indexid` = "newperson", indicating posterior distribution.
+#'   - `iteration` = number of sampling iterations
+#'   - `chain` = number of mcmc chains run; between 1 and 4
+#'   - `indexid` = "newperson", indicating posterior distribution
 #'   - `antigen_iso` = antibody/antigen type combination being evaluated
 #'   - `alpha` = posterior estimate of decay rate
 #'   - `r` = posterior estimate of shape parameter
 #'   - `t1` = posterior estimate of time to peak
 #'   - `y0` = posterior estimate of baseline antibody concentration
 #'   - `y1` = posterior estimate of peak antibody concentration
-#'   - `stratified variable` = the variable that jags was stratified by
+#'   - `stratified variable` = the variable used to stratify jags model
 #' - A [list] of `attributes` that summarize the jags inputs, including:
 #'   - `class`: Class of the output object.
 #'   - `nChain`: Number of chains run.
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
-#'   - `nThin`: Thinning number (niter/nmc)
+#'   - `nThin`: Thinning number (niter/nmc).
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
