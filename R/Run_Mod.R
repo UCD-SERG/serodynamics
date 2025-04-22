@@ -17,8 +17,8 @@
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying number of samples in posterior chains.
-#' @param niter An [integer] specifying number of iterations.
+#' @param nmc An [integer] specifying the number of samples in posterior chains.
+#' @param niter An [integer] specifying the number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`

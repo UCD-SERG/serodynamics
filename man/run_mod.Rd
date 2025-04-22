@@ -29,9 +29,9 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying number of samples in posterior chains.}
+\item{nmc}{An \link{integer} specifying the number of samples in posterior chains.}
 
-\item{niter}{An \link{integer} specifying number of iterations.}
+\item{niter}{An \link{integer} specifying the number of iterations.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
