@@ -149,8 +149,7 @@ only include the predictive distribution.</p></dd>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> containing the following elements:</p><ul><li><p>A jags.post <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> returned as class <a href="https://rdrr.io/pkg/runjags/man/runjags-class.html" class="external-link">runjags::runjags</a>.</p></li>
 <li><p>A <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">base::data.frame()</a></code> titled <code>curve_params</code> that contains the posterior
-distribution will be exported with the following attributes:</p></li>
-<li><p><code>iteration</code> = number of sampling iterations.</p></li>
+distribution will be exported with the following attributes:</p><ul><li><p><code>iteration</code> = number of sampling iterations.</p></li>
 <li><p><code>chain</code> = number of mcmc chains run; between 1 and 4.</p></li>
 <li><p><code>indexid</code> = "newperson", indicating posterior distribution.</p></li>
 <li><p><code>antigen_iso</code> = antibody/antigen type combination being evaluated</p></li>
@@ -160,13 +159,14 @@ distribution will be exported with the following attributes:</p></li>
 <li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = posterior estimate of peak antibody concentration</p></li>
 <li><p><code>stratified variable</code> = the variable that jags was stratified by</p></li>
-<li><p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> of <code>attributes</code> that summarize the jags inputs, including:</p></li>
-<li><p><code>class</code>: Class of the output object.</p></li>
+</ul></li>
+<li><p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> of <code>attributes</code> that summarize the jags inputs, including:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
 <li><p><code>nChain</code>: Number of chains run.</p></li>
 <li><p><code>nParameters</code>: The amount of parameters estimated in the model.</p></li>
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
 <li><p><code>nThin</code>: Thinning number (niter/nmc)</p></li>
+</ul></li>
 </ul></div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -210,7 +210,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 22 06:00:08 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 22 20:28:23 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -236,6 +236,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -244,7 +245,7 @@ distribution will be exported with the following attributes:</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 22 06:01:00 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 22 20:29:12 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
