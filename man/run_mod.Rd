@@ -52,6 +52,7 @@ A \link{list} containing the following elements:
 \item A jags.post \link{list} returned as class \link[runjags:runjags-class]{runjags::runjags}.
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
+\itemize{
 \item \code{iteration} = number of sampling iterations.
 \item \code{chain} = number of mcmc chains run; between 1 and 4.
 \item \code{indexid} = "newperson", indicating posterior distribution.
@@ -62,13 +63,16 @@ distribution will be exported with the following attributes:
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
 \item \verb{stratified variable} = the variable that jags was stratified by
+}
 \item A \link{list} of \code{attributes} that summarize the jags inputs, including:
+\itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc)
+}
 }
 }
 \description{
