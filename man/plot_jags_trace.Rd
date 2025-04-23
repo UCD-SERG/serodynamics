@@ -52,7 +52,7 @@ The antibody dynamic curve includes the following parameters:
 }
 \examples{
 
-data <- serodynamics::nepal_sees_jags_post
+data <- serodynamics::nepal_sees_jags_output
 
 # Specifying isotype, parameter, and stratification for traceplot.
 plot_jags_trace(

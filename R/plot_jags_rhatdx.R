@@ -22,11 +22,11 @@
 #' all antigen/antibody combinations.
 #' @param param Specify [character] string to produce plots of only a
 #' specific parameter, entered with quotes. Options include:
-#' - `alpha` = posterior estimate of decay rate
-#' - `r` = posterior estimate of shape parameter
-#' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
+#' - `t1` = posterior estimate of time to peak
+#' - `r` = posterior estimate of shape parameter
+#' - `alpha` = posterior estimate of decay rate
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
@@ -45,7 +45,8 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
   for (i in strat) {
 
     visualize_jags_sub <- visualize_jags |>
-      dplyr::filter(.data$Stratification == i)
+      dplyr::filter(.data$Stratification == i) |>
+      dplyr::filter(.data$Subject == "newperson")
 
     # Creating open list to store ggplots
     rhat_out <- list()
@@ -69,10 +70,11 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
       # Creating rhat dotplots
       rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(title = ifelse(j == "None", 
-                                     paste0("Rhat value: ag/iso = ", j),
-                                     paste0("Rhat value: ag/iso = ", 
-                                            j, "; strata =  ", i)))
+        ggplot2::labs(title = "Rhat value",
+                      subtitle = plot_title_fun(i, j),
+                      x = "Rhat value") +
+        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                             "y0"))
       rhat_out[[j]] <- rhatplot
     }
     rhat_strat_list[[i]] <- rhat_out
