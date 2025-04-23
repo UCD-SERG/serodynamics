@@ -13,7 +13,7 @@
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
-#' @param nchain An [integer] between 1 and 4 that specifies.
+#' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.

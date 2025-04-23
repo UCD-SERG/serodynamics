@@ -22,7 +22,7 @@ run_mod(
 
 \item{file_mod}{The name of the file that contains model structure.}
 
-\item{nchain}{An \link{integer} between 1 and 4 that specifies.
+\item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of mcmc chains to be run per jags model.}
 
 \item{nadapt}{An \link{integer} specifying the number of adaptations per chain.}
