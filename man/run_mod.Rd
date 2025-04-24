@@ -123,6 +123,14 @@ distribution will be exported with the following attributes:
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc)
 }
+\item A \link{list} of \code{priors} that summarize the input priors, including:
+\itemize{
+\item \code{mu_hyp_param}
+\item \code{prec_hyp_param}
+\item \code{omega_param}
+\item \code{wishdf}
+\item \code{prec_logy_hyp_param}
+}
 }
 }
 \description{

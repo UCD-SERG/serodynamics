@@ -53,12 +53,11 @@
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc)
 #' - A [list] of `priors` that summarize the input priors, including:
-#'   - `class`: Class of the output object.
-#'   - `nChain`: Number of chains run.
-#'   - `nParameters`: The amount of parameters estimated in the model.
-#'   - `nIterations`: Number of iteration specified.
-#'   - `nBurnin`: Number of burn ins.
-#'   - `nThin`: Thinning number (niter/nmc)
+#'   - `mu_hyp_param`
+#'   - `prec_hyp_param`
+#'   - `omega_param`
+#'   - `wishdf`
+#'   - `prec_logy_hyp_param`
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
