@@ -52,6 +52,13 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc)
+#' - A [list] of `priors` that summarize the input priors, including:
+#'   - `class`: Class of the output object.
+#'   - `nChain`: Number of chains run.
+#'   - `nParameters`: The amount of parameters estimated in the model.
+#'   - `nIterations`: Number of iteration specified.
+#'   - `nBurnin`: Number of burn ins.
+#'   - `nThin`: Thinning number (niter/nmc)
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
@@ -188,13 +195,13 @@ run_mod <- function(data,
       "curve_params" = jags_out,
       "jags.post" = jags_post_final,
       "attributes" = mod_atts,
-      "priors" = priorspec[["used_priors"]]
+      "priors" = attributes(priorspec)[["used_priors"]]
     )
   } else { 
     jags_out <- list(
       "curve_params" = jags_out,
       "attributes" = mod_atts,
-      "priors" = priorspec[["used_priors"]]
+      "priors" = attributes(priorspec)[["used_priors"]]
     )
   }
   jags_out
