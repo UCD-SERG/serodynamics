@@ -12,7 +12,7 @@ test_that(
       sim_case_data(n = 100,
                     antigen_isos = "HlyE_IgA") |>
       mutate(strat = "stratum 1")
-    dataset <- bind_rows(strat1, strat2)
+    dataset <- dplyr::bind_rows(strat1, strat2)
     withr::with_seed(
       1,
       code = {
