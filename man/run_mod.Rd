@@ -13,6 +13,8 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
+  with_post = FALSE,
+  include_subs = FALSE,
   max_antigens,
   ...
 )
@@ -29,12 +31,22 @@ the number of mcmc chains to be run per jags model.}
 
 \item{nburn}{An \link{integer} specifying the number of burn ins before sampling.}
 
-\item{nmc}{An \link{integer} specifying number of samples in posterior chains}
+\item{nmc}{An \link{integer} specifying the number of samples in posterior chains.}
 
-\item{niter}{An \link{integer} specifying number of iterations.}
+\item{niter}{An \link{integer} specifying the number of iterations.}
 
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
+
+\item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post}
+component
+should be included as an element of the \link{list} object returned by \code{run_mod()}
+(see \code{Value} section below for details).
+Note: These objects can be large.}
+
+\item{include_subs}{A \link{logical} value specifying whether posterior
+distributions should be included for all subjects. A value of \link{FALSE} will
+only include the predictive distribution.}
 
 \item{max_antigens}{An \link{integer} specifying how many
 antigen-isotypes will be modeled}
@@ -84,21 +96,24 @@ on log-scale. If specified, must be 2 values long.
   }}
 }
 \value{
+A \link{list} containing the following elements:
 \itemize{
-\item A jags.post \code{\link[=list]{list()}} object or multiple jags.post \code{\link[=list]{list()}}
-if stratified. Returned as a \code{\link[=list]{list()}} of class \link[runjags:runjags-class]{runjags::runjags}
+\item \code{"jags.post"}: a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags}
+objects (one per stratum).
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following attributes:
-\item \code{iteration} = number of sampling iterations.
-\item \code{chain} = number of mcmc chains run; between 1 and 4.
-\item \code{indexid} = "newperson", indicating posterior distribution.
+\itemize{
+\item \code{iteration} = number of sampling iterations
+\item \code{chain} = number of mcmc chains run; between 1 and 4
+\item \code{indexid} = "newperson", indicating posterior distribution
 \item \code{antigen_iso} = antibody/antigen type combination being evaluated
 \item \code{alpha} = posterior estimate of decay rate
 \item \code{r} = posterior estimate of shape parameter
 \item \code{t1} = posterior estimate of time to peak
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable that jags was stratified by
+\item \verb{stratified variable} = the variable used to stratify jags model
+}
 \item A \link{list} of \code{attributes} that summarize the jags inputs, including:
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
