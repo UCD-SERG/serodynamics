@@ -115,12 +115,14 @@ distribution will be exported with the following attributes:
 \item \verb{stratified variable} = the variable used to stratify jags model
 }
 \item A \link{list} of \code{attributes} that summarize the jags inputs, including:
+\itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc)
+}
 }
 }
 \description{

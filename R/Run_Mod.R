@@ -46,12 +46,12 @@
 #'   - `y1` = posterior estimate of peak antibody concentration
 #'   - `stratified variable` = the variable used to stratify jags model
 #' - A [list] of `attributes` that summarize the jags inputs, including:
-#'  - `class`: Class of the output object.
-#'  - `nChain`: Number of chains run.
-#'  - `nParameters`: The amount of parameters estimated in the model.
-#'  - `nIterations`: Number of iteration specified.
-#'  - `nBurnin`: Number of burn ins.
-#'  - `nThin`: Thinning number (niter/nmc)
+#'   - `class`: Class of the output object.
+#'   - `nChain`: Number of chains run.
+#'   - `nParameters`: The amount of parameters estimated in the model.
+#'   - `nIterations`: Number of iteration specified.
+#'   - `nBurnin`: Number of burn ins.
+#'   - `nThin`: Thinning number (niter/nmc)
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
