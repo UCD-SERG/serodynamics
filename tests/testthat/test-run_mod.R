@@ -105,3 +105,36 @@ test_that(
       ssdtools:::expect_snapshot_data("nostrat-curve-params")
   }
 )
+
+test_that(
+  desc = "results are consistent with unstratified SEES data with jags.post
+  included",
+  code = {
+    skip_on_os(c("windows", "linux"))
+    withr::local_seed(1)
+    dataset <- serodynamics::nepal_sees 
+    
+    results <- run_mod(
+      data = dataset, # The data set input
+      file_mod = serodynamics_example("model.jags"),
+      nchain = 2, # Number of mcmc chains to run
+      nadapt = 10, # Number of adaptations to run
+      nburn = 10, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
+      strat = NA, # Variable to be stratified
+      with_post = TRUE,
+      include_subs = TRUE
+    ) |>
+      suppressWarnings() |>
+      magrittr::use_series("curve_params")
+    
+    results |>
+      attributes() |>
+      rlist::list.remove("row.names") |>
+      expect_snapshot_value(style = "deparse")
+    
+    results |>
+      ssdtools:::expect_snapshot_data("nostrat-curve-params")
+  }
+)
