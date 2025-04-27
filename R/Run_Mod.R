@@ -26,9 +26,6 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @param include_subs A [logical] value specifying whether posterior
-#' distributions should be included for all subjects. A value of [FALSE] will
-#' only include the predictive distribution.
 #' @returns A [list] containing the following elements:
 #' - `"jags.post"`: a [list] containing one or more [runjags::runjags-class]
 #' objects (one per stratum).
