@@ -13,8 +13,7 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
-  with_post = FALSE,
-  include_subs = FALSE
+  with_post = FALSE
 )
 }
 \arguments{
@@ -41,31 +40,31 @@ component
 should be included as an element of the \link{list} object returned by \code{run_mod()}
 (see \code{Value} section below for details).
 Note: These objects can be large.}
-
-\item{include_subs}{A \link{logical} value specifying whether posterior
-distributions should be included for all subjects. A value of \link{FALSE} will
-only include the predictive distribution.}
 }
 \value{
+A \link{tbl} that contains the posterior
+distribution will be exported with the following attributes:
 A \link{list} containing the following elements:
 \itemize{
-\item \code{"jags.post"}: a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags}
-objects (one per stratum).
 \item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
-distribution will be exported with the following attributes:
+distribution will be exported with the following variables:
 \itemize{
-\item \code{iteration} = number of sampling iterations
-\item \code{chain} = number of mcmc chains run; between 1 and 4
-\item \code{indexid} = "newperson", indicating posterior distribution
-\item \code{antigen_iso} = antibody/antigen type combination being evaluated
-\item \code{alpha} = posterior estimate of decay rate
-\item \code{r} = posterior estimate of shape parameter
-\item \code{t1} = posterior estimate of time to peak
-\item \code{y0} = posterior estimate of baseline antibody concentration
-\item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable used to stratify jags model
+\item \code{iteration} = Number of sampling iterations
+\item \code{chain} = Number of mcmc chains run; between 1 and 4
+\item \code{Parameter} = Parameter being estimated. Includes the following:
+\itemize{
+\item \code{alpha} = Posterior estimate of decay rate
+\item \code{r} = Posterior estimate of shape parameter
+\item \code{t1} = Posterior estimate of time to peak
+\item \code{y0} = Posterior estimate of baseline antibody concentration
+\item \code{y1} = Posterior estimate of peak antibody concentration
 }
-\item A \link{list} of \code{attributes} that summarize the jags inputs, including:
+\item \code{Iso_type} = Antibody/antigen type combination being evaluated
+\item \code{Stratification} = The variable used to stratify jags model
+\item \code{Subject} = ID of subject being evaluated
+\item \code{value} = Estimated value of the parameter
+}
+\item The following attributes are included in the output:
 \itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
@@ -73,6 +72,9 @@ distribution will be exported with the following attributes:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item An optional \code{"jags.post"} included when \code{with_post} = TRUE. Includes a
+\link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
+(one per stratum).
 }
 }
 }

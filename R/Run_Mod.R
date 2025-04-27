@@ -31,26 +31,28 @@
 #' A [list] containing the following elements:
 #' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following variables:
-#'   - `iteration` = number of sampling iterations
-#'   - `chain` = number of mcmc chains run; between 1 and 4
-#'   - `Parameter`
-#'   - `indexid` = "newperson", indicating posterior distribution
-#'   - `antigen_iso` = antibody/antigen type combination being evaluated
-#'   - `alpha` = posterior estimate of decay rate
-#'   - `r` = posterior estimate of shape parameter
-#'   - `t1` = posterior estimate of time to peak
-#'   - `y0` = posterior estimate of baseline antibody concentration
-#'   - `y1` = posterior estimate of peak antibody concentration
-#'   - `stratified variable` = the variable used to stratify jags model
-#' - A [list] of `attributes` that summarize the jags inputs, including:
+#'   - `iteration` = Number of sampling iterations
+#'   - `chain` = Number of mcmc chains run; between 1 and 4
+#'   - `Parameter` = Parameter being estimated. Includes the following:
+#'     - `alpha` = Posterior estimate of decay rate
+#'     - `r` = Posterior estimate of shape parameter
+#'     - `t1` = Posterior estimate of time to peak
+#'     - `y0` = Posterior estimate of baseline antibody concentration
+#'     - `y1` = Posterior estimate of peak antibody concentration
+#'   - `Iso_type` = Antibody/antigen type combination being evaluated
+#'   - `Stratification` = The variable used to stratify jags model
+#'   - `Subject` = ID of subject being evaluated
+#'   - `value` = Estimated value of the parameter
+#' - The following attributes are included in the output:
 #'   - `class`: Class of the output object.
 #'   - `nChain`: Number of chains run.
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - An optional `"jags.post"`: a [list] containing one or more
-#' [runjags::runjags-class] objects (one per stratum).
+#'   - An optional `"jags.post"` included when `with_post` = TRUE. Includes a
+#'   [list] containing one or more [runjags::runjags-class] objects
+#'   (one per stratum).
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
