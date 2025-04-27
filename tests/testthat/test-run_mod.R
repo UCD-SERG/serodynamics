@@ -27,8 +27,7 @@ test_that(
           niter = 10, # Number of iterations
           strat = "strat", # Variable to be stratified
         ) |>
-          suppressWarnings() |>
-          magrittr::use_series("curve_params")
+          suppressWarnings()
         
         results |>
           attributes() |>
@@ -60,8 +59,7 @@ test_that(
       niter = 100, # Number of iterations
       strat = "bldculres", # Variable to be stratified
     ) |>
-      suppressWarnings() |>
-      magrittr::use_series("curve_params")
+      suppressWarnings()
 
     results |>
       attributes() |>
@@ -90,8 +88,7 @@ test_that(
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
     ) |>
-      suppressWarnings() |>
-      magrittr::use_series("curve_params")
+      suppressWarnings()
 
     results |>
       attributes() |>
@@ -122,15 +119,14 @@ test_that(
       strat = NA, # Variable to be stratified
       with_post = TRUE
     ) |>
-      suppressWarnings() |>
-      magrittr::use_series("curve_params")
+      suppressWarnings()
     
     results |>
       attributes() |>
       rlist::list.remove("row.names") |>
-      expect_snapshot_value(style = "deparse")
+      expect_snapshot_value(style = "serialize")
     
     results |>
-      ssdtools:::expect_snapshot_data("nostrat-curve-params")
+      ssdtools:::expect_snapshot_data("nostrat-curve-params-withpost")
   }
 )
