@@ -4,6 +4,11 @@
 
 ## New features
 
+* Changes to `run_mod()` output:
+  - Taking out `include_subs` as an input option, default will include all
+  individuals
+  - Making a single tbl as output
+  - All other pieces will be attributes.
 * Changes to `run_mod()` (#79):
    - `jags.post` now optionally included in output, as specified by argument
    `with_post`
