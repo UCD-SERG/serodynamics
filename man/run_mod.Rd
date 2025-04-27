@@ -43,10 +43,6 @@ Note: These objects can be large.}
 }
 \value{
 A \link{tbl} that contains the posterior
-distribution will be exported with the following attributes:
-A \link{list} containing the following elements:
-\itemize{
-\item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
 distribution will be exported with the following variables:
 \itemize{
 \item \code{iteration} = Number of sampling iterations
@@ -63,8 +59,7 @@ distribution will be exported with the following variables:
 \item \code{Stratification} = The variable used to stratify jags model
 \item \code{Subject} = ID of subject being evaluated
 \item \code{value} = Estimated value of the parameter
-}
-\item The following attributes are included in the output:
+\item The following \code{attributes} are included in the output:
 \itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
@@ -72,8 +67,8 @@ distribution will be exported with the following variables:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
-\item An optional \code{"jags.post"} included when \code{with_post} = TRUE. Includes a
-\link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
+\item An optional \code{"jags.post"} included when argument \code{with_post} = TRUE.
+Includes a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
 (one per stratum).
 }
 }

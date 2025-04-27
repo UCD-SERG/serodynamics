@@ -27,9 +27,6 @@
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
 #' @returns A [tbl] that contains the posterior
-#' distribution will be exported with the following attributes:
-#' A [list] containing the following elements:
-#' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following variables:
 #'   - `iteration` = Number of sampling iterations
 #'   - `chain` = Number of mcmc chains run; between 1 and 4
@@ -43,15 +40,15 @@
 #'   - `Stratification` = The variable used to stratify jags model
 #'   - `Subject` = ID of subject being evaluated
 #'   - `value` = Estimated value of the parameter
-#' - The following attributes are included in the output:
+#' - The following `attributes` are included in the output:
 #'   - `class`: Class of the output object.
 #'   - `nChain`: Number of chains run.
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - An optional `"jags.post"` included when `with_post` = TRUE. Includes a
-#'   [list] containing one or more [runjags::runjags-class] objects
+#'   - An optional `"jags.post"` included when argument `with_post` = TRUE.
+#'   Includes a [list] containing one or more [runjags::runjags-class] objects
 #'   (one per stratum).
 #' @export
 #' @example inst/examples/run_mod-examples.R
