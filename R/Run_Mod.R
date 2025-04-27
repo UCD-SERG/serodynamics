@@ -26,13 +26,14 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns A [list] containing the following elements:
-#' - `"jags.post"`: a [list] containing one or more [runjags::runjags-class]
-#' objects (one per stratum).
-#' - A [base::data.frame()] titled `curve_params` that contains the posterior
+#' @returns A [tbl] that contains the posterior
 #' distribution will be exported with the following attributes:
+#' A [list] containing the following elements:
+#' - A [base::data.frame()] titled `curve_params` that contains the posterior
+#' distribution will be exported with the following variables:
 #'   - `iteration` = number of sampling iterations
 #'   - `chain` = number of mcmc chains run; between 1 and 4
+#'   - `Parameter`
 #'   - `indexid` = "newperson", indicating posterior distribution
 #'   - `antigen_iso` = antibody/antigen type combination being evaluated
 #'   - `alpha` = posterior estimate of decay rate
@@ -48,6 +49,8 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
+#'   - An optional `"jags.post"`: a [list] containing one or more
+#' [runjags::runjags-class] objects (one per stratum).
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -166,7 +169,12 @@ run_mod <- function(data,
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
 
-  jags_out <- dplyr::as_tibble(jags_out) 
+  # Making output a tibble and restructing.
+  jags_out <- dplyr::as_tibble(jags_out)  |>
+    select(!c("Parameter")) |>
+    rename("Parameter" = "Parameter_sub")
+  jags_out <- jags_out[,c("Iteration", "Chain", "Parameter", "Iso_type",
+                          "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
