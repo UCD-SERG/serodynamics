@@ -133,7 +133,7 @@ run_mod <- function(data,
     # Adding attributes
     mod_atts <- attributes(jags_unpack)
     # Only keeping necesarry attributes
-    mod_atts <- mod_atts[3:8]
+    mod_atts <- mod_atts[4:8]
 
     # extracting antigen-iso combinations to correctly number
     # then by the order they are estimated by the program.
@@ -176,18 +176,15 @@ run_mod <- function(data,
       filter(.data$Subject == "newperson")
   }
 
-  # Logical argument to keep the raw jags post or not.
+  jags_out <- dplyr::as_tibble(jags_out) 
+  current_atts <- attributes(jags_out) 
+  current_atts <- c(current_atts, mod_atts)
+  attributes(jags_out) <- current_atts
+  
+  # Conditionally adding jags.post
   if (with_post) {
-    jags_out <- list(
-      "curve_params" = jags_out,
-      "jags.post" = jags_post_final,
-      "attributes" = mod_atts
-    )
-  } else { 
-    jags_out <- list(
-      "curve_params" = jags_out,
-      "attributes" = mod_atts
-    )
-  }
+    jags_out <- jags_out |>
+    structure(jags.post = jags_post_final)
+  } 
   jags_out
 }
