@@ -26,7 +26,6 @@ test_that(
           nmc = 10,
           niter = 10, # Number of iterations
           strat = "strat", # Variable to be stratified
-          include_subs = TRUE
         ) |>
           suppressWarnings() |>
           magrittr::use_series("curve_params")
@@ -60,7 +59,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = "bldculres", # Variable to be stratified
-      include_subs = TRUE
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params")
@@ -91,7 +89,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      include_subs = TRUE
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params")
@@ -123,8 +120,7 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE,
-      include_subs = TRUE
+      with_post = TRUE
     ) |>
       suppressWarnings() |>
       magrittr::use_series("curve_params")
