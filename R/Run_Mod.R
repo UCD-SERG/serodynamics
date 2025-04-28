@@ -168,16 +168,6 @@ run_mod <- function(data,
   # Ensuring output does not have any NAs
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
-<<<<<<< HEAD
-  # jags output results for each stratification
-  # rbinded.
-  jags_out <- list(
-    "curve_params" = jags_out,
-    "jags.post" = jags_post_final,
-    "attributes" = mod_atts
-  )
-  class(jags_out) <- "sr_mod_list"
-=======
   # jags output results for each stratification rbinded.
   # Logical argument to include posterior of all subjects or just the
   # predictive distribution (new person).
@@ -199,6 +189,5 @@ run_mod <- function(data,
       "attributes" = mod_atts
     )
   }
->>>>>>> origin/main
   jags_out
 }
