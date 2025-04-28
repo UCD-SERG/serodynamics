@@ -22,7 +22,7 @@ run_mod(
 \item{file_mod}{The name of the file that contains model structure.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
-the number of mcmc chains to be run per jags model.}
+the number of MCMC chains to be run per jags model.}
 
 \item{nadapt}{An \link{integer} specifying the number of adaptations per chain.}
 
@@ -46,7 +46,7 @@ A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
 distribution will be exported with the following variables:
 \itemize{
 \item \code{iteration} = Number of sampling iterations
-\item \code{chain} = Number of mcmc chains run; between 1 and 4
+\item \code{chain} = Number of MCMC chains run; between 1 and 4
 \item \code{Parameter} = Parameter being estimated. Includes the following:
 \itemize{
 \item \code{alpha} = Posterior estimate of decay rate
@@ -74,9 +74,9 @@ Includes a \link{list} containing one or more \link[runjags:runjags-class]{runja
 }
 }
 \description{
-run_mod() takes a data frame and adjustable mcmc inputs to
-\code{\link[runjags:run.jags]{runjags::run.jags()}} as an mcmc
-bayesian model to estimate antibody dynamic curve parameters.
+run_mod() takes a data frame and adjustable MCMC inputs to
+\code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
+Bayesian model to estimate antibody dynamic curve parameters.
 The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
 infection. The antibody dynamic curve includes the following parameters:
 \itemize{

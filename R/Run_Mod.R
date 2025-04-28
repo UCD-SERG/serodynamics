@@ -1,9 +1,9 @@
 #' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  run_mod() takes a data frame and adjustable mcmc inputs to
-#'  [runjags::run.jags()] as an mcmc
-#'  bayesian model to estimate antibody dynamic curve parameters.
+#'  run_mod() takes a data frame and adjustable MCMC inputs to
+#'  [runjags::run.jags()] as an MCMC
+#'  Bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()] models seroresponse dynamics to an
 #'  infection. The antibody dynamic curve includes the following parameters:
 #'  - y0 = baseline antibody concentration
@@ -14,7 +14,7 @@
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
-#' the number of mcmc chains to be run per jags model.
+#' the number of MCMC chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
 #' @param nmc An [integer] specifying the number of samples in posterior chains.
@@ -29,7 +29,7 @@
 #' @returns A [dplyr::tbl_df] that contains the posterior
 #' distribution will be exported with the following variables:
 #'   - `iteration` = Number of sampling iterations
-#'   - `chain` = Number of mcmc chains run; between 1 and 4
+#'   - `chain` = Number of MCMC chains run; between 1 and 4
 #'   - `Parameter` = Parameter being estimated. Includes the following:
 #'     - `alpha` = Posterior estimate of decay rate
 #'     - `r` = Posterior estimate of shape parameter
@@ -125,7 +125,7 @@ run_mod <- function(data,
     # stratification and will only be included if specified. 
     jags_post_final[[i]] <- jags_post
 
-    # Unpacking and cleaning mcmc output.
+    # Unpacking and cleaning MCMC output.
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
 
     # Adding attributes
