@@ -45,6 +45,7 @@ reference:
   contents:
   - serodynamics_example
   - nepal_sees
+  - nepal_sees_jags_output
 - title: Modeling Functions  
   contents:
       - plot_predicted_curve    

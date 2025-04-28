@@ -38,15 +38,15 @@ process_jags_samples <- function(jags_post, dataset, id, antigen_iso) {
   # 4) Pivot to wide format: one row per iteration/chain
   samples_wide <- df_clean |>
     dplyr::select(
-      .data$Chain, 
-      .data$Iteration,
-      .data$Iso_type,
-      .data$Parameter_clean, 
-      .data$value
+      all_of(c("Chain", 
+      "Iteration",
+      "Iso_type",
+      "Parameter_clean", 
+      "value"))
     ) |>
     tidyr::pivot_wider(
-      names_from  = .data$Parameter_clean,
-      values_from = .data$value
+      names_from  = c("Parameter_clean"),
+      values_from = c("value")
     ) |>
     dplyr::arrange(.data$Chain, .data$Iteration) |>
     
@@ -54,7 +54,7 @@ process_jags_samples <- function(jags_post, dataset, id, antigen_iso) {
       antigen_iso = factor(.data$Iso_type),
       r = .data$shape
     ) |>
-    dplyr::select(-.data$Iso_type)
+    dplyr::select(-c("Iso_type"))
 
   
   return(samples_wide)
