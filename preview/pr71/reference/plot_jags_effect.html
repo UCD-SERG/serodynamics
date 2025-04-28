@@ -33,7 +33,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9023</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9028</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -109,11 +109,11 @@ all antigen/antibody combinations.</p></dd>
 
 <dt id="arg-param">param<a class="anchor" aria-label="anchor" href="#arg-param"></a></dt>
 <dd><p>Specify <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string to produce plots of only a
-specific parameter, entered with quotes. Options include:</p><ul><li><p><code>alpha</code> = posterior estimate of decay rate</p></li>
-<li><p><code>r</code> = posterior estimate of shape parameter</p></li>
-<li><p><code>t1</code> = posterior estimate of time to peak</p></li>
-<li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
+specific parameter, entered with quotes. Options include:</p><ul><li><p><code>y0</code> = posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = posterior estimate of peak antibody concentration</p></li>
+<li><p><code>t1</code> = posterior estimate of time to peak</p></li>
+<li><p><code>r</code> = posterior estimate of shape parameter</p></li>
+<li><p><code>alpha</code> = posterior estimate of decay rate</p></li>
 </ul></dd>
 
 
@@ -137,7 +137,7 @@ samples taken will be listed first.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">serodynamics</span><span class="fu">::</span><span class="va"><a href="nepal_sees_jags_post.html">nepal_sees_jags_post</a></span></span></span>
+<span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu">serodynamics</span><span class="fu">::</span><span class="va"><a href="nepal_sees_jags_output.html">nepal_sees_jags_output</a></span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">plot_jags_effect</span><span class="op">(</span>data <span class="op">=</span> <span class="va">data</span>,</span></span>
 <span class="r-in"><span>                 iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
@@ -154,7 +154,7 @@ samples taken will be listed first.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
 </div>
 
     </footer></div>
