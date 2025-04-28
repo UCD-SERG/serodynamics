@@ -19,9 +19,7 @@ iso
 isotype
 isotypes
 mcmc
-newperson
 nmc
-npl
 params
 prec
 rhat
@@ -31,5 +29,6 @@ serocourse
 seroresponse
 strat
 stratifications
+tbl
 unstratified
 wishdf
