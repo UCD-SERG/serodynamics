@@ -2,27 +2,27 @@
 % Please edit documentation in R/process_jags_samples.R
 \name{process_jags_samples}
 \alias{process_jags_samples}
-\title{Process JAGS Output to Extract Full MCMC Samples for a Specific Subject and Antigen}
+\title{Process JAGS Output to Extract Full MCMC Samples for a Specific
+Subject and Antigen}
 \usage{
 process_jags_samples(jags_post, dataset, id, antigen_iso)
 }
 \arguments{
-\item{jags_post}{A list output from \code{serodynamics::run_mod()}, containing posterior samples.}
+\item{jags_post}{The list returned by \code{run_mod(...)}
+(must have \code{curve_params}).}
 
-\item{dataset}{A data.frame containing subject and antigen information.}
+\item{dataset}{A data.frame containing original data.}
 
-\item{id}{The original subject ID (as in the dataset) for which you want to extract samples.}
+\item{id}{The original subject ID (e.g. "sees_npl_128") to extract.}
 
-\item{antigen_iso}{A numeric or character value specifying the antigen iso.
-If a character, it should be one of "HlyE_IgA" or "HlyE_IgG".}
+\item{antigen_iso}{The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".}
 }
 \value{
-A tibble in wide format with one row per MCMC sample. Columns correspond to the parameters
-(e.g., y0, y1, t1, alpha, shape) needed to compute the antibody curve.
+A tibble, one row per MCMC iteration & chain, wide format giving
+each parameter.
 }
 \description{
-This function extracts the full posterior parameter samples from a JAGS model run for a specified
-subject (using the original subject ID) and antigen. The returned tibble is in wide format
-(each row corresponds to one MCMC sample) so that you can compute quantiles (e.g., 10\%, 50\%, 90\%)
-to form credible interval bands.
+Simplified version that pulls directly from \code{model$curve_params}(the element
+created by \code{run_mod(include_subs = TRUE)}), filters to the desired subject
+and antigen_iso, and returns a wide tibble of MCMC samples.
 }
