@@ -17,33 +17,40 @@
 #' the number of mcmc chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
 #' @param nburn An [integer] specifying the number of burn ins before sampling.
-#' @param nmc An [integer] specifying number of samples in posterior chains
-#' @param niter An [integer] specifying number of iterations.
-#' @param strat
-#' A [character] string specifying the stratification variable,
+#' @param nmc An [integer] specifying the number of samples in posterior chains.
+#' @param niter An [integer] specifying the number of iterations.
+#' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
-#' @return
-#' - A jags.post [list] object or multiple jags.post [list]
-#' if stratified. Returned as a [list] of class [runjags::sr_mod_list]
-#' - A [data.frame] titled `curve_params` that contains the posterior
+#' @param with_post A [logical] value specifying whether a raw `jags.post`
+#' component
+#' should be included as an element of the [list] object returned by `run_mod()`
+#' (see `Value` section below for details).
+#' Note: These objects can be large.
+#' @param include_subs A [logical] value specifying whether posterior
+#' distributions should be included for all subjects. A value of [FALSE] will
+#' only include the predictive distribution.
+#' @returns A [list] containing the following elements:
+#' - `"jags.post"`: a [list] containing one or more [runjags::runjags-class]
+#' objects (one per stratum).
+#' - A [base::data.frame()] titled `curve_params` that contains the posterior
 #' distribution will be exported with the following attributes:
-#'  - `iteration` = number of sampling iterations.
-#'  - `chain` = number of mcmc chains run; between 1 and 4.
-#'  - `indexid` = "newperson", indicating posterior distribution.
-#'  - `antigen_iso` = antibody/antigen type combination being evaluated
-#'  - `alpha` = posterior estimate of decay rate
-#'  - `r` = posterior estimate of shape parameter
-#'  - `t1` = posterior estimate of time to peak
-#'  - `y0` = posterior estimate of baseline antibody concentration
-#'  - `y1` = posterior estimate of peak antibody concentration
-#'  - `stratified variable` = the variable that jags was stratified by
+#'   - `iteration` = number of sampling iterations
+#'   - `chain` = number of mcmc chains run; between 1 and 4
+#'   - `indexid` = "newperson", indicating posterior distribution
+#'   - `antigen_iso` = antibody/antigen type combination being evaluated
+#'   - `alpha` = posterior estimate of decay rate
+#'   - `r` = posterior estimate of shape parameter
+#'   - `t1` = posterior estimate of time to peak
+#'   - `y0` = posterior estimate of baseline antibody concentration
+#'   - `y1` = posterior estimate of peak antibody concentration
+#'   - `stratified variable` = the variable used to stratify jags model
 #' - A [list] of `attributes` that summarize the jags inputs, including:
-#'  - `class`: Class of the output object.
-#'  - `nChain`: Number of chains run.
-#'  - `nParameters`: The amount of parameters estimated in the model.
-#'  - `nIterations`: Number of iteration specified.
-#'  - `nBurnin`: Number of burn ins.
-#'  - `nThin`: Thinning number (niter/nmc)
+#'   - `class`: Class of the output object.
+#'   - `nChain`: Number of chains run.
+#'   - `nParameters`: The amount of parameters estimated in the model.
+#'   - `nIterations`: Number of iteration specified.
+#'   - `nBurnin`: Number of burn ins.
+#'   - `nThin`: Thinning number (niter/nmc).
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -53,12 +60,14 @@ run_mod <- function(data,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
-                    strat = NA) {
+                    strat = NA,
+                    with_post = FALSE,
+                    include_subs = FALSE) {
   ## Conditionally creating a stratification list to loop through
-  if (is.na(strat) == FALSE) {
-    strat_list <- unique(data[[strat]])
-  } else {
+  if (is.na(strat)) {
     strat_list <- "None"
+  } else {
+    strat_list <- unique(data[[strat]])
   }
 
   ## Creating a shell to output results
@@ -79,11 +88,11 @@ run_mod <- function(data,
   # For loop for running stratifications
   for (i in strat_list) {
     # Creating if else statement for running the loop
-    if (is.na(strat) == FALSE) {
+    if (is.na(strat)) {
+      dl_sub <- data
+    } else {
       dl_sub <- data |>
         dplyr::filter(.data[[strat]] == i)
-    } else {
-      dl_sub <- data
     }
 
     # prepare data for modeline
@@ -114,13 +123,11 @@ run_mod <- function(data,
       summarise = FALSE
     )
     # Assigning the raw jags output to a list.
-    # This will include a raw output for the jags.post for each stratification.
+    # This object will include a raw output for the jags.post for each
+    # stratification and will only be included if specified. 
     jags_post_final[[i]] <- jags_post
 
-    ## Cleaning the jags output -- much of this has to do with correctly
-    # classifying the [x,x] number
-    # included in the outputs
-    # ggs works with mcmc objects
+    # Unpacking and cleaning mcmc output.
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
 
     # Adding attributes
@@ -132,7 +139,7 @@ run_mod <- function(data,
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
-    ### Working with jags unpacked ggs outputs to clarify parameter and subject
+    # Working with jags unpacked ggs outputs to clarify parameter and subject
     jags_unpack <- jags_unpack |>
       dplyr::mutate(
         Subnum = sub(".*,", "", .data$Parameter),
@@ -145,14 +152,14 @@ run_mod <- function(data,
       )
     # Merging isodat in to ensure we are classifying antigen_iso
     jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
-    jags_unpack <- jags_unpack |>
-      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens")) |>
-      dplyr::select(!c("Subnum"))
-    # Setting subset for the "new person" --setting it to the final sample
-    np <- as.character(longdata$nsubj)
+    ids <- data.frame(attr(longdata, "ids")) |>
+      mutate(Subject = as.character(dplyr::row_number()))
+    jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
     jags_final <- jags_unpack |>
-      dplyr::filter(.data$Subject == np)
-    ## Creating a label for the stratification, if there is one.
+      dplyr::select(!c("Subnum", "Subject")) |>
+      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
+                      "Subject" = "attr.longdata...ids.."))
+    # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
     ## Creating output
@@ -161,6 +168,7 @@ run_mod <- function(data,
   # Ensuring output does not have any NAs
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
+<<<<<<< HEAD
   # jags output results for each stratification
   # rbinded.
   jags_out <- list(
@@ -169,5 +177,28 @@ run_mod <- function(data,
     "attributes" = mod_atts
   )
   class(jags_out) <- "sr_mod_list"
+=======
+  # jags output results for each stratification rbinded.
+  # Logical argument to include posterior of all subjects or just the
+  # predictive distribution (new person).
+  if (!include_subs) {
+    jags_out <- jags_out |>
+      filter(.data$Subject == "newperson")
+  }
+
+  # Logical argument to keep the raw jags post or not.
+  if (with_post) {
+    jags_out <- list(
+      "curve_params" = jags_out,
+      "jags.post" = jags_post_final,
+      "attributes" = mod_atts
+    )
+  } else { 
+    jags_out <- list(
+      "curve_params" = jags_out,
+      "attributes" = mod_atts
+    )
+  }
+>>>>>>> origin/main
   jags_out
 }
