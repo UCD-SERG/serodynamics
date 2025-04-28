@@ -1,5 +1,6 @@
 test_that(
-  desc = "plot_predicted_curve() works with run_mod output and on-the-fly dataset",
+  desc = "plot_predicted_curve() works with run_mod output and 
+  on-the-fly dataset",
   code = {
     skip_if(getRversion() < "4.4.1")
     
