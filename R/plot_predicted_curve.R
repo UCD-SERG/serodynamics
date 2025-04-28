@@ -14,8 +14,8 @@
 #'   it will be treated as the observed data, and only one model is plotted.
 #' @param dataset (Optional) A tibble with observed antibody response data. 
 #' Must contain:
-#'   - `dayssincefeveronset`
-#'   - `result`
+#'   - `timeindays`
+#'   - `value`
 #'   - `id`
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
@@ -113,9 +113,9 @@ plot_predicted_curve <- function(param_medians_wide,
                                  alpha_samples = 0.3) {
   
   # If the second argument is actually observed data, treat it as 'dat'
-  if (!is.null(param_medians_wide2) && "dayssincefeveronset" %in% 
+  if (!is.null(param_medians_wide2) && "timeindays" %in% 
         names(param_medians_wide2)) {
-    dat <- param_medians_wide2
+    dataset <- param_medians_wide2
     param_medians_wide2 <- NULL
   }
   
