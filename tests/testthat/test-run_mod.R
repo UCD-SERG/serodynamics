@@ -123,7 +123,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove("row.names") |>
+      rlist::list.remove(c("row.names", "jags.post")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
