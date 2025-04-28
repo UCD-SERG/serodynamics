@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9024</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9029</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,16 @@
 <ul><li>Initial CRAN submission.</li>
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Added <code>process_jags_model()</code> for modeling antibody response curves and assessing model fit (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
+<ul><li>Added <code><a href="../reference/process_jags_samples.html">process_jags_samples()</a></code> and <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
+<ul><li>
+<code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
+</li>
+<li>all subjects now optionally included in <code>curve_params</code> output component, as specified by argument <code>include_subs</code>
+</li>
+</ul></li>
+<li>Diagnostic function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>)</li>
+<li>Added function for summarizing estimates in a table (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>)</li>
 <li>Diagnostic trace plot function with strat (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>)</li>
 <li>Diagnostic function to produce effective sample size plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/66" class="external-link">#66</a>)</li>
 <li>Diagnostic function to produce density plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/27" class="external-link">#27</a>)</li>
@@ -74,7 +83,10 @@
 </div>
 <div class="section level3">
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>
-<ul><li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
+<ul><li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
+<li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
 </li>
 <li>Clarified <code><a href="../reference/prep_data.html">prep_data()</a></code> internals using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
 <li>Removed “.R” suffix from jags model files to prevent them from getting linted as R files (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
@@ -97,7 +109,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
 </div>
 
     </footer></div>
