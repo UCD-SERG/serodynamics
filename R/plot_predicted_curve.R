@@ -280,8 +280,8 @@ plot_predicted_curve <- function(param_medians_wide,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = .data$dayssincefeveronset, 
-                    res = .data$result) |>
+      dplyr::rename(t = .data$timeindays, 
+                    res = .data$value) |>
       dplyr::select(.data$id, 
                     .data$t, 
                     .data$res, 
@@ -315,7 +315,7 @@ plot_predicted_curve <- function(param_medians_wide,
     fill_vals["mod2"] <- "green"
     fill_labels["mod2"] <- legend_mod2
   }
-  if (!is.null(dat)) {
+  if (!is.null(dataset)) {
     color_vals["observed"] <- "blue"
     color_labels["observed"] <- legend_obs
   }
