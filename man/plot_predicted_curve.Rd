@@ -19,13 +19,16 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{param_medians_wide}{A tibble with full posterior parameter samples (first model).}
+\item{param_medians_wide}{A tibble with full posterior parameter samples
+(first model).}
 
-\item{param_medians_wide2}{(Optional) A tibble with full posterior parameter samples (second model).
-If this tibble contains observed data (with "dayssincefeveronset"), it will be treated as the
-observed data, and only one model is plotted.}
+\item{param_medians_wide2}{(Optional) A tibble with full posterior
+parameter samples (second model).
+If this tibble contains observed data (with "dayssincefeveronset"),
+it will be treated as the observed data, and only one model is plotted.}
 
-\item{dat}{(Optional) A tibble with observed antibody response data. Must contain:
+\item{dat}{(Optional) A tibble with observed antibody response data.
+Must contain:
 \itemize{
 \item \code{dayssincefeveronset}
 \item \code{result}
@@ -39,64 +42,94 @@ observed data, and only one model is plotted.}
 
 \item{legend_mod2}{Label for the second model in the legend.}
 
-\item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%, and 97.5\% quantiles.}
+\item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%,
+and 97.5\% quantiles.}
 
-\item{log_scale}{Logical; if TRUE, applies a log10 transformation to the y-axis.}
+\item{log_scale}{Logical; if TRUE, applies a log10 transformation to
+the y-axis.}
 
 \item{log_x}{Logical; if TRUE, applies a log10 transformation to the x-axis.}
 
-\item{show_all_curves}{Logical; if TRUE, overlays all individual sampled curves.}
+\item{show_all_curves}{Logical; if TRUE, overlays all
+individual sampled curves.}
 
-\item{alpha_samples}{Numeric; transparency level for individual curves (default = 0.3).}
+\item{alpha_samples}{Numeric; transparency level for individual
+curves (default = 0.3).}
 }
 \value{
-A ggplot object displaying predicted antibody response curves with a median curve
-and a 95\% credible interval band.
+A ggplot object displaying predicted antibody response curves
+with a median curve and a 95\% credible interval band.
 }
 \description{
-Plots a single median antibody response curve with a 95\% credible interval ribbon,
-using full posterior samples. Optionally overlays observed data, moves the legend to the bottom,
-provides options to apply log10 transformation on the y- and x-axes, and to show all individual
+Plots a single median antibody response curve with a 95\% credible interval
+ribbon, using full posterior samples. Optionally overlays observed data,
+moves the legend to the bottom, provides options to apply log10
+transformation on the y- and x-axes, and to show all individual
 sampled curves.
 }
 \examples{
-# Run JAGS model for subject sees_npl_128 (HlyE_IgA)
-jags_results <- prepare_and_run_jags(
-  id = "sees_npl_128",
+# 1) Prepare the on-the-fly dataset
+dataset <- nepal_sees |>
+  as_case_data(
+    id_var        = "person_id",
+    biomarker_var = "antigen_iso",
+    value_var     = "value",
+    time_in_days  = "timeindays"
+  ) |>
+  rename(
+    strat      = bldculres,
+    timeindays = dayssincefeveronset,
+    value      = result
+  )
+
+# 2) Extract just the one subject/antigen for overlay later
+dat <- dataset |>
+  filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
+
+# 3) Fit the model to the full dataset
+model <- run_mod(
+  data         = dataset,
+  file_mod     = serodynamics_example("model.jags"),
+  nchain       = 2,
+  nadapt       = 100,
+  nburn        = 100,
+  nmc          = 500,
+  niter        = 1000,
+  strat        = "strat",
+  include_subs = TRUE
+)
+
+# 4) Pull out the full MCMC samples for that one ID + antigen
+full_samples <- process_jags_samples(
+  jags_post   = model,
+  dataset     = dataset,
+  id          = "sees_npl_128",
   antigen_iso = "HlyE_IgA"
 )
 
-# Extract results
-dat <- jags_results$dat
-dataset <- jags_results$dataset
-nepal_sees_jags_post <- jags_results$nepal_sees_jags_post
-nepal_sees_jags_post2 <- jags_results$nepal_sees_jags_post2
+# 5a) Plot (linear axes) with all individual curves + median ribbon
+p1 <- plot_predicted_curve(
+  param_medians_wide = full_samples,
+  dat                = dat,
+  legend_obs         = "Observed Data",
+  legend_mod1        = "Full Model Predictions",
+  show_quantiles     = TRUE,
+  log_scale          = FALSE,
+  log_x              = FALSE,
+  show_all_curves    = TRUE
+)
+print(p1)
 
-# Process JAGS output (partial and full processing)
-param_medians_partial <- process_jags_basic(nepal_sees_jags_post, dataset)
-basic_result <- process_jags_basic(nepal_sees_jags_post2, dataset)
-param_medians_full <- finalize_jags_output(basic_result, dataset, 
-                                           id = "sees_npl_128", 
-                                           antigen_iso = "HlyE_IgA")
-
-# Generate predicted antibody response curves using median-based parameters
-plot_pred_only <- plot_predicted_curve(param_medians_wide = param_medians_full,
-                                       param_medians_wide2 = param_medians_partial,
-                                       dat = dat)
-print(plot_pred_only)
-
-# Alternatively, generate curves using full MCMC samples with log10 transformations on both axes,
-# and overlay all individual sampled curves.
-full_samples <- process_jags_samples(nepal_sees_jags_post2, dataset,
-                                     id = "sees_npl_128",
-                                     antigen_iso = "HlyE_IgA")
-plot_full <- plot_predicted_curve(param_medians_wide = full_samples,
-                                  dat = dat,
-                                  legend_obs = "Observed Data",
-                                  legend_mod1 = "Full Model Predictions",
-                                  show_quantiles = TRUE,
-                                  log_scale = TRUE,
-                                  log_x = TRUE,
-                                  show_all_curves = TRUE)
-print(plot_full)
+# 5b) Plot (log10 y-axis) with all individual curves + median ribbon
+p2 <- plot_predicted_curve(
+  param_medians_wide = full_samples,
+  dat                = dat,
+  legend_obs         = "Observed Data",
+  legend_mod1        = "Full Model Predictions",
+  show_quantiles     = TRUE,
+  log_scale          = TRUE,
+  log_x              = FALSE,
+  show_all_curves    = TRUE
+)
+print(p2)
 }
