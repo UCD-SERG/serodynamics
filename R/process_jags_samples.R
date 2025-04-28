@@ -14,12 +14,12 @@
 #' each parameter.
 #' @export
 process_jags_samples <- function(jags_post, dataset, id, antigen_iso) {
-  # ----------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
   # 1) Grab the curve_params data.frame out of the run_mod() output:
   df <- jags_post$curve_params
 
   
-  # ----------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
   # 2) Filter to the subject & antigen of interest:
   df_sub   <- df |>
     dplyr::filter(
@@ -27,22 +27,22 @@ process_jags_samples <- function(jags_post, dataset, id, antigen_iso) {
       .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"
     )
   
-  # ----------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
   # 3) Clean up parameter name if you like:
   df_clean <- df_sub |>
     dplyr::mutate(
       Parameter_clean = stringr::str_extract(.data$Parameter, "^[^\\[]+")
     )
   
-  # ----------------------------------------------------------------------------
+  # --------------------------------------------------------------------------
   # 4) Pivot to wide format: one row per iteration/chain
   samples_wide <- df_clean |>
     dplyr::select(
-      all_of(c("Chain", 
-      "Iteration",
-      "Iso_type",
-      "Parameter_clean", 
-      "value"))
+      all_of(c("Chain",
+               "Iteration",
+               "Iso_type",
+               "Parameter_clean",
+               "value"))
     ) |>
     tidyr::pivot_wider(
       names_from  = c("Parameter_clean"),
