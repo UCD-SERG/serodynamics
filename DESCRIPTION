@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9023
+Version: 0.0.0.9028
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -47,7 +47,8 @@ Suggests:
     rmarkdown,
     stringr,
     magrittr,
-    ssdtools
+    ssdtools,
+    rex
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: 
@@ -60,7 +61,7 @@ Config/needs/test:
     readr,
     rlist
 Config/needs/check: commonmark, xml2
-Remotes:  
+Remotes: 
     ucd-serg/serocalculator,
     xfim/ggmcmc
 Depends: 

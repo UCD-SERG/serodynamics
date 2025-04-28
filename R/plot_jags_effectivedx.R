@@ -20,11 +20,11 @@
 #' all antigen/antibody combinations.
 #' @param param Specify [character] string to produce plots of only a
 #' specific parameter, entered with quotes. Options include:
-#' - `alpha` = posterior estimate of decay rate
-#' - `r` = posterior estimate of shape parameter
-#' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
+#' - `t1` = posterior estimate of time to peak
+#' - `r` = posterior estimate of shape parameter
+#' - `alpha` = posterior estimate of decay rate
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
 #' @return A [list] of [ggplot2::ggplot] objects showing the 
@@ -46,7 +46,8 @@ plot_jags_effect <- function(data,
   for (i in strat) {
 
     visualize_jags_sub <- visualize_jags |>
-      dplyr::filter(.data$Stratification == i)
+      dplyr::filter(.data$Stratification == i) |>
+      dplyr::filter(.data$Subject == "newperson")
 
     # Creating open list to store ggplots
     eff_out <- list()
@@ -62,15 +63,19 @@ plot_jags_effect <- function(data,
 
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter_sub, ", strat = ",
-                                         i))
+        dplyr::mutate(Parameter = .data$Parameter_sub)
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
+
       # Creating density plot
       eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
-        theme_bw()
+        ggplot2::theme_bw()  +
+        ggplot2::labs(title = "Effective sample size",
+                      subtitle = plot_title_fun(i, j),
+                      x = "Proportion of effective samples") +
+        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                             "y0"))
       eff_out[[j]] <- eff
     }
     eff_strat_list[[i]] <- eff_out

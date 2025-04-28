@@ -4,12 +4,14 @@ Codecov
 JAGs
 Lifecycle
 Postprocess
+Rhat
 Traceplots
 bayesian
 behaviour
 biomarker
 biomarkers
 dobson
+dotplots
 geoms
 ggproto
 hyp
@@ -19,8 +21,10 @@ isotypes
 mcmc
 newperson
 nmc
+npl
 params
 prec
+rhat
 sd
 seroconversion
 serocourse
