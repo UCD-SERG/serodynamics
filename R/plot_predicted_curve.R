@@ -286,7 +286,7 @@ plot_predicted_curve <- function(param_medians_wide,
                     .data$t, 
                     .data$res, 
                     .data$antigen_iso) |>
-      dplyr::mutate(id = as.factor(id))
+      dplyr::mutate(id = as.factor(.data$id))
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
