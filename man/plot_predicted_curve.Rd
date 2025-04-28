@@ -30,8 +30,8 @@ it will be treated as the observed data, and only one model is plotted.}
 \item{dataset}{(Optional) A tibble with observed antibody response data.
 Must contain:
 \itemize{
-\item \code{dayssincefeveronset}
-\item \code{result}
+\item \code{timeindays}
+\item \code{value}
 \item \code{id}
 \item \code{antigen_iso}
 }}
