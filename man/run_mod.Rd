@@ -42,7 +42,7 @@ should be included as an element of the \link{list} object returned by \code{run
 Note: These objects can be large.}
 }
 \value{
-A \link{tbl} that contains the posterior
+A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
 distribution will be exported with the following variables:
 \itemize{
 \item \code{iteration} = Number of sampling iterations

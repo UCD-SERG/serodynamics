@@ -26,7 +26,7 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns A [tbl] that contains the posterior
+#' @returns A [dplyr::tbl_df] that contains the posterior
 #' distribution will be exported with the following variables:
 #'   - `iteration` = Number of sampling iterations
 #'   - `chain` = Number of mcmc chains run; between 1 and 4
