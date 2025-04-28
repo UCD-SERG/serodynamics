@@ -172,8 +172,8 @@ run_mod <- function(data,
   jags_out <- dplyr::as_tibble(jags_out)  |>
     select(!c("Parameter")) |>
     rename("Parameter" = "Parameter_sub")
-  jags_out <- jags_out[,c("Iteration", "Chain", "Parameter", "Iso_type",
-                          "Stratification", "Subject", "value")]
+  jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
+                           "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
@@ -181,7 +181,7 @@ run_mod <- function(data,
   # Conditionally adding jags.post
   if (with_post) {
     jags_out <- jags_out |>
-    structure(jags.post = jags_post_final)
+      structure(jags.post = jags_post_final)
   } 
   jags_out
 }
