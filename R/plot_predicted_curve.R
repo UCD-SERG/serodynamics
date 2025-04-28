@@ -37,9 +37,9 @@
 #'
 #' @examples
 #' # 1) Prepare the on-the-fly dataset
-#' dataset <- nepal_sees |>
+#' dataset <- serodynamics::nepal_sees |>
 #'   as_case_data(
-#'     id_var        = "person_id",
+#'     id_var        = "id",
 #'     biomarker_var = "antigen_iso",
 #'     value_var     = "value",
 #'     time_in_days  = "timeindays"
@@ -78,7 +78,7 @@
 #' # 5a) Plot (linear axes) with all individual curves + median ribbon
 #' p1 <- plot_predicted_curve(
 #'   param_medians_wide = full_samples,
-#'   dat                = dat,
+#'   dataset                = dat,
 #'   legend_obs         = "Observed Data",
 #'   legend_mod1        = "Full Model Predictions",
 #'   show_quantiles     = TRUE,
@@ -91,7 +91,7 @@
 #' # 5b) Plot (log10 y-axis) with all individual curves + median ribbon
 #' p2 <- plot_predicted_curve(
 #'   param_medians_wide = full_samples,
-#'   dat                = dat,
+#'   dataset                = dat,
 #'   legend_obs         = "Observed Data",
 #'   legend_mod1        = "Full Model Predictions",
 #'   show_quantiles     = TRUE,
