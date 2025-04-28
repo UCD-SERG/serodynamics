@@ -21,6 +21,7 @@ isotypes
 mcmc
 newperson
 nmc
+npl
 params
 prec
 rhat
@@ -30,7 +31,6 @@ serocourse
 seroresponse
 strat
 stratifications
-summ
 unstratified
 wishdf
 dayssincefeveronset
