@@ -7,7 +7,7 @@
 plot_predicted_curve(
   param_medians_wide,
   param_medians_wide2 = NULL,
-  dat = NULL,
+  dataset = NULL,
   legend_obs = "Observed Data",
   legend_mod1 = "Model 1 Predictions",
   legend_mod2 = "Model 2 Predictions",
@@ -27,7 +27,7 @@ parameter samples (second model).
 If this tibble contains observed data (with "dayssincefeveronset"),
 it will be treated as the observed data, and only one model is plotted.}
 
-\item{dat}{(Optional) A tibble with observed antibody response data.
+\item{dataset}{(Optional) A tibble with observed antibody response data.
 Must contain:
 \itemize{
 \item \code{dayssincefeveronset}

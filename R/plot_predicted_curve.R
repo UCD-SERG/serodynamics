@@ -12,7 +12,7 @@
 #' parameter samples (second model).
 #'   If this tibble contains observed data (with "dayssincefeveronset"), 
 #'   it will be treated as the observed data, and only one model is plotted.
-#' @param dat (Optional) A tibble with observed antibody response data. 
+#' @param dataset (Optional) A tibble with observed antibody response data. 
 #' Must contain:
 #'   - `dayssincefeveronset`
 #'   - `result`
@@ -102,7 +102,7 @@
 #' print(p2)
 plot_predicted_curve <- function(param_medians_wide,
                                  param_medians_wide2 = NULL,
-                                 dat = NULL,
+                                 dataset = NULL,
                                  legend_obs = "Observed Data",
                                  legend_mod1 = "Model 1 Predictions",
                                  legend_mod2 = "Model 2 Predictions",
@@ -278,8 +278,8 @@ plot_predicted_curve <- function(param_medians_wide,
   }
   
   # --- Overlay Observed Data (if provided) ---
-  if (!is.null(dat)) {
-    observed_data <- dat |>
+  if (!is.null(dataset)) {
+    observed_data <- dataset |>
       dplyr::rename(t = .data$dayssincefeveronset, 
                     res = .data$result) |>
       dplyr::select(.data$id, 

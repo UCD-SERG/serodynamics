@@ -6,7 +6,7 @@ test_that(
     # 1) Build the full dataset:
     dataset <- nepal_sees |>
       as_case_data(
-        id_var        = "person_id",
+        id_var        = "id",
         biomarker_var = "antigen_iso",
         value_var     = "value",
         time_in_days  = "timeindays"
@@ -47,7 +47,7 @@ test_that(
     
     # c) It has exactly the columns we expect:
     expected_cols <- c(
-      "Chain", "Iteration",
+      "Chain", "Iteration", "antigen_iso", "r",
       "y0", "y1", "t1", "alpha", "shape"
     )
     expect_true(all(expected_cols %in% names(full_samples)))

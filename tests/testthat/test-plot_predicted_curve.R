@@ -5,9 +5,9 @@ test_that(
     skip_if(getRversion() < "4.4.1")
     
     # 1. Build the full dataset exactly as in your example:
-    dataset <- nepal_sees |>
+    dataset <- serodynamics::nepal_sees |>
       as_case_data(
-        id_var        = "person_id",
+        id_var        = "id",
         biomarker_var = "antigen_iso",
         value_var     = "value",
         time_in_days  = "timeindays"
@@ -49,7 +49,7 @@ test_that(
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
       param_medians_wide = full_samples,
-      dat                = dat,
+      dataset                = dat,
       legend_obs         = "Observed Data",
       legend_mod1        = "Full Model Predictions",
       show_quantiles     = TRUE,
@@ -63,7 +63,7 @@ test_that(
     # 5b. Plot (log10 axes) with both model curves + observed points
     plot2 <- plot_predicted_curve(
       param_medians_wide = full_samples,
-      dat                = dat,
+      dataset                = dat,
       legend_obs         = "Observed Data",
       legend_mod1        = "Full Model Predictions",
       show_quantiles     = TRUE,
