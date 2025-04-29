@@ -249,7 +249,7 @@ plot_predicted_curve <- function(param_medians_wide,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res.med, 
                                       color = "mod1"),
-                         size = 1, inherit.aes = FALSE)
+                         linewidth = 1, inherit.aes = FALSE)
   }
   
   # --- Summarize & Plot Model 2 (Median + 95% Ribbon) ---
@@ -274,7 +274,7 @@ plot_predicted_curve <- function(param_medians_wide,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res.med, 
                                       color = "mod2"),
-                         size = 1, inherit.aes = FALSE)
+                         linewidth = 1, inherit.aes = FALSE)
   }
   
   # --- Overlay Observed Data (if provided) ---
@@ -283,9 +283,9 @@ plot_predicted_curve <- function(param_medians_wide,
       dplyr::rename(t = c("timeindays"), 
                     res = c("value")) |>
       dplyr::select(all_of(c("id", 
-                    "t", 
-                    "res", 
-                    "antigen_iso"))) |>
+                             "t",
+                             "res",
+                             "antigen_iso"))) |>
       dplyr::mutate(id = as.factor(.data$id))
     
     p <- p +

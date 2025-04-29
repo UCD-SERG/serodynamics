@@ -57,7 +57,7 @@ test_that(
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
-    expect_true(ggplot2::is.ggplot(plot1))
+    expect_true(ggplot2::is_ggplot(plot1))
     vdiffr::expect_doppelganger("predicted_curve_linear", plot1)
     
     # 5b. Plot (log10 axes) with both model curves + observed points
@@ -71,7 +71,7 @@ test_that(
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
-    expect_true(ggplot2::is.ggplot(plot2))
+    expect_true(ggplot2::is_ggplot(plot2))
     vdiffr::expect_doppelganger("predicted_curve_log", plot2)
   }
 )
