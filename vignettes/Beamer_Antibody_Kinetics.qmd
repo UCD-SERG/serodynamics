@@ -1,9 +1,10 @@
 ---
-title: "Hierarchical Model for Antibody Kinetics: Revisions Based on Advisor Feedback"
+title: "Extending the Hierarchical Model for Antibody Kinetics"
 author: "Kwan Ho Lee"
 institute: "UC Davis"
 date: today
 format: 
+  html: default
   beamer:
     theme: Madrid
     slide-level: 2
