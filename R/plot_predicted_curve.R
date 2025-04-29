@@ -157,8 +157,8 @@ plot_predicted_curve <- function(param_medians_wide,
   ## --- Prepare data for Model 1 ---
   dt1 <- data.frame(t = tx2) |>
     dplyr::mutate(id = dplyr::row_number()) |>
-    tidyr::pivot_wider(names_from = .data$id, 
-                       values_from = .data$t, 
+    tidyr::pivot_wider(names_from = c("id"), 
+                       values_from = c("t"), 
                        names_prefix = "time") |>
     dplyr::slice(
       rep(seq_len(dplyr::n()), each = nrow(param_medians_wide))
@@ -167,7 +167,7 @@ plot_predicted_curve <- function(param_medians_wide,
   
   serocourse_all1 <- cbind(param_medians_wide, dt1) |>
     tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") |>
-    dplyr::select(-.data$name) |>
+    dplyr::select(-c("name")) |>
     dplyr::rowwise() |>
     dplyr::mutate(res = ab(.data$t, 
                            .data$y0, 
@@ -181,8 +181,8 @@ plot_predicted_curve <- function(param_medians_wide,
   if (!is.null(param_medians_wide2)) {
     dt2 <- data.frame(t = tx2) |>
       dplyr::mutate(id = dplyr::row_number()) |>
-      tidyr::pivot_wider(names_from = .data$id, 
-                         values_from = .data$t, 
+      tidyr::pivot_wider(names_from = c("id"), 
+                         values_from = c("t"), 
                          names_prefix = "time") |>
       dplyr::slice(
         rep(seq_len(dplyr::n()), each = nrow(param_medians_wide2))
@@ -192,7 +192,7 @@ plot_predicted_curve <- function(param_medians_wide,
     serocourse_all2 <- cbind(param_medians_wide2, dt2) |>
       tidyr::pivot_longer(cols = dplyr::starts_with("time"), 
                           values_to = "t") |>
-      dplyr::select(-.data$name) |>
+      dplyr::select(-c("name")) |>
       dplyr::rowwise() |>
       dplyr::mutate(res = ab(.data$t, 
                              .data$y0, 
@@ -280,12 +280,12 @@ plot_predicted_curve <- function(param_medians_wide,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = .data$timeindays, 
-                    res = .data$value) |>
-      dplyr::select(.data$id, 
-                    .data$t, 
-                    .data$res, 
-                    .data$antigen_iso) |>
+      dplyr::rename(t = c("timeindays"), 
+                    res = c("value")) |>
+      dplyr::select(all_of(c("id", 
+                    "t", 
+                    "res", 
+                    "antigen_iso"))) |>
       dplyr::mutate(id = as.factor(.data$id))
     
     p <- p +
