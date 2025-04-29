@@ -4,14 +4,14 @@ test_that(
     skip_if(getRversion() < "4.4.1")
     
     # 1) Build the full dataset:
-    dataset <- nepal_sees |>
+    dataset <- serodynamics::nepal_sees |>
       as_case_data(
         id_var        = "id",
         biomarker_var = "antigen_iso",
         value_var     = "value",
         time_in_days  = "timeindays"
       ) |>
-      rename(
+      dplyr::rename(
         strat      = bldculres,
         timeindays = dayssincefeveronset,
         value      = result
