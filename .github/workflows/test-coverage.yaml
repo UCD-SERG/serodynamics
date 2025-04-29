@@ -48,23 +48,7 @@ jobs:
           extra-packages: any::covr, any::xml2
           needs: test, coverage
       
-      - name: "install rjags Mac"
-        if: runner.os == 'macOS'
-        run: |
-          install.packages("rjags",
-                    repos = "https://cloud.r-project.org",
-                    type = "source",
-                    verbose = TRUE)
-                      
-           withr::local_options(warn = 2)
-           library(rjags)
-           library(runjags)
-           runjags::findJAGS()
-           runjags::testjags()
-        shell: Rscript {0}
-
       - name: "install rjags not-mac"
-        if: runner.os != 'macOS'
         run: |
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
