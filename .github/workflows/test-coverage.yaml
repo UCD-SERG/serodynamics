@@ -24,13 +24,13 @@ jobs:
           del wjags.exe
         shell: cmd
       
+      # from https://github.com/ku-awdc/runjags/issues/2:
       - name: Install JAGS (macOS)
         if: runner.os == 'macOS'
         run: |
-          brew install pkg-config
-          brew install jags
-          brew upgrade
-
+          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
+          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
+      
       - name: Install JAGS (Ubuntu)
         if: runner.os == 'Linux'
         run: |
@@ -48,30 +48,13 @@ jobs:
           extra-packages: any::covr, any::xml2
           needs: test, coverage
       
-      - name: "install rjags Mac"
-        if: runner.os == 'macOS'
-        run: |
-          install.packages("rjags",
-                    repos = "https://cloud.r-project.org",
-                    type = "source",
-                    configure.args = c(
-                      "--with-jags-include=/opt/homebrew/opt/jags/include/JAGS",
-                      "--with-jags-lib=/opt/homebrew/opt/jags/lib"),
-                    verbose = TRUE)
-                      
-           library(rjags)
-           library(runjags)
-           runjags::findJAGS()
-           runjags::testjags()
-        shell: Rscript {0}
-        
-      - name: "install rjags not-mac"
-        if: runner.os != 'macOS'
+      - name: "install rjags"
         run: |
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
                     type = "source",
                     verbose = TRUE)
+           withr::local_options(warn = 2)
            library(rjags)
            library(runjags)
            runjags::findJAGS()
@@ -132,4 +115,3 @@ jobs:
           plugins: noop
           disable_search: true
           token: ${{ secrets.CODECOV_TOKEN }}
-
