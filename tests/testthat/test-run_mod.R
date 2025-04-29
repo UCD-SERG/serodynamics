@@ -1,7 +1,7 @@
 test_that(
   desc = "results are consistent with simulated data",
   code = {
-    skip_on_os(c("windows", "linux"))
+    skip_on_os(c("windows", "mac"))
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -47,7 +47,7 @@ test_that(
 test_that(
   desc = "results are consistent with SEES data",
   code = {
-    skip_on_os(c("windows", "linux"))
+    skip_on_os(c("windows", "mac"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
 
@@ -78,7 +78,7 @@ test_that(
 test_that(
   desc = "results are consistent with unstratified SEES data",
   code = {
-    skip_on_os(c("windows", "linux"))
+    skip_on_os(c("windows", "mac"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
 
