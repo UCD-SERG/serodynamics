@@ -62,6 +62,7 @@ jobs:
            library(rjags)
            library(runjags)
            runjags::findJAGS()
+           withr::local
            runjags::testjags()
         shell: Rscript {0}
         
@@ -72,6 +73,7 @@ jobs:
                     repos = "https://cloud.r-project.org",
                     type = "source",
                     verbose = TRUE)
+           withr::local_options(warn = 2)
            library(rjags)
            library(runjags)
            runjags::findJAGS()
