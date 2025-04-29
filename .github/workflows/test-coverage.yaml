@@ -29,15 +29,12 @@ jobs:
           del wjags.exe
         shell: cmd
       
-      - name: Install JAGS (macOS)
+      # from https://github.com/ku-awdc/runjags/issues/2:
         if: runner.os == 'macOS'
         run: |
-          brew install pkg-config
-          brew install jags
-          brew upgrade
-          echo "Verifying JAGS installation..."
-          ls -l /opt/homebrew/opt/jags
-          
+          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
+          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
+      
       - name: Install JAGS (Ubuntu)
         if: runner.os == 'Linux'
         run: |
