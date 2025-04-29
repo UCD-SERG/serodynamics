@@ -6,7 +6,7 @@
 \alias{serodynamics-package}
 \title{serodynamics: What the Package Does (One Line, Title Case)}
 \description{
-What the package does (one paragraph).
+Modeling longitudinal immune seroresponses to pathogens.
 }
 \seealso{
 Useful links:
