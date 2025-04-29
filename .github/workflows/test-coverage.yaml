@@ -30,6 +30,7 @@ jobs:
         shell: cmd
       
       # from https://github.com/ku-awdc/runjags/issues/2:
+      - name: Install JAGS (Mac)
         if: runner.os == 'macOS'
         run: |
           sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
