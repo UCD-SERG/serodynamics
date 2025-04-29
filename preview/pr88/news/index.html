@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9028</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9030</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Beamer_Antibody_Kinetics.pdf">Hierarchical Model for Antibody Kinetics: Revisions Based on Advisor Feedback (PDF)</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Beamer_Antibody_Kinetics.html">Extending the Hierarchical Model for Antibody Kinetics</a></li>
     <li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -49,6 +49,13 @@
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>Added Beamer presentation files (<code>Beamer_Antibody_Kinetics.qmd</code>, <code>.pdf</code>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/88" class="external-link">#88</a>)</li>
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
+<ul><li>
+<code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
+</li>
+<li>all subjects now optionally included in <code>curve_params</code> output component, as specified by argument <code>include_subs</code>
+</li>
+</ul></li>
 <li>Diagnostic function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>)</li>
 <li>Added function for summarizing estimates in a table (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>)</li>
 <li>Diagnostic trace plot function with strat (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>)</li>
@@ -103,7 +110,7 @@
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
 </div>
 
     </footer></div>

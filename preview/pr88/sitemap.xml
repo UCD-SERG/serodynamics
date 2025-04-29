@@ -3,6 +3,7 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/CONTRIBUTING.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/LICENSE-text.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/LICENSE.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/articles/Beamer_Antibody_Kinetics.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/articles/dobson.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/articles/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/authors.html</loc></url>
@@ -14,11 +15,12 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/initsfunction.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/load_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/nepal_sees.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/nepal_sees_jags_post.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/nepal_sees_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/plot_jags_Rhat.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/plot_jags_dens.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/plot_jags_effect.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/plot_jags_trace.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/plot_title_fun.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/post_summ.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr88/reference/prep_data.html</loc></url>
