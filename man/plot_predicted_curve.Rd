@@ -84,7 +84,7 @@ dataset <- serodynamics::nepal_sees |>
 
 # 2) Extract just the one subject/antigen for overlay later
 dat <- dataset |>
-  filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
+  dplyr::filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
 
 # 3) Fit the model to the full dataset
 model <- run_mod(
