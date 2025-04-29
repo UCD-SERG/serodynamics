@@ -4,7 +4,7 @@ pkgdown_sha: 99457e7fa7f36696ae743b06aca59c0fdd97a7d6
 articles:
   Beamer_Antibody_Kinetics: Beamer_Antibody_Kinetics.html
   dobson: dobson.html
-last_built: 2025-04-29T23:43Z
+last_built: 2025-04-29T23:56Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr88/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr88/articles
