@@ -48,7 +48,7 @@ jobs:
           extra-packages: any::covr, any::xml2
           needs: test, coverage
       
-      - name: "install rjags not-mac"
+      - name: "install rjags"
         run: |
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
