@@ -4,7 +4,13 @@
 
 ## New features
 
+
 * Added Beamer presentation files (`Beamer_Antibody_Kinetics.qmd`, `.pdf`) (#88)
+* Changes to `run_mod()` (#79):
+   - `jags.post` now optionally included in output, as specified by argument
+   `with_post`
+   - all subjects now optionally included in `curve_params` output component, 
+   as specified by argument `include_subs`
 * Diagnostic function to produce R-hat dotplots with stratification (#67)
 * Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)

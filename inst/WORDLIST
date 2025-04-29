@@ -5,7 +5,6 @@ JAGs
 Lifecycle
 Postprocess
 Rhat
-Traceplots
 bayesian
 behaviour
 biomarker
@@ -24,13 +23,11 @@ nmc
 params
 prec
 rhat
-sd
 seroconversion
-serocourse
 seroresponse
+seroresponses
 strat
 stratifications
-summ
 unstratified
 wishdf
 Beamer
