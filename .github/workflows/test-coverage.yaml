@@ -35,6 +35,9 @@ jobs:
           brew install pkg-config
           brew install jags
           brew upgrade
+          echo "Verifying JAGS installation..."
+          ls -l /opt/homebrew/opt/jags
+          ls -l /opt/homebrew/libexec
 
       - name: Install JAGS (Ubuntu)
         if: runner.os == 'Linux'
@@ -70,5 +73,3 @@ jobs:
            runjags::findJAGS()
            runjags::testjags()
         shell: Rscript {0}
-        
-
