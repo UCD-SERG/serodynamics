@@ -16,9 +16,10 @@ engine: knitr
 
 ## Overview
 
-- Incorporates feedback from Dr. Morrison
-- Aligns with Teunis et al. (2016, 2023) formulations
-- Clarifies model parameter roles and their interpretation
+- Incorporates feedback from Dr. Morrison and Dr.Aiemjoy
+- Focus exclusively on Teunis et al. (2016) model
+- Clarifies model dynamics: growth, clearance, decay
+- Uses updated parameter notation: $\mu_y$, $\mu_b$, $\gamma$, $\alpha$, $\rho$
 - Assumes block-diagonal covariance structure across biomarkers
 
 ## Full Model Structure
