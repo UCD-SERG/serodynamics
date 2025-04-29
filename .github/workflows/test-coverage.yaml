@@ -59,10 +59,10 @@ jobs:
                       "--with-jags-lib=/opt/homebrew/opt/jags/lib"),
                     verbose = TRUE)
                       
+           withr::local_options(warn = 2)
            library(rjags)
            library(runjags)
            runjags::findJAGS()
-           withr::local
            runjags::testjags()
         shell: Rscript {0}
         
