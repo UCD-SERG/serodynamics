@@ -14,3 +14,4 @@ cholera_data_compiled_050324.csv
 inst/doc
 docsvignettes/*.pdf
 vignettes/*.tex
+docs/
