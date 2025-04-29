@@ -76,7 +76,7 @@ dataset <- serodynamics::nepal_sees |>
     value_var     = "value",
     time_in_days  = "timeindays"
   ) |>
-  rename(
+  dplyr::rename(
     strat      = bldculres,
     timeindays = dayssincefeveronset,
     value      = result
