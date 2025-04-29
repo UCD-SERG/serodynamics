@@ -3,11 +3,8 @@ test_that(
   desc = "results are consistent with ggplot output",
   code = {
     skip_if(getRversion() < "4.4.1") # 4.3.3 had issues
-    library(runjags)
-    library(dplyr)
 
-    data <- serodynamics::nepal_sees_jags_output |>
-      suppressWarnings()
+    data <- serodynamics::nepal_sees_jags_output
 
     # Testing for any errors:
     results <- plot_jags_dens(data) |> expect_no_error()

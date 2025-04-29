@@ -32,7 +32,7 @@ specific parameter, entered with quotes. Options include:
 stratification entered in quotes.}
 }
 \value{
-A \code{\link[base:list]{base::list()}} of \code{\link[ggplot2:ggplot]{ggplot2::ggplot()}} objects producing density
+A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects producing density
 plots for all the specified input.
 }
 \description{
@@ -52,9 +52,9 @@ The antibody dynamic curve includes the following parameters:
 }
 \examples{
 
+
 data <- serodynamics::nepal_sees_jags_output
 
-# Specifying isotype and stratification for traceplot.
 plot_jags_dens(
                data = data,
                iso = "HlyE_IgA",
