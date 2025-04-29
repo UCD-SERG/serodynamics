@@ -18,4 +18,3 @@ longdata |>
   readr::write_rds(
     testthat::test_path("fixtures", "example_runjags_inputs.rds")
   )
-
