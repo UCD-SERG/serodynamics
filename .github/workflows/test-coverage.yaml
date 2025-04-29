@@ -37,8 +37,7 @@ jobs:
           brew upgrade
           echo "Verifying JAGS installation..."
           ls -l /opt/homebrew/opt/jags
-          which jags-terminal
-
+          
       - name: Install JAGS (Ubuntu)
         if: runner.os == 'Linux'
         run: |
