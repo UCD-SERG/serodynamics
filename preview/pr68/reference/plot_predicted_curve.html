@@ -153,12 +153,11 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-in"><span>    value_var     <span class="op">=</span> <span class="st">"value"</span>,</span></span>
 <span class="r-in"><span>    time_in_days  <span class="op">=</span> <span class="st">"timeindays"</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">rename</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    strat      <span class="op">=</span> <span class="va">bldculres</span>,</span></span>
 <span class="r-in"><span>    timeindays <span class="op">=</span> <span class="va">dayssincefeveronset</span>,</span></span>
 <span class="r-in"><span>    value      <span class="op">=</span> <span class="va">result</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in rename(as_case_data(serodynamics::nepal_sees, id_var = "id",     biomarker_var = "antigen_iso", value_var = "value", time_in_days = "timeindays"),     strat = bldculres, timeindays = dayssincefeveronset, value = result):</span> could not find function "rename"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 2) Extract just the one subject/antigen for overlay later</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span></span>
@@ -177,7 +176,76 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-in"><span>  strat        <span class="op">=</span> <span class="st">"strat"</span>,</span></span>
 <span class="r-in"><span>  include_subs <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'dataset' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 29 05:43:54 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 690</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 384</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 14802</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Apr 29 05:44:01 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 214</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 4771</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4) Pull out the full MCMC samples for that one ID + antigen</span></span></span>
 <span class="r-in"><span><span class="va">full_samples</span> <span class="op">&lt;-</span> <span class="fu"><a href="process_jags_samples.html">process_jags_samples</a></span><span class="op">(</span></span></span>
@@ -186,7 +254,6 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-in"><span>  id          <span class="op">=</span> <span class="st">"sees_npl_128"</span>,</span></span>
 <span class="r-in"><span>  antigen_iso <span class="op">=</span> <span class="st">"HlyE_IgA"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'model' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 5a) Plot (linear axes) with all individual curves + median ribbon</span></span></span>
 <span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
@@ -199,7 +266,7 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'full_samples' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'dat' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p1' not found</span>
 <span class="r-in"><span></span></span>
@@ -214,7 +281,7 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'full_samples' not found</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'dat' not found</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span></span></span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p2' not found</span>
 </code></pre></div>
