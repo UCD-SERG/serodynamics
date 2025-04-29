@@ -24,7 +24,7 @@ engine: knitr
 
 ## Within-Host ODE System (Teunis et al., 2016)
 
-**Two-phase within-host antibody kinetics:** 
+**Two-phase within-host antibody kinetics:**
 
 $$
 \frac{dy}{dt} = 
@@ -40,21 +40,60 @@ $$
 **Key transition:** $t_1$ is the time when $b(t_1) = 0$\
 **Derived quantity:** $y_1 = y(t_1)$
 
+## Closed-Form Solutions
 
-## Definition of Model Quantities
+**Antibody concentration** $y(t)$
 
-**Parameters used in the dynamic model:**
+-   $t \le t_1$:\
+    $$
+    y(t) = y_0 e^{\mu_y t}
+    $$
 
--   $\mu_0$: Pathogen growth rate\
--   $\mu_1$: Antibody production rate (driven by pathogen)\
--   $c$: Clearance rate — how effectively antibodies eliminate pathogen\
--   $\alpha$: Antibody decay rate (governs speed of waning)\
--   $r$: Shape of antibody decay (nonlinear power)\
--   $y_0$: Initial antibody concentration at $t = 0$\
--   $b_0$: Initial pathogen concentration at $t = 0$\
--   $y_1 = y(t_1)$: Peak antibody level — computed at time of pathogen clearance
+-   $t > t_1$:\
+    $$
+    y(t) = y_1 \left(1 + (\rho - 1)\alpha y_1^{\rho - 1}(t - t_1)\right)^{- \frac{1}{\rho - 1}}
+    $$
 
-**Note:** Only the first 7 are estimated. $y_1$ is derived from the ODE solution.
+**Pathogen load** $b(t)$
+
+-   $t \le t_1$:\
+    $$
+    b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left(e^{\mu_y t} - e^{\mu_b t} \right)
+    $$
+
+-   $t > t_1$:\
+    $$
+    b(t) = 0
+    $$
+
+## Time of Peak Response
+
+**Peak Time** $t_1$
+
+$$
+t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
+$$
+
+**Peak Antibody Level** $y_1$
+
+$$
+y_1 = y_0 e^{\mu_y t_1}
+$$
+
+## Parameter Summary
+
+| Symbol   | Description                    |
+|----------|--------------------------------|
+| $\mu_y$  | Antibody production rate       |
+| $\mu_b$  | Pathogen replication rate      |
+| $\gamma$ | Clearance rate (by antibodies) |
+| $\alpha$ | Antibody decay rate            |
+| $\rho$   | Shape of decay curve           |
+| $t_1$    | Time of peak response          |
+| $y_1$    | Peak antibody concentration    |
+
+**Note:** Only the first 6 are typically estimated.\
+$y_1$ is derived from the ODE solution at $t_1$.
 
 ## Model Comparison: 2016 vs Our Formulation
 
