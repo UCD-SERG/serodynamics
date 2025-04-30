@@ -63,11 +63,9 @@ sampled curves.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">plot_predicted_curve</span><span class="op">(</span></span>
 <span>  <span class="va">param_medians_wide</span>,</span>
-<span>  param_medians_wide2 <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  dataset <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  legend_obs <span class="op">=</span> <span class="st">"Observed Data"</span>,</span>
 <span>  legend_mod1 <span class="op">=</span> <span class="st">"Model 1 Predictions"</span>,</span>
-<span>  legend_mod2 <span class="op">=</span> <span class="st">"Model 2 Predictions"</span>,</span>
 <span>  show_quantiles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  log_scale <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  log_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -82,12 +80,7 @@ sampled curves.</p>
 
 <dl><dt id="arg-param-medians-wide">param_medians_wide<a class="anchor" aria-label="anchor" href="#arg-param-medians-wide"></a></dt>
 <dd><p>A tibble with full posterior parameter samples
-(first model).</p></dd>
-
-
-<dt id="arg-param-medians-wide-">param_medians_wide2<a class="anchor" aria-label="anchor" href="#arg-param-medians-wide-"></a></dt>
-<dd><p>(Optional) A tibble with full posterior
-parameter samples (second model).
+(first model).
 If this tibble contains observed data (with "dayssincefeveronset"),
 it will be treated as the observed data, and only one model is plotted.</p></dd>
 
@@ -107,10 +100,6 @@ Must contain:</p><ul><li><p><code>timeindays</code></p></li>
 
 <dt id="arg-legend-mod-">legend_mod1<a class="anchor" aria-label="anchor" href="#arg-legend-mod-"></a></dt>
 <dd><p>Label for the first model in the legend.</p></dd>
-
-
-<dt id="arg-legend-mod-">legend_mod2<a class="anchor" aria-label="anchor" href="#arg-legend-mod-"></a></dt>
-<dd><p>Label for the second model in the legend.</p></dd>
 
 
 <dt id="arg-show-quantiles">show_quantiles<a class="anchor" aria-label="anchor" href="#arg-show-quantiles"></a></dt>
@@ -178,7 +167,7 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr 30 18:49:56 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr 30 21:35:02 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -213,7 +202,7 @@ with a median curve and a 95% credible interval band.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr 30 18:50:04 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr 30 21:35:10 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
