@@ -133,6 +133,10 @@ y_1 = y_0 e^{\mu_y t_1}
 </annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="parameter-summary">Parameter Summary<a class="anchor" aria-label="anchor" href="#parameter-summary"></a>
 </h2>
+<div id="tbl-param-summary" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-param-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 1: Parameter summary for antibody kinetics model.
+</figcaption><div aria-describedby="tbl-param-summary-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table caption-top">
 <thead><tr class="header">
 <th>Symbol</th>
@@ -169,6 +173,9 @@ y_1 = y_0 e^{\mu_y t_1}
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <p><strong>Note:</strong> Only the first 6 are typically estimated. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is derived from the ODE solution at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>.</p>
 <hr></section><section class="level2"><h2 id="model-comparison-teunis2016-vs-this-presentation">Model Comparison: <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis2016-vs-this-presentation"></a>
 </h2>
@@ -240,7 +247,14 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-</annotation></semantics></math><strong>Hyperparameters – Means:</strong> - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> - Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math><strong>Hyperparameters – Means:</strong></p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+</li>
+<li>Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>:</li>
+</ul>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
 </annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="core-parameters-used-for-curve-drawing">Core Parameters Used for Curve Drawing<a class="anchor" aria-label="anchor" href="#core-parameters-used-for-curve-drawing"></a>
