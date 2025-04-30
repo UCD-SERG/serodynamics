@@ -103,6 +103,8 @@ $$
 | $t_1$    | Time of peak response                   |
 | $y_1$    | Peak antibody concentration             |
 
+: Parameter summary for antibody kinetics model. {#tbl-param-summary}
+
 **Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
 
 ------------------------------------------------------------------------
@@ -128,8 +130,7 @@ $$
 
 ## Full Parameter Model (7 Parameters)
 
-**Subject-level parameters:** 
-$$
+**Subject-level parameters:** $$
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
 \begin{bmatrix}
 y_{0,ij} \\
@@ -140,11 +141,7 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-$$ 
-**Hyperparameters – Means:** 
-- $\mu_j$: population-level mean vector for biomarker $j$ 
-- Prior on $\mu_j$: 
-$$
+$$ **Hyperparameters – Means:** - $\mu_j$: population-level mean vector for biomarker $j$ - Prior on $\mu_j$: $$
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
 $$
 
