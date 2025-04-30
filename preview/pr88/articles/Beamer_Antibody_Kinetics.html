@@ -81,12 +81,14 @@
 </h2>
 <ul>
 <li>Incorporates feedback from Dr. Morrison and Dr.Aiemjoy</li>
-<li>Focus exclusively on Teunis et al. <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> model</li>
+<li>Focus exclusively on <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> model</li>
 <li>Clarifies model dynamics: growth, clearance, decay</li>
 <li>Uses updated parameter notation: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>y</mi></msub><annotation encoding="application/x-tex">\mu_y</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>b</mi></msub><annotation encoding="application/x-tex">\mu_b</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
 </li>
 <li>Assumes block-diagonal covariance structure across biomarkers</li>
-</ul></section><section class="level2"><h2 id="within-host-ode-system-teunis-et-al--teunis2016">Within-Host ODE System (Teunis et al., <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span>)<a class="anchor" aria-label="anchor" href="#within-host-ode-system-teunis-et-al--teunis2016"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="within-host-ode-system-teunis2016">Within-Host ODE System <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span>
+<a class="anchor" aria-label="anchor" href="#within-host-ode-system-teunis2016"></a>
 </h2>
 <p><strong>Two-phase within-host antibody kinetics:</strong></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>μ</mi><mi>y</mi></msub><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>≤</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>α</mi><mi>y</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>ρ</mi></msup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>&gt;</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr></mtable></mrow><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">with </mtext><mspace width="0.333em"></mspace></mrow><mfrac><mrow><mi>d</mi><mi>b</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><msub><mi>μ</mi><mi>b</mi></msub><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>γ</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
@@ -99,7 +101,7 @@
 \frac{db}{dt} = \mu_b b(t) - \gamma y(t)
 </annotation></semantics></math></p>
 <p><strong>Initial conditions:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">y(0) = y_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">b(0) = b_0</annotation></semantics></math><br><strong>Key transition:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math> is the time when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b(t_1) = 0</annotation></semantics></math><br><strong>Derived quantity:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y_1 = y(t_1)</annotation></semantics></math></p>
-</section><section class="level2"><h2 id="closed-form-solutions">Closed-Form Solutions<a class="anchor" aria-label="anchor" href="#closed-form-solutions"></a>
+<hr></section><section class="level2"><h2 id="closed-form-solutions">Closed-Form Solutions<a class="anchor" aria-label="anchor" href="#closed-form-solutions"></a>
 </h2>
 <p><strong>Antibody concentration</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y(t)</annotation></semantics></math></p>
 <ul>
@@ -118,7 +120,8 @@ b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left(e^{\mu_y t} - e^
 <li><p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>t</mi><mo>&gt;</mo><msub><mi>t</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">t &gt; t_1</annotation></semantics></math>:<br><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">
 b(t) = 0
 </annotation></semantics></math></p></li>
-</ul></section><section class="level2"><h2 id="time-of-peak-response">Time of Peak Response<a class="anchor" aria-label="anchor" href="#time-of-peak-response"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="time-of-peak-response">Time of Peak Response<a class="anchor" aria-label="anchor" href="#time-of-peak-response"></a>
 </h2>
 <p><strong>Peak Time</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mfrac><mn>1</mn><mrow><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub></mrow></mfrac><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>b</mi><mn>0</mn></msub></mrow><mrow><mi>γ</mi><msub><mi>y</mi><mn>0</mn></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
@@ -128,7 +131,7 @@ t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma 
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><msup><mi>e</mi><mrow><msub><mi>μ</mi><mi>y</mi></msub><msub><mi>t</mi><mn>1</mn></msub></mrow></msup></mrow><annotation encoding="application/x-tex">
 y_1 = y_0 e^{\mu_y t_1}
 </annotation></semantics></math></p>
-</section><section class="level2"><h2 id="parameter-summary">Parameter Summary<a class="anchor" aria-label="anchor" href="#parameter-summary"></a>
+<hr></section><section class="level2"><h2 id="parameter-summary">Parameter Summary<a class="anchor" aria-label="anchor" href="#parameter-summary"></a>
 </h2>
 <table class="table caption-top">
 <thead><tr class="header">
@@ -166,8 +169,8 @@ y_1 = y_0 e^{\mu_y t_1}
 </tr>
 </tbody>
 </table>
-<p><strong>Note:</strong> Only the first 6 are typically estimated.<br><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is derived from the ODE solution at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>.</p>
-</section><section class="level2"><h2 id="model-comparison-teunis-teunis2016-vs-this-presentation">Model Comparison: Teunis <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis-teunis2016-vs-this-presentation"></a>
+<p><strong>Note:</strong> Only the first 6 are typically estimated. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is derived from the ODE solution at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>.</p>
+</section><section class="level2"><h2 id="model-comparison-teunis2016-vs-this-presentation">Model Comparison: <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis2016-vs-this-presentation"></a>
 </h2>
 <table class="table caption-top">
 <colgroup>
@@ -177,8 +180,7 @@ y_1 = y_0 e^{\mu_y t_1}
 </colgroup>
 <thead><tr class="header">
 <th>Component</th>
-<th>Teunis <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span>
-</th>
+<th><span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span></th>
 <th>This Presentation</th>
 </tr></thead>
 <tbody>
@@ -218,39 +220,29 @@ y_1 = y_0 e^{\mu_y t_1}
 </table>
 <p><strong>Note:</strong></p>
 <ul>
-<li>Teunis <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> uses <strong>linear clearance</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c y(t)</annotation></semantics></math>, not bilinear<br>
+<li>
+<span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> uses <strong>linear clearance</strong>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>c</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">c y(t)</annotation></semantics></math>, not bilinear<br>
 </li>
 <li>Antibody production is <strong>driven by pathogen</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">b(t)</annotation></semantics></math><br>
 </li>
 <li>Our model simplifies by assuming self-expanding antibody dynamics</li>
-</ul></section><section class="level2"><h2 id="full-parameter-model-7-parameters">Full Parameter Model (7 Parameters)<a class="anchor" aria-label="anchor" href="#full-parameter-model-7-parameters"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="full-parameter-model-7-parameters">Full Parameter Model (7 Parameters)<a class="anchor" aria-label="anchor" href="#full-parameter-model-7-parameters"></a>
 </h2>
-<p><strong>Subject-level parameters:</strong></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><strong>Subject-level parameters:</strong> <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
 \begin{bmatrix}
-  y_{0,ij} \\
-  b_{0,ij} \\
-  \mu_{b,ij} \\
-  \mu_{y,ij} \\
-  \gamma_{ij} \\
-  \alpha_{ij} \\
-  \rho_{ij}
+y_{0,ij} \\
+b_{0,ij} \\
+\mu_{b,ij} \\
+\mu_{y,ij} \\
+\gamma_{ij} \\
+\alpha_{ij} \\
+\rho_{ij}
 \end{bmatrix}
-</annotation></semantics></math></p>
-<p><strong>Hyperparameters – Means:</strong></p>
-<ul>
-<li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
-</li>
-<li>Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>:</li>
-</ul>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+</annotation></semantics></math><strong>Hyperparameters – Means:</strong> - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> - Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
-</annotation></semantics></math></p>
-</section><section class="level2"><h2 id="core-parameters-used-for-curve-drawing">Core Parameters Used for Curve Drawing<a class="anchor" aria-label="anchor" href="#core-parameters-used-for-curve-drawing"></a>
-</h2>
-<p>In this presentation, we focus on <strong>5 key parameters</strong> required to draw antibody curves:</p>
+</annotation></semantics></math> ## Core Parameters Used for Curve Drawing In this presentation, we focus on <strong>5 key parameters</strong> required to draw antibody curves:</p>
 <ul>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>: initial antibody level</li>
@@ -264,7 +256,7 @@ y_1 = y_0 e^{\mu_y t_1}
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>: shape of decay</li>
 </ul>
 <p>Note: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> are <strong>derived from the full model</strong> - These 5 are sufficient for prediction and plotting</p>
-</section><section class="level2"><h2 id="classifying-model-parameters-teunis2016-structure">Classifying Model Parameters (<span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> Structure)<a class="anchor" aria-label="anchor" href="#classifying-model-parameters-teunis2016-structure"></a>
+<hr></section><section class="level2"><h2 id="classifying-model-parameters-teunis2016-structure">Classifying Model Parameters (<span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> Structure)<a class="anchor" aria-label="anchor" href="#classifying-model-parameters-teunis2016-structure"></a>
 </h2>
 <p><strong>Estimated Parameters (7 total):</strong></p>
 <ul>
@@ -276,7 +268,8 @@ y_1 = y_0 e^{\mu_y t_1}
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math>: peak antibody level computed as <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y(t_1)</annotation></semantics></math>
 </li>
-</ul></section><section class="level2"><h2 id="time-of-pathogen-clearance-t_1">Time of Pathogen Clearance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#time-of-pathogen-clearance-t_1"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="time-of-pathogen-clearance-t_1">Time of Pathogen Clearance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#time-of-pathogen-clearance-t_1"></a>
 </h2>
 <p><strong>Definition:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math> is the time when the pathogen is cleared, i.e., <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b(t_1) = 0</annotation></semantics></math></p>
 <p><strong>Analytic expression:</strong></p>
@@ -284,7 +277,7 @@ y_1 = y_0 e^{\mu_y t_1}
 t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b)b_0}{\gamma y_0}\right)
 </annotation></semantics></math></p>
 <p><strong>Key observations:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math> depends on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>b</mi></msub><annotation encoding="application/x-tex">\mu_b</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>y</mi></msub><annotation encoding="application/x-tex">\mu_y</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>b</mi><mn>0</mn></msub><annotation encoding="application/x-tex">b_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>, and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y_1 = y(t_1)</annotation></semantics></math> is computed based on this time point</p>
-</section><section class="level2"><h2 id="why-its-a-seven-parameter-model">Why It’s a Seven-Parameter Model<a class="anchor" aria-label="anchor" href="#why-its-a-seven-parameter-model"></a>
+<hr></section><section class="level2"><h2 id="why-its-a-seven-parameter-model">Why It’s a Seven-Parameter Model<a class="anchor" aria-label="anchor" href="#why-its-a-seven-parameter-model"></a>
 </h2>
 <ul>
 <li>Our model estimates <strong>7 parameters</strong>:
@@ -300,7 +293,7 @@ t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b)b_0}{\gamma y_0
 <li>So why isn’t <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> a parameter?</li>
 </ul>
 <p><u>Answer</u>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is a <strong>computed value</strong>, not directly estimated.</p>
-</section><section class="level2"><h2 id="why-y_1-is-not-fit-directly">Why <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> Is Not Fit Directly<a class="anchor" aria-label="anchor" href="#why-y_1-is-not-fit-directly"></a>
+<hr></section><section class="level2"><h2 id="why-y_1-is-not-fit-directly">Why <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> Is Not Fit Directly<a class="anchor" aria-label="anchor" href="#why-y_1-is-not-fit-directly"></a>
 </h2>
 <ul>
 <li>
@@ -322,7 +315,7 @@ y_1 = y(t_1) \quad \text{where } b(t_1) = 0
 </li>
 </ul>
 <p>In other words: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is a <strong>derived output</strong>, not a fit parameter.</p>
-</section><section class="level2"><h2 id="how-y_1-is-computed">How <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> Is Computed<a class="anchor" aria-label="anchor" href="#how-y_1-is-computed"></a>
+<hr></section><section class="level2"><h2 id="how-y_1-is-computed">How <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> Is Computed<a class="anchor" aria-label="anchor" href="#how-y_1-is-computed"></a>
 </h2>
 <ul>
 <li>
@@ -336,7 +329,7 @@ y_1 = y(t_1) \quad \text{where } b(t_1) = 0
 </ul>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo>;</mo><msub><mi>μ</mi><mi>y</mi></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>b</mi><mn>0</mn></msub><mo>,</mo><msub><mi>μ</mi><mi>b</mi></msub><mo>,</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
-</annotation></semantics></math></p>
+</annotation></semantics></math> —————————————————————————</p>
 </section><section class="level2"><h2 id="recap-what-we-estimate">Recap: What We Estimate<a class="anchor" aria-label="anchor" href="#recap-what-we-estimate"></a>
 </h2>
 <p><strong>Seven model parameters (</strong><u>7-parameter model for full dynamics</u><strong>):</strong></p>
@@ -356,7 +349,8 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
 </li>
-</ul></section><section class="level2"><h2 id="hierarchical-bayesian-structure">Hierarchical Bayesian Structure<a class="anchor" aria-label="anchor" href="#hierarchical-bayesian-structure"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="hierarchical-bayesian-structure">Hierarchical Bayesian Structure<a class="anchor" aria-label="anchor" href="#hierarchical-bayesian-structure"></a>
 </h2>
 <p><strong>Individual parameters:</strong></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
@@ -378,7 +372,8 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level means (per biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>)</li>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\Sigma_j</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>7</mn><mo>×</mo><mn>7</mn></mrow><annotation encoding="application/x-tex">7 \times 7</annotation></semantics></math> covariance matrix over parameters</li>
-</ul></section><section class="level2"><h2 id="subject-level-parameters-theta_ij">Subject-Level Parameters: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{ij}</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#subject-level-parameters-theta_ij"></a>
+</ul>
+<hr></section><section class="level2"><h2 id="subject-level-parameters-theta_ij">Subject-Level Parameters: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{ij}</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#subject-level-parameters-theta_ij"></a>
 </h2>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} \in \mathbb{R}^7
@@ -398,7 +393,7 @@ b_{0,ij} \\
 \quad \Sigma_j \in \mathbb{R}^{7 \times 7}
 </annotation></semantics></math></p>
 <p>Each subject <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> has a unique 7-parameter vector per biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>, capturing individual-level variation in antibody dynamics.</p>
-</section><section class="level2"><h2 id="hyperparameters-priors-on-population-means">Hyperparameters: Priors on Population Means<a class="anchor" aria-label="anchor" href="#hyperparameters-priors-on-population-means"></a>
+<hr></section><section class="level2"><h2 id="hyperparameters-priors-on-population-means">Hyperparameters: Priors on Population Means<a class="anchor" aria-label="anchor" href="#hyperparameters-priors-on-population-means"></a>
 </h2>
 <p><strong>Population-level means:</strong></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛍</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>𝛍</mi><mrow><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">y</mi><mi mathvariant="normal">p</mi></mrow><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><msub><mi>Ω</mi><mrow><mrow><mi mathvariant="normal">h</mi><mi mathvariant="normal">y</mi><mi mathvariant="normal">p</mi></mrow><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
