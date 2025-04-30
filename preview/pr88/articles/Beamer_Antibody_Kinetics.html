@@ -91,7 +91,7 @@
 <a class="anchor" aria-label="anchor" href="#within-host-ode-system-teunis2016"></a>
 </h2>
 <p><strong>Two-phase within-host antibody kinetics:</strong></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>μ</mi><mi>y</mi></msub><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>≤</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>α</mi><mi>y</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>ρ</mi></msup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>&gt;</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr></mtable></mrow><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">with </mtext><mspace width="0.333em"></mspace></mrow><mfrac><mrow><mi>d</mi><mi>b</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><msub><mi>μ</mi><mi>b</mi></msub><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>γ</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><span id="eq-ode-system"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><mi>y</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><msub><mi>μ</mi><mi>y</mi></msub><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>≤</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>−</mi><mi>α</mi><mi>y</mi><msup><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mi>ρ</mi></msup><mo>,</mo></mtd><mtd columnalign="left" style="text-align: left"><mi>t</mi><mo>&gt;</mo><msub><mi>t</mi><mn>1</mn></msub></mtd></mtr></mtable></mrow><mspace width="1.0em"></mspace><mrow><mtext mathvariant="normal">with </mtext><mspace width="0.333em"></mspace></mrow><mfrac><mrow><mi>d</mi><mi>b</mi></mrow><mrow><mi>d</mi><mi>t</mi></mrow></mfrac><mo>=</mo><msub><mi>μ</mi><mi>b</mi></msub><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>−</mo><mi>γ</mi><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>t</mi><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \frac{dy}{dt} =
 \begin{cases}
 \mu_y y(t), &amp; t \le t_1 \\
@@ -99,7 +99,7 @@
 \end{cases}
 \quad \text{with }
 \frac{db}{dt} = \mu_b b(t) - \gamma y(t)
-</annotation></semantics></math></p>
+ \qquad(1)</annotation></semantics></math></span></p>
 <p><strong>Initial conditions:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">y(0) = y_0</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>b</mi><mn>0</mn></msub></mrow><annotation encoding="application/x-tex">b(0) = b_0</annotation></semantics></math><br><strong>Key transition:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math> is the time when <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>b</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">b(t_1) = 0</annotation></semantics></math><br><strong>Derived quantity:</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">y_1 = y(t_1)</annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="closed-form-solutions">Closed-Form Solutions<a class="anchor" aria-label="anchor" href="#closed-form-solutions"></a>
 </h2>
@@ -124,13 +124,13 @@ b(t) = 0
 <hr></section><section class="level2"><h2 id="time-of-peak-response">Time of Peak Response<a class="anchor" aria-label="anchor" href="#time-of-peak-response"></a>
 </h2>
 <p><strong>Peak Time</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mfrac><mn>1</mn><mrow><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub></mrow></mfrac><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>b</mi><mn>0</mn></msub></mrow><mrow><mi>γ</mi><msub><mi>y</mi><mn>0</mn></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><span id="eq-t1"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>=</mo><mfrac><mn>1</mn><mrow><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub></mrow></mfrac><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>+</mo><mfrac><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>y</mi></msub><mo>−</mo><msub><mi>μ</mi><mi>b</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>b</mi><mn>0</mn></msub></mrow><mrow><mi>γ</mi><msub><mi>y</mi><mn>0</mn></msub></mrow></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>2</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
-</annotation></semantics></math></p>
+ \qquad(2)</annotation></semantics></math></span></p>
 <p><strong>Peak Antibody Level</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><msup><mi>e</mi><mrow><msub><mi>μ</mi><mi>y</mi></msub><msub><mi>t</mi><mn>1</mn></msub></mrow></msup></mrow><annotation encoding="application/x-tex">
+<p><span id="eq-y1"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><msub><mi>y</mi><mn>0</mn></msub><msup><mi>e</mi><mrow><msub><mi>μ</mi><mi>y</mi></msub><msub><mi>t</mi><mn>1</mn></msub></mrow></msup><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>3</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 y_1 = y_0 e^{\mu_y t_1}
-</annotation></semantics></math></p>
+ \qquad(3)</annotation></semantics></math></span></p>
 <hr></section><section class="level2"><h2 id="parameter-summary">Parameter Summary<a class="anchor" aria-label="anchor" href="#parameter-summary"></a>
 </h2>
 <div id="tbl-param-summary" class="quarto-float quarto-figure quarto-figure-center">
@@ -179,11 +179,15 @@ Table 1: Parameter summary for antibody kinetics model.
 <p><strong>Note:</strong> Only the first 6 are typically estimated. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is derived from the ODE solution at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>.</p>
 <hr></section><section class="level2"><h2 id="model-comparison-teunis2016-vs-this-presentation">Model Comparison: <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis2016-vs-this-presentation"></a>
 </h2>
+<div id="tbl-model-comparison" class="quarto-float quarto-figure quarto-figure-center">
+<figure class="quarto-float quarto-float-tbl"><figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table 2: Comparison of Teunis (2016) model and this presentation’s model assumptions.
+</figcaption><div aria-describedby="tbl-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table caption-top">
 <colgroup>
-<col style="width: 30%">
+<col style="width: 27%">
 <col style="width: 40%">
-<col style="width: 29%">
+<col style="width: 31%">
 </colgroup>
 <thead><tr class="header">
 <th>Component</th>
@@ -225,6 +229,9 @@ Table 1: Parameter summary for antibody kinetics model.
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
+</div>
 <p><strong>Note:</strong></p>
 <ul>
 <li>
@@ -236,7 +243,8 @@ Table 1: Parameter summary for antibody kinetics model.
 </ul>
 <hr></section><section class="level2"><h2 id="full-parameter-model-7-parameters">Full Parameter Model (7 Parameters)<a class="anchor" aria-label="anchor" href="#full-parameter-model-7-parameters"></a>
 </h2>
-<p><strong>Subject-level parameters:</strong> <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><strong>Subject-level parameters:</strong></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
 \begin{bmatrix}
 y_{0,ij} \\
@@ -247,7 +255,8 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-</annotation></semantics></math><strong>Hyperparameters – Means:</strong></p>
+</annotation></semantics></math></p>
+<p><strong>Hyperparameters – Means:</strong></p>
 <ul>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
