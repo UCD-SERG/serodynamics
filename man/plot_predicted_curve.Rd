@@ -6,11 +6,9 @@
 \usage{
 plot_predicted_curve(
   param_medians_wide,
-  param_medians_wide2 = NULL,
   dataset = NULL,
   legend_obs = "Observed Data",
   legend_mod1 = "Model 1 Predictions",
-  legend_mod2 = "Model 2 Predictions",
   show_quantiles = TRUE,
   log_scale = FALSE,
   log_x = FALSE,
@@ -20,10 +18,7 @@ plot_predicted_curve(
 }
 \arguments{
 \item{param_medians_wide}{A tibble with full posterior parameter samples
-(first model).}
-
-\item{param_medians_wide2}{(Optional) A tibble with full posterior
-parameter samples (second model).
+(first model).
 If this tibble contains observed data (with "dayssincefeveronset"),
 it will be treated as the observed data, and only one model is plotted.}
 
@@ -39,8 +34,6 @@ Must contain:
 \item{legend_obs}{Label for observed data in the legend.}
 
 \item{legend_mod1}{Label for the first model in the legend.}
-
-\item{legend_mod2}{Label for the second model in the legend.}
 
 \item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}

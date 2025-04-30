@@ -8,8 +8,6 @@
 #'
 #' @param param_medians_wide A tibble with full posterior parameter samples 
 #' (first model).
-#' @param param_medians_wide2 (Optional) A tibble with full posterior 
-#' parameter samples (second model).
 #'   If this tibble contains observed data (with "dayssincefeveronset"), 
 #'   it will be treated as the observed data, and only one model is plotted.
 #' @param dataset (Optional) A tibble with observed antibody response data. 
@@ -20,7 +18,6 @@
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
 #' @param legend_mod1 Label for the first model in the legend.
-#' @param legend_mod2 Label for the second model in the legend.
 #' @param show_quantiles Logical; if TRUE (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
 #' @param log_scale Logical; if TRUE, applies a log10 transformation to 
@@ -101,46 +98,26 @@
 #' )
 #' print(p2)
 plot_predicted_curve <- function(param_medians_wide,
-                                 param_medians_wide2 = NULL,
                                  dataset = NULL,
                                  legend_obs = "Observed Data",
                                  legend_mod1 = "Model 1 Predictions",
-                                 legend_mod2 = "Model 2 Predictions",
                                  show_quantiles = TRUE,
                                  log_scale = FALSE,
                                  log_x = FALSE,
                                  show_all_curves = FALSE,
                                  alpha_samples = 0.3) {
   
-  # If the second argument is actually observed data, treat it as 'dat'
-  if (!is.null(param_medians_wide2) && "timeindays" %in% 
-        names(param_medians_wide2)) {
-    dataset <- param_medians_wide2
-    param_medians_wide2 <- NULL
-  }
-  
   # Ensure Subject column exists in each model's data
   if (!"Subject" %in% names(param_medians_wide)) {
     param_medians_wide <- param_medians_wide |>
       dplyr::mutate(Subject = "subject1")
   }
-  if (!is.null(param_medians_wide2) && !"Subject" %in% 
-        names(param_medians_wide2)) {
-    param_medians_wide2 <- param_medians_wide2 |>
-      dplyr::mutate(Subject = "subject2")
-  }
-  
+
   # Add sample_id if not present (to identify individual samples)
   if (!"sample_id" %in% names(param_medians_wide)) {
     param_medians_wide <- param_medians_wide |>
       dplyr::mutate(sample_id = dplyr::row_number())
   }
-  if (!is.null(param_medians_wide2) && !"sample_id" %in% 
-        names(param_medians_wide2)) {
-    param_medians_wide2 <- param_medians_wide2 |>
-      dplyr::mutate(sample_id = dplyr::row_number())
-  }
-  
   # Define time points for prediction
   tx2 <- seq(0, 1200, by = 5)
   
@@ -177,32 +154,6 @@ plot_predicted_curve <- function(param_medians_wide,
                            .data$shape)) |>
     dplyr::ungroup()
   
-  ## --- Prepare data for Model 2 (if provided) ---
-  if (!is.null(param_medians_wide2)) {
-    dt2 <- data.frame(t = tx2) |>
-      dplyr::mutate(id = dplyr::row_number()) |>
-      tidyr::pivot_wider(names_from = c("id"), 
-                         values_from = c("t"), 
-                         names_prefix = "time") |>
-      dplyr::slice(
-        rep(seq_len(dplyr::n()), each = nrow(param_medians_wide2))
-      )
-    
-    
-    serocourse_all2 <- cbind(param_medians_wide2, dt2) |>
-      tidyr::pivot_longer(cols = dplyr::starts_with("time"), 
-                          values_to = "t") |>
-      dplyr::select(-c("name")) |>
-      dplyr::rowwise() |>
-      dplyr::mutate(res = ab(.data$t, 
-                             .data$y0, 
-                             .data$y1, 
-                             .data$t1, 
-                             .data$alpha, 
-                             .data$shape)) |>
-      dplyr::ungroup()
-  }
-  
   # Base ggplot object with legend at the bottom.
   p <- ggplot2::ggplot() +
     ggplot2::theme_minimal() +
@@ -217,14 +168,6 @@ plot_predicted_curve <- function(param_medians_wide,
                                       y = .data$res, 
                                       group = .data$sample_id),
                          color = "gray", alpha = 0.2)
-    if (!is.null(param_medians_wide2)) {
-      p <- p +
-        ggplot2::geom_line(data = serocourse_all2,
-                           ggplot2::aes(x = .data$t, 
-                                        y = .data$res, 
-                                        group = .data$sample_id),
-                           color = "gray", alpha = 0.2)
-    }
   }
   
   # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
@@ -249,31 +192,6 @@ plot_predicted_curve <- function(param_medians_wide,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res.med, 
                                       color = "mod1"),
-                         linewidth = 1, inherit.aes = FALSE)
-  }
-  
-  # --- Summarize & Plot Model 2 (Median + 95% Ribbon) ---
-  if (!is.null(param_medians_wide2) && show_quantiles) {
-    sum2 <- serocourse_all2 |>
-      dplyr::group_by(t) |>
-      dplyr::summarise(
-        res.med  = stats::quantile(.data$res, probs = 0.50, na.rm = TRUE),
-        res.low  = stats::quantile(.data$res, probs = 0.025, na.rm = TRUE),
-        res.high = stats::quantile(.data$res, probs = 0.975, na.rm = TRUE),
-        .groups  = "drop"
-      )
-    
-    p <- p +
-      ggplot2::geom_ribbon(data = sum2,
-                           ggplot2::aes(x = .data$t, 
-                                        ymin = .data$res.low, 
-                                        ymax = .data$res.high, 
-                                        fill = "mod2"),
-                           alpha = 0.2, inherit.aes = FALSE) +
-      ggplot2::geom_line(data = sum2,
-                         ggplot2::aes(x = .data$t, 
-                                      y = .data$res.med, 
-                                      color = "mod2"),
                          linewidth = 1, inherit.aes = FALSE)
   }
   
@@ -309,15 +227,9 @@ plot_predicted_curve <- function(param_medians_wide,
   fill_vals  <- c("mod1" = "red")
   fill_labels <- c("mod1" = legend_mod1)
   
-  if (!is.null(param_medians_wide2)) {
-    color_vals["mod2"] <- "green"
-    color_labels["mod2"] <- legend_mod2
-    fill_vals["mod2"] <- "green"
-    fill_labels["mod2"] <- legend_mod2
-  }
   if (!is.null(dataset)) {
-    color_vals["observed"] <- "blue"
-    color_labels["observed"] <- legend_obs
+    color_vals <- c(color_vals, "observed" = "blue")
+    color_labels <- c(color_labels, "observed" = legend_obs)
   }
   
   p <- p +
