@@ -170,7 +170,7 @@ y_1 = y_0 e^{\mu_y t_1}
 </tbody>
 </table>
 <p><strong>Note:</strong> Only the first 6 are typically estimated. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> is derived from the ODE solution at <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>t</mi><mn>1</mn></msub><annotation encoding="application/x-tex">t_1</annotation></semantics></math>.</p>
-</section><section class="level2"><h2 id="model-comparison-teunis2016-vs-this-presentation">Model Comparison: <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis2016-vs-this-presentation"></a>
+<hr></section><section class="level2"><h2 id="model-comparison-teunis2016-vs-this-presentation">Model Comparison: <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> vs This Presentation<a class="anchor" aria-label="anchor" href="#model-comparison-teunis2016-vs-this-presentation"></a>
 </h2>
 <table class="table caption-top">
 <colgroup>
@@ -242,7 +242,10 @@ b_{0,ij} \\
 \end{bmatrix}
 </annotation></semantics></math><strong>Hyperparameters – Means:</strong> - <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> - Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: <math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
-</annotation></semantics></math> ## Core Parameters Used for Curve Drawing In this presentation, we focus on <strong>5 key parameters</strong> required to draw antibody curves:</p>
+</annotation></semantics></math></p>
+<hr></section><section class="level2"><h2 id="core-parameters-used-for-curve-drawing">Core Parameters Used for Curve Drawing<a class="anchor" aria-label="anchor" href="#core-parameters-used-for-curve-drawing"></a>
+</h2>
+<p>In this presentation, we focus on <strong>5 key parameters</strong> required to draw antibody curves:</p>
 <ul>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>0</mn></msub><annotation encoding="application/x-tex">y_0</annotation></semantics></math>: initial antibody level</li>
@@ -329,8 +332,8 @@ y_1 = y(t_1) \quad \text{where } b(t_1) = 0
 </ul>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>=</mo><mi>y</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo>;</mo><msub><mi>μ</mi><mi>y</mi></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>b</mi><mn>0</mn></msub><mo>,</mo><msub><mi>μ</mi><mi>b</mi></msub><mo>,</mo><mi>γ</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
-</annotation></semantics></math> —————————————————————————</p>
-</section><section class="level2"><h2 id="recap-what-we-estimate">Recap: What We Estimate<a class="anchor" aria-label="anchor" href="#recap-what-we-estimate"></a>
+</annotation></semantics></math></p>
+<hr></section><section class="level2"><h2 id="recap-what-we-estimate">Recap: What We Estimate<a class="anchor" aria-label="anchor" href="#recap-what-we-estimate"></a>
 </h2>
 <p><strong>Seven model parameters (</strong><u>7-parameter model for full dynamics</u><strong>):</strong></p>
 <ul>
