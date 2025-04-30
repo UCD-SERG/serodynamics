@@ -39,6 +39,7 @@ $$
 \end{cases}
 \quad \text{with } 
 \frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+\tag{1} {#eq-ode-system}
 $$
 
 **Initial conditions:** $y(0) = y_0$, $b(0) = b_0$\
@@ -81,12 +82,14 @@ $$
 
 $$
 t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
+\tag{2} {#eq-t1}
 $$
 
 **Peak Antibody Level** $y_1$
 
 $$
 y_1 = y_0 e^{\mu_y t_1}
+\tag{3} {#eq-y1}
 $$
 
 ------------------------------------------------------------------------
@@ -111,20 +114,23 @@ $$
 
 ## Model Comparison: [@teunis2016] vs This Presentation
 
-| Component | [@teunis2016] | This Presentation |
-|----------------------|-----------------------------|---------------------|
-| Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
-| Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
-| Antibody ODE (post-$t_1$) | $- \alpha y(t)^r$ | $- \alpha y(t)^\rho$ |
-| Antibody growth type | Pathogen-driven | Self-driven exponential |
-| Antibody rate name | $\mu$ | $\mu_y$ |
-| $t_1$ formula | Uses $\mu_0$, $\mu$, $b_0$, $c$, $y_0$ | Uses $\mu_b$, $\mu_y$, etc. |
+: Comparison of Teunis (2016) model and this presentation’s model assumptions. {#tbl-model-comparison}
+
+| Component                  | [@teunis2016]                         | This Presentation              |
+|---------------------------|----------------------------------------|-------------------------------|
+| Pathogen ODE              | $\mu_0 b(t) - c y(t)$                  | $\mu_b b(t) - \gamma y(t)$    |
+| Antibody ODE (pre-$t_1$)  | $\mu y(t)$                             | $\mu_y y(t)$                  |
+| Antibody ODE (post-$t_1$) | $- \alpha y(t)^r$                      | $- \alpha y(t)^\rho$          |
+| Antibody growth type      | Pathogen-driven                        | Self-driven exponential       |
+| Antibody rate name        | $\mu$                                  | $\mu_y$                       |
+| $t_1$ formula             | Uses $\mu_0$, $\mu$, $b_0$, $c$, $y_0$ | Uses $\mu_b$, $\mu_y$, etc.   |
 
 **Note:**
 
--   [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear\
--   Antibody production is **driven by pathogen** $b(t)$\
+-   [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear  
+-   Antibody production is **driven by pathogen** $b(t)$  
 -   Our model simplifies by assuming self-expanding antibody dynamics
+
 
 ------------------------------------------------------------------------
 
