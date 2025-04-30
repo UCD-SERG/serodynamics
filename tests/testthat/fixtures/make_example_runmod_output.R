@@ -43,9 +43,12 @@ full_samples <- process_jags_samples(
 )
 
 # 5. Save output to disk for reproducibility or testing
-full_samples |>
-  structure(
-    ids           = attr(dataset, "ids"),
-    antigen_isos  = attr(dataset, "antigens")
-  ) |>
+list(
+  full_samples = full_samples |>
+    structure(
+      ids          = attr(dataset, "ids"),
+      antigen_isos = attr(dataset, "antigens")
+    ),
+  dat = dat
+) |>
   readr::write_rds(file = "tests/testthat/fixtures/example_runmod_output.rds")
