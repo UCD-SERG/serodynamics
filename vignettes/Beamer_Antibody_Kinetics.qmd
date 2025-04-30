@@ -130,7 +130,8 @@ $$
 
 ## Full Parameter Model (7 Parameters)
 
-**Subject-level parameters:** $$
+**Subject-level parameters:** 
+$$
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
 \begin{bmatrix}
 y_{0,ij} \\
@@ -141,7 +142,13 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-$$ **Hyperparameters – Means:** - $\mu_j$: population-level mean vector for biomarker $j$ - Prior on $\mu_j$: $$
+$$ 
+**Hyperparameters – Means:** 
+
+-   $\mu_j$: population-level mean vector for biomarker $j$ 
+-   Prior on $\mu_j$: 
+
+$$
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
 $$
 
