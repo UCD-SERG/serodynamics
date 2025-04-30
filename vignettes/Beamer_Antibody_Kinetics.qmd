@@ -13,6 +13,8 @@ format:
     incremental: false
 engine: knitr
 bibliography: references.bib
+env:
+  PAK_CACHE_DISABLE: "true"
 ---
 
 ## Overview
