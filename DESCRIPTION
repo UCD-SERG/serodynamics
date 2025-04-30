@@ -46,7 +46,6 @@ Suggests:
     here,
     rjags,
     rmarkdown,
-    stringr,
     magrittr,
     ssdtools,
     rex
