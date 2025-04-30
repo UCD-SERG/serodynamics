@@ -18,12 +18,14 @@ bibliography: references.bib
 ## Overview
 
 -   Incorporates feedback from Dr. Morrison and Dr.Aiemjoy
--   Focus exclusively on Teunis et al. [@teunis2016] model
+-   Focus exclusively on [@teunis2016] model
 -   Clarifies model dynamics: growth, clearance, decay
 -   Uses updated parameter notation: $\mu_y$, $\mu_b$, $\gamma$, $\alpha$, $\rho$
 -   Assumes block-diagonal covariance structure across biomarkers
 
-## Within-Host ODE System (Teunis et al., [@teunis2016])
+------------------------------------------------------------------------
+
+## Within-Host ODE System [@teunis2016]
 
 **Two-phase within-host antibody kinetics:**
 
@@ -40,6 +42,8 @@ $$
 **Initial conditions:** $y(0) = y_0$, $b(0) = b_0$\
 **Key transition:** $t_1$ is the time when $b(t_1) = 0$\
 **Derived quantity:** $y_1 = y(t_1)$
+
+------------------------------------------------------------------------
 
 ## Closed-Form Solutions
 
@@ -67,6 +71,8 @@ $$
     b(t) = 0
     $$
 
+------------------------------------------------------------------------
+
 ## Time of Peak Response
 
 **Peak Time** $t_1$
@@ -81,6 +87,8 @@ $$
 y_1 = y_0 e^{\mu_y t_1}
 $$
 
+------------------------------------------------------------------------
+
 ## Parameter Summary
 
 | Symbol   | Description                             |
@@ -93,12 +101,11 @@ $$
 | $t_1$    | Time of peak response                   |
 | $y_1$    | Peak antibody concentration             |
 
-**Note:** Only the first 6 are typically estimated.\
-$y_1$ is derived from the ODE solution at $t_1$.
+**Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
 
-## Model Comparison: Teunis [@teunis2016] vs This Presentation
+## Model Comparison: [@teunis2016] vs This Presentation
 
-| Component | Teunis [@teunis2016] | This Presentation |
+| Component | [@teunis2016] | This Presentation |
 |----------------------|-----------------------------|---------------------|
 | Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
 | Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
@@ -109,39 +116,28 @@ $y_1$ is derived from the ODE solution at $t_1$.
 
 **Note:**
 
--   Teunis [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear\
+-   [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear\
 -   Antibody production is **driven by pathogen** $b(t)$\
 -   Our model simplifies by assuming self-expanding antibody dynamics
 
+------------------------------------------------------------------------
+
 ## Full Parameter Model (7 Parameters)
 
-**Subject-level parameters:**
-
-$$
+**Subject-level parameters:** $$
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
 \begin{bmatrix}
-  y_{0,ij} \\
-  b_{0,ij} \\
-  \mu_{b,ij} \\
-  \mu_{y,ij} \\
-  \gamma_{ij} \\
-  \alpha_{ij} \\
-  \rho_{ij}
+y_{0,ij} \\
+b_{0,ij} \\
+\mu_{b,ij} \\
+\mu_{y,ij} \\
+\gamma_{ij} \\
+\alpha_{ij} \\
+\rho_{ij}
 \end{bmatrix}
-$$
-
-**Hyperparameters – Means:**
-
--   $\mu_j$: population-level mean vector for biomarker $j$
--   Prior on $\mu_j$:
-
-$$
+$$ **Hyperparameters – Means:** - $\mu_j$: population-level mean vector for biomarker $j$ - Prior on $\mu_j$: $$
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
-$$
-
-## Core Parameters Used for Curve Drawing
-
-In this presentation, we focus on **5 key parameters** required to draw antibody curves:
+$$ \## Core Parameters Used for Curve Drawing In this presentation, we focus on **5 key parameters** required to draw antibody curves:
 
 -   $y_0$: initial antibody level
 -   $t_1$: time of peak antibody response
@@ -150,6 +146,8 @@ In this presentation, we focus on **5 key parameters** required to draw antibody
 -   $\rho$: shape of decay
 
 Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficient for prediction and plotting
+
+------------------------------------------------------------------------
 
 ## Classifying Model Parameters ([@teunis2016] Structure)
 
@@ -163,6 +161,8 @@ Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficie
 
 -   $y_1$: peak antibody level computed as $y(t_1)$
 
+------------------------------------------------------------------------
+
 ## Time of Pathogen Clearance $t_1$
 
 **Definition:** $t_1$ is the time when the pathogen is cleared, i.e., $b(t_1) = 0$
@@ -175,6 +175,8 @@ $$
 
 **Key observations:** $t_1$ depends on $\mu_b$, $\mu_y$, $b_0$, $y_0$, and $y_1 = y(t_1)$ is computed based on this time point
 
+------------------------------------------------------------------------
+
 ## Why It's a Seven-Parameter Model
 
 -   Our model estimates **7 parameters**:
@@ -184,6 +186,8 @@ $$
 -   So why isn’t $y_1$ a parameter?
 
 [Answer]{.underline}: $y_1$ is a **computed value**, not directly estimated.
+
+------------------------------------------------------------------------
 
 ## Why $y_1$ Is Not Fit Directly
 
@@ -199,6 +203,8 @@ $$
 
 In other words: $y_1$ is a **derived output**, not a fit parameter.
 
+------------------------------------------------------------------------
+
 ## How $y_1$ Is Computed
 
 -   $y_1$ is computed by solving the ODE system:
@@ -211,7 +217,7 @@ $$
 
 $$
 y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
-$$
+$$ ---------------------------------------------------------------------------
 
 ## Recap: What We Estimate
 
@@ -227,6 +233,8 @@ $$
 **5-parameter subset for curve visualization:**
 
 -   $y_0$, $y_1$, $t_1$, $\alpha$, $\rho$
+
+------------------------------------------------------------------------
 
 ## Hierarchical Bayesian Structure
 
@@ -251,6 +259,8 @@ $$
 -   $\mu_j$: population-level means (per biomarker $j$)
 -   $\Sigma_j$: $7 \times 7$ covariance matrix over parameters
 
+------------------------------------------------------------------------
+
 ## Subject-Level Parameters: $\theta_{ij}$
 
 $$
@@ -274,6 +284,8 @@ b_{0,ij} \\
 $$
 
 Each subject $i$ has a unique 7-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
+
+------------------------------------------------------------------------
 
 ## Hyperparameters: Priors on Population Means
 
