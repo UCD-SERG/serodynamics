@@ -67,7 +67,7 @@
       <h1>Hierarchical Bayesian Model</h1>
 
       <p class="author">Our Study Group</p>
-      <p class="date">2025-05-01</p>
+      <p class="date">2025-05-02</p>
 
       <small class="dont-index">Source: <a href="https://github.com/UCD-SERG/serodynamics/blob/beamer/vignettes/Hierarchical_Bayesian_Model.qmd" class="external-link"><code>vignettes/Hierarchical_Bayesian_Model.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -90,7 +90,7 @@
 <p>This is a perfect use case for a <strong>hierarchical Bayesian model</strong>.</p>
 <hr></section><section class="level2"><h2 id="step-1-individual-level-parameters-subject-level">Step 1: Individual-Level Parameters (Subject-Level)<a class="anchor" aria-label="anchor" href="#step-1-individual-level-parameters-subject-level"></a>
 </h2>
-<p>Each person ( <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> ), for biomarker ($ j$ ), has their own unique set of parameters:</p>
+<p>Each person (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>), for biomarker (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>), has their own unique set of parameters:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>b</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mrow><mi>y</mi><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>γ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} =
 \begin{bmatrix}
