@@ -4,6 +4,8 @@
 
 ## New features
 
+
+* Added Beamer presentation files (`Beamer_Antibody_Kinetics.qmd`, `.pdf`) (#88)
 * Changes to `run_mod()` (#79):
    - `jags.post` now optionally included in output, as specified by argument
    `with_post`
