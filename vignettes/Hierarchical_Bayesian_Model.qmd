@@ -32,7 +32,7 @@ This is a perfect use case for a **hierarchical Bayesian model**.
 
 ## Step 1: Individual-Level Parameters (Subject-Level)
 
-Each person ( $i$ ), for biomarker (\$ j\$ ), has their own unique set of parameters:
+Each person ($i$), for biomarker ($j$), has their own unique set of parameters:
 
 $$
 \theta_{ij} =
