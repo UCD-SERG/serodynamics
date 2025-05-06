@@ -29,6 +29,7 @@
 #' @param include_subs A [logical] value specifying whether posterior
 #' distributions should be included for all subjects. A value of [FALSE] will
 #' only include the predictive distribution.
+#' @inheritParams prep_priors 
 #' @returns A [list] containing the following elements:
 #' - `"jags.post"`: a [list] containing one or more [runjags::runjags-class]
 #' objects (one per stratum).
@@ -50,11 +51,18 @@
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
-#'   - `nThin`: Thinning number (niter/nmc).
+#'   - `nThin`: Thinning number (niter/nmc)
+#' - A [list] of `priors` that summarize the input priors, including:
+#'   - `mu_hyp_param`
+#'   - `prec_hyp_param`
+#'   - `omega_param`
+#'   - `wishdf`
+#'   - `prec_logy_hyp_param`
+#' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod,
+                    file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
@@ -62,7 +70,9 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    include_subs = FALSE) {
+                    include_subs = FALSE,
+                    max_antigens,
+                    ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -97,7 +107,9 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+    priorspec <- prep_priors(max_antigens = 
+                               longdata$n_antigen_isos,
+                             ...)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -111,7 +123,7 @@ run_mod <- function(data,
 
     jags_post <- runjags::run.jags(
       model = file_mod,
-      data = c(longdata, priors),
+      data = c(longdata, priorspec),
       inits = initsfunction,
       method = "parallel",
       adapt = nadapt,
@@ -181,12 +193,14 @@ run_mod <- function(data,
     jags_out <- list(
       "curve_params" = jags_out,
       "jags.post" = jags_post_final,
-      "attributes" = mod_atts
+      "attributes" = mod_atts,
+      "priors" = attributes(priorspec)[["used_priors"]]
     )
   } else { 
     jags_out <- list(
       "curve_params" = jags_out,
-      "attributes" = mod_atts
+      "attributes" = mod_atts,
+      "priors" = attributes(priorspec)[["used_priors"]]
     )
   }
   jags_out

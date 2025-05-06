@@ -4,6 +4,7 @@
 
 ## New features
 
+* Making prep_priors modifiable (#78)
 * Changes to `run_mod()` (#79):
    - `jags.post` now optionally included in output, as specified by argument
    `with_post`

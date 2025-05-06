@@ -6,7 +6,7 @@
 \usage{
 run_mod(
   data,
-  file_mod,
+  file_mod = serodynamics_example("model.jags"),
   nchain = 4,
   nadapt = 0,
   nburn = 0,
@@ -14,7 +14,9 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
-  include_subs = FALSE
+  include_subs = FALSE,
+  max_antigens,
+  ...
 )
 }
 \arguments{
@@ -45,6 +47,52 @@ Note: These objects can be large.}
 \item{include_subs}{A \link{logical} value specifying whether posterior
 distributions should be included for all subjects. A value of \link{FALSE} will
 only include the predictive distribution.}
+
+\item{max_antigens}{An \link{integer} specifying how many
+antigen-isotypes (biomarkers) will be modeled.}
+
+\item{...}{
+  Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
+  \describe{
+    \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
+guess for the population mean of the seroresponse curve
+parameters (y0, y1, t1, r, alpha) for each biomarker.
+If specified, must be 5 values long, representing the following parameters:
+\itemize{
+\item y0 = baseline antibody concentration (default = 1.0)
+\item y1 = peak antibody concentration (default = 7.0)
+\item t1 = time to peak (default = 1.0)
+\item r = shape parameter (default = -4.0)
+\item alpha = decay rate (default = -1.0)
+}}
+    \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
+hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+representing prior beliefs of uncertainty around \code{mu_hyp_param}.
+If specified, must be 5 values long:
+\itemize{
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+}}
+    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
+diagonal entries representing the Wishart hyperprior
+distributions of \code{prec_hyp_param}.
+If specified, must be 5 values long:
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}}
+    \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
+of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
+If specified, must be 1 value long.
+\itemize{
+\item default = 20.0
+}}
+    \item{\code{prec_logy_hyp_param}}{A \link{numeric} \link{vector} of 2 values corresponding to
+hyperprior diagonal entries on the log-scale for the precision matrix
+(i.e. inverse variance) representing prior beliefs of individual variation.
+If specified, must be 2 values long:
+\itemize{
+\item defaults = 4.0, 1.0
+}}
+  }}
 }
 \value{
 A \link{list} containing the following elements:
@@ -72,7 +120,15 @@ distribution will be exported with the following attributes:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc).
+\item \code{nThin}: Thinning number (niter/nmc)
+}
+\item A \link{list} of \code{priors} that summarize the input priors, including:
+\itemize{
+\item \code{mu_hyp_param}
+\item \code{prec_hyp_param}
+\item \code{omega_param}
+\item \code{wishdf}
+\item \code{prec_logy_hyp_param}
 }
 }
 }
