@@ -48,51 +48,12 @@ Note: These objects can be large.}
 distributions should be included for all subjects. A value of \link{FALSE} will
 only include the predictive distribution.}
 
-\item{max_antigens}{An \link{integer} specifying how many
-antigen-isotypes will be modeled}
+\item{max_antigens}{\link{integer}: how many antigen-isotypes will be modeled}
 
 \item{...}{
   Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
   \describe{
-    \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the mean of
-the hyperprior distribution of the population mean of the random
-person-specific seroresponse curve parameters.
-If specified, must be 5 values long, representing the following parameters:
-\itemize{
-\item y0 = baseline antibody concentration (default = 1.0)
-\item y1 = peak antibody concentration (default = 7.0)
-\item t1 = time to peak (default = 1.0)
-\item r = shape parameter (default = -4.0)
-\item alpha = decay rate (default = -1.0)
-}}
-    \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
-diagonal entries representing the precision matrix of the hyperprior
-distributions of the population means of the seroresponse curve parameters
-(reused for each antigen-isotype).
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-}}
-    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
-diagonal entries of the (diagonal) scale matrix of the Wishart hyperprior
-distributions of the person-specific random effects' precision matrices.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-}}
-    \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
-of freedom for the Wishart hyperprior distributions of the random effects'
-precision matrices.
-If specified, must be 1 value long.
-\itemize{
-\item default = 20.0
-}}
-    \item{\code{prec_logy_hyp_param}}{A \link{numeric} \link{vector} of 2 values corresponding to
-the hyper-parameters for the precision (inverse variance) of the biomarkers,
-on log-scale. If specified, must be 2 values long.
-\itemize{
-\item defaults = 4.0, 1.0
-}}
+    \item{\code{}}{}
   }}
 }
 \value{
