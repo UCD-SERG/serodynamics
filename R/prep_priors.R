@@ -1,12 +1,12 @@
 #' @title Prepare priors
 #' @description
-#' Takes a [list] input to allow for modifiable priors. Priors can be specified
-#' as an option in run_mod.
+#' Takes multiple [vector] inputs to allow for modifiable priors. 
+#' Priors can be specified as an option in run_mod.
 #' 
 #' @param max_antigens An [integer] specifying how many
-#' antigen-isotypes will be modeled
+#' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
-#' guess for the population mean of the 5 estimated seroresponse curve
+#' guess for the population mean of the seroresponse curve
 #' parameters (y0, y1, t1, r, alpha) for each biomarker.
 #' If specified, must be 5 values long, representing the following parameters:
 #'    - y0 = baseline antibody concentration (default = 1.0)
@@ -31,30 +31,32 @@
 #' @param prec_logy_hyp_param A [numeric] [vector] of 2 values corresponding to
 #' hyperprior diagonal entries on the log-scale for the precision matrix
 #' (i.e. inverse variance) representing prior beliefs of individual variation.
+#' If specified, must be 2 values long:
 #'    - defaults = 4.0, 1.0
 #'
 #' @returns A "curve_params_priors" object 
 #' (a subclass of [list] with the inputs to `prep_priors()` attached 
-#' as an [attributes] entry named `"used_priors"`).
+#' as [attributes]  named `"used_priors"`).
 #' - "n_params": Corresponds to the 5 parameters being estimated.
 #' - "mu.hyp": A [matrix] of hyperpriors with dimensions
-#' `max_antigens` x 5 (number of parameters), representing the mean of the
+#' `max_antigens` x 5 (# of parameters), representing the mean of the
 #' hyperprior distribution for each biomarker: y0, y1, t1, r, and alpha).
 #' - "prec.hyp": A three-dimensional [numeric] [array] 
 #' with dimensions `max_antigens` x 5 (# of parameters), 
 #' containing the precision matrices of the hyperprior distributions of
-#' `mu_hyp_param`,for each biomarker.
+#' `mu.hyp`, for each biomarker.
 #' - "omega" : A three-dimensional [numeric] [array] with 5 [matrix],each
 #' with dimensions `max_antigens` x 5 (# of parameters), representing the
-#' precision matrix of Wishart hyper-priors for `prec_hyp_param`
+#' precision matrix of Wishart hyper-priors for `prec.hyp`.
 #' - "wishdf": A [vector] of 2 values specifying Wishart distribution degrees
-#' of freedom for `prec_hyp_param`.
+#' of freedom for `prec.hyp`.
 #' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
 #' (inverse variance) of individual variation measuring
-#' `max_antigens` x 2., on the log-scale, 
+#' `max_antigens` x 2, on the log-scale.
+#' - `used_priors` = inputs to `prep_priors()` attached as attributes.
 #' @export
-#' @examples
-#' prep_priors(max_antigens = 2)
+#' @example inst/examples/examples-prep_priors.R
+
 prep_priors <- function(max_antigens,
                         mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                         prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
