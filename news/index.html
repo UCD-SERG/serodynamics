@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9029</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9030</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,12 @@
 <ul><li>Initial CRAN submission.</li>
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
+<ul><li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> output:
+<ul><li>Taking out <code>include_subs</code> as an input option, default will include all individuals</li>
+<li>Making a single tbl as output</li>
+<li>All other pieces will be attributes.</li>
+</ul></li>
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
 <ul><li>
 <code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
 </li>
