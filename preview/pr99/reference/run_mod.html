@@ -66,7 +66,7 @@ alpha = decay rate
     </div>
 
     <div class="ref-description section level2">
-    <p>run_mod() takes a data frame and adjustable MCMC inputs to
+    <p><code>run_mod()</code> takes a data frame and adjustable MCMC inputs to
 <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags()</a></code> as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The <code><a href="https://rdrr.io/pkg/rjags/man/jags.model.html" class="external-link">rjags::jags.model()</a></code> models seroresponse dynamics to an
@@ -153,13 +153,14 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <li><p><code>Stratification</code> = The variable used to stratify jags model</p></li>
 <li><p><code>Subject</code> = ID of subject being evaluated</p></li>
 <li><p><code>value</code> = Estimated value of the parameter</p></li>
-<li><p>The following <code>attributes</code> are included in the output:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
+<li><p>The following <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> are included in the output:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
 <li><p><code>nChain</code>: Number of chains run.</p></li>
 <li><p><code>nParameters</code>: The amount of parameters estimated in the model.</p></li>
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
 <li><p><code>nThin</code>: Thinning number (niter/nmc).</p></li>
-<li><p>An optional <code>"jags.post"</code> included when argument <code>with_post</code> = TRUE.
+<li><p>An optional <code>"jags.post"</code> attribute, included when argument
+<code>with_post</code> = TRUE.
 Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> containing one or more <a href="https://rdrr.io/pkg/runjags/man/runjags-class.html" class="external-link">runjags::runjags</a> objects
 (one per stratum).</p></li>
 </ul></li>
@@ -206,7 +207,7 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 04:54:26 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 05:00:42 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -232,7 +233,6 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -241,7 +241,7 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 04:55:17 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 05:01:31 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -267,6 +267,7 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
