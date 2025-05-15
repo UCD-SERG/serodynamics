@@ -59,7 +59,7 @@ distribution will be exported with the following variables:
 \item \code{Stratification} = The variable used to stratify jags model
 \item \code{Subject} = ID of subject being evaluated
 \item \code{value} = Estimated value of the parameter
-\item The following \code{attributes} are included in the output:
+\item The following \link{attributes} are included in the output:
 \itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
@@ -67,14 +67,14 @@ distribution will be exported with the following variables:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
-\item An optional \code{"jags.post"} included when argument \code{with_post} = TRUE.
+\item An optional \code{"jags.post"} attribute, included when argument \code{with_post} = TRUE.
 Includes a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
 (one per stratum).
 }
 }
 }
 \description{
-run_mod() takes a data frame and adjustable MCMC inputs to
+\code{run_mod()} takes a data frame and adjustable MCMC inputs to
 \code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
