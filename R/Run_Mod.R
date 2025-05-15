@@ -130,7 +130,7 @@ run_mod <- function(data,
 
     # Adding attributes
     mod_atts <- attributes(jags_unpack)
-    # Only keeping necesarry attributes
+    # Only keeping necessary attributes
     mod_atts <- mod_atts[4:8]
 
     # extracting antigen-iso combinations to correctly number
