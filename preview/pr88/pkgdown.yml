@@ -2,10 +2,11 @@ pandoc: 3.1.11
 pkgdown: 2.1.2.9000
 pkgdown_sha: 99457e7fa7f36696ae743b06aca59c0fdd97a7d6
 articles:
+  Antibody_Kinetics: Antibody_Kinetics.html
   Beamer_Antibody_Kinetics: Beamer_Antibody_Kinetics.html
   dobson: dobson.html
   Hierarchical_Bayesian_Model: Hierarchical_Bayesian_Model.html
-last_built: 2025-05-02T00:52Z
+last_built: 2025-05-15T22:30Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr88/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr88/articles

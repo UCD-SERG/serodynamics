@@ -18,7 +18,8 @@
       <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Beamer_Antibody_Kinetics.html">Extending the Hierarchical Model for Antibody Kinetics</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Antibody_Kinetics.html">Hierarchical Bayesian Modeling of Antibody Kinetics: Extensions and Refinements</a></li>
+    <li><a class="dropdown-item" href="../articles/Beamer_Antibody_Kinetics.html">Extending the Hierarchical Model for Antibody Kinetics</a></li>
     <li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
     <li><a class="dropdown-item" href="../articles/Hierarchical_Bayesian_Model.html">Hierarchical Bayesian Model</a></li>
   </ul></li>
@@ -50,6 +51,11 @@
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>Added Beamer presentation files (<code>Beamer_Antibody_Kinetics.qmd</code>, <code>.pdf</code>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/88" class="external-link">#88</a>)</li>
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> output:
+<ul><li>Taking out <code>include_subs</code> as an input option, default will include all individuals</li>
+<li>Making a single tbl as output</li>
+<li>All other pieces will be attributes.</li>
+</ul></li>
 <li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
 <ul><li>
 <code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
