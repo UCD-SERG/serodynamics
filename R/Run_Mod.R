@@ -47,7 +47,8 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - An optional `"jags.post"` attribute, included when argument `with_post` = TRUE.
+#'   - An optional `"jags.post"` attribute, included when argument
+#'   `with_post` = TRUE.
 #'   Includes a [list] containing one or more [runjags::runjags-class] objects
 #'   (one per stratum).
 #' @export
