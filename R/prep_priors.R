@@ -14,6 +14,15 @@
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
+#'    Notes: Mean of the hyperprior distribution on mu_j. typically dont make a
+#'    guess the same way you do in a frequentist analysis. Instead have a 
+#'    whole distribution.
+#'    mu and omega are parameters. priors and hyperiors are distributions
+#'    that have parameters including
+#'    mu_hyp_j is the mean of the hyperprior distirbution on mu_j
+#'    Step 3: specifying a population distribution
+#'    Look at relationship between math and the jags
+#'    Saying mean of the hyperprior on the population 
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 #' representing prior beliefs of uncertainty around `mu_hyp_param`.
@@ -28,6 +37,8 @@
 #' of freedom for the Wishart hyperprior distribution of `prec_hyp_param`.
 #' If specified, must be 1 value long.
 #'    - default = 20.0
+#'    nu x omega 
+#'    Decrease to make hyperprior less informative. 
 #' @param prec_logy_hyp_param A [numeric] [vector] of 2 values corresponding to
 #' hyperprior diagonal entries on the log-scale for the precision matrix
 #' (i.e. inverse variance) representing prior beliefs of individual variation.
