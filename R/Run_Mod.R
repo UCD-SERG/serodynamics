@@ -40,7 +40,7 @@
 #'   - `Stratification` = The variable used to stratify jags model
 #'   - `Subject` = ID of subject being evaluated
 #'   - `value` = Estimated value of the parameter
-#' - The following `attributes` are included in the output:
+#' - The following [attributes] are included in the output:
 #'   - `class`: Class of the output object.
 #'   - `nChain`: Number of chains run.
 #'   - `nParameters`: The amount of parameters estimated in the model.
