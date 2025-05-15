@@ -250,7 +250,7 @@ $$ {#eq-12}
 -   $\Omega_j$ : prior scale matrix (small variance across parameters, often $0.1 \cdot I_7$)
 -   $\nu_j$ : degrees of freedom
 
-Higer $\nu_j$ $\rightarrow$ more inofrmative prior (stronger prior).
+Higher $\nu_j$ $\rightarrow$ more informative prior (stronger prior).
 
 Lower $\nu_j$ $\rightarrow$ more weakly informative (broader prior or weaker prior).
 
