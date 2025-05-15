@@ -7,7 +7,7 @@ infection. The antibody dynamic curve includes the following parameters:
 y0 = baseline antibody concentration
 y1 = peak antibody concentration
 t1 = time to peak
-r = shape parameter
+shape = shape parameter
 alpha = decay rate
 
 "><meta property="og:description" content="run_mod() takes a data frame and adjustable MCMC inputs to
@@ -18,7 +18,7 @@ infection. The antibody dynamic curve includes the following parameters:
 y0 = baseline antibody concentration
 y1 = peak antibody concentration
 t1 = time to peak
-r = shape parameter
+shape = shape parameter
 alpha = decay rate
 
 "></head><body>
@@ -73,7 +73,7 @@ The <code><a href="https://rdrr.io/pkg/rjags/man/jags.model.html" class="externa
 infection. The antibody dynamic curve includes the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
-<li><p>r = shape parameter</p></li>
+<li><p>shape = shape parameter</p></li>
 <li><p>alpha = decay rate</p></li>
 </ul></div>
 
@@ -143,11 +143,11 @@ Note: These objects can be large.</p></dd>
     <p>A <a href="https://dplyr.tidyverse.org/reference/tbl_df.html" class="external-link">dplyr::tbl_df</a> that contains the posterior
 distribution will be exported with the following variables:</p><ul><li><p><code>iteration</code> = Number of sampling iterations</p></li>
 <li><p><code>chain</code> = Number of MCMC chains run; between 1 and 4</p></li>
-<li><p><code>Parameter</code> = Parameter being estimated. Includes the following:</p><ul><li><p><code>alpha</code> = Posterior estimate of decay rate</p></li>
-<li><p><code>r</code> = Posterior estimate of shape parameter</p></li>
-<li><p><code>t1</code> = Posterior estimate of time to peak</p></li>
-<li><p><code>y0</code> = Posterior estimate of baseline antibody concentration</p></li>
+<li><p><code>Parameter</code> = Parameter being estimated. Includes the following:</p><ul><li><p><code>y0</code> = Posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = Posterior estimate of peak antibody concentration</p></li>
+<li><p><code>t1</code> = Posterior estimate of time to peak</p></li>
+<li><p><code>shape</code> = Posterior estimate of shape parameter</p></li>
+<li><p><code>alpha</code> = Posterior estimate of decay rate</p></li>
 </ul></li>
 <li><p><code>Iso_type</code> = Antibody/antigen type combination being evaluated</p></li>
 <li><p><code>Stratification</code> = The variable used to stratify jags model</p></li>
@@ -206,7 +206,7 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 01:37:47 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 01:47:32 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -241,7 +241,7 @@ Includes a <a href="https://rdrr.io/r/base/list.html" class="external-link">list
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 01:38:37 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 15 01:48:23 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
