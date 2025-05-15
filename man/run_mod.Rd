@@ -49,11 +49,11 @@ distribution will be exported with the following variables:
 \item \code{chain} = Number of MCMC chains run; between 1 and 4
 \item \code{Parameter} = Parameter being estimated. Includes the following:
 \itemize{
-\item \code{alpha} = Posterior estimate of decay rate
-\item \code{r} = Posterior estimate of shape parameter
-\item \code{t1} = Posterior estimate of time to peak
 \item \code{y0} = Posterior estimate of baseline antibody concentration
 \item \code{y1} = Posterior estimate of peak antibody concentration
+\item \code{t1} = Posterior estimate of time to peak
+\item \code{shape} = Posterior estimate of shape parameter
+\item \code{alpha} = Posterior estimate of decay rate
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model
@@ -83,7 +83,7 @@ infection. The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item r = shape parameter
+\item shape = shape parameter
 \item alpha = decay rate
 }
 }

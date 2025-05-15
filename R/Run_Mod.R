@@ -9,7 +9,7 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - r = shape parameter
+#'  - shape = shape parameter
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
@@ -31,11 +31,11 @@
 #'   - `iteration` = Number of sampling iterations
 #'   - `chain` = Number of MCMC chains run; between 1 and 4
 #'   - `Parameter` = Parameter being estimated. Includes the following:
-#'     - `alpha` = Posterior estimate of decay rate
-#'     - `r` = Posterior estimate of shape parameter
-#'     - `t1` = Posterior estimate of time to peak
 #'     - `y0` = Posterior estimate of baseline antibody concentration
 #'     - `y1` = Posterior estimate of peak antibody concentration
+#'     - `t1` = Posterior estimate of time to peak
+#'     - `shape` = Posterior estimate of shape parameter
+#'     - `alpha` = Posterior estimate of decay rate
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
 #'   - `Subject` = ID of subject being evaluated
