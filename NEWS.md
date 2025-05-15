@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added Beamer presentation files (`Beamer_Antibody_Kinetics.qmd`, `.pdf`) (#88)
 * Changes to `run_mod()` output:
   - Taking out `include_subs` as an input option, default will include all
   individuals
