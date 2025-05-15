@@ -18,7 +18,6 @@ iso
 isotype
 isotypes
 mcmc
-newperson
 nmc
 params
 prec
@@ -28,5 +27,6 @@ seroresponse
 seroresponses
 strat
 stratifications
+tbl
 unstratified
 wishdf

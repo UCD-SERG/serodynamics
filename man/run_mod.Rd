@@ -13,8 +13,7 @@ run_mod(
   nmc = 100,
   niter = 100,
   strat = NA,
-  with_post = FALSE,
-  include_subs = FALSE
+  with_post = FALSE
 )
 }
 \arguments{
@@ -23,7 +22,7 @@ run_mod(
 \item{file_mod}{The name of the file that contains model structure.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
-the number of mcmc chains to be run per jags model.}
+the number of MCMC chains to be run per jags model.}
 
 \item{nadapt}{An \link{integer} specifying the number of adaptations per chain.}
 
@@ -41,31 +40,26 @@ component
 should be included as an element of the \link{list} object returned by \code{run_mod()}
 (see \code{Value} section below for details).
 Note: These objects can be large.}
-
-\item{include_subs}{A \link{logical} value specifying whether posterior
-distributions should be included for all subjects. A value of \link{FALSE} will
-only include the predictive distribution.}
 }
 \value{
-A \link{list} containing the following elements:
+A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
+distribution will be exported with the following variables:
 \itemize{
-\item \code{"jags.post"}: a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags}
-objects (one per stratum).
-\item A \code{\link[base:data.frame]{base::data.frame()}} titled \code{curve_params} that contains the posterior
-distribution will be exported with the following attributes:
+\item \code{iteration} = Number of sampling iterations
+\item \code{chain} = Number of MCMC chains run; between 1 and 4
+\item \code{Parameter} = Parameter being estimated. Includes the following:
 \itemize{
-\item \code{iteration} = number of sampling iterations
-\item \code{chain} = number of mcmc chains run; between 1 and 4
-\item \code{indexid} = "newperson", indicating posterior distribution
-\item \code{antigen_iso} = antibody/antigen type combination being evaluated
-\item \code{alpha} = posterior estimate of decay rate
-\item \code{r} = posterior estimate of shape parameter
-\item \code{t1} = posterior estimate of time to peak
-\item \code{y0} = posterior estimate of baseline antibody concentration
-\item \code{y1} = posterior estimate of peak antibody concentration
-\item \verb{stratified variable} = the variable used to stratify jags model
+\item \code{y0} = Posterior estimate of baseline antibody concentration
+\item \code{y1} = Posterior estimate of peak antibody concentration
+\item \code{t1} = Posterior estimate of time to peak
+\item \code{shape} = Posterior estimate of shape parameter
+\item \code{alpha} = Posterior estimate of decay rate
 }
-\item A \link{list} of \code{attributes} that summarize the jags inputs, including:
+\item \code{Iso_type} = Antibody/antigen type combination being evaluated
+\item \code{Stratification} = The variable used to stratify jags model
+\item \code{Subject} = ID of subject being evaluated
+\item \code{value} = Estimated value of the parameter
+\item The following \link{attributes} are included in the output:
 \itemize{
 \item \code{class}: Class of the output object.
 \item \code{nChain}: Number of chains run.
@@ -73,20 +67,24 @@ distribution will be exported with the following attributes:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item An optional \code{"jags.post"} attribute, included when argument
+\code{with_post} = TRUE.
+Includes a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
+(one per stratum).
 }
 }
 }
 \description{
-run_mod() takes a data frame and adjustable mcmc inputs to
-\code{\link[runjags:run.jags]{runjags::run.jags()}} as an mcmc
-bayesian model to estimate antibody dynamic curve parameters.
+\code{run_mod()} takes a data frame and adjustable MCMC inputs to
+\code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
+Bayesian model to estimate antibody dynamic curve parameters.
 The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
 infection. The antibody dynamic curve includes the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item r = shape parameter
+\item shape = shape parameter
 \item alpha = decay rate
 }
 }
