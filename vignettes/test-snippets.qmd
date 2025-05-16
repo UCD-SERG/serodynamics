@@ -1,5 +1,7 @@
 ---
 title: "test-snippets"
+filters:
+   - include-code-files
 vignette: >
   %\VignetteIndexEntry{test-snippets}
   %\VignetteEngine{quarto::html}
@@ -14,3 +16,9 @@ knitr:
 #| label: setup
 library(serodynamics)
 ```
+
+```{.r include="../inst/extdata/model.jags" start-line=66 end-line=66  snippet="main"}
+```
+
+
+hello
