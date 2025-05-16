@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9030
+Version: 0.0.0.9031
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -48,7 +48,8 @@ Suggests:
     stringr,
     magrittr,
     ssdtools,
-    rex
+    rex,
+    quarto
 Language: en-US
 Config/testthat/edition: 3
 Config/needs/test: 
@@ -67,4 +68,4 @@ Remotes:
 Depends: 
     R (>= 4.1.0)
 LazyData: true
-VignetteBuilder: knitr
+VignetteBuilder: knitr, quarto
