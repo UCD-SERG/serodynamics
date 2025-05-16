@@ -8,13 +8,7 @@ knitr:
     comment: '#>'
 ---
 
-```{r}
-#| label: setup
-library(serodynamics)
+Here's line 66 from `model.jags`:
+
+```{.r include="../../inst/extdata/model.jags" start-line=66 end-line=66 code-line-numbers="true"}
 ```
-
-```{.r include="../inst/extdata/model.jags" start-line=66 end-line=66  snippet="main"}
-```
-
-
-hello
