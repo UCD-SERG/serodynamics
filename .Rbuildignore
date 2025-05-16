@@ -19,3 +19,4 @@
 ^\.project$
 ^\.settings$
 ^\.lintr\.R$
+^_extensions$
