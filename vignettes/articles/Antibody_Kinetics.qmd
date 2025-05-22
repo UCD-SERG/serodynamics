@@ -1,0 +1,461 @@
+---
+title: "Hierarchical Bayesian Modeling of Antibody Kinetics: Extensions and Refinements"
+author: "Kwan Ho Lee"
+institute: "UC Davis"
+date: today
+format: 
+  html: default
+  beamer:
+    theme: Madrid
+    slide-level: 2
+    keep-tex: true
+    toc: false
+    incremental: false
+engine: knitr
+bibliography: references.bib
+env:
+  PAK_CACHE_DISABLE: "true"
+filters:
+  - include-code-files
+---
+
+## Overview
+
+-   Incorporates feedback from Dr. Morrison, Dr. Aiemjoy, and lab discussion
+-   Focus exclusively on [@teunis2016] two-phase within-host model
+-   Clarifies full hierarchical Bayesian modeling structure
+-   Explicitly distinguishes between priors, hyperpriors, transformations
+-   Reorders: **Start from observation model → build upward**
+
+------------------------------------------------------------------------
+
+## Big Picture: What Are We Modeling?
+
+We are modeling **how antibody levels change over time** in response to infection, using multiple individuals and multiple biomarkers (antigen-isotype combinations, (j = 1, 2, $\dots$, 10)).
+
+Goals:
+
+-   Understand the **average pattern** for each biomarker
+-   Allow for **individual-level variation**
+-   **Share information** across individuals to improve inference
+
+This motivates using a **hierarchical Bayesian model**.
+
+------------------------------------------------------------------------
+
+## Step 1: Observation Model (Data Level)
+
+Observed (log-transformed) antibody levels:
+
+$$
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+$$ {#eq-1}
+
+Where:
+
+-   $y_{\text{obs},ij}$: Observed antibody level for subject $i$ and biomarker $j$
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   $\theta_{ij}$: Subject-level latent parameters (e.g., $y_0, \alpha, \rho$) used to define the predicted antibody curve
+-   $\tau_j$: Measurement precision (inverse of variance) specific to biomarker $j$
+
+The expression above corresponds to line 54 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="54" end-line="54" code-line-numbers="true"}
+logy[subj,obs,cur_antigen_iso] ~ dnorm(mu.logy[subj,obs,cur_antigen_iso], prec.logy[cur_antigen_iso])
+```
+
+Measurement precision prior:
+
+$$
+\tau_j \sim \text{Gamma}(a_j, b_j)
+$$ {#eq-2}
+
+Where:
+
+-   $\tau_j$: Precision (inverse of variance) of the measurement noise for biomarker $j$
+-   $(a_j, b_j)$: Shape and rate hyperparameters of the Gamma prior for precision, which control its expected value and variability
+
+The expression above corresponds to line 75 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="75" end-line="75" code-line-numbers="true"}
+prec.logy[cur_antigen_iso] ~ dgamma(prec.logy.hyp[cur_antigen_iso,1], prec.logy.hyp[cur_antigen_iso,2])
+```
+
+------------------------------------------------------------------------
+
+## Parameter Summary
+
+| Symbol   | Description                             |
+|----------|-----------------------------------------|
+| $\mu_y$  | Antibody production rate (growth phase) |
+| $\mu_b$  | Pathogen replication rate               |
+| $\gamma$ | Clearance rate (by antibodies)          |
+| $\alpha$ | Antibody decay rate                     |
+| $\rho$   | Shape of antibody decay (power-law)     |
+| $t_1$    | Time of peak response                   |
+| $y_1$    | Peak antibody concentration             |
+
+: Parameter summary for antibody kinetics model. {#tbl-param-summary}
+
+**Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
+
+------------------------------------------------------------------------
+
+## Step 2: Within-Host ODE System [@teunis2016]
+
+$$
+\frac{dy}{dt} = 
+\begin{cases}
+\mu_y y(t), & t \leq t_1 \\
+- \alpha y(t)^\rho, & t > t_1
+\end{cases}
+\quad \text{and} \quad
+\frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+$$ {#eq-3}
+
+-   Initial conditions: $y(0) = y_0$, $b(0) = b_0$
+-   Transition at $t_1$: when $b(t_1) = 0$
+
+------------------------------------------------------------------------
+
+## Step 3: Closed-Form Solutions
+
+**Antibody concentration:**
+
+-   For $t \leq t_1$: $$
+    y(t) = y_0 e^{\mu_y t}
+    $$ {#eq-4}
+-   For $t \> t_1$: $$
+    y(t) = y_1 \left(1 + (\rho-1)\alpha y_1^{\rho-1}(t-t_1)\right)^{-\frac{1}{\rho-1}}
+    $$ {#eq-5}
+
+The expression above corresponds to lines 18-50 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="18" end-line="50" code-line-numbers="true"}
+     mu.logy[subj, obs, cur_antigen_iso] <- ifelse(
+        
+        # `step(x)` returns 1 if x >= 0;
+        # here we are determining which phase of infection we are in; 
+        # active or recovery;
+        # `smpl.t` is the time when the blood sample was collected, 
+        # relative to estimated start of infection;
+        # so we are determining whether the current observation is after `t1` 
+        # the time when the active infection ended.
+        step(t1[subj,cur_antigen_iso] - smpl.t[subj,obs]), 
+        
+        ## active infection period:
+        # this is equation 15, case t <= t_1, but on a logarithmic scale
+        log(y0[subj,cur_antigen_iso]) + (beta[subj,cur_antigen_iso] * smpl.t[subj,obs]),
+        
+        ## recovery period:
+        # this is equation 15, case t > t_1
+        1 / (1 - shape[subj,cur_antigen_iso]) *
+           log(
+              # this is `log{y_1^(1-r)}`; 
+              # the exponent cancels out with the factor outside the log
+              y1[subj, cur_antigen_iso]^(1 - shape[subj, cur_antigen_iso]) - 
+                 
+               # this is (1-r); not sure why switched from paper  
+              (1 - shape[subj,cur_antigen_iso]) *
+                
+                  # (there's no missing y1^(r-1) term here; the math checks out)
+                 
+                 # alpha is `nu` in Teunis 2016; the "decay rate" parameter
+                alpha[subj,cur_antigen_iso] *
+                 
+                 # this is `t - t_1`
+                 (smpl.t[subj,obs] - t1[subj,cur_antigen_iso])))
+```
+
+**Pathogen load:**
+
+-   For $t \leq t_1$: $$
+    b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left( e^{\mu_y t} - e^{\mu_b t} \right)
+    $$ {#eq-6}
+-   For $t \> t_1$: $$
+    b(t) = 0
+    $$
+
+------------------------------------------------------------------------
+
+## Step 4: Derived Quantities
+
+-   **Clearance Time** $t_1$:
+
+    $$
+    t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0}\right)
+    $$ {#eq-7}
+
+The expression above is indirectly represented by lines 8-12 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="8" end-line="12" code-line-numbers="true"}
+beta[subj, cur_antigen_iso] <- 
+       log(
+         y1[subj,cur_antigen_iso] / y0[subj,cur_antigen_iso]
+         ) / 
+       t1[subj,cur_antigen_iso]
+```
+
+-   **Peak Antibody Level** $y_1$:
+
+    $$
+    y_1 = y_0 e^{\mu_y t_1}
+    $$ {#eq-8}
+
+The expression above corresponds to line 59 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="59" end-line="59" code-line-numbers="true"}
+y1[subj,cur_antigen_iso]    <- y0[subj,cur_antigen_iso] + exp(par[subj,cur_antigen_iso,2]) # par[,,2] must be log(y1-y0)
+```
+
+**Important**: $t_1$ and $y_1$ are **derived**, not fit parameters.
+
+------------------------------------------------------------------------
+
+## Full Parameter Model (7 Parameters)
+
+**Subject-level parameters** for each subject$i$ and biomarker $j$:
+
+$$
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
+\begin{bmatrix}
+y_{0,ij} \\
+b_{0,ij} \\
+\mu_{b,ij} \\
+\mu_{y,ij} \\
+\gamma_{ij} \\
+\alpha_{ij} \\
+\rho_{ij}
+\end{bmatrix}
+$$ {#eq-9}
+
+-   These 7 parameters represent the **full biological model** (antibody + pathogen dynamics)
+
+------------------------------------------------------------------------
+
+## From Full 7 Parameters to 5 Latent Parameters
+
+-   Although the model estimates 7 parameters, for modeling antibody kinetics $y(t)$, we focus on **5-parameter subset**:
+
+$$y_0,\ \ t_1 (\text{derived}),\ \  y_1 (\text{derived}),\ \  \alpha,\ \  \rho$$
+
+-   These 5 parameters are **log-transformed** into the latent parameters $\theta\_{ij}$ used for modeling.
+
+------------------------------------------------------------------------
+
+## Core Parameters Used for Curve Drawing
+
+Although the full model estimates **7 parameters**, only **5 key parameters** required to draw antibody curves:
+
+-   $y_0$: initial antibody level
+-   $t_1$: time of peak antibody response (derived)
+-   $y_1$: peak antibody level (derived)
+-   $\alpha$: decay rate
+-   $\rho$: shape of decay
+
+Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficient for prediction and plotting
+
+------------------------------------------------------------------------
+
+## Step 5: Subject-Level Parameters (Latent Version)
+
+Each subject $i$ and biomarker $j$ has latent parameters:
+
+$$
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+$$ {#eq-10}
+
+Distribution:
+
+$$
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+$$
+
+The expression above reflects the prior distribution specified on line 66 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="66" end-line="66" code-line-numbers="true"}
+par[subj, cur_antigen_iso, 1:n_params] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])
+```
+
+------------------------------------------------------------------------
+
+## Step 6: Parameter Transformations (log scale priors)
+
+JAGS implements latent parameters (par) as:
+
+| Model Parameter | Transformation in JAGS     |
+|:----------------|:---------------------------|
+| $y_0$           | $\exp(\text{par}_1)$       |
+| $y_1$           | $y_0 + \exp(\text{par}_2)$ |
+| $t_1$           | $\exp(\text{par}_3)$       |
+| $\alpha$        | $\exp(\text{par}_4)$       |
+| $\rho$          | $\exp(\text{par}_5) + 1$   |
+
+: Log-Scale Transformations of Antibody Model Parameters in JAGS. {#tbl-transformation}
+
+The table above corresponds to lines 58-62 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="58" end-line="62" code-line-numbers="true"}
+y0[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,1])
+   y1[subj,cur_antigen_iso]    <- y0[subj,cur_antigen_iso] + exp(par[subj,cur_antigen_iso,2]) # par[,,2] must be log(y1-y0)
+   t1[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,3])
+   alpha[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,4]) # `nu` in the paper
+   shape[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,5]) + 1 # `r` in the paper
+```
+
+All priors are thus applied on **log scale** (or log-minus-one for $\rho$).
+
+------------------------------------------------------------------------
+
+## Step 7: Population-Level Parameters (Priors)
+
+The biomarker-specific mean vector $\mu_j$ has a **hyperprior** :
+
+$$
+\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})
+$$ {#eq-11}
+
+Where:
+
+-   $\mu_{\text{hyp},j}$ : **prior mean** for the population-level parameters\
+-   $\Omega_{\text{hyp},j}$ : **prior covariance** encoding uncertainty about $\mu_j$ (e.g., $100 \cdot I_7$ for weakly informative prior)
+
+The expression above corresponds to line 73 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="73" end-line="73" code-line-numbers="true"}
+mu.par[cur_antigen_iso, 1:n_params] ~ dmnorm(mu.hyp[cur_antigen_iso,], prec.hyp[cur_antigen_iso,,])
+```
+
+**Clarification:**
+
+-   $\mu_{\text{hyp},j}$ defines the **center of a distribution, not** a single point guess.
+
+-   In Bayesian modeling, **priors and hyperpriors are distributions** over unknown quantities, capturing full uncertainty.
+
+------------------------------------------------------------------------
+
+## Step 8: Prior on Covariance Matrices
+
+We also don’t know how much individual parameters vary. So we assign a **Wishart prior** to the **inverse** covariance matrix:
+
+$$
+\Sigma_j^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+$$ {#eq-12}
+
+-   $\Omega_j$ : prior scale matrix (small variance across parameters, often $0.1 \cdot I_7$)
+-   $\nu_j$ : degrees of freedom
+
+The expression above corresponds to line 74 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="74" end-line="74" code-line-numbers="true"}
+prec.par[cur_antigen_iso, 1:n_params, 1:n_params] ~ dwish(omega[cur_antigen_iso,,], wishdf[cur_antigen_iso])
+```
+
+Higher $\nu_j$ $\rightarrow$ more informative prior (stronger prior).
+
+Lower $\nu_j$ $\rightarrow$ more weakly informative (broader prior or weaker prior).
+
+This tells the model how much we expect individuals to vary from the average for biomarker $j$.
+
+------------------------------------------------------------------------
+
+## Putting It All Together
+
+The model is built hierarchically across five conceptual levels:
+
+1.  **Observed data:** noisy log antibody concentrations from serum samples
+2.  **Latent individual parameters:** hidden antibody dynamics $\theta_{ij}$ for each subject-biomarker pair
+3.  **Population-level means:** average antibody parameters for each biomarker
+4.  **Hyperpriors on means:** our belief about the likely range of biomarker-specific population means
+5.  **Priors on variability:** our belief about how much individual parameters vary around the population mean
+
+This structure allows us to account for uncertainty at every level, while borrowing strength across subjects and biomarkers.
+
+------------------------------------------------------------------------
+
+## Summary of the Hierarchy
+
+1.  **Top Level**:
+
+    -   For each biomarker $j$, the true mean antibody trajectory parameters $\mu_j$ come from a prior:
+        -   $\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})$
+
+2.  **Middle Level**:
+
+    -   For each person $i$, their parameters:
+        -   $\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)$
+
+3.  **Bottom Level**:
+
+    -   Their actual observed antibody levels are noisy measurements of predictions from $\theta_{ij}$:
+        -   $\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})$
+
+Where:
+
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   Predictions use $\theta_{ij}$ to compute $\mu_{\log y,ij}$, which is then compared to the observed log antibody data.
+
+------------------------------------------------------------------------
+
+## Clarification: How Bottom Level Depends on Middle Level
+
+We know the following facts:
+
+1.  $\theta_{ij}$ are the **subject-level latent parameters** (like $y_0, b_0, \mu\_b, \mu\_y, \gamma, \alpha, \rho$).
+2.  From $\theta_{ij}$, we calculate the expected **log antibody level** $\mu_{\log y,ij}$ using the ODE-based two-phase model.
+3.  The **observed log-antibody** $\log(y_{\text{obs},ij})$ is modeled as a **noisy version** of $\mu_{\log y,ij}$.
+4.  $\tau_j$ is the precision (measurement noise precision for biomarker $j$).
+
+Thus, at the **Bottom Level**, we model:
+
+$$
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+$$
+
+Here:
+
+-   The **mean** is $\mu_{\log y,ij}$ — derived from the **ODE solution** using $\theta_{ij}$.
+-   The **variance** is $\tau_j^{-1}$ — shared across individuals for a given biomarker.
+
+Summary:
+
+-   Observations depend indirectly on latent parameters $\theta_{ij}$ via the predicted log antibody levels $\mu_{\log y,ij}$.
+
+------------------------------------------------------------------------
+
+## Summary Mapping of Notation
+
+| Symbol | Meaning | JAGS Variable |
+|------------------|--------------------------------|----------------------|
+| $i$ | Subject index | `subj` |
+| $j$ | Antigen-isotype (biomarker) index | `cur_antigen_iso` |
+| $y_{\text{obs},ij}$ | Observed antibody concentration at a timepoint | `logy[subj, obs, cur_antigen_iso]` |
+| $\mu_{\log y,ij}$ | Expected log antibody level based on ODE model using $\theta_{ij}$ | `mu.logy[subj, obs, cur_antigen_iso]` |
+| $\theta_{ij}$ | Subject-level latent parameters for modeling $y(t)$ | `par[subj, cur_antigen_iso, 1:n_params]` |
+| $\mu_j$ | Mean vector of latent parameters across subjects for biomarker $j$ | `mu.par[cur_antigen_iso, ]` |
+| $\Sigma_j$ | Covariance matrix of latent parameters for biomarker $j$ | `inverse of prec.par[cur_antigen_iso, , ]` |
+| $\tau_j$ | Precision (inverse variance) of measurement error for biomarker $j$ | `prec.logy[cur_antigen_iso]` |
+| $(a_j, b_j)$ | Gamma prior hyperparameters for $\tau_j$ | `prec.logy.hyp[cur_antigen_iso, 1/2]` |
+| $\mu_{\text{hyp},j}$ | Prior mean for $\mu_j$ | `mu.hyp[cur_antigen_iso, ]` |
+| $\Omega_{\text{hyp},j}$ | Prior precision for $\mu_j$ | `prec.hyp[cur_antigen_iso, , ]` |
+| $(\Omega_j, \nu_j)$ | Wishart scale and degrees of freedom for $\Sigma_j^{-1}$ | `omega[cur_antigen_iso, , ], wishdf[...]` |
+
+------------------------------------------------------------------------
+
+## Model Comparison [@teunis2016] vs. Our Presentation
+
+| Component           | [@teunis2016]         | This Presentation          |
+|:--------------------|:----------------------|:---------------------------|
+| Pathogen ODE        | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
+| Antibody growth ODE | $\mu y(t)$            | $\mu_y y(t)$               |
+| Antibody decay ODE  | $-\alpha y(t)^r$      | $-\alpha y(t)^\rho$        |
+| Growth mechanism    | Pathogen-driven       | Self-driven                |
+
+: Comparison of Teunis (2016) model and this presentation’s model assumptions. {#tbl-model-comparison}
