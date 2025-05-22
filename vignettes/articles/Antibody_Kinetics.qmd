@@ -51,11 +51,23 @@ $$
 \log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}(\theta_{ij})), \tau_j^{-1})
 $$ {#eq-1}
 
+The expression above corresponds to line 54 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="54" end-line="54" code-line-numbers="true"}
+logy[subj,obs,cur_antigen_iso] ~ dnorm(mu.logy[subj,obs,cur_antigen_iso], prec.logy[cur_antigen_iso])
+```
+
 Measurement precision prior:
 
 $$
 \tau_j \sim \text{Gamma}(a_j, b_j)
 $$ {#eq-2}
+
+The expression above corresponds to line 75 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="75" end-line="75" code-line-numbers="true"}
+prec.logy[cur_antigen_iso] ~ dgamma(prec.logy.hyp[cur_antigen_iso,1], prec.logy.hyp[cur_antigen_iso,2])
+```
 
 ------------------------------------------------------------------------
 
@@ -105,6 +117,44 @@ $$ {#eq-3}
     y(t) = y_1 \left(1 + (\rho-1)\alpha y_1^{\rho-1}(t-t_1)\right)^{-\frac{1}{\rho-1}}
     $$ {#eq-5}
 
+The expression above corresponds to lines 18-50 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="18" end-line="50" code-line-numbers="true"}
+     mu.logy[subj, obs, cur_antigen_iso] <- ifelse(
+        
+        # `step(x)` returns 1 if x >= 0;
+        # here we are determining which phase of infection we are in; 
+        # active or recovery;
+        # `smpl.t` is the time when the blood sample was collected, 
+        # relative to estimated start of infection;
+        # so we are determining whether the current observation is after `t1` 
+        # the time when the active infection ended.
+        step(t1[subj,cur_antigen_iso] - smpl.t[subj,obs]), 
+        
+        ## active infection period:
+        # this is equation 15, case t <= t_1, but on a logarithmic scale
+        log(y0[subj,cur_antigen_iso]) + (beta[subj,cur_antigen_iso] * smpl.t[subj,obs]),
+        
+        ## recovery period:
+        # this is equation 15, case t > t_1
+        1 / (1 - shape[subj,cur_antigen_iso]) *
+           log(
+              # this is `log{y_1^(1-r)}`; 
+              # the exponent cancels out with the factor outside the log
+              y1[subj, cur_antigen_iso]^(1 - shape[subj, cur_antigen_iso]) - 
+                 
+               # this is (1-r); not sure why switched from paper  
+              (1 - shape[subj,cur_antigen_iso]) *
+                
+                  # (there's no missing y1^(r-1) term here; the math checks out)
+                 
+                 # alpha is `nu` in Teunis 2016; the "decay rate" parameter
+                alpha[subj,cur_antigen_iso] *
+                 
+                 # this is `t - t_1`
+                 (smpl.t[subj,obs] - t1[subj,cur_antigen_iso])))
+```
+
 **Pathogen load:**
 
 -   For $t \leq t_1$: $$
@@ -124,11 +174,27 @@ $$ {#eq-3}
     t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0}\right)
     $$ {#eq-7}
 
+The expression above is indirectly represented by lines 8-12 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="8" end-line="12" code-line-numbers="true"}
+beta[subj, cur_antigen_iso] <- 
+       log(
+         y1[subj,cur_antigen_iso] / y0[subj,cur_antigen_iso]
+         ) / 
+       t1[subj,cur_antigen_iso]
+```
+
 -   **Peak Antibody Level** $y_1$:
 
     $$
     y_1 = y_0 e^{\mu_y t_1}
     $$ {#eq-8}
+
+The expression above corresponds to line 59 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="59" end-line="59" code-line-numbers="true"}
+y1[subj,cur_antigen_iso]    <- y0[subj,cur_antigen_iso] + exp(par[subj,cur_antigen_iso,2]) # par[,,2] must be log(y1-y0)
+```
 
 **Important**: $t_1$ and $y_1$ are **derived**, not fit parameters.
 
@@ -199,6 +265,7 @@ Distribution:
 $$
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
 $$
+
 The expression above reflects the prior distribution specified on line 66 of `model.jags`:
 
 ``` {.r include="../../inst/extdata/model.jags" start-line="66" end-line="66" code-line-numbers="true"}
@@ -221,6 +288,16 @@ JAGS implements latent parameters (par) as:
 
 : Log-Scale Transformations of Antibody Model Parameters in JAGS. {#tbl-transformation}
 
+The table above corresponds to lines 58-62 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="58" end-line="62" code-line-numbers="true"}
+y0[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,1])
+   y1[subj,cur_antigen_iso]    <- y0[subj,cur_antigen_iso] + exp(par[subj,cur_antigen_iso,2]) # par[,,2] must be log(y1-y0)
+   t1[subj,cur_antigen_iso]    <- exp(par[subj,cur_antigen_iso,3])
+   alpha[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,4]) # `nu` in the paper
+   shape[subj,cur_antigen_iso] <- exp(par[subj,cur_antigen_iso,5]) + 1 # `r` in the paper
+```
+
 All priors are thus applied on **log scale** (or log-minus-one for $\rho$).
 
 ------------------------------------------------------------------------
@@ -237,6 +314,12 @@ Where:
 
 -   $\mu_{\text{hyp},j}$ : **prior mean** for the population-level parameters\
 -   $\Omega_{\text{hyp},j}$ : **prior covariance** encoding uncertainty about $\mu_j$ (e.g., $100 \cdot I_7$ for weakly informative prior)
+
+The expression above corresponds to line 73 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="73" end-line="73" code-line-numbers="true"}
+mu.par[cur_antigen_iso, 1:n_params] ~ dmnorm(mu.hyp[cur_antigen_iso,], prec.hyp[cur_antigen_iso,,])
+```
 
 **Clarification:**
 
@@ -256,6 +339,12 @@ $$ {#eq-12}
 
 -   $\Omega_j$ : prior scale matrix (small variance across parameters, often $0.1 \cdot I_7$)
 -   $\nu_j$ : degrees of freedom
+
+The expression above corresponds to line 74 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="74" end-line="74" code-line-numbers="true"}
+prec.par[cur_antigen_iso, 1:n_params, 1:n_params] ~ dwish(omega[cur_antigen_iso,,], wishdf[cur_antigen_iso])
+```
 
 Higher $\nu_j$ $\rightarrow$ more informative prior (stronger prior).
 
