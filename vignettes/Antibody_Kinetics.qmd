@@ -198,6 +198,10 @@ $$
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
 $$
 
+``` jags
+par[subj, cur_antigen_iso, 1:n_params] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])
+```
+
 ------------------------------------------------------------------------
 
 ## Step 6: Parameter Transformations (log scale priors)
