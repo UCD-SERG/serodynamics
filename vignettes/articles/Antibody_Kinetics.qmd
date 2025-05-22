@@ -15,6 +15,8 @@ engine: knitr
 bibliography: references.bib
 env:
   PAK_CACHE_DISABLE: "true"
+filters:
+  - include-code-files
 ---
 
 ## Overview
@@ -197,8 +199,9 @@ Distribution:
 $$
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
 $$
+The expression above reflects the prior distribution specified on line 66 of `model.jags`:
 
-``` jags
+``` {.r include="../../inst/extdata/model.jags" start-line="66" end-line="66" code-line-numbers="true"}
 par[subj, cur_antigen_iso, 1:n_params] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])
 ```
 
