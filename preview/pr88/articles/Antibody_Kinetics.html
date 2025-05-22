@@ -39,6 +39,7 @@
     <li><a class="dropdown-item" href="../articles/Beamer_Antibody_Kinetics.html">Extending the Hierarchical Model for Antibody Kinetics</a></li>
     <li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
     <li><a class="dropdown-item" href="../articles/Hierarchical_Bayesian_Model.html">Hierarchical Bayesian Model</a></li>
+    <li><a class="dropdown-item" href="../articles/test-snippets.html">test-snippets</a></li>
   </ul>
 </li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -68,7 +69,7 @@
       <h1>Hierarchical Bayesian Modeling of Antibody Kinetics: Extensions and Refinements</h1>
 
       <p class="author">Kwan Ho Lee</p>
-      <p class="date">2025-05-15</p>
+      <p class="date">2025-05-22</p>
 
       <small class="dont-index">Source: <a href="https://github.com/UCD-SERG/serodynamics/blob/beamer/vignettes/Antibody_Kinetics.qmd" class="external-link"><code>vignettes/Antibody_Kinetics.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
@@ -276,6 +277,7 @@ b_{0,ij} \\
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><msub><mi>Σ</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
 </annotation></semantics></math></p>
+<pre class="jags"><code><span><span class="va">par</span><span class="op">[</span><span class="va">subj</span>, <span class="va">cur_antigen_iso</span>, <span class="fl">1</span><span class="op">:</span><span class="va">n_params</span><span class="op">]</span> <span class="op">~</span> <span class="fu">dmnorm</span><span class="op">(</span><span class="va">mu.par</span><span class="op">[</span><span class="va">cur_antigen_iso</span>,<span class="op">]</span>, <span class="va">prec.par</span><span class="op">[</span><span class="va">cur_antigen_iso</span>,,<span class="op">]</span><span class="op">)</span></span></code></pre>
 <hr></section><section class="level2"><h2 id="step-6-parameter-transformations-log-scale-priors">Step 6: Parameter Transformations (log scale priors)<a class="anchor" aria-label="anchor" href="#step-6-parameter-transformations-log-scale-priors"></a>
 </h2>
 <p>JAGS implements latent parameters (par) as:</p>
@@ -570,7 +572,7 @@ Teunis, Peter F. M., and J. C. H. van Eijkeren. 2016. <span>“Linking the Seror
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.2.9000.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.9000.</p>
 </div>
 
     </footer>
