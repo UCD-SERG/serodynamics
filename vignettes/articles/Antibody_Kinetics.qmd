@@ -48,8 +48,15 @@ This motivates using a **hierarchical Bayesian model**.
 Observed (log-transformed) antibody levels:
 
 $$
-\log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}(\theta_{ij})), \tau_j^{-1})
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
 $$ {#eq-1}
+
+Where:
+
+-   $y_{\text{obs},ij}$: Observed antibody level for subject $i$ and biomarker $j$
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   $\theta_{ij}$: Subject-level latent parameters (e.g., $y_0, \alpha, \rho$) used to define the predicted antibody curve
+-   $\tau_j$: Measurement precision (inverse of variance) specific to biomarker $j$
 
 The expression above corresponds to line 54 of `model.jags`:
 
@@ -62,6 +69,11 @@ Measurement precision prior:
 $$
 \tau_j \sim \text{Gamma}(a_j, b_j)
 $$ {#eq-2}
+
+Where:
+
+-   $\tau_j$: Precision (inverse of variance) of the measurement noise for biomarker $j$
+-   $(a_j, b_j)$: Shape and rate hyperparameters of the Gamma prior for precision, which control its expected value and variability
 
 The expression above corresponds to line 75 of `model.jags`:
 
@@ -383,12 +395,12 @@ This structure allows us to account for uncertainty at every level, while borrow
 3.  **Bottom Level**:
 
     -   Their actual observed antibody levels are noisy measurements of predictions from $\theta_{ij}$:
-        -   $\log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}(\theta_{ij})), \tau_j^{-1})$
+        -   $\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})$
 
 Where:
 
--   $y_{\text{pred},ij}(\theta_{ij})$ is the predicted antibody trajectory based on $\theta{ij}$.
--   So predictions directly use $\theta_{ij}$ to compute $y_{\text{pred},ij}$, and then compare to observed data.
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   Predictions use $\theta_{ij}$ to compute $\mu_{\log y,ij}$, which is then compared to the observed log antibody data.
 
 ------------------------------------------------------------------------
 
@@ -397,24 +409,43 @@ Where:
 We know the following facts:
 
 1.  $\theta_{ij}$ are the **subject-level latent parameters** (like $y_0, b_0, \mu\_b, \mu\_y, \gamma, \alpha, \rho$).
-2.  From $\theta_{ij}$, we **calculate** the antibody trajectory $y_{\text{pred},ij}(t)$ using the ODE solution.
-3.  The **observed log-antibody** $\log(y_{\text{obs},ij})$ is modeled as a **noisy version** of $\log(y_{\text{pred},ij})$.
+2.  From $\theta_{ij}$, we calculate the expected **log antibody level** $\mu_{\log y,ij}$ using the ODE-based two-phase model.
+3.  The **observed log-antibody** $\log(y_{\text{obs},ij})$ is modeled as a **noisy version** of $\mu_{\log y,ij}$.
 4.  $\tau_j$ is the precision (measurement noise precision for biomarker $j$).
 
 Thus, at the **Bottom Level**, we model:
 
 $$
-\log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}(\theta_{ij})), \tau_j^{-1})
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
 $$
 
 Here:
 
--   The **mean** is $\log(y_{\text{pred},ij}(\theta_{ij}))$ — depends on the **ODE solution** which itself depends on $\theta_{ij}$.
+-   The **mean** is $\mu_{\log y,ij}$ — derived from the **ODE solution** using $\theta_{ij}$.
 -   The **variance** is $\tau_j^{-1}$ — shared across individuals for a given biomarker.
 
 Summary:
 
--   Meaning: Observations depend indirectly on latent parameters $\theta_{ij}$ via predictions $y_{\text{pred}}$.
+-   Observations depend indirectly on latent parameters $\theta_{ij}$ via the predicted log antibody levels $\mu_{\log y,ij}$.
+
+------------------------------------------------------------------------
+
+## Summary Mapping of Notation
+
+| Symbol | Meaning | JAGS Variable |
+|------------------|--------------------------------|----------------------|
+| $i$ | Subject index | `subj` |
+| $j$ | Antigen-isotype (biomarker) index | `cur_antigen_iso` |
+| $y_{\text{obs},ij}$ | Observed antibody concentration at a timepoint | `logy[subj, obs, cur_antigen_iso]` |
+| $\mu_{\log y,ij}$ | Expected log antibody level based on ODE model using $\theta_{ij}$ | `mu.logy[subj, obs, cur_antigen_iso]` |
+| $\theta_{ij}$ | Subject-level latent parameters for modeling $y(t)$ | `par[subj, cur_antigen_iso, 1:n_params]` |
+| $\mu_j$ | Mean vector of latent parameters across subjects for biomarker $j$ | `mu.par[cur_antigen_iso, ]` |
+| $\Sigma_j$ | Covariance matrix of latent parameters for biomarker $j$ | `inverse of prec.par[cur_antigen_iso, , ]` |
+| $\tau_j$ | Precision (inverse variance) of measurement error for biomarker $j$ | `prec.logy[cur_antigen_iso]` |
+| $(a_j, b_j)$ | Gamma prior hyperparameters for $\tau_j$ | `prec.logy.hyp[cur_antigen_iso, 1/2]` |
+| $\mu_{\text{hyp},j}$ | Prior mean for $\mu_j$ | `mu.hyp[cur_antigen_iso, ]` |
+| $\Omega_{\text{hyp},j}$ | Prior precision for $\mu_j$ | `prec.hyp[cur_antigen_iso, , ]` |
+| $(\Omega_j, \nu_j)$ | Wishart scale and degrees of freedom for $\Sigma_j^{-1}$ | `omega[cur_antigen_iso, , ], wishdf[...]` |
 
 ------------------------------------------------------------------------
 
