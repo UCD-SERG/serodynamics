@@ -1,0 +1,14 @@
+---
+title: "test-snippets"
+filters:
+   - include-code-files
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: '#>'
+---
+
+Here's line 66 from `model.jags`:
+
+```{.r include="../../inst/extdata/model.jags" start-line=66 end-line=66 code-line-numbers="true"}
+```
