@@ -66,7 +66,8 @@ run_mod <- function(data,
                     nmc = 100,
                     niter = 100,
                     strat = NA,
-                    with_post = FALSE) {
+                    with_post = FALSE,
+                    ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -101,9 +102,7 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priorspec <- prep_priors(max_antigens = 
-                               longdata$n_antigen_isos,
-                             ...)
+    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -188,7 +187,7 @@ run_mod <- function(data,
   
   # Adding priors
   jags_out <- jags_out |>
-    structure("priors" = )
+    structure("priors" = attributes(priorspec)$used_priors)
   
   # Conditionally adding jags.post
   if (with_post) {
