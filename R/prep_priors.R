@@ -6,7 +6,7 @@
 #' @param max_antigens An [integer] specifying how many
 #' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
-#' guess for the population mean of the seroresponse curve
+#' mean for the population level parameters
 #' parameters (y0, y1, t1, r, alpha) for each biomarker.
 #' If specified, must be 5 values long, representing the following parameters:
 #'    - y0 = baseline antibody concentration (default = 1.0)
@@ -14,23 +14,15 @@
 #'    - t1 = time to peak (default = 1.0)
 #'    - r = shape parameter (default = -4.0)
 #'    - alpha = decay rate (default = -1.0)
-#'    Notes: Mean of the hyperprior distribution on mu_j. typically dont make a
-#'    guess the same way you do in a frequentist analysis. Instead have a 
-#'    whole distribution.
-#'    mu and omega are parameters. priors and hyperiors are distributions
-#'    that have parameters including
-#'    mu_hyp_j is the mean of the hyperprior distirbution on mu_j
-#'    Step 3: specifying a population distribution
-#'    Look at relationship between math and the jags
-#'    Saying mean of the hyperprior on the population 
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-#' representing prior beliefs of uncertainty around `mu_hyp_param`.
+#' representing prior covariance of uncertainty around `mu_hyp_param`.
 #' If specified, must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
 #' @param omega_param A [numeric] [vector] of 5 values corresponding to the
 #' diagonal entries representing the Wishart hyperprior
-#' distributions of `prec_hyp_param`.
+#' distributions of `prec_hyp_param`, describing how much we expect parameters
+#' to vary between individuals.
 #' If specified, must be 5 values long:
 #'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
 #' @param wishdf_param An [integer] [vector] of 1 value specifying the degrees
