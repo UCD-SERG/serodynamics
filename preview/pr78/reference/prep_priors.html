@@ -74,7 +74,7 @@ antigen-isotypes (biomarkers) will be modeled.</p></dd>
 
 <dt id="arg-mu-hyp-param">mu_hyp_param<a class="anchor" aria-label="anchor" href="#arg-mu-hyp-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
-guess for the population mean of the seroresponse curve
+mean for the population level parameters
 parameters (y0, y1, t1, r, alpha) for each biomarker.
 If specified, must be 5 values long, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
 <li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
@@ -87,7 +87,7 @@ If specified, must be 5 values long, representing the following parameters:</p><
 <dt id="arg-prec-hyp-param">prec_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-hyp-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior beliefs of uncertainty around <code>mu_hyp_param</code>.
+representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
 If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
 </ul></dd>
 
@@ -95,7 +95,8 @@ If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00
 <dt id="arg-omega-param">omega_param<a class="anchor" aria-label="anchor" href="#arg-omega-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
-distributions of <code>prec_hyp_param</code>.
+distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
+to vary between individuals.
 If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
 </ul></dd>
 
@@ -103,7 +104,9 @@ If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0
 <dt id="arg-wishdf-param">wishdf_param<a class="anchor" aria-label="anchor" href="#arg-wishdf-param"></a></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
-If specified, must be 1 value long.</p><ul><li><p>default = 20.0</p></li>
+If specified, must be 1 value long.</p><ul><li><p>default = 20.0
+nu x omega
+Decrease to make hyperprior less informative.</p></li>
 </ul></dd>
 
 
