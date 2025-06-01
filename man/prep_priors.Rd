@@ -18,7 +18,7 @@ prep_priors(
 antigen-isotypes (biomarkers) will be modeled.}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
-guess for the population mean of the seroresponse curve
+mean for the population level parameters
 parameters (y0, y1, t1, r, alpha) for each biomarker.
 If specified, must be 5 values long, representing the following parameters:
 \itemize{
@@ -31,7 +31,7 @@ If specified, must be 5 values long, representing the following parameters:
 
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior beliefs of uncertainty around \code{mu_hyp_param}.
+representing prior covariance of uncertainty around \code{mu_hyp_param}.
 If specified, must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
@@ -39,7 +39,8 @@ If specified, must be 5 values long:
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
-distributions of \code{prec_hyp_param}.
+distributions of \code{prec_hyp_param}, describing how much we expect parameters
+to vary between individuals.
 If specified, must be 5 values long:
 \itemize{
 \item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
@@ -50,6 +51,8 @@ of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
 If specified, must be 1 value long.
 \itemize{
 \item default = 20.0
+nu x omega
+Decrease to make hyperprior less informative.
 }}
 
 \item{prec_logy_hyp_param}{A \link{numeric} \link{vector} of 2 values corresponding to
