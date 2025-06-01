@@ -186,6 +186,10 @@ run_mod <- function(data,
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
   
+  # Adding priors
+  jags_out <- jags_out |>
+    structure("priors" = )
+  
   # Conditionally adding jags.post
   if (with_post) {
     jags_out <- jags_out |>
