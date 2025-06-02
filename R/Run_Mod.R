@@ -53,9 +53,9 @@
 #'     - `omega_param`
 #'     - `wishdf`
 #'     - `prec_logy_hyp_param`
-#' @inheritDotParams prep_priors
-#'   - An optional `"jags.post"` attribute, included when argument
+#'     - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
+#' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -102,7 +102,8 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos)
+    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
+                             ...)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
