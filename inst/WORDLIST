@@ -5,7 +5,7 @@ JAGs
 Lifecycle
 Postprocess
 Rhat
-bayesian
+Traceplots
 behaviour
 biomarker
 biomarkers
@@ -24,7 +24,9 @@ nmc
 params
 prec
 rhat
+sd
 seroconversion
+serocourse
 seroresponse
 seroresponses
 strat
