@@ -141,8 +141,50 @@ Note: These objects can be large.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="prep_priors.html">prep_priors</a></code></p><dl><dt><code></code></dt>
-<dd></dd>
+<dd><p>Arguments passed on to <code><a href="prep_priors.html">prep_priors</a></code></p><dl><dt><code>max_antigens</code></dt>
+<dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> specifying how many
+antigen-isotypes (biomarkers) will be modeled.</p></dd>
+
+    <dt><code>mu_hyp_param</code></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
+mean for the population level parameters
+parameters (y0, y1, t1, r, alpha) for each biomarker.
+If specified, must be 5 values long, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
+<li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
+<li><p>t1 = time to peak (default = 1.0)</p></li>
+<li><p>r = shape parameter (default = -4.0)</p></li>
+<li><p>alpha = decay rate (default = -1.0)</p></li>
+</ul></dd>
+
+    <dt><code>prec_hyp_param</code></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
+hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
+If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
+</ul></dd>
+
+    <dt><code>omega_param</code></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to the
+diagonal entries representing the Wishart hyperprior
+distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
+to vary between individuals.
+If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
+</ul></dd>
+
+    <dt><code>wishdf_param</code></dt>
+<dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
+of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
+If specified, must be 1 value long.</p><ul><li><p>default = 20.0
+nu x omega
+Decrease to make hyperprior less informative.</p></li>
+</ul></dd>
+
+    <dt><code>prec_logy_hyp_param</code></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values corresponding to
+hyperprior diagonal entries on the log-scale for the precision matrix
+(i.e. inverse variance) representing prior beliefs of individual variation.
+If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
+</ul></dd>
 
 
 </dl></dd>
@@ -174,6 +216,8 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <li><p><code>omega_param</code></p></li>
 <li><p><code>wishdf</code></p></li>
 <li><p><code>prec_logy_hyp_param</code></p></li>
+<li><p>An optional <code>"jags.post"</code> attribute, included when argument
+<code>with_post</code> = TRUE.</p></li>
 </ul></li>
 </ul></li>
 </ul></div>
@@ -219,7 +263,7 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jun  1 17:35:19 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Jun  2 23:22:04 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -254,7 +298,7 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jun  1 17:36:07 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Jun  2 23:22:52 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
