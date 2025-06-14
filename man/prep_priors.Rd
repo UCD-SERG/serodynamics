@@ -51,8 +51,10 @@ of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
 If specified, must be 1 value long.
 \itemize{
 \item default = 20.0
-nu x omega
-Decrease to make hyperprior less informative.
+\item The value of \code{wishdf_param} controls how informative the Wishart prior is.
+Higher values lead to tighter priors on individual variation.
+Lower values (e.g., 5–10) make the prior more weakly informative,
+which can help improve convergence if the model is over-regularized.
 }}
 
 \item{prec_logy_hyp_param}{A \link{numeric} \link{vector} of 2 values corresponding to
@@ -79,8 +81,8 @@ containing the precision matrices of the hyperprior distributions of
 \item "omega" : A three-dimensional \link{numeric} \link{array} with 5 \link{matrix},each
 with dimensions \code{max_antigens} x 5 (# of parameters), representing the
 precision matrix of Wishart hyper-priors for \code{prec.hyp}.
-\item "wishdf": A \link{vector} of 2 values specifying Wishart distribution degrees
-of freedom for \code{prec.hyp}.
+\item "wishdf": A \link{vector} of 2 values specifying the degrees of freedom
+for the Wishart distribution used in the subject-level precision prior.
 \item "prec.logy.hyp": A \link{matrix} of hyper-parameters for the precision
 (inverse variance) of individual variation measuring
 \code{max_antigens} x 2, on the log-scale.
