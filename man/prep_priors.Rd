@@ -51,8 +51,8 @@ of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
 If specified, must be 1 value long.
 \itemize{
 \item default = 20.0
-\item The value of \code{wishdf_param} controls how informative the Wishart prior is.
-Higher values lead to tighter priors on individual variation.
+\item The value of \code{wishdf_param} controls how informative the Wishart prior
+is. Higher values lead to tighter priors on individual variation.
 Lower values (e.g., 5–10) make the prior more weakly informative,
 which can help improve convergence if the model is over-regularized.
 }}
