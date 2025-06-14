@@ -53,8 +53,8 @@
 #' - "omega" : A three-dimensional [numeric] [array] with 5 [matrix],each
 #' with dimensions `max_antigens` x 5 (# of parameters), representing the
 #' precision matrix of Wishart hyper-priors for `prec.hyp`.
-#' - "wishdf": A [vector] of 2 values specifying Wishart distribution degrees
-#' of freedom for `prec.hyp`.
+#' - "wishdf": A [vector] of 2 values specifying the degrees of freedom
+#' for the Wishart distribution used in the subject-level precision prior.
 #' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
 #' (inverse variance) of individual variation measuring
 #' `max_antigens` x 2, on the log-scale.
