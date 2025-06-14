@@ -104,9 +104,11 @@ If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0
 <dt id="arg-wishdf-param">wishdf_param<a class="anchor" aria-label="anchor" href="#arg-wishdf-param"></a></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
-If specified, must be 1 value long.</p><ul><li><p>default = 20.0
-nu x omega
-Decrease to make hyperprior less informative.</p></li>
+If specified, must be 1 value long.</p><ul><li><p>default = 20.0</p></li>
+<li><p>The value of <code>wishdf_param</code> controls how informative the Wishart prior is.
+Higher values lead to tighter priors on individual variation.
+Lower values (e.g., 5–10) make the prior more weakly informative,
+which can help improve convergence if the model is over-regularized.</p></li>
 </ul></dd>
 
 
@@ -133,8 +135,8 @@ containing the precision matrices of the hyperprior distributions of
 <li><p>"omega" : A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>,each
 with dimensions <code>max_antigens</code> x 5 (# of parameters), representing the
 precision matrix of Wishart hyper-priors for <code>prec.hyp</code>.</p></li>
-<li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values specifying Wishart distribution degrees
-of freedom for <code>prec.hyp</code>.</p></li>
+<li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values specifying the degrees of freedom
+for the Wishart distribution used in the subject-level precision prior.</p></li>
 <li><p>"prec.logy.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision
 (inverse variance) of individual variation measuring
 <code>max_antigens</code> x 2, on the log-scale.</p></li>

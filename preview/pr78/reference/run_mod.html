@@ -174,9 +174,11 @@ If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0
     <dt><code>wishdf_param</code></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
-If specified, must be 1 value long.</p><ul><li><p>default = 20.0
-nu x omega
-Decrease to make hyperprior less informative.</p></li>
+If specified, must be 1 value long.</p><ul><li><p>default = 20.0</p></li>
+<li><p>The value of <code>wishdf_param</code> controls how informative the Wishart prior is.
+Higher values lead to tighter priors on individual variation.
+Lower values (e.g., 5–10) make the prior more weakly informative,
+which can help improve convergence if the model is over-regularized.</p></li>
 </ul></dd>
 
     <dt><code>prec_logy_hyp_param</code></dt>
@@ -263,7 +265,7 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jun 14 18:08:41 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jun 14 18:12:43 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -289,7 +291,6 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -298,7 +299,7 @@ distribution will be exported with the following variables:</p><ul><li><p><code>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jun 14 18:09:29 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jun 14 18:13:32 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
