@@ -29,8 +29,10 @@
 #' of freedom for the Wishart hyperprior distribution of `prec_hyp_param`.
 #' If specified, must be 1 value long.
 #'    - default = 20.0
-#'    nu x omega 
-#'    Decrease to make hyperprior less informative. 
+#'    - The value of `wishdf_param` controls how informative the Wishart prior is.
+#'      Higher values lead to tighter priors on individual variation.
+#'      Lower values (e.g., 5–10) make the prior more weakly informative,
+#'      which can help improve convergence if the model is over-regularized.
 #' @param prec_logy_hyp_param A [numeric] [vector] of 2 values corresponding to
 #' hyperprior diagonal entries on the log-scale for the precision matrix
 #' (i.e. inverse variance) representing prior beliefs of individual variation.
