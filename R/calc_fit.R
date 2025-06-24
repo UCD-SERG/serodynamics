@@ -20,6 +20,6 @@ calc_fit <- function(t, y0, y1, t1, alpha, shape) {
   if (t <= t1) {
     y0 * exp(beta * t)
   } else {
-    (y1^(1 - shape) - (1 - shape) * alpha * (t - t1))^(1 / (1 - shape))
+    (y1^(1 - shape) - (1 - shape) * alpha * (t - t1)) ^ (1/(1 - shape))
   }
 }

@@ -179,10 +179,13 @@ run_mod <- function(data,
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
   
+  # Calculating fitted and residuals
+  fit_res <- calc_fit_mod()
+  
   # Conditionally adding jags.post
   if (with_post) {
     jags_out <- jags_out |>
       structure(jags.post = jags_post_final)
-  } 
+  }
   jags_out
 }
