@@ -124,10 +124,11 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A "curve_params_priors" object
 (a subclass of <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with the inputs to <code>prep_priors()</code> attached
-as <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a>  named <code>"used_priors"</code>).</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated.</p></li>
+as <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> entry named <code>"used_priors"</code>), containing the following
+elements:</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated.</p></li>
 <li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors with dimensions
 <code>max_antigens</code> x 5 (# of parameters), representing the mean of the
-hyperprior distribution for each biomarker: y0, y1, t1, r, and alpha).</p></li>
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, and alpha).</p></li>
 <li><p>"prec.hyp": A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a>
 with dimensions <code>max_antigens</code> x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of
