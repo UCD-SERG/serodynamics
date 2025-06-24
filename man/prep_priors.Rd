@@ -68,12 +68,13 @@ If specified, must be 2 values long:
 \value{
 A "curve_params_priors" object
 (a subclass of \link{list} with the inputs to \code{prep_priors()} attached
-as \link{attributes}  named \code{"used_priors"}).
+as \link{attributes} entry named \code{"used_priors"}), containing the following
+elements:
 \itemize{
 \item "n_params": Corresponds to the 5 parameters being estimated.
 \item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
 \code{max_antigens} x 5 (# of parameters), representing the mean of the
-hyperprior distribution for each biomarker: y0, y1, t1, r, and alpha).
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, and alpha).
 \item "prec.hyp": A three-dimensional \link{numeric} \link{array}
 with dimensions \code{max_antigens} x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of

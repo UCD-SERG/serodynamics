@@ -118,7 +118,7 @@ distribution will be exported with the following variables:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc)
-\item A \link{list} of \code{priors} that summarize the input priors, including:
+\item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}
 \item \code{prec_hyp_param}
