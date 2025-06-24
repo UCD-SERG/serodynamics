@@ -47,7 +47,7 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc)
-#'   - A [list] of `priors` that summarize the input priors, including:
+#'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
 #'     - `omega_param`
