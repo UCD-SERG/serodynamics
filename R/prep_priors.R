@@ -46,7 +46,8 @@
 #' - "n_params": Corresponds to the 5 parameters being estimated.
 #' - "mu.hyp": A [matrix] of hyperpriors with dimensions
 #' `max_antigens` x 5 (# of parameters), representing the mean of the
-#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, and alpha).
+#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, 
+#' and alpha).
 #' - "prec.hyp": A three-dimensional [numeric] [array] 
 #' with dimensions `max_antigens` x 5 (# of parameters), 
 #' containing the precision matrices of the hyperprior distributions of
@@ -121,7 +122,7 @@ prep_priors <- function(max_antigens,
     "prec.logy.hyp" = prec_logy_hyp
   ) |>
     structure(
-      class = c("curve_params_priors", "list"))
+              class = c("curve_params_priors", "list"))
   # Creating two objects in a list, one will be used in run_mod and the other
   # will be attached to run_mod output as an attribute. 
   prepped_priors <- prepped_priors |> 

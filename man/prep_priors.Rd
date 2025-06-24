@@ -74,7 +74,8 @@ elements:
 \item "n_params": Corresponds to the 5 parameters being estimated.
 \item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
 \code{max_antigens} x 5 (# of parameters), representing the mean of the
-hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, and alpha).
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r,
+and alpha).
 \item "prec.hyp": A three-dimensional \link{numeric} \link{array}
 with dimensions \code{max_antigens} x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of
