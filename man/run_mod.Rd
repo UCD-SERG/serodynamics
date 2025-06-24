@@ -6,14 +6,15 @@
 \usage{
 run_mod(
   data,
-  file_mod,
+  file_mod = serodynamics_example("model.jags"),
   nchain = 4,
   nadapt = 0,
   nburn = 0,
   nmc = 100,
   niter = 100,
   strat = NA,
-  with_post = FALSE
+  with_post = FALSE,
+  ...
 )
 }
 \arguments{
@@ -40,6 +41,56 @@ component
 should be included as an element of the \link{list} object returned by \code{run_mod()}
 (see \code{Value} section below for details).
 Note: These objects can be large.}
+
+\item{...}{
+  Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
+  \describe{
+    \item{\code{max_antigens}}{An \link{integer} specifying how many
+antigen-isotypes (biomarkers) will be modeled.}
+    \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
+mean for the population level parameters
+parameters (y0, y1, t1, r, alpha) for each biomarker.
+If specified, must be 5 values long, representing the following parameters:
+\itemize{
+\item y0 = baseline antibody concentration (default = 1.0)
+\item y1 = peak antibody concentration (default = 7.0)
+\item t1 = time to peak (default = 1.0)
+\item r = shape parameter (default = -4.0)
+\item alpha = decay rate (default = -1.0)
+}}
+    \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
+hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+representing prior covariance of uncertainty around \code{mu_hyp_param}.
+If specified, must be 5 values long:
+\itemize{
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+}}
+    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
+diagonal entries representing the Wishart hyperprior
+distributions of \code{prec_hyp_param}, describing how much we expect parameters
+to vary between individuals.
+If specified, must be 5 values long:
+\itemize{
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+}}
+    \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
+of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
+If specified, must be 1 value long.
+\itemize{
+\item default = 20.0
+\item The value of \code{wishdf_param} controls how informative the Wishart prior
+is. Higher values lead to tighter priors on individual variation.
+Lower values (e.g., 5–10) make the prior more weakly informative,
+which can help improve convergence if the model is over-regularized.
+}}
+    \item{\code{prec_logy_hyp_param}}{A \link{numeric} \link{vector} of 2 values corresponding to
+hyperprior diagonal entries on the log-scale for the precision matrix
+(i.e. inverse variance) representing prior beliefs of individual variation.
+If specified, must be 2 values long:
+\itemize{
+\item defaults = 4.0, 1.0
+}}
+  }}
 }
 \value{
 A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
@@ -66,11 +117,17 @@ distribution will be exported with the following variables:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc).
+\item \code{nThin}: Thinning number (niter/nmc)
+\item \code{priors}: A \link{list} that summarizes the input priors, including:
+\itemize{
+\item \code{mu_hyp_param}
+\item \code{prec_hyp_param}
+\item \code{omega_param}
+\item \code{wishdf}
+\item \code{prec_logy_hyp_param}
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
-Includes a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
-(one per stratum).
+}
 }
 }
 }

@@ -4,6 +4,8 @@
 
 ## New features
 
+
+* Making prep_priors modifiable (#78)
 * Changes to `run_mod()` output:
   - Taking out `include_subs` as an input option, default will include all
   individuals

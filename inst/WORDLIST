@@ -5,7 +5,7 @@ JAGs
 Lifecycle
 Postprocess
 Rhat
-bayesian
+Traceplots
 behaviour
 biomarker
 biomarkers
@@ -14,6 +14,8 @@ dotplots
 geoms
 ggproto
 hyp
+hyperprior
+hyperpriors
 iso
 isotype
 isotypes
@@ -22,7 +24,9 @@ nmc
 params
 prec
 rhat
+sd
 seroconversion
+serocourse
 seroresponse
 seroresponses
 strat
