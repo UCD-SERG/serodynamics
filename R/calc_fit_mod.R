@@ -16,8 +16,8 @@
 #'   - residual = The residual value calculated as the difference between
 #'   observed and fitted values for a given `t`
 
-calc_fit_mod <- function(input_dat = jags_out, 
-                         original_data = orig_data) {
+calc_fit_mod <- function(input_dat, 
+                         original_data) {
   # Preparing modeled data
   input_dat <- input_dat |>
     dplyr::group_by(.data$Parameter, .data$Iso_type, .data$Stratification, 

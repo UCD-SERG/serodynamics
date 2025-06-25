@@ -4,7 +4,7 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(input_dat = jags_out, original_data = orig_data)
+calc_fit_mod(input_dat, original_data)
 }
 \arguments{
 \item{input_dat}{A [] dataframe of modeled antibody kinetic parameter values.}
