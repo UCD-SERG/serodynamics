@@ -4,7 +4,7 @@
 
 ## New features
 
-* Including fitted and residual values as data frame in run_mod output.
+* Including fitted and residual values as data frame in run_mod output.(#101)
 * Changes to `run_mod()` output:
   - Taking out `include_subs` as an input option, default will include all
   individuals
