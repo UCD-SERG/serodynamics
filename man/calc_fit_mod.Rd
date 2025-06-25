@@ -2,55 +2,31 @@
 % Please edit documentation in R/calc_fit_mod.R
 \name{calc_fit_mod}
 \alias{calc_fit_mod}
-\title{Calculates fitted values for run_mod output}
+\title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(data)
+calc_fit_mod(input_dat = jags_out, original_data = orig_data)
 }
 \arguments{
-\item{t}{A \link{vector} of time points used to plot the fitted values.}
+\item{input_dat}{A [] dataframe of modeled antibody kinetic parameter values.}
 
-\item{y0}{A \link{vector} of parameter estimates for baseline antibody level.}
-
-\item{y1}{A \link{vector} of parameter estimates specifying the .}
-
-\item{t1}{A \link{vector} of parameter estimates specifying the time to infect.}
-
-\item{alpha}{A \link{vector} of parameter estimates specifying the antibody decay
-rate.}
+\item{original_data}{A [] data frame of the original input dataset.}
 }
 \value{
-A \link{vector} of fitted
-value corresponding to the estimated assay value (ex. ELISA units etc.) at
-time since infection (TSI).
+A \link{data.frame} attached as an \link{attributes} with the following
+values:
+\itemize{
+\item Subject = ID number specifying an individual
+\item Iso_type = The modeled antigen_isotype
+\item t = Time since infection
+\item fitted = The fitted value calculated using model output parameters for a
+given \code{t}
+\item residual = The residual value calculated as the difference between
+observed and fitted values for a given \code{t}
+}
 }
 \description{
-\code{calc_fit_mod()} takes antibody kinetic parameters and creates a fitted
-value corresponding to the estimated assay value (ex. ELISA units etc.) at
-time since infection (TSI).
-}
-\examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
-  set.seed(1)
-  library(dplyr)
-  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
-  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
-
-  dataset <- bind_rows(strat1, strat2)
-
-  fitted_model <- run_mod(
-    data = dataset, # The data set input
-    file_mod = serodynamics_example("model.jags"),
-    nchain = 4, # Number of mcmc chains to run
-    nadapt = 100, # Number of adaptations to run
-    nburn = 100, # Number of unrecorded samples before sampling begins
-    nmc = 1000,
-    niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
-}
+\code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates
+fitted and residual values. Fitted values correspond to the estimated assay
+value (ex. ELISA units etc.) at time since infection (TSI). Residual values
+are calculate as the difference between fitted and observed values.
 }
