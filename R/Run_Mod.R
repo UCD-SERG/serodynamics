@@ -196,4 +196,6 @@ run_mod <- function(data,
       structure(jags.post = jags_post_final)
   } 
   jags_out
+  class(jags_out) <- "sero_mod_output"
+  
 }
