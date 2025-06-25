@@ -47,23 +47,29 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
+#'   - `priors`: A [list] that summarizes the input priors, including:
+#'     - `mu_hyp_param`
+#'     - `prec_hyp_param`
+#'     - `omega_param`
+#'     - `wishdf`
+#'     - `prec_logy_hyp_param`
 #'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
 #'   for all observations.
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
-#'   Includes a [list] containing one or more [runjags::runjags-class] objects
-#'   (one per stratum).
+#' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod,
+                    file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
                     nmc = 100,
                     niter = 100,
                     strat = NA,
-                    with_post = FALSE) {
+                    with_post = FALSE,
+                    ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -98,7 +104,8 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priors <- prep_priors(max_antigens = longdata$n_antigen_isos)
+    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
+                             ...)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -112,7 +119,7 @@ run_mod <- function(data,
 
     jags_post <- runjags::run.jags(
       model = file_mod,
-      data = c(longdata, priors),
+      data = c(longdata, priorspec),
       inits = initsfunction,
       method = "parallel",
       adapt = nadapt,
@@ -180,6 +187,10 @@ run_mod <- function(data,
   current_atts <- attributes(jags_out) 
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
+  
+  # Adding priors
+  jags_out <- jags_out |>
+    structure("priors" = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
