@@ -180,8 +180,19 @@ run_mod <- function(data,
   attributes(jags_out) <- current_atts
   
   # Calculating fitted and residuals
-  fit_res <- calc_fit_mod()
-  
+  # Renaming columns using attributes from as_case_data
+  orig_data <- dl_sub
+  orig_data$Subject <- orig_data[[attributes(orig_data)$id_var]]
+  orig_data$Iso_type <- orig_data[[attributes(orig_data)$biomarker_var]]
+  orig_data$t <- orig_data[[attributes(orig_data)$timeindays]]
+  orig_data$result <- orig_data[[attributes(orig_data)$value_var]]
+  orig_data <- orig_data |>
+    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+  fit_res <- calc_fit_mod(input_dat = jags_out,
+                          original_data = orig_data)
+  jags_out <- jags_out |>
+    structure(fitted_residuals = fit_res)
+
   # Conditionally adding jags.post
   if (with_post) {
     jags_out <- jags_out |>
