@@ -47,6 +47,8 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
+#'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
+#'   for all observations.
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #'   Includes a [list] containing one or more [runjags::runjags-class] objects

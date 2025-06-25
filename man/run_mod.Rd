@@ -67,6 +67,8 @@ distribution will be exported with the following variables:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
+for all observations.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
 Includes a \link{list} containing one or more \link[runjags:runjags-class]{runjags::runjags} objects
