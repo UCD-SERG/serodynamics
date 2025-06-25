@@ -34,9 +34,10 @@ calc_fit_mod <- function(input_dat = jags_out,
     mutate(fitted = ifelse(.data$t <= .data$t1, 
                            .data$y0 * exp((log(.data$y1 / .data$y0) / .data$t1)
                                           * .data$t),
-                           (.data$y1 ^ (1 - shape) - (1 - .data$shape) *
+                           (.data$y1 ^ (1 - .data$shape) - (1 - .data$shape) *
                               .data$alpha * (.data$t - .data$t1)) ^ 
                              (1 / (1 - .data$shape))),
            residual = .data$result - .data$fitted) |>
     select(.data$Subject, .data$Iso_type, .data$t, .data$fitted, .data$residual)
+  fitted_dat
 }
