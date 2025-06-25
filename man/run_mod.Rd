@@ -117,7 +117,7 @@ distribution will be exported with the following variables:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc)
+\item \code{nThin}: Thinning number (niter/nmc).
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}
@@ -125,9 +125,11 @@ distribution will be exported with the following variables:
 \item \code{omega_param}
 \item \code{wishdf}
 \item \code{prec_logy_hyp_param}
+}
+\item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
+for all observations.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
-}
 }
 }
 }
