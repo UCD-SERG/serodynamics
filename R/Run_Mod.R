@@ -26,8 +26,9 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns A [dplyr::tbl_df] that contains the posterior
-#' distribution will be exported with the following variables:
+#' @returns A [serodynamics::sr_model] class [dplyr::tbl_df] object that
+#' contains the posterior distribution will be exported with the following
+#' variables:
 #'   - `iteration` = Number of sampling iterations
 #'   - `chain` = Number of MCMC chains run; between 1 and 4
 #'   - `Parameter` = Parameter being estimated. Includes the following:

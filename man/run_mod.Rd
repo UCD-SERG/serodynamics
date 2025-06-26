@@ -93,8 +93,9 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
-distribution will be exported with the following variables:
+A \link{sr_model} class \link[dplyr:tbl_df]{dplyr::tbl_df} object that
+contains the posterior distribution will be exported with the following
+variables:
 \itemize{
 \item \code{iteration} = Number of sampling iterations
 \item \code{chain} = Number of MCMC chains run; between 1 and 4
