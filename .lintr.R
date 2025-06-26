@@ -68,5 +68,8 @@ rm(snake_case_ACRO)
 exclusions <- list(
   `data-raw` = list(
     pipe_consistency_linter = Inf
+  ),
+  vignettes = list(
+    undesirable_function_linter = Inf
   )
 )
