@@ -5,6 +5,7 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/LICENSE.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/articles/dobson.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/articles/index.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/articles/test-snippets.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/authors.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/news/index.html</loc></url>
@@ -14,10 +15,13 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/initsfunction.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/load_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/nepal_sees.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/nepal_sees_jags_post.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/nepal_sees_jags_output.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/plot_jags_Rhat.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/plot_jags_dens.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/plot_jags_effect.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/plot_jags_trace.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/plot_title_fun.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/post_summ.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/prep_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr76/reference/prep_priors.html</loc></url>
