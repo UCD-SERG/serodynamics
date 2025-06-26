@@ -28,6 +28,6 @@
 #'  \item{value}{Estimated value of the parameter}
 #'  \item{attributes}{A [list] of `attributes` that summarize the jags inputs, 
 #'  priors, and optional jags_post mcmc object}
-#' }
+#'  }
 #' @source reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
 "nepal_sees_jags_output"
