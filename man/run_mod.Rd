@@ -93,7 +93,7 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-A \link{sr_model} class \link[dplyr:tbl_df]{dplyr::tbl_df} object that
+A \code{sr_model} class \link[dplyr:tbl_df]{dplyr::tbl_df} object that
 contains the posterior distribution will be exported with the following
 variables:
 \itemize{

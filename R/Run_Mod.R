@@ -26,7 +26,7 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns A [serodynamics::sr_model] class [dplyr::tbl_df] object that
+#' @returns A `sr_model` class [dplyr::tbl_df] object that
 #' contains the posterior distribution will be exported with the following
 #' variables:
 #'   - `iteration` = Number of sampling iterations
