@@ -8,12 +8,11 @@
 #' which is the diagnosis type (typhoid or
 #' paratyphoid). Keeping only IDs `"newperson"`, `"sees_npl_1"`, `"sees_npl_2"`.
 #'
-#' @format ## `nepal_sees_jags_output`
-#'   An S3 object of class `sr_model`: A [dplyr::tbl_df] that contains the
+#' @format An S3 object of class `sr_model`: A [dplyr::tbl_df] that contains the
 #'   posterior predictive distribution of the person-specific parameters for a
 #'   "new person" with no observed data (`Subject = "newperson"`) and posterior
 #'   distributions of the person-specific parameters for two arbitrarily-chosen
-#'   subjects (`"sees_npl_1"` and `"sees_npl_2"`)}.
+#'   subjects (`"sees_npl_1"` and `"sees_npl_2"`).
 #'   Contains 40,000 `rows`, 7 `columns`, and model `attributes`.
 #' \describe{
 #'  \item{Iteration}{Number of sampling iterations: 500 iterations}
