@@ -72,20 +72,42 @@ paratyphoid). Keeping only IDs <code>"newperson"</code>, <code>"sees_npl_1"</cod
 <h3 id="nepal-sees-jags-output"><code>nepal_sees_jags_output</code><a class="anchor" aria-label="anchor" href="#nepal-sees-jags-output"></a></h3>
 
 
-<p>A tbl_df consisting of the following named elements:</p><dl><dt>A tbl_df that contains the
+<p>An S3 object of class <code>sr_model</code>: A <a href="https://dplyr.tidyverse.org/reference/tbl_df.html" class="external-link">dplyr::tbl_df</a> that contains the
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (<code>Subject = "newperson"</code>) and posterior
 distributions of the person-specific parameters for two arbitrarily-chosen
-subjects (<code>"sees_npl_1"</code> and <code>"sees_npl_2"</code>)</dt>
-<dd><p></p></dd>
+subjects (<code>"sees_npl_1"</code> and <code>"sees_npl_2"</code>)</p>
+</div><p>.
+Contains 40,000 <code>rows</code>, 7 <code>columns</code>, and model <code>attributes</code>.</p><dl><dt>Iteration</dt>
+<dd><p>Number of sampling iterations: 500 iterations</p></dd>
+
+<dt>Chain</dt>
+<dd><p>Number of MCMC chains run: 2 chains run</p></dd>
+
+<dt>Parameter</dt>
+<dd><p>Parameter being estimated</p></dd>
+
+<dt>Iso_type</dt>
+<dd><p>Antibody/antigen type combination being evaluated:
+<code>HlyE_IgA</code> and <code>HlyE_IgG</code></p></dd>
+
+<dt>Stratification</dt>
+<dd><p>The variable used to stratify jags model: <code>typhi</code> and
+<code>paratyphi</code></p></dd>
+
+<dt>Subject</dt>
+<dd><p>ID of subject being evaluated: <code>newperson</code>, <code>sees_npl_1</code>,
+<code>sees_npl_2</code></p></dd>
+
+<dt>value</dt>
+<dd><p>Estimated value of the parameter</p></dd>
+
 <dt>attributes</dt>
 <dd><p>A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> of <code>attributes</code> that summarize the jags inputs,
-priors, optional jags_post mcmc object</p></dd>
+priors, and optional jags_post mcmc object</p></dd>
 
 
 </dl></div>
-
-    </div>
     <div class="section level2">
     <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
     <p>reference study: <a href="https://doi.org/10.1016/S2666-5247(22)00114-8" class="external-link">https://doi.org/10.1016/S2666-5247(22)00114-8</a></p>
