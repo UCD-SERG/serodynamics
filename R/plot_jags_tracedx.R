@@ -26,8 +26,6 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @param subject Specify [character] string to produce plots of specific
-#' subjects.
 #' @return A [list] of [ggplot2::ggplot] objects producing trace
 #' plots for all the specified input.
 #' @export
