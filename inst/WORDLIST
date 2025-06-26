@@ -6,7 +6,6 @@ Lifecycle
 Postprocess
 Rhat
 Traceplots
-bayesian
 behaviour
 biomarker
 biomarkers
@@ -15,11 +14,12 @@ dotplots
 geoms
 ggproto
 hyp
+hyperprior
+hyperpriors
 iso
 isotype
 isotypes
 mcmc
-newperson
 nmc
 params
 prec
@@ -28,8 +28,9 @@ sd
 seroconversion
 serocourse
 seroresponse
+seroresponses
 strat
 stratifications
-summ
+tbl
 unstratified
 wishdf

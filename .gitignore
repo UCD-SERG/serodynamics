@@ -15,3 +15,6 @@ mcmc_raw_reinfec_rem_032425.rds
 cholera_data_compiled_050324.csv
 inst/doc
 docs
+
+**/.quarto/
+

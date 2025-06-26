@@ -4,6 +4,18 @@
 
 ## New features
 
+
+* Making prep_priors modifiable (#78)
+* Changes to `run_mod()` output:
+  - Taking out `include_subs` as an input option, default will include all
+  individuals
+  - Making a single tbl as output
+  - All other pieces will be attributes.
+* Changes to `run_mod()` (#79):
+   - `jags.post` now optionally included in output, as specified by argument
+   `with_post`
+   - all subjects now optionally included in `curve_params` output component, 
+   as specified by argument `include_subs`
 * Diagnostic function to produce R-hat dotplots with stratification (#67)
 * Added function for summarizing estimates in a table (#74)
 * Diagnostic trace plot function with strat (#64)
@@ -32,6 +44,10 @@ None yet
 
 ## Developer-facing changes
 
+* Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
+* Reformatted `.lintr` as R file (following 
+https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389) (#81)
+* Set shortcut pipe to be base pipe (#80)
 * Added snapshot test for `run_mod()`
 * Clarified `prep_data()` internals using `{dplyr}` (#34)
 * Removed ".R" suffix from jags model files 

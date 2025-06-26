@@ -3,7 +3,7 @@ test_that(
   desc = "results are consistent with data frame showing parameter estimates",
   code = {
 
-    data <- serodynamics::nepal_sees_jags_post |>
+    data <- serodynamics::nepal_sees_jags_output |>
       suppressWarnings()
 
     # Testing for any errors:
