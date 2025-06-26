@@ -6,9 +6,9 @@
 \usage{
 plot_jags_trace(
   data,
-  iso = unique(data$curve_params$Iso_type),
-  param = unique(data$curve_params$Parameter_sub),
-  strat = unique(data$curve_params$Stratification)
+  iso = unique(data$Iso_type),
+  param = unique(data$Parameter),
+  strat = unique(data$Stratification)
 )
 }
 \arguments{
@@ -30,6 +30,9 @@ specific parameter, entered with quotes. Options include:
 
 \item{strat}{Specify \link{character} string to produce plots of specific
 stratification entered in quotes.}
+
+\item{subject}{Specify \link{character} string to produce plots of specific
+subjects.}
 }
 \value{
 A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects producing trace
