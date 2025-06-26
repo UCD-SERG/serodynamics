@@ -7,14 +7,15 @@
 \format{
 \subsection{\code{nepal_sees_jags_output}}{
 
-A \link{list} consisting of the following named elements:
+A \link{tbl_df} consisting of the following named elements:
 \describe{
-\item{curve_params}{A \link{data.frame} titled \code{curve_params} that contains the
+\item{A \link{tbl_df} that contains the
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (\code{Subject = "newperson"}) and posterior
 distributions of the person-specific parameters for two arbitrarily-chosen
 subjects (\code{"sees_npl_1"} and \code{"sees_npl_2"})}
-\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
+\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs,
+priors, optional jags_post mcmc object}
 }
 }
 }
