@@ -34,19 +34,18 @@
 #' post_summ(data = serodynamics::nepal_sees_jags_output)
 
 post_summ <- function(data,
-                      iso = unique(data$curve_params$Iso_type),
-                      param = unique(data$curve_params$Parameter_sub),
-                      strat = unique(data$curve_params$Stratification)) {
-  summarize_jags <- data[["curve_params"]]
+                      iso = unique(data$Iso_type),
+                      param = unique(data$Parameter),
+                      strat = unique(data$Stratification)) {
 
-  summarize_jags <- summarize_jags |>
+  summarize_jags <- data |>
     filter(.data$Iso_type %in% iso) |>
-    filter(.data$Parameter_sub %in% param) |>
+    filter(.data$Parameter %in% param) |>
     filter(.data$Stratification %in% strat)  |>
     dplyr::filter(.data$Subject == "newperson")
 
   summarize_jags <- summarize_jags |>
-    dplyr::group_by(.data$Iso_type, .data$Parameter_sub, 
+    dplyr::group_by(.data$Iso_type, .data$Parameter, 
                     .data$Stratification) |>
     dplyr::summarize(Mean = mean(.data$value), 
                      SD = stats::sd(.data$value), 
