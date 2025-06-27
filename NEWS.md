@@ -5,6 +5,8 @@
 ## New features
 
 * Including fitted and residual values as data frame in run_mod output.(#101)
+* Replacing old data object with new run_mod output (#102)
+* Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
 * Changes to `run_mod()` output:
   - Taking out `include_subs` as an input option, default will include all
