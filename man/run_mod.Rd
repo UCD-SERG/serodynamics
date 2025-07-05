@@ -24,9 +24,9 @@ explicitly labeled as so.
 \itemize{
 \item id_var = The ID of individuals included
 \item biomarker_var = The different antigen isotype combinations that are being
-measured.
-\item timeindays = The amount of time in days since symptom onset.
-\item value_var = The measured assay value.
+measured
+\item timeindays = The amount of time in days since symptom onset
+\item value_var = The measured assay value
 }}
 
 \item{file_mod}{The name of the file that contains model structure.}
