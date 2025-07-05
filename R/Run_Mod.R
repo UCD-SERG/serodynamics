@@ -12,7 +12,8 @@
 #'  - shape = shape parameter
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns. These values
-#' can be clarified as inputs using [serodynamics::as_case_data()]
+#' can be clarified as inputs using [serodynamics::as_case_data()] if not
+#' explicitly labeled as so.
 #'  - id_var = The ID of individuals included
 #'  - biomarker_var = The different antigen isotype combinations that are being
 #'  measured.

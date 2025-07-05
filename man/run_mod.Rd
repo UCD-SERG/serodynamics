@@ -19,7 +19,8 @@ run_mod(
 }
 \arguments{
 \item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns. These values
-can be clarified as inputs using \code{\link[=as_case_data]{as_case_data()}}
+can be clarified as inputs using \code{\link[=as_case_data]{as_case_data()}} if not
+explicitly labeled as so.
 \itemize{
 \item id_var = The ID of individuals included
 \item biomarker_var = The different antigen isotype combinations that are being
