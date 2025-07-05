@@ -11,7 +11,13 @@
 #'  - t1 = time to peak
 #'  - shape = shape parameter
 #'  - alpha = decay rate
-#' @param data A [base::data.frame()] with the following columns.
+#' @param data A [base::data.frame()] with the following columns. These values
+#' can be clarified as inputs using [serodynamics::as_case_data()]
+#'  - id_var = The ID of individuals included
+#'  - biomarker_var = The different antigen isotype combinations that are being
+#'  measured.
+#'  - timeindays = The amount of time in days since symptom onset. 
+#'  - value_var = The measured assay value.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of MCMC chains to be run per jags model.
