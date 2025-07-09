@@ -7,9 +7,9 @@
 calc_fit_mod(input_dat, original_data)
 }
 \arguments{
-\item{input_dat}{A [] dataframe of modeled antibody kinetic parameter values.}
+\item{input_dat}{A \link{data.frame} of modeled antibody kinetic parameter values.}
 
-\item{original_data}{A [] data frame of the original input dataset.}
+\item{original_data}{A \link{data.frame} of the original input dataset.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following
@@ -30,3 +30,4 @@ fitted and residual values. Fitted values correspond to the estimated assay
 value (ex. ELISA units etc.) at time since infection (TSI). Residual values
 are calculate as the difference between fitted and observed values.
 }
+\keyword{internal}
