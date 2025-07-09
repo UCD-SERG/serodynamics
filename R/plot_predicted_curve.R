@@ -1,6 +1,6 @@
 #' @title Generate Predicted Antibody Response Curves (Median + 95% CI)
 #' @description
-#' Plots a single median antibody response curve with a 95% credible interval 
+#' Plots a median antibody response curve with a 95% credible interval 
 #' ribbon, using full posterior samples. Optionally overlays observed data, 
 #' moves the legend to the bottom, provides options to apply log10 
 #' transformation on the y- and x-axes, and to show all individual 
