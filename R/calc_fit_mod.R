@@ -23,7 +23,7 @@ calc_fit_mod <- function(input_dat,
     dplyr::group_by(.data$Parameter, .data$Iso_type, .data$Stratification, 
                     .data$Subject) |>
     dplyr::summarize(med_value = stats::median(.data$value)) |>
-    tidyr::spread(.data$Parameter, .data$med_value)
+    tidyr::pivot_wider(.data$Parameter, .data$med_value)
 
   # Matching input data with modeled data
   matched_dat <- merge(input_dat, original_data, by = c("Subject", "Iso_type"),
