@@ -6,7 +6,7 @@
 #' transformation on the y- and x-axes, and to show all individual 
 #' sampled curves.
 #'
-#' @param param_medians_wide A tibble with full posterior parameter samples 
+#' @param param_medians_wide A [dplyr::tbl_df] with full posterior parameter samples 
 #' (first model).
 #'   If this tibble contains observed data (with "dayssincefeveronset"), 
 #'   it will be treated as the observed data, and only one model is plotted.
