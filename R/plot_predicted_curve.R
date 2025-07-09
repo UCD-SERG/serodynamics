@@ -28,7 +28,7 @@
 #' @param alpha_samples Numeric; transparency level for individual 
 #' curves (default = 0.3).
 #'
-#' @return A ggplot object displaying predicted antibody response curves 
+#' @return A [ggplot2::ggplot] object displaying predicted antibody response curves 
 #' with a median curve and a 95% credible interval band.
 #' @export
 #'
