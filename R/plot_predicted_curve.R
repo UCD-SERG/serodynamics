@@ -6,10 +6,10 @@
 #' transformation on the y- and x-axes, and to show all individual 
 #' sampled curves.
 #'
-#' @param param_medians_wide A [dplyr::tbl_df] with full posterior parameter samples 
-#' (first model).
-#'   If this tibble contains observed data (with "dayssincefeveronset"), 
-#'   it will be treated as the observed data, and only one model is plotted.
+#' @param jags_post The list returned by `run_mod(...)` 
+#' (must have `curve_params`).
+#' @param id           The original subject ID (e.g. "sees_npl_128") to extract.
+#' @param antigen_iso  The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".
 #' @param dataset (Optional) A tibble with observed antibody response data. 
 #' Must contain:
 #'   - `timeindays`
@@ -64,18 +64,12 @@
 #'   include_subs = TRUE
 #' )
 #'
-#' # 4) Pull out the full MCMC samples for that one ID + antigen
-#' full_samples <- process_jags_samples(
-#'   jags_post   = model,
-#'   dataset     = dataset,
-#'   id          = "sees_npl_128",
-#'   antigen_iso = "HlyE_IgA"
-#' )
-#'
-#' # 5a) Plot (linear axes) with all individual curves + median ribbon
+#' # 4a) Plot (linear axes) with all individual curves + median ribbon
 #' p1 <- plot_predicted_curve(
-#'   param_medians_wide = full_samples,
-#'   dataset                = dat,
+#'   jags_post          = model,
+#'   id                 = "sees_npl_128",
+#'   antigen_iso        = "HlyE_IgA",
+#'   dataset            = dat,
 #'   legend_obs         = "Observed Data",
 #'   legend_mod1        = "Full Model Predictions",
 #'   show_quantiles     = TRUE,
@@ -85,10 +79,12 @@
 #' )
 #' print(p1)
 #'
-#' # 5b) Plot (log10 y-axis) with all individual curves + median ribbon
+#' # 4b) Plot (log10 y-axis) with all individual curves + median ribbon
 #' p2 <- plot_predicted_curve(
-#'   param_medians_wide = full_samples,
-#'   dataset                = dat,
+#'   jags_post          = model,
+#'   id                 = "sees_npl_128",
+#'   antigen_iso        = "HlyE_IgA",
+#'   dataset            = dat,
 #'   legend_obs         = "Observed Data",
 #'   legend_mod1        = "Full Model Predictions",
 #'   show_quantiles     = TRUE,
@@ -97,7 +93,9 @@
 #'   show_all_curves    = TRUE
 #' )
 #' print(p2)
-plot_predicted_curve <- function(param_medians_wide,
+plot_predicted_curve <- function(jags_post,
+                                 id,
+                                 antigen_iso,
                                  dataset = NULL,
                                  legend_obs = "Observed Data",
                                  legend_mod1 = "Model 1 Predictions",
@@ -106,6 +104,48 @@ plot_predicted_curve <- function(param_medians_wide,
                                  log_x = FALSE,
                                  show_all_curves = FALSE,
                                  alpha_samples = 0.3) {
+  
+  # --------------------------------------------------------------------------
+  # 1) Grab the curve_params data.frame out of the run_mod() output:
+  df <- jags_post$curve_params
+  
+  
+  # --------------------------------------------------------------------------
+  # 2) Filter to the subject & antigen of interest:
+  df_sub   <- df |>
+    dplyr::filter(
+      .data$Subject == id,        # e.g. "sees_npl_128"
+      .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"
+    )
+  
+  # --------------------------------------------------------------------------
+  # 3) Clean up parameter name if you like:
+  df_clean <- df_sub |>
+    dplyr::mutate(
+      Parameter_clean = stringr::str_extract(.data$Parameter, "^[^\\[]+")
+    )
+  
+  # --------------------------------------------------------------------------
+  # 4) Pivot to wide format: one row per iteration/chain
+  param_medians_wide <- df_clean |>
+    dplyr::select(
+      all_of(c("Chain",
+               "Iteration",
+               "Iso_type",
+               "Parameter_clean",
+               "value"))
+    ) |>
+    tidyr::pivot_wider(
+      names_from  = c("Parameter_clean"),
+      values_from = c("value")
+    ) |>
+    dplyr::arrange(.data$Chain, .data$Iteration) |>
+    
+    dplyr::mutate(
+      antigen_iso = factor(.data$Iso_type),
+      r = .data$shape
+    ) |>
+    dplyr::select(-c("Iso_type"))
   
   # Ensure Subject column exists in each model's data
   if (!"Subject" %in% names(param_medians_wide)) {
@@ -167,7 +207,7 @@ plot_predicted_curve <- function(param_medians_wide,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res, 
                                       group = .data$sample_id),
-                         color = "gray", alpha = 0.2)
+                         color = "gray", alpha = alpha_samples)
   }
   
   # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
