@@ -15,7 +15,7 @@
 #'   given `t`
 #'   - residual = The residual value calculated as the difference between
 #'   observed and fitted values for a given `t`
-
+#' @keywords internal
 calc_fit_mod <- function(input_dat, 
                          original_data) {
   # Preparing modeled data
