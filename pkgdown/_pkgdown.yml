@@ -41,6 +41,7 @@ reference:
 - title: Summarize seroresponse model estimates
   contents:
   - post_summ
+  - print.sr_model
 - title: Example data sets
   contents:
   - serodynamics_example
