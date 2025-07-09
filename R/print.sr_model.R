@@ -10,8 +10,8 @@
 #' contains the mean posterior distribution for antibody kinetic curve
 #' parameters by `Iso_type` and `Stratification` (if specified).
 #' @export
-#' @example
-#' print.sr_model(nepal_sees_jags_output)
+#' @examples
+#' print(nepal_sees_jags_output)
 print.sr_model <- function(data) {
   data_group <- data |>
     dplyr::group_by(Stratification, Iso_type, Parameter) |>
