@@ -22,7 +22,7 @@
 #' and 97.5% quantiles.
 #' @param log_scale Logical; if TRUE, applies a log10 transformation to 
 #' the y-axis.
-#' @param log_x Logical; if TRUE, applies a log10 transformation to the x-axis.
+#' @param log_x [Logical]; if TRUE, applies a log10 transformation to the x-axis.
 #' @param show_all_curves Logical; if TRUE, overlays all 
 #' individual sampled curves.
 #' @param alpha_samples Numeric; transparency level for individual 
