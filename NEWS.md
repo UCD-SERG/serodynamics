@@ -4,6 +4,7 @@
 
 ## New features
 
+* Creating default print.sr_model function for sr_model class (#)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
