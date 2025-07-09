@@ -29,7 +29,7 @@
 #' curves (default = 0.3).
 #'
 #' @return A [ggplot2::ggplot] object displaying predicted antibody response curves 
-#' with a median curve and a 95% credible interval band.
+#' with a median curve and a 95% credible interval band as default.
 #' @export
 #'
 #' @examples
