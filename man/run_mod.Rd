@@ -93,8 +93,10 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the posterior
-distribution will be exported with the following variables:
+An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
+contains MCMC samples from the joint posterior distribution of the model
+parameters, conditional on the provided input \code{data},
+including the following:
 \itemize{
 \item \code{iteration} = Number of sampling iterations
 \item \code{chain} = Number of MCMC chains run; between 1 and 4

@@ -29,7 +29,7 @@ Authors:
 
 Other contributors:
 \itemize{
-  \item Kwan Ho Lee [contributor]
+  \item Kwan Ho Lee \email{ksjlee@ucdavis.edu} [contributor]
 }
 
 }
