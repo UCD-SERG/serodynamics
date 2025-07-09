@@ -34,8 +34,7 @@ calc_fit_mod <- function(input_dat,
   fitted_dat <- matched_dat |>
     rowwise() |>
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                                     .data$alpha,
-                       .data$shape),
+                       .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
     select(.data$Subject, .data$Iso_type, .data$t, .data$fitted, .data$residual)
   fitted_dat
