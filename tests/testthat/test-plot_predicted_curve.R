@@ -39,5 +39,20 @@ test_that(
     )
     expect_true(ggplot2::is_ggplot(plot2))
     vdiffr::expect_doppelganger("predicted_curve_log", plot2)
+    
+    # 5c. Plot with log10 x-axis
+    plot3 <- plot_predicted_curve(
+      param_medians_wide = full_samples,
+      dataset                = dat,
+      legend_obs         = "Observed Data",
+      legend_mod1        = "Full Model Predictions",
+      show_quantiles     = TRUE,
+      log_scale          = FALSE,
+      log_x              = TRUE,
+      show_all_curves    = TRUE
+    )
+    expect_true(ggplot2::is_ggplot(plot3))
+    vdiffr::expect_doppelganger("predicted_curve_logx", plot3)
+    
   }
 )
