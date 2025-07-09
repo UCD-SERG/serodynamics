@@ -2,12 +2,13 @@
 % Please edit documentation in R/print.sr_model.R
 \name{print.sr_model}
 \alias{print.sr_model}
-\title{Default print for run_mod object of class sr_model}
+\title{Default print for \code{\link[=run_mod]{run_mod()}} output object of class
+\code{sr_model}}
 \usage{
 \method{print}{sr_model}(data)
 }
 \arguments{
-\item{data}{A \link{sr_model} object output from the
+\item{data}{An \code{sr_model} output object from the
 \code{\link[=run_mod]{run_mod()}} function.}
 }
 \value{
@@ -19,7 +20,4 @@ parameters by \code{Iso_type} and \code{Stratification} (if specified).
 A default print method for class \code{sr_model} that includes the mean posterior
 distribution for antibody kinetic curve parameters by \code{Iso_type} and
 \code{Stratification} (if specified).
-}
-\author{
-Sam Schildhauer
 }

@@ -1,10 +1,10 @@
-#' @title Default print for run_mod object of class sr_model
-#' @author Sam Schildhauer
+#' @title Default print for [serodynamics::run_mod()] output object of class
+#' `sr_model`
 #' @description
 #'  A default print method for class `sr_model` that includes the mean posterior
 #'  distribution for antibody kinetic curve parameters by `Iso_type` and
 #'  `Stratification` (if specified).
-#' @param data A [serodynamics::sr_model] object output from the
+#' @param data An `sr_model` output object from the
 #' [serodynamics::run_mod()] function.
 #' @returns A [dplyr::grouped_df] that
 #' contains the mean posterior distribution for antibody kinetic curve
