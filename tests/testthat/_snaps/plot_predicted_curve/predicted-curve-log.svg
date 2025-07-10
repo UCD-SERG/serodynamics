@@ -1069,14 +1069,23 @@
 <text x='709.43' y='516.90' text-anchor='middle' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='19.58px' lengthAdjust='spacingAndGlyphs'>1250</text>
 <text x='378.55' y='529.04' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='111.30px' lengthAdjust='spacingAndGlyphs'>Days since fever onset</text>
 <text transform='translate(13.05,264.35) rotate(-90)' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='57.49px' lengthAdjust='spacingAndGlyphs'>ELISA units</text>
-<text x='252.05' y='560.19' style='font-size: 11.00px; font-family: sans;' textLength='50.75px' lengthAdjust='spacingAndGlyphs'>Data Type</text>
-<line x1='310.01' y1='556.40' x2='323.83' y2='556.40' style='stroke-width: 2.13; stroke: #FF0000; stroke-linecap: butt;' />
-<circle cx='316.92' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: #FF0000; fill: #FF0000;' />
-<line x1='310.01' y1='556.40' x2='323.83' y2='556.40' style='stroke-width: 2.13; stroke: #FF0000; stroke-linecap: butt;' />
-<circle cx='431.74' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: #0000FF; fill: #0000FF;' />
-<line x1='424.82' y1='556.40' x2='438.65' y2='556.40' style='stroke-width: 2.13; stroke: #0000FF; stroke-linecap: butt;' />
-<text x='331.04' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='86.58px' lengthAdjust='spacingAndGlyphs'>Full Model Predictions</text>
-<text x='445.86' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='59.20px' lengthAdjust='spacingAndGlyphs'>Observed Data</text>
+<text x='113.35' y='560.19' style='font-size: 11.00px; font-family: sans;' textLength='56.88px' lengthAdjust='spacingAndGlyphs'>Component</text>
+<rect x='176.41' y='548.47' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; stroke-linejoin: miter; fill: #FF0000; fill-opacity: 0.20;' />
+<circle cx='184.35' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: none;' />
+<line x1='177.43' y1='556.40' x2='191.26' y2='556.40' style='stroke-width: 2.13; stroke: none; stroke-linecap: butt;' />
+<text x='198.46' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='81.69px' lengthAdjust='spacingAndGlyphs'>95% credible interval</text>
+<text x='302.07' y='560.19' style='font-size: 11.00px; font-family: sans;' textLength='56.88px' lengthAdjust='spacingAndGlyphs'>Component</text>
+<line x1='366.16' y1='556.40' x2='379.99' y2='556.40' style='stroke-width: 2.13; stroke: #FF0000; stroke-linecap: butt;' />
+<circle cx='373.07' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: #FF0000; fill: #FF0000;' />
+<line x1='366.16' y1='556.40' x2='379.99' y2='556.40' style='stroke-width: 2.13; stroke: #FF0000; stroke-linecap: butt;' />
+<circle cx='471.76' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: #0000FF; fill: #0000FF;' />
+<line x1='464.85' y1='556.40' x2='478.67' y2='556.40' style='stroke-width: 2.13; stroke: #0000FF; stroke-linecap: butt;' />
+<line x1='552.28' y1='556.40' x2='566.11' y2='556.40' style='stroke-width: 1.07; stroke: #BEBEBE; stroke-opacity: 0.30; stroke-linecap: butt;' />
+<circle cx='559.20' cy='556.40' r='2.49' style='stroke-width: 0.71; stroke: #BEBEBE; fill: #BEBEBE;' />
+<line x1='552.28' y1='556.40' x2='566.11' y2='556.40' style='stroke-width: 2.13; stroke: #BEBEBE; stroke-linecap: butt;' />
+<text x='387.19' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='70.45px' lengthAdjust='spacingAndGlyphs'>Median Prediction</text>
+<text x='485.88' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='59.20px' lengthAdjust='spacingAndGlyphs'>Observed Data</text>
+<text x='573.32' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='70.44px' lengthAdjust='spacingAndGlyphs'>Posterior samples</text>
 <text x='42.58' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='118.90px' lengthAdjust='spacingAndGlyphs'>predicted_curve_log</text>
 </g>
 </svg>

@@ -15,7 +15,8 @@ plot_predicted_curve(
   log_scale = FALSE,
   log_x = FALSE,
   show_all_curves = FALSE,
-  alpha_samples = 0.3
+  alpha_samples = 0.3,
+  xlim = NULL
 )
 }
 \arguments{
@@ -37,7 +38,7 @@ Must contain:
 
 \item{legend_obs}{Label for observed data in the legend.}
 
-\item{legend_mod1}{Label for the first model in the legend.}
+\item{legend_mod1}{Label for the median prediction line.}
 
 \item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
@@ -45,17 +46,21 @@ and 97.5\% quantiles.}
 \item{log_scale}{Logical; if TRUE, applies a log10 transformation to
 the y-axis.}
 
-\item{log_x}{\link{Logical}; if TRUE, applies a log10 transformation to the x-axis.}
+\item{log_x}{\link{Logical}; if TRUE, applies a log10 transformation to the
+x-axis.}
 
 \item{show_all_curves}{Logical; if TRUE, overlays all
 individual sampled curves.}
 
 \item{alpha_samples}{Numeric; transparency level for individual
 curves (default = 0.3).}
+
+\item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
+limits.}
 }
 \value{
-A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response curves
-with a median curve and a 95\% credible interval band as default.
+A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response
+curves with a median curve and a 95\% credible interval band as default.
 }
 \description{
 Plots a median antibody response curve with a 95\% credible interval
@@ -103,7 +108,7 @@ p1 <- plot_predicted_curve(
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
   legend_obs         = "Observed Data",
-  legend_mod1        = "Full Model Predictions",
+  legend_mod1        = "Median Prediction",
   show_quantiles     = TRUE,
   log_scale          = FALSE,
   log_x              = FALSE,
@@ -118,11 +123,27 @@ p2 <- plot_predicted_curve(
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
   legend_obs         = "Observed Data",
-  legend_mod1        = "Full Model Predictions",
+  legend_mod1        = "Median Prediction",
   show_quantiles     = TRUE,
   log_scale          = TRUE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
-print(p2) 
+print(p2)
+
+# 4c) Plot with custom x-axis limits (0-600 days)
+p3 <- plot_predicted_curve(
+  jags_post          = model,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  dataset            = dat,
+  legend_obs         = "Observed Data",
+  legend_mod1        = "Median Prediction",
+  show_quantiles     = TRUE,
+  log_scale          = FALSE,
+  log_x              = FALSE,
+  show_all_curves    = TRUE,
+  xlim               = c(0, 600)
+)
+print(p3) 
 }

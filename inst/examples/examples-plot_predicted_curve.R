@@ -36,7 +36,7 @@ p1 <- plot_predicted_curve(
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
   legend_obs         = "Observed Data",
-  legend_mod1        = "Full Model Predictions",
+  legend_mod1        = "Median Prediction",
   show_quantiles     = TRUE,
   log_scale          = FALSE,
   log_x              = FALSE,
@@ -51,10 +51,26 @@ p2 <- plot_predicted_curve(
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
   legend_obs         = "Observed Data",
-  legend_mod1        = "Full Model Predictions",
+  legend_mod1        = "Median Prediction",
   show_quantiles     = TRUE,
   log_scale          = TRUE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
-print(p2) 
+print(p2)
+
+# 4c) Plot with custom x-axis limits (0-600 days)
+p3 <- plot_predicted_curve(
+  jags_post          = model,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  dataset            = dat,
+  legend_obs         = "Observed Data",
+  legend_mod1        = "Median Prediction",
+  show_quantiles     = TRUE,
+  log_scale          = FALSE,
+  log_x              = FALSE,
+  show_all_curves    = TRUE,
+  xlim               = c(0, 600)
+)
+print(p3) 

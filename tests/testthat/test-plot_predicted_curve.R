@@ -19,7 +19,7 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
       legend_obs         = "Observed Data",
-      legend_mod1        = "Full Model Predictions",
+      legend_mod1        = "Median Prediction",
       show_quantiles     = TRUE,
       log_scale          = FALSE,
       log_x              = FALSE,
@@ -35,7 +35,7 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
       legend_obs         = "Observed Data",
-      legend_mod1        = "Full Model Predictions",
+      legend_mod1        = "Median Prediction",
       show_quantiles     = TRUE,
       log_scale          = TRUE,
       log_x              = FALSE,
@@ -51,7 +51,7 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
       legend_obs         = "Observed Data",
-      legend_mod1        = "Full Model Predictions",
+      legend_mod1        = "Median Prediction",
       show_quantiles     = TRUE,
       log_scale          = FALSE,
       log_x              = TRUE,
@@ -60,5 +60,21 @@ test_that(
     expect_true(ggplot2::is_ggplot(plot3))
     vdiffr::expect_doppelganger("predicted_curve_logx", plot3)
     
+    # 5d. Plot with custom x-axis limits
+    plot4 <- plot_predicted_curve(
+      jags_post          = jags_post,
+      id                 = "sees_npl_128",
+      antigen_iso        = "HlyE_IgA",
+      dataset            = dat,
+      legend_obs         = "Observed Data",
+      legend_mod1        = "Median Prediction",
+      show_quantiles     = TRUE,
+      log_scale          = FALSE,
+      log_x              = FALSE,
+      show_all_curves    = TRUE,
+      xlim               = c(0, 500)
+    )
+    expect_true(ggplot2::is_ggplot(plot4))
+    vdiffr::expect_doppelganger("predicted_curve_xlim", plot4)
   }
 )

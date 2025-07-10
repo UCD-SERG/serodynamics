@@ -17,19 +17,22 @@
 #'   - `id`
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
-#' @param legend_mod1 Label for the first model in the legend.
+#' @param legend_mod1 Label for the median prediction line.
 #' @param show_quantiles Logical; if TRUE (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
 #' @param log_scale Logical; if TRUE, applies a log10 transformation to 
 #' the y-axis.
-#' @param log_x [Logical]; if TRUE, applies a log10 transformation to the x-axis.
+#' @param log_x [Logical]; if TRUE, applies a log10 transformation to the 
+#' x-axis.
 #' @param show_all_curves Logical; if TRUE, overlays all 
 #' individual sampled curves.
 #' @param alpha_samples Numeric; transparency level for individual 
 #' curves (default = 0.3).
+#' @param xlim (Optional) A numeric vector of length 2 providing custom x-axis 
+#' limits.
 #'
-#' @return A [ggplot2::ggplot] object displaying predicted antibody response curves 
-#' with a median curve and a 95% credible interval band as default.
+#' @return A [ggplot2::ggplot] object displaying predicted antibody response 
+#' curves with a median curve and a 95% credible interval band as default.
 #' @export
 #'
 #' @example inst/examples/examples-plot_predicted_curve.R
@@ -43,7 +46,8 @@ plot_predicted_curve <- function(jags_post,
                                  log_scale = FALSE,
                                  log_x = FALSE,
                                  show_all_curves = FALSE,
-                                 alpha_samples = 0.3) {
+                                 alpha_samples = 0.3,
+                                 xlim = NULL) {
   
   # --------------------------------------------------------------------------
   # 1) Grab the curve_params data.frame out of the run_mod() output:
@@ -146,8 +150,9 @@ plot_predicted_curve <- function(jags_post,
       ggplot2::geom_line(data = serocourse_all1,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res, 
-                                      group = .data$sample_id),
-                         color = "gray", alpha = alpha_samples)
+                                      group = .data$sample_id,
+                                      color = "samples"),
+                         alpha = alpha_samples)
   }
   
   # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
@@ -166,12 +171,12 @@ plot_predicted_curve <- function(jags_post,
                            ggplot2::aes(x = .data$t, 
                                         ymin = .data$res.low, 
                                         ymax = .data$res.high, 
-                                        fill = "mod1"),
+                                        fill = "ci"),
                            alpha = 0.2, inherit.aes = FALSE) +
       ggplot2::geom_line(data = sum1,
                          ggplot2::aes(x = .data$t, 
                                       y = .data$res.med, 
-                                      color = "mod1"),
+                                      color = "median"),
                          linewidth = 1, inherit.aes = FALSE)
   }
   
@@ -202,23 +207,33 @@ plot_predicted_curve <- function(jags_post,
   }
   
   # --- Construct Unified Legend ---
-  color_vals <- c("mod1" = "red")
-  color_labels <- c("mod1" = legend_mod1)
-  fill_vals  <- c("mod1" = "red")
-  fill_labels <- c("mod1" = legend_mod1)
-  
+  color_vals <- c("median" = "red")
+  color_labels <- c("median" = legend_mod1)
+  fill_vals <- c("ci" = "red")
+  fill_labels <- c("ci" = "95% credible interval")
+
+  if (show_all_curves) {
+    color_vals["samples"] <- "gray"
+    color_labels["samples"] <- "Posterior samples"
+  }
+
   if (!is.null(dataset)) {
-    color_vals <- c(color_vals, "observed" = "blue")
-    color_labels <- c(color_labels, "observed" = legend_obs)
+    color_vals["observed"] <- "blue"
+    color_labels["observed"] <- legend_obs
   }
   
   p <- p +
-    ggplot2::scale_color_manual(values = color_vals,
-                                labels = color_labels,
-                                name = "Data Type") +
-    ggplot2::scale_fill_manual(values = fill_vals,
-                               labels = fill_labels,
-                               guide = "none")
+    ggplot2::scale_color_manual(
+      name = "Component",
+      values = color_vals,
+      labels = color_labels
+    ) +
+    ggplot2::scale_fill_manual(
+      name = "Component",
+      values = fill_vals,
+      labels = fill_labels,
+      guide = ggplot2::guide_legend(override.aes = list(color = NA))
+    )
   
   # --- Optionally add log10 scales for y and/or x ---
   if (log_scale) {
@@ -231,5 +246,10 @@ plot_predicted_curve <- function(jags_post,
       )
   }
   
+  # --- Set custom x-axis limits if provided ---
+  if (!is.null(xlim)) {
+    p <- p + ggplot2::coord_cartesian(xlim = xlim)
+  }
+
   return(p)
 }
