@@ -32,6 +32,14 @@ model <- run_mod(
   include_subs  = TRUE
 )
 
+# Filter the model's curve parameters to only include the data needed
+# for the test case. This dramatically reduces the size of the output file.
+model$curve_params <- model$curve_params |>
+  dplyr::filter(
+    .data$Subject == "sees_npl_128",
+    .data$Iso_type == "HlyE_IgA"
+  )
+
 # 4. Save output to disk for reproducibility or testing
 list(
   dat = dat,
