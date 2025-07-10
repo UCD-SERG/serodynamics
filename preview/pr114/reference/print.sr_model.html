@@ -79,8 +79,14 @@ parameters by <code>Iso_type</code> and <code>Stratification</code> (if specifie
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nepal_sees_jags_output</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in pivot_wider(dplyr::summarise(dplyr::group_by(data, Stratification,     Iso_type, Parameter), mean_val = mean(value)), Parameter,     mean_val):</span> Can't select columns that don't exist.</span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span style="color: #BB0000;">✖</span> Column `name` doesn't exist.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># A tibble: 4 × 7</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #949494;"># Groups:   Stratification, Iso_type [4]</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Stratification Iso_type   alpha shape    t1    y0    y1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>          <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>      <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">1</span> paratyphi      HlyE_IgA 0.002<span style="text-decoration: underline;">29</span>  1.66  3.85  2.55 <span style="text-decoration: underline;">1</span>024.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">2</span> typhi          HlyE_IgA 0.002<span style="text-decoration: underline;">91</span>  1.61  7.31  2.97 <span style="text-decoration: underline;">1</span>032.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">3</span> paratyphi      HlyE_IgG 0.002<span style="text-decoration: underline;">57</span>  1.36  4.78  1.72  833.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #BCBCBC;">4</span> typhi          HlyE_IgG 0.001<span style="text-decoration: underline;">54</span>  1.41  8.73  2.31  339.</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
