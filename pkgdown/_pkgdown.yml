@@ -49,7 +49,7 @@ reference:
 - title: Modeling Functions  
   contents:
       - plot_predicted_curve    
-      - process_jags_samples
+      
 
   
 

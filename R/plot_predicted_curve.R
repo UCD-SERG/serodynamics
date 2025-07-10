@@ -18,12 +18,13 @@
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
 #' @param legend_mod1 Label for the median prediction line.
-#' @param show_quantiles Logical; if TRUE (default), plots the 2.5%, 50%, 
+#' @param show_quantiles logical; if TRUE (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
-#' @param log_scale Logical; if TRUE, applies a log10 transformation to 
+#' @param log_scale logical; if TRUE, applies a log10 transformation to 
 #' the y-axis.
-#' @param log_x [logical]; if TRUE, applies a log10 transformation to the x-axis.
-#' @param show_all_curves Logical; if TRUE, overlays all 
+#' @param log_x [logical]; if TRUE, applies a log10 transformation to the 
+#' x-axis.
+#' @param show_all_curves logical; if TRUE, overlays all 
 #' individual sampled curves.
 #' @param alpha_samples Numeric; transparency level for individual 
 #' curves (default = 0.3).

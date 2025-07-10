@@ -25,7 +25,8 @@ model <- run_mod(
   nburn        = 100,
   nmc          = 500,
   niter        = 1000,
-  strat        = "strat"
+  strat        = "strat",
+  with_post    = TRUE
 )
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
@@ -72,4 +73,4 @@ p3 <- plot_predicted_curve(
   show_all_curves    = TRUE,
   xlim               = c(0, 600)
 )
-print(p3) 
+print(p3)

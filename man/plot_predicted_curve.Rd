@@ -40,15 +40,16 @@ Must contain:
 
 \item{legend_mod1}{Label for the median prediction line.}
 
-\item{show_quantiles}{Logical; if TRUE (default), plots the 2.5\%, 50\%,
+\item{show_quantiles}{logical; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
 
-\item{log_scale}{Logical; if TRUE, applies a log10 transformation to
+\item{log_scale}{logical; if TRUE, applies a log10 transformation to
 the y-axis.}
 
-\item{log_x}{\link{logical}; if TRUE, applies a log10 transformation to the x-axis.}
+\item{log_x}{\link{logical}; if TRUE, applies a log10 transformation to the
+x-axis.}
 
-\item{show_all_curves}{Logical; if TRUE, overlays all
+\item{show_all_curves}{logical; if TRUE, overlays all
 individual sampled curves.}
 
 \item{alpha_samples}{Numeric; transparency level for individual
@@ -96,7 +97,8 @@ model <- run_mod(
   nburn        = 100,
   nmc          = 500,
   niter        = 1000,
-  strat        = "strat"
+  strat        = "strat",
+  with_post    = TRUE
 )
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
@@ -143,5 +145,5 @@ p3 <- plot_predicted_curve(
   show_all_curves    = TRUE,
   xlim               = c(0, 600)
 )
-print(p3) 
+print(p3)
 }
