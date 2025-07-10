@@ -25,8 +25,7 @@ model <- run_mod(
   nburn        = 100,
   nmc          = 500,
   niter        = 1000,
-  strat        = "strat",
-  include_subs = TRUE
+  strat        = "strat"
 )
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon

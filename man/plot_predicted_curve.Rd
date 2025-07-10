@@ -46,8 +46,7 @@ and 97.5\% quantiles.}
 \item{log_scale}{Logical; if TRUE, applies a log10 transformation to
 the y-axis.}
 
-\item{log_x}{\link{Logical}; if TRUE, applies a log10 transformation to the
-x-axis.}
+\item{log_x}{\link{logical}; if TRUE, applies a log10 transformation to the x-axis.}
 
 \item{show_all_curves}{Logical; if TRUE, overlays all
 individual sampled curves.}
@@ -97,8 +96,7 @@ model <- run_mod(
   nburn        = 100,
   nmc          = 500,
   niter        = 1000,
-  strat        = "strat",
-  include_subs = TRUE
+  strat        = "strat"
 )
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
