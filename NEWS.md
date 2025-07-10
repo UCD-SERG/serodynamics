@@ -4,8 +4,15 @@
 
 ## New features
 
-
 * Added `plot_predicted_curve()`  (#68)
+* Replacing old data object with new run_mod output (#102)
+* Adding class assignment to run_mod output (#76)
+* Making prep_priors modifiable (#78)
+* Changes to `run_mod()` output:
+  - Taking out `include_subs` as an input option, default will include all
+  individuals
+  - Making a single tbl as output
+  - All other pieces will be attributes.
 * Changes to `run_mod()` (#79):
    - `jags.post` now optionally included in output, as specified by argument
    `with_post`

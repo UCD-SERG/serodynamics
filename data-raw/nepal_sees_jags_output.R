@@ -9,12 +9,11 @@ nepal_sees_jags_output <- run_mod(
   nmc = 500,
   niter = 1000, # Number of iterations
   strat = "bldculres", # Stratification
-  with_post = FALSE,
-  include_subs = TRUE
+  with_post = FALSE
 )
 
 # Filtering to keep only 2 subjects + newperson
-nepal_sees_jags_output$curve_params <- nepal_sees_jags_output$curve_params |>
+nepal_sees_jags_output <- nepal_sees_jags_output |>
   filter(Subject %in% c("newperson", "sees_npl_1", "sees_npl_2"))
 
 usethis::use_data(nepal_sees_jags_output, overwrite = TRUE)

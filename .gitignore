@@ -21,4 +21,5 @@ serodynamics*.tgz
 
 inst/doc
 docs
+**/.quarto/
 

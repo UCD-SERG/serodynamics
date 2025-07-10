@@ -22,4 +22,7 @@
 ^\.project$
 ^\.settings$
 ^\.lintr\.R$
+^_extensions$
+^vignettes/\.quarto$
+^vignettes/*_files$
 
