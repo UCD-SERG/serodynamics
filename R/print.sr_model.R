@@ -12,7 +12,7 @@
 #' @export
 #' @examples
 #' print(nepal_sees_jags_output)
-print.sr_model <- function(data) {
+print.sr_model <- function(data) { # nolint
   data_group <- data |>
     dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
     dplyr::summarise(mean_val = mean(.data$value)) |>
