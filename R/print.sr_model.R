@@ -14,17 +14,14 @@
 #' print(nepal_sees_jags_output)
 print.sr_model <- function(data) {
   data_group <- data |>
-    dplyr::group_by(Stratification, Iso_type, Parameter) |>
-    dplyr::summarise(mean_val = mean(value)) |>
-    pivot_wider(Parameter, mean_val) |>
-    dplyr::arrange(Iso_type)
+    dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
+    dplyr::summarise(mean_val = mean(.data$value)) |>
+    tidyr::pivot_wider(names_from = .data$Parameter, 
+                       values_from = .data$mean_val) |>
+    dplyr::arrange(.data$Iso_type)
   # Taking out stratification column if not specified
-  if(unique(data$Stratification == "None")) {
-    data_group <- data_group[,2:7]
+  if (unique(data$Stratification == "None")) {
+    data_group <- data_group[, 2:7]
   } 
   data_group
 }
-    
-  
-  
-  
