@@ -32,23 +32,9 @@ model <- run_mod(
   include_subs  = TRUE
 )
 
-# 4. Extract MCMC samples for specific subject + antigen combination
-devtools::load_all()
-
-full_samples <- process_jags_samples(
-  jags_post   = model,
-  dataset     = dataset,
-  id          = "sees_npl_128",
-  antigen_iso = "HlyE_IgA"
-)
-
-# 5. Save output to disk for reproducibility or testing
+# 4. Save output to disk for reproducibility or testing
 list(
-  full_samples = full_samples |>
-    structure(
-      ids          = attr(dataset, "ids"),
-      antigen_isos = attr(dataset, "antigens")
-    ),
-  dat = dat
+  dat = dat,
+  model = model
 ) |>
   readr::write_rds(file = "tests/testthat/fixtures/example_runmod_output.rds")

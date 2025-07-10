@@ -5,7 +5,9 @@
 \title{Generate Predicted Antibody Response Curves (Median + 95\% CI)}
 \usage{
 plot_predicted_curve(
-  param_medians_wide,
+  jags_post,
+  id,
+  antigen_iso,
   dataset = NULL,
   legend_obs = "Observed Data",
   legend_mod1 = "Model 1 Predictions",
@@ -17,10 +19,12 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{param_medians_wide}{A tibble with full posterior parameter samples
-(first model).
-If this tibble contains observed data (with "dayssincefeveronset"),
-it will be treated as the observed data, and only one model is plotted.}
+\item{jags_post}{The list returned by \code{run_mod(...)}
+(must have \code{curve_params}).}
+
+\item{id}{The original subject ID (e.g. "sees_npl_128") to extract.}
+
+\item{antigen_iso}{The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".}
 
 \item{dataset}{(Optional) A tibble with observed antibody response data.
 Must contain:
@@ -41,7 +45,7 @@ and 97.5\% quantiles.}
 \item{log_scale}{Logical; if TRUE, applies a log10 transformation to
 the y-axis.}
 
-\item{log_x}{Logical; if TRUE, applies a log10 transformation to the x-axis.}
+\item{log_x}{\link{Logical}; if TRUE, applies a log10 transformation to the x-axis.}
 
 \item{show_all_curves}{Logical; if TRUE, overlays all
 individual sampled curves.}
@@ -50,11 +54,11 @@ individual sampled curves.}
 curves (default = 0.3).}
 }
 \value{
-A ggplot object displaying predicted antibody response curves
-with a median curve and a 95\% credible interval band.
+A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response curves
+with a median curve and a 95\% credible interval band as default.
 }
 \description{
-Plots a single median antibody response curve with a 95\% credible interval
+Plots a median antibody response curve with a 95\% credible interval
 ribbon, using full posterior samples. Optionally overlays observed data,
 moves the legend to the bottom, provides options to apply log10
 transformation on the y- and x-axes, and to show all individual
@@ -92,18 +96,12 @@ model <- run_mod(
   include_subs = TRUE
 )
 
-# 4) Pull out the full MCMC samples for that one ID + antigen
-full_samples <- process_jags_samples(
-  jags_post   = model,
-  dataset     = dataset,
-  id          = "sees_npl_128",
-  antigen_iso = "HlyE_IgA"
-)
-
-# 5a) Plot (linear axes) with all individual curves + median ribbon
+# 4a) Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
-  param_medians_wide = full_samples,
-  dataset                = dat,
+  jags_post          = model,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  dataset            = dat,
   legend_obs         = "Observed Data",
   legend_mod1        = "Full Model Predictions",
   show_quantiles     = TRUE,
@@ -113,10 +111,12 @@ p1 <- plot_predicted_curve(
 )
 print(p1)
 
-# 5b) Plot (log10 y-axis) with all individual curves + median ribbon
+# 4b) Plot (log10 y-axis) with all individual curves + median ribbon
 p2 <- plot_predicted_curve(
-  param_medians_wide = full_samples,
-  dataset                = dat,
+  jags_post          = model,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  dataset            = dat,
   legend_obs         = "Observed Data",
   legend_mod1        = "Full Model Predictions",
   show_quantiles     = TRUE,
@@ -124,5 +124,5 @@ p2 <- plot_predicted_curve(
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
-print(p2)
+print(p2) 
 }

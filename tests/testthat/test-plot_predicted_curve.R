@@ -4,18 +4,20 @@ test_that(
   code = {
     skip_if(getRversion() < "4.4.1")
     
-    # Load pre-saved fixture (includes both full_samples and dat)
+    # Load pre-saved fixture (includes model output and sample data)
     example <- 
       readr::read_rds(testthat::test_path("fixtures", 
                                           "example_runmod_output.rds"))
     
-    full_samples <- example$full_samples
+    jags_post <- example$model
     dat <- example$dat
     
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
-      param_medians_wide = full_samples,
-      dataset                = dat,
+      jags_post          = jags_post,
+      id                 = "sees_npl_128",
+      antigen_iso        = "HlyE_IgA",
+      dataset            = dat,
       legend_obs         = "Observed Data",
       legend_mod1        = "Full Model Predictions",
       show_quantiles     = TRUE,
@@ -28,8 +30,10 @@ test_that(
     
     # 5b. Plot (log10 axes) with both model curves + observed points
     plot2 <- plot_predicted_curve(
-      param_medians_wide = full_samples,
-      dataset                = dat,
+      jags_post          = jags_post,
+      id                 = "sees_npl_128",
+      antigen_iso        = "HlyE_IgA",
+      dataset            = dat,
       legend_obs         = "Observed Data",
       legend_mod1        = "Full Model Predictions",
       show_quantiles     = TRUE,
@@ -42,8 +46,10 @@ test_that(
     
     # 5c. Plot with log10 x-axis
     plot3 <- plot_predicted_curve(
-      param_medians_wide = full_samples,
-      dataset                = dat,
+      jags_post          = jags_post,
+      id                 = "sees_npl_128",
+      antigen_iso        = "HlyE_IgA",
+      dataset            = dat,
       legend_obs         = "Observed Data",
       legend_mod1        = "Full Model Predictions",
       show_quantiles     = TRUE,
