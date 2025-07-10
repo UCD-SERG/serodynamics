@@ -55,53 +55,53 @@ d0 <-
 
 #balance data accross ages and sites
 
-# Create age bins
-df <- d0 %>%
-  filter(!is.na(age)) %>%
-  mutate(age_bin = cut(age, breaks = seq(0, 60, by = 1), right = FALSE))
-
-# Count available samples per country and bin
-bin_counts <- df %>%
-  count(country, age_bin)
-
-# Find minimum counts per bin across countries
-min_counts <- bin_counts %>%
-  group_by(age_bin) %>%
-  summarise(n_min = min(n))
-
-# Join back to original data
-df_counts <- df %>%
-  left_join(min_counts, by = "age_bin")
-
-# Sample per country and age bin
-set.seed(123)
-
-
-df_balanced <- df_counts %>%
-  group_by(country, age_bin) %>%
-  group_modify(~ {
-    n_take <- unique(.x$n_min)
-    if (is.na(n_take) || n_take == 0) {
-      tibble() # skip if no samples in this bin
-    } else {
-      slice_sample(.x, n = n_take)
-    }
-  }) %>%
-  ungroup() 
-  #filter(age >4 & age <16)
-
-
-
-ggplot(df_balanced, aes(x = age, fill = country)) + 
-  geom_density(alpha = .5)
-  geom_histogram()
-
-
-
+# # Create age bins
+# df <- d0 %>%
+#   filter(!is.na(age)) %>%
+#   mutate(age_bin = cut(age, breaks = seq(0, 60, by = 1), right = FALSE))
+# 
+# # Count available samples per country and bin
+# bin_counts <- df %>%
+#   count(country, age_bin)
+# 
+# # Find minimum counts per bin across countries
+# min_counts <- bin_counts %>%
+#   group_by(age_bin) %>%
+#   summarise(n_min = min(n))
+# 
+# # Join back to original data
+# df_counts <- df %>%
+#   left_join(min_counts, by = "age_bin")
+# 
+# # Sample per country and age bin
+# set.seed(123)
+# 
+# 
+# df_balanced <- df_counts %>%
+#   group_by(country, age_bin) %>%
+#   group_modify(~ {
+#     n_take <- unique(.x$n_min)
+#     if (is.na(n_take) || n_take == 0) {
+#       tibble() # skip if no samples in this bin
+#     } else {
+#       slice_sample(.x, n = n_take)
+#     }
+#   }) %>%
+#   ungroup() 
+#   #filter(age >4 & age <16)
+# 
+# 
+# 
+# ggplot(df_balanced, aes(x = age, fill = country)) + 
+#   geom_density(alpha = .5)
+#   geom_histogram()
+# 
+# 
+# 
 
   
 
-dl_case <- as_case_data(d0,
+dl_case <- as_case_data(d0 %>% filter(!is.na(age)) ,
                    id_var = "index_id",
                    biomarker_var = "antigen_iso",
                    value_var = "result",
@@ -145,7 +145,7 @@ mod2 <- run_mod(data = dl_case,
                 mu_hyp_param = c( y0_prior,  y1_prior,  t1_prior, alpha_prior, shape_prior),
                 prec_hyp_param = prec.prior,
                 omega_param = omega.prior, 
-                strat = "agecat")
+                strat = "country")
 
 
 
@@ -162,7 +162,7 @@ mod_np <- mod2 %>% filter(Subject == "newperson")
 
 plot_jags_trace(mod_np)
 
-plot_jags_Rhat(mod)
+plot_jags_Rhat(mod_np)
 
 
 #mcmc data frame
