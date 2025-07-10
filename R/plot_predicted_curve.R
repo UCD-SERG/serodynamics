@@ -225,7 +225,10 @@ plot_predicted_curve <- function(jags_post,
     p <- p + ggplot2::scale_y_log10()
   }
   if (log_x) {
-    p <- p + ggplot2::scale_x_log10()
+    p <- p +
+      ggplot2::scale_x_continuous(
+        trans = scales::pseudo_log_trans(sigma = 1, base = 10)
+      )
   }
   
   return(p)

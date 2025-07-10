@@ -10,7 +10,7 @@ plot_predicted_curve(
   antigen_iso,
   dataset = NULL,
   legend_obs = "Observed Data",
-  legend_mod1 = "Model 1 Predictions",
+  legend_mod1 = "Median Prediction",
   show_quantiles = TRUE,
   log_scale = FALSE,
   log_x = FALSE,
