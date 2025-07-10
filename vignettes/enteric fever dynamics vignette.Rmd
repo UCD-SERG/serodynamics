@@ -5,9 +5,12 @@ output: html_notebook
 
 ## load packages and data
 ```{r}
-today <- format( Sys.Date(), "%m%d%y")
+
 library(tidyverse)
+library(serocalculator)
 load_all()
+
+
 
 
 #load SEES data and prepare 
@@ -31,16 +34,16 @@ d0 <-
     mutate(agecat = case_when(age < 5 ~ "0-4",
                               age >= 5 & age < 15 ~ "5-14",
                               age >= 15 ~ "16+")) 
+  #remove reinfection events
+  #filter(postreinf != 1)
+  
+
+
+
 
 
 #all <- d0 %>% mutate(reinfec_pop = "all data")
-
-
 #reinf_rem <- d0 %>% filter(postreinf != 1) %>% mutate(reinfec_pop = "reinf removed")
-
-
-
-
 
 
 ```
@@ -50,12 +53,59 @@ d0 <-
 ## make longitudinal data "case_data"object
 ```{r}
 
-df <- as_case_data(d0,
+#balance data accross ages and sites
+
+# Create age bins
+df <- d0 %>%
+  filter(!is.na(age)) %>%
+  mutate(age_bin = cut(age, breaks = seq(0, 60, by = 1), right = FALSE))
+
+# Count available samples per country and bin
+bin_counts <- df %>%
+  count(country, age_bin)
+
+# Find minimum counts per bin across countries
+min_counts <- bin_counts %>%
+  group_by(age_bin) %>%
+  summarise(n_min = min(n))
+
+# Join back to original data
+df_counts <- df %>%
+  left_join(min_counts, by = "age_bin")
+
+# Sample per country and age bin
+set.seed(123)
+
+
+df_balanced <- df_counts %>%
+  group_by(country, age_bin) %>%
+  group_modify(~ {
+    n_take <- unique(.x$n_min)
+    if (is.na(n_take) || n_take == 0) {
+      tibble() # skip if no samples in this bin
+    } else {
+      slice_sample(.x, n = n_take)
+    }
+  }) %>%
+  ungroup() 
+  #filter(age >4 & age <16)
+
+
+
+ggplot(df_balanced, aes(x = age, fill = country)) + 
+  geom_density(alpha = .5)
+  geom_histogram()
+
+
+
+
+  
+
+dl_case <- as_case_data(d0,
                    id_var = "index_id",
                    biomarker_var = "antigen_iso",
                    value_var = "result",
                    time_in_days = "time_in_days")
-
 
 
 ```
@@ -63,13 +113,57 @@ df <- as_case_data(d0,
 ## Run model
 ```{r}
 
-mod <- run_mod(data = df,
+
+# y1_prior <- log(quantile(get_values(dl_case), 0.99))
+# y0_prior <-log(quantile(get_values(dl_case), .05))
+# t1_prior <- 2
+# alpha_prior <- -2
+# shape_prior <- -3
+# prec.prior <- c(0.1, 0.1, 0.1, 0.1, 0.1)
+# omega.prior <- c(0.1, 0.1, 0.1, 0.1, 0.1)
+
+#lancet microbe priors 
+y1_prior <- 7.0
+y0_prior <- 1.0
+t1_prior <- 1.0
+alpha_prior <- -4.0
+shape_prior <- -1.0
+prec.prior <- c(1.0,   0.00001,   1.0,   0.001,  1.0)
+omega.prior <- c(1.0,  50.0,   1.0,   10.0,  1.0)
+
+
+mod2 <- run_mod(data = dl_case,
                 file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
                 nchain = 4,
-                nadapt = 2000,
+                #nadapt = 2000,
+                nadapt = 1000,
                 nburn = 1000,
-                nmc = 2500,
-                niter = 5000)
+                #nmc = 2500,
+                nmc = 1000,
+                #niter = 4000, 
+                niter = 1000, 
+                mu_hyp_param = c( y0_prior,  y1_prior,  t1_prior, alpha_prior, shape_prior),
+                prec_hyp_param = prec.prior,
+                omega_param = omega.prior, 
+                strat = "agecat")
+
+
+
+mod_np <- mod2 %>% filter(Subject == "newperson")
+
+```
+
+
+
+
+## Diagnostics
+```{r}
+
+
+plot_jags_trace(mod_np)
+
+plot_jags_Rhat(mod)
+
 
 #mcmc data frame
 mcmc_df <- mod$curve_params %>%
@@ -96,20 +190,13 @@ mcmc_param <- mcmc_df %>%
 #write_rds(mcmc_param, paste0("mcmc_sum_reinfec_rem", today, ".rds"))
 
 
-
-
-
-```
-
-
-## Diagnostics
-```{r}
-
 plot_jags_Rhat(mod)
 
 plot_jags_trace(mod)
 
+
 ```
+
 
 
 ## Serocourse
@@ -117,13 +204,8 @@ plot_jags_trace(mod)
 ```{r}
 
 
-
-
-##SEROCOURSE SUMMARIES
-
-
-wide_predpar_df <- mcmc_df  %>%
-      pivot_wider(names_from = "parameter", values_from="value") %>%
+wide_predpar_df <- mod_np  %>%
+      pivot_wider(names_from = "Parameter", values_from="value") %>%
       rowwise() %>%
       #mutate(y1 = y0+y1) %>%
       droplevels() %>%
@@ -132,24 +214,9 @@ wide_predpar_df <- mcmc_df  %>%
 
 
 
-
 # Generate a sequence of time points
 tx2 <- 10^seq(-1, 3, 0.025)
-
-# Function to apply the ab0 function to a row of curve_params
-apply_ab0 <- function(row) {
-  y_values <- serocalculator:::ab0(tx2, curve_params = row)  # Apply ab0 function over time points
-
-  # Create a data frame with the results
-  decay_curve <- data.frame(
-    t = tx2,
-    y = y_values,
-    Iteration = row$Iteration,
-    Chain = row$Chain,
-    antigen_iso = row$antigen_iso)
-
-  return(decay_curve)
-}
+#tx2 <- seq(0, 1500, by = 1)
 
 
 
@@ -162,10 +229,8 @@ serocourse <- wide_predpar_df %>%
     )
   )) %>%
   ungroup() %>%
-  unnest(decay_curve) %>%  # Expand the list-column into rows.
-  mutate(id = paste0(Chain, "_", Iteration)) 
-
-
+  unnest(decay_curve) %>%
+  mutate(id = paste0(Stratification, Subject, Iteration, "-", Chain))
 
 
 
@@ -173,33 +238,37 @@ serocourse_sum <- serocourse %>%
   summarise(
     res.med  = quantile(y, 0.5),
     res.low  = quantile(y, 0.025),
-    res.high = quantile(y, 0.975), .by = c("antigen_iso", "t", "reinfec_pop")
-  ) %>%
-  pivot_longer(names_to = "quantile", cols = c("res.med", "res.low", "res.high"), names_prefix = "res.", values_to = "res")
-
-# write_rds(serocourse_sum, paste0("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Research/Melioidosis_ISO_DORIM/clean data/sercourse_sum_", mthd, "_", read_norm, "_", today, ".rds"))
+    res.high = quantile(y, 0.975), .by = c("Iso_type", "t", "Stratification")
+  ) 
+ 
 
 
 
-ggplot(serocourse_sum %>% filter(quantile == "med"), aes(x=t, y=res, color = reinfec_pop)) +
-  geom_line() +
-  scale_x_continuous(limits = c(0, 500)) +
-  #scale_y_continuous(limits = c(0,4)) +
- # scale_y_log10() +
-  facet_wrap(~antigen_iso) +
-  theme_linedraw() +
-  theme(
-    axis.line = element_line(),
-    plot.title = element_text(size = 20, face = "bold")
+  
+ggplot(
+  serocourse_sum %>% filter(Iso_type %in% c("HlyE_IgG", "HlyE_IgA")) %>% filter(t <580),
+  aes(x = t, color = Stratification, fill = Stratification)
+) +
+  geom_ribbon(
+    aes(ymin = res.low, ymax = res.high),
+    alpha = 0.2,     # Light shading
+    color = NA       # No border on the ribbon itself
   ) +
+  geom_line(
+    aes(y = res.med)
+  ) +
+  facet_wrap(~Iso_type) +
+  scale_y_log10(limits = c(0.1,1000), labels = scales::label_number(accuracy = 0.1)) +
+  #scale_x_log10() +
+  theme_linedraw() +
   labs(
     x = "Days since admission",
     y = "Antibody Concentration",
     title = "Decay Curves by Antigen"
   )
 
-
-
+  
+ 
 
 
 ```
