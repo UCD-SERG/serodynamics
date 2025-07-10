@@ -6,8 +6,8 @@
 #' transformation on the y- and x-axes, and to show all individual 
 #' sampled curves.
 #'
-#' @param jags_post The list returned by `run_mod(...)` 
-#' (must have `curve_params`).
+#' @param jags_post A [dplyr::tbl_df] returned by `run_mod(...)` containing the
+#'   full posterior parameter samples.
 #' @param id           The original subject ID (e.g. "sees_npl_128") to extract.
 #' @param antigen_iso  The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".
 #' @param dataset (Optional) A tibble with observed antibody response data. 
@@ -50,8 +50,8 @@ plot_predicted_curve <- function(jags_post,
                                  xlim = NULL) {
   
   # --------------------------------------------------------------------------
-  # 1) Grab the curve_params data.frame out of the run_mod() output:
-  df <- jags_post$curve_params
+  # 1) The 'jags_post' object is now the tibble itself
+  df <- jags_post
   
   
   # --------------------------------------------------------------------------

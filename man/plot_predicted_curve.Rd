@@ -20,8 +20,8 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{jags_post}{The list returned by \code{run_mod(...)}
-(must have \code{curve_params}).}
+\item{jags_post}{A \link[dplyr:tbl_df]{dplyr::tbl_df} returned by \code{run_mod(...)} containing the
+full posterior parameter samples.}
 
 \item{id}{The original subject ID (e.g. "sees_npl_128") to extract.}
 
