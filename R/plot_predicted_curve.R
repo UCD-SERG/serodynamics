@@ -2,15 +2,15 @@
 #' @description
 #' Plots a median antibody response curve with a 95% credible interval 
 #' ribbon, using full posterior samples. Optionally overlays observed data, 
-#' moves the legend to the bottom, provides options to apply log10 
-#' transformation on the y- and x-axes, and to show all individual 
+#' moves the legend to the bottom, applies log10 
+#' transformation on the y- and x-axes, and shows all individual 
 #' sampled curves.
 #'
-#' @param jags_post A [dplyr::tbl_df] returned by `run_mod(...)` containing the
+#' @param jags_post A [sr_model] returned by [run_mod()] containing the
 #'   full posterior parameter samples.
-#' @param id           The original subject ID (e.g. "sees_npl_128") to extract.
-#' @param antigen_iso  The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".
-#' @param dataset (Optional) A tibble with observed antibody response data. 
+#' @param id The original subject ID (e.g. "sees_npl_128") to plot.
+#' @param antigen_iso  The antigen to plot, e.g. "HlyE_IgA" or "HlyE_IgG".
+#' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response data. 
 #' Must contain:
 #'   - `timeindays`
 #'   - `value`
@@ -18,7 +18,7 @@
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
 #' @param legend_mod1 Label for the median prediction line.
-#' @param show_quantiles logical; if TRUE (default), plots the 2.5%, 50%, 
+#' @param show_quantiles [logical]; if TRUE (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
 #' @param log_scale logical; if TRUE, applies a log10 transformation to 
 #' the y-axis.
