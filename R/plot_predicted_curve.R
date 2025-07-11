@@ -226,7 +226,8 @@ plot_predicted_curve <- function(jags_post,
     ggplot2::scale_color_manual(
       name = "Component",
       values = color_vals,
-      labels = color_labels
+      labels = color_labels,
+      guide = ggplot2::guide_legend(override.aes = list(shape = NA))
     ) +
     ggplot2::scale_fill_manual(
       name = "Component",
