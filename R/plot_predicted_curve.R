@@ -64,24 +64,17 @@ plot_predicted_curve <- function(jags_post,
     )
   
   # --------------------------------------------------------------------------
-  # 3) Clean up parameter name if you like:
-  df_clean <- df_sub |>
-    dplyr::mutate(
-      Parameter_clean = stringr::str_extract(.data$Parameter, "^[^\\[]+")
-    )
-  
-  # --------------------------------------------------------------------------
-  # 4) Pivot to wide format: one row per iteration/chain
-  param_medians_wide <- df_clean |>
+  # 3) Pivot to wide format: one row per iteration/chain
+  param_medians_wide <- df_sub |>
     dplyr::select(
       all_of(c("Chain",
                "Iteration",
                "Iso_type",
-               "Parameter_clean",
+               "Parameter",
                "value"))
     ) |>
     tidyr::pivot_wider(
-      names_from  = c("Parameter_clean"),
+      names_from  = c("Parameter"),
       values_from = c("value")
     ) |>
     dplyr::arrange(.data$Chain, .data$Iteration) |>
@@ -106,15 +99,6 @@ plot_predicted_curve <- function(jags_post,
   # Define time points for prediction
   tx2 <- seq(0, 1200, by = 5)
   
-  # Antibody response model function
-  ab <- function(t, y0, y1, t1, alpha, shape) {
-    beta <- log(y1 / y0) / t1
-    if (t <= t1) {
-      y0 * exp(beta * t)
-    } else {
-      (y1^(1 - shape) - (1 - shape) * alpha * (t - t1))^(1 / (1 - shape))
-    }
-  }
   
   ## --- Prepare data for Model 1 ---
   dt1 <- data.frame(t = tx2) |>
