@@ -20,7 +20,7 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{jags_post}{A \link{sr_model} returned by \code{\link[=run_mod]{run_mod()}} containing the
+\item{jags_post}{An object returned by \code{\link[=run_mod]{run_mod()}} containing the
 full posterior parameter samples.}
 
 \item{id}{The original subject ID (e.g. "sees_npl_128") to plot.}

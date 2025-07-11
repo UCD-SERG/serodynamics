@@ -6,7 +6,7 @@
 #' transformation on the y- and x-axes, and shows all individual 
 #' sampled curves.
 #'
-#' @param jags_post A [sr_model] returned by [run_mod()] containing the
+#' @param jags_post An object returned by [run_mod()] containing the
 #'   full posterior parameter samples.
 #' @param id The original subject ID (e.g. "sees_npl_128") to plot.
 #' @param antigen_iso  The antigen to plot, e.g. "HlyE_IgA" or "HlyE_IgG".
