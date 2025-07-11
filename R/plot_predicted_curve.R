@@ -10,7 +10,8 @@
 #'   full posterior parameter samples.
 #' @param id The original subject ID (e.g. "sees_npl_128") to plot.
 #' @param antigen_iso  The antigen to plot, e.g. "HlyE_IgA" or "HlyE_IgG".
-#' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response data. 
+#' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response 
+#' data. 
 #' Must contain:
 #'   - `timeindays`
 #'   - `value`

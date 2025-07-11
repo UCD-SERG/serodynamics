@@ -20,14 +20,15 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{jags_post}{A \link[dplyr:tbl_df]{dplyr::tbl_df} returned by \code{run_mod(...)} containing the
+\item{jags_post}{A \link{sr_model} returned by \code{\link[=run_mod]{run_mod()}} containing the
 full posterior parameter samples.}
 
-\item{id}{The original subject ID (e.g. "sees_npl_128") to extract.}
+\item{id}{The original subject ID (e.g. "sees_npl_128") to plot.}
 
-\item{antigen_iso}{The antigen to extract, e.g. "HlyE_IgA" or "HlyE_IgG".}
+\item{antigen_iso}{The antigen to plot, e.g. "HlyE_IgA" or "HlyE_IgG".}
 
-\item{dataset}{(Optional) A tibble with observed antibody response data.
+\item{dataset}{(Optional) A \link[dplyr:tbl_df]{dplyr::tbl_df} with observed antibody response
+data.
 Must contain:
 \itemize{
 \item \code{timeindays}
@@ -40,7 +41,7 @@ Must contain:
 
 \item{legend_mod1}{Label for the median prediction line.}
 
-\item{show_quantiles}{logical; if TRUE (default), plots the 2.5\%, 50\%,
+\item{show_quantiles}{\link{logical}; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
 
 \item{log_scale}{logical; if TRUE, applies a log10 transformation to
@@ -65,8 +66,8 @@ curves with a median curve and a 95\% credible interval band as default.
 \description{
 Plots a median antibody response curve with a 95\% credible interval
 ribbon, using full posterior samples. Optionally overlays observed data,
-moves the legend to the bottom, provides options to apply log10
-transformation on the y- and x-axes, and to show all individual
+moves the legend to the bottom, applies log10
+transformation on the y- and x-axes, and shows all individual
 sampled curves.
 }
 \examples{
