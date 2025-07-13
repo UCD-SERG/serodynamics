@@ -173,88 +173,10 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="va">dataset</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">id</span> <span class="op">==</span> <span class="st">"sees_npl_128"</span>, <span class="va">antigen_iso</span> <span class="op">==</span> <span class="st">"HlyE_IgA"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># 3) Fit the model to the full dataset</span></span></span>
-<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu"><a href="run_mod.html">run_mod</a></span><span class="op">(</span></span></span>
-<span class="r-in"><span>  data         <span class="op">=</span> <span class="va">dataset</span>,</span></span>
-<span class="r-in"><span>  file_mod     <span class="op">=</span> <span class="fu"><a href="serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  nchain       <span class="op">=</span> <span class="fl">2</span>,</span></span>
-<span class="r-in"><span>  nadapt       <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  nburn        <span class="op">=</span> <span class="fl">100</span>,</span></span>
-<span class="r-in"><span>  nmc          <span class="op">=</span> <span class="fl">500</span>,</span></span>
-<span class="r-in"><span>  niter        <span class="op">=</span> <span class="fl">1000</span>,</span></span>
-<span class="r-in"><span>  strat        <span class="op">=</span> <span class="st">"strat"</span>,</span></span>
-<span class="r-in"><span>  with_post    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
-<span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:33:44 2025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 690</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 384</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 14802</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:33:52 2025</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 214</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 130</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 4771</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Adapting 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Adaptation incomplete.</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . . . Updating 1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 1000</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-in"><span><span class="co"># 3) Load the pre-computed model output included with the package.</span></span></span>
+<span class="r-in"><span><span class="co"># This is much faster than running the model live.</span></span></span>
+<span class="r-in"><span><span class="va">model</span> <span class="op">&lt;-</span> <span class="fu">serodynamics</span><span class="fu">::</span><span class="va"><a href="nepal_sees_jags_output.html">nepal_sees_jags_output</a></span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4a) Plot (linear axes) with all individual curves + median ribbon</span></span></span>
 <span class="r-in"><span><span class="va">p1</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
