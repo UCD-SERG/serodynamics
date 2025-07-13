@@ -23,9 +23,10 @@ plot_predicted_curve(
 \item{jags_post}{An object returned by \code{\link[=run_mod]{run_mod()}} containing the
 full posterior parameter samples.}
 
-\item{id}{The original subject ID (e.g. "sees_npl_128") to plot.}
+\item{id}{The participant ID to plot; for example, "sees_npl_128".}
 
-\item{antigen_iso}{The antigen to plot, e.g. "HlyE_IgA" or "HlyE_IgG".}
+\item{antigen_iso}{The antigen isotype to plot; for example, "HlyE_IgA" or
+"HlyE_IgG".}
 
 \item{dataset}{(Optional) A \link[dplyr:tbl_df]{dplyr::tbl_df} with observed antibody response
 data.
@@ -38,8 +39,6 @@ Must contain:
 }}
 
 \item{legend_obs}{Label for observed data in the legend.}
-
-\item{legend_mod1}{Label for the median prediction line.}
 
 \item{show_quantiles}{\link{logical}; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
@@ -58,6 +57,8 @@ curves (default = 0.3).}
 
 \item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
 limits.}
+
+\item{legend_median}{Label for the median prediction line.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response
@@ -65,9 +66,10 @@ curves with a median curve and a 95\% credible interval band as default.
 }
 \description{
 Plots a median antibody response curve with a 95\% credible interval
-ribbon, using full posterior samples. Optionally overlays observed data,
-moves the legend to the bottom, applies log10
-transformation on the y- and x-axes, and shows all individual
+ribbon, using MCMC samples from the posterior distribution.
+Optionally overlays observed data,
+applies logarithmic spacing on the y- and x-axes,
+and shows all individual
 sampled curves.
 }
 \examples{
