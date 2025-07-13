@@ -10,7 +10,7 @@ plot_predicted_curve(
   antigen_iso,
   dataset = NULL,
   legend_obs = "Observed data",
-  legend_mod1 = "Median prediction",
+  legend_median = "Median prediction",
   show_quantiles = TRUE,
   log_scale = FALSE,
   log_x = FALSE,
@@ -40,6 +40,8 @@ Must contain:
 
 \item{legend_obs}{Label for observed data in the legend.}
 
+\item{legend_median}{Label for the median prediction line.}
+
 \item{show_quantiles}{\link{logical}; if TRUE (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
 
@@ -57,8 +59,6 @@ curves (default = 0.3).}
 
 \item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
 limits.}
-
-\item{legend_median}{Label for the median prediction line.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response

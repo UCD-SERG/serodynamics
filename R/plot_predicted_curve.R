@@ -44,7 +44,7 @@ plot_predicted_curve <- function(jags_post,
                                  antigen_iso,
                                  dataset = NULL,
                                  legend_obs = "Observed data",
-                                 legend_mod1 = "Median prediction",
+                                 legend_median = "Median prediction",
                                  show_quantiles = TRUE,
                                  log_scale = FALSE,
                                  log_x = FALSE,
@@ -195,7 +195,7 @@ plot_predicted_curve <- function(jags_post,
   
   # --- Construct Unified Legend ---
   color_vals <- c("median" = "red")
-  color_labels <- c("median" = legend_mod1)
+  color_labels <- c("median" = legend_median)
   fill_vals <- c("ci" = "red")
   fill_labels <- c("ci" = "95% credible interval")
 
