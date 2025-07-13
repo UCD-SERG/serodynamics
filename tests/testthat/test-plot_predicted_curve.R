@@ -4,13 +4,22 @@ test_that(
   code = {
     skip_if(getRversion() < "4.4.1")
     
-    # Load pre-saved fixture (includes model output and sample data)
-    example <- 
-      readr::read_rds(testthat::test_path("fixtures", 
-                                          "example_runmod_output.rds"))
-    
-    jags_post <- example$model
-    dat <- example$dat
+    # Use the pre-computed package data instead of a fixture
+    jags_post <- serodynamics::nepal_sees_jags_output
+
+    # Prepare the 'dat' object for overlay, mirroring the main example
+    dat <- serodynamics::nepal_sees |>
+      as_case_data(
+        id_var        = "id",
+        biomarker_var = "antigen_iso",
+        value_var     = "value",
+        time_in_days  = "timeindays"
+      ) |>
+      dplyr::rename(
+        timeindays = dayssincefeveronset,
+        value      = result
+      ) |>
+      dplyr::filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
     
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
