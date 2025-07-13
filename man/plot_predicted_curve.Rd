@@ -91,18 +91,10 @@ dataset <- serodynamics::nepal_sees |>
 dat <- dataset |>
   dplyr::filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
 
-# 3) Fit the model to the full dataset
-model <- run_mod(
-  data         = dataset,
-  file_mod     = serodynamics_example("model.jags"),
-  nchain       = 2,
-  nadapt       = 100,
-  nburn        = 100,
-  nmc          = 500,
-  niter        = 1000,
-  strat        = "strat",
-  with_post    = TRUE
-)
+# 3) Load the pre-computed model output included with the package.
+# This is much faster than running the model live.
+model <- serodynamics::nepal_sees_jags_output
+
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
