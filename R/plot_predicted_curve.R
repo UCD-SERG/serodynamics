@@ -10,7 +10,8 @@
 #' @param jags_post An object returned by [run_mod()] containing the
 #'   full posterior parameter samples.
 #' @param id The participant ID to plot; for example, "sees_npl_128".
-#' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or "HlyE_IgG".
+#' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
+#' "HlyE_IgG".
 #' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response 
 #' data. 
 #' Must contain:
