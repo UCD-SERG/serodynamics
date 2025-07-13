@@ -188,7 +188,7 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:00:53 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:14:31 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -223,7 +223,7 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:01:00 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jul 13 20:14:38 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -263,15 +263,14 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  antigen_iso        <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
 <span class="r-in"><span>  dataset            <span class="op">=</span> <span class="va">dat</span>,</span></span>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
-<span class="r-in"><span>  legend_mod1        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
+<span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(jags_post = model, id = "sees_npl_128",     antigen_iso = "HlyE_IgA", dataset = dat, legend_obs = "Observed data",     legend_mod1 = "Median prediction", show_quantiles = TRUE,     log_scale = FALSE, log_x = FALSE, show_all_curves = TRUE):</span> unused argument (legend_mod1 = "Median prediction")</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p1' not found</span>
+<span class="r-plt img"><img src="plot_predicted_curve-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4b) Plot (log10 y-axis) with all individual curves + median ribbon</span></span></span>
 <span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
@@ -280,15 +279,14 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  antigen_iso        <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
 <span class="r-in"><span>  dataset            <span class="op">=</span> <span class="va">dat</span>,</span></span>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
-<span class="r-in"><span>  legend_mod1        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
+<span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(jags_post = model, id = "sees_npl_128",     antigen_iso = "HlyE_IgA", dataset = dat, legend_obs = "Observed data",     legend_mod1 = "Median prediction", show_quantiles = TRUE,     log_scale = TRUE, log_x = FALSE, show_all_curves = TRUE):</span> unused argument (legend_mod1 = "Median prediction")</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p2' not found</span>
+<span class="r-plt img"><img src="plot_predicted_curve-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4c) Plot with custom x-axis limits (0-600 days)</span></span></span>
 <span class="r-in"><span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
@@ -297,16 +295,15 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  antigen_iso        <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
 <span class="r-in"><span>  dataset            <span class="op">=</span> <span class="va">dat</span>,</span></span>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
-<span class="r-in"><span>  legend_mod1        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
+<span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  xlim               <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">600</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(jags_post = model, id = "sees_npl_128",     antigen_iso = "HlyE_IgA", dataset = dat, legend_obs = "Observed data",     legend_mod1 = "Median prediction", show_quantiles = TRUE,     log_scale = FALSE, log_x = FALSE, show_all_curves = TRUE,     xlim = c(0, 600)):</span> unused argument (legend_mod1 = "Median prediction")</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p3' not found</span>
+<span class="r-plt img"><img src="plot_predicted_curve-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
