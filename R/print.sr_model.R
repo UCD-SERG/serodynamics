@@ -16,8 +16,8 @@ print.sr_model <- function(data) { # nolint
   data_group <- data |>
     dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
     dplyr::summarise(mean_val = mean(.data$value)) |>
-    tidyr::pivot_wider(names_from = Parameter, 
-                       values_from = mean_val) |>
+    tidyr::pivot_wider(names_from = .data$Parameter, 
+                       values_from = .data$mean_val) |>
     dplyr::arrange(.data$Iso_type)
   # Taking out stratification column if not specified
   if (unique(data$Stratification == "None")) {
