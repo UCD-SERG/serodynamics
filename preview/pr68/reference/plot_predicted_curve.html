@@ -77,7 +77,8 @@ sampled curves.</p>
 <span>  log_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_all_curves <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  alpha_samples <span class="op">=</span> <span class="fl">0.3</span>,</span>
-<span>  xlim <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ylab <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -145,6 +146,12 @@ curves (default = 0.3).</p></dd>
 <dt id="arg-xlim">xlim<a class="anchor" aria-label="anchor" href="#arg-xlim"></a></dt>
 <dd><p>(Optional) A numeric vector of length 2 providing custom x-axis
 limits.</p></dd>
+
+
+<dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
+<dd><p>(Optional) A string for the y-axis label. If <code>NULL</code> (default),
+the label is automatically set to "ELISA units" or "ELISA units (log scale)"
+based on the <code>log_scale</code> argument.</p></dd>
 
 </dl></div>
     <div class="section level2">
