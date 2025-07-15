@@ -16,7 +16,8 @@ plot_predicted_curve(
   log_x = FALSE,
   show_all_curves = FALSE,
   alpha_samples = 0.3,
-  xlim = NULL
+  xlim = NULL,
+  ylab = NULL
 )
 }
 \arguments{
@@ -59,6 +60,10 @@ curves (default = 0.3).}
 
 \item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
 limits.}
+
+\item{ylab}{(Optional) A string for the y-axis label. If \code{NULL} (default),
+the label is automatically set to "ELISA units" or "ELISA units (log scale)"
+based on the \code{log_scale} argument.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response

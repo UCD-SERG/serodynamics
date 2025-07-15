@@ -33,6 +33,9 @@
 #' curves (default = 0.3).
 #' @param xlim (Optional) A numeric vector of length 2 providing custom x-axis 
 #' limits.
+#' @param ylab (Optional) A string for the y-axis label. If `NULL` (default), 
+#' the label is automatically set to "ELISA units" or "ELISA units (log scale)"
+#' based on the `log_scale` argument.
 #'
 #' @return A [ggplot2::ggplot] object displaying predicted antibody response 
 #' curves with a median curve and a 95% credible interval band as default.
@@ -50,7 +53,8 @@ plot_predicted_curve <- function(jags_post,
                                  log_x = FALSE,
                                  show_all_curves = FALSE,
                                  alpha_samples = 0.3,
-                                 xlim = NULL) {
+                                 xlim = NULL,
+                                 ylab = NULL) {
   
   # --------------------------------------------------------------------------
   # 1) The 'jags_post' object is now the tibble itself
@@ -119,10 +123,19 @@ plot_predicted_curve <- function(jags_post,
                            .data$shape)) |>
     dplyr::ungroup()
   
+  # Determine Y-axis label
+  if (is.null(ylab)) {
+    if (log_scale) {
+      ylab <- "ELISA units (log scale)"
+    } else {
+      ylab <- "ELISA units"
+    }
+  }
+  
   # Base ggplot object with legend at the bottom.
   p <- ggplot2::ggplot() +
     ggplot2::theme_minimal() +
-    ggplot2::labs(x = "Days since fever onset", y = "ELISA units") +
+    ggplot2::labs(x = "Days since fever onset", y = ylab) +
     ggplot2::theme(legend.position = "bottom")
   
   # If show_all_curves is TRUE, overlay all individual sampled curves.
