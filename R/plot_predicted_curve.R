@@ -7,8 +7,8 @@
 #' and shows all individual 
 #' sampled curves.
 #'
-#' @param jags_post An object returned by [run_mod()] containing the
-#'   full posterior parameter samples.
+#' @param jags_post An `sr_model` object (returned by [run_mod()]) containing 
+#'   samples from the posterior distribution of the model parameters.
 #' @param id The participant ID to plot; for example, "sees_npl_128".
 #' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
 #' "HlyE_IgG".
@@ -21,13 +21,13 @@
 #'   - `antigen_iso`
 #' @param legend_obs Label for observed data in the legend.
 #' @param legend_median Label for the median prediction line.
-#' @param show_quantiles [logical]; if TRUE (default), plots the 2.5%, 50%, 
+#' @param show_quantiles [logical]; if [TRUE] (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
-#' @param log_scale logical; if TRUE, applies a log10 transformation to 
+#' @param log_scale [logical]; if [TRUE], applies a [log10] transformation to 
 #' the y-axis.
-#' @param log_x [logical]; if TRUE, applies a log10 transformation to the 
+#' @param log_x [logical]; if [TRUE], applies a [log10] transformation to the 
 #' x-axis.
-#' @param show_all_curves logical; if TRUE, overlays all 
+#' @param show_all_curves [logical]; if [TRUE], overlays all 
 #' individual sampled curves.
 #' @param alpha_samples Numeric; transparency level for individual 
 #' curves (default = 0.3).
@@ -105,8 +105,8 @@ plot_predicted_curve <- function(jags_post,
   ## --- Prepare data for Model 1 ---
   dt1 <- data.frame(t = tx2) |>
     dplyr::mutate(id = dplyr::row_number()) |>
-    tidyr::pivot_wider(names_from = c("id"), 
-                       values_from = c("t"), 
+    tidyr::pivot_wider(names_from = "id", 
+                       values_from = "t", 
                        names_prefix = "time") |>
     dplyr::slice(
       rep(seq_len(dplyr::n()), each = nrow(param_medians_wide))
