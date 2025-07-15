@@ -20,8 +20,8 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{jags_post}{An object returned by \code{\link[=run_mod]{run_mod()}} containing the
-full posterior parameter samples.}
+\item{jags_post}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}) containing
+samples from the posterior distribution of the model parameters.}
 
 \item{id}{The participant ID to plot; for example, "sees_npl_128".}
 
@@ -42,16 +42,16 @@ Must contain:
 
 \item{legend_median}{Label for the median prediction line.}
 
-\item{show_quantiles}{\link{logical}; if TRUE (default), plots the 2.5\%, 50\%,
+\item{show_quantiles}{\link{logical}; if \link{TRUE} (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
 
-\item{log_scale}{logical; if TRUE, applies a log10 transformation to
+\item{log_scale}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to
 the y-axis.}
 
-\item{log_x}{\link{logical}; if TRUE, applies a log10 transformation to the
+\item{log_x}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
 x-axis.}
 
-\item{show_all_curves}{logical; if TRUE, overlays all
+\item{show_all_curves}{\link{logical}; if \link{TRUE}, overlays all
 individual sampled curves.}
 
 \item{alpha_samples}{Numeric; transparency level for individual
