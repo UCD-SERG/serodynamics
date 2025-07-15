@@ -86,12 +86,6 @@ plot_predicted_curve <- function(jags_post,
       r = .data$shape
     ) |>
     dplyr::select(-c("Iso_type"))
-  
-  # Ensure Subject column exists in each model's data
-  if (!"Subject" %in% names(param_medians_wide)) {
-    param_medians_wide <- param_medians_wide |>
-      dplyr::mutate(Subject = "subject1")
-  }
 
   # Add sample_id if not present (to identify individual samples)
   if (!"sample_id" %in% names(param_medians_wide)) {
