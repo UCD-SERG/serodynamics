@@ -5,7 +5,7 @@ test_that(
     skip_if(getRversion() < "4.4.1")
     
     # Use the pre-computed package data instead of a fixture
-    jags_post <- serodynamics::nepal_sees_jags_output
+    sr_model <- serodynamics::nepal_sees_jags_output
 
     # Prepare the 'dat' object for overlay, mirroring the main example
     dat <- serodynamics::nepal_sees |>
@@ -23,7 +23,7 @@ test_that(
     
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
-      jags_post          = jags_post,
+      sr_model           = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
@@ -39,7 +39,7 @@ test_that(
     
     # 5b. Plot (log10 axes) with both model curves + observed points
     plot2 <- plot_predicted_curve(
-      jags_post          = jags_post,
+      sr_model           = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
@@ -55,7 +55,7 @@ test_that(
     
     # 5c. Plot with log10 x-axis
     plot3 <- plot_predicted_curve(
-      jags_post          = jags_post,
+      sr_model           = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,
@@ -71,7 +71,7 @@ test_that(
     
     # 5d. Plot with custom x-axis limits
     plot4 <- plot_predicted_curve(
-      jags_post          = jags_post,
+      sr_model           = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = dat,

@@ -5,7 +5,7 @@
 \title{Generate Predicted Antibody Response Curves (Median + 95\% CI)}
 \usage{
 plot_predicted_curve(
-  jags_post,
+  sr_model,
   id,
   antigen_iso,
   dataset = NULL,
@@ -21,7 +21,7 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{jags_post}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}) containing
+\item{sr_model}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}) containing
 samples from the posterior distribution of the model parameters.}
 
 \item{id}{The participant ID to plot; for example, "sees_npl_128".}
@@ -103,7 +103,7 @@ model <- serodynamics::nepal_sees_jags_output
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
@@ -118,7 +118,7 @@ print(p1)
 
 # 4b) Plot (log10 y-axis) with all individual curves + median ribbon
 p2 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
@@ -133,7 +133,7 @@ print(p2)
 
 # 4c) Plot with custom x-axis limits (0-600 days)
 p3 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,

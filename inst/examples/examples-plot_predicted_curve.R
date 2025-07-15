@@ -23,7 +23,7 @@ model <- serodynamics::nepal_sees_jags_output
 
 # 4a) Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
@@ -38,7 +38,7 @@ print(p1)
 
 # 4b) Plot (log10 y-axis) with all individual curves + median ribbon
 p2 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
@@ -53,7 +53,7 @@ print(p2)
 
 # 4c) Plot with custom x-axis limits (0-600 days)
 p3 <- plot_predicted_curve(
-  jags_post          = model,
+  sr_model           = model,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   dataset            = dat,
