@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9034
+Version: 0.0.0.9035
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -26,7 +26,7 @@ Imports:
     rlang,
     runjags,
     scales,
-    serocalculator,
+    serocalculator (>= 1.3.0.9037),
     stats,
     tibble,
     tidyr,
@@ -37,6 +37,7 @@ Suggests:
     readr,
     rlist,
     spelling,
+    stringr,
     testthat (>= 3.0.0),
     tidyverse,
     withr,
@@ -45,7 +46,6 @@ Suggests:
     here,
     rjags,
     rmarkdown,
-    stringr,
     magrittr,
     ssdtools,
     rex,
