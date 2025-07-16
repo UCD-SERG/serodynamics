@@ -73,7 +73,7 @@ sampled curves.</p>
 <span>  legend_obs <span class="op">=</span> <span class="st">"Observed data"</span>,</span>
 <span>  legend_median <span class="op">=</span> <span class="st">"Median prediction"</span>,</span>
 <span>  show_quantiles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  log_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_scale <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  log_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  show_all_curves <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  alpha_samples <span class="op">=</span> <span class="fl">0.3</span>,</span>
@@ -123,7 +123,7 @@ Must contain:</p><ul><li><p><code>timeindays</code></p></li>
 and 97.5% quantiles.</p></dd>
 
 
-<dt id="arg-log-y">log_y<a class="anchor" aria-label="anchor" href="#arg-log-y"></a></dt>
+<dt id="arg-log-scale">log_scale<a class="anchor" aria-label="anchor" href="#arg-log-scale"></a></dt>
 <dd><p><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a>; if <a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a>, applies a <a href="https://rdrr.io/r/base/Log.html" class="external-link">log10</a> transformation to
 the y-axis.</p></dd>
 
@@ -151,7 +151,7 @@ limits.</p></dd>
 <dt id="arg-ylab">ylab<a class="anchor" aria-label="anchor" href="#arg-ylab"></a></dt>
 <dd><p>(Optional) A string for the y-axis label. If <code>NULL</code> (default),
 the label is automatically set to "ELISA units" or "ELISA units (log scale)"
-based on the <code>log_y</code> argument.</p></dd>
+based on the <code>log_scale</code> argument.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -194,12 +194,13 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
 <span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  log_y          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(sr_model = model, id = "sees_npl_128", antigen_iso = "HlyE_IgA",     dataset = dat, legend_obs = "Observed data", legend_median = "Median prediction",     show_quantiles = TRUE, log_scale = FALSE, log_x = FALSE,     show_all_curves = TRUE):</span> unused argument (log_scale = FALSE)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p1</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_predicted_curve-1.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p1' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4b) Plot (log10 y-axis) with all individual curves + median ribbon</span></span></span>
 <span class="r-in"><span><span class="va">p2</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
@@ -210,12 +211,13 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
 <span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  log_y          <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(sr_model = model, id = "sees_npl_128", antigen_iso = "HlyE_IgA",     dataset = dat, legend_obs = "Observed data", legend_median = "Median prediction",     show_quantiles = TRUE, log_scale = TRUE, log_x = FALSE, show_all_curves = TRUE):</span> unused argument (log_scale = TRUE)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p2</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_predicted_curve-2.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p2' not found</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># 4c) Plot with custom x-axis limits (0-600 days)</span></span></span>
 <span class="r-in"><span><span class="va">p3</span> <span class="op">&lt;-</span> <span class="fu">plot_predicted_curve</span><span class="op">(</span></span></span>
@@ -226,13 +228,14 @@ curves with a median curve and a 95% credible interval band as default.</p>
 <span class="r-in"><span>  legend_obs         <span class="op">=</span> <span class="st">"Observed data"</span>,</span></span>
 <span class="r-in"><span>  legend_median        <span class="op">=</span> <span class="st">"Median prediction"</span>,</span></span>
 <span class="r-in"><span>  show_quantiles     <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
-<span class="r-in"><span>  log_y          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
+<span class="r-in"><span>  log_scale          <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  log_x              <span class="op">=</span> <span class="cn">FALSE</span>,</span></span>
 <span class="r-in"><span>  show_all_curves    <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
 <span class="r-in"><span>  xlim               <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">600</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in plot_predicted_curve(sr_model = model, id = "sees_npl_128", antigen_iso = "HlyE_IgA",     dataset = dat, legend_obs = "Observed data", legend_median = "Median prediction",     show_quantiles = TRUE, log_scale = FALSE, log_x = FALSE,     show_all_curves = TRUE, xlim = c(0, 600)):</span> unused argument (log_scale = FALSE)</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p3</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="plot_predicted_curve-3.png" alt="" width="700" height="433"></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p3' not found</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
