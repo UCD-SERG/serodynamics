@@ -30,7 +30,7 @@ test_that(
       legend_obs         = "Observed data",
       legend_median        = "Median prediction",
       show_quantiles     = TRUE,
-      log_scale          = FALSE,
+      log_y          = FALSE,
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
@@ -46,7 +46,7 @@ test_that(
       legend_obs         = "Observed data",
       legend_median        = "Median prediction",
       show_quantiles     = TRUE,
-      log_scale          = TRUE,
+      log_y          = TRUE,
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
@@ -62,7 +62,7 @@ test_that(
       legend_obs         = "Observed data",
       legend_median        = "Median prediction",
       show_quantiles     = TRUE,
-      log_scale          = FALSE,
+      log_y          = FALSE,
       log_x              = TRUE,
       show_all_curves    = TRUE
     )
@@ -78,7 +78,7 @@ test_that(
       legend_obs         = "Observed data",
       legend_median        = "Median prediction",
       show_quantiles     = TRUE,
-      log_scale          = FALSE,
+      log_y          = FALSE,
       log_x              = FALSE,
       show_all_curves    = TRUE,
       xlim               = c(0, 500)

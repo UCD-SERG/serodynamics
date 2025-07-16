@@ -12,7 +12,7 @@ plot_predicted_curve(
   legend_obs = "Observed data",
   legend_median = "Median prediction",
   show_quantiles = TRUE,
-  log_scale = FALSE,
+  log_y = FALSE,
   log_x = FALSE,
   show_all_curves = FALSE,
   alpha_samples = 0.3,
@@ -46,7 +46,7 @@ Must contain:
 \item{show_quantiles}{\link{logical}; if \link{TRUE} (default), plots the 2.5\%, 50\%,
 and 97.5\% quantiles.}
 
-\item{log_scale}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to
+\item{log_y}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to
 the y-axis.}
 
 \item{log_x}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
@@ -63,7 +63,7 @@ limits.}
 
 \item{ylab}{(Optional) A string for the y-axis label. If \code{NULL} (default),
 the label is automatically set to "ELISA units" or "ELISA units (log scale)"
-based on the \code{log_scale} argument.}
+based on the \code{log_y} argument.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response
@@ -110,7 +110,7 @@ p1 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = FALSE,
+  log_y          = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
@@ -125,7 +125,7 @@ p2 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = TRUE,
+  log_y          = TRUE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
@@ -140,7 +140,7 @@ p3 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = FALSE,
+  log_y          = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE,
   xlim               = c(0, 600)

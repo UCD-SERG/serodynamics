@@ -30,7 +30,7 @@ p1 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = FALSE,
+  log_y          = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
@@ -45,7 +45,7 @@ p2 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = TRUE,
+  log_y          = TRUE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
@@ -60,7 +60,7 @@ p3 <- plot_predicted_curve(
   legend_obs         = "Observed data",
   legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_scale          = FALSE,
+  log_y          = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE,
   xlim               = c(0, 600)

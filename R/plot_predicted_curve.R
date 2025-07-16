@@ -23,7 +23,7 @@
 #' @param legend_median Label for the median prediction line.
 #' @param show_quantiles [logical]; if [TRUE] (default), plots the 2.5%, 50%, 
 #' and 97.5% quantiles.
-#' @param log_scale [logical]; if [TRUE], applies a [log10] transformation to 
+#' @param log_y [logical]; if [TRUE], applies a [log10] transformation to 
 #' the y-axis.
 #' @param log_x [logical]; if [TRUE], applies a [log10] transformation to the 
 #' x-axis.
@@ -35,7 +35,7 @@
 #' limits.
 #' @param ylab (Optional) A string for the y-axis label. If `NULL` (default), 
 #' the label is automatically set to "ELISA units" or "ELISA units (log scale)"
-#' based on the `log_scale` argument.
+#' based on the `log_y` argument.
 #'
 #' @return A [ggplot2::ggplot] object displaying predicted antibody response 
 #' curves with a median curve and a 95% credible interval band as default.
@@ -125,7 +125,7 @@ plot_predicted_curve <- function(sr_model,
   
   # Determine Y-axis label
   if (is.null(ylab)) {
-    if (log_scale) {
+    if (log_y) {
       ylab <- "ELISA units (log scale)"
     } else {
       ylab <- "ELISA units"
@@ -231,7 +231,7 @@ plot_predicted_curve <- function(sr_model,
     )
   
   # --- Optionally add log10 scales for y and/or x ---
-  if (log_scale) {
+  if (log_y) {
     p <- p + ggplot2::scale_y_log10()
   }
   if (log_x) {
