@@ -4,7 +4,7 @@ pkgdown_sha: 26cecc444a485bd22cd066612432e94818904b67
 articles:
   dobson: dobson.html
   articles/test-snippets: test-snippets.html
-last_built: 2025-07-16T01:20Z
+last_built: 2025-07-17T03:45Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr101/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr101/articles
