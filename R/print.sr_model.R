@@ -22,7 +22,7 @@ print.sr_model <- function(x, ...) { # nolint
     dplyr::arrange(.data$Iso_type)
   # Taking out stratification column if not specified
   if (unique(data$Stratification == "None")) {
-    x <- x |> select(-all_of(Stratification))
+    x <- x |> select(-all_of(.data$Stratification))
   } 
   invisible(x)
 }
