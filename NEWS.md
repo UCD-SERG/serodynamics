@@ -4,6 +4,7 @@
 
 ## New features
 
+* Creating default print.sr_model function for sr_model class (#114)
 * Added `plot_predicted_curve()`  (#68)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
