@@ -11,6 +11,15 @@ project*.tar.gz
 project*.tgz
 elisa_clean_2023-11-01.csv
 cholera_data_compiled_050324.csv
+inst/extdata/*.csv
+*.xlsx
+*.xls
+docs
+serodynamics.Rcheck/
+serodynamics*.tar.gz
+serodynamics*.tgz
+
 inst/doc
 docs
 **/.quarto/
+
