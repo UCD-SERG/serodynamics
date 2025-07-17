@@ -14,7 +14,7 @@
 #' @examples
 #' print(nepal_sees_jags_output)
 print.sr_model <- function(x, ...) { # nolint
-  data_group <- x |>
+  x <- x |>
     dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
     dplyr::summarise(mean_val = mean(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 
@@ -22,7 +22,7 @@ print.sr_model <- function(x, ...) { # nolint
     dplyr::arrange(.data$Iso_type)
   # Taking out stratification column if not specified
   if (unique(data$Stratification == "None")) {
-    data_group <- data_group |> select(-all_of(Stratification))
+    x <- x |> select(-all_of(Stratification))
   } 
-  data_group
+  invisible(x)
 }
