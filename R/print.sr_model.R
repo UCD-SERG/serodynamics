@@ -4,7 +4,8 @@
 #'  A default print method for class `sr_model` that includes the mean posterior
 #'  distribution for antibody kinetic curve parameters by `Iso_type` and
 #'  `Stratification` (if specified).
-#' @param data An `sr_model` output object from the
+#' @param x An `sr_model` output object from [run_mod()].
+#' @param ... Additional arguments affecting the summary produced.
 #' [serodynamics::run_mod()] function.
 #' @returns A [dplyr::grouped_df] that
 #' contains the mean posterior distribution for antibody kinetic curve
@@ -12,8 +13,8 @@
 #' @export
 #' @examples
 #' print(nepal_sees_jags_output)
-print.sr_model <- function(data) { # nolint
-  data_group <- data |>
+print.sr_model <- function(x, ...) { # nolint
+  data_group <- x |>
     dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
     dplyr::summarise(mean_val = mean(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 

@@ -5,10 +5,12 @@
 \title{Default print for \code{\link[=run_mod]{run_mod()}} output object of class
 \code{sr_model}}
 \usage{
-\method{print}{sr_model}(data)
+\method{print}{sr_model}(x, ...)
 }
 \arguments{
-\item{data}{An \code{sr_model} output object from the
+\item{x}{An \code{sr_model} output object from \code{\link[=run_mod]{run_mod()}}.}
+
+\item{...}{Additional arguments affecting the summary produced.
 \code{\link[=run_mod]{run_mod()}} function.}
 }
 \value{
