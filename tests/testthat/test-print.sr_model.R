@@ -3,7 +3,7 @@ test_that(
   code = {
     withr::local_seed(1)
     results <- print(nepal_sees_jags_output) |>
-      ssdtools:::expect_snapshot_data("default-print-runmod-object")
+      ssdtools:::expect_snapshot("default-print-runmod-object")
         
   }
 )
