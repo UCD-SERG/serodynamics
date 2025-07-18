@@ -29,6 +29,9 @@
 #' - `alpha` = posterior estimate of decay rate
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
+#' @param id Specify [character] id in a [vector] format to produce plots for
+#' specific individuals. Default is the `newperson` referring to the predictive
+#' distribution.
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
 #' values for all the specified input.
 #' @export
@@ -40,6 +43,12 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                            strat = unique(data$Stratification)) {
   
   attributes_jags <- data[["attributes"]]
+  
+  rhat_id_list <- list()
+  for (h in id) {
+    
+    visualize_jags_sub <- data |>
+      dplyr::filter(.data$Subject == h)
   
   rhat_strat_list <- list()
   for (i in strat) {
@@ -83,5 +92,7 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
   if (sum(lengths(rhat_strat_list)) == 1) {
     rhat_strat_list <- rhat_strat_list[[1]][[iso]]
   } 
-  rhat_strat_list
+  rhat_id_list[[h]] <- rhat_strat_list
+  }
+  rhat_id_list
 }

@@ -30,6 +30,10 @@ specific parameter, entered with quotes. Options include:
 
 \item{strat}{Specify \link{character} string to produce plots of specific
 stratification entered in quotes.}
+
+\item{id}{Specify \link{character} id in a \link{vector} format to produce plots for
+specific individuals. Default is the \code{newperson} referring to the predictive
+distribution.}
 }
 \value{
 A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects producing dotplots with rhat
