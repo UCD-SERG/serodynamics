@@ -26,6 +26,9 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
+#' @param id Specify [character] id in a [vector] format to produce plots for
+#' specific individuals. Default is the `newperson` referring to the predictive
+#' distribution.
 #' @return A [list] of [ggplot2::ggplot] objects producing trace
 #' plots for all the specified input.
 #' @export
@@ -34,16 +37,23 @@
 plot_jags_trace <- function(data,
                             iso = unique(data$Iso_type),
                             param = unique(data$Parameter),
-                            strat = unique(data$Stratification)) {
+                            strat = unique(data$Stratification),
+                            id = c("newperson")) {
 
   attributes_jags <- data[["attributes"]]
+  
+  trace_id_list <- list()
+  for (h in id) {
 
+    visualize_jags_sub <- data |>
+      dplyr::filter(.data$Subject == h)
+    
   trace_strat_list <- list()
+  
   for (i in strat) {
 
     visualize_jags_sub <- data |>
-      dplyr::filter(.data$Stratification == i) |>
-      dplyr::filter(.data$Subject == "newperson")
+      dplyr::filter(.data$Stratification == i)
 
     # Creating open list to store ggplots
     trace_out <- list()
@@ -79,5 +89,7 @@ plot_jags_trace <- function(data,
   if (sum(lengths(trace_strat_list) == 1)) {
     trace_strat_list <- trace_strat_list[[1]][[iso]]
   } 
-  trace_strat_list
+  trace_id_list[[h]] <- trace_strat_list
+  }
+  trace_id_list
 }
