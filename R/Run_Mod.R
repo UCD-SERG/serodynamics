@@ -48,14 +48,16 @@
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
-#'   - `nThin`: Thinning number (niter/nmc)
+#'   - `nThin`: Thinning number (niter/nmc).
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
 #'     - `omega_param`
 #'     - `wishdf`
 #'     - `prec_logy_hyp_param`
-#'     - An optional `"jags.post"` attribute, included when argument
+#'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
+#'   for all observations.
+#'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
 #' @export
@@ -192,11 +194,26 @@ run_mod <- function(data,
   jags_out <- jags_out |>
     structure("priors" = attributes(priorspec)$used_priors)
   
+  # Calculating fitted and residuals
+  # Renaming columns using attributes from as_case_data
+  orig_data <- dl_sub |> 
+    dplyr::rename(
+      Subject = dl_sub |> serocalculator::ids_varname(),
+      Iso_type = dl_sub |> serocalculator::get_biomarker_names_var(),
+      t = dl_sub |> get_timeindays_var(),
+      result = dl_sub |> serocalculator::get_values_var()
+    ) |>
+    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+  fit_res <- calc_fit_mod(input_dat = jags_out,
+                          original_data = orig_data)
+  jags_out <- jags_out |>
+    structure(fitted_residuals = fit_res)
+
   # Conditionally adding jags.post
   if (with_post) {
     jags_out <- jags_out |>
       structure(jags.post = jags_post_final)
-  } 
+  }
   jags_out <- jags_out |>
     structure(class = union("sr_model", class(jags_out)))
   jags_out
