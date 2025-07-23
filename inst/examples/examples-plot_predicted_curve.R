@@ -66,3 +66,20 @@ p3 <- plot_predicted_curve(
   xlim               = c(0, 600)
 )
 print(p3)
+
+# 5) Multi-ID, faceted plot (single antigen)
+ids <- c("sees_npl_128", "sees_npl_131")
+antigen <- "HlyE_IgA"
+
+dat_multi <- dataset |>
+  dplyr::filter(id %in% ids, antigen_iso == antigen)
+
+p4 <- plot_predicted_curve(
+  sr_model        = model,
+  id              = ids,
+  antigen_iso     = antigen,
+  dataset         = dat_multi,
+  show_all_curves = TRUE,
+  facet_by_id     = TRUE
+)
+print(p4)

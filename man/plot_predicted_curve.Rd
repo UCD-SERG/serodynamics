@@ -17,7 +17,8 @@ plot_predicted_curve(
   show_all_curves = FALSE,
   alpha_samples = 0.3,
   xlim = NULL,
-  ylab = NULL
+  ylab = NULL,
+  facet_by_id = FALSE
 )
 }
 \arguments{
@@ -64,6 +65,9 @@ limits.}
 \item{ylab}{(Optional) A string for the y-axis label. If \code{NULL} (default),
 the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 based on the \code{log_y} argument.}
+
+\item{facet_by_id}{\link{logical}; if \link{TRUE}, facets the plot by 'id' (horizontal
+for 2 IDs, 2x2 grid for 3-4 IDs).}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response
@@ -146,4 +150,21 @@ p3 <- plot_predicted_curve(
   xlim               = c(0, 600)
 )
 print(p3)
+
+# 5) Multi-ID, faceted plot (single antigen)
+ids <- c("sees_npl_128", "sees_npl_131")
+antigen <- "HlyE_IgA"
+
+dat_multi <- dataset |>
+  dplyr::filter(id \%in\% ids, antigen_iso == antigen)
+
+p4 <- plot_predicted_curve(
+  sr_model        = model,
+  id              = ids,
+  antigen_iso     = antigen,
+  dataset         = dat_multi,
+  show_all_curves = TRUE,
+  facet_by_id     = TRUE
+)
+print(p4)
 }

@@ -87,3 +87,86 @@ test_that(
     vdiffr::expect_doppelganger("predicted_curve_xlim", plot4)
   }
 )
+
+# Helper function for repeated test logic
+check_plot_multi <- function(ids, antigen, log_y = FALSE) {
+  dat_multi <- serodynamics::nepal_sees |>
+    as_case_data(
+      id_var = "id",
+      biomarker_var = "antigen_iso",
+      value_var = "value",
+      time_in_days = "timeindays"
+    ) |>
+    dplyr::rename(
+      timeindays = dayssincefeveronset,
+      value      = result
+    ) |>
+    dplyr::filter(id %in% ids, antigen_iso == antigen)
+
+  plot_multi <- plot_predicted_curve(
+    sr_model = serodynamics::nepal_sees_jags_output,
+    id = ids,
+    antigen_iso = antigen,
+    dataset = dat_multi,
+    show_all_curves = TRUE,
+    log_y = log_y,
+    facet_by_id = TRUE
+  )
+  expect_true(ggplot2::is_ggplot(plot_multi))
+  built <- ggplot2::ggplot_build(plot_multi)
+  n_facets <- length(unique(dat_multi$id))
+  expect_equal(length(unique(built$layout$layout$PANEL)), n_facets)
+  gtable <- ggplot2::ggplot_gtable(built)
+  legend_labels <- unlist(lapply(
+    gtable$grobs,
+    function(x) {
+      if (!is.null(x$children[["guide-box"]]))
+        x$children[["guide-box"]]$grobs[[1]]$children[[1]]$label
+      else NULL
+    }
+  ))
+  expect_true(
+    all(c(
+      "Median prediction",
+      "Observed data",
+      "Posterior samples",
+      "95% credible interval"
+    ) %in% legend_labels)
+  )
+  return(plot_multi)
+}
+
+test_that(
+  "plot_predicted_curve() works with 2 IDs (faceting, original legend)",
+  {
+    plot_multi <- check_plot_multi(
+      ids = c("sees_npl_128", "sees_npl_131"),
+      antigen = "HlyE_IgA"
+    )
+    vdiffr::expect_doppelganger("predicted-curve-multi-id-2", plot_multi)
+  }
+)
+
+test_that(
+  "plot_predicted_curve() works with 3 IDs (faceting, log_y)",
+  {
+    plot_multi <- check_plot_multi(
+      ids = c("sees_npl_28", "sees_npl_128", "sees_npl_131"),
+      antigen = "HlyE_IgA",
+      log_y = TRUE
+    )
+    vdiffr::expect_doppelganger("predicted-curve-multi-id-3", plot_multi)
+  }
+)
+
+test_that(
+  "plot_predicted_curve() works with 4 IDs (faceting, log_y)",
+  {
+    plot_multi <- check_plot_multi(
+      ids = c("sees_npl_28", "sees_npl_68", "sees_npl_128", "sees_npl_131"),
+      antigen = "HlyE_IgA",
+      log_y = TRUE
+    )
+    vdiffr::expect_doppelganger("predicted-curve-multi-id-4", plot_multi)
+  }
+)
