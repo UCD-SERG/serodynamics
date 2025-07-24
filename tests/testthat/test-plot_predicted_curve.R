@@ -106,14 +106,14 @@ testthat::test_that(
   {
     plot_multi <- plot_predicted_curve(
       sr_model       = serodynamics::nepal_sees_jags_output,
-      id             = c("sees_npl_28", "sees_npl_128", "sees_npl_131"),
+      id             = c("sees_npl_2", "sees_npl_128", "sees_npl_131"),
       antigen_iso    = "HlyE_IgA",
       dataset        = serodynamics::nepal_sees |>
         dplyr::rename(
           timeindays = dayssincefeveronset,
           value      = result
         ) |>
-        dplyr::filter(id %in% c("sees_npl_28", 
+        dplyr::filter(id %in% c("sees_npl_2", 
                                 "sees_npl_128", 
                                 "sees_npl_131"), 
                       antigen_iso == "HlyE_IgA"),
@@ -130,7 +130,7 @@ testthat::test_that(
   {
     plot_multi <- plot_predicted_curve(
       sr_model       = serodynamics::nepal_sees_jags_output,
-      id             = c("sees_npl_28", "sees_npl_68", "sees_npl_128", 
+      id             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 
                          "sees_npl_131"),
       antigen_iso    = "HlyE_IgA",
       dataset        = serodynamics::nepal_sees |>
@@ -138,7 +138,7 @@ testthat::test_that(
           timeindays = dayssincefeveronset,
           value      = result
         ) |>
-        dplyr::filter(id %in% c("sees_npl_28", "sees_npl_68", 
+        dplyr::filter(id %in% c("sees_npl_2", "sees_npl_133", 
                                 "sees_npl_128", "sees_npl_131"), 
                       antigen_iso == "HlyE_IgA"),
       show_all_curves = TRUE,
