@@ -79,7 +79,8 @@ sampled curves.</p>
 <span>  alpha_samples <span class="op">=</span> <span class="fl">0.3</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  ylab <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  facet_by_id <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  facet_by_id <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  ncol <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -156,8 +157,12 @@ based on the <code>log_y</code> argument.</p></dd>
 
 
 <dt id="arg-facet-by-id">facet_by_id<a class="anchor" aria-label="anchor" href="#arg-facet-by-id"></a></dt>
-<dd><p><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a>; if <a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a>, facets the plot by 'id' (horizontal
-for 2 IDs, 2x2 grid for 3-4 IDs).</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a>; if <a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a>, facets the plot by 'id'.
+Defaults to <a href="https://rdrr.io/r/base/logical.html" class="external-link">TRUE</a> when multiple IDs are provided.</p></dd>
+
+
+<dt id="arg-ncol">ncol<a class="anchor" aria-label="anchor" href="#arg-ncol"></a></dt>
+<dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a>; number of columns for faceting.</p></dd>
 
 </dl></div>
     <div class="section level2">
