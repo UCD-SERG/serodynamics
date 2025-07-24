@@ -121,14 +121,12 @@ plot_predicted_curve <- function(sr_model,
   serocourse_all1 <- cbind(param_medians_wide, dt1) |>
     tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") |>
     dplyr::select(-c("name")) |>
-    dplyr::rowwise() |>
     dplyr::mutate(res = ab(.data$t, 
                            .data$y0, 
                            .data$y1, 
                            .data$t1, 
                            .data$alpha, 
-                           .data$shape)) |>
-    dplyr::ungroup()
+                           .data$shape))
   
   # Determine Y-axis label
   if (is.null(ylab)) {
