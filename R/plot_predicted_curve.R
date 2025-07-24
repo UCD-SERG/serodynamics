@@ -36,6 +36,9 @@
 #' @param ylab (Optional) A string for the y-axis label. If `NULL` (default), 
 #' the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 #' based on the `log_y` argument.
+#' @param facet_by_id [logical]; if [TRUE], facets the plot by 'id'. 
+#' Defaults to [TRUE] when multiple IDs are provided.
+#' @param ncol [integer]; number of columns for faceting.
 #'
 #' @return A [ggplot2::ggplot] object displaying predicted antibody response 
 #' curves with a median curve and a 95% credible interval band as default.
@@ -54,18 +57,23 @@ plot_predicted_curve <- function(sr_model,
                                  show_all_curves = FALSE,
                                  alpha_samples = 0.3,
                                  xlim = NULL,
-                                 ylab = NULL) {
+                                 ylab = NULL,
+                                 facet_by_id = NULL,
+                                 ncol = NULL) {
   
   # --------------------------------------------------------------------------
   # 1) The 'sr_model' object is now the tibble itself
   df <- sr_model
-  
+
+  if (is.null(facet_by_id)) {
+    facet_by_id <- length(id) > 1
+  }
   
   # --------------------------------------------------------------------------
-  # 2) Filter to the subject & antigen of interest:
+  # 2) Filter to the subject(s) & antigen of interest:
   df_sub   <- df |>
     dplyr::filter(
-      .data$Subject == id,        # e.g. "sees_npl_128"
+      .data$Subject %in% id,        # allow multiple IDs
       .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"
     )
   
@@ -77,19 +85,20 @@ plot_predicted_curve <- function(sr_model,
                "Iteration",
                "Iso_type",
                "Parameter",
-               "value"))
+               "value",
+               "Subject"))
     ) |>
     tidyr::pivot_wider(
       names_from  = c("Parameter"),
       values_from = c("value")
     ) |>
     dplyr::arrange(.data$Chain, .data$Iteration) |>
-    
     dplyr::mutate(
       antigen_iso = factor(.data$Iso_type),
+      id = as.factor(.data$Subject),
       r = .data$shape
     ) |>
-    dplyr::select(-c("Iso_type"))
+    dplyr::select(-c("Iso_type", "Subject"))
 
   # Add sample_id if not present (to identify individual samples)
   if (!"sample_id" %in% names(param_medians_wide)) {
@@ -99,29 +108,25 @@ plot_predicted_curve <- function(sr_model,
   # Define time points for prediction
   tx2 <- seq(0, 1200, by = 5)
   
-  
   ## --- Prepare data for Model 1 ---
   dt1 <- data.frame(t = tx2) |>
-    dplyr::mutate(id = dplyr::row_number()) |>
-    tidyr::pivot_wider(names_from = "id", 
+    dplyr::mutate(idx = dplyr::row_number()) |>
+    tidyr::pivot_wider(names_from = "idx", 
                        values_from = "t", 
                        names_prefix = "time") |>
     dplyr::slice(
       rep(seq_len(dplyr::n()), each = nrow(param_medians_wide))
     )
   
-  
   serocourse_all1 <- cbind(param_medians_wide, dt1) |>
     tidyr::pivot_longer(cols = dplyr::starts_with("time"), values_to = "t") |>
     dplyr::select(-c("name")) |>
-    dplyr::rowwise() |>
     dplyr::mutate(res = ab(.data$t, 
                            .data$y0, 
                            .data$y1, 
                            .data$t1, 
                            .data$alpha, 
-                           .data$shape)) |>
-    dplyr::ungroup()
+                           .data$shape))
   
   # Determine Y-axis label
   if (is.null(ylab)) {
@@ -152,7 +157,7 @@ plot_predicted_curve <- function(sr_model,
   # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
   if (show_quantiles) {
     sum1 <- serocourse_all1 |>
-      dplyr::group_by(t) |>
+      dplyr::group_by(id, t) |>
       dplyr::summarise(
         res.med  = stats::quantile(.data$res, probs = 0.50, na.rm = TRUE),
         res.low  = stats::quantile(.data$res, probs = 0.025, na.rm = TRUE),
@@ -177,13 +182,14 @@ plot_predicted_curve <- function(sr_model,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = c("timeindays"), 
-                    res = c("value")) |>
+      dplyr::rename(t = "timeindays", 
+                    res = "value") |>
       dplyr::select(all_of(c("id", 
                              "t",
                              "res",
                              "antigen_iso"))) |>
-      dplyr::mutate(id = as.factor(.data$id))
+      dplyr::mutate(id = as.factor(.data$id)) |>
+      dplyr::filter(id %in% !!id)
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
@@ -230,6 +236,21 @@ plot_predicted_curve <- function(sr_model,
       guide = ggplot2::guide_legend(override.aes = list(color = NA))
     )
   
+  # --- Optionally facet by ID ---
+  if (facet_by_id) {
+    if (is.null(ncol)) {
+      n_ids <- length(unique(param_medians_wide$id))
+      ncol <- if (n_ids == 1) {
+        1
+      } else if (n_ids > 1 && n_ids <= 4) {
+        2
+      } else {
+        NULL
+      }
+    }
+    p <- p + ggplot2::facet_wrap(~ id, ncol = ncol)
+  }
+
   # --- Optionally add log10 scales for y and/or x ---
   if (log_y) {
     p <- p + ggplot2::scale_y_log10()
