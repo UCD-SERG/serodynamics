@@ -36,8 +36,9 @@
 #' @param ylab (Optional) A string for the y-axis label. If `NULL` (default), 
 #' the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 #' based on the `log_y` argument.
-#' @param facet_by_id [logical]; if [TRUE], facets the plot by 'id' (horizontal 
-#' for 2 IDs, 2x2 grid for 3-4 IDs).
+#' @param facet_by_id [logical]; if [TRUE], facets the plot by 'id'. 
+#' Defaults to [TRUE] when multiple IDs are provided.
+#' @param ncol [integer]; number of columns for faceting.
 #'
 #' @return A [ggplot2::ggplot] object displaying predicted antibody response 
 #' curves with a median curve and a 95% credible interval band as default.
@@ -57,11 +58,16 @@ plot_predicted_curve <- function(sr_model,
                                  alpha_samples = 0.3,
                                  xlim = NULL,
                                  ylab = NULL,
-                                 facet_by_id = FALSE) {
+                                 facet_by_id = NULL,
+                                 ncol = NULL) {
   
   # --------------------------------------------------------------------------
   # 1) The 'sr_model' object is now the tibble itself
   df <- sr_model
+
+  if (is.null(facet_by_id)) {
+    facet_by_id <- length(id) > 1
+  }
   
   # --------------------------------------------------------------------------
   # 2) Filter to the subject(s) & antigen of interest:
@@ -234,8 +240,16 @@ plot_predicted_curve <- function(sr_model,
   
   # --- Optionally facet by ID ---
   if (facet_by_id) {
-    n_ids <- length(unique(param_medians_wide$id))
-    ncol <- ifelse(n_ids == 2, 2, ifelse(n_ids <= 4, 2, NULL))
+    if (is.null(ncol)) {
+      n_ids <- length(unique(param_medians_wide$id))
+      ncol <- if (n_ids == 1) {
+        1
+      } else if (n_ids > 1 && n_ids <= 4) {
+        2
+      } else {
+        NULL
+      }
+    }
     p <- p + ggplot2::facet_wrap(~ id, ncol = ncol)
   }
 

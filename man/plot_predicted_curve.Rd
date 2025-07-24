@@ -18,7 +18,8 @@ plot_predicted_curve(
   alpha_samples = 0.3,
   xlim = NULL,
   ylab = NULL,
-  facet_by_id = FALSE
+  facet_by_id = NULL,
+  ncol = NULL
 )
 }
 \arguments{
@@ -66,8 +67,10 @@ limits.}
 the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 based on the \code{log_y} argument.}
 
-\item{facet_by_id}{\link{logical}; if \link{TRUE}, facets the plot by 'id' (horizontal
-for 2 IDs, 2x2 grid for 3-4 IDs).}
+\item{facet_by_id}{\link{logical}; if \link{TRUE}, facets the plot by 'id'.
+Defaults to \link{TRUE} when multiple IDs are provided.}
+
+\item{ncol}{\link{integer}; number of columns for faceting.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object displaying predicted antibody response
