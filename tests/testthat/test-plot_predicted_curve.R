@@ -10,8 +10,8 @@ test_that(
     # Prepare the 'dat' object for overlay, mirroring the main example
     dat <- serodynamics::nepal_sees |>
       dplyr::rename(
-        timeindays = .data$dayssincefeveronset,
-        value      = .data$result
+        timeindays = "dayssincefeveronset",
+        value      = "result"
       ) |>
       dplyr::filter(.data$id == "sees_npl_128", .data$antigen_iso == "HlyE_IgA")
     
@@ -88,8 +88,8 @@ testthat::test_that(
       antigen_iso    = "HlyE_IgA",
       dataset        = serodynamics::nepal_sees |>
         dplyr::rename(
-          timeindays = .data$dayssincefeveronset,
-          value      = .data$result
+          timeindays = "dayssincefeveronset",
+          value      = "result"
         ) |>
         dplyr::filter(.data$id %in% c("sees_npl_128", "sees_npl_131"), 
                       .data$antigen_iso == "HlyE_IgA"),
@@ -110,13 +110,13 @@ testthat::test_that(
       antigen_iso    = "HlyE_IgA",
       dataset        = serodynamics::nepal_sees |>
         dplyr::rename(
-          timeindays = .data$dayssincefeveronset,
-          value      = .data$result
+          timeindays = dayssincefeveronset,
+          value      = result
         ) |>
-        dplyr::filter(.data$id %in% c("sees_npl_28", 
-                                      "sees_npl_128", 
-                                      "sees_npl_131"), 
-                      .data$antigen_iso == "HlyE_IgA"),
+        dplyr::filter(id %in% c("sees_npl_28", 
+                                "sees_npl_128", 
+                                "sees_npl_131"), 
+                      antigen_iso == "HlyE_IgA"),
       show_all_curves = TRUE,
       log_y          = TRUE,
       facet_by_id    = TRUE
@@ -135,12 +135,12 @@ testthat::test_that(
       antigen_iso    = "HlyE_IgA",
       dataset        = serodynamics::nepal_sees |>
         dplyr::rename(
-          timeindays = .data$dayssincefeveronset,
-          value      = .data$result
+          timeindays = dayssincefeveronset,
+          value      = result
         ) |>
-        dplyr::filter(.data$id %in% c("sees_npl_28", "sees_npl_68", 
-                                      "sees_npl_128", "sees_npl_131"), 
-                      .data$antigen_iso == "HlyE_IgA"),
+        dplyr::filter(id %in% c("sees_npl_28", "sees_npl_68", 
+                                "sees_npl_128", "sees_npl_131"), 
+                      antigen_iso == "HlyE_IgA"),
       show_all_curves = TRUE,
       log_y          = TRUE,
       facet_by_id    = TRUE

@@ -184,8 +184,8 @@ plot_predicted_curve <- function(sr_model,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = c("timeindays"), 
-                    res = c("value")) |>
+      dplyr::rename(t = "timeindays", 
+                    res = "value") |>
       dplyr::select(all_of(c("id", 
                              "t",
                              "res",
