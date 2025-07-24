@@ -12,9 +12,9 @@ nepal_sees_jags_output <- run_mod(
   with_post = FALSE
 )
 
-# Filtering to keep only 2 subjects + newperson + all subjects with visit_num 4 or 5
-subjects_v4_v5 <- unique(dataset$id[dataset$visit_num %in% c(4, 5)])
-keep_subjects <- unique(c("newperson", "sees_npl_1", "sees_npl_2", subjects_v4_v5))
+# Filtering to keep only 2 subjects + newperson + all subjects with visit_num 5
+subjects_v5 <- unique(dataset$id[dataset$visit_num == 5])
+keep_subjects <- unique(c("newperson", "sees_npl_1", "sees_npl_2", subjects_v5))
 nepal_sees_jags_output <- nepal_sees_jags_output |>
   filter(Subject %in% keep_subjects)
 
