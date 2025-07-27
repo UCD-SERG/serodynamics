@@ -51,49 +51,49 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
     visualize_jags_sub <- data |>
       dplyr::filter(.data$Subject == h)
   
-  rhat_strat_list <- list()
-  for (i in strat) {
+    rhat_strat_list <- list()
+    for (i in strat) {
     
-    visualize_jags_sub <- data |>
-      dplyr::filter(.data$Stratification == i) |>
-      dplyr::filter(.data$Subject == "newperson")
+      visualize_jags_sub <- data |>
+        dplyr::filter(.data$Stratification == i) |>
+        dplyr::filter(.data$Subject == "newperson")
 
-    # Creating open list to store ggplots
-    rhat_out <- list()
-    # Looping through the isos
-    for (j in iso) {
-      visualize_jags_plot <- visualize_jags_sub |>
-        dplyr::filter(.data$Iso_type == j)
+      # Creating open list to store ggplots
+      rhat_out <- list()
+      # Looping through the isos
+      for (j in iso) {
+        visualize_jags_plot <- visualize_jags_sub |>
+          dplyr::filter(.data$Iso_type == j)
       
-      # Will not loop through parameters, as we may want each to show on the
-      # same plot by default.
-      visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter %in% param)
+        # Will not loop through parameters, as we may want each to show on the
+        # same plot by default.
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::filter(.data$Parameter %in% param)
       
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter,
-                      value = log(.data$value))
-      # Assigning attributes, which are needed to run ggs_rhat
-      attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                           attributes_jags)
-      # Creating rhat dotplots
-      rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
-        ggplot2::theme_bw() +
-        ggplot2::labs(title = "Rhat value",
-                      subtitle = plot_title_fun(i, j),
-                      x = "Rhat value") +
-        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                             "y0"))
-      rhat_out[[j]] <- rhatplot
+        visualize_jags_plot <- visualize_jags_plot |>
+          # Changing parameter name to reflect the input
+          dplyr::mutate(Parameter = .data$Parameter,
+                        value = log(.data$value))
+        # Assigning attributes, which are needed to run ggs_rhat
+        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
+                                             attributes_jags)
+        # Creating rhat dotplots
+        rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
+          ggplot2::theme_bw() +
+          ggplot2::labs(title = "Rhat value",
+                        subtitle = plot_title_fun(i, j),
+                        x = "Rhat value") +
+          ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                               "y0"))
+        rhat_out[[j]] <- rhatplot
+      }
+      rhat_strat_list[[i]] <- rhat_out
     }
-    rhat_strat_list[[i]] <- rhat_out
-  }
-  #Printing only one plot if only one exists.
-  if (sum(lengths(rhat_strat_list)) == 1) {
-    rhat_strat_list <- rhat_strat_list[[1]][[iso]]
-  } 
-  rhat_id_list[[h]] <- rhat_strat_list
+    #Printing only one plot if only one exists.
+    if (sum(lengths(rhat_strat_list)) == 1) {
+      rhat_strat_list <- rhat_strat_list[[1]][[iso]]
+    } 
+    rhat_id_list[[h]] <- rhat_strat_list
   }
   rhat_id_list
 }

@@ -62,38 +62,38 @@ plot_jags_effect <- function(data,
       eff_out <- list()
       # Looping through the isos
       for (j in iso) {
-      visualize_jags_plot <- visualize_jags_sub |>
-        dplyr::filter(.data$Iso_type == j)
+        visualize_jags_plot <- visualize_jags_sub |>
+          dplyr::filter(.data$Iso_type == j)
 
-      # Will not loop through parameters, as we may want each to show on the
-      # same plot by default.
-      visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter %in% param)
+        # Will not loop through parameters, as we may want each to show on the
+        # same plot by default.
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::filter(.data$Parameter %in% param)
 
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter)
-      # Assigning attributes, which are needed to run ggs_density
-      attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                           attributes_jags)
+        visualize_jags_plot <- visualize_jags_plot |>
+          # Changing parameter name to reflect the input
+          dplyr::mutate(Parameter = .data$Parameter)
+        # Assigning attributes, which are needed to run ggs_density
+        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
+                                             attributes_jags)
 
-      # Creating density plot
-      eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
-        ggplot2::theme_bw()  +
-        ggplot2::labs(title = "Effective sample size",
-                      subtitle = plot_title_fun(i, j),
-                      x = "Proportion of effective samples") +
-        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                             "y0"))
-      eff_out[[j]] <- eff
+        # Creating density plot
+        eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
+          ggplot2::theme_bw()  +
+          ggplot2::labs(title = "Effective sample size",
+                        subtitle = plot_title_fun(i, j),
+                        x = "Proportion of effective samples") +
+          ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
+                                               "y0"))
+        eff_out[[j]] <- eff
+      }
+      eff_strat_list[[i]] <- eff_out
     }
-    eff_strat_list[[i]] <- eff_out
-  }
-  #Printing only one plot if only one exists.
-  if (sum(lengths(eff_strat_list)) == 1) {
-    eff_strat_list <- eff_strat_list[[1]][[iso]]
-  } 
-  eff_id_list[[h]] <- eff_strat_list
+    #Printing only one plot if only one exists.
+    if (sum(lengths(eff_strat_list)) == 1) {
+      eff_strat_list <- eff_strat_list[[1]][[iso]]
+    } 
+    eff_id_list[[h]] <- eff_strat_list
   }
   eff_id_list
 }

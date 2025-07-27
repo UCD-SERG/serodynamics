@@ -26,6 +26,9 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
+#' @param id Specify [character] id in a [vector] format to produce plots for
+#' specific individuals. Default is the `newperson` referring to the predictive
+#' distribution.
 #' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
 #' plots for all the specified input.
 #' @export
@@ -38,7 +41,6 @@ plot_jags_dens <- function(data,
                            id = c("newperson")) {
   
   attributes_jags <- data[["attributes"]]
-  
   
   dens_id_list <- list()
   for (h in id) {

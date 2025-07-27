@@ -48,48 +48,48 @@ plot_jags_trace <- function(data,
     visualize_jags_sub <- data |>
       dplyr::filter(.data$Subject == h)
     
-  trace_strat_list <- list()
+    trace_strat_list <- list()
   
-  for (i in strat) {
+    for (i in strat) {
 
-    visualize_jags_sub <- data |>
-      dplyr::filter(.data$Stratification == i)
+      visualize_jags_sub <- data |>
+        dplyr::filter(.data$Stratification == i)
 
-    # Creating open list to store ggplots
-    trace_out <- list()
-    # Looping through the isos
-    for (j in iso) {
-      visualize_jags_plot <- visualize_jags_sub |>
-        dplyr::filter(.data$Iso_type == j)
+      # Creating open list to store ggplots
+      trace_out <- list()
+      # Looping through the isos
+      for (j in iso) {
+        visualize_jags_plot <- visualize_jags_sub |>
+          dplyr::filter(.data$Iso_type == j)
 
-      # Will not loop through parameters, as we may want each to show on the
-      # same plot by default.
-      visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter %in% param)
+        # Will not loop through parameters, as we may want each to show on the
+        # same plot by default.
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::filter(.data$Parameter %in% param)
 
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter, ", strat = ",
-                                         i))
-      # Assigning attributes, which are needed to run ggs_density
-      attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                           attributes_jags)
-      # Creating density plot
-      traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
-        ggplot2::theme_bw() +
-        ggplot2::labs(x = "iterations", y = "parameter value") +
-        ggplot2::theme(legend.position = "bottom") +
-        ggplot2::scale_y_log10(labels = scales::label_comma())
-      trace_out[[j]] <- traceplot
+        visualize_jags_plot <- visualize_jags_plot |>
+          # Changing parameter name to reflect the input
+          dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
+                                           .data$Parameter, ", strat = ",
+                                           i))
+        # Assigning attributes, which are needed to run ggs_density
+        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
+                                             attributes_jags)
+        # Creating density plot
+        traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
+          ggplot2::theme_bw() +
+          ggplot2::labs(x = "iterations", y = "parameter value") +
+          ggplot2::theme(legend.position = "bottom") +
+          ggplot2::scale_y_log10(labels = scales::label_comma())
+        trace_out[[j]] <- traceplot
+      }
+      trace_strat_list[[i]] <- trace_out
     }
-    trace_strat_list[[i]] <- trace_out
-  }
-  #Printing only one plot if only one exists.
-  if (sum(lengths(trace_strat_list) == 1)) {
-    trace_strat_list <- trace_strat_list[[1]][[iso]]
-  } 
-  trace_id_list[[h]] <- trace_strat_list
+    #Printing only one plot if only one exists.
+    if (sum(lengths(trace_strat_list) == 1)) {
+      trace_strat_list <- trace_strat_list[[1]][[iso]]
+    } 
+    trace_id_list[[h]] <- trace_strat_list
   }
   trace_id_list
 }
