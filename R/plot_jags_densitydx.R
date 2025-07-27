@@ -34,45 +34,55 @@
 plot_jags_dens <- function(data,
                            iso = unique(data$Iso_type),
                            param = unique(data$Parameter),
-                           strat = unique(data$Stratification)) {
+                           strat = unique(data$Stratification),
+                           id = c("newperson")) {
   
   attributes_jags <- data[["attributes"]]
-
-  dens_strat_list <- list()
-  for (i in strat) {
+  
+  
+  dens_id_list <- list()
+  for (h in id) {
 
     visualize_jags_sub <- data |>
-      dplyr::filter(.data$Stratification == i) |>
-      dplyr::filter(.data$Subject == "newperson")
+      dplyr::filter(.data$Subject == h)
 
-    # Creating open list to store ggplots
-    density_out <- list()
-    # Looping through the isos
-    for (j in iso) {
-      visualize_jags_plot <- visualize_jags_sub |>
-        dplyr::filter(.data$Iso_type == j)
+    dens_strat_list <- list()
+    for (i in strat) {
 
-      # Will not loop through parameters, as we may want each to show on the
-      # same plot by default.
-      visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter %in% param)
+      visualize_jags_sub <- data |>
+        dplyr::filter(.data$Stratification == i) |>
+        dplyr::filter(.data$Subject == "newperson")
 
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter, ", strat = ",
-                                         i),
-                      value = log(.data$value))
-      # Assigning attributes, which are needed to run ggs_density
-      attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                           attributes_jags)
-      # Creating density plot
-      densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
-        ggplot2::theme_bw() +
-        ggplot2::labs(x = "log(value)")
-      density_out[[j]] <- densplot
+      # Creating open list to store ggplots
+      density_out <- list()
+      # Looping through the isos
+      for (j in iso) {
+        visualize_jags_plot <- visualize_jags_sub |>
+          dplyr::filter(.data$Iso_type == j)
+
+        # Will not loop through parameters, as we may want each to show on the
+        # same plot by default.
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::filter(.data$Parameter %in% param)
+
+        visualize_jags_plot <- visualize_jags_plot |>
+          # Changing parameter name to reflect the input
+          dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
+                                           .data$Parameter, ", strat = ",
+                                           i),
+                        value = log(.data$value))
+        # Assigning attributes, which are needed to run ggs_density
+        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
+                                             attributes_jags)
+        # Creating density plot
+        densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
+          ggplot2::theme_bw() +
+          ggplot2::labs(x = "log(value)")
+        density_out[[j]] <- densplot
+      }
+      dens_strat_list[[i]] <- density_out
     }
-    dens_strat_list[[i]] <- density_out
+    dens_id_list[[h]] <- dens_strat_list
   }
-  dens_strat_list
+  dens_id_list
 }
