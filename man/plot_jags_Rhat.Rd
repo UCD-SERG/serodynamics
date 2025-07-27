@@ -8,7 +8,8 @@ plot_jags_Rhat(
   data,
   iso = unique(data$Iso_type),
   param = unique(data$Parameter),
-  strat = unique(data$Stratification)
+  strat = unique(data$Stratification),
+  id = c("newperson")
 )
 }
 \arguments{
