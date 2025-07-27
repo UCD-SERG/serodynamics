@@ -40,7 +40,8 @@
 plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                            iso = unique(data$Iso_type),
                            param = unique(data$Parameter),
-                           strat = unique(data$Stratification)) {
+                           strat = unique(data$Stratification),
+                           id = c("newperson")) {
   
   attributes_jags <- data[["attributes"]]
   
