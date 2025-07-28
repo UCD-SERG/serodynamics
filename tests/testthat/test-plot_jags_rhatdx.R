@@ -28,7 +28,7 @@ test_that(
       suppressWarnings()
     
     # Testing for any errors:
-    results <- plot_jags_Rhat(data, id = c("sees_npl_1", "sees_npl_2"))|>
+    results <- plot_jags_Rhat(data, id = c("sees_npl_1", "sees_npl_2")) |>
       expect_no_error()
     
     # Test to ensure output is a list object:
