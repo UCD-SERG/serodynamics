@@ -9,7 +9,7 @@
 #'
 #' @param sr_model An `sr_model` object (returned by [run_mod()]) containing 
 #'   samples from the posterior distribution of the model parameters.
-#' @param id The participant ID to plot; for example, "sees_npl_128".
+#' @param ids The participant IDs to plot; for example, `"sees_npl_128"`.
 #' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
 #' "HlyE_IgG".
 #' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response 
@@ -46,7 +46,7 @@
 #'
 #' @example inst/examples/examples-plot_predicted_curve.R
 plot_predicted_curve <- function(sr_model,
-                                 id,
+                                 ids,
                                  antigen_iso,
                                  dataset = NULL,
                                  legend_obs = "Observed data",
@@ -66,14 +66,14 @@ plot_predicted_curve <- function(sr_model,
   df <- sr_model
 
   if (is.null(facet_by_id)) {
-    facet_by_id <- length(id) > 1
+    facet_by_id <- length(ids) > 1
   }
   
   # --------------------------------------------------------------------------
   # 2) Filter to the subject(s) & antigen of interest:
   df_sub   <- df |>
     dplyr::filter(
-      .data$Subject %in% id,        # allow multiple IDs
+      .data$Subject %in% ids,        # allow multiple IDs
       .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"
     )
   
@@ -157,12 +157,11 @@ plot_predicted_curve <- function(sr_model,
   # --- Summarize & Plot Model 1 (Median + 95% Ribbon) ---
   if (show_quantiles) {
     sum1 <- serocourse_all1 |>
-      dplyr::group_by(id, t) |>
       dplyr::summarise(
+        .by = all_of(c("id", "t")),
         res.med  = stats::quantile(.data$res, probs = 0.50, na.rm = TRUE),
         res.low  = stats::quantile(.data$res, probs = 0.025, na.rm = TRUE),
-        res.high = stats::quantile(.data$res, probs = 0.975, na.rm = TRUE),
-        .groups  = "drop"
+        res.high = stats::quantile(.data$res, probs = 0.975, na.rm = TRUE)
       )
     
     p <- p +
@@ -189,7 +188,7 @@ plot_predicted_curve <- function(sr_model,
                              "res",
                              "antigen_iso"))) |>
       dplyr::mutate(id = as.factor(.data$id)) |>
-      dplyr::filter(id %in% !!id)
+      dplyr::filter(.data$id %in% .env$ids)
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
