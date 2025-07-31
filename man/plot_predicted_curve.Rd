@@ -6,7 +6,7 @@
 \usage{
 plot_predicted_curve(
   sr_model,
-  id,
+  ids,
   antigen_iso,
   dataset = NULL,
   legend_obs = "Observed data",
@@ -26,7 +26,7 @@ plot_predicted_curve(
 \item{sr_model}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}) containing
 samples from the posterior distribution of the model parameters.}
 
-\item{id}{The participant ID to plot; for example, "sees_npl_128".}
+\item{ids}{The participant IDs to plot; for example, \code{"sees_npl_128"}.}
 
 \item{antigen_iso}{The antigen isotype to plot; for example, "HlyE_IgA" or
 "HlyE_IgG".}
