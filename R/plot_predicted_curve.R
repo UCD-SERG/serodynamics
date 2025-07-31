@@ -223,13 +223,13 @@ plot_predicted_curve <- function(sr_model,
   
   p <- p +
     ggplot2::scale_color_manual(
-      name = "Component",
+      name = "",
       values = color_vals,
       labels = color_labels,
       guide = ggplot2::guide_legend(override.aes = list(shape = NA))
     ) +
     ggplot2::scale_fill_manual(
-      name = "Component",
+      name = "",
       values = fill_vals,
       labels = fill_labels,
       guide = ggplot2::guide_legend(override.aes = list(color = NA))
