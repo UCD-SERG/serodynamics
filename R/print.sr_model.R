@@ -7,13 +7,17 @@
 #' @param x An `sr_model` output object from [run_mod()].
 #' @param ... Additional arguments affecting the summary produced.
 #' [serodynamics::run_mod()] function.
-#' @returns A [dplyr::grouped_df] that
+#' @returns A data summary that
 #' contains the mean posterior distribution for antibody kinetic curve
 #' parameters by `Iso_type` and `Stratification` (if specified).
 #' @export
 #' @examples
 #' print(nepal_sees_jags_output)
 print.sr_model <- function(x, ...) { # nolint
+  
+  cat("An sr_model with the following mean values:")
+  cat("\n")
+  cat("\n")
   x <- x |>
     dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
     dplyr::summarise(mean_val = mean(.data$value)) |>
@@ -24,5 +28,6 @@ print.sr_model <- function(x, ...) { # nolint
   if (unique(data$Stratification == "None")) {
     x <- x |> select(-all_of(.data$Stratification))
   } 
+  print(data.frame(x))
   invisible(x)
 }

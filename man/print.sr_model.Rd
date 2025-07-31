@@ -14,7 +14,7 @@
 \code{\link[=run_mod]{run_mod()}} function.}
 }
 \value{
-A \link[dplyr:grouped_df]{dplyr::grouped_df} that
+A data summary that
 contains the mean posterior distribution for antibody kinetic curve
 parameters by \code{Iso_type} and \code{Stratification} (if specified).
 }
