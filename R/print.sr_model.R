@@ -25,7 +25,7 @@ print.sr_model <- function(x, ...) { # nolint
                        values_from = .data$mean_val) |>
     dplyr::arrange(.data$Iso_type)
   # Taking out stratification column if not specified
-  if (unique(data$Stratification == "None")) {
+  if (unique(.data$Stratification == "None")) {
     x <- x |> select(-all_of(.data$Stratification))
   } 
   print(data.frame(x))
