@@ -19,8 +19,9 @@ print.sr_model <- function(x, ...) { # nolint
   cat("\n")
   cat("\n")
   x <- x |>
-    dplyr::group_by(.data$Stratification, .data$Iso_type, .data$Parameter) |>
-    dplyr::summarise(mean_val = mean(.data$value)) |>
+    dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
+                             .data$Parameter), 
+                     mean_val = mean(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 
                        values_from = .data$mean_val) |>
     dplyr::arrange(.data$Iso_type)
@@ -28,6 +29,6 @@ print.sr_model <- function(x, ...) { # nolint
   if (unique(x$Stratification == "None")) {
     x <- x |> select(-c(.data$Stratification))
   } 
-  print(data.frame(x))
+  print(x)
   invisible(x)
 }
