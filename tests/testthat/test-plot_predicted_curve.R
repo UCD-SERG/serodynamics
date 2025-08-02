@@ -100,7 +100,7 @@ testthat::test_that(
     plot_multi <- plot_predicted_curve(
       sr_model        = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 
-                           "sees_npl_131"),
+                          "sees_npl_131"),
       antigen_iso     = "HlyE_IgA",
       dataset         = serodynamics::nepal_sees,
       show_all_curves = TRUE,
