@@ -181,8 +181,8 @@ plot_predicted_curve <- function(sr_model,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = "timeindays", 
-                    res = "value") |>
+      dplyr::rename(t = dataset |> get_timeindays_var(), 
+                    res = dataset |> serocalculator::get_values_var()) |>
       dplyr::select(all_of(c("id", 
                              "t",
                              "res",
