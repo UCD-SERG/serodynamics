@@ -18,7 +18,7 @@ plot_predicted_curve(
   alpha_samples = 0.3,
   xlim = NULL,
   ylab = NULL,
-  facet_by_id = NULL,
+  facet_by_id = length(ids) > 1,
   ncol = NULL
 )
 }
