@@ -43,8 +43,8 @@ print(p3)
 
 # Multi-ID, faceted plot (single antigen):
 p4 <- plot_predicted_curve(
-  sr_model           = sees_model,
-  dataset            = sees_data,
+  sr_model        = sees_model,
+  dataset         = sees_data,
   id              = c("sees_npl_128", "sees_npl_131"),
   antigen_iso     = "HlyE_IgA",
   show_all_curves = TRUE,
