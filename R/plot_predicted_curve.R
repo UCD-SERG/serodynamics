@@ -7,7 +7,7 @@
 #' and shows all individual 
 #' sampled curves.
 #'
-#' @param sr_model An `sr_model` object (returned by [run_mod()]) containing 
+#' @param model An `sr_model` object (returned by [run_mod()]) containing 
 #'   samples from the posterior distribution of the model parameters.
 #' @param ids The participant IDs to plot; for example, `"sees_npl_128"`.
 #' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
@@ -45,7 +45,7 @@
 #' @export
 #'
 #' @example inst/examples/examples-plot_predicted_curve.R
-plot_predicted_curve <- function(sr_model,
+plot_predicted_curve <- function(model,
                                  ids,
                                  antigen_iso,
                                  dataset = NULL,
@@ -62,7 +62,7 @@ plot_predicted_curve <- function(sr_model,
                                  ncol = NULL) {
   
   # Filter to the subject(s) & antigen of interest:
-  sr_model_sub <- sr_model |>
+  sr_model_sub <- model |>
     dplyr::filter(
       .data$Subject %in% ids,        # allow multiple IDs
       .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"

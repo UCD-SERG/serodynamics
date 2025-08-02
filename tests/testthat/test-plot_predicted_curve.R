@@ -9,7 +9,7 @@ test_that(
 
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
-      sr_model           = sr_model,
+      model              = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
@@ -22,7 +22,7 @@ test_that(
     
     # 5b. Plot (log10 axes) with both model curves + observed points
     plot2 <- plot_predicted_curve(
-      sr_model           = sr_model,
+      model              = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
@@ -35,7 +35,7 @@ test_that(
     
     # 5c. Plot with log10 x-axis
     plot3 <- plot_predicted_curve(
-      sr_model           = sr_model,
+      model              = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
@@ -48,7 +48,7 @@ test_that(
     
     # 5d. Plot with custom x-axis limits
     plot4 <- plot_predicted_curve(
-      sr_model           = sr_model,
+      model              = sr_model,
       id                 = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
@@ -66,7 +66,7 @@ testthat::test_that(
   "plot_predicted_curve() works with 2 IDs (faceting, original legend)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model        = serodynamics::nepal_sees_jags_output,
+      model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_128", "sees_npl_131"),
       antigen_iso     = "HlyE_IgA",
       dataset         = serodynamics::nepal_sees,
@@ -82,7 +82,7 @@ testthat::test_that(
   "plot_predicted_curve() works with 3 IDs (faceting, log_y)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model        = serodynamics::nepal_sees_jags_output,
+      model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_128", "sees_npl_131"),
       antigen_iso     = "HlyE_IgA",
       dataset         = serodynamics::nepal_sees,
@@ -98,7 +98,7 @@ testthat::test_that(
   "plot_predicted_curve() works with 4 IDs (faceting, log_y)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model        = serodynamics::nepal_sees_jags_output,
+      model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 
                           "sees_npl_131"),
       antigen_iso     = "HlyE_IgA",
