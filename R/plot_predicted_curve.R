@@ -188,7 +188,8 @@ plot_predicted_curve <- function(sr_model,
                              "res",
                              "antigen_iso"))) |>
       dplyr::mutate(id = as.factor(.data$id)) |>
-      dplyr::filter(.data$id %in% .env$ids)
+      dplyr::filter(.data$id %in% .env$ids,
+                    .data$antigen_iso %in% .env$antigen_iso)
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
