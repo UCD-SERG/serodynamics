@@ -14,9 +14,9 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       legend_obs         = "Observed data",
-      legend_median        = "Median prediction",
+      legend_median      = "Median prediction",
       show_quantiles     = TRUE,
-      log_y          = FALSE,
+      log_y              = FALSE,
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
@@ -29,9 +29,9 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       legend_obs         = "Observed data",
-      legend_median        = "Median prediction",
+      legend_median      = "Median prediction",
       show_quantiles     = TRUE,
-      log_y          = TRUE,
+      log_y              = TRUE,
       log_x              = FALSE,
       show_all_curves    = TRUE
     )
@@ -44,9 +44,9 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       legend_obs         = "Observed data",
-      legend_median        = "Median prediction",
+      legend_median      = "Median prediction",
       show_quantiles     = TRUE,
-      log_y          = FALSE,
+      log_y              = FALSE,
       log_x              = TRUE,
       show_all_curves    = TRUE
     )
@@ -59,9 +59,9 @@ test_that(
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       legend_obs         = "Observed data",
-      legend_median        = "Median prediction",
+      legend_median      = "Median prediction",
       show_quantiles     = TRUE,
-      log_y          = FALSE,
+      log_y              = FALSE,
       log_x              = FALSE,
       show_all_curves    = TRUE,
       xlim               = c(0, 500)
@@ -75,13 +75,13 @@ testthat::test_that(
   "plot_predicted_curve() works with 2 IDs (faceting, original legend)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model       = serodynamics::nepal_sees_jags_output,
+      sr_model        = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_128", "sees_npl_131"),
-      antigen_iso    = "HlyE_IgA",
-      dataset        = serodynamics::nepal_sees,
+      antigen_iso     = "HlyE_IgA",
+      dataset         = serodynamics::nepal_sees,
       show_all_curves = TRUE,
-      log_y          = FALSE,
-      facet_by_id    = TRUE
+      log_y           = FALSE,
+      facet_by_id     = TRUE
     )
     vdiffr::expect_doppelganger("predicted-curve-multi-id-2", plot_multi)
   }
@@ -91,13 +91,13 @@ testthat::test_that(
   "plot_predicted_curve() works with 3 IDs (faceting, log_y)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model       = serodynamics::nepal_sees_jags_output,
+      sr_model        = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_128", "sees_npl_131"),
-      antigen_iso    = "HlyE_IgA",
-      dataset        = serodynamics::nepal_sees,
+      antigen_iso     = "HlyE_IgA",
+      dataset         = serodynamics::nepal_sees,
       show_all_curves = TRUE,
-      log_y          = TRUE,
-      facet_by_id    = TRUE
+      log_y           = TRUE,
+      facet_by_id     = TRUE
     )
     vdiffr::expect_doppelganger("predicted-curve-multi-id-3", plot_multi)
   }
@@ -107,14 +107,14 @@ testthat::test_that(
   "plot_predicted_curve() works with 4 IDs (faceting, log_y)",
   {
     plot_multi <- plot_predicted_curve(
-      sr_model       = serodynamics::nepal_sees_jags_output,
+      sr_model        = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 
-                          "sees_npl_131"),
-      antigen_iso    = "HlyE_IgA",
-      dataset        = serodynamics::nepal_sees,
+                           "sees_npl_131"),
+      antigen_iso     = "HlyE_IgA",
+      dataset         = serodynamics::nepal_sees,
       show_all_curves = TRUE,
-      log_y          = TRUE,
-      facet_by_id    = TRUE
+      log_y           = TRUE,
+      facet_by_id     = TRUE
     )
     vdiffr::expect_doppelganger("predicted-curve-multi-id-4", plot_multi)
   }
