@@ -32,7 +32,6 @@ calc_fit_mod <- function(input_dat,
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
-    rowwise() |>
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
