@@ -29,6 +29,6 @@ print.sr_model <- function(x, ...) { # nolint
   if (unique(x$Stratification == "None")) {
     x <- x |> select(-c(.data$Stratification))
   } 
-  print(x)
+  print(as.data.frame(x))
   invisible(x)
 }

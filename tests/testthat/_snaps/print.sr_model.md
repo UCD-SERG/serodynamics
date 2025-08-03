@@ -28,11 +28,9 @@
       Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
       i Please use `"mean_val"` instead of `.data$mean_val`
     Output
-      # A tibble: 4 x 7
-        Stratification Iso_type   alpha shape    t1    y0    y1
-        <chr>          <chr>      <dbl> <dbl> <dbl> <dbl> <dbl>
-      1 typhi          HlyE_IgA 0.00291  1.61  7.31  2.97 1032.
-      2 paratyphi      HlyE_IgA 0.00229  1.66  3.85  2.55 1024.
-      3 typhi          HlyE_IgG 0.00154  1.41  8.73  2.31  339.
-      4 paratyphi      HlyE_IgG 0.00257  1.36  4.78  1.72  833.
+        Stratification Iso_type       alpha    shape       t1       y0        y1
+      1          typhi HlyE_IgA 0.002905432 1.612991 7.306797 2.967301 1031.8956
+      2      paratyphi HlyE_IgA 0.002286716 1.664825 3.850284 2.550720 1024.2988
+      3          typhi HlyE_IgG 0.001536668 1.408457 8.728905 2.314505  338.5723
+      4      paratyphi HlyE_IgG 0.002568724 1.360532 4.779399 1.721313  833.1053
 
