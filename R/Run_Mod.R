@@ -197,12 +197,7 @@ run_mod <- function(data,
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
   orig_data <- dl_sub |> 
-    dplyr::rename(
-      Subject = dl_sub |> serocalculator::ids_varname(),
-      Iso_type = dl_sub |> serocalculator::get_biomarker_names_var(),
-      t = dl_sub |> get_timeindays_var(),
-      result = dl_sub |> serocalculator::get_values_var()
-    ) |>
+    use_att_names() |>
     select(.data$Subject, .data$Iso_type, .data$t, .data$result)
   fit_res <- calc_fit_mod(input_dat = jags_out,
                           original_data = orig_data)
