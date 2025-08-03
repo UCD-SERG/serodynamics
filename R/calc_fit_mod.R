@@ -20,8 +20,6 @@ calc_fit_mod <- function(input_dat,
                          original_data) {
   # Preparing modeled data
   input_dat <- input_dat |>
-    dplyr::group_by(.data$Parameter, .data$Iso_type, .data$Stratification, 
-                    .data$Subject) |>
     dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
                              .data$Stratification, 
                              .data$Subject),
