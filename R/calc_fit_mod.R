@@ -23,7 +23,7 @@ calc_fit_mod <- function(input_dat,
     dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
                              .data$Stratification, 
                              .data$Subject),
-                             med_value = stats::median(.data$value)) |>
+                     med_value = stats::median(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 
                        values_from = .data$med_value)
 
