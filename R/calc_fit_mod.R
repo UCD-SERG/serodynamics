@@ -22,7 +22,10 @@ calc_fit_mod <- function(input_dat,
   input_dat <- input_dat |>
     dplyr::group_by(.data$Parameter, .data$Iso_type, .data$Stratification, 
                     .data$Subject) |>
-    dplyr::summarize(med_value = stats::median(.data$value)) |>
+    dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
+                             .data$Stratification, 
+                             .data$Subject),
+                             med_value = stats::median(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 
                        values_from = .data$med_value)
 
