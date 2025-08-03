@@ -2,7 +2,10 @@ Biomarker
 CMD
 CodeFactor
 Codecov
+HlyE
 Hyperpriors
+IgA
+IgG
 Iso
 JAGs
 Lifecycle
@@ -28,7 +31,9 @@ isotype
 isotypes
 mathcal
 mcmc
+mergine
 nmc
+npl
 overfit
 params
 prec
@@ -44,12 +49,5 @@ stratifications
 tbl
 tibble
 unstratified
+vectorized
 wishdf
-dayssincefeveronset
-ggplot
-tibble
-HlyE
-IgA
-IgG
-newpage
-npl
