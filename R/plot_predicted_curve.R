@@ -7,7 +7,7 @@
 #' and shows all individual 
 #' sampled curves.
 #'
-#' @param sr_model An `sr_model` object (returned by [run_mod()]) containing 
+#' @param model An `sr_model` object (returned by [run_mod()]) containing 
 #'   samples from the posterior distribution of the model parameters.
 #' @param ids The participant IDs to plot; for example, `"sees_npl_128"`.
 #' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
@@ -45,7 +45,7 @@
 #' @export
 #'
 #' @example inst/examples/examples-plot_predicted_curve.R
-plot_predicted_curve <- function(sr_model,
+plot_predicted_curve <- function(model,
                                  ids,
                                  antigen_iso,
                                  dataset = NULL,
@@ -58,28 +58,18 @@ plot_predicted_curve <- function(sr_model,
                                  alpha_samples = 0.3,
                                  xlim = NULL,
                                  ylab = NULL,
-                                 facet_by_id = NULL,
+                                 facet_by_id = length(ids) > 1,
                                  ncol = NULL) {
   
-  # --------------------------------------------------------------------------
-  # 1) The 'sr_model' object is now the tibble itself
-  df <- sr_model
-
-  if (is.null(facet_by_id)) {
-    facet_by_id <- length(ids) > 1
-  }
-  
-  # --------------------------------------------------------------------------
-  # 2) Filter to the subject(s) & antigen of interest:
-  df_sub   <- df |>
+  # Filter to the subject(s) & antigen of interest:
+  sr_model_sub <- model |>
     dplyr::filter(
       .data$Subject %in% ids,        # allow multiple IDs
       .data$Iso_type == antigen_iso  # e.g. "HlyE_IgA"
     )
   
-  # --------------------------------------------------------------------------
-  # 3) Pivot to wide format: one row per iteration/chain
-  param_medians_wide <- df_sub |>
+  # Pivot to wide format: one row per iteration/chain
+  param_medians_wide <- sr_model_sub |>
     dplyr::select(
       all_of(c("Chain",
                "Iteration",
@@ -99,7 +89,7 @@ plot_predicted_curve <- function(sr_model,
       r = .data$shape
     ) |>
     dplyr::select(-c("Iso_type", "Subject"))
-
+  
   # Add sample_id if not present (to identify individual samples)
   if (!"sample_id" %in% names(param_medians_wide)) {
     param_medians_wide <- param_medians_wide |>
@@ -181,14 +171,17 @@ plot_predicted_curve <- function(sr_model,
   # --- Overlay Observed Data (if provided) ---
   if (!is.null(dataset)) {
     observed_data <- dataset |>
-      dplyr::rename(t = "timeindays", 
-                    res = "value") |>
+      dplyr::rename(
+        t = dataset |> get_timeindays_var(), 
+        res = dataset |> serocalculator::get_values_var()
+      ) |>
       dplyr::select(all_of(c("id", 
                              "t",
                              "res",
                              "antigen_iso"))) |>
       dplyr::mutate(id = as.factor(.data$id)) |>
-      dplyr::filter(.data$id %in% .env$ids)
+      dplyr::filter(.data$id %in% .env$ids,
+                    .data$antigen_iso %in% .env$antigen_iso)
     
     p <- p +
       ggplot2::geom_point(data = observed_data,
@@ -210,12 +203,12 @@ plot_predicted_curve <- function(sr_model,
   color_labels <- c("median" = legend_median)
   fill_vals <- c("ci" = "red")
   fill_labels <- c("ci" = "95% credible interval")
-
+  
   if (show_all_curves) {
     color_vals["samples"] <- "gray"
     color_labels["samples"] <- "Posterior samples"
   }
-
+  
   if (!is.null(dataset)) {
     color_vals["observed"] <- "blue"
     color_labels["observed"] <- legend_obs
@@ -249,7 +242,7 @@ plot_predicted_curve <- function(sr_model,
     }
     p <- p + ggplot2::facet_wrap(~ id, ncol = ncol)
   }
-
+  
   # --- Optionally add log10 scales for y and/or x ---
   if (log_y) {
     p <- p + ggplot2::scale_y_log10()
@@ -265,6 +258,6 @@ plot_predicted_curve <- function(sr_model,
   if (!is.null(xlim)) {
     p <- p + ggplot2::coord_cartesian(xlim = xlim)
   }
-
+  
   return(p)
 }
