@@ -1,7 +1,7 @@
 # results are consistent with printed output for sr_model class
 
     Code
-      print(nepal_sees_jags_output)
+      nepal_sees_jags_output
     Output
       An sr_model with the following mean values:
       
