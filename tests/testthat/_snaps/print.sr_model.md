@@ -3,7 +3,7 @@
     Code
       suppressWarnings(nepal_sees_jags_output)
     Output
-      An sr_model with the following mean values:
+      An sr_model with the following median values:
       
     Condition
       Warning:
@@ -20,17 +20,17 @@
       i Please use `"Parameter"` instead of `.data$Parameter`
       Warning:
       Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"mean_val"` instead of `.data$mean_val`
+      i Please use `"median_val"` instead of `.data$median_val`
       Warning:
       Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
       i Please use `"Parameter"` instead of `.data$Parameter`
       Warning:
       Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"mean_val"` instead of `.data$mean_val`
+      i Please use `"median_val"` instead of `.data$median_val`
     Output
-        Stratification Iso_type       alpha    shape       t1       y0        y1
-      1          typhi HlyE_IgA 0.002905432 1.612991 7.306797 2.967301 1031.8956
-      2      paratyphi HlyE_IgA 0.002286716 1.664825 3.850284 2.550720 1024.2988
-      3          typhi HlyE_IgG 0.001536668 1.408457 8.728905 2.314505  338.5723
-      4      paratyphi HlyE_IgG 0.002568724 1.360532 4.779399 1.721313  833.1053
+        Stratification Iso_type       alpha    shape       t1       y0      y1
+      1          typhi HlyE_IgA 0.001788800 1.538820 6.235540 2.405515 342.565
+      2      paratyphi HlyE_IgA 0.001272495 1.614535 3.700500 2.406050 153.787
+      3          typhi HlyE_IgG 0.001140990 1.346445 7.025800 2.073250 252.156
+      4      paratyphi HlyE_IgG 0.001742340 1.321350 4.370495 1.537045 288.325
 
