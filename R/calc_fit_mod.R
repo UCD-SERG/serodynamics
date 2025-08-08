@@ -33,7 +33,8 @@ calc_fit_mod <- function(modeled_dat,
                        values_from = .data$med_value)
 
   # Matching input data with modeled data
-  matched_dat <- merge(modeled_dat, original_data, by = c("Subject", "Iso_type"),
+  matched_dat <- merge(modeled_dat, original_data, 
+                       by = c("Subject", "Iso_type"),
                        all.y = TRUE)
 
   # Calculating fitted and residual
