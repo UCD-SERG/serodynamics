@@ -19,6 +19,10 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat, 
                          original_data) {
+  original_data <- original_data |> 
+    use_att_names() |>
+    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+  
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
     dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
