@@ -16,4 +16,5 @@ use_att_names <- function(data) {
       t = data |> get_timeindays_var(),
       result = data |> serocalculator::get_values_var()
     ) 
+  return(data)
 }
