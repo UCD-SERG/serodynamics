@@ -16,10 +16,10 @@
 #'   - residual = The residual value calculated as the difference between
 #'   observed and fitted values for a given `t`
 #' @keywords internal
-calc_fit_mod <- function(input_dat, 
+calc_fit_mod <- function(modeled_dat, 
                          original_data) {
   # Preparing modeled data
-  input_dat <- input_dat |>
+  modeled_dat <- modeled_dat |>
     dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
                              .data$Stratification, 
                              .data$Subject),
@@ -28,7 +28,7 @@ calc_fit_mod <- function(input_dat,
                        values_from = .data$med_value)
 
   # Matching input data with modeled data
-  matched_dat <- merge(input_dat, original_data, by = c("Subject", "Iso_type"),
+  matched_dat <- merge(modeled_dat, original_data, by = c("Subject", "Iso_type"),
                        all.y = TRUE)
 
   # Calculating fitted and residual
