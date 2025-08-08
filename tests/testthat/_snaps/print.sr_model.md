@@ -5,29 +5,6 @@
     Output
       An sr_model with the following median values:
       
-    Condition
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"Stratification"` instead of `.data$Stratification`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"Iso_type"` instead of `.data$Iso_type`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"Parameter"` instead of `.data$Parameter`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"Parameter"` instead of `.data$Parameter`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"median_val"` instead of `.data$median_val`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"Parameter"` instead of `.data$Parameter`
-      Warning:
-      Use of .data in tidyselect expressions was deprecated in tidyselect 1.2.0.
-      i Please use `"median_val"` instead of `.data$median_val`
-    Output
         Stratification Iso_type       alpha    shape       t1       y0      y1
       1          typhi HlyE_IgA 0.001788800 1.538820 6.235540 2.405515 342.565
       2      paratyphi HlyE_IgA 0.001272495 1.614535 3.700500 2.406050 153.787
