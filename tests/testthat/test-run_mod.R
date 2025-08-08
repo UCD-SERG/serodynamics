@@ -31,11 +31,14 @@ test_that(
         
         results |>
           attributes() |>
-          rlist::list.remove("row.names") |>
+          rlist::list.remove(c("row.names", "fitted_residuals")) |>
           expect_snapshot_value(style = "deparse")
         
         results |>
           ssdtools:::expect_snapshot_data("sim-strat-curve-params")
+
+        attributes(results)$fitted_residuals |>
+          ssdtools:::expect_snapshot_data("sim-strat-fitted_residuals")
         
       }
     )
@@ -63,11 +66,14 @@ test_that(
 
     results |>
       attributes() |>
-      rlist::list.remove("row.names") |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("strat-curve-params")
+
+    attributes(results)$fitted_residuals |>
+      ssdtools:::expect_snapshot_data("strat-fitted_residuals")
   }
 )
 
@@ -92,11 +98,14 @@ test_that(
 
     results |>
       attributes() |>
-      rlist::list.remove("row.names") |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
 
     results |>
       ssdtools:::expect_snapshot_data("nostrat-curve-params")
+
+    attributes(results)$fitted_residuals |>
+      ssdtools:::expect_snapshot_data("nostrat-fitted_residuals")
   }
 )
 
@@ -123,7 +132,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "jags.post")) |>
+      rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
@@ -158,7 +167,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>

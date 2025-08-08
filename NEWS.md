@@ -1,8 +1,11 @@
 # serodynamics (development version)
 
-* Added support for faceting by multiple IDs in `plot_predicted_curve()`:
-    - New `facet_by_id` argument allows faceted plots by participant ID.
-* Added `plot_predicted_curve()`  (#68)
+* Initial CRAN submission.
+
+## New features
+
+* Including fitted and residual values as data frame in run_mod output. (#101)
+* Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
