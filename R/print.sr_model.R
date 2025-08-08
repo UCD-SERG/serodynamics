@@ -24,7 +24,8 @@ print.sr_model <- function(x, ...) { # nolint
                      median_val = stats::median(.data$value)) |>
     tidyr::pivot_wider(names_from = .data$Parameter, 
                        values_from = .data$median_val) |>
-    dplyr::arrange(.data$Iso_type)
+    dplyr::arrange(.data$Iso_type) |>
+    suppressWarnings()
   # Taking out stratification column if not specified
   if (unique(x$Stratification == "None")) {
     x <- x |> select(-c(.data$Stratification))
