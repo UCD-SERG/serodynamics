@@ -1,7 +1,7 @@
-#' @title Assigns column attribute name directly to column
+#' @title Assigns column names to conform with [calc_fit_mod()] using attributes
 #' @description
 #'  `use_att_names` takes prepared longitudinal data for antibody kinetic
-#'  modeling and names columns based off of attributes to allow merging
+#'  modeling and names columns using attribute values to allow merging
 #'  with a modeled [run_mod()] output [dplyr::tbl_df]. The column names include
 #'  `Subject`, `Iso_type`, `t`, and `result`. 
 #' @param data A [data.frame] raw longitudinal data that has been

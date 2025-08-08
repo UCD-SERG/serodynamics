@@ -2,7 +2,7 @@
 % Please edit documentation in R/use_att_names.R
 \name{use_att_names}
 \alias{use_att_names}
-\title{Assigns column attribute name directly to column}
+\title{Assigns column names to conform with \code{\link[=calc_fit_mod]{calc_fit_mod()}} using attributes}
 \usage{
 use_att_names(data)
 }
@@ -15,7 +15,7 @@ The input \link{data.frame} with columns named after attributes.
 }
 \description{
 \code{use_att_names} takes prepared longitudinal data for antibody kinetic
-modeling and names columns based off of attributes to allow merging
+modeling and names columns using attribute values to allow merging
 with a modeled \code{\link[=run_mod]{run_mod()}} output \link[dplyr:tbl_df]{dplyr::tbl_df}. The column names include
 \code{Subject}, \code{Iso_type}, \code{t}, and \code{result}.
 }
