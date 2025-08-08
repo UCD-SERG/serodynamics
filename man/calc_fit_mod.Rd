@@ -29,6 +29,6 @@ observed and fitted values for a given \code{t}
 \code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates
 fitted and residual values. Fitted values correspond to the estimated assay
 value (ex. ELISA units etc.) at time since infection (TSI). Residual values
-are calculate as the difference between fitted and observed values.
+are calculated as the difference between fitted and observed values.
 }
 \keyword{internal}
