@@ -4,7 +4,8 @@
 #'  fitted and residual values. Fitted values correspond to the estimated assay
 #'  value (ex. ELISA units etc.) at time since infection (TSI). Residual values
 #'  are calculate as the difference between fitted and observed values.
-#' @param input_dat A [data.frame] of modeled antibody kinetic parameter values.
+#' @param modeled_dat A [data.frame] of modeled antibody kinetic parameter
+#' values.
 #' @param original_data A [data.frame] of the original input dataset.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:
