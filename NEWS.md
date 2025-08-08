@@ -4,7 +4,11 @@
 
 ## New features
 
+<<<<<<< HEAD
 * Adding `id` parameter to diagnostic functions (#121)
+=======
+* Adding `id` parameter to diagnostic functions (#)
+>>>>>>> a0fbb749cb1e9f9e04f2a2a28b419d9ac9443f57
 * Added support for faceting by multiple IDs in `plot_predicted_curve()`:
     - New `facet_by_id` argument allows faceted plots by participant ID.
 * Added `plot_predicted_curve()`  (#68)
