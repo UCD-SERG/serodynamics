@@ -18,8 +18,9 @@ docs
 serodynamics.Rcheck/
 serodynamics*.tar.gz
 serodynamics*.tgz
-
 inst/doc
 docs
 **/.quarto/
-
+docsvignettes/*.pdf
+vignettes/*.tex
+docs/
