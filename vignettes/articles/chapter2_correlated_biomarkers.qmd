@@ -27,6 +27,56 @@ env:
 
 ------------------------------------------------------------------------
 
+## Observation Model (Data Level)
+
+Observed (log-transformed) antibody levels:
+
+$$
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+$$ {#eq-1}
+
+Where:
+
+-   $y_{\text{obs},ij}$: Observed antibody level for subject $i$ and biomarker $j$
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   $\theta_{ij}$: Subject-level latent parameters (e.g., $y_0, \alpha, \rho$) used to define the predicted antibody curve
+-   $\tau_j$: Measurement precision (inverse of variance) specific to biomarker $j$
+
+Measurement precision prior:
+
+$$
+\tau_j \sim \text{Gamma}(a_j, b_j)
+$$ {#eq-2}
+
+Where:
+
+-   $\tau_j$: Precision (inverse of variance) of the measurement noise for biomarker $j$
+-   $(a_j, b_j)$: Shape and rate hyperparameters of the Gamma prior for precision, which control its expected value and variability
+
+The expression above corresponds to line 75 of `model.jags`:
+
+``` {.r include="../../inst/extdata/model.jags" start-line="75" end-line="75" code-line-numbers="true"}
+prec.logy[cur_antigen_iso] ~ dgamma(prec.logy.hyp[cur_antigen_iso,1], prec.logy.hyp[cur_antigen_iso,2])
+```
+
+------------------------------------------------------------------------
+
+## Parameter Summary
+
+| Symbol   | Description                             |
+|----------|-----------------------------------------|
+| $\mu_y$  | Antibody production rate (growth phase) |
+| $\mu_b$  | Pathogen replication rate               |
+| $\gamma$ | Clearance rate (by antibodies)          |
+| $\alpha$ | Antibody decay rate                     |
+| $\rho$   | Shape of antibody decay (power-law)     |
+| $t_1$    | Time of peak response                   |
+| $y_1$    | Peak antibody concentration             |
+
+: Parameter summary for antibody kinetics model. {#tbl-param-summary}
+
+**Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
+
 ## Within-Host ODE System [@teunis2016]
 
 **Two-phase within-host antibody kinetics:**
@@ -91,27 +141,9 @@ $${#eq-y1}
 
 ------------------------------------------------------------------------
 
-## Parameter Summary
+## Model Comparison: [@teunis2016] vs serodynamics
 
-| Symbol   | Description                             |
-|----------|-----------------------------------------|
-| $\mu_y$  | Antibody production rate (growth phase) |
-| $\mu_b$  | Pathogen replication rate               |
-| $\gamma$ | Clearance rate (by antibodies)          |
-| $\alpha$ | Antibody decay rate                     |
-| $\rho$   | Shape of antibody decay (power-law)     |
-| $t_1$    | Time of peak response                   |
-| $y_1$    | Peak antibody concentration             |
-
-: Parameter summary for antibody kinetics model. {#tbl-param-summary}
-
-**Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
-
-------------------------------------------------------------------------
-
-## Model Comparison: [@teunis2016] vs This Presentation
-
-| Component | [@teunis2016] | This Presentation |
+| Component | [@teunis2016] | serodynamics |
 |--------------------|-----------------------------|-----------------------|
 | Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
 | Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
@@ -120,7 +152,7 @@ $${#eq-y1}
 | Antibody rate name | $\mu$ | $\mu_y$ |
 | $t_1$ formula | Uses $\mu_0$, $\mu$, $b_0$, $c$, $y_0$ | Uses $\mu_b$, $\mu_y$, etc. |
 
-: Comparison of Teunis (2016) model and this presentation’s model assumptions. {#tbl-model-comparison}
+: Comparison of Teunis (2016) model and serodynamic’s model assumptions. {#tbl-model-comparison}
 
 **Note:**
 
