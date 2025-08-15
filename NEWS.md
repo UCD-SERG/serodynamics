@@ -4,6 +4,7 @@
 
 ## New features
 
+* Added Chapter 2 documentation on correlated biomarker model (#129)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
