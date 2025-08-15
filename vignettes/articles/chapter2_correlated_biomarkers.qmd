@@ -131,13 +131,13 @@ $$ {#eq-ode-system}
 
 $$
 t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
-$${#eq-t1}
+$$ {#eq-t1}
 
 **Peak Antibody Level** $y_1$
 
 $$
 y_1 = y_0 e^{\mu_y t_1}
-$${#eq-y1}
+$$ {#eq-y1}
 
 ------------------------------------------------------------------------
 
@@ -190,7 +190,17 @@ $$
 
 ------------------------------------------------------------------------
 
-## Core Parameters Used for Curve Drawing
+## From Full 7 Parameters to 5 Latent Parameters
+
+-   Although the model estimates 7 parameters, for modeling antibody kinetics $y(t)$, we focus on **5-parameter subset**:
+
+$$y_0,\ \ t_1 (\text{derived}),\ \  y_1 (\text{derived}),\ \  \alpha,\ \  \rho$$
+
+-   These 5 parameters are **log-transformed** into the latent parameters $\theta\_{ij}$ used for modeling.
+
+------------------------------------------------------------------------
+
+## 5 Core Parameters Used for Curve Drawing
 
 In this presentation, we focus on **5 key parameters** required to draw antibody curves:
 
@@ -218,29 +228,26 @@ Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficie
 
 ------------------------------------------------------------------------
 
-## Time of Pathogen Clearance $t_1$
+## Subject-Level Parameters (Latent Version = serodynamics)
 
-**Definition:** $t_1$ is the time when the pathogen is cleared, i.e., $b(t_1) = 0$
-
-**Analytic expression:**
+Each subject $i$ and biomarker $j$ has latent parameters:
 
 $$
-t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b)b_0}{\gamma y_0}\right)
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+$$ {#eq-10}
+
+Distribution:
+
 $$
-
-**Key observations:** $t_1$ depends on $\mu_b$, $\mu_y$, $b_0$, $y_0$, and $y_1 = y(t_1)$ is computed based on this time point
-
-------------------------------------------------------------------------
-
-## Why It's a Seven-Parameter Model
-
--   Our model estimates **7 parameters**:
-    -   5 biological parameters: $\mu_b$, $\mu_y$, $\gamma$, $\alpha$, $\rho$
-    -   2 initial conditions: $y_0$, $b_0$
--   But we often refer to an 8th quantity: $y_1$
--   So why isn’t $y_1$ a parameter?
-
-[Answer]{.underline}: $y_1$ is a **computed value**, not directly estimated.
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+$$
 
 ------------------------------------------------------------------------
 
@@ -293,20 +300,18 @@ $$
 
 ------------------------------------------------------------------------
 
-## Hierarchical Bayesian Structure
+## Hierarchical Bayesian Structure (serodynamics)
 
 **Individual parameters:**
 
 $$
 \theta_{ij} =
 \begin{bmatrix}
-  y_{0,ij} \\
-  b_{0,ij} \\
-  \mu_{b,ij} \\
-  \mu_{y,ij} \\
-  \gamma_{ij} \\
-  \alpha_{ij} \\
-  \rho_{ij}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
 \end{bmatrix}
 \sim \mathcal{N}(\mu_j,\, \Sigma_j)
 $$
@@ -314,14 +319,14 @@ $$
 **Hyperparameters:**
 
 -   $\mu_j$: population-level means (per biomarker $j$)
--   $\Sigma_j$: $7 \times 7$ covariance matrix over parameters
+-   $\Sigma_j$: $5 \times 5$ covariance matrix over parameters
 
 ------------------------------------------------------------------------
 
 ## Subject-Level Parameters: $\theta_{ij}$
 
 $$
-\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} \in \mathbb{R}^7
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} \in \mathbb{R}^5
 $$
 
 **Where:**
@@ -329,18 +334,16 @@ $$
 $$
 \boldsymbol{\theta}_{ij} = 
 \begin{bmatrix}
-y_{0,ij} \\
-b_{0,ij} \\
-\mu_{b,ij} \\
-\mu_{y,ij} \\
-\gamma_{ij} \\
-\alpha_{ij} \\
-\rho_{ij}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
 \end{bmatrix},
-\quad \Sigma_j \in \mathbb{R}^{7 \times 7}
+\quad \Sigma_j \in \mathbb{R}^{5 \times 5}
 $$
 
-Each subject $i$ has a unique 7-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
+Each subject $i$ has a unique 5-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
 
 ------------------------------------------------------------------------
 
@@ -361,7 +364,7 @@ $$
 **Example:**
 
 $$
-\boldsymbol{\mu}_{\mathrm{hyp},j} = 0, \quad \Omega_{\mathrm{hyp},j} = 100 \cdot I_7
+\boldsymbol{\mu}_{\mathrm{hyp},j} = 0, \quad \Omega_{\mathrm{hyp},j} = 100 \cdot I_5
 $$
 
 ------------------------------------------------------------------------
@@ -381,7 +384,7 @@ $$
 **Example:**
 
 $$
-\Omega_j = 0.1 \cdot I_7, \quad \nu_j = 8
+\Omega_j = 0.1 \cdot I_5, \quad \nu_j = 6
 $$
 
 ------------------------------------------------------------------------
@@ -407,36 +410,36 @@ $$
 
 ## Matrix Algebra Computation
 
-Let $K = 7$ (parameters), $J$ biomarkers. Then:
+Let $P = 5$ (parameters), $J$ biomarkers. Then:
 
 $$
 \Theta_i =
 \begin{bmatrix}
-\theta_{i1} & \theta_{i2} & \cdots & \theta_{iJ}
+\theta_{i1} & \theta_{i2} & \cdots & \theta_{iB}
 \end{bmatrix}
-\in \mathbb{R}^{K \times J}
+\in \mathbb{R}^{P \times B}
 $$
 
 Assume:
 
 $$
-\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_K \otimes I_J)
+\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_P \otimes I_B)
 $$
 
 ------------------------------------------------------------------------
 
 ## Matrix Algebra – Simplified Structure
 
-Setup: $\Theta_i \in \mathbb{R}^{7 \times J}$
+Setup: $\Theta_i \in \mathbb{R}^{P \times B}$
 
 Model:
 
 $$
-\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_K \otimes I_J)
+\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_P \otimes I_B)
 $$
 
--   $\Sigma_K$: 7×7 covariance (same across biomarkers)
--   $I_J$: biomarkers assumed uncorrelated
+-   $\Sigma_P$: 5×5 covariance (same across biomarkers)
+-   $I_B$: biomarkers assumed uncorrelated
 -   Block-diagonal covariance
 
 ------------------------------------------------------------------------
@@ -461,16 +464,16 @@ $$
 Flattening:
 
 $$
-\text{vec}(\Theta_i) \in \mathbb{R}^{7J \times 1}
+\text{vec}(\Theta_i) \in \mathbb{R}^{5B \times 1}
 $$
 
 ------------------------------------------------------------------------
 
 ## Understanding $\text{vec}(M)$
 
-Let $M = [\mu_1\, \mu_2\, \cdots\, \mu_J] \in \mathbb{R}^{7 \times J}$
+Let $M = [\mu_1\, \mu_2\, \cdots\, \mu_B] \in \mathbb{R}^{5 \times B}$
 
-Example for $J=3$:
+Example for $B=3$:
 
 $$
 M =
@@ -479,37 +482,35 @@ M =
 \mu_{2,1} & \mu_{2,2} & \mu_{2,3} \\
 \mu_{3,1} & \mu_{3,2} & \mu_{3,3} \\
 \mu_{4,1} & \mu_{4,2} & \mu_{4,3} \\
-\mu_{5,1} & \mu_{5,2} & \mu_{5,3} \\
-\mu_{6,1} & \mu_{6,2} & \mu_{6,3} \\
-\mu_{7,1} & \mu_{7,2} & \mu_{7,3}
+\mu_{5,1} & \mu_{5,2} & \mu_{5,3} 
 \end{bmatrix}
 $$
 
 ------------------------------------------------------------------------
 
-## Covariance Structure: $\Sigma_K \otimes I_J$
+## Covariance Structure: $\Sigma_P \otimes I_B$
 
 $$
-\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_K \otimes I_J
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes I_B
 $$
 
--   $\Sigma_K$: parameter covariance matrix
--   $I_J$: biomarker-wise independence
+-   $\Sigma_P$: parameter covariance matrix
+-   $I_B$: biomarker-wise independence
 -   Kronecker product yields block-diagonal matrix
 
 ------------------------------------------------------------------------
 
-## Example: Kronecker Product with $K=2$, $J=3$
+## Example: Kronecker Product with $P=2$, $B=3$
 
 Let:
 
 $$
-\Sigma_K =
+\Sigma_P =
 \begin{bmatrix}
 \sigma_{11} & \sigma_{12} \\
 \sigma_{21} & \sigma_{22}
 \end{bmatrix},\quad
-I_3 =
+I_B =
 \begin{bmatrix}
 1 & 0 & 0 \\
 0 & 1 & 0 \\
@@ -520,15 +521,15 @@ $$
 Then:
 
 $$
-\Sigma_K \otimes I_3 \in \mathbb{R}^{6 \times 6}
+\Sigma_P \otimes I_B \in \mathbb{R}^{6 \times 6}
 $$
 
 ------------------------------------------------------------------------
 
-## Expanded Matrix: $\Sigma_K \otimes I_3$
+## Expanded Matrix: $\Sigma_P \otimes I_B$
 
 $$
-\Sigma_K \otimes I_3 =
+\Sigma_P \otimes I_B =
 \begin{bmatrix}
 \sigma_{11} & 0 & 0 & \sigma_{12} & 0 & 0 \\
 0 & \sigma_{11} & 0 & 0 & \sigma_{12} & 0 \\
@@ -545,21 +546,21 @@ $$
 
 Current Limitation:
 
--   Biomarkers assumed independent: $I_J$
+-   Biomarkers assumed independent: $I_B$
 
 Planned Extension:
 
--   Use full covariance $\Sigma_J$:
+-   Use full covariance $\Sigma_B$:
 
 $$
-\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_K \otimes \Sigma_J
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B
 $$
 
 ------------------------------------------------------------------------
 
 ## Extending to Correlated Biomarkers
 
-Assume $K=3$, $J=3$
+Assume $P=3$, $B=3$
 
 Define:
 
