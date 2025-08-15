@@ -1,6 +1,8 @@
 test_that(
   desc = "results are consistent with simulated data",
   code = {
+    testthat::announce_snapshot_file("sim-strat-curve-params.csv")
+    testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
@@ -48,6 +50,8 @@ test_that(
 test_that(
   desc = "results are consistent with SEES data",
   code = {
+    testthat::announce_snapshot_file("strat-curve-params.csv")
+    testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -80,6 +84,8 @@ test_that(
 test_that(
   desc = "results are consistent with unstratified SEES data",
   code = {
+    announce_snapshot_file("nostrat-curve-params.csv")
+    announce_snapshot_file("nostrat-fitted_residuals.csv")
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -113,6 +119,7 @@ test_that(
   desc = "results are consistent with unstratified SEES data with jags.post
   included",
   code = {
+    announce_snapshot_file("nostrat-curve-params-withpost.csv")
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -144,6 +151,7 @@ test_that(
   desc = "results are consistent with unstratified SEES data with modified 
   priors",
   code = {
+    announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
