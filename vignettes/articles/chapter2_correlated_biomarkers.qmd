@@ -53,12 +53,6 @@ Where:
 -   $\tau_j$: Precision (inverse of variance) of the measurement noise for biomarker $j$
 -   $(a_j, b_j)$: Shape and rate hyperparameters of the Gamma prior for precision, which control its expected value and variability
 
-The expression above corresponds to line 75 of `model.jags`:
-
-``` {.r include="../../inst/extdata/model.jags" start-line="75" end-line="75" code-line-numbers="true"}
-prec.logy[cur_antigen_iso] ~ dgamma(prec.logy.hyp[cur_antigen_iso,1], prec.logy.hyp[cur_antigen_iso,2])
-```
-
 ------------------------------------------------------------------------
 
 ## Parameter Summary
