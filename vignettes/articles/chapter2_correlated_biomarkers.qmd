@@ -1,0 +1,641 @@
+---
+title: "Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach"
+author: "Kwan Ho Lee"
+institute: "UC Davis"
+date: today
+format: 
+  html: default
+  beamer:
+    theme: Madrid
+    slide-level: 2
+    keep-tex: true
+    toc: false
+    incremental: false
+engine: knitr
+bibliography: references.bib
+env:
+  PAK_CACHE_DISABLE: "true"
+---
+
+## Overview
+
+-   Incorporates feedback from Dr. Morrison and Dr. Aiemjoy\
+-   Builds on [@teunis2016] framework for antibody kinetics\
+-   Focus on covariance structure: parameter covariance within each biomarker ($\Sigma_{P,j}$, 5×5 per biomarker) and biomarker covariance across $j$ ($\Sigma_B$, across biomarkers)\
+-   Uses updated parameterization: $\log(y_0)$, $\log(y_1 - y_0)$, $\log(t_1)$, $\log(\alpha)$, $\log(\rho-1)$\
+-   Current stage: block-diagonal covariance (independent biomarkers)\
+-   Planned extension: full $\Sigma_B$ to capture correlation between biomarkers
+
+------------------------------------------------------------------------
+
+## Observation Model (Data Level)
+
+Observed (log-transformed) antibody levels:
+
+$$
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+$$ {#eq-1}
+
+Where:
+
+-   $y_{\text{obs},ij}$: Observed antibody level for subject $i$ and biomarker $j$
+-   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   $\theta_{ij}$: Subject-level latent parameters (e.g., $y_0, \alpha, \rho$) used to define the predicted antibody curve
+-   $\tau_j$: Measurement precision (inverse of variance) specific to biomarker $j$
+
+Measurement precision prior:
+
+$$
+\tau_j \sim \text{Gamma}(a_j, b_j)
+$$ {#eq-2}
+
+Where:
+
+-   $\tau_j$: Precision (inverse of variance) of the measurement noise for biomarker $j$
+-   $(a_j, b_j)$: Shape and rate hyperparameters of the Gamma prior for precision, which control its expected value and variability
+
+------------------------------------------------------------------------
+
+## Parameter Summary
+
+| Symbol   | Description                             |
+|----------|-----------------------------------------|
+| $\mu_y$  | Antibody production rate (growth phase) |
+| $\mu_b$  | Pathogen replication rate               |
+| $\gamma$ | Clearance rate (by antibodies)          |
+| $\alpha$ | Antibody decay rate                     |
+| $\rho$   | Shape of antibody decay (power-law)     |
+| $t_1$    | Time of peak response                   |
+| $y_1$    | Peak antibody concentration             |
+
+: Parameter summary for antibody kinetics model. {#tbl-param-summary}
+
+**Note:** Only the first 6 are typically estimated. $y_1$ is derived from the ODE solution at $t_1$.
+
+## Within-Host ODE System [@teunis2016]
+
+**Two-phase within-host antibody kinetics:**
+
+$$
+\frac{dy}{dt} = 
+\begin{cases}
+\mu_y y(t), & t \le t_1 \\
+- \alpha y(t)^\rho, & t > t_1
+\end{cases}
+\quad \text{with } 
+\frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+$$ {#eq-ode-system}
+
+**Initial conditions:** $y(0) = y_0$, $b(0) = b_0$\
+**Key transition:** $t_1$ is the time when $b(t_1) = 0$\
+**Derived quantity:** $y_1 = y(t_1)$
+
+------------------------------------------------------------------------
+
+## Closed-Form Solutions
+
+**Antibody concentration** $y(t)$
+
+-   $t \le t_1$:\
+    $$
+    y(t) = y_0 e^{\mu_y t}
+    $$
+
+-   $t > t_1$:\
+    $$
+    y(t) = y_1 \left(1 + (\rho - 1)\alpha y_1^{\rho - 1}(t - t_1)\right)^{- \frac{1}{\rho - 1}}
+    $$
+
+**Pathogen load** $b(t)$
+
+-   $t \le t_1$:\
+    $$
+    b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left(e^{\mu_y t} - e^{\mu_b t} \right)
+    $$
+
+-   $t > t_1$:\
+    $$
+    b(t) = 0
+    $$
+
+------------------------------------------------------------------------
+
+## Time of Peak Response
+
+**Peak Time** $t_1$
+
+$$
+t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
+$$ {#eq-t1}
+
+**Peak Antibody Level** $y_1$
+
+$$
+y_1 = y_0 e^{\mu_y t_1}
+$$ {#eq-y1}
+
+------------------------------------------------------------------------
+
+## Model Comparison: [@teunis2016] vs serodynamics
+
+| Component | [@teunis2016] | serodynamics |
+|------------------------|------------------------|------------------------|
+| Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
+| Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
+| Antibody ODE (post-$t_1$) | $- \alpha y(t)^r$ | $- \alpha y(t)^\rho$ |
+| Antibody growth type | Pathogen-driven | Self-driven exponential |
+| Antibody rate name | $\mu$ | $\mu_y$ |
+| $t_1$ formula | Uses $\mu_0$, $\mu$, $b_0$, $c$, $y_0$ | Uses $\mu_b$, $\mu_y$, etc. |
+
+: Comparison of Teunis (2016) model and serodynamic’s model assumptions. {#tbl-model-comparison}
+
+**Note:**
+
+-   [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear\
+-   Antibody production is **driven by pathogen** $b(t)$\
+-   Our model simplifies by assuming self-expanding antibody dynamics
+
+------------------------------------------------------------------------
+
+## Full Parameter Model (7 Parameters)
+
+**Subject-level parameters:**
+
+$$
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} =
+\begin{bmatrix}
+y_{0,ij} \\
+b_{0,ij} \\
+\mu_{b,ij} \\
+\mu_{y,ij} \\
+\gamma_{ij} \\
+\alpha_{ij} \\
+\rho_{ij}
+\end{bmatrix}
+$$ **Where:**
+
+-   $\theta_{ij}$: parameter vector for subject $i$, biomarker $j$\
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{7 \times 7}$: covariance matrix **across parameters** for biomarker $j$
+    -   Subscript $P$: denotes that this is covariance over the **P parameters**\
+    -   Subscript $j$: indicates the biomarker index
+
+**Hyperparameters – Means:**
+
+$$
+\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
+$$
+
+------------------------------------------------------------------------
+
+## From Full 7 Parameters to 5 Latent Parameters
+
+-   Although the model estimates 7 parameters, for modeling antibody kinetics $y(t)$, we focus on **5-parameter subset**:
+
+$$y_0,\ \ t_1 (\text{derived}),\ \  y_1 (\text{derived}),\ \  \alpha,\ \  \rho$$
+
+-   These 5 parameters are **log-transformed** into the latent parameters $\theta\_{ij}$ used for modeling.
+
+------------------------------------------------------------------------
+
+## 5 Core Parameters Used for Curve Drawing
+
+In this presentation, we focus on **5 key parameters** required to draw antibody curves:
+
+-   $y_0$: initial antibody level
+-   $t_1$: time of peak antibody response
+-   $y_1$: peak antibody level
+-   $\alpha$: decay rate
+-   $\rho$: shape of decay
+
+Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficient for prediction and plotting
+
+------------------------------------------------------------------------
+
+## Classifying Model Parameters ([@teunis2016] Structure)
+
+**Estimated Parameters (7 total):**
+
+-   **Core model parameters (5):** $\mu_b$, $\mu_y$, $\gamma$, $\alpha$, $\rho$
+
+-   **Initial conditions (2):** $y_0$, $b_0$
+
+**Derived Quantity (not estimated):**
+
+-   $y_1$: peak antibody level computed as $y(t_1)$
+
+------------------------------------------------------------------------
+
+## Subject-Level Parameters (Latent Version = serodynamics)
+
+Each subject $i$ and biomarker $j$ has latent parameters:
+
+$$
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+\in \mathbb{R}^5
+$$ {#eq-10}
+
+Distribution:
+
+$$
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_{P,j})
+$$ **Where:**
+
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{5 \times 5}$: covariance matrix **across the** $P=5$ parameters for biomarker $j$
+
+------------------------------------------------------------------------
+
+## Why $y_1$ Is Not Fit Directly
+
+-   $y_1$ is the antibody level at the time the pathogen is cleared:
+
+$$
+y_1 = y(t_1) \quad \text{where } b(t_1) = 0
+$$
+
+-   $y_1$ is not an “input” — it is **computed** from:
+    -   $\mu_y$, $y_0$, $b_0$, $\mu_b$, $\gamma$
+    -   via solution of ODEs to find $t_1$ and compute $y(t_1)$
+
+In other words: $y_1$ is a **derived output**, not a fit parameter.
+
+------------------------------------------------------------------------
+
+## How $y_1$ Is Computed
+
+-   $y_1$ is computed by solving the ODE system:
+
+$$
+\frac{dy}{dt} = \mu_y y(t), \quad \frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+$$
+
+-   Evaluate $y(t)$ at $t = t_1$ using ODE solution:
+
+$$
+y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
+$$
+
+------------------------------------------------------------------------
+
+## Recap: What We Estimate
+
+**Seven model parameters (**[7-parameter model for full dynamics]{.underline}**):**
+
+-   $\mu_b$, $\mu_y$, $\gamma$, $\alpha$, $\rho$ (biological process)
+-   $y_0$, $b_0$ (initial state)
+
+**Derived quantity:**
+
+-   $y_1 = y(t_1)$ — not directly estimated, computed
+
+**5-parameter subset for curve visualization:**
+
+-   $y_0$, $y_1$, $t_1$, $\alpha$, $\rho$
+
+------------------------------------------------------------------------
+
+## Hierarchical Bayesian Structure (serodynamics)
+
+**Individual parameters:**
+
+$$
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+\sim \mathcal{N}(\mu_j,\, \Sigma_{P,j})
+$$
+
+**Hyperparameters:**
+
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5$: covariance matrix **across the parameters** for biomarker $j$
+
+------------------------------------------------------------------------
+
+## Subject-Level Parameters: $\theta_{ij}$
+
+$$
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} \in \mathbb{R}^5
+$$
+
+**Where:**
+
+$$
+\boldsymbol{\theta}_{ij} = 
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix},
+\quad \Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5
+$$
+
+Each subject $i$ has a unique 5-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
+
+------------------------------------------------------------------------
+
+## Hyperparameters: Priors on Population Means
+
+**Population-level means:**
+
+$$
+\boldsymbol{\mu}_j \sim \mathcal{N}(\boldsymbol{\mu}_{\mathrm{hyp},j}, \Omega_{\mathrm{hyp},j})
+$$
+
+**Interpretation:**
+
+-   $\boldsymbol{\mu}_j$: average parameter vector for biomarker $j$
+-   $\boldsymbol{\mu}_{\mathrm{hyp},j}$: prior guess (e.g., vector of zeros)
+-   $\Omega_{\mathrm{hyp},j}$: covariance matrix encoding uncertainty
+
+**Example:**
+
+$$
+\boldsymbol{\mu}_{\mathrm{hyp},j} = 0, \quad \Omega_{\mathrm{hyp},j} = 100 \cdot I_5
+$$
+
+------------------------------------------------------------------------
+
+## Hyperparameters: Priors on Covariance
+
+**Covariance across parameters:**
+
+$$
+\Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+$$
+
+-   $\Sigma_{P,j}$: $5 \times 5$ covariance matrix of subject-level parameters for biomarker $j$\
+-   $\Omega_j$: prior scale matrix (dimension $5 \times 5$)\
+-   $\nu_j$: degrees of freedom
+
+**Example:**
+
+$$
+\Omega_j = 0.1 \cdot I_5, \quad \nu_j = 6
+$$
+
+------------------------------------------------------------------------
+
+## Measurement Error and Precision Priors
+
+**Observed antibody levels:**
+
+$$
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}), \tau_j^{-1})
+$$
+
+**Precision prior:**
+
+$$
+\tau_j \sim \text{Gamma}(a_j, b_j)
+$$
+
+-   $\tau_j$: shared measurement precision for biomarker $j$
+-   Gamma prior allows flexible noise modeling
+
+------------------------------------------------------------------------
+
+## Matrix Algebra Computation
+
+Let $P = 5$ (parameters), $B$ biomarkers. Then:
+
+$$
+\Theta_i =
+\begin{bmatrix}
+\theta_{i1} & \theta_{i2} & \cdots & \theta_{iB}
+\end{bmatrix}
+\in \mathbb{R}^{P \times B}
+$$
+
+Assume:
+
+$$
+\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_P \otimes I_B)
+$$
+
+------------------------------------------------------------------------
+
+## Matrix Algebra – Simplified Structure
+
+Setup: $\Theta_i \in \mathbb{R}^{P \times B}$
+
+Model:
+
+$$
+\text{vec}(\Theta_i) \sim \mathcal{N}(\text{vec}(M), \Sigma_P \otimes I_B)
+$$
+
+-   $\Sigma_P$: 5×5 covariance (same across biomarkers)
+-   $I_B$: biomarkers assumed uncorrelated
+-   Block-diagonal covariance
+
+------------------------------------------------------------------------
+
+## Understanding $\text{vec}(\Theta_i)$
+
+Each $\theta_{ij} \in \mathbb{R}^5$:
+
+$$
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+$$
+
+Flattening:
+
+$$
+\text{vec}(\Theta_i) \in \mathbb{R}^{5B \times 1}
+$$
+
+------------------------------------------------------------------------
+
+## Understanding $\text{vec}(M)$
+
+Let $M = [\mu_1\, \mu_2\, \cdots\, \mu_B] \in \mathbb{R}^{5 \times B}$
+
+Example for $B=3$:
+
+$$
+M =
+\begin{bmatrix}
+\mu_{1,1} & \mu_{1,2} & \mu_{1,3} \\
+\mu_{2,1} & \mu_{2,2} & \mu_{2,3} \\
+\mu_{3,1} & \mu_{3,2} & \mu_{3,3} \\
+\mu_{4,1} & \mu_{4,2} & \mu_{4,3} \\
+\mu_{5,1} & \mu_{5,2} & \mu_{5,3} 
+\end{bmatrix}
+$$
+
+------------------------------------------------------------------------
+
+## Covariance Structure: $\Sigma_P \otimes I_B$
+
+$$
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes I_B
+$$
+
+-   $\Sigma_P$: parameter covariance matrix
+-   $I_B$: biomarker-wise independence
+-   Kronecker product yields block-diagonal matrix
+
+------------------------------------------------------------------------
+
+## Example: Kronecker Product with $P = 5$, $B = 3$
+
+Let:
+
+$$
+\Sigma_P =
+\begin{bmatrix}
+\sigma_{y_0,y_0} & \sigma_{y_0,y_1-y_0} & \sigma_{y_0,t_1} & \sigma_{y_0,\alpha} & \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} & \sigma_{y_1-y_0,y_1-y_0} & \sigma_{y_1-y_0,t_1} & \sigma_{y_1-y_0,\alpha} & \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} & \sigma_{t_1,y_1-y_0} & \sigma_{t_1,t_1} & \sigma_{t_1,\alpha} & \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} & \sigma_{\alpha,y_1-y_0} & \sigma_{\alpha,t_1} & \sigma_{\alpha,\alpha} & \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} & \sigma_{\rho-1,y_1-y_0} & \sigma_{\rho-1,t_1} & \sigma_{\rho-1,\alpha} & \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
+I_B =
+\begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+
+Then:
+
+$$
+\Sigma_P \otimes I_B \in \mathbb{R}^{15 \times 15}
+$$
+
+------------------------------------------------------------------------
+
+## Expanded Matrix: $\Sigma_P \otimes I_B$
+
+$$
+\Sigma_P \otimes I_B =
+\begin{bmatrix}
+\Sigma_P & 0 & 0 \\
+0 & \Sigma_P & 0 \\
+0 & 0 & \Sigma_P
+\end{bmatrix}
+\in \mathbb{R}^{15 \times 15}
+$$
+
+where each block $\Sigma_P$ is the $5 \times 5$ covariance across parameters:
+
+$$
+\Sigma_P =
+\begin{bmatrix}
+\sigma_{y_0,y_0} & \cdots & \sigma_{y_0,\rho-1} \\
+\vdots & \ddots & \vdots \\
+\sigma_{\rho-1,y_0} & \cdots & \sigma_{\rho-1,\rho-1}
+\end{bmatrix}
+$$
+
+------------------------------------------------------------------------
+
+## Next Steps: Modeling Correlation Across Biomarkers
+
+Current Limitation:
+
+-   Biomarkers assumed independent: $I_B$
+
+Planned Extension:
+
+-   Use full covariance $\Sigma_B$:
+
+$$
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B
+$$
+
+------------------------------------------------------------------------
+
+## Extending to Correlated Biomarkers
+
+Assume $P=5$, $B=3$
+
+Define:
+
+$$
+\Sigma_P =
+\begin{bmatrix}
+\sigma_{y_0,y_0} & \sigma_{y_0,y_1-y_0} & \sigma_{y_0,t_1} & \sigma_{y_0,\alpha} & \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} & \sigma_{y_1-y_0,y_1-y_0} & \sigma_{y_1-y_0,t_1} & \sigma_{y_1-y_0,\alpha} & \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} & \sigma_{t_1,y_1-y_0} & \sigma_{t_1,t_1} & \sigma_{t_1,\alpha} & \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} & \sigma_{\alpha,y_1-y_0} & \sigma_{\alpha,t_1} & \sigma_{\alpha,\alpha} & \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} & \sigma_{\rho-1,y_1-y_0} & \sigma_{\rho-1,t_1} & \sigma_{\rho-1,\alpha} & \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
+\Sigma_B =
+\begin{bmatrix}
+\tau_{11} & \tau_{12} & \tau_{13} \\
+\tau_{21} & \tau_{22} & \tau_{23} \\
+\tau_{31} & \tau_{32} & \tau_{33}
+\end{bmatrix}
+$$
+
+Here:
+
+-   $\Sigma_P$: covariance across the 5 parameters (size $5 \times 5$)\
+-   $\Sigma_B$: covariance across the $B$ biomarkers (size $B \times B$)
+
+------------------------------------------------------------------------
+
+## Kronecker Product Structure: $\Sigma_P \otimes \Sigma_B$
+
+$$
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B
+$$
+
+-   $\Sigma_P$: $5 \times 5$ covariance across parameters\
+-   $\Sigma_B$: $B \times B$ covariance across biomarkers\
+-   The Kronecker product expands to a $(5B) \times (5B)$ covariance matrix\
+-   Not block-diagonal — allows both parameter correlations *and* cross-biomarker correlations
+
+------------------------------------------------------------------------
+
+## Practical To-Do List (for Chapter 2)
+
+**Model Implementation:**
+
+-   Define parameter covariance $\Sigma_{P,j}$ (within each biomarker $j$)\
+-   Define biomarker covariance $\Sigma_B$ (across biomarkers)\
+-   Full covariance structure: $\text{Cov}(\text{vec}(\theta_i)) = \Sigma_P \otimes \Sigma_B$\
+-   Priors: $\Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)$, $\Sigma_B^{-1} \sim \mathcal{W}(\Omega_B, \nu_B)$
+
+**Simulation Study (first step):**
+
+-   Generate fake longitudinal data with known $\Sigma_P$ and $\Sigma_B$\
+-   Fit independence model ($I_B$) vs. correlated model ($\Sigma_B$)\
+-   Evaluate recovery of true covariance structure
+
+**Validation on Real Data (next step):**
+
+-   Apply to Shigella longitudinal data\
+-   Compare independence vs. correlated models (DIC, WAIC, posterior predictive checks)\
+-   Summarize implications for epidemiologic utility
+
+**Deliverable:**
+
+-   Simulation + model comparison documented in a vignette for the serodynamics package
