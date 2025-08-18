@@ -5,14 +5,14 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>Extending the Hierarchical Model for Antibody Kinetics • serodynamics</title>
+<title>Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach • serodynamics</title>
 <script src="../lightswitch.js"></script><script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="chapter2_correlated_biomarkers_files/libs/quarto-html/popper.min.js"></script><script src="chapter2_correlated_biomarkers_files/libs/quarto-html/tippy.umd.min.js"></script><link href="chapter2_correlated_biomarkers_files/libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="chapter2_correlated_biomarkers_files/libs/quarto-html/light-border.css" rel="stylesheet">
-<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Extending the Hierarchical Model for Antibody Kinetics">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -35,7 +35,7 @@
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
-<li><a class="dropdown-item" href="../articles/chapter2_correlated_biomarkers.html">Extending the Hierarchical Model for Antibody Kinetics</a></li>
+<li><a class="dropdown-item" href="../articles/chapter2_correlated_biomarkers.html">Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach</a></li>
     <li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
     <li><a class="dropdown-item" href="../articles/test-snippets.html">test-snippets</a></li>
   </ul>
@@ -64,7 +64,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>Extending the Hierarchical Model for Antibody Kinetics</h1>
+      <h1>Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach</h1>
 
       <p class="author">Kwan Ho Lee</p>
       <p class="date">2025-08-18</p>
@@ -81,12 +81,17 @@
     <section class="level2"><h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
 <ul>
-<li>Incorporates feedback from Dr. Morrison and Dr.Aiemjoy</li>
-<li>Focus exclusively on <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> model</li>
-<li>Clarifies model dynamics: growth, clearance, decay</li>
-<li>Uses updated parameter notation: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>y</mi></msub><annotation encoding="application/x-tex">\mu_y</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>b</mi></msub><annotation encoding="application/x-tex">\mu_b</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>γ</mi><annotation encoding="application/x-tex">\gamma</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ρ</mi><annotation encoding="application/x-tex">\rho</annotation></semantics></math>
+<li>Incorporates feedback from Dr. Morrison and Dr. Aiemjoy<br>
 </li>
-<li>Assumes block-diagonal covariance structure across biomarkers</li>
+<li>Builds on <span class="citation" data-cites="teunis2016">(<a href="#ref-teunis2016" role="doc-biblioref">Teunis and Eijkeren 2016</a>)</span> framework for antibody kinetics<br>
+</li>
+<li>Focus on covariance structure: parameter covariance within each biomarker (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{P,j}</annotation></semantics></math>, 5×5 per biomarker) and biomarker covariance across <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math>, across biomarkers)<br>
+</li>
+<li>Uses updated parameterization: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(y_0)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(y_1 - y_0)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(t_1)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(\alpha)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><mi>ρ</mi><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\log(\rho-1)</annotation></semantics></math><br>
+</li>
+<li>Current stage: block-diagonal covariance (independent biomarkers)<br>
+</li>
+<li>Planned extension: full <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math> to capture correlation between biomarkers</li>
 </ul>
 <hr></section><section class="level2"><h2 id="observation-model-data-level">Observation Model (Data Level)<a class="anchor" aria-label="anchor" href="#observation-model-data-level"></a>
 </h2>
@@ -217,9 +222,9 @@ Table 2: Comparison of Teunis (2016) model and serodynamic’s model assumption
 </figcaption><div aria-describedby="tbl-model-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="table caption-top">
 <colgroup>
-<col style="width: 27%">
-<col style="width: 40%">
-<col style="width: 31%">
+<col style="width: 33%">
+<col style="width: 33%">
+<col style="width: 33%">
 </colgroup>
 <thead><tr class="header">
 <th>Component</th>
@@ -287,14 +292,23 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-</annotation></semantics></math></p>
-<p><strong>Hyperparameters – Means:</strong></p>
+</annotation></semantics></math><strong>Where:</strong></p>
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{ij}</annotation></semantics></math>: parameter vector for subject <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>, biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><br>
 </li>
-<li>Prior on <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>:</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><br>
+</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>7</mn><mo>×</mo><mn>7</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\Sigma_{P,j} \in \mathbb{R}^{7 \times 7}</annotation></semantics></math>: covariance matrix <strong>across parameters</strong> for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><ul>
+<li>Subscript <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>P</mi><annotation encoding="application/x-tex">P</annotation></semantics></math>: denotes that this is covariance over the <strong>P parameters</strong><br>
+</li>
+<li>Subscript <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>: indicates the biomarker index</li>
 </ul>
+</li>
+</ul>
+<p><strong>Hyperparameters – Means:</strong></p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>μ</mi><mi>j</mi></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo>,</mo><mspace width="0.167em"></mspace><msub><mi>Ω</mi><mrow><mtext mathvariant="normal">hyp</mtext><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
 </annotation></semantics></math></p>
@@ -339,7 +353,7 @@ b_{0,ij} \\
 <hr></section><section class="level2"><h2 id="subject-level-parameters-latent-version-serodynamics">Subject-Level Parameters (Latent Version = serodynamics)<a class="anchor" aria-label="anchor" href="#subject-level-parameters-latent-version-serodynamics"></a>
 </h2>
 <p>Each subject <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> and biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math> has latent parameters:</p>
-<p><span id="eq-10"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>6</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><span id="eq-10"><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mn>5</mn></msup><mspace width="2.0em"></mspace><mrow><mo stretchy="true" form="prefix">(</mo><mn>6</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} =
 \begin{bmatrix}
 \log(y_{0,ij}) \\
@@ -348,11 +362,20 @@ b_{0,ij} \\
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix}
+\in \mathbb{R}^5
  \qquad(6)</annotation></semantics></math></span></p>
 <p>Distribution:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∼</mo><mi>𝒩</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>μ</mi><mi>j</mi></msub><mo>,</mo><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_{P,j})
-</annotation></semantics></math></p>
+</annotation></semantics></math><strong>Where:</strong></p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><br>
+</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow></msup></mrow><annotation encoding="application/x-tex">\Sigma_{P,j} \in \mathbb{R}^{5 \times 5}</annotation></semantics></math>: covariance matrix <strong>across the</strong> <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">P=5</annotation></semantics></math> parameters for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+</li>
+</ul>
 <hr></section><section class="level2"><h2 id="why-y_1-is-not-fit-directly">Why <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>y</mi><mn>1</mn></msub><annotation encoding="application/x-tex">y_1</annotation></semantics></math> Is Not Fit Directly<a class="anchor" aria-label="anchor" href="#why-y_1-is-not-fit-directly"></a>
 </h2>
 <ul>
@@ -427,9 +450,11 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 <p><strong>Hyperparameters:</strong></p>
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level means (per biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>)</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>μ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\mu_j</annotation></semantics></math>: population-level mean vector for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><br>
+</li>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\Sigma_j</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math> covariance matrix over parameters</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>P</mi><mo>×</mo><mi>P</mi></mrow></msup><mo>,</mo><mspace width="0.278em"></mspace><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">\Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5</annotation></semantics></math>: covariance matrix <strong>across the parameters</strong> for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
+</li>
 </ul>
 <hr></section><section class="level2"><h2 id="subject-level-parameters-theta_ij">Subject-Level Parameters: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\theta_{ij}</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#subject-level-parameters-theta_ij"></a>
 </h2>
@@ -437,7 +462,7 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 \theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} \in \mathbb{R}^5
 </annotation></semantics></math></p>
 <p><strong>Where:</strong></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛉</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow></msup></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝛉</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>P</mi><mo>×</mo><mi>P</mi></mrow></msup><mo>,</mo><mspace width="0.278em"></mspace><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">
 \boldsymbol{\theta}_{ij} =
 \begin{bmatrix}
 \log(y_{0,ij}) \\
@@ -446,7 +471,7 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix},
-\quad \Sigma_{P,j} \in \mathbb{R}^{5 \times 5}
+\quad \Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5
 </annotation></semantics></math></p>
 <p>Each subject <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math> has a unique 5-parameter vector per biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>, capturing individual-level variation in antibody dynamics.</p>
 <hr></section><section class="level2"><h2 id="hyperparameters-priors-on-population-means">Hyperparameters: Priors on Population Means<a class="anchor" aria-label="anchor" href="#hyperparameters-priors-on-population-means"></a>
@@ -477,9 +502,11 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 </annotation></semantics></math></p>
 <ul>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\Sigma_j</annotation></semantics></math>: variability/covariance in subject-level parameters</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{P,j}</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math> covariance matrix of subject-level parameters for biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math><br>
+</li>
 <li>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Ω</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\Omega_j</annotation></semantics></math>: prior scale matrix</li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Ω</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\Omega_j</annotation></semantics></math>: prior scale matrix (dimension <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math>)<br>
+</li>
 <li>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>ν</mi><mi>j</mi></msub><annotation encoding="application/x-tex">\nu_j</annotation></semantics></math>: degrees of freedom</li>
 </ul>
@@ -505,7 +532,7 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 </ul>
 <hr></section><section class="level2"><h2 id="matrix-algebra-computation">Matrix Algebra Computation<a class="anchor" aria-label="anchor" href="#matrix-algebra-computation"></a>
 </h2>
-<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">P = 5</annotation></semantics></math> (parameters), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>J</mi><annotation encoding="application/x-tex">J</annotation></semantics></math> biomarkers. Then:</p>
+<p>Let <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">P = 5</annotation></semantics></math> (parameters), <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math> biomarkers. Then:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Θ</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>θ</mi><mrow><mi>i</mi><mn>1</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>θ</mi><mrow><mi>i</mi><mn>2</mn></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>θ</mi><mrow><mi>i</mi><mi>B</mi></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mrow><mi>P</mi><mo>×</mo><mi>B</mi></mrow></msup></mrow><annotation encoding="application/x-tex">
 \Theta_i =
 \begin{bmatrix}
@@ -533,17 +560,15 @@ y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
 </ul>
 <hr></section><section class="level2"><h2 id="understanding-textvectheta_i">Understanding <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">vec</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Θ</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\text{vec}(\Theta_i)</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#understanding-textvectheta_i"></a>
 </h2>
-<p>Each <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mn>7</mn></msup></mrow><annotation encoding="application/x-tex">\theta_{ij} \in \mathbb{R}^7</annotation></semantics></math>:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>y</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>b</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mn>0</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>μ</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>c</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>α</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>r</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p>Each <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>∈</mo><msup><mi>ℝ</mi><mn>5</mn></msup></mrow><annotation encoding="application/x-tex">\theta_{ij} \in \mathbb{R}^5</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>θ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>y</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><msub><mi>y</mi><mrow><mn>0</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>t</mi><mrow><mn>1</mn><mo>,</mo><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>α</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo>log</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>ρ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \theta_{ij} =
 \begin{bmatrix}
-y_0 \\
-b_0 \\
-\mu_0 \\
-\mu_1 \\
-c \\
-\alpha \\
-r
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
 \end{bmatrix}
 </annotation></semantics></math></p>
 <p>Flattening:</p>
@@ -576,15 +601,19 @@ M =
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>B</mi></msub><annotation encoding="application/x-tex">I_B</annotation></semantics></math>: biomarker-wise independence</li>
 <li>Kronecker product yields block-diagonal matrix</li>
 </ul>
-<hr></section><section class="level2"><h2 id="example-kronecker-product-with-p2-b3">Example: Kronecker Product with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>2</mn></mrow><annotation encoding="application/x-tex">P=2</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">B=3</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#example-kronecker-product-with-p2-b3"></a>
+<hr></section><section class="level2"><h2 id="example-kronecker-product-with-p-5-b-3">Example: Kronecker Product with <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">P = 5</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">B = 3</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#example-kronecker-product-with-p-5-b-3"></a>
 </h2>
 <p>Let:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>I</mi><mi>B</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>I</mi><mi>B</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>1</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
 \Sigma_P =
 \begin{bmatrix}
-\sigma_{11} &amp; \sigma_{12} \\
-\sigma_{21} &amp; \sigma_{22}
-\end{bmatrix},\quad
+\sigma_{y_0,y_0} &amp; \sigma_{y_0,y_1-y_0} &amp; \sigma_{y_0,t_1} &amp; \sigma_{y_0,\alpha} &amp; \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} &amp; \sigma_{y_1-y_0,y_1-y_0} &amp; \sigma_{y_1-y_0,t_1} &amp; \sigma_{y_1-y_0,\alpha} &amp; \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} &amp; \sigma_{t_1,y_1-y_0} &amp; \sigma_{t_1,t_1} &amp; \sigma_{t_1,\alpha} &amp; \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} &amp; \sigma_{\alpha,y_1-y_0} &amp; \sigma_{\alpha,t_1} &amp; \sigma_{\alpha,\alpha} &amp; \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} &amp; \sigma_{\rho-1,y_1-y_0} &amp; \sigma_{\rho-1,t_1} &amp; \sigma_{\rho-1,\alpha} &amp; \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
 I_B =
 \begin{bmatrix}
 1 &amp; 0 &amp; 0 \\
@@ -593,20 +622,27 @@ I_B =
 \end{bmatrix}
 </annotation></semantics></math></p>
 <p>Then:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>I</mi><mi>B</mi></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>6</mn><mo>×</mo><mn>6</mn></mrow></msup></mrow><annotation encoding="application/x-tex">
-\Sigma_P \otimes I_B \in \mathbb{R}^{6 \times 6}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>I</mi><mi>B</mi></msub><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>15</mn><mo>×</mo><mn>15</mn></mrow></msup></mrow><annotation encoding="application/x-tex">
+\Sigma_P \otimes I_B \in \mathbb{R}^{15 \times 15}
 </annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="expanded-matrix-sigma_p-otimes-i_b">Expanded Matrix: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>I</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_P \otimes I_B</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#expanded-matrix-sigma_p-otimes-i_b"></a>
 </h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>I</mi><mi>B</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>I</mi><mi>B</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>Σ</mi><mi>P</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>Σ</mi><mi>P</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>Σ</mi><mi>P</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>∈</mo><msup><mi>ℝ</mi><mrow><mn>15</mn><mo>×</mo><mn>15</mn></mrow></msup></mrow><annotation encoding="application/x-tex">
 \Sigma_P \otimes I_B =
 \begin{bmatrix}
-\sigma_{11} &amp; 0 &amp; 0 &amp; \sigma_{12} &amp; 0 &amp; 0 \\
-0 &amp; \sigma_{11} &amp; 0 &amp; 0 &amp; \sigma_{12} &amp; 0 \\
-0 &amp; 0 &amp; \sigma_{11} &amp; 0 &amp; 0 &amp; \sigma_{12} \\
-\sigma_{21} &amp; 0 &amp; 0 &amp; \sigma_{22} &amp; 0 &amp; 0 \\
-0 &amp; \sigma_{21} &amp; 0 &amp; 0 &amp; \sigma_{22} &amp; 0 \\
-0 &amp; 0 &amp; \sigma_{21} &amp; 0 &amp; 0 &amp; \sigma_{22}
+\Sigma_P &amp; 0 &amp; 0 \\
+0 &amp; \Sigma_P &amp; 0 \\
+0 &amp; 0 &amp; \Sigma_P
+\end{bmatrix}
+\in \mathbb{R}^{15 \times 15}
+</annotation></semantics></math></p>
+<p>where each block <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\Sigma_P</annotation></semantics></math> is the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math> covariance across parameters:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd><mtd columnalign="center" style="text-align: center"><mo>⋱</mo></mtd><mtd columnalign="center" style="text-align: center"><mi>⋮</mi></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>⋯</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+\Sigma_P =
+\begin{bmatrix}
+\sigma_{y_0,y_0} &amp; \cdots &amp; \sigma_{y_0,\rho-1} \\
+\vdots &amp; \ddots &amp; \vdots \\
+\sigma_{\rho-1,y_0} &amp; \cdots &amp; \sigma_{\rho-1,\rho-1}
 \end{bmatrix}
 </annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="next-steps-modeling-correlation-across-biomarkers">Next Steps: Modeling Correlation Across Biomarkers<a class="anchor" aria-label="anchor" href="#next-steps-modeling-correlation-across-biomarkers"></a>
@@ -625,52 +661,81 @@ I_B =
 </annotation></semantics></math></p>
 <hr></section><section class="level2"><h2 id="extending-to-correlated-biomarkers">Extending to Correlated Biomarkers<a class="anchor" aria-label="anchor" href="#extending-to-correlated-biomarkers"></a>
 </h2>
-<p>Assume <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">P=3</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">B=3</annotation></semantics></math></p>
+<p>Assume <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>P</mi><mo>=</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">P=5</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>=</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">B=3</annotation></semantics></math></p>
 <p>Define:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>K</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>Σ</mi><mi>J</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
-\Sigma_K =
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><msub><mi>t</mi><mn>1</mn></msub><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>α</mi><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>y</mi><mn>1</mn></msub><mo>−</mo><msub><mi>y</mi><mn>0</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><msub><mi>t</mi><mn>1</mn></msub></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>α</mi></mrow></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mi>ρ</mi><mo>−</mo><mn>1</mn><mo>,</mo><mi>ρ</mi><mo>−</mo><mn>1</mn></mrow></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>,</mo><mspace width="1.0em"></mspace><msub><mi>Σ</mi><mi>B</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>τ</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
+\Sigma_P =
 \begin{bmatrix}
-\sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
-\sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\
-\sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33}
-\end{bmatrix},\quad
-\Sigma_J =
+\sigma_{y_0,y_0} &amp; \sigma_{y_0,y_1-y_0} &amp; \sigma_{y_0,t_1} &amp; \sigma_{y_0,\alpha} &amp; \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} &amp; \sigma_{y_1-y_0,y_1-y_0} &amp; \sigma_{y_1-y_0,t_1} &amp; \sigma_{y_1-y_0,\alpha} &amp; \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} &amp; \sigma_{t_1,y_1-y_0} &amp; \sigma_{t_1,t_1} &amp; \sigma_{t_1,\alpha} &amp; \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} &amp; \sigma_{\alpha,y_1-y_0} &amp; \sigma_{\alpha,t_1} &amp; \sigma_{\alpha,\alpha} &amp; \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} &amp; \sigma_{\rho-1,y_1-y_0} &amp; \sigma_{\rho-1,t_1} &amp; \sigma_{\rho-1,\alpha} &amp; \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
+\Sigma_B =
 \begin{bmatrix}
 \tau_{11} &amp; \tau_{12} &amp; \tau_{13} \\
 \tau_{21} &amp; \tau_{22} &amp; \tau_{23} \\
 \tau_{31} &amp; \tau_{32} &amp; \tau_{33}
 \end{bmatrix}
 </annotation></semantics></math></p>
-<hr></section><section class="level2"><h2 id="kronecker-product-structure-sigma_k-otimes-sigma_j">Kronecker Product Structure: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>K</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>J</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_K \otimes \Sigma_J</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#kronecker-product-structure-sigma_k-otimes-sigma_j"></a>
+<p>Here:</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\Sigma_P</annotation></semantics></math>: covariance across the 5 parameters (size <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math>)<br>
+</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math>: covariance across the <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>B</mi><annotation encoding="application/x-tex">B</annotation></semantics></math> biomarkers (size <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>×</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">B \times B</annotation></semantics></math>)</li>
+</ul>
+<hr></section><section class="level2"><h2 id="kronecker-product-structure-sigma_p-otimes-sigma_b">Kronecker Product Structure: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_P \otimes \Sigma_B</annotation></semantics></math><a class="anchor" aria-label="anchor" href="#kronecker-product-structure-sigma_p-otimes-sigma_b"></a>
 </h2>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>K</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>J</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>32</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub><msub><mi>Σ</mi><mi>J</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">
-\Sigma_K \otimes \Sigma_J =
-\begin{bmatrix}
-\sigma_{11}\Sigma_J &amp; \sigma_{12}\Sigma_J &amp; \sigma_{13}\Sigma_J \\
-\sigma_{21}\Sigma_J &amp; \sigma_{22}\Sigma_J &amp; \sigma_{23}\Sigma_J \\
-\sigma_{31}\Sigma_J &amp; \sigma_{32}\Sigma_J &amp; \sigma_{33}\Sigma_J
-\end{bmatrix}
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Cov</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">vec</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Θ</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B
 </annotation></semantics></math></p>
-<p>Now biomarkers and parameters can be correlated.</p>
-<hr></section><section class="level2"><h2 id="expanded-form-sigma_k-otimes-sigma_j-3x3">Expanded Form: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>K</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>J</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_K \otimes \Sigma_J</annotation></semantics></math> (3x3)<a class="anchor" aria-label="anchor" href="#expanded-form-sigma_k-otimes-sigma_j-3x3"></a>
-</h2>
-<p>The <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>9</mn><mo>×</mo><mn>9</mn></mrow><annotation encoding="application/x-tex">9 \times 9</annotation></semantics></math> matrix contains all combinations <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mi>a</mi><mi>b</mi></mrow></msub><msub><mi>τ</mi><mrow><mi>c</mi><mi>d</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sigma_{ab}\tau_{cd}</annotation></semantics></math></p>
-<p>Not block-diagonal — includes cross-biomarker correlation</p>
+<ul>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\Sigma_P</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>5</mn><mo>×</mo><mn>5</mn></mrow><annotation encoding="application/x-tex">5 \times 5</annotation></semantics></math> covariance across parameters<br>
+</li>
+<li>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math>: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>B</mi><mo>×</mo><mi>B</mi></mrow><annotation encoding="application/x-tex">B \times B</annotation></semantics></math> covariance across biomarkers<br>
+</li>
+<li>The Kronecker product expands to a <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><mn>5</mn><mi>B</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo>×</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>5</mn><mi>B</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(5B) \times (5B)</annotation></semantics></math> covariance matrix<br>
+</li>
+<li>Not block-diagonal — allows both parameter correlations <em>and</em> cross-biomarker correlations</li>
+</ul>
 <hr></section><section class="level2"><h2 id="practical-to-do-list-for-chapter-2">Practical To-Do List (for Chapter 2)<a class="anchor" aria-label="anchor" href="#practical-to-do-list-for-chapter-2"></a>
 </h2>
 <p><strong>Model Implementation:</strong></p>
 <ul>
-<li>Define full <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>J</mi></msub><annotation encoding="application/x-tex">\Sigma_J</annotation></semantics></math> and prior: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Σ</mi><mi>J</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>∼</mo><mi>𝒲</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>Ψ</mi><mo>,</mo><mi>ν</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Sigma_J^{-1} \sim \mathcal{W}(\Psi, \nu)</annotation></semantics></math><br>
+<li>Define parameter covariance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\Sigma_{P,j}</annotation></semantics></math> (within each biomarker <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>)<br>
 </li>
-<li>Implement <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>Σ</mi><mi>K</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>J</mi></msub></mrow><annotation encoding="application/x-tex">\Sigma_K \otimes \Sigma_J</annotation></semantics></math> in JAGS</li>
+<li>Define biomarker covariance <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math> (across biomarkers)<br>
+</li>
+<li>Full covariance structure: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">Cov</mtext><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">vec</mtext><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>θ</mi><mi>i</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>Σ</mi><mi>P</mi></msub><mo>⊗</mo><msub><mi>Σ</mi><mi>B</mi></msub></mrow><annotation encoding="application/x-tex">\text{Cov}(\text{vec}(\theta_i)) = \Sigma_P \otimes \Sigma_B</annotation></semantics></math><br>
+</li>
+<li>Priors: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Σ</mi><mrow><mi>P</mi><mo>,</mo><mi>j</mi></mrow><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>∼</mo><mi>𝒲</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Ω</mi><mi>j</mi></msub><mo>,</mo><msub><mi>ν</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)</annotation></semantics></math>, <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>Σ</mi><mi>B</mi><mrow><mi>−</mi><mn>1</mn></mrow></msubsup><mo>∼</mo><mi>𝒲</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>Ω</mi><mi>B</mi></msub><mo>,</mo><msub><mi>ν</mi><mi>B</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\Sigma_B^{-1} \sim \mathcal{W}(\Omega_B, \nu_B)</annotation></semantics></math>
+</li>
 </ul>
-<p><strong>Simulation + Validation:</strong></p>
+<p><strong>Simulation Study (first step):</strong></p>
 <ul>
-<li>Simulate individuals with correlated biomarkers<br>
+<li>Generate fake longitudinal data with known <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\Sigma_P</annotation></semantics></math> and <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math><br>
 </li>
-<li>Fit both block-diagonal and full-covariance models<br>
+<li>Fit independence model (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mi>B</mi></msub><annotation encoding="application/x-tex">I_B</annotation></semantics></math>) vs. correlated model (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>Σ</mi><mi>B</mi></msub><annotation encoding="application/x-tex">\Sigma_B</annotation></semantics></math>)<br>
 </li>
-<li>Compare fit: DIC, WAIC, predictive checks</li>
+<li>Evaluate recovery of true covariance structure</li>
+</ul>
+<p><strong>Validation on Real Data (next step):</strong></p>
+<ul>
+<li>Apply to Shigella longitudinal data<br>
+</li>
+<li>Compare independence vs. correlated models (DIC, WAIC, posterior predictive checks)<br>
+</li>
+<li>Summarize implications for epidemiologic utility</li>
+</ul>
+<p><strong>Deliverable:</strong></p>
+<ul>
+<li>Simulation + model comparison documented in a vignette for the serodynamics package</li>
 </ul>
 <div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list">
 <div id="ref-teunis2016" class="csl-entry" role="listitem">
