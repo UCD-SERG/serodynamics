@@ -1,5 +1,5 @@
 ---
-title: "Extending the Hierarchical Model for Antibody Kinetics"
+title: "Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Approach"
 author: "Kwan Ho Lee"
 institute: "UC Davis"
 date: today
@@ -19,11 +19,12 @@ env:
 
 ## Overview
 
--   Incorporates feedback from Dr. Morrison and Dr.Aiemjoy
--   Focus exclusively on [@teunis2016] model
--   Clarifies model dynamics: growth, clearance, decay
--   Uses updated parameter notation: $\mu_y$, $\mu_b$, $\gamma$, $\alpha$, $\rho$
--   Assumes block-diagonal covariance structure across biomarkers
+-   Incorporates feedback from Dr. Morrison and Dr. Aiemjoy\
+-   Builds on [@teunis2016] framework for antibody kinetics\
+-   Focus on covariance structure: parameter covariance within each biomarker ($\Sigma_{P,j}$, 5×5 per biomarker) and biomarker covariance across $j$ ($\Sigma_B$, across biomarkers)\
+-   Uses updated parameterization: $\log(y_0)$, $\log(y_1 - y_0)$, $\log(t_1)$, $\log(\alpha)$, $\log(\rho-1)$\
+-   Current stage: block-diagonal covariance (independent biomarkers)\
+-   Planned extension: full $\Sigma_B$ to capture correlation between biomarkers
 
 ------------------------------------------------------------------------
 
@@ -138,7 +139,7 @@ $$ {#eq-y1}
 ## Model Comparison: [@teunis2016] vs serodynamics
 
 | Component | [@teunis2016] | serodynamics |
-|--------------------|-----------------------------|-----------------------|
+|------------------------|------------------------|------------------------|
 | Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
 | Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
 | Antibody ODE (post-$t_1$) | $- \alpha y(t)^r$ | $- \alpha y(t)^\rho$ |
@@ -171,12 +172,15 @@ b_{0,ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-$$
+$$ **Where:**
+
+-   $\theta_{ij}$: parameter vector for subject $i$, biomarker $j$\
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{7 \times 7}$: covariance matrix **across parameters** for biomarker $j$
+    -   Subscript $P$: denotes that this is covariance over the **P parameters**\
+    -   Subscript $j$: indicates the biomarker index
 
 **Hyperparameters – Means:**
-
--   $\mu_j$: population-level mean vector for biomarker $j$
--   Prior on $\mu_j$:
 
 $$
 \mu_j \sim \mathcal{N}(\mu_{\text{hyp},j},\, \Omega_{\text{hyp},j})
@@ -235,13 +239,17 @@ $$
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix}
+\in \mathbb{R}^5
 $$ {#eq-10}
 
 Distribution:
 
 $$
 \theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_{P,j})
-$$
+$$ **Where:**
+
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{5 \times 5}$: covariance matrix **across the** $P=5$ parameters for biomarker $j$
 
 ------------------------------------------------------------------------
 
@@ -312,8 +320,8 @@ $$
 
 **Hyperparameters:**
 
--   $\mu_j$: population-level means (per biomarker $j$)
--   $\Sigma_j$: $5 \times 5$ covariance matrix over parameters
+-   $\mu_j$: population-level mean vector for biomarker $j$\
+-   $\Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5$: covariance matrix **across the parameters** for biomarker $j$
 
 ------------------------------------------------------------------------
 
@@ -334,7 +342,7 @@ $$
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix},
-\quad \Sigma_{P,j} \in \mathbb{R}^{5 \times 5}
+\quad \Sigma_{P,j} \in \mathbb{R}^{P \times P}, \; P=5
 $$
 
 Each subject $i$ has a unique 5-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
@@ -371,8 +379,8 @@ $$
 \Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
 $$
 
--   $\Sigma_j$: variability/covariance in subject-level parameters
--   $\Omega_j$: prior scale matrix
+-   $\Sigma_{P,j}$: $5 \times 5$ covariance matrix of subject-level parameters for biomarker $j$\
+-   $\Omega_j$: prior scale matrix (dimension $5 \times 5$)\
 -   $\nu_j$: degrees of freedom
 
 **Example:**
@@ -404,7 +412,7 @@ $$
 
 ## Matrix Algebra Computation
 
-Let $P = 5$ (parameters), $J$ biomarkers. Then:
+Let $P = 5$ (parameters), $B$ biomarkers. Then:
 
 $$
 \Theta_i =
@@ -440,18 +448,16 @@ $$
 
 ## Understanding $\text{vec}(\Theta_i)$
 
-Each $\theta_{ij} \in \mathbb{R}^7$:
+Each $\theta_{ij} \in \mathbb{R}^5$:
 
 $$
 \theta_{ij} =
 \begin{bmatrix}
-y_0 \\
-b_0 \\
-\mu_0 \\
-\mu_1 \\
-c \\
-\alpha \\
-r
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
 \end{bmatrix}
 $$
 
@@ -494,16 +500,20 @@ $$
 
 ------------------------------------------------------------------------
 
-## Example: Kronecker Product with $P=2$, $B=3$
+## Example: Kronecker Product with $P = 5$, $B = 3$
 
 Let:
 
 $$
 \Sigma_P =
 \begin{bmatrix}
-\sigma_{11} & \sigma_{12} \\
-\sigma_{21} & \sigma_{22}
-\end{bmatrix},\quad
+\sigma_{y_0,y_0} & \sigma_{y_0,y_1-y_0} & \sigma_{y_0,t_1} & \sigma_{y_0,\alpha} & \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} & \sigma_{y_1-y_0,y_1-y_0} & \sigma_{y_1-y_0,t_1} & \sigma_{y_1-y_0,\alpha} & \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} & \sigma_{t_1,y_1-y_0} & \sigma_{t_1,t_1} & \sigma_{t_1,\alpha} & \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} & \sigma_{\alpha,y_1-y_0} & \sigma_{\alpha,t_1} & \sigma_{\alpha,\alpha} & \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} & \sigma_{\rho-1,y_1-y_0} & \sigma_{\rho-1,t_1} & \sigma_{\rho-1,\alpha} & \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
 I_B =
 \begin{bmatrix}
 1 & 0 & 0 \\
@@ -515,7 +525,7 @@ $$
 Then:
 
 $$
-\Sigma_P \otimes I_B \in \mathbb{R}^{6 \times 6}
+\Sigma_P \otimes I_B \in \mathbb{R}^{15 \times 15}
 $$
 
 ------------------------------------------------------------------------
@@ -525,12 +535,21 @@ $$
 $$
 \Sigma_P \otimes I_B =
 \begin{bmatrix}
-\sigma_{11} & 0 & 0 & \sigma_{12} & 0 & 0 \\
-0 & \sigma_{11} & 0 & 0 & \sigma_{12} & 0 \\
-0 & 0 & \sigma_{11} & 0 & 0 & \sigma_{12} \\
-\sigma_{21} & 0 & 0 & \sigma_{22} & 0 & 0 \\
-0 & \sigma_{21} & 0 & 0 & \sigma_{22} & 0 \\
-0 & 0 & \sigma_{21} & 0 & 0 & \sigma_{22}
+\Sigma_P & 0 & 0 \\
+0 & \Sigma_P & 0 \\
+0 & 0 & \Sigma_P
+\end{bmatrix}
+\in \mathbb{R}^{15 \times 15}
+$$
+
+where each block $\Sigma_P$ is the $5 \times 5$ covariance across parameters:
+
+$$
+\Sigma_P =
+\begin{bmatrix}
+\sigma_{y_0,y_0} & \cdots & \sigma_{y_0,\rho-1} \\
+\vdots & \ddots & \vdots \\
+\sigma_{\rho-1,y_0} & \cdots & \sigma_{\rho-1,\rho-1}
 \end{bmatrix}
 $$
 
@@ -554,18 +573,21 @@ $$
 
 ## Extending to Correlated Biomarkers
 
-Assume $P=3$, $B=3$
+Assume $P=5$, $B=3$
 
 Define:
 
 $$
-\Sigma_K =
+\Sigma_P =
 \begin{bmatrix}
-\sigma_{11} & \sigma_{12} & \sigma_{13} \\
-\sigma_{21} & \sigma_{22} & \sigma_{23} \\
-\sigma_{31} & \sigma_{32} & \sigma_{33}
-\end{bmatrix},\quad
-\Sigma_J =
+\sigma_{y_0,y_0} & \sigma_{y_0,y_1-y_0} & \sigma_{y_0,t_1} & \sigma_{y_0,\alpha} & \sigma_{y_0,\rho-1} \\
+\sigma_{y_1-y_0,y_0} & \sigma_{y_1-y_0,y_1-y_0} & \sigma_{y_1-y_0,t_1} & \sigma_{y_1-y_0,\alpha} & \sigma_{y_1-y_0,\rho-1} \\
+\sigma_{t_1,y_0} & \sigma_{t_1,y_1-y_0} & \sigma_{t_1,t_1} & \sigma_{t_1,\alpha} & \sigma_{t_1,\rho-1} \\
+\sigma_{\alpha,y_0} & \sigma_{\alpha,y_1-y_0} & \sigma_{\alpha,t_1} & \sigma_{\alpha,\alpha} & \sigma_{\alpha,\rho-1} \\
+\sigma_{\rho-1,y_0} & \sigma_{\rho-1,y_1-y_0} & \sigma_{\rho-1,t_1} & \sigma_{\rho-1,\alpha} & \sigma_{\rho-1,\rho-1}
+\end{bmatrix},
+\quad
+\Sigma_B =
 \begin{bmatrix}
 \tau_{11} & \tau_{12} & \tau_{13} \\
 \tau_{21} & \tau_{22} & \tau_{23} \\
@@ -573,28 +595,23 @@ $$
 \end{bmatrix}
 $$
 
-------------------------------------------------------------------------
+Here:
 
-## Kronecker Product Structure: $\Sigma_K \otimes \Sigma_J$
-
-$$
-\Sigma_K \otimes \Sigma_J =
-\begin{bmatrix}
-\sigma_{11}\Sigma_J & \sigma_{12}\Sigma_J & \sigma_{13}\Sigma_J \\
-\sigma_{21}\Sigma_J & \sigma_{22}\Sigma_J & \sigma_{23}\Sigma_J \\
-\sigma_{31}\Sigma_J & \sigma_{32}\Sigma_J & \sigma_{33}\Sigma_J
-\end{bmatrix}
-$$
-
-Now biomarkers and parameters can be correlated.
+-   $\Sigma_P$: covariance across the 5 parameters (size $5 \times 5$)\
+-   $\Sigma_B$: covariance across the $B$ biomarkers (size $B \times B$)
 
 ------------------------------------------------------------------------
 
-## Expanded Form: $\Sigma_K \otimes \Sigma_J$ (3x3)
+## Kronecker Product Structure: $\Sigma_P \otimes \Sigma_B$
 
-The $9 \times 9$ matrix contains all combinations $\sigma_{ab}\tau_{cd}$
+$$
+\text{Cov}(\text{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B
+$$
 
-Not block-diagonal — includes cross-biomarker correlation
+-   $\Sigma_P$: $5 \times 5$ covariance across parameters\
+-   $\Sigma_B$: $B \times B$ covariance across biomarkers\
+-   The Kronecker product expands to a $(5B) \times (5B)$ covariance matrix\
+-   Not block-diagonal — allows both parameter correlations *and* cross-biomarker correlations
 
 ------------------------------------------------------------------------
 
@@ -602,11 +619,23 @@ Not block-diagonal — includes cross-biomarker correlation
 
 **Model Implementation:**
 
--   Define full $\Sigma_J$ and prior: $\Sigma_J^{-1} \sim \mathcal{W}(\Psi, \nu)$\
--   Implement $\Sigma_K \otimes \Sigma_J$ in JAGS
+-   Define parameter covariance $\Sigma_{P,j}$ (within each biomarker $j$)\
+-   Define biomarker covariance $\Sigma_B$ (across biomarkers)\
+-   Full covariance structure: $\text{Cov}(\text{vec}(\theta_i)) = \Sigma_P \otimes \Sigma_B$\
+-   Priors: $\Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)$, $\Sigma_B^{-1} \sim \mathcal{W}(\Omega_B, \nu_B)$
 
-**Simulation + Validation:**
+**Simulation Study (first step):**
 
--   Simulate individuals with correlated biomarkers\
--   Fit both block-diagonal and full-covariance models\
--   Compare fit: DIC, WAIC, predictive checks
+-   Generate fake longitudinal data with known $\Sigma_P$ and $\Sigma_B$\
+-   Fit independence model ($I_B$) vs. correlated model ($\Sigma_B$)\
+-   Evaluate recovery of true covariance structure
+
+**Validation on Real Data (next step):**
+
+-   Apply to Shigella longitudinal data\
+-   Compare independence vs. correlated models (DIC, WAIC, posterior predictive checks)\
+-   Summarize implications for epidemiologic utility
+
+**Deliverable:**
+
+-   Simulation + model comparison documented in a vignette for the serodynamics package
