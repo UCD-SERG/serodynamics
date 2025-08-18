@@ -161,7 +161,7 @@ $$ {#eq-y1}
 **Subject-level parameters:**
 
 $$
-\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} =
 \begin{bmatrix}
 y_{0,ij} \\
 b_{0,ij} \\
@@ -240,7 +240,7 @@ $$ {#eq-10}
 Distribution:
 
 $$
-\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_{P,j})
 $$
 
 ------------------------------------------------------------------------
@@ -307,7 +307,7 @@ $$
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix}
-\sim \mathcal{N}(\mu_j,\, \Sigma_j)
+\sim \mathcal{N}(\mu_j,\, \Sigma_{P,j})
 $$
 
 **Hyperparameters:**
@@ -320,7 +320,7 @@ $$
 ## Subject-Level Parameters: $\theta_{ij}$
 
 $$
-\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} \in \mathbb{R}^5
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} \in \mathbb{R}^5
 $$
 
 **Where:**
@@ -334,7 +334,7 @@ $$
 \log(\alpha_{ij}) \\
 \log(\rho_{ij} - 1)
 \end{bmatrix},
-\quad \Sigma_j \in \mathbb{R}^{5 \times 5}
+\quad \Sigma_{P,j} \in \mathbb{R}^{5 \times 5}
 $$
 
 Each subject $i$ has a unique 5-parameter vector per biomarker $j$, capturing individual-level variation in antibody dynamics.
@@ -368,7 +368,7 @@ $$
 **Covariance across parameters:**
 
 $$
-\Sigma_j^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+\Sigma_{P,j}^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
 $$
 
 -   $\Sigma_j$: variability/covariance in subject-level parameters
