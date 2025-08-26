@@ -15,7 +15,6 @@ format:
     echo: false
     # fig-format: svg # seems to break things
     fig-dpi: 600
-    # dpi: 300
     toc-depth: 4
     cap-location: top
     fig-cap-location: top
@@ -24,8 +23,8 @@ format:
     number-sections: false
     number-depth: 3
     link-citations: true
-    # date: last-modified
-    # date-format: "[Last modified:] YYYY-MM-DD: H:mm:ss (A)"
+    date: last-modified
+    date-format: "[Last modified:] YYYY-MM-DD: H:mm:ss (A)"
     embed-resources: false
     appendix-style: plain
     mainfont: serif

@@ -23,3 +23,5 @@ inst/doc
 vignettes/*.pdf
 vignettes/*.tex
 docs/
+
+/.quarto/
