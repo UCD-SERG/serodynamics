@@ -1,0 +1,10 @@
+pandoc: 3.1.11
+pkgdown: 2.1.3.9000
+pkgdown_sha: 290661e6bf8dc6bcb4eb738939c5fcc2f52a3247
+articles:
+  dobson: dobson.html
+  articles/test-snippets: test-snippets.html
+last_built: 2025-08-26T18:08Z
+urls:
+  reference: https:/ucd-serg.github.io/serodynamics/preview/pr132/reference
+  article: https:/ucd-serg.github.io/serodynamics/preview/pr132/articles
