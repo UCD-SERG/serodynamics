@@ -26,3 +26,4 @@
 ^vignettes/\.quarto$
 ^vignettes/*_files$
 
+^_quarto\.yml$
