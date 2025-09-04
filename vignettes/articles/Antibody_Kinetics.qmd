@@ -11,6 +11,11 @@ format:
     keep-tex: true
     toc: false
     incremental: false
+  pdf:
+    documentclass: article
+    keep-tex: true
+    toc: false
+    number-sections: true
 engine: knitr
 bibliography: references.bib
 env:
