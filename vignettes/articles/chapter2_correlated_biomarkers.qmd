@@ -438,7 +438,7 @@ This is how a person’s latent kinetics (e.g., $y_0, y_1, t_1, r, \alpha$) are 
   \varepsilon_{i\ell j} \sim \mathcal{N}(0, \sigma_j)
   $$
 
-Here $\mu_x(\cdot)$ is your antibody kinetics function (rise/decay, etc.). Noise $\sigma_j$ is assay/measurement variability.
+Here $\mu_x(\cdot)$ is our antibody kinetics function (rise/decay, etc.). Noise $\sigma_j$ is assay/measurement variability.
 
 ------------------------------------------------------------------------
 
@@ -499,7 +499,7 @@ p(\theta_{\text{new},j} \mid X_j)
 \; p(\mu_j, \Sigma_{p,j} \mid X_j) \; d\mu_j \, d\Sigma_{p,j}
 $$
 
-Key points: - **Independence given the population:** once you condition on $(\mu_j,\Sigma_{p,j})$, a brand-new person is independent of the existing data. $$
+Key points: - **Independence given the population:** once we condition on $(\mu_j,\Sigma_{p,j})$, a brand-new person is independent of the existing data. $$
   p(\theta_{\text{new},j}\mid \mu_j,\Sigma_{p,j}, X_j)
   = p(\theta_{\text{new},j}\mid \mu_j,\Sigma_{p,j})
   $$ - **Two sources of uncertainty included:** 1. *Population uncertainty*: we don’t know the exact $\mu_j$ or $\Sigma_{p,j}$; we have a posterior over them.\
@@ -515,20 +515,20 @@ So “new person” is **wider** than “just the mean” because it includes bo
 
 #### B. “Population”
 
-When you show the *population* summary, you are typically visualizing $\mu_j$ (and maybe an uncertainty band for $\mu_j$ itself). This reflects uncertainty in the mean but **does not** add the between-person scatter $\Sigma_{p,j}$.
+When we show the *population* summary, we are typically visualizing $\mu_j$ (and maybe an uncertainty band for $\mu_j$ itself). This reflects uncertainty in the mean but **does not** add the between-person scatter $\Sigma_{p,j}$.
 
 -   **Population curve:** plug $\mu_j$ into kinetics function: $t \mapsto \mu_x(\mu_j, t)$\
 -   **Population uncertainty band:** variation across posterior draws of $\mu_j$ only\
--   **No person-to-person wiggle:** you don’t add $\Sigma_{p,j}$ here
+-   **No person-to-person wiggle:** we don’t add $\Sigma_{p,j}$ here
 
-**Rule of thumb:** - Use *population* when you want the **typical (mean) kinetics**.\
-- Use *new person* when you want what you’d expect for a **random individual**.
+**Rule of thumb:** - Use *population* when we want the **typical (mean) kinetics**.\
+- Use *new person* when we want what we’d expect for a **random individual**.
 
 ------------------------------------------------------------------------
 
 ### 4) Why the posterior for $(\mu_j, \Sigma_{p,j})$ isn’t “just the average of individual fits”
 
-A common misconception: if you fit each person separately and then average, you do **not** recover the hierarchical posterior.
+A common misconception: if we fit each person separately and then average, we do **not** recover the hierarchical posterior.
 
 Why not? - **Shrinkage:** noisy individual estimates are “pulled” toward the group mean.\
 - **Priors matter:** the hierarchical prior interacts with the likelihood.\
