@@ -555,8 +555,8 @@ $$
 
 -   **Black (top):** $p(\theta_{\text{new},j}\mid X_j)$ = new person posterior predictive\
 -   **Red:** $\color{red}{p(\mu_j,\Sigma_{p,j}\mid X_j)}$ = posterior for population parameters\
--   **Blue:** $\color{blue}{p(X_j\mid\mu_j,\Sigma_{p,j})} = \prod_i p(X_{ij}\mid\mu_j,\Sigma_{p,j})$ = product over people\
--   **Green:** $\color{green}{p(X_{ij}\mid\mu_j,\Sigma_{p,j})} = \int \color{orange}{p(X_{ij}\mid \theta_{ij})} p(\theta_{ij}\mid\mu_j,\Sigma_{p,j}) d\theta_{ij}$ = integrate out each person\
+-   **Blue:** ${\color{blue}{p(X_j\mid\mu_j,\Sigma_{p,j})}} = \prod_i p(X_{ij}\mid\mu_j,\Sigma_{p,j})$ = product over people\
+-   **Green:** ${\color{green}{p(X_{ij}\mid\mu_j,\Sigma_{p,j})}} = \int {\color{orange}{p(X_{ij}\mid \theta_{ij})}} p(\theta_{ij}\mid\mu_j,\Sigma_{p,j}) d\theta_{ij}$ = integrate out each person\
 -   **Orange:** $\color{orange}{p(X_{ij}\mid\theta_{ij})}$ = observation model
 
 ------------------------------------------------------------------------
