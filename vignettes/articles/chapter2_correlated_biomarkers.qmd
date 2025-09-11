@@ -3,18 +3,23 @@ title: "Modeling Correlation in Antibody Kinetics: A Hierarchical Bayesian Appro
 author: "Kwan Ho Lee"
 institute: "UC Davis"
 date: today
-format: 
-  html: default
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left          
+    highlight-style: tango
+    number-sections: false
+    embed-resources: true   # <- pack images/CSS/JS into the HTML
   beamer:
     theme: Madrid
     slide-level: 2
     keep-tex: true
     toc: false
     incremental: false
+    highlight-style: tango
 engine: knitr
 bibliography: references.bib
-env:
-  PAK_CACHE_DISABLE: "true"
 ---
 
 ## Overview
@@ -407,6 +412,152 @@ $$
 
 -   $\tau_j$: shared measurement precision for biomarker $j$
 -   Gamma prior allows flexible noise modeling
+
+------------------------------------------------------------------------
+
+------------------------------------------------------------------------
+
+## Intuition: Full Walkthrough of the Hierarchical Model
+
+### 1) The three “levels” in our hierarchical model
+
+Think of one biomarker (one antigen–isotype) at a time; call it biomarker $j$.
+
+**Level A — population (hyper-parameters):** - Mean vector across people: $\mu_j$ - Between-person covariance for that biomarker’s kinetics parameters: $\Sigma_{p,j}$
+
+These say how people’s true kinetic parameters vary in the population.
+
+**Level B — person-specific (random effects):** - For person $i$, their true parameter vector: $\theta_{ij}$ - Assumed distribution: $$
+  \theta_{ij} \mid \mu_j, \Sigma_{p,j} \sim \mathcal{N}(\mu_j, \Sigma_{p,j})
+  $$
+
+This is how a person’s latent kinetics (e.g., $y_0, y_1, t_1, r, \alpha$) are drawn from the population.
+
+**Level C — observed data (measurement model):** - At each visit $t_{i\ell}$ for person $i$ we observe $x_{i\ell j}$. - The model says the observation is the true kinetics curve at that time plus noise: $$
+  x_{i\ell j} = \mu_x(\theta_{ij}, t_{i\ell}) + \varepsilon_{i\ell j}, \qquad
+  \varepsilon_{i\ell j} \sim \mathcal{N}(0, \sigma_j)
+  $$
+
+Here $\mu_x(\cdot)$ is your antibody kinetics function (rise/decay, etc.). Noise $\sigma_j$ is assay/measurement variability.
+
+------------------------------------------------------------------------
+
+### 2) What we learn from the data (Bayes’ rule)
+
+Let $X_j$ denote all the observed measurements for biomarker $j$ (every person, every timepoint).
+
+Bayes gives the posterior for the *population* parameters:
+
+$$
+{\color{red}{p(\mu_j, \Sigma_{p,j} \mid X_j)}}
+\;\propto\;
+{\color{blue}{p(X_j \mid \mu_j, \Sigma_{p,j})}}\;
+{{p(\mu_j, \Sigma_{p,j})}}
+$$
+
+-   **Posterior (red)** = **marginal likelihood (blue)** $\times$ **prior**
+
+The “marginal likelihood” (blue) means:
+
+1.  **The product over people:** $$
+    {\color{blue}{p(X_j \mid \mu_j, \Sigma_{p,j})}}
+    \;=\;
+    \prod_{i=1}^n {\color{green}{p(X_{ij} \mid \mu_j, \Sigma_{p,j})}}
+    $$
+
+2.  **For each person, we integrate out their latent** $\theta_{ij}$ (green with orange observation term): $$
+    {\color{green}{p(X_{ij} \mid \mu_j, \Sigma_{p,j})}}
+    \;=\;
+    \int {\color{orange}{p(X_{ij} \mid \theta_{ij})}}\;
+    p(\theta_{ij} \mid \mu_j, \Sigma_{p,j})\; d\theta_{ij}
+    $$
+
+The orange bit ${\color{orange}{p(X_{ij}\mid \theta_{ij})}}$ is the observation model above.
+
+**Plain-English translation:** to evaluate how plausible ${{(\mu_j,\Sigma_{p,j})}}$ is, we ask:\
+*“If the population mean/covariance were* ${{(\mu_j,\Sigma_{p,j})}}$*, how likely are the data we saw?”*
+
+Because each person has their own unknown $\theta_{ij}$, we average (integrate) over all plausible $\theta_{ij}$ values.\
+That’s what the integral means: **average over person-level uncertainty.**
+
+Those integrals are rarely doable by hand, which is why we use **MCMC**: JAGS/Stan numerically “do the integrals” by sampling.
+
+------------------------------------------------------------------------
+
+### 3) “New person” vs “Population”: what are they?
+
+These two are *predictive* objects we care about **after** we’ve learned from the data.
+
+#### A. “New person” (what Teunis calls *newperson*)
+
+This is the posterior predictive distribution of the parameters for a hypothetical new subject with no observed data, given what we learned about the population:
+
+$$
+p(\theta_{\text{new},j} \mid X_j)
+=
+\int p(\theta_{\text{new},j} \mid \mu_j, \Sigma_{p,j})
+\; p(\mu_j, \Sigma_{p,j} \mid X_j) \; d\mu_j \, d\Sigma_{p,j}
+$$
+
+Key points: - **Independence given the population:** once you condition on $(\mu_j,\Sigma_{p,j})$, a brand-new person is independent of the existing data. $$
+  p(\theta_{\text{new},j}\mid \mu_j,\Sigma_{p,j}, X_j)
+  = p(\theta_{\text{new},j}\mid \mu_j,\Sigma_{p,j})
+  $$ - **Two sources of uncertainty included:** 1. *Population uncertainty*: we don’t know the exact $\mu_j$ or $\Sigma_{p,j}$; we have a posterior over them.\
+2. *Individual-to-individual variability*: even if $(\mu_j, \Sigma_{p,j})$ were known, a random person’s $\theta_{\text{new},j}$ varies around $\mu_j$ with covariance $\Sigma_{p,j}$.
+
+So “new person” is **wider** than “just the mean” because it includes both.
+
+**How to actually sample new person from MCMC draws:** 1. From posterior draws $s=1,\dots,S$: take $\mu_j^{(s)}, \Sigma_{p,j}^{(s)}$.\
+2. Draw a personal parameter: $\theta_{\text{new},j}^{(s)} \sim \mathcal{N}(\mu_j^{(s)}, \Sigma_{p,j}^{(s)})$.\
+3. Optionally simulate data: $x_{\text{new}}^{(s)}(t) = \mu_x(\theta_{\text{new},j}^{(s)}, t) + \varepsilon^{(s)}$.
+
+------------------------------------------------------------------------
+
+#### B. “Population”
+
+When you show the *population* summary, you are typically visualizing $\mu_j$ (and maybe an uncertainty band for $\mu_j$ itself). This reflects uncertainty in the mean but **does not** add the between-person scatter $\Sigma_{p,j}$.
+
+-   **Population curve:** plug $\mu_j$ into kinetics function: $t \mapsto \mu_x(\mu_j, t)$\
+-   **Population uncertainty band:** variation across posterior draws of $\mu_j$ only\
+-   **No person-to-person wiggle:** you don’t add $\Sigma_{p,j}$ here
+
+**Rule of thumb:** - Use *population* when you want the **typical (mean) kinetics**.\
+- Use *new person* when you want what you’d expect for a **random individual**.
+
+------------------------------------------------------------------------
+
+### 4) Why the posterior for $(\mu_j, \Sigma_{p,j})$ isn’t “just the average of individual fits”
+
+A common misconception: if you fit each person separately and then average, you do **not** recover the hierarchical posterior.
+
+Why not? - **Shrinkage:** noisy individual estimates are “pulled” toward the group mean.\
+- **Priors matter:** the hierarchical prior interacts with the likelihood.\
+- **Nonlinearity:** averaging nonlinear fits ≠ hierarchical inference.
+
+------------------------------------------------------------------------
+
+### 5) Where MCMC actually happens (and why “new person” doesn’t need more MCMC)
+
+The hard part is sampling:
+
+$$
+p(\mu_j, \Sigma_{p,j}, \{\theta_{ij}\}_{i=1}^n \mid X_j)
+$$
+
+-   The integrals over $\theta_{ij}$ and the denominator $p(X_j)$ are what MCMC approximates.\
+-   Once we have posterior draws of $(\mu_j, \Sigma_{p,j})$, sampling a “new person” is **independent Monte Carlo**: $$
+    \theta_{\text{new},j}^{(s)} \sim \mathcal{N}(\mu_j^{(s)}, \Sigma_{p,j}^{(s)})
+    $$ No further Markov chain needed.
+
+------------------------------------------------------------------------
+
+### 6) Connecting colors in the figure to the story
+
+-   **Black (top):** $p(\theta_{\text{new},j}\mid X_j)$ = new person posterior predictive\
+-   **Red:** $\color{red}{p(\mu_j,\Sigma_{p,j}\mid X_j)}$ = posterior for population parameters\
+-   **Blue:** $\color{blue}{p(X_j\mid\mu_j,\Sigma_{p,j})} = \prod_i p(X_{ij}\mid\mu_j,\Sigma_{p,j})$ = product over people\
+-   **Green:** $\color{green}{p(X_{ij}\mid\mu_j,\Sigma_{p,j})} = \int \color{orange}{p(X_{ij}\mid \theta_{ij})} p(\theta_{ij}\mid\mu_j,\Sigma_{p,j}) d\theta_{ij}$ = integrate out each person\
+-   **Orange:** $\color{orange}{p(X_{ij}\mid\theta_{ij})}$ = observation model
 
 ------------------------------------------------------------------------
 
