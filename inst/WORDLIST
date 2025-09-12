@@ -2,11 +2,16 @@ Biomarker
 CMD
 CodeFactor
 Codecov
+HlyE
 Hyperpriors
+IgA
+IgG
+Iso
 JAGs
 Lifecycle
 Postprocess
 Rhat
+TSI
 Traceplots
 behaviour
 biomarker
@@ -26,7 +31,12 @@ isotype
 isotypes
 mathcal
 mcmc
+mergine
 nmc
+<<<<<<< HEAD
+=======
+npl
+>>>>>>> d0c5aec9a60c1db30076e15b404f82261354cd3a
 overfit
 params
 prec
@@ -43,12 +53,5 @@ stratifications
 tbl
 tibble
 unstratified
+vectorized
 wishdf
-dayssincefeveronset
-ggplot
-tibble
-HlyE
-IgA
-IgG
-newpage
-npl

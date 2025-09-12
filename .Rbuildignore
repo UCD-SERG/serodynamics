@@ -24,5 +24,7 @@
 ^\.lintr\.R$
 ^_extensions$
 ^vignettes/\.quarto$
-^vignettes/*_files$
+^vignettes/.*_files$
 
+^_quarto\.yml$
+^\.quarto$
