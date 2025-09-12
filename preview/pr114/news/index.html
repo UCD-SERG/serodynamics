@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9038</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9041</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,48 +48,8 @@
 <ul><li>Initial CRAN submission.</li>
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Creating default print.sr_model function for sr_model class (<a href="https://github.com/UCD-SERG/serodynamics/issues/114" class="external-link">#114</a>)</li>
-<li>Added support for faceting by multiple IDs in <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code>:
-<ul><li>New <code>facet_by_id</code> argument allows faceted plots by participant ID.</li>
-</ul></li>
-<li>Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
-<li>Replacing old data object with new run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/102" class="external-link">#102</a>)</li>
-<li>Adding class assignment to run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/76" class="external-link">#76</a>)</li>
-<li>Making prep_priors modifiable (<a href="https://github.com/UCD-SERG/serodynamics/issues/78" class="external-link">#78</a>)</li>
-<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> output:
-<ul><li>Taking out <code>include_subs</code> as an input option, default will include all individuals</li>
-<li>Making a single tbl as output</li>
-<li>All other pieces will be attributes.</li>
-</ul></li>
-<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
-<ul><li>
-<code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
-</li>
-<li>all subjects now optionally included in <code>curve_params</code> output component, as specified by argument <code>include_subs</code>
-</li>
-</ul></li>
-<li>Diagnostic function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>)</li>
-<li>Added function for summarizing estimates in a table (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>)</li>
-<li>Diagnostic trace plot function with strat (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>)</li>
-<li>Diagnostic function to produce effective sample size plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/66" class="external-link">#66</a>)</li>
-<li>Diagnostic function to produce density plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/27" class="external-link">#27</a>)</li>
-<li>Added SEES data set data folder and documentation (<a href="https://github.com/UCD-SERG/serodynamics/issues/41" class="external-link">#41</a>)</li>
-<li>Fixing SEES data and added jags_post for SEES (<a href="https://github.com/UCD-SERG/serodynamics/issues/63" class="external-link">#63</a>)</li>
-<li>
-<code><a href="../reference/as_case_data.html">as_case_data()</a></code> now creates column <code>visit_num</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/47" class="external-link">#47</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/50" class="external-link">#50</a>)</li>
-<li>Added <code><a href="../reference/postprocess_jags_output.html">postprocess_jags_output()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/33" class="external-link">#33</a>)</li>
-<li>Added <code><a href="../reference/initsfunction.html">initsfunction()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/37" class="external-link">#37</a>)</li>
-<li>Added participant IDs as names to <code>nsmpl</code> element of <code><a href="../reference/prep_data.html">prep_data()</a></code> output (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
-<li>Added <code><a href="../reference/initsfunction.html">initsfunction()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/37" class="external-link">#37</a>)</li>
-<li>Added <code><a href="../reference/as_case_data.html">as_case_data()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/31" class="external-link">#31</a>)</li>
-<li>Added <code><a href="../reference/prep_priors.html">prep_priors()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/30" class="external-link">#30</a>)</li>
-<li>Added <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> method for <code>case_data</code> objects (<a href="https://github.com/UCD-SERG/serodynamics/issues/28" class="external-link">#28</a>)</li>
-<li>Added examples for <code>sim_pop_data()</code>, <code><a href="../reference/autoplot.case_data.html">autoplot.case_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/18" class="external-link">#18</a>)</li>
-<li>Added attributes as a return to the run_mod function (<a href="https://github.com/UCD-SERG/serodynamics/issues/24" class="external-link">#24</a>)</li>
-<li>exported <code><a href="../reference/run_mod.html">run_mod()</a></code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/22" class="external-link">#22</a>)</li>
-<li>Function that runs jags with option of stratification included. (<a href="https://github.com/UCD-SERG/serodynamics/issues/14" class="external-link">#14</a>)</li>
-<li>Changed package name to serodynamics. (<a href="https://github.com/UCD-SERG/serodynamics/issues/19" class="external-link">#19</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/20" class="external-link">#20</a>)</li>
-</ul></div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD * Creating default print.sr_model function for sr_model class (<a href="https://github.com/UCD-SERG/serodynamics/issues/114" class="external-link">#114</a>) * Including fitted and residual values as data frame in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/101" class="external-link">#101</a>) * Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> with support for faceting by multiple IDs (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>) * Replacing old data object with new run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/102" class="external-link">#102</a>) * Adding class assignment to run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/76" class="external-link">#76</a>) * Making prep_priors modifiable (<a href="https://github.com/UCD-SERG/serodynamics/issues/78" class="external-link">#78</a>) * Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> output: - Taking out <code>include_subs</code> as an input option, default will include all individuals - Making a single tbl as output - All other pieces will be attributes. * Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>): - <code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code> - all subjects now optionally included in <code>curve_params</code> output component, as specified by argument <code>include_subs</code> * Diagnostic function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>) * Added function for summarizing estimates in a table (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>) * Diagnostic trace plot function with strat (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>) * Diagnostic function to produce effective sample size plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/66" class="external-link">#66</a>) * Diagnostic function to produce density plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/27" class="external-link">#27</a>) * Added SEES data set data folder and documentation (<a href="https://github.com/UCD-SERG/serodynamics/issues/41" class="external-link">#41</a>) * Fixing SEES data and added jags_post for SEES (<a href="https://github.com/UCD-SERG/serodynamics/issues/63" class="external-link">#63</a>) * <code><a href="../reference/as_case_data.html">as_case_data()</a></code> now creates column <code>visit_num</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/47" class="external-link">#47</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/50" class="external-link">#50</a>) * Added <code><a href="../reference/postprocess_jags_output.html">postprocess_jags_output()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/33" class="external-link">#33</a>) * Added <code><a href="../reference/initsfunction.html">initsfunction()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/37" class="external-link">#37</a>) * Added participant IDs as names to <code>nsmpl</code> element of <code><a href="../reference/prep_data.html">prep_data()</a></code> output (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>) * Added <code><a href="../reference/initsfunction.html">initsfunction()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/37" class="external-link">#37</a>) * Added <code><a href="../reference/as_case_data.html">as_case_data()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/31" class="external-link">#31</a>) * Added <code><a href="../reference/prep_priors.html">prep_priors()</a></code> to API (<a href="https://github.com/UCD-SERG/serodynamics/issues/30" class="external-link">#30</a>) * Added <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> method for <code>case_data</code> objects (<a href="https://github.com/UCD-SERG/serodynamics/issues/28" class="external-link">#28</a>) * Added examples for <code>sim_pop_data()</code>, <code><a href="../reference/autoplot.case_data.html">autoplot.case_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/18" class="external-link">#18</a>) * Added attributes as a return to the run_mod function (<a href="https://github.com/UCD-SERG/serodynamics/issues/24" class="external-link">#24</a>) * exported <code><a href="../reference/run_mod.html">run_mod()</a></code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/22" class="external-link">#22</a>) * Function that runs jags with option of stratification included. (<a href="https://github.com/UCD-SERG/serodynamics/issues/14" class="external-link">#14</a>) * Changed package name to serodynamics. (<a href="https://github.com/UCD-SERG/serodynamics/issues/19" class="external-link">#19</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/20" class="external-link">#20</a>)</p>
+</div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
 <p>None yet</p>
@@ -97,7 +57,7 @@
 <div class="section level3">
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>
 <ul><li>vectorized <code>ab()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/116" class="external-link">#116</a>)</li>
-<li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Added <code>lintr::undesirable_function_linter()</code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
 <li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>

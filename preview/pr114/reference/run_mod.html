@@ -29,7 +29,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9038</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9041</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -214,15 +214,17 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <li><p><code>nParameters</code>: The amount of parameters estimated in the model.</p></li>
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
-<li><p><code>nThin</code>: Thinning number (niter/nmc)</p></li>
+<li><p><code>nThin</code>: Thinning number (niter/nmc).</p></li>
 <li><p><code>priors</code>: A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> that summarizes the input priors, including:</p><ul><li><p><code>mu_hyp_param</code></p></li>
 <li><p><code>prec_hyp_param</code></p></li>
 <li><p><code>omega_param</code></p></li>
 <li><p><code>wishdf</code></p></li>
 <li><p><code>prec_logy_hyp_param</code></p></li>
+</ul></li>
+<li><p><code>fitted_residuals</code>: A <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> containing fitted and residual values
+for all observations.</p></li>
 <li><p>An optional <code>"jags.post"</code> attribute, included when argument
 <code>with_post</code> = TRUE.</p></li>
-</ul></li>
 </ul></li>
 </ul></div>
     <div class="section level2">
@@ -267,7 +269,7 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Aug  8 08:20:33 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Sep 12 21:45:59 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -293,7 +295,6 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -302,7 +303,7 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Aug  8 08:21:20 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Sep 12 21:46:47 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
