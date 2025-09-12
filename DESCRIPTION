@@ -1,10 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-<<<<<<< HEAD
-Version: 0.0.0.9038
-=======
 Version: 0.0.0.9041
->>>>>>> d0c5aec9a60c1db30076e15b404f82261354cd3a
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
