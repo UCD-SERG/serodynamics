@@ -33,7 +33,10 @@ mathcal
 mcmc
 mergine
 nmc
+<<<<<<< HEAD
+=======
 npl
+>>>>>>> d0c5aec9a60c1db30076e15b404f82261354cd3a
 overfit
 params
 prec
@@ -44,6 +47,7 @@ seroconversion
 serocourse
 seroresponse
 seroresponses
+sr
 strat
 stratifications
 tbl
