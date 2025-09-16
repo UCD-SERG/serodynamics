@@ -1,0 +1,325 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+## load packages and data
+```{r}
+
+library(tidyverse)
+#library(serocalculator)
+load_all()
+
+# install.packages("pak")
+#pak::pak("UCD-SERG/serodynamics")
+
+# Generate a sequence of time points
+tx2 <- 10^seq(-1, 3, 0.025)
+#tx2 <- seq(0, 1500, by = 1)
+
+#load SEES data and prepare 
+# d0 <- 
+#   read.csv("~/Library/CloudStorage/OneDrive-UCDavisHealth/Research/EF_Serosurveillance/SEES_Analyses/From JS/SEES elisa data/elisa_2021-05-13.csv") %>% #lancet microbe bangladesh reproduce
+#   #read.csv("~/Documents/GitHub/serodynamics/inst/extdata/elisa_clean_2024-06-05.csv") %>%  ##latest data 
+#   filter(surgical != 1 | is.na(surgical)) %>%
+#   filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
+#   mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>% 
+#   mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
+#   mutate(TimeInDays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
+#   mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months"))) %>%
+#   mutate(visit = as.numeric(TimePeriod)) %>%
+#   group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
+#   ungroup() %>%
+#   filter(antigen =="HlyE") %>%
+#   #filter(antigen_iso == "HlyE_IgG") %>%
+#   select(index_id, Country, seapage, bldculres, Hospitalized, 
+#          antigen_iso, result, TimePeriod,  samplenum,  TimeInDays) %>%
+#   #mutate(postreinf= ifelse(is.na(postreinf), 0, postreinf)) %>%
+#   rename(age = seapage) %>%
+#   rename(visit = samplenum)  %>%
+#   janitor::clean_names() %>%
+#     #remove reinfection events
+#   #filter(postreinf != 1) %>%
+#   filter(country=="Bangladesh") %>%
+#   #   mutate(agecat = case_when(age < 5 ~ "0-4",
+#   #                             age >= 5 & age < 15 ~ "5-14",
+#   #                             age >= 15 ~ "16+")) %>%
+#   # filter(agecat != "16+") %>%
+#       mutate(agecat = case_when(age < 5 ~ "<5",
+#                               age >= 5  ~ ">5")) %>%
+#     droplevels()
+# 
+# 
+# d0 <- d0 %>% mutate(result = ifelse(antigen_iso == "HlyE_IgG"&result>3, result-3, result))
+
+#latest data and reinfections removed 
+d0 <-
+  read.csv("~/Documents/GitHub/serodynamics/inst/extdata/elisa_clean_2024-06-05.csv") %>%  ##latest data
+  filter(surgical != 1 | is.na(surgical)) %>%
+  filter(Arm == "Prospective Cases" | Arm == "Retrospective Cases") %>%
+  mutate(Hospitalized = ifelse((recloc == "Inpatient Department" | admithosp_seap == "Yes"), "Yes", "No")) %>%
+  mutate(antigen_iso = paste(elisa_antigen, "_", elisa_antbdy_iso, sep="")) %>%
+  mutate(TimeInDays = ifelse(is.na(dayssincefeveronset), timesince0, dayssincefeveronset)) %>%
+  mutate(TimePeriod = factor(TimePeriod, levels = c("Baseline","First visit", "28 days", "3 months","6 months", "12 months", "18 months", "24 months"))) %>%
+  mutate(visit = as.numeric(TimePeriod)) %>%
+  group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
+  ungroup() %>%
+  filter(antigen =="HlyE") %>%
+  #filter(antigen_iso == "HlyE_IgG") %>%
+  select(index_id, Country, seapage, bldculres, Hospitalized,
+         antigen_iso, result, TimePeriod,  postreinf, samplenum,  TimeInDays, reinf_obs) %>%
+  mutate(postreinf= ifelse(is.na(postreinf), 0, postreinf)) %>%
+  rename(age = seapage) %>%
+  rename(visit = samplenum)  %>%
+  janitor::clean_names() %>%
+    #remove reinfection events
+  filter(postreinf != 1) %>%
+  filter(country=="Bangladesh") %>%
+  #   mutate(agecat = case_when(age < 5 ~ "0-4",
+  #                             age >= 5 & age < 15 ~ "5-14",
+  #                             age >= 15 ~ "16+")) %>%
+  # filter(agecat != "16+") %>%
+      mutate(agecat = case_when(age < 5 ~ "<5",
+                              age >= 5  ~ ">5")) %>%
+    droplevels()
+
+
+#all <- d0 %>% mutate(reinfec_pop = "all data")
+#reinf_rem <- d0 %>% filter(postreinf != 1) %>% mutate(reinfec_pop = "reinf removed")
+
+
+```
+
+
+
+## make longitudinal data "case_data"object
+```{r}
+
+  
+
+dl_case <- as_case_data(d0 %>% filter(!is.na(age)),
+                   id_var = "index_id",
+                   biomarker_var = "antigen_iso",
+                   value_var = "result",
+                   time_in_days = "time_in_days")
+
+
+```
+
+## Run model
+```{r}
+
+
+# y1_prior <- log(quantile(get_values(dl_case), 0.99))
+# y0_prior <-log(quantile(get_values(dl_case), .05))
+# t1_prior <- 2
+# alpha_prior <- -2
+# shape_prior <- -3
+# prec.prior <- c(0.1, 0.1, 0.1, 0.1, 0.1)
+# omega.prior <- c(0.1, 0.1, 0.1, 0.1, 0.1)
+
+#lancet microbe priors 
+y1_prior <- 7.0
+y0_prior <- 1.0
+t1_prior <- 1.0
+alpha_prior <- -4.0
+shape_prior <- -1.0
+prec.prior <- c(1.0,   0.00001,   1.0,   0.001,  1.0)
+omega.prior <- c(1.0,  50.0,   1.0,   10.0,  1.0)
+
+
+mod2 <- run_mod(data = dl_case,
+                file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+                nchain = 4,
+                nadapt = 1000,
+                #nadapt = 1000,
+                nburn = 10000,
+                nmc = 1000,
+                #nmc = 1000,
+                niter = 10000, 
+                #niter = 1000, 
+                mu_hyp_param = c( y0_prior,  y1_prior,  t1_prior, alpha_prior, shape_prior),
+                prec_hyp_param = prec.prior,
+                omega_param = omega.prior )
+               #strat = "agecat")
+
+
+
+mod_np <- mod2 %>% filter(Subject == "newperson")
+
+```
+
+
+
+
+## Diagnostics
+```{r}
+
+
+plot_jags_trace(mod_np)
+
+plot_jags_Rhat(mod_np)
+
+
+
+```
+
+
+
+## Serocourse - dmcmc comb 09.30
+
+```{r}
+
+
+dmcmc_comb_09.30.v2 <- readRDS("~/Library/CloudStorage/OneDrive-UniversityofCalifornia,Davis/Dropbox backup 09-27-24/DataAnalysis/EntericFever/EF_seroincidence/Source Data/dmcmc_comb_09.30.v2.rds") %>%
+  filter(Country=="Bangladesh" & ageCat == "<5") %>%
+  filter(antigen_iso %in% c("HlyE_IgG", "HlyE_IgA")) %>%
+  rename(Stratification = ageCat) 
+
+
+
+serocourse_dmcmc <- dmcmc_comb_09.30.v2 %>%
+  rowwise() %>%  # Treat each row independently.
+  mutate(decay_curve = list(
+    tibble(
+      t = tx2,
+      y = serocalculator:::ab0(tx2, curve_params = cur_data())
+    )
+  )) %>%
+  ungroup() %>%
+  unnest(decay_curve) %>%
+  mutate(id = paste0(Stratification,  iter))
+
+
+
+serocourse_dmcmc_sum <- serocourse_dmcmc %>%
+  rename(Iso_type = antigen_iso) %>%
+  summarise(
+    res.med  = quantile(y, 0.5),
+    res.low  = quantile(y, 0.025),
+    res.high = quantile(y, 0.975), .by = c("Iso_type", "t", "Stratification")
+  ) %>%
+  mutate(data = "dmcmc_09.30.v2.rds")
+ 
+
+
+
+```
+
+
+
+## serocourse
+
+
+```{r}
+
+wide_predpar_df <- mod_np  %>%
+      pivot_wider(names_from = "Parameter", values_from="value") %>%
+      rowwise() %>%
+      #mutate(y1 = y0+y1) %>%
+      droplevels() %>%
+      
+      rename(r = shape) %>%
+      ungroup()
+
+
+
+
+#wide_predpar_df <- readRDS("~/Documents/GitHub/serodynamics/inst/extdata/serocalculator_curve_params_byAgecat_reinfec.rds")
+
+
+
+
+
+
+serocourse <- wide_predpar_df %>%
+  rowwise() %>%  # Treat each row independently.
+  mutate(decay_curve = list(
+    tibble(
+      t = tx2,
+      y = serocalculator:::ab0(tx2, curve_params = cur_data())
+    )
+  )) %>%
+  ungroup() %>%
+  unnest(decay_curve) %>%
+  mutate(id = paste0(Stratification, Subject, Iteration, "-", Chain))
+
+
+
+serocourse_sum <- serocourse %>%
+  summarise(
+    res.med  = quantile(y, 0.5),
+    res.low  = quantile(y, 0.025),
+    res.high = quantile(y, 0.975), .by = c("Iso_type", "t", "Stratification")
+  ) 
+ 
+
+
+# serocourse_sum_lancet_3 <- serocourse_sum %>%
+#   mutate(data = "elisa-2021-05-13_MINUS3")
+# 
+# serocourse_sum_new <- serocourse_sum %>%
+#   mutate(data = "elisa-clean-2024-06-05")
+
+serocourse_sum <- rbind(serocourse_sum_lancet, serocourse_dmcmc_sum, serocourse_sum_new, serocourse_sum_lancet_3)
+
+
+  
+ggplot(serocourse_sum %>% filter(Iso_type %in% c("HlyE_IgG", "HlyE_IgA")) %>% 
+    filter(t <580), aes(x = t, color = data, fill = data)) +
+  geom_ribbon(
+    aes(ymin = res.low, ymax = res.high),
+    alpha = 0.2,     # Light shading
+    color = NA       # No border on the ribbon itself
+  ) +
+  geom_line(
+    aes(y = res.med)
+  ) +
+  facet_wrap(~Iso_type+Stratification) +
+  scale_y_log10(limits = c(1, 800), labels = scales::label_number(accuracy = 0.1)) +
+  #scale_x_log10() +
+  theme_linedraw() +
+  labs(
+    x = "Days since admission",
+    y = "Antibody Concentration"
+  )
+
+
+```
+
+
+
+## save
+```{r}
+
+wide_predpar_df_exp <- wide_predpar_df %>%
+    rename(ageCat = Stratification,
+           antigen_iso = Iso_type) %>%
+  mutate(country = "Bangladesh",
+         SourceData = "ELISA-clean-2024-06-05") 
+
+wide_predpar_df_exp <- wide_predpar_df %>%
+    rename(
+           antigen_iso = Iso_type) %>%
+  mutate(country = "Bangladesh",
+         SourceData = "ELISA-clean-2024-06-05",
+         ageCat = "Overall") %>%
+  select(-Stratification)
+
+
+write_rds(wide_predpar_df_exp, "~/Documents/GitHub/serodynamics/inst/extdata/sees_mcmc_Bangladesh_Overall_ELISA-clean-2024-06-05-ReinfectionsRemoved.rds") 
+
+  
+
+
+#df_agecat1 <- wide_predpar_df 
+# df_agecat2 <- wide_predpar_df  %>%
+#   filter(Stratification == ">5")
+
+df_lancet <- wide_predpar_df 
+
+
+#df <- rbind(df_agecat1, df_agecat2, df_overall)
+# write_rds(df, "~/Documents/GitHub/serodynamics/inst/extdata/sees_Bangladesh_mcmc_lm_reproduce_elisa_clean_2023-02-23.rds")
+
+```

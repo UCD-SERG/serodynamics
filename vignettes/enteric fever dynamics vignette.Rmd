@@ -7,9 +7,11 @@ output: html_notebook
 ```{r}
 
 library(tidyverse)
-library(serocalculator)
+#library(serocalculator)
 load_all()
 
+# install.packages("pak")
+#pak::pak("UCD-SERG/serodynamics")
 
 
 
@@ -25,17 +27,24 @@ d0 <-
   mutate(visit = as.numeric(TimePeriod)) %>%
   group_by(index_id, TimePeriod) %>% mutate(nVisits=n()) %>%
   ungroup() %>%
-  filter(antigen =="HlyE" | antigen == "LPS") %>%
+  filter(antigen =="HlyE") %>%
+  #filter(antigen_iso == "HlyE_IgG") %>%
   select(index_id, Country, seapage, bldculres, Hospitalized, antigen_iso, result, TimePeriod,  postreinf, samplenum,  TimeInDays, reinf_obs) %>%
   mutate(postreinf= ifelse(is.na(postreinf), 0, postreinf)) %>%
   rename(age = seapage) %>%
   rename(visit = samplenum)  %>%
   janitor::clean_names() %>%
+    #remove reinfection events
+  filter(postreinf != 1) %>%
+  filter(country=="Bangladesh") %>%
     mutate(agecat = case_when(age < 5 ~ "0-4",
                               age >= 5 & age < 15 ~ "5-14",
-                              age >= 15 ~ "16+")) 
-  #remove reinfection events
-  #filter(postreinf != 1)
+                              age >= 15 ~ "16+")) %>%
+  filter(agecat != "16+") %>%
+  droplevels()
+      # mutate(agecat = case_when(age < 5 ~ "<5",
+      #                         age >= 5  ~ ">5"))
+
   
 
 
@@ -53,55 +62,9 @@ d0 <-
 ## make longitudinal data "case_data"object
 ```{r}
 
-#balance data accross ages and sites
-
-# # Create age bins
-# df <- d0 %>%
-#   filter(!is.na(age)) %>%
-#   mutate(age_bin = cut(age, breaks = seq(0, 60, by = 1), right = FALSE))
-# 
-# # Count available samples per country and bin
-# bin_counts <- df %>%
-#   count(country, age_bin)
-# 
-# # Find minimum counts per bin across countries
-# min_counts <- bin_counts %>%
-#   group_by(age_bin) %>%
-#   summarise(n_min = min(n))
-# 
-# # Join back to original data
-# df_counts <- df %>%
-#   left_join(min_counts, by = "age_bin")
-# 
-# # Sample per country and age bin
-# set.seed(123)
-# 
-# 
-# df_balanced <- df_counts %>%
-#   group_by(country, age_bin) %>%
-#   group_modify(~ {
-#     n_take <- unique(.x$n_min)
-#     if (is.na(n_take) || n_take == 0) {
-#       tibble() # skip if no samples in this bin
-#     } else {
-#       slice_sample(.x, n = n_take)
-#     }
-#   }) %>%
-#   ungroup() 
-#   #filter(age >4 & age <16)
-# 
-# 
-# 
-# ggplot(df_balanced, aes(x = age, fill = country)) + 
-#   geom_density(alpha = .5)
-#   geom_histogram()
-# 
-# 
-# 
-
   
 
-dl_case <- as_case_data(d0 %>% filter(!is.na(age)) ,
+dl_case <- as_case_data(d0 %>% filter(!is.na(age)),
                    id_var = "index_id",
                    biomarker_var = "antigen_iso",
                    value_var = "result",
@@ -135,17 +98,17 @@ omega.prior <- c(1.0,  50.0,   1.0,   10.0,  1.0)
 mod2 <- run_mod(data = dl_case,
                 file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
                 nchain = 4,
-                #nadapt = 2000,
-                nadapt = 1000,
+                nadapt = 2000,
+                #nadapt = 1000,
                 nburn = 1000,
-                #nmc = 2500,
-                nmc = 1000,
-                #niter = 4000, 
-                niter = 1000, 
+                nmc = 2500,
+                #nmc = 1000,
+                niter = 4000, 
+                #niter = 1000, 
                 mu_hyp_param = c( y0_prior,  y1_prior,  t1_prior, alpha_prior, shape_prior),
                 prec_hyp_param = prec.prior,
                 omega_param = omega.prior, 
-                strat = "country")
+               strat = "agecat")
 
 
 
@@ -165,35 +128,6 @@ plot_jags_trace(mod_np)
 plot_jags_Rhat(mod_np)
 
 
-#mcmc data frame
-mcmc_df <- mod$curve_params %>%
-  select(-Parameter) %>%
-  rename(parameter = Parameter_sub,
-         antigen_iso = Iso_type)
-
-#make wide and export
-mcmc_df_wide <- mcmc_df  %>%
-  mutate(id = paste0(Chain, ".", Iteration)) %>%
-  select(-Chain, -Iteration, -Stratification, -Subject) %>%
-  pivot_wider(names_from = "parameter", values_from = "value", id_cols = c("id", "antigen_iso")) %>%
-  rename(r = shape)
-
-#write_rds(mcmc_df_wide, paste0("mcmc_all_data_with_reinf", "_", today, ".rds"))
-
-#parameter summary
-mcmc_param <- mcmc_df %>%
-  group_by(antigen_iso, parameter) %>%
-  summarise(med = median(value),
-            iqr_low = quantile(value, 0.25),
-            iqr_upper = quantile(value, 0.75))
-
-#write_rds(mcmc_param, paste0("mcmc_sum_reinfec_rem", today, ".rds"))
-
-
-plot_jags_Rhat(mod)
-
-plot_jags_trace(mod)
-
 
 ```
 
@@ -209,9 +143,12 @@ wide_predpar_df <- mod_np  %>%
       rowwise() %>%
       #mutate(y1 = y0+y1) %>%
       droplevels() %>%
-      ungroup() %>%
-      rename(r = shape)
+      ungroup() 
 
+
+
+
+#wide_predpar_df <- readRDS("~/Documents/GitHub/serodynamics/inst/extdata/serocalculator_curve_params_byAgecat_reinfec.rds")
 
 
 # Generate a sequence of time points
@@ -263,12 +200,17 @@ ggplot(
   theme_linedraw() +
   labs(
     x = "Days since admission",
-    y = "Antibody Concentration",
-    title = "Decay Curves by Antigen"
+    y = "Antibody Concentration"
   )
 
-  
- 
+
+```
+
+
+
+## save
+```{r}
+# write_rds(wide_predpar_df, "~/Documents/GitHub/serodynamics/inst/extdata/sees_mcmc_unstratified_ReinfectionsIncluded.rds")
 
 
 ```
