@@ -1,0 +1,611 @@
+---
+title: "Chapter 2 — Fake Data First, Then Fit"
+author: "Kwan Ho Lee"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    code-summary: "Show R Code"
+    code-fold-default: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  eval: false
+---
+
+# Current Model (what we already fit)
+
+-   Chapter 1 model fits subject-level parameters for each biomarker $(y_0, t_1, y_1, \alpha, \rho)$.
+-   Within each biomarker: variation is captured by a covariance $(\Sigma_P)$.
+-   Across biomarkers: independence (block-diagonal), i.e. $$
+    \mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big) = \Sigma_P \otimes I_B
+    $$
+
+# Step A — Set up
+
+```{r}
+set.seed(123)
+library(tidyverse)
+library(mvtnorm)   # rmvnorm
+library(Matrix)    # kronecker
+library(serodynamics)
+```
+
+# Step B — Minimal helpers
+
+```{r}
+## 1) SIMULATOR: make fake longitudinal data with known ΣP and ΣB
+# Two-phase kinetics (rise -> decay)
+two_phase_y <- function(t, y0, y1, t1, alpha, rho){
+  beta <- log(y1 / y0) / t1
+  ifelse(
+    t <= t1,
+    y0 * exp(beta * t),
+    {
+      term <- 1 + (rho - 1) * alpha * y1^(rho - 1) * (t - t1)
+      term <- pmax(term, 1e-12)
+      y1 * term^(-1/(rho - 1))
+    }
+  )
+}
+
+# simulator version1
+simulate_multiB_long <- function(n_id, B, time_grid, Sigma_P, Sigma_B,
+                                 mu_latent_base = c(log(1.0),  # log y0
+                                                    log(5.0),  # log(y1 - y0)
+                                                    log(30),   # log t1
+                                                    log(0.02), # log alpha
+                                                    log(1.5)), # log(rho - 1)
+                                 meas_sd = rep(0.22, B)) {
+  stopifnot(all(dim(Sigma_P) == c(5,5)), all(dim(Sigma_B) == c(B,B)))
+  Sigma_total <- kronecker(Sigma_B, Sigma_P)   # Σ_total = ΣB ⊗ ΣP
+
+  # Per-biomarker means on latent scale (keep simple: same base for all B)
+  M_true <- matrix(rep(mu_latent_base, B), nrow = 5, ncol = B)
+  vec_M  <- as.vector(M_true)                  # length 5B
+
+  # Draw person-level latent parameters (length 5B each), reshape to 5×B
+  Theta_latent <- mvtnorm::rmvnorm(n_id, vec_M, Sigma_total)
+
+  dat <- map_dfr(1:n_id, function(i){
+    mat <- matrix(Theta_latent[i,], nrow = 5, ncol = B)
+    rownames(mat) <- c("log_y0","log_y1m0","log_t1","log_alpha","log_rho_m1")
+    tibble(biomarker = paste0("bm", 1:B),
+           log_y0 = mat[1,], log_y1m0 = mat[2,],
+           log_t1 = mat[3,], log_alpha = mat[4,],
+           log_rho_m1 = mat[5,]) |>
+      mutate(y0 = exp(log_y0),
+             y1 = y0 + exp(log_y1m0),
+             t1 = exp(log_t1),
+             alpha = exp(log_alpha),
+             rho = exp(log_rho_m1) + 1,
+             Subject = as.character(i)) |>
+      crossing(visit_num = seq_along(time_grid), time_days = time_grid) |>
+      mutate(
+        y_true    = two_phase_y(time_days, y0, y1, t1, alpha, rho),
+        logy_true = log(pmax(y_true, 1e-12)),
+        logy_obs  = logy_true + rnorm(n(), 0, meas_sd[as.integer(factor(biomarker, levels = paste0("bm",1:B)))]),
+        value     = exp(logy_obs)               # raw (positive), not logged
+      ) |>
+      select(Subject, visit_num, antigen_iso = biomarker, time_days, value)
+  })
+
+  list(
+    data = dat,
+    truth = list(M_true = M_true, Sigma_P = Sigma_P, Sigma_B = Sigma_B,
+                 Sigma_total = Sigma_total, meas_sd = meas_sd,
+                 Theta_latent = Theta_latent)
+  )
+}
+
+## 2) SIMULATOR: 
+
+ab_vec <- Vectorize(
+  function(t, y0, y1, t1, alpha, shape)
+    serodynamics:::ab(t, y0, y1, t1, alpha, shape),
+  vectorize.args = c("t","y0","y1","t1","alpha","shape")
+)
+
+# Simulator version2: uses serodynamics:::ab 
+simulate_multiB_long2 <- function(
+  n_id, B, time_grid, Sigma_P, Sigma_B,
+  mu_latent_base = c(log(1.0),  # log y0
+                     log(5.0),   # log(y1 - y0)
+                     log(30),    # log t1
+                     log(0.02),  # log alpha
+                     log(1.5)),  # log(rho - 1)
+  meas_sd = rep(0.22, B)
+){
+  stopifnot(all(dim(Sigma_P) == c(5, 5)),
+            all(dim(Sigma_B) == c(B, B)))
+
+  # Σ_total = ΣB ⊗ ΣP (dimension 5B x 5B)
+  Sigma_total <- kronecker(Sigma_B, Sigma_P)
+
+  # Per-biomarker means on latent scale (same base across B for simplicity)
+  M_true <- matrix(rep(mu_latent_base, B), nrow = 5, ncol = B)
+  vec_M  <- as.vector(M_true)  # length 5B
+
+  # Draw person-level latent parameters (each length 5B), then reshape to 5×B
+  Theta_latent <- mvtnorm::rmvnorm(n_id, mean = vec_M, sigma = Sigma_total)
+
+  # Safety: ensure meas_sd has length B
+  if (length(meas_sd) == 1L) meas_sd <- rep(meas_sd, B)
+  stopifnot(length(meas_sd) == B)
+
+  dat <- purrr::map_dfr(seq_len(n_id), function(i){
+    mat <- matrix(Theta_latent[i, ], nrow = 5, ncol = B)
+    tibble::tibble(
+      biomarker   = paste0("bm", seq_len(B)),
+      log_y0      = mat[1, ],
+      log_y1m0    = mat[2, ],
+      log_t1      = mat[3, ],
+      log_alpha   = mat[4, ],
+      log_rho_m1  = mat[5, ]
+    ) |>
+      dplyr::mutate(
+        y0    = exp(log_y0),
+        y1    = y0 + exp(log_y1m0),
+        t1    = exp(log_t1),
+        alpha = exp(log_alpha),
+        rho   = exp(log_rho_m1) + 1,         # shape = rho
+        Subject = as.character(i)
+      ) |>
+      tidyr::crossing(
+        visit_num = seq_along(time_grid),
+        time_days = time_grid
+      ) |>
+      dplyr::mutate(
+        # Use ab_vec pass rho as `shape`
+        y_true = ab_vec(
+          t      = time_days,
+          y0     = y0,
+          y1     = y1,
+          t1     = t1,
+          alpha  = alpha,
+          shape  = rho
+        ),
+        logy_true = log(pmax(y_true, 1e-12)),
+        bm_idx    = as.integer(sub("^bm", "", biomarker)),
+        logy_obs  = logy_true + stats::rnorm(dplyr::n(), mean = 0, sd = meas_sd[bm_idx]),
+        value     = exp(logy_obs)
+      ) |>
+      dplyr::select(Subject, visit_num, antigen_iso = biomarker, time_days, value)
+  })
+
+  list(
+    data  = dat,
+    truth = list(
+      M_true       = M_true,
+      Sigma_P      = Sigma_P,
+      Sigma_B      = Sigma_B,
+      Sigma_total  = Sigma_total,
+      meas_sd      = meas_sd,
+      Theta_latent = Theta_latent
+    )
+  )
+}
+```
+
+# Step C — Choose a “truth” and simulate fake data
+
+```{r}
+
+# Choose B biomarkers and visit schedule
+B <- 3
+time_grid <- c(0, 7, 14, 30, 90, 180, 365)
+
+# True ΣP (5×5): mild positive correlation among the five latent parameters
+sd_P <- c(0.35, 0.45, 0.25, 0.30, 0.25)
+R_P  <- matrix(0.25, 5, 5); diag(R_P) <- 1
+Sigma_P <- diag(sd_P) %*% R_P %*% diag(sd_P)
+
+# True ΣB (B×B): cross-biomarker correlation
+R_B <- matrix(c( 1, 0.5, 0.3,
+                 0.5, 1, 0.4,
+                 0.3, 0.4, 1), B, B, byrow = TRUE)
+sd_B <- rep(0.6, B)
+Sigma_B <- diag(sd_B) %*% R_B %*% diag(sd_B)
+
+sim <- simulate_multiB_long(
+  n_id = 24, B = B, time_grid = time_grid,
+  Sigma_P = Sigma_P, Sigma_B = Sigma_B
+)
+
+sim2 <- simulate_multiB_long2(
+  n_id = 24, B = B, time_grid = time_grid,
+  Sigma_P = Sigma_P, Sigma_B = Sigma_B
+)
+
+# This long table already matches prep_data() expectations:
+
+sim$data |> dplyr::slice_head(n = 8)
+sim2$data |> dplyr::slice_head(n = 8)
+```
+
+# Step D — Fit the independence model
+
+```{r}
+# If our package is loaded, this is all we need:
+
+sim_tbl <- serodynamics::as_case_data(
+  sim$data,
+  id_var        = "Subject",
+  biomarker_var = "antigen_iso",
+  value_var     = "value",
+  time_in_days  = "time_days"
+)
+
+prepped <- prep_data(sim_tbl)
+priors  <- prep_priors(max_antigens = prepped$n_antigen_isos)
+fit_v0  <- run_mod(
+ data     = sim_tbl,
+ file_mod = serodynamics_example("model.jags"),  # our current model
+ nchain = 4, nadapt = 1000, nburn = 500, nmc = 500, niter = 5000,
+ strat = NA, with_post = TRUE
+ )
+
+fit_v0
+```
+
+# Step E — Prepare for Correlated Model
+
+-   In Step D we fit the “independence” model: each biomarker had its own covariance for the 5 parameters, but biomarkers were assumed independent.
+-   Now we allow correlations **across biomarkers** as well as **within biomarkers**.
+-   Mathematically, we replace the block-diagonal assumption with a **Kronecker structure**:
+
+$$
+\mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big) 
+   = \Sigma_P \otimes \Sigma_B
+$$
+
+-   Here:
+    -   $\Sigma_P$ = covariance of the 5 parameters $(y_0, y_1, t_1, \alpha, \rho)$ within a biomarker.
+    -   $\Sigma_B$ = covariance across biomarkers.
+    -   The Kronecker product $\otimes$ builds a $5B \times 5B$ covariance.
+-   Implementation plan:
+    1.  Define priors for $\Sigma_P$ and $\Sigma_B$ separately (via Wishart distributions).
+    2.  Build the Kronecker precision matrix $\text{T} = \text{T}_B \otimes \text{T}_P$ inside JAGS.
+    3.  Draw each subject’s stacked parameter vector from this multivariate prior.
+    4.  Likelihood for observed antibody data is unchanged — only the prior covariance differs.
+
+------------------------------------------------------------------------
+
+## E.1 Priors for the Correlated Model
+
+We define a helper function `prep_priors_multiB()` that sets priors for both $\Sigma_P$ (within-biomarker) and $\Sigma_B$ (across-biomarkers).
+
+-   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$\
+-   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$\
+-   Kronecker precision: $\text{T} = \text{T}_B \otimes \text{T}_P$
+
+```{r}
+prep_priors_multiB <- function(B,
+                               OmegaP_scale = rep(0.1, 5), nuP = 6,
+                               OmegaB_scale = rep(1.0, B), nuB = B + 1,
+                               mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)) {
+  list(
+    OmegaP = diag(OmegaP_scale, 5),   # scale for parameter covariance
+    nuP    = nuP,                     # df for Wishart on TauP
+    OmegaB = diag(OmegaB_scale, B),   # scale for biomarker covariance
+    nuB    = nuB,                     # df for Wishart on TauB
+    mu.par = matrix(rep(mu_hyp_param, each = B), nrow = B, ncol = 5,
+                    dimnames = list(NULL, c("y0","y1","t1","alpha","shape")))
+  )
+}
+```
+
+
+
+```{r}
+# A safe initializer that accepts chain and never sets TauB/TauP 
+initsfunction <- function(chain) {
+  list(
+    .RNG.name = "base::Mersenne-Twister",
+    .RNG.seed = 123 + chain
+  )
+}
+
+inits_kron <- function(chain) {
+  z <- initsfunction(chain)   # call with chain argument
+  z$TauB <- NULL              # remove if present
+  z$TauP <- NULL
+  z$prec.par <- NULL          # old per-biomarker precision (not used now)
+  z
+}
+
+# Clean base priors to avoid unused legacy parts (omega/wishdf)
+clean_priors <- function(x) {
+  drop <- intersect(names(x), c("omega","wishdf","Omega","WishDF","prec.par"))
+  if (length(drop)) x <- x[setdiff(names(x), drop)]
+  x
+}
+
+```
+
+## E.2 Write the new JAGS model file (Kronecker precision)
+
+This is our `model.jags` with only one conceptual change:\
+instead of independent
+
+$$
+par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.par}[\text{b},,] )
+$$
+where b is `cur_antigen_iso`
+
+we draw **all biomarkers at once** for a subject with a **Kronecker precision**:
+
+$$
+\mathrm{vec}(par_{\text{subj},\cdot,\cdot}) \sim \mathcal{N}\!\big( \mathrm{vec}(\mu_{par}), \ \text{T}_B \otimes \text{T}_P \big).
+$$
+
+-   Everything else (transforms, likelihood, measurement precisions) stays as before.\
+-   We keep our hyperpriors for `mu.par` (the per-biomarker means), so it plugs right into our current `prep_priors()`.
+
+This is our new `model.jags` rename as `model_ch2_kron.jags`
+
+```{r}
+# --- E.2: Write the new JAGS file once (beta defined outside obs loop) ---
+write_model_ch2_kron <- function(path = "model_ch2_kron.jags"){
+  cat('
+model {
+
+  # ----------------------------
+  # Hyperpriors for population means (same as model.jags)
+  # ----------------------------
+  for (b in 1:B) {
+    mu.par[b, 1:n_params] ~ dmnorm(mu.hyp[b, ], prec.hyp[b, , ])
+  }
+
+  # ----------------------------
+  # Wishart priors for Kronecker precision (new)
+  # ----------------------------
+  TauP[1:5,1:5] ~ dwish(OmegaP[1:5,1:5], nuP)             # within-biomarker
+  TauB[1:B,1:B] ~ dwish(OmegaB[1:B,1:B], nuB)             # across biomarkers
+
+  # Build Tau = TauB ⊗ TauP  (dimension: (5*B) x (5*B))
+  for (b1 in 1:B) {
+    for (b2 in 1:B) {
+      for (p1 in 1:5) {
+        for (p2 in 1:5) {
+          Tau[(b1-1)*5 + p1, (b2-1)*5 + p2] <- TauB[b1,b2] * TauP[p1,p2]
+        }
+      }
+    }
+  }
+
+  # Vectorized mean (stack mu.par across biomarkers)
+  for (b in 1:B) {
+    for (p in 1:5) {
+      mu_vec[(b-1)*5 + p] <- mu.par[b,p]
+    }
+  }
+
+  # ----------------------------
+  # Subject-level prior: one big MVN per subject
+  # ----------------------------
+  for (subj in 1:nsubj) {
+    par_vec[subj, 1:(5*B)] ~ dmnorm(mu_vec[1:(5*B)], Tau[ , ])
+
+    # Unstack back to par[subj, biomarker, param]
+    for (b in 1:B) {
+      for (p in 1:5) {
+        par[subj, b, p] <- par_vec[subj, (b-1)*5 + p]
+      }
+    }
+
+    # Transforms to natural scale
+    for (b in 1:B) {
+      y0[subj,b]    <- exp(par[subj,b,1])
+      y1[subj,b]    <- y0[subj,b] + exp(par[subj,b,2])    # log(y1-y0)
+      t1[subj,b]    <- exp(par[subj,b,3])
+      alpha[subj,b] <- exp(par[subj,b,4])
+      shape[subj,b] <- exp(par[subj,b,5]) + 1
+    }
+
+    # Likelihood
+    for (obs in 1:nsmpl[subj]) {
+      for (b in 1:B) {
+        beta_tmp[subj,b] <- log(y1[subj,b] / y0[subj,b]) / t1[subj,b]
+        mu.logy[subj,obs,b] <- ifelse(
+          step(t1[subj,b] - smpl.t[subj,obs]),
+          log(y0[subj,b]) + beta_tmp[subj,b] * smpl.t[subj,obs],
+          (1/(1-shape[subj,b])) * log( y1[subj,b]^(1-shape[subj,b]) -
+               (1-shape[subj,b]) * alpha[subj,b] * (smpl.t[subj,obs] - t1[subj,b]) )
+        )
+        logy[subj,obs,b] ~ dnorm(mu.logy[subj,obs,b], prec.logy[b])
+      }
+    }
+  }
+
+  # Measurement precisions
+  for (b in 1:B) {
+    prec.logy[b] ~ dgamma(prec.logy.hyp[b,1], prec.logy.hyp[b,2])
+  }
+}
+', file = path)
+  invisible(path)
+}
+
+```
+
+### What changed vs. our current `model.jags`
+
+-   Removed the per-biomarker `prec.par[cur_antigen_iso,,] ~ dwish(...)` and `par[subj,cur_antigen_iso,] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])`.
+
+-   Replaced with one prior per subject on the stacked vector using $\text{T} = \text{T}_B \otimes \text{T}_P$
+
+-   Kept our `mu.par` prior and the likelihood exactly as is.
+
+## E.3: Minimal wrapper so we can keep calling one function
+
+```{r}
+# --- E.3: Minimal wrapper (with flexible monitor list) ---
+run_mod_kron <- function(data,
+                         file_mod = "model_ch2_kron.jags",
+                         nchain = 4, nadapt = 0, nburn = 0,
+                         nmc = 100, niter = 100,
+                         strat = NA, with_post = FALSE,
+                         monitor = c("y0","y1","t1","alpha","shape","TauB","TauP"),
+                         ...) {
+
+  if (is.na(strat)) {
+    strat_list <- "None"
+  } else {
+    strat_list <- unique(data[[strat]])
+  }
+
+  jags_out <- data.frame(
+    Iteration=NA, Chain=NA, Parameter=NA, value=NA,
+    Parameter_sub=NA, Subject=NA, Iso_type=NA, Stratification=NA
+  )
+  jags_post_final <- list()
+
+  for (i in strat_list) {
+
+    dl_sub <- if (is.na(strat)) data else dplyr::filter(data, .data[[strat]] == i)
+
+    longdata    <- prep_data(dl_sub)
+    base_priors <- prep_priors(max_antigens = longdata$n_antigen_isos, ...)
+    base_priors <- clean_priors(base_priors)                  # << NEW
+    kron_priors <- prep_priors_multiB(B = longdata$n_antigen_isos)
+
+    # Add scalar B expected by the model
+    B_scalar <- list(B = longdata$n_antigen_isos)
+
+    priorspec <- c(base_priors, kron_priors, B_scalar)
+
+    nchains <- nchain; nadapt <- nadapt; nburnin <- nburn
+    nmc <- nmc; niter <- niter; nthin <- round(niter / nmc)
+
+    monitor_kron <- monitor
+
+    jags_post <- runjags::run.jags(
+      model     = file_mod,
+      data      = c(longdata, priorspec),
+      inits     = inits_kron,                      # << NEW
+      method    = "parallel",
+      adapt     = nadapt, burnin = nburnin, thin = nthin,
+      sample    = nmc, n.chains = nchains,
+      monitor   = monitor_kron,
+      summarise = FALSE
+    )
+    jags_post_final[[i]] <- jags_post
+
+    jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
+    mod_atts <- attributes(jags_unpack)[4:8]
+
+    iso_dat <- data.frame(attributes(longdata)$antigens) |>
+      dplyr::mutate(Subnum = as.numeric(row.names(.)))
+    jags_unpack <- jags_unpack |>
+      dplyr::mutate(
+        Subnum = sub(".*,", "", .data$Parameter),
+        Parameter_sub = sub("\\[.*", "", .data$Parameter),
+        Subject = sub("\\,.*", "", .data$Parameter)
+      ) |>
+      dplyr::mutate(
+        Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
+        Subject = sub(".*\\[", "", .data$Subject)
+      ) |>
+      dplyr::left_join(iso_dat, by = "Subnum")
+
+    ids <- data.frame(attr(longdata, "ids")) |>
+      dplyr::mutate(Subject = as.character(dplyr::row_number()))
+
+    jags_final <- jags_unpack |>
+      dplyr::left_join(ids, by = "Subject") |>
+      dplyr::select(!c("Subnum", "Subject")) |>
+      dplyr::rename(
+        Iso_type = "attributes.longdata..antigens",
+        Subject  = "attr.longdata...ids.."
+      )
+
+    jags_final$Stratification <- i
+    jags_out <- data.frame(rbind(jags_out, jags_final))
+  }
+
+  jags_out <- jags_out[complete.cases(jags_out), ]
+  jags_out <- dplyr::as_tibble(jags_out) |>
+    dplyr::select(!c("Parameter")) |>
+    dplyr::rename("Parameter" = "Parameter_sub") |>
+    dplyr::relocate(Iteration, Chain, Parameter, Iso_type, Stratification, Subject, value)
+
+  attributes(jags_out) <- c(attributes(jags_out), mod_atts)
+
+  # attach priors used (from last stratum)
+  jags_out <- jags_out |> structure("priors" = attributes(priorspec)$used_priors)
+
+  fit_res <- calc_fit_mod(modeled_dat = jags_out, original_data = dl_sub)
+  jags_out <- jags_out |> structure(fitted_residuals = fit_res)
+
+  if (with_post) jags_out <- jags_out |> structure(jags.post = jags_post_final)
+
+  class(jags_out) <- union("sr_model", class(jags_out))
+  jags_out
+}
+
+```
+
+# What are `OmegaP`, `nuP`, `OmegaB`, `nuB` — and why these defaults?
+
+These are the **Wishart hyperparameters** for the **precision matrices** (inverse covariances) used in the Kronecker prior:
+
+-   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$ -- within-biomarker parameter precision (5×5).
+-   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$ -- across-biomarker precision (B×B).
+
+Generally speaking (JAGS Wishart): $\mathop{\mathbb{E}}[\text{T}]\approx \nu \cdot \Omega^{-1}$ when $\nu$ is not tiny. So smaller diagonal entries in $\Omega$ imply larger expected precision (i.e., smaller covariance), and vice versa.
+
+## Chosen weakly-informative defaults
+
+``` r
+OmegaP_scale = rep(0.1, 5);  nuP = 6
+OmegaB_scale = rep(1.0, B);  nuB = B + 1
+```
+
+-   `nuP = 6` is just above the dimension (5): proper but not tight.
+
+-   `OmegaP = 0.1 * I_5` is diffuse. With small `nuP`, the prior is wide; data will dominate.
+
+-   `nuB = B + 1` is a minimally-informative choice for a B×B Wishart.
+
+-   `OmegaB = I_B` centers `TauB` near identity while letting the data learn cross-biomarker correlation.
+
+These are starting values. Validate with prior predictive checks (simulate parameters → curves → sanity check ranges).
+
+# Putting it together
+
+-   **Independence model (our baseline)**: no changes.
+
+-   **Correlated model**: we supply both the usual priors and the new Kronecker priors:
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Run Kronecker model (disabled for now)"
+
+# Step 1: simulate fake data (or load real Shigella data)
+sim_tbl 
+
+# Step 2: write the new Kronecker model file (once per session/project)
+write_model_ch2_kron()
+
+# Step 3: run the new wrapper with combined priors
+fit_kron <- run_mod_kron(
+  data     = sim_tbl,
+  file_mod = "model_ch2_kron.jags",
+  nchain   = 4, nadapt = 1000, nburn = 500,
+  nmc      = 500, niter = 5000,
+  strat    = NA,
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)  # optional override
+)
+
+# Step 4: inspect results (same as with run_mod)
+fit_kron
+
+```
+
