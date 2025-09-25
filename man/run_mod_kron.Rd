@@ -101,7 +101,6 @@ out <- run_mod_kron(
   strat    = NA
 )
 
-# Peek at output
 print(dplyr::glimpse(out))
 }
 \author{
