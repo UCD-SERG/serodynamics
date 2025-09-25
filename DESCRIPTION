@@ -30,7 +30,8 @@ Imports:
     stats,
     tibble,
     tidyr,
-    utils
+    utils,
+    mvtnorm
 Suggests: 
     Hmisc,
     knitr,
