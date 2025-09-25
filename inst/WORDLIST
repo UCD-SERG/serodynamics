@@ -58,3 +58,6 @@ mathrm
 otimes
 precisions
 vec
+hypermeans 
+initializer
+runjags
