@@ -18,7 +18,7 @@
 #' @seealso simulate_multi_b_long
 #' @export
 #' @example inst/examples/examples-simulate_multi_b_long.R
-simulate_multi_b_long2 <- function(
+simulate_multi_b_long <- function(
   n_id,
   n_blocks,
   time_grid,
