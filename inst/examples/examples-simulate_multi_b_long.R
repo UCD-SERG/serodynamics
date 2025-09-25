@@ -26,11 +26,3 @@ sim <- simulate_multi_b_long(
 
 # Peek at the long table
 head(sim$data)
-
-# Optional: quick check of one subject’s time series (interactive only)
-if (interactive()) {
-  d <- subset(sim$data, Subject == "1" & antigen_iso == "1")
-  plot(d$time_days, d$value, type = "b",
-       main = "Simulated biomarker 1 (Subject 1)",
-       xlab = "Days", ylab = "Value")
-}

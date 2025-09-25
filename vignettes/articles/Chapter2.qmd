@@ -54,7 +54,7 @@ two_phase_y <- function(t, y0, y1, t1, alpha, rho){
 }
 
 # simulator version1
-simulate_multiB_long <- function(n_id, B, time_grid, Sigma_P, Sigma_B,
+simulate_multi_b_long <- function(n_id, B, time_grid, Sigma_P, Sigma_B,
                                  mu_latent_base = c(log(1.0),  # log y0
                                                     log(5.0),  # log(y1 - y0)
                                                     log(30),   # log t1
@@ -111,7 +111,7 @@ ab_vec <- Vectorize(
 )
 
 # Simulator version2: uses serodynamics:::ab 
-simulate_multiB_long2 <- function(
+simulate_multi_b_long2 <- function(
   n_id, B, time_grid, Sigma_P, Sigma_B,
   mu_latent_base = c(log(1.0),  # log y0
                      log(5.0),   # log(y1 - y0)
@@ -196,29 +196,37 @@ simulate_multiB_long2 <- function(
 ```{r}
 
 # Choose B biomarkers and visit schedule
-B <- 3
-time_grid <- c(0, 7, 14, 30, 90, 180, 365)
+n_blocks  <- 2
+time_grid <- c(0, 7, 14, 30)
 
 # True ΣP (5×5): mild positive correlation among the five latent parameters
-sd_P <- c(0.35, 0.45, 0.25, 0.30, 0.25)
-R_P  <- matrix(0.25, 5, 5); diag(R_P) <- 1
-Sigma_P <- diag(sd_P) %*% R_P %*% diag(sd_P)
+sd_p <- c(0.35, 0.45, 0.25, 0.30, 0.25)
+R_p  <- matrix(0.25, 5, 5)
+diag(R_p) <- 1
+sigma_p <- diag(sd_p) %*% R_p %*% diag(sd_p)
 
 # True ΣB (B×B): cross-biomarker correlation
-R_B <- matrix(c( 1, 0.5, 0.3,
-                 0.5, 1, 0.4,
-                 0.3, 0.4, 1), B, B, byrow = TRUE)
-sd_B <- rep(0.6, B)
-Sigma_B <- diag(sd_B) %*% R_B %*% diag(sd_B)
+R_b <- matrix(c(1, 0.5,
+                0.5, 1), n_blocks, n_blocks, byrow = TRUE)
+sd_b <- rep(0.6, n_blocks)
+sigma_b <- diag(sd_b) %*% R_b %*% diag(sd_b)
 
-sim <- simulate_multiB_long(
-  n_id = 24, B = B, time_grid = time_grid,
-  Sigma_P = Sigma_P, Sigma_B = Sigma_B
+
+# Run simulator
+sim <- simulate_multi_b_long(
+  n_id      = 5,
+  n_blocks  = n_blocks,
+  time_grid = time_grid,
+  sigma_p   = sigma_p,
+  sigma_b   = sigma_b
 )
 
-sim2 <- simulate_multiB_long2(
-  n_id = 24, B = B, time_grid = time_grid,
-  Sigma_P = Sigma_P, Sigma_B = Sigma_B
+sim2 <- simulate_multi_b_long2(
+  n_id      = 5,
+  n_blocks  = n_blocks,
+  time_grid = time_grid,
+  sigma_p   = sigma_p,
+  sigma_b   = sigma_b
 )
 
 # This long table already matches prep_data() expectations:
@@ -284,7 +292,7 @@ We define a helper function `prep_priors_multiB()` that sets priors for both $\S
 -   Kronecker precision: $\text{T} = \text{T}_B \otimes \text{T}_P$
 
 ```{r}
-prep_priors_multiB <- function(B,
+prep_priors_multi_b <- function(B,
                                OmegaP_scale = rep(0.1, 5), nuP = 6,
                                OmegaB_scale = rep(1.0, B), nuB = B + 1,
                                mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)) {

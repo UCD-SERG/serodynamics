@@ -24,20 +24,3 @@ sim2 <- simulate_multi_b_long2(
 )
 
 head(sim2$data)
-
-# Optional: use a custom trajectory instead of the default
-custom_fun <- function(t, y0, y1, t1, alpha, shape) {
-  # simple saturating rise curve (toy)
-  y0 + (y1 - y0) * (1 - exp(-alpha * t))
-}
-
-sim2_custom <- simulate_multi_b_long2(
-  n_id      = 3,
-  n_blocks  = n_blocks,
-  time_grid = time_grid,
-  sigma_p   = sigma_p,
-  sigma_b   = sigma_b,
-  ab_vec    = make_ab_vec(custom_fun)
-)
-
-head(sim2_custom$data)
