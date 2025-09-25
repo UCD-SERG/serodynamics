@@ -60,7 +60,8 @@ n_blocks  <- 2
 time_grid <- c(0, 7, 14, 30)
 
 sd_p <- c(0.35, 0.45, 0.25, 0.30, 0.25)
-R_p  <- matrix(0.25, 5, 5); diag(R_p) <- 1
+R_p  <- matrix(0.25, 5, 5)
+diag(R_p) <- 1
 sigma_p <- diag(sd_p) \%*\% R_p \%*\% diag(sd_p)
 
 R_b <- matrix(c(1, 0.5,

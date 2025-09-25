@@ -64,18 +64,19 @@ Required helpers available in the package environment:
 model_path <- write_model_ch2_kron(file.path(tempdir(), "model_ch2_kron.jags"))
 
 # 2) Simulate a tiny dataset
-set.seed(123)
+set.seed(926)
 B <- 2
 time_grid <- c(0, 7, 14, 30)
 
 sd_P <- c(0.35, 0.45, 0.25, 0.30, 0.25)
-R_P  <- matrix(0.25, 5, 5); diag(R_P) <- 1
-Sigma_P <- diag(sd_P) \%*\% R_P \%*\% diag(sd_P)
+R_P  <- matrix(0.25, 5, 5)
+diag(R_P) <- 1
+sigma_p <- diag(sd_P) \%*\% R_P \%*\% diag(sd_P)
 
 R_B <- matrix(c(1, 0.5,
                 0.5, 1), B, B, byrow = TRUE)
 sd_B <- rep(0.6, B)
-Sigma_B <- diag(sd_B) \%*\% R_B \%*\% diag(sd_B)
+sigma_b <- diag(sd_B) \%*\% R_B \%*\% diag(sd_B)
 
 sim <- simulate_multiB_long(
   n_id = 4, B = B, time_grid = time_grid,
