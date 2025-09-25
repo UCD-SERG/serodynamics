@@ -5,22 +5,25 @@ model_path <- write_model_ch2_kron(file.path(tempdir(), "model_ch2_kron.jags"))
 
 # 2) Simulate a tiny dataset
 set.seed(926)
-B <- 2
+n_blocks  <- 2
 time_grid <- c(0, 7, 14, 30)
 
-sd_P <- c(0.35, 0.45, 0.25, 0.30, 0.25)
-R_P  <- matrix(0.25, 5, 5)
-diag(R_P) <- 1
-sigma_p <- diag(sd_P) %*% R_P %*% diag(sd_P)
+sd_p <- c(0.35, 0.45, 0.25, 0.30, 0.25)
+R_p  <- matrix(0.25, 5, 5)
+diag(R_p) <- 1
+sigma_p <- diag(sd_p) %*% R_p %*% diag(sd_p)
 
-R_B <- matrix(c(1, 0.5,
-                0.5, 1), B, B, byrow = TRUE)
-sd_B <- rep(0.6, B)
-sigma_b <- diag(sd_B) %*% R_B %*% diag(sd_B)
+R_b <- matrix(c(1, 0.5,
+                0.5, 1), n_blocks, n_blocks, byrow = TRUE)
+sd_b <- rep(0.6, n_blocks)
+sigma_b <- diag(sd_b) %*% R_b %*% diag(sd_b)
 
-sim <- simulate_multiB_long(
-  n_id = 4, B = B, time_grid = time_grid,
-  Sigma_P = Sigma_P, Sigma_B = Sigma_B
+sim <- simulate_multi_b_long(
+  n_id      = 5,
+  n_blocks  = n_blocks,
+  time_grid = time_grid,
+  sigma_p   = sigma_p,
+  sigma_b   = sigma_b
 )
 
 # 3) Convert to case_data expected by prep_data/run_mod
