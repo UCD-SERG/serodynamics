@@ -30,6 +30,7 @@ Imports:
     stats,
     tibble,
     tidyr,
+    tidyselect,
     utils
 Suggests: 
     Hmisc,
