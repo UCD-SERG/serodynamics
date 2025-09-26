@@ -19,9 +19,10 @@ per-biomarker parameters (5 per biomarker).
 
 Expected data in the JAGS environment includes:
 \itemize{
-\item scalar: \code{B}, \code{nsubj}, \code{n_params} (should be 5)
+\item scalar: \code{n_blocks}, \code{nsubj}, \code{n_params} (should be 5)
 \item hypermeans: \code{mu.hyp[b, ]}, hyper-precisions: \code{prec.hyp[b, , ]}
-\item Wishart pieces: \code{OmegaP[5,5]}, \code{nuP}, \code{OmegaB[B,B]}, \code{nuB}
+\item Wishart pieces: \code{OmegaP[5,5]}, \code{nuP}, \code{OmegaB[n_blocks,n_blocks]},
+\code{nuB}
 \item measurement: \code{smpl.t}, \code{nsmpl}, \code{prec.logy.hyp}
 }
 }
