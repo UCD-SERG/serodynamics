@@ -13,7 +13,9 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/as_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/autoplot.case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/calc_fit_mod.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/clean_priors.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/index.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/inits_kron.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/initsfunction.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/load_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/nepal_sees.html</loc></url>
@@ -28,12 +30,16 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/prep_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/prep_priors.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/prep_priors_multi_b.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/reexports.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/run_mod.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/run_mod_kron.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/serodynamics-package.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/serodynamics_example.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/sim_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/sim_n_obs.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/simulate_multi_b_long.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/use_att_names.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr133/reference/write_model_ch2_kron.html</loc></url>
 </urlset>
 

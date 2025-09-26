@@ -103,203 +103,47 @@
 </section><section class="section level2" data-number="3"><h2 data-number="3" id="step-b-minimal-helpers">
 <span class="header-section-number">3</span> Step B — Minimal helpers<a class="anchor" aria-label="anchor" href="#step-b-minimal-helpers"></a>
 </h2>
-<div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">## 1) SIMULATOR: make fake longitudinal data with known ΣP and ΣB</span></span>
-<span><span class="co"># Two-phase kinetics (rise -&gt; decay)</span></span>
-<span><span class="va">two_phase_y</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y0</span>, <span class="va">y1</span>, <span class="va">t1</span>, <span class="va">alpha</span>, <span class="va">rho</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="va">beta</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">y1</span> <span class="op">/</span> <span class="va">y0</span><span class="op">)</span> <span class="op">/</span> <span class="va">t1</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span></span>
-<span>    <span class="va">t</span> <span class="op">&lt;=</span> <span class="va">t1</span>,</span>
-<span>    <span class="va">y0</span> <span class="op">*</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">beta</span> <span class="op">*</span> <span class="va">t</span><span class="op">)</span>,</span>
-<span>    <span class="op">{</span></span>
-<span>      <span class="va">term</span> <span class="op">&lt;-</span> <span class="fl">1</span> <span class="op">+</span> <span class="op">(</span><span class="va">rho</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="va">alpha</span> <span class="op">*</span> <span class="va">y1</span><span class="op">^</span><span class="op">(</span><span class="va">rho</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span> <span class="op">*</span> <span class="op">(</span><span class="va">t</span> <span class="op">-</span> <span class="va">t1</span><span class="op">)</span></span>
-<span>      <span class="va">term</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">term</span>, <span class="fl">1e-12</span><span class="op">)</span></span>
-<span>      <span class="va">y1</span> <span class="op">*</span> <span class="va">term</span><span class="op">^</span><span class="op">(</span><span class="op">-</span><span class="fl">1</span><span class="op">/</span><span class="op">(</span><span class="va">rho</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="op">}</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># simulator version1</span></span>
-<span><span class="va">simulate_multiB_long</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">n_id</span>, <span class="va">B</span>, <span class="va">time_grid</span>, <span class="va">Sigma_P</span>, <span class="va">Sigma_B</span>,</span>
-<span>                                 <span class="va">mu_latent_base</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.0</span><span class="op">)</span>,  <span class="co"># log y0</span></span>
-<span>                                                    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">5.0</span><span class="op">)</span>,  <span class="co"># log(y1 - y0)</span></span>
-<span>                                                    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>,   <span class="co"># log t1</span></span>
-<span>                                                    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.02</span><span class="op">)</span>, <span class="co"># log alpha</span></span>
-<span>                                                    <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>, <span class="co"># log(rho - 1)</span></span>
-<span>                                 <span class="va">meas_sd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.22</span>, <span class="va">B</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Sigma_P</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Sigma_B</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">B</span>,<span class="va">B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">Sigma_total</span> <span class="op">&lt;-</span> <span class="fu">kronecker</span><span class="op">(</span><span class="va">Sigma_B</span>, <span class="va">Sigma_P</span><span class="op">)</span>   <span class="co"># Σ_total = ΣB ⊗ ΣP</span></span>
-<span></span>
-<span>  <span class="co"># Per-biomarker means on latent scale (keep simple: same base for all B)</span></span>
-<span>  <span class="va">M_true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">mu_latent_base</span>, <span class="va">B</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span>  <span class="va">vec_M</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">M_true</span><span class="op">)</span>                  <span class="co"># length 5B</span></span>
-<span></span>
-<span>  <span class="co"># Draw person-level latent parameters (length 5B each), reshape to 5×B</span></span>
-<span>  <span class="va">Theta_latent</span> <span class="op">&lt;-</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu">rmvnorm</span><span class="op">(</span><span class="va">n_id</span>, <span class="va">vec_M</span>, <span class="va">Sigma_total</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_dfr</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="va">n_id</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">Theta_latent</span><span class="op">[</span><span class="va">i</span>,<span class="op">]</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">mat</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"log_y0"</span>,<span class="st">"log_y1m0"</span>,<span class="st">"log_t1"</span>,<span class="st">"log_alpha"</span>,<span class="st">"log_rho_m1"</span><span class="op">)</span></span>
-<span>    <span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span>biomarker <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"bm"</span>, <span class="fl">1</span><span class="op">:</span><span class="va">B</span><span class="op">)</span>,</span>
-<span>           log_y0 <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, log_y1m0 <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span>,</span>
-<span>           log_t1 <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">3</span>,<span class="op">]</span>, log_alpha <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">4</span>,<span class="op">]</span>,</span>
-<span>           log_rho_m1 <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">5</span>,<span class="op">]</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>y0 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_y0</span><span class="op">)</span>,</span>
-<span>             y1 <span class="op">=</span> <span class="va">y0</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_y1m0</span><span class="op">)</span>,</span>
-<span>             t1 <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_t1</span><span class="op">)</span>,</span>
-<span>             alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_alpha</span><span class="op">)</span>,</span>
-<span>             rho <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_rho_m1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span>             Subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span>visit_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">time_grid</span><span class="op">)</span>, time_days <span class="op">=</span> <span class="va">time_grid</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        y_true    <span class="op">=</span> <span class="fu">two_phase_y</span><span class="op">(</span><span class="va">time_days</span>, <span class="va">y0</span>, <span class="va">y1</span>, <span class="va">t1</span>, <span class="va">alpha</span>, <span class="va">rho</span><span class="op">)</span>,</span>
-<span>        logy_true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">y_true</span>, <span class="fl">1e-12</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        logy_obs  <span class="op">=</span> <span class="va">logy_true</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, <span class="fl">0</span>, <span class="va">meas_sd</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">biomarker</span>, levels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"bm"</span>,<span class="fl">1</span><span class="op">:</span><span class="va">B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>        value     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">logy_obs</span><span class="op">)</span>               <span class="co"># raw (positive), not logged</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Subject</span>, <span class="va">visit_num</span>, antigen_iso <span class="op">=</span> <span class="va">biomarker</span>, <span class="va">time_days</span>, <span class="va">value</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    data <span class="op">=</span> <span class="va">dat</span>,</span>
-<span>    truth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>M_true <span class="op">=</span> <span class="va">M_true</span>, Sigma_P <span class="op">=</span> <span class="va">Sigma_P</span>, Sigma_B <span class="op">=</span> <span class="va">Sigma_B</span>,</span>
-<span>                 Sigma_total <span class="op">=</span> <span class="va">Sigma_total</span>, meas_sd <span class="op">=</span> <span class="va">meas_sd</span>,</span>
-<span>                 Theta_latent <span class="op">=</span> <span class="va">Theta_latent</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co">## 2) SIMULATOR: </span></span>
-<span></span>
-<span><span class="va">ab_vec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Vectorize.html" class="external-link">Vectorize</a></span><span class="op">(</span></span>
-<span>  <span class="kw">function</span><span class="op">(</span><span class="va">t</span>, <span class="va">y0</span>, <span class="va">y1</span>, <span class="va">t1</span>, <span class="va">alpha</span>, <span class="va">shape</span><span class="op">)</span></span>
-<span>    <span class="fu">serodynamics</span><span class="fu">:::</span><span class="fu">ab</span><span class="op">(</span><span class="va">t</span>, <span class="va">y0</span>, <span class="va">y1</span>, <span class="va">t1</span>, <span class="va">alpha</span>, <span class="va">shape</span><span class="op">)</span>,</span>
-<span>  vectorize.args <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"t"</span>,<span class="st">"y0"</span>,<span class="st">"y1"</span>,<span class="st">"t1"</span>,<span class="st">"alpha"</span>,<span class="st">"shape"</span><span class="op">)</span></span>
-<span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Simulator version2: uses serodynamics:::ab </span></span>
-<span><span class="va">simulate_multiB_long2</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span></span>
-<span>  <span class="va">n_id</span>, <span class="va">B</span>, <span class="va">time_grid</span>, <span class="va">Sigma_P</span>, <span class="va">Sigma_B</span>,</span>
-<span>  <span class="va">mu_latent_base</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.0</span><span class="op">)</span>,  <span class="co"># log y0</span></span>
-<span>                     <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">5.0</span><span class="op">)</span>,   <span class="co"># log(y1 - y0)</span></span>
-<span>                     <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">30</span><span class="op">)</span>,    <span class="co"># log t1</span></span>
-<span>                     <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">0.02</span><span class="op">)</span>,  <span class="co"># log alpha</span></span>
-<span>                     <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fl">1.5</span><span class="op">)</span><span class="op">)</span>,  <span class="co"># log(rho - 1)</span></span>
-<span>  <span class="va">meas_sd</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.22</span>, <span class="va">B</span><span class="op">)</span></span>
-<span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Sigma_P</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>            <span class="fu"><a href="https://rdrr.io/r/base/all.html" class="external-link">all</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/dim.html" class="external-link">dim</a></span><span class="op">(</span><span class="va">Sigma_B</span><span class="op">)</span> <span class="op">==</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">B</span>, <span class="va">B</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># Σ_total = ΣB ⊗ ΣP (dimension 5B x 5B)</span></span>
-<span>  <span class="va">Sigma_total</span> <span class="op">&lt;-</span> <span class="fu">kronecker</span><span class="op">(</span><span class="va">Sigma_B</span>, <span class="va">Sigma_P</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># Per-biomarker means on latent scale (same base across B for simplicity)</span></span>
-<span>  <span class="va">M_true</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">mu_latent_base</span>, <span class="va">B</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span>  <span class="va">vec_M</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/vector.html" class="external-link">as.vector</a></span><span class="op">(</span><span class="va">M_true</span><span class="op">)</span>  <span class="co"># length 5B</span></span>
-<span></span>
-<span>  <span class="co"># Draw person-level latent parameters (each length 5B), then reshape to 5×B</span></span>
-<span>  <span class="va">Theta_latent</span> <span class="op">&lt;-</span> <span class="fu">mvtnorm</span><span class="fu">::</span><span class="fu">rmvnorm</span><span class="op">(</span><span class="va">n_id</span>, mean <span class="op">=</span> <span class="va">vec_M</span>, sigma <span class="op">=</span> <span class="va">Sigma_total</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># Safety: ensure meas_sd has length B</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">meas_sd</span><span class="op">)</span> <span class="op">==</span> <span class="fl">1L</span><span class="op">)</span> <span class="va">meas_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">meas_sd</span>, <span class="va">B</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/stopifnot.html" class="external-link">stopifnot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">meas_sd</span><span class="op">)</span> <span class="op">==</span> <span class="va">B</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu">purrr</span><span class="fu">::</span><span class="fu"><a href="https://purrr.tidyverse.org/reference/map_dfr.html" class="external-link">map_dfr</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">n_id</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span></span>
-<span>    <span class="va">mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="va">Theta_latent</span><span class="op">[</span><span class="va">i</span>, <span class="op">]</span>, nrow <span class="op">=</span> <span class="fl">5</span>, ncol <span class="op">=</span> <span class="va">B</span><span class="op">)</span></span>
-<span>    <span class="fu">tibble</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></span><span class="op">(</span></span>
-<span>      biomarker   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/paste.html" class="external-link">paste0</a></span><span class="op">(</span><span class="st">"bm"</span>, <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_len</a></span><span class="op">(</span><span class="va">B</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>      log_y0      <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
-<span>      log_y1m0    <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>,</span>
-<span>      log_t1      <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>,</span>
-<span>      log_alpha   <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">4</span>, <span class="op">]</span>,</span>
-<span>      log_rho_m1  <span class="op">=</span> <span class="va">mat</span><span class="op">[</span><span class="fl">5</span>, <span class="op">]</span></span>
-<span>    <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        y0    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_y0</span><span class="op">)</span>,</span>
-<span>        y1    <span class="op">=</span> <span class="va">y0</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_y1m0</span><span class="op">)</span>,</span>
-<span>        t1    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_t1</span><span class="op">)</span>,</span>
-<span>        alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_alpha</span><span class="op">)</span>,</span>
-<span>        rho   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">log_rho_m1</span><span class="op">)</span> <span class="op">+</span> <span class="fl">1</span>,         <span class="co"># shape = rho</span></span>
-<span>        Subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="va">i</span><span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">tidyr</span><span class="fu">::</span><span class="fu"><a href="https://tidyr.tidyverse.org/reference/expand.html" class="external-link">crossing</a></span><span class="op">(</span></span>
-<span>        visit_num <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq_along</a></span><span class="op">(</span><span class="va">time_grid</span><span class="op">)</span>,</span>
-<span>        time_days <span class="op">=</span> <span class="va">time_grid</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        <span class="co"># Use ab_vec pass rho as `shape`</span></span>
-<span>        y_true <span class="op">=</span> <span class="fu">ab_vec</span><span class="op">(</span></span>
-<span>          t      <span class="op">=</span> <span class="va">time_days</span>,</span>
-<span>          y0     <span class="op">=</span> <span class="va">y0</span>,</span>
-<span>          y1     <span class="op">=</span> <span class="va">y1</span>,</span>
-<span>          t1     <span class="op">=</span> <span class="va">t1</span>,</span>
-<span>          alpha  <span class="op">=</span> <span class="va">alpha</span>,</span>
-<span>          shape  <span class="op">=</span> <span class="va">rho</span></span>
-<span>        <span class="op">)</span>,</span>
-<span>        logy_true <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">pmax</a></span><span class="op">(</span><span class="va">y_true</span>, <span class="fl">1e-12</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        bm_idx    <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/integer.html" class="external-link">as.integer</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"^bm"</span>, <span class="st">""</span>, <span class="va">biomarker</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        logy_obs  <span class="op">=</span> <span class="va">logy_true</span> <span class="op">+</span> <span class="fu">stats</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/stats/Normal.html" class="external-link">rnorm</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/context.html" class="external-link">n</a></span><span class="op">(</span><span class="op">)</span>, mean <span class="op">=</span> <span class="fl">0</span>, sd <span class="op">=</span> <span class="va">meas_sd</span><span class="op">[</span><span class="va">bm_idx</span><span class="op">]</span><span class="op">)</span>,</span>
-<span>        value     <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">exp</a></span><span class="op">(</span><span class="va">logy_obs</span><span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="va">Subject</span>, <span class="va">visit_num</span>, antigen_iso <span class="op">=</span> <span class="va">biomarker</span>, <span class="va">time_days</span>, <span class="va">value</span><span class="op">)</span></span>
-<span>  <span class="op">}</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    data  <span class="op">=</span> <span class="va">dat</span>,</span>
-<span>    truth <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>      M_true       <span class="op">=</span> <span class="va">M_true</span>,</span>
-<span>      Sigma_P      <span class="op">=</span> <span class="va">Sigma_P</span>,</span>
-<span>      Sigma_B      <span class="op">=</span> <span class="va">Sigma_B</span>,</span>
-<span>      Sigma_total  <span class="op">=</span> <span class="va">Sigma_total</span>,</span>
-<span>      meas_sd      <span class="op">=</span> <span class="va">meas_sd</span>,</span>
-<span>      Theta_latent <span class="op">=</span> <span class="va">Theta_latent</span></span>
-<span>    <span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</details>
-</div>
 </section><section class="section level2" data-number="4"><h2 data-number="4" id="step-c-choose-a-truth-and-simulate-fake-data">
 <span class="header-section-number">4</span> Step C — Choose a “truth” and simulate fake data<a class="anchor" aria-label="anchor" href="#step-c-choose-a-truth-and-simulate-fake-data"></a>
 </h2>
 <div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Choose B biomarkers and visit schedule</span></span>
-<span><span class="va">B</span> <span class="op">&lt;-</span> <span class="fl">3</span></span>
-<span><span class="va">time_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">7</span>, <span class="fl">14</span>, <span class="fl">30</span>, <span class="fl">90</span>, <span class="fl">180</span>, <span class="fl">365</span><span class="op">)</span></span>
+<span><span class="va">n_blocks</span>  <span class="op">&lt;-</span> <span class="fl">2</span></span>
+<span><span class="va">time_grid</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">7</span>, <span class="fl">14</span>, <span class="fl">30</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># True ΣP (5×5): mild positive correlation among the five latent parameters</span></span>
-<span><span class="va">sd_P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.35</span>, <span class="fl">0.45</span>, <span class="fl">0.25</span>, <span class="fl">0.30</span>, <span class="fl">0.25</span><span class="op">)</span></span>
-<span><span class="va">R_P</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">R_P</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
-<span><span class="va">Sigma_P</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_P</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">R_P</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_P</span><span class="op">)</span></span>
+<span><span class="va">sd_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.35</span>, <span class="fl">0.45</span>, <span class="fl">0.25</span>, <span class="fl">0.30</span>, <span class="fl">0.25</span><span class="op">)</span></span>
+<span><span class="va">R_p</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fl">0.25</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">R_p</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fl">1</span></span>
+<span><span class="va">sigma_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_p</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">R_p</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_p</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># True ΣB (B×B): cross-biomarker correlation</span></span>
-<span><span class="va">R_B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span> <span class="fl">1</span>, <span class="fl">0.5</span>, <span class="fl">0.3</span>,</span>
-<span>                 <span class="fl">0.5</span>, <span class="fl">1</span>, <span class="fl">0.4</span>,</span>
-<span>                 <span class="fl">0.3</span>, <span class="fl">0.4</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">B</span>, <span class="va">B</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
-<span><span class="va">sd_B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="va">B</span><span class="op">)</span></span>
-<span><span class="va">Sigma_B</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_B</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">R_B</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_B</span><span class="op">)</span></span>
+<span><span class="va">R_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0.5</span>,</span>
+<span>                <span class="fl">0.5</span>, <span class="fl">1</span><span class="op">)</span>, <span class="va">n_blocks</span>, <span class="va">n_blocks</span>, byrow <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="va">sd_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.6</span>, <span class="va">n_blocks</span><span class="op">)</span></span>
+<span><span class="va">sigma_b</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_b</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">R_b</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">sd_b</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu">simulate_multiB_long</span><span class="op">(</span></span>
-<span>  n_id <span class="op">=</span> <span class="fl">24</span>, B <span class="op">=</span> <span class="va">B</span>, time_grid <span class="op">=</span> <span class="va">time_grid</span>,</span>
-<span>  Sigma_P <span class="op">=</span> <span class="va">Sigma_P</span>, Sigma_B <span class="op">=</span> <span class="va">Sigma_B</span></span>
-<span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">sim2</span> <span class="op">&lt;-</span> <span class="fu">simulate_multiB_long2</span><span class="op">(</span></span>
-<span>  n_id <span class="op">=</span> <span class="fl">24</span>, B <span class="op">=</span> <span class="va">B</span>, time_grid <span class="op">=</span> <span class="va">time_grid</span>,</span>
-<span>  Sigma_P <span class="op">=</span> <span class="va">Sigma_P</span>, Sigma_B <span class="op">=</span> <span class="va">Sigma_B</span></span>
+<span><span class="co"># Run simulator</span></span>
+<span><span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/simulate_multi_b_long.html">simulate_multi_b_long</a></span><span class="op">(</span></span>
+<span>  n_id      <span class="op">=</span> <span class="fl">5</span>,</span>
+<span>  n_blocks  <span class="op">=</span> <span class="va">n_blocks</span>,</span>
+<span>  time_grid <span class="op">=</span> <span class="va">time_grid</span>,</span>
+<span>  sigma_p   <span class="op">=</span> <span class="va">sigma_p</span>,</span>
+<span>  sigma_b   <span class="op">=</span> <span class="va">sigma_b</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># This long table already matches prep_data() expectations:</span></span>
 <span></span>
-<span><span class="va">sim</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
-<span><span class="va">sim2</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">sim</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/slice.html" class="external-link">slice_head</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span></code></pre></div>
 </details>
 </div>
 </section><section class="section level2" data-number="5"><h2 data-number="5" id="step-d-fit-the-independence-model">
 <span class="header-section-number">5</span> Step D — Fit the independence model<a class="anchor" aria-label="anchor" href="#step-d-fit-the-independence-model"></a>
 </h2>
 <div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># If our package is loaded, this is all we need:</span></span>
 <span></span>
 <span><span class="va">sim_tbl</span> <span class="op">&lt;-</span> <span class="fu">serodynamics</span><span class="fu">::</span><span class="fu"><a href="../reference/as_case_data.html">as_case_data</a></span><span class="op">(</span></span>
@@ -367,51 +211,7 @@
 </li>
 <li>Kronecker precision: <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mtext mathvariant="normal">T</mtext><mo>=</mo><msub><mtext mathvariant="normal">T</mtext><mi>B</mi></msub><mo>⊗</mo><msub><mtext mathvariant="normal">T</mtext><mi>P</mi></msub></mrow><annotation encoding="application/x-tex">\text{T} = \text{T}_B \otimes \text{T}_P</annotation></semantics></math>
 </li>
-</ul>
-<div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">prep_priors_multiB</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">B</span>,</span>
-<span>                               <span class="va">OmegaP_scale</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">nuP</span> <span class="op">=</span> <span class="fl">6</span>,</span>
-<span>                               <span class="va">OmegaB_scale</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="va">B</span><span class="op">)</span>, <span class="va">nuB</span> <span class="op">=</span> <span class="va">B</span> <span class="op">+</span> <span class="fl">1</span>,</span>
-<span>                               <span class="va">mu_hyp_param</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    OmegaP <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">OmegaP_scale</span>, <span class="fl">5</span><span class="op">)</span>,   <span class="co"># scale for parameter covariance</span></span>
-<span>    nuP    <span class="op">=</span> <span class="va">nuP</span>,                     <span class="co"># df for Wishart on TauP</span></span>
-<span>    OmegaB <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="va">OmegaB_scale</span>, <span class="va">B</span><span class="op">)</span>,   <span class="co"># scale for biomarker covariance</span></span>
-<span>    nuB    <span class="op">=</span> <span class="va">nuB</span>,                     <span class="co"># df for Wishart on TauB</span></span>
-<span>    mu.par <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="va">mu_hyp_param</span>, each <span class="op">=</span> <span class="va">B</span><span class="op">)</span>, nrow <span class="op">=</span> <span class="va">B</span>, ncol <span class="op">=</span> <span class="fl">5</span>,</span>
-<span>                    dimnames <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="cn">NULL</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y0"</span>,<span class="st">"y1"</span>,<span class="st">"t1"</span>,<span class="st">"alpha"</span>,<span class="st">"shape"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</details>
-</div>
-<div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># A safe initializer that accepts chain and never sets TauB/TauP </span></span>
-<span><span class="va">initsfunction</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chain</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span></span>
-<span>    .RNG.name <span class="op">=</span> <span class="st">"base::Mersenne-Twister"</span>,</span>
-<span>    .RNG.seed <span class="op">=</span> <span class="fl">123</span> <span class="op">+</span> <span class="va">chain</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="va">inits_kron</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">chain</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/initsfunction.html">initsfunction</a></span><span class="op">(</span><span class="va">chain</span><span class="op">)</span>   <span class="co"># call with chain argument</span></span>
-<span>  <span class="va">z</span><span class="op">$</span><span class="va">TauB</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>              <span class="co"># remove if present</span></span>
-<span>  <span class="va">z</span><span class="op">$</span><span class="va">TauP</span> <span class="op">&lt;-</span> <span class="cn">NULL</span></span>
-<span>  <span class="va">z</span><span class="op">$</span><span class="va">prec.par</span> <span class="op">&lt;-</span> <span class="cn">NULL</span>          <span class="co"># old per-biomarker precision (not used now)</span></span>
-<span>  <span class="va">z</span></span>
-<span><span class="op">}</span></span>
-<span></span>
-<span><span class="co"># Clean base priors to avoid unused legacy parts (omega/wishdf)</span></span>
-<span><span class="va">clean_priors</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="va">drop</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">intersect</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"omega"</span>,<span class="st">"wishdf"</span>,<span class="st">"Omega"</span>,<span class="st">"WishDF"</span>,<span class="st">"prec.par"</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">drop</span><span class="op">)</span><span class="op">)</span> <span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span><span class="op">[</span><span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">setdiff</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, <span class="va">drop</span><span class="op">)</span><span class="op">]</span></span>
-<span>  <span class="va">x</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</details>
-</div>
-</section><section class="level2" data-number="6.2"><h3 data-number="6.2" id="e-2-write-the-new-jags-model-file-kronecker-precision">
+</ul></section><section class="level2" data-number="6.2"><h3 data-number="6.2" id="e-2-write-the-new-jags-model-file-kronecker-precision">
 <span class="header-section-number">6.2</span> E.2 Write the new JAGS model file (Kronecker precision)<a class="anchor" aria-label="anchor" href="#e-2-write-the-new-jags-model-file-kronecker-precision"></a>
 </h3>
 <p>This is our <code>model.jags</code> with only one conceptual change:<br>
@@ -429,91 +229,6 @@ par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.pa
 <li>We keep our hyperpriors for <code>mu.par</code> (the per-biomarker means), so it plugs right into our current <code><a href="../reference/prep_priors.html">prep_priors()</a></code>.</li>
 </ul>
 <p>This is our new <code>model.jags</code> rename as <code>model_ch2_kron.jags</code></p>
-<div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># --- E.2: Write the new JAGS file once (beta defined outside obs loop) ---</span></span>
-<span><span class="va">write_model_ch2_kron</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">path</span> <span class="op">=</span> <span class="st">"model_ch2_kron.jags"</span><span class="op">)</span><span class="op">{</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/cat.html" class="external-link">cat</a></span><span class="op">(</span><span class="st">'</span></span>
-<span><span class="st">model {</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  # Hyperpriors for population means (same as model.jags)</span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  for (b in 1:B) {</span></span>
-<span><span class="st">    mu.par[b, 1:n_params] ~ dmnorm(mu.hyp[b, ], prec.hyp[b, , ])</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  # Wishart priors for Kronecker precision (new)</span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  TauP[1:5,1:5] ~ dwish(OmegaP[1:5,1:5], nuP)             # within-biomarker</span></span>
-<span><span class="st">  TauB[1:B,1:B] ~ dwish(OmegaB[1:B,1:B], nuB)             # across biomarkers</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # Build Tau = TauB ⊗ TauP  (dimension: (5*B) x (5*B))</span></span>
-<span><span class="st">  for (b1 in 1:B) {</span></span>
-<span><span class="st">    for (b2 in 1:B) {</span></span>
-<span><span class="st">      for (p1 in 1:5) {</span></span>
-<span><span class="st">        for (p2 in 1:5) {</span></span>
-<span><span class="st">          Tau[(b1-1)*5 + p1, (b2-1)*5 + p2] &lt;- TauB[b1,b2] * TauP[p1,p2]</span></span>
-<span><span class="st">        }</span></span>
-<span><span class="st">      }</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # Vectorized mean (stack mu.par across biomarkers)</span></span>
-<span><span class="st">  for (b in 1:B) {</span></span>
-<span><span class="st">    for (p in 1:5) {</span></span>
-<span><span class="st">      mu_vec[(b-1)*5 + p] &lt;- mu.par[b,p]</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  # Subject-level prior: one big MVN per subject</span></span>
-<span><span class="st">  # ----------------------------</span></span>
-<span><span class="st">  for (subj in 1:nsubj) {</span></span>
-<span><span class="st">    par_vec[subj, 1:(5*B)] ~ dmnorm(mu_vec[1:(5*B)], Tau[ , ])</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">    # Unstack back to par[subj, biomarker, param]</span></span>
-<span><span class="st">    for (b in 1:B) {</span></span>
-<span><span class="st">      for (p in 1:5) {</span></span>
-<span><span class="st">        par[subj, b, p] &lt;- par_vec[subj, (b-1)*5 + p]</span></span>
-<span><span class="st">      }</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">    # Transforms to natural scale</span></span>
-<span><span class="st">    for (b in 1:B) {</span></span>
-<span><span class="st">      y0[subj,b]    &lt;- exp(par[subj,b,1])</span></span>
-<span><span class="st">      y1[subj,b]    &lt;- y0[subj,b] + exp(par[subj,b,2])    # log(y1-y0)</span></span>
-<span><span class="st">      t1[subj,b]    &lt;- exp(par[subj,b,3])</span></span>
-<span><span class="st">      alpha[subj,b] &lt;- exp(par[subj,b,4])</span></span>
-<span><span class="st">      shape[subj,b] &lt;- exp(par[subj,b,5]) + 1</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">    # Likelihood</span></span>
-<span><span class="st">    for (obs in 1:nsmpl[subj]) {</span></span>
-<span><span class="st">      for (b in 1:B) {</span></span>
-<span><span class="st">        beta_tmp[subj,b] &lt;- log(y1[subj,b] / y0[subj,b]) / t1[subj,b]</span></span>
-<span><span class="st">        mu.logy[subj,obs,b] &lt;- ifelse(</span></span>
-<span><span class="st">          step(t1[subj,b] - smpl.t[subj,obs]),</span></span>
-<span><span class="st">          log(y0[subj,b]) + beta_tmp[subj,b] * smpl.t[subj,obs],</span></span>
-<span><span class="st">          (1/(1-shape[subj,b])) * log( y1[subj,b]^(1-shape[subj,b]) -</span></span>
-<span><span class="st">               (1-shape[subj,b]) * alpha[subj,b] * (smpl.t[subj,obs] - t1[subj,b]) )</span></span>
-<span><span class="st">        )</span></span>
-<span><span class="st">        logy[subj,obs,b] ~ dnorm(mu.logy[subj,obs,b], prec.logy[b])</span></span>
-<span><span class="st">      }</span></span>
-<span><span class="st">    }</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st"></span></span>
-<span><span class="st">  # Measurement precisions</span></span>
-<span><span class="st">  for (b in 1:B) {</span></span>
-<span><span class="st">    prec.logy[b] ~ dgamma(prec.logy.hyp[b,1], prec.logy.hyp[b,2])</span></span>
-<span><span class="st">  }</span></span>
-<span><span class="st">}</span></span>
-<span><span class="st">'</span>, file <span class="op">=</span> <span class="va">path</span><span class="op">)</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="va">path</span><span class="op">)</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</details>
-</div>
 <section class="level3" data-number="6.2.1"><h4 data-number="6.2.1" id="what-changed-vs--our-current-model-jags">
 <span class="header-section-number">6.2.1</span> What changed vs. our current <code>model.jags</code>
 <a class="anchor" aria-label="anchor" href="#what-changed-vs--our-current-model-jags"></a>
@@ -525,113 +240,6 @@ par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.pa
 </ul></section></section><section class="level2" data-number="6.3"><h3 data-number="6.3" id="e-3-minimal-wrapper-so-we-can-keep-calling-one-function">
 <span class="header-section-number">6.3</span> E.3: Minimal wrapper so we can keep calling one function<a class="anchor" aria-label="anchor" href="#e-3-minimal-wrapper-so-we-can-keep-calling-one-function"></a>
 </h3>
-<div class="cell">
-<details class="code-fold"><summary>Show R Code</summary><div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># --- E.3: Minimal wrapper (with flexible monitor list) ---</span></span>
-<span><span class="va">run_mod_kron</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">data</span>,</span>
-<span>                         <span class="va">file_mod</span> <span class="op">=</span> <span class="st">"model_ch2_kron.jags"</span>,</span>
-<span>                         <span class="va">nchain</span> <span class="op">=</span> <span class="fl">4</span>, <span class="va">nadapt</span> <span class="op">=</span> <span class="fl">0</span>, <span class="va">nburn</span> <span class="op">=</span> <span class="fl">0</span>,</span>
-<span>                         <span class="va">nmc</span> <span class="op">=</span> <span class="fl">100</span>, <span class="va">niter</span> <span class="op">=</span> <span class="fl">100</span>,</span>
-<span>                         <span class="va">strat</span> <span class="op">=</span> <span class="cn">NA</span>, <span class="va">with_post</span> <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>                         <span class="va">monitor</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y0"</span>,<span class="st">"y1"</span>,<span class="st">"t1"</span>,<span class="st">"alpha"</span>,<span class="st">"shape"</span>,<span class="st">"TauB"</span>,<span class="st">"TauP"</span><span class="op">)</span>,</span>
-<span>                         <span class="va">...</span><span class="op">)</span> <span class="op">{</span></span>
-<span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">strat</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span>
-<span>    <span class="va">strat_list</span> <span class="op">&lt;-</span> <span class="st">"None"</span></span>
-<span>  <span class="op">}</span> <span class="kw">else</span> <span class="op">{</span></span>
-<span>    <span class="va">strat_list</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">data</span><span class="op">[[</span><span class="va">strat</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span></span>
-<span>    Iteration<span class="op">=</span><span class="cn">NA</span>, Chain<span class="op">=</span><span class="cn">NA</span>, Parameter<span class="op">=</span><span class="cn">NA</span>, value<span class="op">=</span><span class="cn">NA</span>,</span>
-<span>    Parameter_sub<span class="op">=</span><span class="cn">NA</span>, Subject<span class="op">=</span><span class="cn">NA</span>, Iso_type<span class="op">=</span><span class="cn">NA</span>, Stratification<span class="op">=</span><span class="cn">NA</span></span>
-<span>  <span class="op">)</span></span>
-<span>  <span class="va">jags_post_final</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="va">strat_list</span><span class="op">)</span> <span class="op">{</span></span>
-<span></span>
-<span>    <span class="va">dl_sub</span> <span class="op">&lt;-</span> <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">strat</span><span class="op">)</span><span class="op">)</span> <span class="va">data</span> <span class="kw">else</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">data</span>, <span class="va">.data</span><span class="op">[[</span><span class="va">strat</span><span class="op">]</span><span class="op">]</span> <span class="op">==</span> <span class="va">i</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">longdata</span>    <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prep_data.html">prep_data</a></span><span class="op">(</span><span class="va">dl_sub</span><span class="op">)</span></span>
-<span>    <span class="va">base_priors</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/prep_priors.html">prep_priors</a></span><span class="op">(</span>max_antigens <span class="op">=</span> <span class="va">longdata</span><span class="op">$</span><span class="va">n_antigen_isos</span>, <span class="va">...</span><span class="op">)</span></span>
-<span>    <span class="va">base_priors</span> <span class="op">&lt;-</span> <span class="fu">clean_priors</span><span class="op">(</span><span class="va">base_priors</span><span class="op">)</span>                  <span class="co"># &lt;&lt; NEW</span></span>
-<span>    <span class="va">kron_priors</span> <span class="op">&lt;-</span> <span class="fu">prep_priors_multiB</span><span class="op">(</span>B <span class="op">=</span> <span class="va">longdata</span><span class="op">$</span><span class="va">n_antigen_isos</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="co"># Add scalar B expected by the model</span></span>
-<span>    <span class="va">B_scalar</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>B <span class="op">=</span> <span class="va">longdata</span><span class="op">$</span><span class="va">n_antigen_isos</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">priorspec</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">base_priors</span>, <span class="va">kron_priors</span>, <span class="va">B_scalar</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">nchains</span> <span class="op">&lt;-</span> <span class="va">nchain</span>; <span class="va">nadapt</span> <span class="op">&lt;-</span> <span class="va">nadapt</span>; <span class="va">nburnin</span> <span class="op">&lt;-</span> <span class="va">nburn</span></span>
-<span>    <span class="va">nmc</span> <span class="op">&lt;-</span> <span class="va">nmc</span>; <span class="va">niter</span> <span class="op">&lt;-</span> <span class="va">niter</span>; <span class="va">nthin</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">niter</span> <span class="op">/</span> <span class="va">nmc</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">monitor_kron</span> <span class="op">&lt;-</span> <span class="va">monitor</span></span>
-<span></span>
-<span>    <span class="va">jags_post</span> <span class="op">&lt;-</span> <span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span><span class="op">(</span></span>
-<span>      model     <span class="op">=</span> <span class="va">file_mod</span>,</span>
-<span>      data      <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="va">longdata</span>, <span class="va">priorspec</span><span class="op">)</span>,</span>
-<span>      inits     <span class="op">=</span> <span class="va">inits_kron</span>,                      <span class="co"># &lt;&lt; NEW</span></span>
-<span>      method    <span class="op">=</span> <span class="st">"parallel"</span>,</span>
-<span>      adapt     <span class="op">=</span> <span class="va">nadapt</span>, burnin <span class="op">=</span> <span class="va">nburnin</span>, thin <span class="op">=</span> <span class="va">nthin</span>,</span>
-<span>      sample    <span class="op">=</span> <span class="va">nmc</span>, n.chains <span class="op">=</span> <span class="va">nchains</span>,</span>
-<span>      monitor   <span class="op">=</span> <span class="va">monitor_kron</span>,</span>
-<span>      summarise <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>    <span class="op">)</span></span>
-<span>    <span class="va">jags_post_final</span><span class="op">[[</span><span class="va">i</span><span class="op">]</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="va">jags_post</span></span>
-<span></span>
-<span>    <span class="va">jags_unpack</span> <span class="op">&lt;-</span> <span class="fu">ggmcmc</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/ggmcmc/man/ggs.html" class="external-link">ggs</a></span><span class="op">(</span><span class="va">jags_post</span><span class="op">[[</span><span class="st">"mcmc"</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span>
-<span>    <span class="va">mod_atts</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">jags_unpack</span><span class="op">)</span><span class="op">[</span><span class="fl">4</span><span class="op">:</span><span class="fl">8</span><span class="op">]</span></span>
-<span></span>
-<span>    <span class="va">iso_dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">longdata</span><span class="op">)</span><span class="op">$</span><span class="va">antigens</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Subnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/row.names.html" class="external-link">row.names</a></span><span class="op">(</span><span class="va">.</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span>    <span class="va">jags_unpack</span> <span class="op">&lt;-</span> <span class="va">jags_unpack</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        Subnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">".*,"</span>, <span class="st">""</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Parameter</span><span class="op">)</span>,</span>
-<span>        Parameter_sub <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"\\[.*"</span>, <span class="st">""</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Parameter</span><span class="op">)</span>,</span>
-<span>        Subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"\\,.*"</span>, <span class="st">""</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Parameter</span><span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span></span>
-<span>        Subnum <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/numeric.html" class="external-link">as.numeric</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">"\\].*"</span>, <span class="st">""</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Subnum</span><span class="op">)</span><span class="op">)</span>,</span>
-<span>        Subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/grep.html" class="external-link">sub</a></span><span class="op">(</span><span class="st">".*\\["</span>, <span class="st">""</span>, <span class="va">.data</span><span class="op">$</span><span class="va">Subject</span><span class="op">)</span></span>
-<span>      <span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">iso_dat</span>, by <span class="op">=</span> <span class="st">"Subnum"</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">ids</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attr.html" class="external-link">attr</a></span><span class="op">(</span><span class="va">longdata</span>, <span class="st">"ids"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>Subject <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/row_number.html" class="external-link">row_number</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">jags_final</span> <span class="op">&lt;-</span> <span class="va">jags_unpack</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">left_join</a></span><span class="op">(</span><span class="va">ids</span>, by <span class="op">=</span> <span class="st">"Subject"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Subnum"</span>, <span class="st">"Subject"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>      <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span></span>
-<span>        Iso_type <span class="op">=</span> <span class="st">"attributes.longdata..antigens"</span>,</span>
-<span>        Subject  <span class="op">=</span> <span class="st">"attr.longdata...ids.."</span></span>
-<span>      <span class="op">)</span></span>
-<span></span>
-<span>    <span class="va">jags_final</span><span class="op">$</span><span class="va">Stratification</span> <span class="op">&lt;-</span> <span class="va">i</span></span>
-<span>    <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">jags_out</span>, <span class="va">jags_final</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="op">}</span></span>
-<span></span>
-<span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="va">jags_out</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/stats/complete.cases.html" class="external-link">complete.cases</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span>, <span class="op">]</span></span>
-<span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select</a></span><span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Parameter"</span><span class="op">)</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/rename.html" class="external-link">rename</a></span><span class="op">(</span><span class="st">"Parameter"</span> <span class="op">=</span> <span class="st">"Parameter_sub"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>    <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></span><span class="op">(</span><span class="va">Iteration</span>, <span class="va">Chain</span>, <span class="va">Parameter</span>, <span class="va">Iso_type</span>, <span class="va">Stratification</span>, <span class="va">Subject</span>, <span class="va">value</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span>, <span class="va">mod_atts</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="co"># attach priors used (from last stratum)</span></span>
-<span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="va">jags_out</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span><span class="st">"priors"</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a></span><span class="op">(</span><span class="va">priorspec</span><span class="op">)</span><span class="op">$</span><span class="va">used_priors</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="va">fit_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/calc_fit_mod.html">calc_fit_mod</a></span><span class="op">(</span>modeled_dat <span class="op">=</span> <span class="va">jags_out</span>, original_data <span class="op">=</span> <span class="va">dl_sub</span><span class="op">)</span></span>
-<span>  <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="va">jags_out</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span>fitted_residuals <span class="op">=</span> <span class="va">fit_res</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">with_post</span><span class="op">)</span> <span class="va">jags_out</span> <span class="op">&lt;-</span> <span class="va">jags_out</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/structure.html" class="external-link">structure</a></span><span class="op">(</span>jags.post <span class="op">=</span> <span class="va">jags_post_final</span><span class="op">)</span></span>
-<span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://generics.r-lib.org/reference/setops.html" class="external-link">union</a></span><span class="op">(</span><span class="st">"sr_model"</span>, <span class="fu"><a href="https://rdrr.io/r/base/class.html" class="external-link">class</a></span><span class="op">(</span><span class="va">jags_out</span><span class="op">)</span><span class="op">)</span></span>
-<span>  <span class="va">jags_out</span></span>
-<span><span class="op">}</span></span></code></pre></div>
-</details>
-</div>
 </section></section><section class="section level2" data-number="7"><h2 data-number="7" id="what-are-omegap-nup-omegab-nub-and-why-these-defaults">
 <span class="header-section-number">7</span> What are <code>OmegaP</code>, <code>nuP</code>, <code>OmegaB</code>, <code>nuB</code> — and why these defaults?<a class="anchor" aria-label="anchor" href="#what-are-omegap-nup-omegab-nub-and-why-these-defaults"></a>
 </h2>
@@ -646,7 +254,7 @@ par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.pa
 <section class="level2" data-number="7.1"><h3 data-number="7.1" id="chosen-weakly-informative-defaults">
 <span class="header-section-number">7.1</span> Chosen weakly-informative defaults<a class="anchor" aria-label="anchor" href="#chosen-weakly-informative-defaults"></a>
 </h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">OmegaP_scale</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.1</span>, <span class="fl">5</span><span class="op">)</span>;  <span class="va">nuP</span> <span class="op">=</span> <span class="fl">6</span></span>
 <span><span class="va">OmegaB_scale</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="va">B</span><span class="op">)</span>;  <span class="va">nuB</span> <span class="op">=</span> <span class="va">B</span> <span class="op">+</span> <span class="fl">1</span></span></code></pre></div>
 <ul>
@@ -664,15 +272,15 @@ par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.pa
 <li><p><strong>Correlated model</strong>: we supply both the usual priors and the new Kronecker priors:</p></li>
 </ul>
 <div class="cell">
-<details class="code-fold"><summary>Run Kronecker model (disabled for now)</summary><div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
+<details class="code-fold"><summary>Run Kronecker model (disabled for now)</summary><div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Step 1: simulate fake data (or load real Shigella data)</span></span>
 <span><span class="va">sim_tbl</span> </span>
 <span></span>
 <span><span class="co"># Step 2: write the new Kronecker model file (once per session/project)</span></span>
-<span><span class="fu">write_model_ch2_kron</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/write_model_ch2_kron.html">write_model_ch2_kron</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Step 3: run the new wrapper with combined priors</span></span>
-<span><span class="va">fit_kron</span> <span class="op">&lt;-</span> <span class="fu">run_mod_kron</span><span class="op">(</span></span>
+<span><span class="va">fit_kron</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_mod_kron.html">run_mod_kron</a></span><span class="op">(</span></span>
 <span>  data     <span class="op">=</span> <span class="va">sim_tbl</span>,</span>
 <span>  file_mod <span class="op">=</span> <span class="st">"model_ch2_kron.jags"</span>,</span>
 <span>  nchain   <span class="op">=</span> <span class="fl">4</span>, nadapt <span class="op">=</span> <span class="fl">1000</span>, nburn <span class="op">=</span> <span class="fl">500</span>,</span>
