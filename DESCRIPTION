@@ -56,7 +56,6 @@ Config/needs/test:
     vdiffr, 
     here, 
     readr, 
-    ssdtools, 
     magrittr, 
     readr,
     rlist
