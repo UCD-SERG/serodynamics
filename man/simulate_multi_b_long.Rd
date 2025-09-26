@@ -73,7 +73,7 @@ sim <- simulate_multi_b_long(
   sigma_b   = sigma_b
 )
 
-head(sim2$data)
+head(sim$data)
 }
 \author{
 Kwan Ho Lee
