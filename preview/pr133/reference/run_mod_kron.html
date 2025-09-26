@@ -182,9 +182,70 @@ optionally <code>jags.post</code>.</p>
 <span class="r-in"><span>  nmc      <span class="op">=</span> <span class="fl">200</span>, niter <span class="op">=</span> <span class="fl">2000</span>,</span></span>
 <span class="r-in"><span>  strat    <span class="op">=</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in run_mod_kron(data = long_tbl, file_mod = model_path, nchain = 2,     nadapt = 200, nburn = 200, nmc = 200, niter = 2000, strat = NA):</span> object 'prep_priors_multiB' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri Sep 26 00:15:05 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> RUNTIME ERROR:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Compilation error on line 8.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Unknown variable B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Either supply values for this variable with the data</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> or define it  on the left hand side of a relation.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARNING: Unused variable(s) in data table:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_antigen_isos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_blocks</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't set RNG name. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't set initial values. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't initialize. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adaptation skipped: model is not in adaptive mode.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 200</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 2000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . No model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump CODA output. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump samplers. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: the model did not require adaptation</span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in runjags.readin(directory = startinfo$directory, silent.jags = silent.jags,     target.adapt = adapt, target.burnin = burnin, target.iters = sample,     n.chains = length(inits), monitor = monitor, method = method,     method.options = method.options, suspended = FALSE, read.monitor = read.monitor,     sub.samples = FALSE, sub.chains = if (runjags.getOption("partial.import") &amp;&amp;         !combine) TRUE else FALSE, force.read = length(noread.monitor) &gt;         0):</span> All the simulations appear to have crashed - check the model output in failed.jags() for clues</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://pillar.r-lib.org/reference/glimpse.html" class="external-link">glimpse</a></span><span class="op">(</span><span class="va">out</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Either one or more simulation(s) failed, or there was an error in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> processing the results.  You may be able to retrieve any successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> simulations using:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> results.jags("/tmp/Rtmp0H7Zwj/runjagsfiles211b7682ed5b",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> recover.chains=TRUE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> See the help file for that function for possible options.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To remove failed simulation folders use cleanup.jags() - this will be</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> run automatically when the runjags package is unloaded</span>
 <span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'out' not found</span>
 </code></pre></div>
     </div>
