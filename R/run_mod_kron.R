@@ -31,16 +31,6 @@
 #'
 #' @export
 #' @example inst/examples/examples-run_mod_kron.R
-#' @examples
-#' \dontrun{
-#' out <- run_mod_kron(
-#'   data     = long_tbl,
-#'   file_mod = model_path,
-#'   nchain   = 2, nadapt = 200, nburn = 200,
-#'   nmc      = 200, niter = 2000,
-#'   strat    = NA
-#' )
-#' }
 run_mod_kron <- function(data,
                          file_mod = "model_ch2_kron.jags",
                          nchain = 4, nadapt = 0, nburn = 0,

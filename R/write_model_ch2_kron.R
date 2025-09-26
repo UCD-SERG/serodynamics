@@ -72,11 +72,17 @@ model {
       alpha[subj,b] <- exp(par[subj,b,4])
       shape[subj,b] <- exp(par[subj,b,5]) + 1
     }
+    
+    # [FIX — moved outside obs loop]
+    # Pre-compute beta_tmp once per (subj, b)
+    for (b in 1:n_blocks) {
+      beta_tmp[subj,b] <- log(y1[subj,b] / y0[subj,b]) / t1[subj,b]
+    }
 
     # Likelihood (unchanged)
     for (obs in 1:nsmpl[subj]) {
       for (b in 1:n_blocks) {
-        beta_tmp[subj,b] <- log(y1[subj,b] / y0[subj,b]) / t1[subj,b]
+        # [FIX — removed duplicate definition of beta_tmp here]
         mu.logy[subj,obs,b] <- ifelse(
           step(t1[subj,b] - smpl.t[subj,obs]),
           log(y0[subj,b]) + beta_tmp[subj,b] * smpl.t[subj,obs],

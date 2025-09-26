@@ -36,10 +36,12 @@ long_tbl <- serodynamics::as_case_data(
 )
 
 # 4) Fit the Kronecker model (very small MCMC for demonstration)
-out <- run_mod_kron(
-  data     = long_tbl,
-  file_mod = model_path,
-  nchain   = 2, nadapt = 200, nburn = 200,
-  nmc      = 200, niter = 2000,
-  strat    = NA
-)
+if (interactive()) {
+  out <- run_mod_kron(
+    data     = long_tbl,
+    file_mod = model_path,
+    nchain   = 2, nadapt = 200, nburn = 200,
+    nmc      = 200, niter = 2000,
+    strat    = NA
+  )
+}
