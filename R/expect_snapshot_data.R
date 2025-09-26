@@ -1,14 +1,8 @@
-# copied from https://github.com/bcgov/ssdtools/blob/4c52d2b87ea09405cd06325877952e50faf5c708/R/helpers.R # nolint line_length_linter
-# with permission: https://github.com/bcgov/ssdtools/issues/379
-
-save_csv <- function(x) {
-  path <- tempfile(fileext = ".csv")
-  readr::write_csv(x, path)
-  path
-}
-
 #' Snapshot testing for [data.frame]s
-#'
+#' @description
+#' copied from <https://github.com/bcgov/ssdtools>
+#' with permission (<https://github.com/bcgov/ssdtools/issues/379>)
+#' 
 #' @param x a [data.frame] to snapshot
 #' @param name [character] snapshot name
 #' @param digits [integer] passed to [signif()] for numeric variables
@@ -29,4 +23,11 @@ expect_snapshot_data <- function(x, name, digits = 6) {
     paste0(name, ".csv"),
     compare = testthat::compare_file_text
   )
+}
+
+
+save_csv <- function(x) {
+  path <- tempfile(fileext = ".csv")
+  readr::write_csv(x, path)
+  path
 }

@@ -17,7 +17,8 @@ expect_snapshot_data(x, name, digits = 6)
 \link{NULL} (from \code{\link[testthat:expect_snapshot_file]{testthat::expect_snapshot_file()}})
 }
 \description{
-Snapshot testing for \link{data.frame}s
+copied from \url{https://github.com/bcgov/ssdtools}
+with permission (\url{https://github.com/bcgov/ssdtools/issues/379})
 }
 \examples{
 expect_snapshot_data(iris, name = iris)
