@@ -103,8 +103,15 @@ out <- run_mod_kron(
   nmc      = 200, niter = 2000,
   strat    = NA
 )
-
-print(dplyr::glimpse(out))
+\donttest{
+out <- run_mod_kron(
+  data     = long_tbl,
+  file_mod = model_path,
+  nchain   = 2, nadapt = 200, nburn = 200,
+  nmc      = 200, niter = 2000,
+  strat    = NA
+)
+}
 }
 \author{
 Kwan Ho Lee

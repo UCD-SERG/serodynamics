@@ -14,6 +14,24 @@ simulate_multi_b_long(
   meas_sd = rep(0.22, n_blocks)
 )
 }
+\arguments{
+\item{n_id}{Integer. Number of individuals to simulate.}
+
+\item{n_blocks}{Integer. Number of biomarkers (blocks).}
+
+\item{time_grid}{Numeric vector of observation times (days).}
+
+\item{sigma_p}{5×5 covariance matrix for within-biomarker parameters.}
+
+\item{sigma_b}{\code{n_blocks}×\code{n_blocks} covariance across biomarkers.}
+
+\item{mu_latent_base}{Numeric length-5 vector of means for the latent
+parameters (on log scale) per biomarker, in the order
+\code{(log y0, log(y1 - y0), log t1, log alpha, log(shape-1))}.}
+
+\item{meas_sd}{Numeric. Measurement error SD(s) on the log scale; either a
+single value recycled to all biomarkers or a length-\code{n_blocks} vector.}
+}
 \value{
 A list with:
 \itemize{
@@ -56,9 +74,6 @@ sim <- simulate_multi_b_long(
 )
 
 head(sim2$data)
-}
-\seealso{
-simulate_multi_b_long
 }
 \author{
 Kwan Ho Lee

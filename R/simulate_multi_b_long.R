@@ -6,6 +6,16 @@
 #' biomarker), then generates noisy observations on a time grid. The expected
 #' trajectory is computed directly using \code{serodynamics::ab()}.
 #'
+#' @param n_id Integer. Number of individuals to simulate.
+#' @param n_blocks Integer. Number of biomarkers (blocks).
+#' @param time_grid Numeric vector of observation times (days).
+#' @param sigma_p 5×5 covariance matrix for within-biomarker parameters.
+#' @param sigma_b \code{n_blocks}×\code{n_blocks} covariance across biomarkers.
+#' @param mu_latent_base Numeric length-5 vector of means for the latent
+#'   parameters (on log scale) per biomarker, in the order
+#'   \code{(log y0, log(y1 - y0), log t1, log alpha, log(shape-1))}.
+#' @param meas_sd Numeric. Measurement error SD(s) on the log scale; either a
+#'   single value recycled to all biomarkers or a length-\code{n_blocks} vector.
 #'
 #' @return A list with:
 #' \itemize{
@@ -15,7 +25,6 @@
 #'         `meas_sd`, and `theta_latent`.
 #' }
 #'
-#' @seealso simulate_multi_b_long
 #' @export
 #' @example inst/examples/examples-simulate_multi_b_long.R
 simulate_multi_b_long <- function(

@@ -31,6 +31,16 @@
 #'
 #' @export
 #' @example inst/examples/examples-run_mod_kron.R
+#' @examples
+#' \donttest{
+#' out <- run_mod_kron(
+#'   data     = long_tbl,
+#'   file_mod = model_path,
+#'   nchain   = 2, nadapt = 200, nburn = 200,
+#'   nmc      = 200, niter = 2000,
+#'   strat    = NA
+#' )
+#' }
 run_mod_kron <- function(data,
                          file_mod = "model_ch2_kron.jags",
                          nchain = 4, nadapt = 0, nburn = 0,
@@ -62,8 +72,8 @@ run_mod_kron <- function(data,
     
     longdata    <- prep_data(dl_sub)
     base_priors <- prep_priors(max_antigens = longdata$n_antigen_isos, ...)
-    base_priors <- serodynamics:::clean_priors(base_priors)
-    kron_priors <- serodynamics:::prep_priors_multi_b(n_blocks = 
+    base_priors <- serodynamics::clean_priors(base_priors)
+    kron_priors <- serodynamics::prep_priors_multi_b(n_blocks = 
                                                        longdata$n_antigen_isos)
     
     # JAGS needs n_blocks as a scalar
@@ -78,7 +88,7 @@ run_mod_kron <- function(data,
     jags_post <- runjags::run.jags(
       model     = file_mod,
       data      = c(longdata, priorspec),
-      inits     = function(chain) serodynamics:::inits_kron(chain),
+      inits     = function(chain) serodynamics::inits_kron(chain),
       method    = "parallel",
       adapt     = nadapt, burnin = nburnin, thin = nthin,
       sample    = nmc, n.chains = nchains,
@@ -114,8 +124,8 @@ run_mod_kron <- function(data,
       dplyr::left_join(ids, by = "Subject") |>
       dplyr::select(!c("Subnum", "Subject")) |>
       dplyr::rename(
-        Iso_type = tidyselect::all_of("attributes.longdata..antigens"),
-        Subject  = tidyselect::all_of("attr.longdata...ids..")
+        c("Iso_type" = "attributes.longdata..antigens",                   
+          "Subject"  = "attr.longdata...ids..")                           
       )
     
     jags_final$Stratification <- i
@@ -123,17 +133,13 @@ run_mod_kron <- function(data,
   }
   
   jags_out <- jags_out[stats::complete.cases(jags_out), ]
-  jags_out <- dplyr::as_tibble(jags_out) |>
-    dplyr::select(-tidyselect::all_of("Parameter")) |>
-    dplyr::rename(Parameter = tidyselect::all_of("Parameter_sub")) |>
-    dplyr::select(
-      tidyselect::all_of(c(
-        "Iteration", "Chain", "Parameter", "Iso_type",
-        "Stratification", "Subject", "value"
-      )),
-      tidyselect::everything()
-    )
   
+  jags_out <- dplyr::as_tibble(jags_out) |>
+    dplyr::select(!c("Parameter")) |>
+    dplyr::rename("Parameter" = "Parameter_sub")                         
+  
+  jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",  
+                           "Stratification", "Subject", "value")]
   
   attributes(jags_out) <- c(attributes(jags_out), mod_atts)
   

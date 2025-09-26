@@ -43,5 +43,3 @@ out <- run_mod_kron(
   nmc      = 200, niter = 2000,
   strat    = NA
 )
-
-print(dplyr::glimpse(out))
