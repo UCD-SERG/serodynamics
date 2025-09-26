@@ -55,7 +55,7 @@ model {
 
   # Subject-level prior over stacked parameters
   for (subj in 1:nsubj) {
-    par_vec[subj, 1:(5*B)] ~ dmnorm(mu_vec[1:(5*n_blocks)], Tau[ , ])
+    par_vec[subj, 1:(5*n_blocks)] ~ dmnorm(mu_vec[1:(5*n_blocks)], Tau[ , ])
 
     # Unstack back to par[subj, b, p]
     for (b in 1:n_blocks) {

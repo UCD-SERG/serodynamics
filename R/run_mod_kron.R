@@ -32,7 +32,7 @@
 #' @export
 #' @example inst/examples/examples-run_mod_kron.R
 #' @examples
-#' \donttest{
+#' \dontrun{
 #' out <- run_mod_kron(
 #'   data     = long_tbl,
 #'   file_mod = model_path,

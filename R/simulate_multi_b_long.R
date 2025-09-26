@@ -84,7 +84,7 @@ simulate_multi_b_long <- function(
       ) |>
       dplyr::mutate(
         # call serodynamics:::ab() directly (already vectorized)
-        y_true    = serodynamics:::ab(
+        y_true    = ab(
           t = .data$time_days, y0 = .data$y0, y1 = .data$y1,
           t1 = .data$t1, alpha = .data$alpha, shape = .data$rho
         ),

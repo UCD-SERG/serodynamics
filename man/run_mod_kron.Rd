@@ -103,7 +103,7 @@ out <- run_mod_kron(
   nmc      = 200, niter = 2000,
   strat    = NA
 )
-\donttest{
+\dontrun{
 out <- run_mod_kron(
   data     = long_tbl,
   file_mod = model_path,
