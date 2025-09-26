@@ -3,18 +3,20 @@
 Kronecker precision \(T = T_B \otimes T_P\) over stacked
 per-biomarker parameters (5 per biomarker).
 Expected data in the JAGS environment includes:
-scalar: B, nsubj, n_params (should be 5)
+scalar: n_blocks, nsubj, n_params (should be 5)
 hypermeans: mu.hyp[b, ], hyper-precisions: prec.hyp[b, , ]
-Wishart pieces: OmegaP[5,5], nuP, OmegaB[B,B], nuB
+Wishart pieces: OmegaP[5,5], nuP, OmegaB[n_blocks,n_blocks],
+nuB
 measurement: smpl.t, nsmpl, prec.logy.hyp
 
 "><meta property="og:description" content="write_model_ch2_kron() emits a JAGS model file that places a
 Kronecker precision \(T = T_B \otimes T_P\) over stacked
 per-biomarker parameters (5 per biomarker).
 Expected data in the JAGS environment includes:
-scalar: B, nsubj, n_params (should be 5)
+scalar: n_blocks, nsubj, n_params (should be 5)
 hypermeans: mu.hyp[b, ], hyper-precisions: prec.hyp[b, , ]
-Wishart pieces: OmegaP[5,5], nuP, OmegaB[B,B], nuB
+Wishart pieces: OmegaP[5,5], nuP, OmegaB[n_blocks,n_blocks],
+nuB
 measurement: smpl.t, nsmpl, prec.logy.hyp
 
 "></head><body>
@@ -67,9 +69,10 @@ measurement: smpl.t, nsmpl, prec.logy.hyp
     <p><code>write_model_ch2_kron()</code> emits a JAGS model file that places a
 Kronecker precision \(T = T_B \otimes T_P\) over stacked
 per-biomarker parameters (5 per biomarker).</p>
-<p>Expected data in the JAGS environment includes:</p><ul><li><p>scalar: <code>B</code>, <code>nsubj</code>, <code>n_params</code> (should be 5)</p></li>
+<p>Expected data in the JAGS environment includes:</p><ul><li><p>scalar: <code>n_blocks</code>, <code>nsubj</code>, <code>n_params</code> (should be 5)</p></li>
 <li><p>hypermeans: <code>mu.hyp[b, ]</code>, hyper-precisions: <code>prec.hyp[b, , ]</code></p></li>
-<li><p>Wishart pieces: <code>OmegaP[5,5]</code>, <code>nuP</code>, <code>OmegaB[B,B]</code>, <code>nuB</code></p></li>
+<li><p>Wishart pieces: <code>OmegaP[5,5]</code>, <code>nuP</code>, <code>OmegaB[n_blocks,n_blocks]</code>,
+<code>nuB</code></p></li>
 <li><p>measurement: <code>smpl.t</code>, <code>nsmpl</code>, <code>prec.logy.hyp</code></p></li>
 </ul></div>
 
