@@ -47,7 +47,6 @@ Suggests:
     rjags,
     rmarkdown,
     magrittr,
-    ssdtools,
     rex,
     quarto
 Language: en-US

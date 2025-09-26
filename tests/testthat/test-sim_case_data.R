@@ -11,6 +11,6 @@ test_that(
 
     expect_snapshot_value(sim_data, style = "serialize")
     
-    ssdtools:::expect_snapshot_data(sim_data, name = "sim-case-data")
+    expect_snapshot_data(sim_data, name = "sim-case-data")
       
 })
