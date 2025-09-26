@@ -63,11 +63,11 @@ run_mod_kron <- function(data,
     longdata    <- prep_data(dl_sub)
     base_priors <- prep_priors(max_antigens = longdata$n_antigen_isos, ...)
     base_priors <- serodynamics:::clean_priors(base_priors)
-    kron_priors <- serodynamics:::prep_priors_multiB(B = 
+    kron_priors <- serodynamics:::prep_priors_multi_b(n_blocks = 
                                                        longdata$n_antigen_isos)
     
-    # JAGS needs B as a scalar
-    B_scalar <- list(B = longdata$n_antigen_isos)
+    # JAGS needs n_blocks as a scalar
+    B_scalar <- list(n_blocks = longdata$n_antigen_isos)
     
     priorspec <- c(base_priors, kron_priors, B_scalar)
     
