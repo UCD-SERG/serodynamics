@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9041
+Version: 0.0.0.9042
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -13,7 +13,7 @@ Description: Modeling longitudinal immune seroresponses to pathogens.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
 Imports: 
@@ -30,7 +30,8 @@ Imports:
     stats,
     tibble,
     tidyr,
-    utils
+    utils,
+    mvtnorm
 Suggests: 
     Hmisc,
     knitr,
