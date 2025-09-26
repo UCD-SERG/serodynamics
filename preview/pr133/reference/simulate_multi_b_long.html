@@ -72,16 +72,47 @@ trajectory is computed directly using <code>serodynamics::ab()</code>.</p>
     </div>
 
     <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
+
+
+<dl><dt id="arg-n-id">n_id<a class="anchor" aria-label="anchor" href="#arg-n-id"></a></dt>
+<dd><p>Integer. Number of individuals to simulate.</p></dd>
+
+
+<dt id="arg-n-blocks">n_blocks<a class="anchor" aria-label="anchor" href="#arg-n-blocks"></a></dt>
+<dd><p>Integer. Number of biomarkers (blocks).</p></dd>
+
+
+<dt id="arg-time-grid">time_grid<a class="anchor" aria-label="anchor" href="#arg-time-grid"></a></dt>
+<dd><p>Numeric vector of observation times (days).</p></dd>
+
+
+<dt id="arg-sigma-p">sigma_p<a class="anchor" aria-label="anchor" href="#arg-sigma-p"></a></dt>
+<dd><p>5×5 covariance matrix for within-biomarker parameters.</p></dd>
+
+
+<dt id="arg-sigma-b">sigma_b<a class="anchor" aria-label="anchor" href="#arg-sigma-b"></a></dt>
+<dd><p><code>n_blocks</code>×<code>n_blocks</code> covariance across biomarkers.</p></dd>
+
+
+<dt id="arg-mu-latent-base">mu_latent_base<a class="anchor" aria-label="anchor" href="#arg-mu-latent-base"></a></dt>
+<dd><p>Numeric length-5 vector of means for the latent
+parameters (on log scale) per biomarker, in the order
+<code>(log y0, log(y1 - y0), log t1, log alpha, log(shape-1))</code>.</p></dd>
+
+
+<dt id="arg-meas-sd">meas_sd<a class="anchor" aria-label="anchor" href="#arg-meas-sd"></a></dt>
+<dd><p>Numeric. Measurement error SD(s) on the log scale; either a
+single value recycled to all biomarkers or a length-<code>n_blocks</code> vector.</p></dd>
+
+</dl></div>
+    <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A list with:</p><ul><li><p><code>data</code>: tibble with columns <code>Subject</code>, <code>visit_num</code>, <code>antigen_iso</code>,
 <code>time_days</code>, <code>value</code>.</p></li>
 <li><p><code>truth</code>: list with <code>m_true</code>, <code>sigma_p</code>, <code>sigma_b</code>, <code>sigma_total</code>,
 <code>meas_sd</code>, and <code>theta_latent</code>.</p></li>
 </ul></div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p>simulate_multi_b_long</p></div>
-    </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Kwan Ho Lee</p>
