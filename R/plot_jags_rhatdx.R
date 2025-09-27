@@ -82,8 +82,9 @@ visualize_jags_sub <- visualize_jags_sub |>
           ggplot2::labs(title = "Rhat value",
                         subtitle = plot_title_fun(i, j),
                         x = "Rhat value") +
-          ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                               "y0"))
+param_levels <- c("alpha","r","t1","y1","y0")
+ggplot2::scale_y_discrete(limits = intersect(param_levels,
+                                             unique(visualize_jags_plot$Parameter)))
         rhat_out[[j]] <- rhatplot
       }
       rhat_strat_list[[i]] <- rhat_out
