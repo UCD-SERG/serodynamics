@@ -83,8 +83,7 @@ visualize_jags_sub <- data |>
           ggplot2::labs(title = "Effective sample size",
                         subtitle = plot_title_fun(i, j),
                         x = "Proportion of effective samples") +
-          ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                               "y0"))
+          ggplot2::scale_y_discrete(limits = unique(visualize_jags_plot$Parameter))
         eff_out[[j]] <- eff
       }
       eff_strat_list[[i]] <- eff_out
