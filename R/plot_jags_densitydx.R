@@ -72,9 +72,13 @@ visualize_jags_strat <- visualize_jags_sub |>
                                            .data$Parameter, ", strat = ",
                                            i),
                         value = log(.data$value))
-        # Assigning attributes, which are needed to run ggs_density
-        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                             attributes_jags)
+add_jags_attrs <- function(df, attrs) {
+  attributes(df) <- c(attributes(df), attrs)
+  df
+}
+
+visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, attributes_jags)
+
         # Creating density plot
         densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
           ggplot2::theme_bw() +
