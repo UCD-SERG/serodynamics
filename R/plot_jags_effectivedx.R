@@ -49,8 +49,8 @@ plot_jags_effect <- function(data,
   eff_id_list <- list()
   for (h in id) {
     
-    visualize_jags_sub <- data |>
-      dplyr::filter(.data$Subject == h)
+visualize_jags_sub <- data |>
+  dplyr::filter(.data$Subject == h, .data$Stratification == i)
 
     eff_strat_list <- list()
     for (i in strat) {
