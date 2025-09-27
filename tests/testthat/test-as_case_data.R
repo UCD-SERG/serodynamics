@@ -23,7 +23,7 @@ test_that(
       rlist::list.remove("row.names") |>
       expect_snapshot_value(style = "deparse")
     
-    test_obj |> ssdtools:::expect_snapshot_data(name = "sim-data")
+    test_obj |> expect_snapshot_data(name = "sim-data")
   }
 )
 
@@ -48,6 +48,6 @@ test_that(
       rlist::list.remove("row.names") |>
       expect_snapshot_value(style = "deparse")
     
-    dataset |> ssdtools:::expect_snapshot_data(name = "sees-data")
+    dataset |> expect_snapshot_data(name = "sees-data")
   }
 )
