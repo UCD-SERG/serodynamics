@@ -66,12 +66,9 @@ visualize_jags_strat <- visualize_jags_sub |>
         visualize_jags_plot <- visualize_jags_plot |>
           dplyr::filter(.data$Parameter %in% param)
 
-        visualize_jags_plot <- visualize_jags_plot |>
-          # Changing parameter name to reflect the input
-          dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                           .data$Parameter, ", strat = ",
-                                           i),
-                        value = log(.data$value))
+visualize_jags_plot <- visualize_jags_plot |>
+  dplyr::mutate(Parameter = glue::glue("iso = {j}, parameter = {Parameter}, strat = {i}"),
+                value = log(value))
 add_jags_attrs <- function(df, attrs) {
   attributes(df) <- c(attributes(df), attrs)
   df
