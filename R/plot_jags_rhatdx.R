@@ -54,9 +54,8 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
     rhat_strat_list <- list()
     for (i in strat) {
     
-      visualize_jags_sub <- data |>
-        dplyr::filter(.data$Stratification == i) |>
-        dplyr::filter(.data$Subject == "newperson")
+visualize_jags_sub <- visualize_jags_sub |>
+  dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       rhat_out <- list()
