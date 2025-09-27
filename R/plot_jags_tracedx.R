@@ -52,8 +52,8 @@ plot_jags_trace <- function(data,
   
     for (i in strat) {
 
-      visualize_jags_sub <- data |>
-        dplyr::filter(.data$Stratification == i)
+visualize_jags_sub <- visualize_jags_sub |>
+  dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       trace_out <- list()
