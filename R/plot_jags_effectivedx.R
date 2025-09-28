@@ -50,19 +50,19 @@ plot_jags_effect <- function(data,
   for (h in id) {
     
 visualize_jags_sub <- data |>
-  dplyr::filter(.data$Subject == h, .data$Stratification == i)
+  dplyr::filter(.data$Subject == h)
 
     eff_strat_list <- list()
     for (i in strat) {
 
-      visualize_jags_sub <- data |>
+      visualize_jags_strat <- visualize_jags_sub |>
         dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       eff_out <- list()
       # Looping through the isos
       for (j in iso) {
-        visualize_jags_plot <- visualize_jags_sub |>
+        visualize_jags_plot <- visualize_jags_strat |>
           dplyr::filter(.data$Iso_type == j)
 
         # Will not loop through parameters, as we may want each to show on the
@@ -74,8 +74,7 @@ visualize_jags_sub <- data |>
           # Changing parameter name to reflect the input
           dplyr::mutate(Parameter = .data$Parameter)
         # Assigning attributes, which are needed to run ggs_density
-        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                             attributes_jags)
+        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, attributes_jags)
 
         # Creating density plot
         eff <- ggmcmc::ggs_effective(visualize_jags_plot) +

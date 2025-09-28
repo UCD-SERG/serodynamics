@@ -77,7 +77,7 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
         visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 
                                               attributes_jags)
         # Default order of main parameters
-        param_levels <- c("alpha", "r", "t1", "y1", "y0")
+        param_levels <- c("alpha", "shape", "t1", "y1", "y0")
         # Creating rhat dotplots
         rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
           ggplot2::theme_bw() +
