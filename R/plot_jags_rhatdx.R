@@ -54,14 +54,14 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
     rhat_strat_list <- list()
     for (i in strat) {
     
-visualize_jags_sub <- visualize_jags_sub |>
-  dplyr::filter(.data$Stratification == i)
+      visualize_jags_strat <- visualize_jags_sub |>
+        dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       rhat_out <- list()
       # Looping through the isos
       for (j in iso) {
-        visualize_jags_plot <- visualize_jags_sub |>
+        visualize_jags_plot <- visualize_jags_strat |>
           dplyr::filter(.data$Iso_type == j)
       
         # Will not loop through parameters, as we may want each to show on the
@@ -74,17 +74,18 @@ visualize_jags_sub <- visualize_jags_sub |>
           dplyr::mutate(Parameter = .data$Parameter,
                         value = log(.data$value))
         # Assigning attributes, which are needed to run ggs_rhat
-        attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                             attributes_jags)
+        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 
+                                              attributes_jags)
+        # Default order of main parameters
+        param_levels <- c("alpha", "r", "t1", "y1", "y0")
         # Creating rhat dotplots
         rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
           ggplot2::theme_bw() +
           ggplot2::labs(title = "Rhat value",
                         subtitle = plot_title_fun(i, j),
                         x = "Rhat value") +
-param_levels <- c("alpha","r","t1","y1","y0")
-ggplot2::scale_y_discrete(limits = intersect(param_levels,
-                                             unique(visualize_jags_plot$Parameter)))
+          ggplot2::scale_y_discrete(limits = intersect(param_levels,
+                                             param))
         rhat_out[[j]] <- rhatplot
       }
       rhat_strat_list[[i]] <- rhat_out
