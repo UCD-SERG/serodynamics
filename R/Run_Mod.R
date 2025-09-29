@@ -71,6 +71,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
+                    params = NA,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -117,7 +118,7 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", params)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
