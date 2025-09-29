@@ -85,7 +85,7 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                         subtitle = plot_title_fun(i, j),
                         x = "Rhat value") +
           ggplot2::scale_y_discrete(limits = intersect(param_levels,
-                                             param))
+                                                       param))
         rhat_out[[j]] <- rhatplot
       }
       rhat_strat_list[[i]] <- rhat_out

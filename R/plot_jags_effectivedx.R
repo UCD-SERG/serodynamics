@@ -49,8 +49,8 @@ plot_jags_effect <- function(data,
   eff_id_list <- list()
   for (h in id) {
     
-visualize_jags_sub <- data |>
-  dplyr::filter(.data$Subject == h)
+    visualize_jags_sub <- data |>
+      dplyr::filter(.data$Subject == h)
 
     eff_strat_list <- list()
     for (i in strat) {
@@ -74,7 +74,8 @@ visualize_jags_sub <- data |>
           # Changing parameter name to reflect the input
           dplyr::mutate(Parameter = .data$Parameter)
         # Assigning attributes, which are needed to run ggs_density
-        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, attributes_jags)
+        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 
+                                              attributes_jags)
 
         # Creating density plot
         eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
@@ -82,7 +83,8 @@ visualize_jags_sub <- data |>
           ggplot2::labs(title = "Effective sample size",
                         subtitle = plot_title_fun(i, j),
                         x = "Proportion of effective samples") +
-          ggplot2::scale_y_discrete(limits = unique(visualize_jags_plot$Parameter))
+          ggplot2::scale_y_discrete(limits = 
+                                      unique(visualize_jags_plot$Parameter))
         eff_out[[j]] <- eff
       }
       eff_strat_list[[i]] <- eff_out

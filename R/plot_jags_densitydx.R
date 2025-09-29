@@ -51,8 +51,8 @@ plot_jags_dens <- function(data,
     dens_strat_list <- list()
     for (i in strat) {
 
-visualize_jags_strat <- visualize_jags_sub |>
-  dplyr::filter(Stratification == i)
+      visualize_jags_strat <- visualize_jags_sub |>
+        dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       density_out <- list()
@@ -66,11 +66,14 @@ visualize_jags_strat <- visualize_jags_sub |>
         visualize_jags_plot <- visualize_jags_plot |>
           dplyr::filter(.data$Parameter %in% param)
 
-visualize_jags_plot <- visualize_jags_plot |>
-  dplyr::mutate(Parameter = glue::glue("iso = {j}, parameter = {Parameter}, strat = {i}"),
-                value = log(value))
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::mutate(Parameter = glue::glue("iso = {j}, 
+                                               parameter = {Parameter}, 
+                                               strat = {i}"),
+                        value = log(.data$value))
 
-visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, attributes_jags)
+        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 
+                                              attributes_jags)
 
         # Creating density plot
         densplot <- ggmcmc::ggs_density(visualize_jags_plot) +

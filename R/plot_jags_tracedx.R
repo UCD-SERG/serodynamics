@@ -52,8 +52,8 @@ plot_jags_trace <- function(data,
   
     for (i in strat) {
 
-visualize_jags_sub <- visualize_jags_sub |>
-  dplyr::filter(.data$Stratification == i)
+      visualize_jags_sub <- visualize_jags_sub |>
+        dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       trace_out <- list()
@@ -69,7 +69,9 @@ visualize_jags_sub <- visualize_jags_sub |>
 
         visualize_jags_plot <- visualize_jags_plot |>
           # Changing parameter name to reflect the input
-          dplyr::mutate(Parameter = glue::glue("iso = {j}, parameter = {Parameter}, strat = {i}"))
+          dplyr::mutate(Parameter = glue::glue("iso = {j}, 
+                                               parameter = {Parameter}, 
+                                               strat = {i}"))
         # Assigning attributes, which are needed to run ggs_density
         attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                              attributes_jags)
