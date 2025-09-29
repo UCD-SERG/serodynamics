@@ -50,10 +50,13 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
     
     visualize_jags_sub <- data |>
       dplyr::filter(.data$Subject == h)
+    
+    stratify <- dplyr::intersect(unique(visualize_jags_sub$Stratification), 
+                                 strat)
   
     rhat_strat_list <- list()
-    for (i in strat) {
-    
+    for (i in stratify) {
+      
       visualize_jags_strat <- visualize_jags_sub |>
         dplyr::filter(.data$Stratification == i)
 
