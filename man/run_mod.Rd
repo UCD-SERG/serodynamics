@@ -14,6 +14,7 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
+  param_out = NA,
   ...
 )
 }
