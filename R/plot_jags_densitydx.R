@@ -72,7 +72,7 @@ plot_jags_dens <- function(data,
         visualize_jags_plot <- visualize_jags_plot |>
           dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                            .data$Parameter, ", strat = ",
-                                           i),
+                                           i, ", sub = ", h),
                         value = log(.data$value))
 
         visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 

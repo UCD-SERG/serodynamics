@@ -74,7 +74,7 @@ plot_jags_trace <- function(data,
           # Changing parameter name to reflect the input
           dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                            .data$Parameter, ", strat = ",
-                                           i))
+                                           i, ", sub = ", h))
         # Assigning attributes, which are needed to run ggs_density
         attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                              attributes_jags)

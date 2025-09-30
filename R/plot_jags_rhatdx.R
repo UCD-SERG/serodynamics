@@ -85,10 +85,14 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
         rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
           ggplot2::theme_bw() +
           ggplot2::labs(title = "Rhat value",
-                        subtitle = plot_title_fun(i, j),
-                        x = "Rhat value") +
-          ggplot2::scale_y_discrete(limits = intersect(param_levels,
+                        subtitle = plot_title_fun(i, j, h),
+                        x = "Rhat value") 
+        
+        if (unique(visualize_jags_plot$Parameter != "mu.par")) {
+          rhatplot <- rhatplot +
+            ggplot2::scale_y_discrete(limits = intersect(param_levels,
                                                        param))
+        }
         rhat_out[[j]] <- rhatplot
       }
       rhat_strat_list[[i]] <- rhat_out

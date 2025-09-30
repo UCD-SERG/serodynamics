@@ -84,10 +84,11 @@ plot_jags_effect <- function(data,
         eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
           ggplot2::theme_bw()  +
           ggplot2::labs(title = "Effective sample size",
-                        subtitle = plot_title_fun(i, j),
+                        subtitle = plot_title_fun(i, j, h),
                         x = "Proportion of effective samples") +
           ggplot2::scale_y_discrete(limits = 
                                       unique(visualize_jags_plot$Parameter))
+        
         eff_out[[j]] <- eff
       }
       eff_strat_list[[i]] <- eff_out
