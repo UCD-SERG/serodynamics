@@ -71,7 +71,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    params = NA,
+                    param_out = NA,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -118,7 +118,7 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", params)
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", param_out)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -161,15 +161,45 @@ run_mod <- function(data,
         Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
         Subject = sub(".*\\[", "", .data$Subject)
       )
-    # Merging isodat in to ensure we are classifying antigen_iso
-    jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
+    # Merging isodat in to ensure we are classifying antigen_iso. Doing it 
+    # differently for mu.par and prec.par
+    jags_unpack_params <- jags_unpack |> 
+      filter(Parameter_sub %in% c("y0", "y1", "t1", "alpha", "shape"))
+    jags_unpack_params <- dplyr::left_join(jags_unpack_params, iso_dat, 
+                                           by = "Subnum")
     ids <- data.frame(attr(longdata, "ids")) |>
       mutate(Subject = as.character(dplyr::row_number()))
-    jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
-    jags_final <- jags_unpack |>
+    jags_unpack_params <- dplyr::left_join(jags_unpack_params, ids, 
+                                           by = "Subject") |>
       dplyr::select(!c("Subnum", "Subject")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject" = "attr.longdata...ids.."))
+      
+    
+    # Unpacking and labeling mu.par
+    jags_unpack_mupar <- jags_unpack |> 
+      filter(Parameter_sub %in% c("mu.par", "prec.par"))
+      jags_unpack_mupar <- dplyr::left_join(jags_unpack_mupar, iso_dat |>
+                                        mutate(Subject = as.character(Subnum)) |>
+                                          select(attributes.longdata..antigens,
+                                                 Subject), 
+                                      by = "Subject")
+      jags_unpack_mupar <- jags_unpack_mupar |> 
+        mutate(Subject = dplyr::case_when(Subnum == 1 ~ "y0",
+                                   Subnum == 2 ~ "y1", 
+                                   Subnum == 3 ~ "t1",
+                                   Subnum == 4 ~ "alpha",
+                                   Subnum == 5 ~ "shape")) |>
+        dplyr::select(!c("Subnum")) |>
+        dplyr::rename("Iso_type" = "attributes.longdata..antigens")
+      
+      # Putting datasets back together
+      jags_final <- rbind(jags_unpack_params, jags_unpack_mupar)
+    
+    # jags_final <- jags_unpack |>
+    #   dplyr::select(!c("Subnum", "Subject")) |>
+    #   dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
+    #                   "Subject" = "attr.longdata...ids.."))
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
