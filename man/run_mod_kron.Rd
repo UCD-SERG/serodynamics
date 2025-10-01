@@ -15,7 +15,8 @@ run_mod_kron(
   strat = NA,
   with_post = FALSE,
   monitor = c("y0", "y1", "t1", "alpha", "shape", "TauB", "TauP"),
-  ...
+  ...,
+  .runjags_fun = runjags::run.jags
 )
 }
 \arguments{
@@ -40,6 +41,9 @@ plus \code{TauB} and \code{TauP}.}
 
 \item{...}{Additional arguments passed to \code{prep_priors()}
 (e.g. \code{mu_hyp_param}).}
+
+\item{.runjags_fun}{Advanced: function used to run JAGS (for testing).
+Defaults to \link[runjags:run.jags]{runjags::run.jags}.}
 }
 \value{
 A tibble with the same general structure as \code{run_mod()} output, with

@@ -24,6 +24,8 @@
 #'  plus `TauB` and `TauP`.
 #' @param ... Additional arguments passed to `prep_priors()` 
 #' (e.g. `mu_hyp_param`).
+#' @param .runjags_fun Advanced: function used to run JAGS (for testing).
+#' Defaults to [runjags::run.jags].
 #'
 #' @return A tibble with the same general structure as `run_mod()` output, with
 #'  attributes carrying priors used, MCMC metadata, fitted values, and 
@@ -38,8 +40,9 @@ run_mod_kron <- function(data,
                          strat = NA, with_post = FALSE,
                          monitor = c("y0", "y1", "t1", "alpha", "shape", 
                                      "TauB", "TauP"),
-                         ...) {
-  
+                         ...,
+                         .runjags_fun = runjags::run.jags) { # <-real runner
+
   if (is.na(strat)) {
     strat_list <- "None"
   } else {
@@ -75,7 +78,7 @@ run_mod_kron <- function(data,
     nburnin <- nburn
     nthin   <- max(1L, round(niter / nmc))
     
-    jags_post <- runjags::run.jags(
+    jags_post <- .runjags_fun( # <-- CHANGED: use the injectable function
       model     = file_mod,
       data      = c(longdata, priorspec),
       inits     = function(chain) serodynamics::inits_kron(chain),
