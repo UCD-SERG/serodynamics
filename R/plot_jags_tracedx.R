@@ -55,14 +55,14 @@ plot_jags_trace <- function(data,
   
     for (i in stratify) {
 
-      visualize_jags_sub <- visualize_jags_sub |>
+      visualize_jags_strat <- visualize_jags_sub |>
         dplyr::filter(.data$Stratification == i)
 
       # Creating open list to store ggplots
       trace_out <- list()
       # Looping through the isos
       for (j in iso) {
-        visualize_jags_plot <- visualize_jags_sub |>
+        visualize_jags_plot <- visualize_jags_strat |>
           dplyr::filter(.data$Iso_type == j)
 
         # Will not loop through parameters, as we may want each to show on the
