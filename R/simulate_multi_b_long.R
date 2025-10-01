@@ -78,10 +78,10 @@ simulate_multi_b_long <- function(
         rho     = exp(.data$log_rho_m1) + 1,
         Subject = as.character(i)
       ) |>
-      tidyr::crossing(
-        visit_num = seq_along(time_grid),
-        time_days = time_grid
-      ) |>
+      tidyr::crossing(visit_num = seq_along(time_grid) 
+      ) |># before: all pairs -> duplicates                                           
+      dplyr::mutate(time_days = time_grid[.data$visit_num]
+      ) |> # after: one index, then look up the matching time
       dplyr::mutate(
         # call serodynamics:::ab() directly (already vectorized)
         y_true    = ab(
