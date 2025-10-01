@@ -79,7 +79,7 @@ simulate_multi_b_long <- function(
         Subject = as.character(i)
       ) |>
       tidyr::crossing(visit_num = seq_along(time_grid) 
-      ) |># before: all pairs -> duplicates                                           
+      ) |> # before: all pairs -> duplicates
       dplyr::mutate(time_days = time_grid[.data$visit_num]
       ) |> # after: one index, then look up the matching time
       dplyr::mutate(
