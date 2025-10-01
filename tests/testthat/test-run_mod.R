@@ -37,10 +37,10 @@ test_that(
           expect_snapshot_value(style = "deparse")
         
         results |>
-          ssdtools:::expect_snapshot_data("sim-strat-curve-params")
+          expect_snapshot_data("sim-strat-curve-params")
 
         attributes(results)$fitted_residuals |>
-          ssdtools:::expect_snapshot_data("sim-strat-fitted_residuals")
+          expect_snapshot_data("sim-strat-fitted_residuals")
         
       }
     )
@@ -74,10 +74,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
 
     results |>
-      ssdtools:::expect_snapshot_data("strat-curve-params")
+      expect_snapshot_data("strat-curve-params")
 
     attributes(results)$fitted_residuals |>
-      ssdtools:::expect_snapshot_data("strat-fitted_residuals")
+      expect_snapshot_data("strat-fitted_residuals")
   }
 )
 
@@ -108,10 +108,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
 
     results |>
-      ssdtools:::expect_snapshot_data("nostrat-curve-params")
+      expect_snapshot_data("nostrat-curve-params")
 
     attributes(results)$fitted_residuals |>
-      ssdtools:::expect_snapshot_data("nostrat-fitted_residuals")
+      expect_snapshot_data("nostrat-fitted_residuals")
   }
 )
 
@@ -143,7 +143,7 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      ssdtools:::expect_snapshot_data("nostrat-curve-params-withpost")
+      expect_snapshot_data("nostrat-curve-params-withpost")
   }
 )
 
@@ -179,6 +179,6 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      ssdtools:::expect_snapshot_data("nostrat-curve-params-specpriors")
+      expect_snapshot_data("nostrat-curve-params-specpriors")
   }
 )

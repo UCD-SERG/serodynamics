@@ -32,6 +32,8 @@ Imports:
     tidyr,
     utils,
     mvtnorm
+    tidyselect,
+    utils
 Suggests: 
     Hmisc,
     knitr,
@@ -48,7 +50,6 @@ Suggests:
     rjags,
     rmarkdown,
     magrittr,
-    ssdtools,
     rex,
     quarto
 Language: en-US
@@ -58,7 +59,6 @@ Config/needs/test:
     vdiffr, 
     here, 
     readr, 
-    ssdtools, 
     magrittr, 
     readr,
     rlist

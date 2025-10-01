@@ -11,6 +11,6 @@ test_that(
       antigen_isos = attr(jags_output, "antigen_isos")
     )
 
-    curve_params |> ssdtools:::expect_snapshot_data(name = "curve-params")
+    curve_params |> expect_snapshot_data(name = "curve-params")
   }
 )
