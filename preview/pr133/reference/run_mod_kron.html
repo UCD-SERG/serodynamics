@@ -80,7 +80,8 @@ priors with Kronecker priors, and calls <strong>runjags</strong>.</p>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  monitor <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"y0"</span>, <span class="st">"y1"</span>, <span class="st">"t1"</span>, <span class="st">"alpha"</span>, <span class="st">"shape"</span>, <span class="st">"TauB"</span>, <span class="st">"TauP"</span><span class="op">)</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  <span class="va">...</span>,</span>
+<span>  .runjags_fun <span class="op">=</span> <span class="fu">runjags</span><span class="fu">::</span><span class="va"><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">run.jags</a></span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -122,6 +123,11 @@ plus <code>TauB</code> and <code>TauP</code>.</p></dd>
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>Additional arguments passed to <code><a href="prep_priors.html">prep_priors()</a></code>
 (e.g. <code>mu_hyp_param</code>).</p></dd>
+
+
+<dt id="arg--runjags-fun">.runjags_fun<a class="anchor" aria-label="anchor" href="#arg--runjags-fun"></a></dt>
+<dd><p>Advanced: function used to run JAGS (for testing).
+Defaults to <a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags</a>.</p></dd>
 
 </dl></div>
     <div class="section level2">
