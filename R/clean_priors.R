@@ -14,6 +14,13 @@
 clean_priors <- function(x) {
   drop <- intersect(names(x), c("omega", "wishdf", "Omega", "WishDF", 
                                 "prec.par"))
-  if (length(drop)) x <- x[setdiff(names(x), drop)]
-  x
+  # keep a copy of attributes we care about
+  used <- attr(x, "used_priors", exact = TRUE)
+  
+  y <- if (length(drop)) x[setdiff(names(x), drop)] else x
+  
+  # restore attribute if it existed
+  if (!is.null(used)) attr(y, "used_priors") <- used
+  
+  y
 }
