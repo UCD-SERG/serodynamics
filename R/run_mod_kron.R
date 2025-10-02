@@ -66,8 +66,9 @@ run_mod_kron <- function(data,
     longdata    <- prep_data(dl_sub)
     base_priors <- prep_priors(max_antigens = longdata$n_antigen_isos, ...)
     base_priors <- serodynamics::clean_priors(base_priors)
-    kron_priors <- serodynamics::prep_priors_multi_b(n_blocks = 
-                                                       longdata$n_antigen_isos)
+    kron_priors <- serodynamics::prep_priors_multi_b(
+      n_blocks = longdata$n_antigen_isos
+    )
     
     # JAGS needs n_blocks as a scalar
     B_scalar <- list(n_blocks = longdata$n_antigen_isos)
@@ -78,7 +79,7 @@ run_mod_kron <- function(data,
     nburnin <- nburn
     nthin   <- max(1L, round(niter / nmc))
     
-    jags_post <- .runjags_fun( # <-- CHANGED: use the injectable function
+    jags_post <- .runjags_fun( # <-- uses the injectable runner
       model     = file_mod,
       data      = c(longdata, priorspec),
       inits     = function(chain) serodynamics::inits_kron(chain),
@@ -90,14 +91,11 @@ run_mod_kron <- function(data,
     )
     jags_post_final[[i]] <- jags_post
     
+    # Unpack MCMC and keep attrs for later
     jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
     mod_atts <- attributes(jags_unpack)[4:8]
     
-    iso_dat <- attributes(longdata)$antigens |>
-      as.data.frame() |>
-      tibble::rownames_to_column(var = "Subnum") |>
-      dplyr::mutate(Subnum = as.numeric(.data$Subnum))
-    
+    # Parse indices from names like "y0[subject, iso]"
     jags_unpack <- jags_unpack |>
       dplyr::mutate(
         Subnum        = sub(".*,", "", .data$Parameter),
@@ -107,19 +105,27 @@ run_mod_kron <- function(data,
       dplyr::mutate(
         Subnum  = as.numeric(sub("\\].*", "", .data$Subnum)),
         Subject = sub(".*\\[", "", .data$Subject)
-      ) |>
-      dplyr::left_join(iso_dat, by = "Subnum")
+      ) 
     
-    ids <- data.frame(attr(longdata, "ids")) |>
-      dplyr::mutate(Subject = as.character(dplyr::row_number()))
+    # Changed: build explicit lookup tables (antigen iso + subject labels)
+    iso_vec <- attributes(longdata)$antigens
+    iso_dat <- tibble::tibble(
+      Subnum = seq_along(iso_vec),
+      Iso_type = as.character(iso_vec)
+    )
     
+    id_vec <- attr(longdata, "ids")
+    ids <- tibble::tibble(
+      Subject       = as.character(seq_along(id_vec)),  # index in Parameter tag
+      Subject_label = as.character(id_vec)              # original subject id
+    )
+    
+    # Changed: join on clean names and produce expected output columns
     jags_final <- jags_unpack |>
-      dplyr::left_join(ids, by = "Subject") |>
-      dplyr::select(!c("Subnum", "Subject")) |>
-      dplyr::rename(
-        c("Iso_type" = "attributes.longdata..antigens",                   
-          "Subject"  = "attr.longdata...ids..")                           
-      )
+      dplyr::left_join(iso_dat, by = "Subnum") |>
+      dplyr::left_join(ids,     by = "Subject") |>
+      dplyr::select(-dplyr::any_of(c("Subnum", "Subject"))) |>
+      dplyr::rename(Subject = dplyr::any_of("Subject_label"))
     
     jags_final$Stratification <- i
     jags_out <- data.frame(rbind(jags_out, jags_final))
@@ -137,8 +143,8 @@ run_mod_kron <- function(data,
   attributes(jags_out) <- c(attributes(jags_out), mod_atts)
   
   # Attach priors used (from last stratum)
-  jags_out <- jags_out |> structure("priors" 
-                                    = attributes(priorspec)$used_priors)
+  jags_out <- jags_out |> 
+    structure("priors" = attributes(priorspec)$used_priors)
   
   fit_res <- calc_fit_mod(modeled_dat = jags_out, original_data = dl_sub)
   jags_out <- jags_out |> structure(fitted_residuals = fit_res)
