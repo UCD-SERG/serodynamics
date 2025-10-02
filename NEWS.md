@@ -1,6 +1,7 @@
 # serodynamics (development version)
 
 * Initial CRAN submission.
+* Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
 
 ## New features
 
