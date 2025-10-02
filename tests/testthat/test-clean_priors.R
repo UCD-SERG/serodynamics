@@ -8,13 +8,12 @@ test_that("clean_priors drops only legacy fields", {
   y <- clean_priors(x)
   
   # legacy fields removed
-  dropped <- c("omega","wishdf","Omega","WishDF","prec.par")
+  dropped <- c("omega", "wishdf", "Omega", "WishDF", "prec.par")
   expect_false(any(dropped %in% names(y)))
   
   # intended fields kept 
-  expect_true(all(c("mu.hyp","prec.hyp","keep_me") %in% names(y)))
+  expect_true(all(c("mu.hyp", "prec.hyp", "keep_me") %in% names(y)))
   expect_equal(y$mu.hyp, 1)
   expect_equal(y$prec.hyp, 2)
   expect_equal(y$keep_me, 8)
 })
-

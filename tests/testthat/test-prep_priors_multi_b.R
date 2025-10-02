@@ -13,6 +13,8 @@ test_that("prep_priors_multi_b() returns correctly-shaped hyperparams", {
 
 test_that("prep_priors_multi_b() validations work", {
   expect_error(prep_priors_multi_b(n_blocks = 0), "positive integer")
-  expect_error(prep_priors_multi_b(n_blocks = 2, omega_p_scale = 1:4), "length 5")
-  expect_error(prep_priors_multi_b(n_blocks = 2, omega_b_scale = 1:3), "`n_blocks`")
+  expect_error(prep_priors_multi_b(n_blocks = 2, omega_p_scale = 1:4), 
+               "length 5")
+  expect_error(prep_priors_multi_b(n_blocks = 2, omega_b_scale = 1:3), 
+               "`n_blocks`")
 })
