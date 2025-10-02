@@ -1,7 +1,6 @@
 # serodynamics (development version)
 
 * Initial CRAN submission.
-* Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
 
 ## New features
 
@@ -48,6 +47,7 @@ None yet
 
 ## Developer-facing changes
 
+* Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
 * vectorized `ab()` function (#116)
 * Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
 * Reformatted `.lintr` as R file (following 
