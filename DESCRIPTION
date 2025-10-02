@@ -20,7 +20,7 @@ Imports:
     cli,
     coda,
     dplyr,
-    ggmcmc (>= 1.5.1.1),
+    ggmcmc (>= 1.5.1.2),
     ggplot2,
     purrr,
     rlang,
@@ -62,8 +62,7 @@ Config/needs/test:
     rlist
 Config/needs/check: commonmark, xml2
 Remotes: 
-    ucd-serg/serocalculator,
-    xfim/ggmcmc
+    ucd-serg/serocalculator
 Depends: 
     R (>= 4.1.0)
 LazyData: true
