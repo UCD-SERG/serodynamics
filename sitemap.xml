@@ -61,6 +61,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/autoplot.case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/autoplot.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/calc_fit_mod.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/get_biomarker_levels.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/get_biomarker_names_var.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr114/reference/index.html</loc></url>
@@ -136,10 +137,12 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/authors.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/news/index.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/add_jags_attrs.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/as_case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/autoplot.case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/autoplot.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/calc_fit_mod.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/get_biomarker_levels.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/get_biomarker_names_var.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr121/reference/index.html</loc></url>
@@ -263,6 +266,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/autoplot.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/calc_fit_mod.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/clean_priors.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/get_biomarker_levels.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/get_biomarker_names_var.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr133/reference/index.html</loc></url>
