@@ -29,6 +29,14 @@ reference:
 - title: Model seroreponse
   contents:
   - run_mod
+- title: Multivariate / Kronecker model (Chapter 2)
+  contents:
+  - clean_priors
+  - inits_kron
+  - prep_priors_multi_b
+  - run_mod_kron
+  - simulate_multi_b_long
+  - write_model_ch2_kron
 - title: Model diagnostics
   contents:
   - plot_jags_dens

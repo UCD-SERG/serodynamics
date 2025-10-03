@@ -31,7 +31,8 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    utils
+    utils,
+    mvtnorm
 Suggests: 
     Hmisc,
     knitr,
