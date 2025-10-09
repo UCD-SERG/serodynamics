@@ -29,6 +29,9 @@
 #' - `alpha` = posterior estimate of decay rate
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
+#' @param id Specify [character] id in a [vector] format to produce plots for
+#' specific individuals. Default is the `newperson` referring to the predictive
+#' distribution.
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
 #' values for all the specified input.
 #' @export
@@ -37,51 +40,64 @@
 plot_jags_Rhat <- function(data,  # nolint: object_name_linter
                            iso = unique(data$Iso_type),
                            param = unique(data$Parameter),
-                           strat = unique(data$Stratification)) {
+                           strat = unique(data$Stratification),
+                           id = c("newperson")) {
   
   attributes_jags <- data[["attributes"]]
   
-  rhat_strat_list <- list()
-  for (i in strat) {
+  rhat_id_list <- list()
+  for (h in id) {
     
     visualize_jags_sub <- data |>
-      dplyr::filter(.data$Stratification == i) |>
-      dplyr::filter(.data$Subject == "newperson")
+      dplyr::filter(.data$Subject == h)
+    
+    stratify <- dplyr::intersect(unique(visualize_jags_sub$Stratification), 
+                                 strat)
+  
+    rhat_strat_list <- list()
+    for (i in stratify) {
+      
+      visualize_jags_strat <- visualize_jags_sub |>
+        dplyr::filter(.data$Stratification == i)
 
-    # Creating open list to store ggplots
-    rhat_out <- list()
-    # Looping through the isos
-    for (j in iso) {
-      visualize_jags_plot <- visualize_jags_sub |>
-        dplyr::filter(.data$Iso_type == j)
+      # Creating open list to store ggplots
+      rhat_out <- list()
+      # Looping through the isos
+      for (j in iso) {
+        visualize_jags_plot <- visualize_jags_strat |>
+          dplyr::filter(.data$Iso_type == j)
       
-      # Will not loop through parameters, as we may want each to show on the
-      # same plot by default.
-      visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter %in% param)
+        # Will not loop through parameters, as we may want each to show on the
+        # same plot by default.
+        visualize_jags_plot <- visualize_jags_plot |>
+          dplyr::filter(.data$Parameter %in% param)
       
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter,
-                      value = log(.data$value))
-      # Assigning attributes, which are needed to run ggs_rhat
-      attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
-                                           attributes_jags)
-      # Creating rhat dotplots
-      rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
-        ggplot2::theme_bw() +
-        ggplot2::labs(title = "Rhat value",
-                      subtitle = plot_title_fun(i, j),
-                      x = "Rhat value") +
-        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                             "y0"))
-      rhat_out[[j]] <- rhatplot
+        visualize_jags_plot <- visualize_jags_plot |>
+          # Changing parameter name to reflect the input
+          dplyr::mutate(Parameter = .data$Parameter,
+                        value = log(.data$value))
+        # Assigning attributes, which are needed to run ggs_rhat
+        visualize_jags_plot <- add_jags_attrs(visualize_jags_plot, 
+                                              attributes_jags)
+        # Default order of main parameters
+        param_levels <- c("alpha", "shape", "t1", "y1", "y0")
+        # Creating rhat dotplots
+        rhatplot <- ggmcmc::ggs_Rhat(visualize_jags_plot) +
+          ggplot2::theme_bw() +
+          ggplot2::labs(title = "Rhat value",
+                        subtitle = plot_title_fun(i, j),
+                        x = "Rhat value") +
+          ggplot2::scale_y_discrete(limits = intersect(param_levels,
+                                                       param))
+        rhat_out[[j]] <- rhatplot
+      }
+      rhat_strat_list[[i]] <- rhat_out
     }
-    rhat_strat_list[[i]] <- rhat_out
+    #Printing only one plot if only one exists.
+    if (sum(lengths(rhat_strat_list)) == 1) {
+      rhat_strat_list <- rhat_strat_list[[1]][[iso]]
+    } 
+    rhat_id_list[[h]] <- rhat_strat_list
   }
-  #Printing only one plot if only one exists.
-  if (sum(lengths(rhat_strat_list)) == 1) {
-    rhat_strat_list <- rhat_strat_list[[1]][[iso]]
-  } 
-  rhat_strat_list
+  rhat_id_list
 }
