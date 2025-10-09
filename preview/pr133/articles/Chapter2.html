@@ -279,17 +279,19 @@ par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.pa
 <span><span class="co"># Step 2: write the new Kronecker model file (once per session/project)</span></span>
 <span><span class="fu"><a href="../reference/write_model_ch2_kron.html">write_model_ch2_kron</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Step 3: run the new wrapper with combined priors</span></span>
-<span><span class="va">fit_kron</span> <span class="op">&lt;-</span> <span class="fu">run_mod_kron</span><span class="op">(</span></span>
+<span><span class="co"># Step 3: run the unified runner in correlated (Chapter 2) mode</span></span>
+<span><span class="va">fit_kron</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_mod.html">run_mod</a></span><span class="op">(</span></span>
 <span>  data     <span class="op">=</span> <span class="va">sim_tbl</span>,</span>
-<span>  file_mod <span class="op">=</span> <span class="st">"model_ch2_kron.jags"</span>,</span>
+<span>  file_mod <span class="op">=</span> <span class="fu"><a href="../reference/serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span>,  <span class="co"># baseline model path (unused here)</span></span>
+<span>  file_mod_kron <span class="op">=</span> <span class="st">"model_ch2_kron.jags"</span>,          <span class="co"># use the Kronecker model</span></span>
+<span>  correlated <span class="op">=</span> <span class="cn">TRUE</span>,                              <span class="co"># &lt;-- key switch</span></span>
 <span>  nchain   <span class="op">=</span> <span class="fl">4</span>, nadapt <span class="op">=</span> <span class="fl">1000</span>, nburn <span class="op">=</span> <span class="fl">500</span>,</span>
-<span>  nmc      <span class="op">=</span> <span class="fl">500</span>, niter <span class="op">=</span> <span class="fl">5000</span>,</span>
+<span>  nmc      <span class="op">=</span> <span class="fl">500</span>,  niter <span class="op">=</span> <span class="fl">5000</span>,</span>
 <span>  strat    <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>  <span class="co"># optional override</span></span>
+<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>     <span class="co"># optional override</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># Step 4: inspect results (same as with run_mod)</span></span>
+<span><span class="co"># Step 4: inspect results (same as with run_mod before)</span></span>
 <span><span class="va">fit_kron</span></span></code></pre></div>
 </details>
 </div>
