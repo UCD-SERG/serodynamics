@@ -34,7 +34,6 @@ reference:
   - clean_priors
   - inits_kron
   - prep_priors_multi_b
-  - run_mod_kron
   - simulate_multi_b_long
   - write_model_ch2_kron
 - title: Model diagnostics
