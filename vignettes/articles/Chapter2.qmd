@@ -206,17 +206,19 @@ sim_tbl
 # Step 2: write the new Kronecker model file (once per session/project)
 write_model_ch2_kron()
 
-# Step 3: run the new wrapper with combined priors
-fit_kron <- run_mod_kron(
+# Step 3: run the unified runner in correlated (Chapter 2) mode
+fit_kron <- run_mod(
   data     = sim_tbl,
-  file_mod = "model_ch2_kron.jags",
+  file_mod = serodynamics_example("model.jags"),  # baseline model path (unused here)
+  file_mod_kron = "model_ch2_kron.jags",          # use the Kronecker model
+  correlated = TRUE,                              # <-- key switch
   nchain   = 4, nadapt = 1000, nburn = 500,
-  nmc      = 500, niter = 5000,
+  nmc      = 500,  niter = 5000,
   strat    = NA,
-  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)  # optional override
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)     # optional override
 )
 
-# Step 4: inspect results (same as with run_mod)
+# Step 4: inspect results (same as with run_mod before)
 fit_kron
 
 ```
