@@ -14,7 +14,9 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
-  ...
+  ...,
+  correlated = FALSE,
+  file_mod_kron = "model_ch2_kron.jags"
 )
 }
 \arguments{
