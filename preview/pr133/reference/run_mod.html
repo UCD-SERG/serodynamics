@@ -194,6 +194,17 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
 
 </dl></dd>
 
+
+<dt id="arg-correlated">correlated<a class="anchor" aria-label="anchor" href="#arg-correlated"></a></dt>
+<dd><p>Logical; use Chapter-2 Kronecker prior across biomarkers.
+Default FALSE (independence).</p></dd>
+
+
+<dt id="arg-file-mod-kron">file_mod_kron<a class="anchor" aria-label="anchor" href="#arg-file-mod-kron"></a></dt>
+<dd><p>Path to a JAGS file for the Kronecker model.If
+<code>correlated = TRUE</code> and this path does not exist, a temporary
+<code>model_ch2_kron.jags</code> is written and used automatically.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -230,6 +241,21 @@ for all observations.</p></li>
 <code>with_post</code> = TRUE.</p></li>
 </ul></li>
 </ul></div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>When <code>correlated = TRUE</code>, <code>run_mod()</code> fits a Chapter-2 Kronecker prior
+across biomarkers: \(\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B\).
+The likelihood for observed antibody data is unchanged; only the prior
+covariance differs. Internally this mode:</p><ul><li><p>calls <code><a href="clean_priors.html">clean_priors()</a></code> on the base priors from <code><a href="prep_priors.html">prep_priors()</a></code>,</p></li>
+<li><p>adds Kronecker hyperpriors via <code><a href="prep_priors_multi_b.html">prep_priors_multi_b()</a></code> (OmegaP, nuP, OmegaB, nuB)
+and <code>n_blocks = &lt;# biomarkers&gt;</code>,</p></li>
+<li><p>uses <code><a href="inits_kron.html">inits_kron()</a></code> to avoid conflicting legacy inits,</p></li>
+<li><p>and monitors <code>TauB</code> and <code>TauP</code> in addition to the core parameters.</p></li>
+</ul></div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron</p></div>
+    </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
     <p>Sam Schildhauer</p>
@@ -272,7 +298,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 14:39:25 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 15:49:13 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -307,7 +333,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 14:40:13 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 15:50:01 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
