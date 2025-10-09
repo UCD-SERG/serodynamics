@@ -17,27 +17,26 @@
 print.sr_model <- function(x, 
                            print_tbl = FALSE,
                            ...) { # nolint
-  
-  if (print_tbl == FALSE) {
+  if (print_tbl) {
     x <- as_tibble(x)
     print(x)
   } else {
-  cat("An sr_model with the following median values:")
-  cat("\n")
-  cat("\n")
-  x <- x |>
-    dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
-                             .data$Parameter), 
-                     median_val = median(.data$value)) |>
-    tidyr::pivot_wider(names_from = .data$Parameter, 
-                       values_from = .data$median_val) |>
-    dplyr::arrange(.data$Iso_type) |>
-    suppressWarnings()
-  # Taking out stratification column if not specified
-  if (unique(x$Stratification == "None")) {
-    x <- x |> select(-c(.data$Stratification))
+    cat("An sr_model with the following median values:")
+    cat("\n")
+    cat("\n")
+    x <- x |>
+      dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
+                               .data$Parameter), 
+                       median_val = median(.data$value)) |>
+      tidyr::pivot_wider(names_from = .data$Parameter, 
+                         values_from = .data$median_val) |>
+      dplyr::arrange(.data$Iso_type) |>
+      suppressWarnings()
+    # Taking out stratification column if not specified
+    if (unique(x$Stratification == "None")) {
+      x <- x |> select(-c(.data$Stratification))
+    } 
+    print(as.data.frame(x))
+    invisible(x)
   } 
-  print(as.data.frame(x))
-  invisible(x)
-  }
 }
