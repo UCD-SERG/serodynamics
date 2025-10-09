@@ -1,18 +1,14 @@
 test_that(
   desc = "results are consistent with printed output for sr_model class",
   code = {
-    results <- print(nepal_sees_jags_output)
-    results |>
-    testthat::expect_snapshot("as summary") 
+    testthat::expect_snapshot(nepal_sees_jags_output) 
   }
 )
 
 test_that(
-  desc = "results are consistent with printed output for sr_model class 
-  as a tbl",
+  desc = "results are consistent with printed output for sr_model class as tbl",
   code = {
-    results <- print(nepal_sees_jags_output, print_tbl = TRUE)
-    results |>
-    testthat::expect_snapshot_data("as tbl") 
+    testthat::expect_snapshot(print(nepal_sees_jags_output, print_tbl = TRUE)) 
   }
 )
+
