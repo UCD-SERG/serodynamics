@@ -149,7 +149,7 @@ test_that(
 
 test_that(
   desc = "results are consistent with unstratified SEES data with modified 
-  priors and additional parameters",
+  priors",
   code = {
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     skip_on_os(c("windows", "linux"))
