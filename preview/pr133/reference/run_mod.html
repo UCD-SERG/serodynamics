@@ -302,7 +302,7 @@ core parameters.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 19:42:41 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 21:30:46 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -337,7 +337,7 @@ core parameters.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 19:43:29 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 21:31:33 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -363,11 +363,117 @@ core parameters.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Coda files loaded successfully</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Finished running the simulation</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># \dontrun{</span></span></span>
+<span class="r-in"><span><span class="co"># This example intentionally triggers the JAGS error:</span></span></span>
+<span class="r-in"><span><span class="co"># "Error in node TauB: Unable to find appropriate sampler"</span></span></span>
+<span class="r-in"><span><span class="co"># It happens when both TauP and TauB are Wishart in the Kronecker prior.</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="op">!</span><span class="fu"><a href="https://rdrr.io/r/base/sets.html" class="external-link">is.element</a></span><span class="op">(</span><span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/findjags.html" class="external-link">findjags</a></span><span class="op">(</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">""</span>, <span class="cn">NULL</span><span class="op">)</span><span class="op">)</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">109</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># Make tiny fake data with 2 biomarkers so Σ_B is identifiable</span></span></span>
+<span class="r-in"><span>  <span class="va">sim</span> <span class="op">&lt;-</span> <span class="fu"><a href="simulate_multi_b_long.html">simulate_multi_b_long</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    n_id      <span class="op">=</span> <span class="fl">3</span>,</span></span>
+<span class="r-in"><span>    n_blocks  <span class="op">=</span> <span class="fl">2</span>,</span></span>
+<span class="r-in"><span>    time_grid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">7</span>, <span class="fl">14</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    sigma_p   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">5</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.1</span>,</span></span>
+<span class="r-in"><span>    sigma_b   <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">2</span><span class="op">)</span> <span class="op">*</span> <span class="fl">0.2</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="va">sim_tbl</span> <span class="op">&lt;-</span> <span class="fu">serodynamics</span><span class="fu">::</span><span class="fu"><a href="as_case_data.html">as_case_data</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">sim</span><span class="op">$</span><span class="va">data</span>,</span></span>
+<span class="r-in"><span>    id_var        <span class="op">=</span> <span class="st">"Subject"</span>,</span></span>
+<span class="r-in"><span>    biomarker_var <span class="op">=</span> <span class="st">"antigen_iso"</span>,</span></span>
+<span class="r-in"><span>    value_var     <span class="op">=</span> <span class="st">"value"</span>,</span></span>
+<span class="r-in"><span>    time_in_days  <span class="op">=</span> <span class="st">"time_days"</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># Write the Chapter-2 Kronecker model that has *both* TauP and TauB ~ Wishart</span></span></span>
+<span class="r-in"><span>  <span class="va">model_path</span> <span class="op">&lt;-</span> <span class="fu"><a href="write_model_ch2_kron.html">write_model_ch2_kron</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/file.path.html" class="external-link">file.path</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/tempfile.html" class="external-link">tempdir</a></span><span class="op">(</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>                                               <span class="st">"model_ch2_kron.jags"</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="co"># This call will fail in JAGS with the 'TauB' sampler error described above</span></span></span>
+<span class="r-in"><span>  <span class="kw"><a href="https://rdrr.io/r/base/try.html" class="external-link">try</a></span><span class="op">(</span></span></span>
+<span class="r-in"><span>    <span class="va">fit_kron</span> <span class="op">&lt;-</span> <span class="fu">run_mod</span><span class="op">(</span></span></span>
+<span class="r-in"><span>      data          <span class="op">=</span> <span class="va">sim_tbl</span>,</span></span>
+<span class="r-in"><span>      file_mod      <span class="op">=</span> <span class="fu"><a href="serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>      file_mod_kron <span class="op">=</span> <span class="va">model_path</span>,                       <span class="co"># Kronecker model file</span></span></span>
+<span class="r-in"><span>      correlated    <span class="op">=</span> <span class="cn">TRUE</span>,                             <span class="co"># &lt;-- key switch</span></span></span>
+<span class="r-in"><span>      nchain <span class="op">=</span> <span class="fl">2</span>, nadapt <span class="op">=</span> <span class="fl">100</span>, nburn <span class="op">=</span> <span class="fl">50</span>, nmc <span class="op">=</span> <span class="fl">10</span>, niter <span class="op">=</span> <span class="fl">100</span>,</span></span>
+<span class="r-in"><span>      strat <span class="op">=</span> <span class="cn">NA</span></span></span>
+<span class="r-in"><span>    <span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Calling 2 simulations using the parallel method...</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 21:32:20 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . . Reading data file data.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Compiling model graph</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Resolving undeclared variables</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Allocating nodes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Graph information:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Observed stochastic nodes: 18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Unobserved stochastic nodes: 16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>    Total graph size: 689</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> WARNING: Unused variable(s) in data table:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> n_antigen_isos</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Reading parameter file inits1.txt</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Initializing model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in node TauB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Unable to find appropriate sampler</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Adaptation skipped: model is not in adaptive mode.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't set monitor. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -------------------------------------------------| 100</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . No model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump CODA output. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Can't dump samplers. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Updating 0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Can't update. No model!</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: the model did not require adaptation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Note: Either one or more simulation(s) failed, or there was an error in</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> processing the results.  You may be able to retrieve any successful</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> simulations using:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> results.jags("/tmp/Rtmpix6aoR/runjagsfiles21f73245c910",</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> recover.chains=TRUE)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> See the help file for that function for possible options.</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> To remove failed simulation folders use cleanup.jags() - this will be</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> run automatically when the runjags package is unloaded</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Error in runjags.readin(directory = startinfo$directory, silent.jags = silent.jags,  : </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   All the simulations appear to have crashed - check the model output in failed.jags() for clues</span>
+<span class="r-in"><span><span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
