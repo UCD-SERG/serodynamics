@@ -5,10 +5,12 @@
 \title{Default print for \code{\link[=run_mod]{run_mod()}} output object of class
 \code{sr_model}}
 \usage{
-\method{print}{sr_model}(x, ...)
+\method{print}{sr_model}(x, print_tbl = FALSE, ...)
 }
 \arguments{
 \item{x}{An \code{sr_model} output object from \code{\link[=run_mod]{run_mod()}}.}
+
+\item{print_tbl}{A \link{logical} indicator to print in style of \link[dplyr:tbl_df]{dplyr::tbl_df}.}
 
 \item{...}{Additional arguments affecting the summary produced.
 \code{\link[=run_mod]{run_mod()}} function.}
