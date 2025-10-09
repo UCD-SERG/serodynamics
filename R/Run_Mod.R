@@ -156,14 +156,14 @@ run_mod <- function(data,
       priorspec  <- c(base_priors, kron_priors, B_scalar)          
       
       # Changed: use file_mod_kron when correlated = TRUE
-      model_path <- file_mod_kron                                   
-      if (!file.exists(model_path)) {                               
+      model_path <- file_mod_kron                   
+      if (!file.exists(model_path)) {               
         model_path <- serodynamics::write_model_ch2_kron(
           file.path(tempdir(), "model_ch2_kron.jags")
         )
       }
       
-      init_fun   <- serodynamics::inits_kron                        
+      init_fun   <- function(chain) serodynamics::inits_kron(chain)    
       to_monitor <- c("y0", "y1", "t1", "alpha", "shape", "TauB", "TauP") 
     }
 
