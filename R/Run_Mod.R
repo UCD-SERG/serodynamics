@@ -11,6 +11,18 @@
 #'  - t1 = time to peak
 #'  - shape = shape parameter
 #'  - alpha = decay rate
+#' @details
+#'  When `correlated = TRUE`, `run_mod()` fits a Chapter-2 Kronecker prior
+#'  across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B}.
+#'  The likelihood for observed antibody data is unchanged; only the prior
+#'  covariance differs. Internally this mode:
+#'  \itemize{
+#'    \item calls \code{clean_priors()} on the base priors from \code{prep_priors()},
+#'    \item adds Kronecker hyperpriors via \code{prep_priors_multi_b()} (OmegaP, nuP, OmegaB, nuB)
+#'          and \code{n_blocks = <# biomarkers>},
+#'    \item uses \code{inits_kron()} to avoid conflicting legacy inits,
+#'    \item and monitors \code{TauB} and \code{TauP} in addition to the core parameters.
+#'  }
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
@@ -26,6 +38,11 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
+#' @param correlated Logical; use Chapter-2 Kronecker prior across biomarkers.
+#'   Default FALSE (independence).
+#' @param file_mod_kron Path to a JAGS file for the Kronecker model.If
+#'   `correlated = TRUE` and this path does not exist, a temporary
+#'   `model_ch2_kron.jags` is written and used automatically.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -60,6 +77,7 @@
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
+#' @seealso clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -152,8 +170,6 @@ run_mod <- function(data,
     nmc <- nmc # nr of samples in posterior chains
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
-
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
     jags_post <- runjags::run.jags(
       model = model_path,
