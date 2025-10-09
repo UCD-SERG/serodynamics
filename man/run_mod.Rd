@@ -160,15 +160,19 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 \details{
 When \code{correlated = TRUE}, \code{run_mod()} fits a Chapter-2 Kronecker prior
-across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B}.
+across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = 
+ \Sigma_P \otimes \Sigma_B}.
 The likelihood for observed antibody data is unchanged; only the prior
 covariance differs. Internally this mode:
 \itemize{
-\item calls \code{clean_priors()} on the base priors from \code{prep_priors()},
-\item adds Kronecker hyperpriors via \code{prep_priors_multi_b()} (OmegaP, nuP, OmegaB, nuB)
+\item calls \code{clean_priors()} on the base priors from
+\code{prep_priors()},
+\item adds Kronecker hyperpriors via \code{prep_priors_multi_b()}
+(OmegaP, nuP, OmegaB, nuB)
 and \code{n_blocks = <# biomarkers>},
 \item uses \code{inits_kron()} to avoid conflicting legacy inits,
-\item and monitors \code{TauB} and \code{TauP} in addition to the core parameters.
+\item and monitors \code{TauB} and \code{TauP} in addition to the
+core parameters.
 }
 }
 \examples{
