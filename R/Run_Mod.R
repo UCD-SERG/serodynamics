@@ -71,7 +71,10 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    ...) {
+                    ...,
+                    correlated = FALSE, # (used when correlated = TRUE)
+                    file_mod_kron = "model_ch2_kron.jags"
+                    ) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -106,8 +109,41 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
-                             ...)
+
+    # ---------- CHOOSE MODEL/PRIORS DEPENDING ON `correlated` ----------
+    if (!correlated) {
+      # original (independence) behavior
+      priorspec <- prep_priors(
+        max_antigens = longdata$n_antigen_isos, ...
+      )
+      model_path <- file_mod                      # UNCHANGED for independence
+      init_fun   <- initsfunction
+      to_monitor <- c("y0", "y1", "t1", "alpha", "shape")
+    } else {
+      # CH2 behavior: Kronecker prior across biomarkers
+      base_priors <- prep_priors(
+        max_antigens = longdata$n_antigen_isos, ...
+      )
+      base_priors <- serodynamics::clean_priors(base_priors)       
+      
+      kron_priors <- serodynamics::prep_priors_multi_b(            
+        n_blocks = longdata$n_antigen_isos
+      )
+      B_scalar   <- list(n_blocks = longdata$n_antigen_isos)       
+      
+      priorspec  <- c(base_priors, kron_priors, B_scalar)          
+      
+      # Changed: use file_mod_kron when correlated = TRUE
+      model_path <- file_mod_kron                                   
+      if (!file.exists(model_path)) {                               
+        model_path <- serodynamics::write_model_ch2_kron(
+          file.path(tempdir(), "model_ch2_kron.jags")
+        )
+      }
+      
+      init_fun   <- serodynamics::inits_kron                        
+      to_monitor <- c("y0","y1","t1","alpha","shape","TauB","TauP") 
+    }
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -120,16 +156,16 @@ run_mod <- function(data,
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
 
     jags_post <- runjags::run.jags(
-      model = file_mod,
+      model = model_path,
       data = c(longdata, priorspec),
-      inits = initsfunction,
+      inits = init_fun,
       method = "parallel",
       adapt = nadapt,
       burnin = nburnin,
       thin = nthin,
       sample = nmc,
       n.chains = nchains,
-      monitor = tomonitor,
+      monitor = to_monitor,
       summarise = FALSE
     )
     # Assigning the raw jags output to a list.
@@ -190,9 +226,11 @@ run_mod <- function(data,
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
   
-  # Adding priors
+  # Changed: Attach priors robustly
+  used_priors <- attr(priorspec, "used_priors", exact = TRUE)
+  if (is.null(used_priors)) used_priors <- names(priorspec)
   jags_out <- jags_out |>
-    structure("priors" = attributes(priorspec)$used_priors)
+    structure("priors" = used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
