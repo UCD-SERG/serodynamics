@@ -11,4 +11,3 @@ test_that(
     testthat::expect_snapshot(print(nepal_sees_jags_output, print_tbl = TRUE)) 
   }
 )
-

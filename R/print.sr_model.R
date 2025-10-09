@@ -18,7 +18,7 @@ print.sr_model <- function(x,
                            print_tbl = FALSE,
                            ...) { # nolint
   if (print_tbl) {
-    x <- as_tibble(x)
+    x <- dplyr::as_tibble(x)
     print(x)
   } else {
     cat("An sr_model with the following median values:")
