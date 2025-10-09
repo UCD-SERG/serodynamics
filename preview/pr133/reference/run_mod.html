@@ -244,13 +244,17 @@ for all observations.</p></li>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>When <code>correlated = TRUE</code>, <code>run_mod()</code> fits a Chapter-2 Kronecker prior
-across biomarkers: \(\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B\).
+across biomarkers: \(\mathrm{Cov}(\mathrm{vec}(\Theta_i)) =
+ \Sigma_P \otimes \Sigma_B\).
 The likelihood for observed antibody data is unchanged; only the prior
-covariance differs. Internally this mode:</p><ul><li><p>calls <code><a href="clean_priors.html">clean_priors()</a></code> on the base priors from <code><a href="prep_priors.html">prep_priors()</a></code>,</p></li>
-<li><p>adds Kronecker hyperpriors via <code><a href="prep_priors_multi_b.html">prep_priors_multi_b()</a></code> (OmegaP, nuP, OmegaB, nuB)
+covariance differs. Internally this mode:</p><ul><li><p>calls <code><a href="clean_priors.html">clean_priors()</a></code> on the base priors from
+<code><a href="prep_priors.html">prep_priors()</a></code>,</p></li>
+<li><p>adds Kronecker hyperpriors via <code><a href="prep_priors_multi_b.html">prep_priors_multi_b()</a></code>
+(OmegaP, nuP, OmegaB, nuB)
 and <code>n_blocks = &lt;# biomarkers&gt;</code>,</p></li>
 <li><p>uses <code><a href="inits_kron.html">inits_kron()</a></code> to avoid conflicting legacy inits,</p></li>
-<li><p>and monitors <code>TauB</code> and <code>TauP</code> in addition to the core parameters.</p></li>
+<li><p>and monitors <code>TauB</code> and <code>TauP</code> in addition to the
+core parameters.</p></li>
 </ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -298,7 +302,7 @@ and <code>n_blocks = &lt;# biomarkers&gt;</code>,</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 15:49:13 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 16:46:19 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -324,7 +328,6 @@ and <code>n_blocks = &lt;# biomarkers&gt;</code>,</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -333,7 +336,7 @@ and <code>n_blocks = &lt;# biomarkers&gt;</code>,</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 15:50:01 2025</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu Oct  9 16:47:06 2025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
