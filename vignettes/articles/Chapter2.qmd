@@ -1,0 +1,225 @@
+---
+title: "Chapter 2 — Fake Data First, Then Fit"
+author: "Kwan Ho Lee"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    code-summary: "Show R Code"
+    code-fold-default: true
+execute:
+  echo: true
+  warning: false
+  message: false
+  eval: false
+---
+
+# Current Model (what we already fit)
+
+-   Chapter 1 model fits subject-level parameters for each biomarker $(y_0, t_1, y_1, \alpha, \rho)$.
+-   Within each biomarker: variation is captured by a covariance $(\Sigma_P)$.
+-   Across biomarkers: independence (block-diagonal), i.e. $$
+    \mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big) = \Sigma_P \otimes I_B
+    $$
+
+# Step A — Set up
+
+```{r}
+set.seed(123)
+library(tidyverse)
+library(mvtnorm)   # rmvnorm
+library(Matrix)    # kronecker
+library(serodynamics)
+```
+
+# Step B — Minimal helpers
+
+
+# Step C — Choose a “truth” and simulate fake data
+
+```{r}
+
+# Choose B biomarkers and visit schedule
+n_blocks  <- 2
+time_grid <- c(0, 7, 14, 30)
+
+# True ΣP (5×5): mild positive correlation among the five latent parameters
+sd_p <- c(0.35, 0.45, 0.25, 0.30, 0.25)
+R_p  <- matrix(0.25, 5, 5)
+diag(R_p) <- 1
+sigma_p <- diag(sd_p) %*% R_p %*% diag(sd_p)
+
+# True ΣB (B×B): cross-biomarker correlation
+R_b <- matrix(c(1, 0.5,
+                0.5, 1), n_blocks, n_blocks, byrow = TRUE)
+sd_b <- rep(0.6, n_blocks)
+sigma_b <- diag(sd_b) %*% R_b %*% diag(sd_b)
+
+
+# Run simulator
+sim <- simulate_multi_b_long(
+  n_id      = 5,
+  n_blocks  = n_blocks,
+  time_grid = time_grid,
+  sigma_p   = sigma_p,
+  sigma_b   = sigma_b
+)
+
+# This long table already matches prep_data() expectations:
+
+sim$data |> dplyr::slice_head(n = 8)
+```
+
+# Step D — Fit the independence model
+
+```{r}
+# If our package is loaded, this is all we need:
+
+sim_tbl <- serodynamics::as_case_data(
+  sim$data,
+  id_var        = "Subject",
+  biomarker_var = "antigen_iso",
+  value_var     = "value",
+  time_in_days  = "time_days"
+)
+
+prepped <- prep_data(sim_tbl)
+priors  <- prep_priors(max_antigens = prepped$n_antigen_isos)
+fit_v0  <- run_mod(
+ data     = sim_tbl,
+ file_mod = serodynamics_example("model.jags"),  # our current model
+ nchain = 4, nadapt = 1000, nburn = 500, nmc = 500, niter = 5000,
+ strat = NA, with_post = TRUE
+ )
+
+fit_v0
+```
+
+# Step E — Prepare for Correlated Model
+
+-   In Step D we fit the “independence” model: each biomarker had its own covariance for the 5 parameters, but biomarkers were assumed independent.
+-   Now we allow correlations **across biomarkers** as well as **within biomarkers**.
+-   Mathematically, we replace the block-diagonal assumption with a **Kronecker structure**:
+
+$$
+\mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big) 
+   = \Sigma_P \otimes \Sigma_B
+$$
+
+-   Here:
+    -   $\Sigma_P$ = covariance of the 5 parameters $(y_0, y_1, t_1, \alpha, \rho)$ within a biomarker.
+    -   $\Sigma_B$ = covariance across biomarkers.
+    -   The Kronecker product $\otimes$ builds a $5B \times 5B$ covariance.
+-   Implementation plan:
+    1.  Define priors for $\Sigma_P$ and $\Sigma_B$ separately (via Wishart distributions).
+    2.  Build the Kronecker precision matrix $\text{T} = \text{T}_B \otimes \text{T}_P$ inside JAGS.
+    3.  Draw each subject’s stacked parameter vector from this multivariate prior.
+    4.  Likelihood for observed antibody data is unchanged — only the prior covariance differs.
+
+------------------------------------------------------------------------
+
+## E.1 Priors for the Correlated Model
+
+We define a helper function `prep_priors_multiB()` that sets priors for both $\Sigma_P$ (within-biomarker) and $\Sigma_B$ (across-biomarkers).
+
+-   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$\
+-   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$\
+-   Kronecker precision: $\text{T} = \text{T}_B \otimes \text{T}_P$
+
+
+## E.2 Write the new JAGS model file (Kronecker precision)
+
+This is our `model.jags` with only one conceptual change:\
+instead of independent
+
+$$
+par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.par}[\text{b},,] )
+$$
+where b is `cur_antigen_iso`
+
+we draw **all biomarkers at once** for a subject with a **Kronecker precision**:
+
+$$
+\mathrm{vec}(par_{\text{subj},\cdot,\cdot}) \sim \mathcal{N}\!\big( \mathrm{vec}(\mu_{par}), \ \text{T}_B \otimes \text{T}_P \big).
+$$
+
+-   Everything else (transforms, likelihood, measurement precisions) stays as before.\
+-   We keep our hyperpriors for `mu.par` (the per-biomarker means), so it plugs right into our current `prep_priors()`.
+
+This is our new `model.jags` rename as `model_ch2_kron.jags`
+
+### What changed vs. our current `model.jags`
+
+-   Removed the per-biomarker `prec.par[cur_antigen_iso,,] ~ dwish(...)` and `par[subj,cur_antigen_iso,] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])`.
+
+-   Replaced with one prior per subject on the stacked vector using $\text{T} = \text{T}_B \otimes \text{T}_P$
+
+-   Kept our `mu.par` prior and the likelihood exactly as is.
+
+## E.3: Minimal wrapper so we can keep calling one function
+
+
+# What are `OmegaP`, `nuP`, `OmegaB`, `nuB` — and why these defaults?
+
+These are the **Wishart hyperparameters** for the **precision matrices** (inverse covariances) used in the Kronecker prior:
+
+-   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$ -- within-biomarker parameter precision (5×5).
+-   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$ -- across-biomarker precision (B×B).
+
+Generally speaking (JAGS Wishart): $\mathop{\mathbb{E}}[\text{T}]\approx \nu \cdot \Omega^{-1}$ when $\nu$ is not tiny. So smaller diagonal entries in $\Omega$ imply larger expected precision (i.e., smaller covariance), and vice versa.
+
+## Chosen weakly-informative defaults
+
+``` r
+OmegaP_scale = rep(0.1, 5);  nuP = 6
+OmegaB_scale = rep(1.0, B);  nuB = B + 1
+```
+
+-   `nuP = 6` is just above the dimension (5): proper but not tight.
+
+-   `OmegaP = 0.1 * I_5` is diffuse. With small `nuP`, the prior is wide; data will dominate.
+
+-   `nuB = B + 1` is a minimally-informative choice for a B×B Wishart.
+
+-   `OmegaB = I_B` centers `TauB` near identity while letting the data learn cross-biomarker correlation.
+
+These are starting values. Validate with prior predictive checks (simulate parameters → curves → sanity check ranges).
+
+# Putting it together
+
+-   **Independence model (our baseline)**: no changes.
+
+-   **Correlated model**: we supply both the usual priors and the new Kronecker priors:
+
+```{r}
+#| echo: true
+#| eval: false
+#| code-fold: true
+#| code-summary: "Run Kronecker model (disabled for now)"
+
+# Step 1: simulate fake data (or load real Shigella data)
+sim_tbl 
+
+# Step 2: write the new Kronecker model file (once per session/project)
+write_model_ch2_kron()
+
+# Step 3: run the unified runner in correlated (Chapter 2) mode
+fit_kron <- run_mod(
+  data     = sim_tbl,
+  file_mod = serodynamics_example("model.jags"),  # baseline model path (unused here)
+  file_mod_kron = "model_ch2_kron.jags",          # use the Kronecker model
+  correlated = TRUE,                              # <-- key switch
+  nchain   = 4, nadapt = 1000, nburn = 500,
+  nmc      = 500,  niter = 5000,
+  strat    = NA,
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)     # optional override
+)
+
+# Step 4: inspect results (same as with run_mod before)
+fit_kron
+
+```
+
