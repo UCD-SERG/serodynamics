@@ -7,11 +7,9 @@
 add_jags_attrs(df, attrs)
 }
 \arguments{
-\item{df}{A \link{data.frame}.}
+\item{df}{A \link{data.frame} of the original input dataset.}
 
 \item{attrs}{\link{attributes} to attach to the \link{data.frame}.}
-
-\item{original_data}{A \link{data.frame} of the original input dataset.}
 }
 \value{
 A \link{data.frame} with specified \link{attributes} attached.
