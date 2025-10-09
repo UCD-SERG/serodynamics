@@ -13,15 +13,19 @@
 #'  - alpha = decay rate
 #' @details
 #'  When `correlated = TRUE`, `run_mod()` fits a Chapter-2 Kronecker prior
-#'  across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = \Sigma_P \otimes \Sigma_B}.
+#'  across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = 
+#'  \Sigma_P \otimes \Sigma_B}.
 #'  The likelihood for observed antibody data is unchanged; only the prior
 #'  covariance differs. Internally this mode:
 #'  \itemize{
-#'    \item calls \code{clean_priors()} on the base priors from \code{prep_priors()},
-#'    \item adds Kronecker hyperpriors via \code{prep_priors_multi_b()} (OmegaP, nuP, OmegaB, nuB)
+#'    \item calls \code{clean_priors()} on the base priors from 
+#'    \code{prep_priors()},
+#'    \item adds Kronecker hyperpriors via \code{prep_priors_multi_b()} 
+#'    (OmegaP, nuP, OmegaB, nuB)
 #'          and \code{n_blocks = <# biomarkers>},
 #'    \item uses \code{inits_kron()} to avoid conflicting legacy inits,
-#'    \item and monitors \code{TauB} and \code{TauP} in addition to the core parameters.
+#'    \item and monitors \code{TauB} and \code{TauP} in addition to the 
+#'    core parameters.
 #'  }
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
@@ -81,18 +85,18 @@
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod = serodynamics_example("model.jags"),
-                    nchain = 4,
-                    nadapt = 0,
-                    nburn = 0,
-                    nmc = 100,
-                    niter = 100,
-                    strat = NA,
-                    with_post = FALSE,
-                    ...,
-                    correlated = FALSE, # (used when correlated = TRUE)
-                    file_mod_kron = "model_ch2_kron.jags"
-                    ) {
+  file_mod = serodynamics_example("model.jags"),
+  nchain = 4,
+  nadapt = 0,
+  nburn = 0,
+  nmc = 100,
+  niter = 100,
+  strat = NA,
+  with_post = FALSE,
+  ...,
+  correlated = FALSE, # (used when correlated = TRUE)
+  file_mod_kron = "model_ch2_kron.jags"
+) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -160,7 +164,7 @@ run_mod <- function(data,
       }
       
       init_fun   <- serodynamics::inits_kron                        
-      to_monitor <- c("y0","y1","t1","alpha","shape","TauB","TauP") 
+      to_monitor <- c("y0", "y1", "t1", "alpha", "shape", "TauB", "TauP") 
     }
 
     # inputs for jags model
