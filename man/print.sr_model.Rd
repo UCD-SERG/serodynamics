@@ -17,7 +17,7 @@
 }
 \value{
 A data summary that
-contains the mean posterior distribution for antibody kinetic curve
+contains the median posterior distribution for antibody kinetic curve
 parameters by \code{Iso_type} and \code{Stratification} (if specified).
 }
 \description{

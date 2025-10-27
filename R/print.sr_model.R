@@ -9,7 +9,7 @@
 #' @param ... Additional arguments affecting the summary produced.
 #' [serodynamics::run_mod()] function.
 #' @returns A data summary that
-#' contains the mean posterior distribution for antibody kinetic curve
+#' contains the median posterior distribution for antibody kinetic curve
 #' parameters by `Iso_type` and `Stratification` (if specified).
 #' @export
 #' @examples
