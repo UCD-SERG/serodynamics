@@ -33,9 +33,9 @@ print.sr_model <- function(x,
       dplyr::arrange(.data$Iso_type) |>
       suppressWarnings()
     # Taking out stratification column if not specified
-    if (unique(x$Stratification == "None")) {
-      x <- x |> select(-c(.data$Stratification))
-    } 
+    if (!"Stratification" %in% names(x) || all(x$Stratification == "None", na.rm = TRUE)) {
+  x <- dplyr::select(x, -dplyr::any_of("Stratification"))
+}
     print(as.data.frame(x))
     invisible(x)
   } 
