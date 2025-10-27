@@ -1,205 +1,218 @@
-// ============================================================================
-// STAN MODEL: Hierarchical Antibody Kinetics Model
-// ----------------------------------------------------------------------------
-// GOAL:
-//   Estimate the antibody kinetics following infection using a hierarchical
-//   (multilevel) Bayesian framework.
-//
-//   Each biomarker (antigen–isotype) has its own parameter distribution.
-//   Each subject draws their individual antibody-response parameters from
-//   these group-level distributions.
-//
-//   The antibody response is modeled as two phases:
-//     (1) Growth during infection (up to a peak at time t₁)
-//     (2) Decay/recovery after t₁
-//
-// ----------------------------------------------------------------------------
-// MISSING DATA STRATEGY:
-//   Stan cannot directly handle NA values in the data block.
-//   To handle missing observations in antibody levels (logy) or sample times (smpl_t),
-//   we use an indicator array `is_obs` (1 = observed, 0 = missing).
-//   The likelihood is only applied to observed values, and missing values
-//   can optionally be estimated as parameters if desired.
-//
-// ----------------------------------------------------------------------------
-// MODEL STRUCTURE:
-//   - Hierarchical priors (population → subject → observation)
-//   - Each subject’s antibody curve is described by 5 parameters (log scale)
-//     representing: baseline, rise, timing, decay, and shape.
-//   - Observed log-antibody values are modeled as normally distributed
-//     around the predicted curve, with antigen-specific precision.
-//
-// ============================================================================
+// -----------------------------------------------------------------------------
+// Title: Antibody kinetics model (growth + decay phases)
+// Converted from JAGS to Stan
+// Handles missing smpl.t and logy data
+// Based on Teunis et al., *Epidemics* 2016 (Equation 15 & 17)
+// -----------------------------------------------------------------------------
 
 data {
-  // ----------------------------------------------------------------------------
-  // DIMENSIONS
-  // ----------------------------------------------------------------------------
-  int<lower=1> nsubj;                 // number of subjects
-  int<lower=1> n_antigen_isos;        // number of biomarkers (antigen-isotypes)
-  int<lower=1> n_params;              // number of model parameters per antigen (usually 5)
-  int<lower=1> max_nsmpl;             // max number of observations per subject
-  int nsmpl[nsubj];                   // actual number of samples for each subject
+  // ------------------------
+  // Study-level structure
+  // ------------------------
+  int<lower=1> nsubj;                  // number of subjects
+  int<lower=1> n_antigen_isos;         // number of antigen-isotypes (e.g. IgG, IgA)
+  int<lower=1> n_params;               // number of subject-level parameters (5)
+  int<lower=1> max_nsmpl;              // maximum number of samples per subject
 
-  // ----------------------------------------------------------------------------
-  // OBSERVED DATA
-  // ----------------------------------------------------------------------------
-  real smpl_t[nsubj, max_nsmpl];      // time since infection (continuous)
-  real logy[nsubj, max_nsmpl, n_antigen_isos]; // observed log antibody levels
+  // number of samples for each subject
+  array[nsubj] int<lower=0> nsmpl;
 
-  // ----------------------------------------------------------------------------
-  // MISSINGNESS INDICATOR (1 = observed, 0 = missing)
-  // ----------------------------------------------------------------------------
-  int<lower=0, upper=1> is_obs[nsubj, max_nsmpl, n_antigen_isos];
+  // ------------------------
+  // Observed data (with missing values)
+  // ------------------------
 
-  // ----------------------------------------------------------------------------
-  // HYPERPRIOR INFORMATION (FIXED INPUTS)
-  // ----------------------------------------------------------------------------
-  // These define weakly informative priors at the antigen (group) level
-  vector[n_params] mu_hyp[n_antigen_isos];             // prior mean vector for mu_par
-  matrix[n_params, n_params] prec_hyp[n_antigen_isos]; // prior precision matrix for mu_par
-  matrix[n_params, n_params] omega[n_antigen_isos];    // scale matrix for Wishart prior
-  real wishdf[n_antigen_isos];                         // degrees of freedom for Wishart
-  vector[2] prec_logy_hyp[n_antigen_isos];             // (shape, rate) for gamma prior on precision
+  // smpl_t_obs: time since infection for each sample
+  // missing values will be ignored if mask == 1
+  matrix[nsubj, max_nsmpl] smpl_t_obs;
+
+  // logy_obs: log antibody concentrations for each observation
+  // array[n_antigen_isos] matrix[nsubj, max_nsmpl] logy_obs;
+  array[max_nsmpl, nsubj, n_antigen_isos] real logy_obs;
+
+  // Binary masks (1 = missing, 0 = observed)
+  array[max_nsmpl, nsubj] int<lower=0, upper=1> smpl_t_miss_mask;
+  array[max_nsmpl, nsubj, n_antigen_isos] int<lower=0, upper=1> logy_miss_mask;
+
+  // matrix[nsubj, max_nsmpl] smpl_t_miss_mask;
+  // array[n_antigen_isos] matrix[nsubj, max_nsmpl] int<lower=0, upper=1> logy_miss_mask;
+
+  // ------------------------
+  // Hyperparameters for hierarchical priors
+  // ------------------------
+
+  // Mean of the biomarker-level parameter distributions
+  matrix[n_antigen_isos, n_params] mu_hyp;
+
+  // Precision matrices for biomarker-level parameters
+  array[n_params] matrix[n_antigen_isos, n_params] prec_hyp;
+
+  // Wishart/LKJ-related hyperpriors (for random effects covariance)
+  array[n_antigen_isos] cov_matrix[n_params] omega;
+  vector[n_antigen_isos] wishdf;
+
+  // Hyperparameters for the measurement precision prior
+  // prec_logy_hyp[i,1] = shape; prec_logy_hyp[i,2] = rate
+  matrix[n_antigen_isos, 2] prec_logy_hyp;
 }
 
 parameters {
-  // ----------------------------------------------------------------------------
-  // GROUP-LEVEL PARAMETERS
-  // ----------------------------------------------------------------------------
-  vector[n_params] mu_par[n_antigen_isos];             // mean of log-parameter distribution for each antigen
-  matrix[n_params, n_params] prec_par[n_antigen_isos]; // precision (inverse covariance) matrix per antigen
+  // These are the parameters that we are monitoring...
+  // ------------------------
+  // Missing data imputation
+  // ------------------------
 
-  // ----------------------------------------------------------------------------
-  // SUBJECT-LEVEL PARAMETERS (RANDOM EFFECTS)
-  // ----------------------------------------------------------------------------
-  // Each subject draws a set of kinetic parameters for each antigen
-  // from the group-level multivariate normal distribution.
-  vector[n_params] par[nsubj, n_antigen_isos];         // subject-specific parameters on log scale
+  // Imputed sample times for missing smpl_t. 
+  // Need to track imputation for missing data
+  matrix[nsubj, max_nsmpl] smpl_t_miss;
 
-  // ----------------------------------------------------------------------------
-  // OBSERVATION-LEVEL PARAMETERS
-  // ----------------------------------------------------------------------------
-  real<lower=0> prec_logy[n_antigen_isos];             // precision (1/variance) for measurement error
+  // Imputed log antibody levels for missing logy
+  array[n_antigen_isos, nsubj, max_nsmpl] real logy_miss;
 
-  // ----------------------------------------------------------------------------
-  // OPTIONAL: MISSING DATA IMPUTATION
-  // ----------------------------------------------------------------------------
-  // If you want Stan to impute missing values instead of skipping them,
-  // declare them as parameters here.
-  // Example:
-  //   real<lower=0> smpl_t_mis[n_mis_t];  // missing time points
-  //   real logy_mis[n_mis_y];             // missing antibody levels
+  // ------------------------
+  // Hierarchical random effects
+  // ------------------------
+
+  // Subject-level parameters (random effects) for each biomarker
+  // par_raw[p][subj, iso] is parameter p for subject subj and biomarker iso
+  array[n_params] matrix[nsubj, n_antigen_isos] par_raw;
+
+  // Mean vector (mu_par) for each biomarker's random-effect distribution
+  matrix[n_antigen_isos, n_params] mu_par;
+
+  // Cholesky factor of correlation for each biomarker’s random effect covariance
+  array[n_antigen_isos] cholesky_factor_corr[n_params] L_par;
+
+  // ------------------------
+  // Measurement noise (likelihood SD)
+  // ------------------------
+  vector<lower=0>[n_antigen_isos] sigma_logy;
 }
 
 transformed parameters {
-  // ----------------------------------------------------------------------------
-  // DERIVED QUANTITIES FOR INTERPRETATION
-  // ----------------------------------------------------------------------------
-  // Convert log-scale parameters to interpretable biological quantities.
-  real y0[nsubj, n_antigen_isos];     // baseline antibody level (before infection)
-  real y1[nsubj, n_antigen_isos];     // peak antibody level
-  real t1[nsubj, n_antigen_isos];     // time to peak antibody
-  real alpha[nsubj, n_antigen_isos];  // decay rate after peak
-  real shape[nsubj, n_antigen_isos];  // shape parameter controlling recovery curvature
-  real beta[nsubj, n_antigen_isos];   // antibody growth rate during infection
-  real mu_logy[nsubj, max_nsmpl, n_antigen_isos]; // expected log-antibody at each observation
+  // Derived biological parameters for each subject × biomarker
+  matrix[nsubj, n_antigen_isos] y0;      // baseline antibody level
+  matrix[nsubj, n_antigen_isos] y1;      // peak antibody level
+  matrix[nsubj, n_antigen_isos] t1;      // time to peak (end of infection)
+  matrix[nsubj, n_antigen_isos] alpha;   // decay rate (ν in paper)
+  matrix[nsubj, n_antigen_isos] shape;   // shape (r in paper)
+  matrix[nsubj, n_antigen_isos] beta;    // growth rate (μ in paper)
 
-  // ----------------------------------------------------------------------------
-  // COMPUTE EXPECTED VALUES (μ_logy)
-  // ----------------------------------------------------------------------------
+  // Compute these deterministic quantities from par_raw
   for (subj in 1:nsubj) {
-    for (a in 1:n_antigen_isos) {
-
-      // --- Transform latent parameters ---
-      // Parameters are stored in log form for stability.
-      y0[subj, a]    = exp(par[subj, a, 1]);   // baseline level
-      y1[subj, a]    = y0[subj, a] + exp(par[subj, a, 2]); // add positive increment for peak
-      t1[subj, a]    = exp(par[subj, a, 3]);   // positive time to peak
-      alpha[subj, a] = exp(par[subj, a, 4]);   // positive decay rate
-      shape[subj, a] = exp(par[subj, a, 5]) + 1; // ensure >1 to avoid singularities
-
-      // --- Derived growth rate ---
-      beta[subj, a]  = log(y1[subj, a] / y0[subj, a]) / t1[subj, a];
-
-      // --- Expected antibody trajectory ---
-      for (obs in 1:nsmpl[subj]) {
-
-        // PHASE 1: Infection/growth (t <= t₁)
-        if (smpl_t[subj, obs] <= t1[subj, a]) {
-          mu_logy[subj, obs, a] =
-            log(y0[subj, a]) + beta[subj, a] * smpl_t[subj, obs];
-
-        // PHASE 2: Recovery/decay (t > t₁)
-        } else {
-          mu_logy[subj, obs, a] =
-            (1 / (1 - shape[subj, a])) *
-            log(
-              pow(y1[subj, a], (1 - shape[subj, a])) -
-              (1 - shape[subj, a]) * alpha[subj, a] *
-              (smpl_t[subj, obs] - t1[subj, a])
-            );
-        }
-      }
+    for (iso in 1:n_antigen_isos) {
+      // par_raw[, subj, iso] holds 5 parameters on log-scale
+      y0[subj, iso]    = exp(par_raw[1][subj, iso]);
+      y1[subj, iso]    = y0[subj, iso] + exp(par_raw[2][subj, iso]);
+      t1[subj, iso]    = exp(par_raw[3][subj, iso]);
+      alpha[subj, iso] = exp(par_raw[4][subj, iso]);
+      shape[subj, iso] = exp(par_raw[5][subj, iso]) + 1.0; // +1 ensures r > 1
+      beta[subj, iso]  = log(y1[subj, iso] / y0[subj, iso]) / t1[subj, iso];
     }
   }
 }
 
 model {
-  // ----------------------------------------------------------------------------
-  // HYPERPRIORS (GROUP LEVEL)
-  // ----------------------------------------------------------------------------
-  for (a in 1:n_antigen_isos) {
-    // Prior for the mean vector of the antigen-level parameters
-    mu_par[a] ~ multi_normal(mu_hyp[a], inverse_spd(prec_hyp[a]));
+  // ---------------------------------------------------------------------------
+  // 1. Priors for biomarker-level parameters (hyperpriors)
+  // Corresponds to lines 70 - 75 of model.jags
+  // ---------------------------------------------------------------------------
 
-    // Prior for the precision matrix (Wishart prior on inverse covariance)
-    prec_par[a] ~ wishart(wishdf[a], omega[a]);
+  for (iso in 1:n_antigen_isos) {
+    // Biomarker-level means follow a multivariate normal
+    mu_par[iso] ~ multi_normal(mu_hyp[iso], inverse(prec_hyp[iso]));
 
-    // Prior for measurement precision (Gamma distribution)
-    // shape = prec_logy_hyp[a, 1], rate = prec_logy_hyp[a, 2]
-    prec_logy[a] ~ gamma(prec_logy_hyp[a, 1], prec_logy_hyp[a, 2]);
+    // LKJ prior for correlation matrix of random effects (instead of Wishart)
+    L_par[iso] ~ lkj_corr_cholesky(2.0);  // weakly informative
+    // May need to define this input as a parameter
+
+    // Measurement noise prior (Gamma, consistent with precision prior in JAGS)
+    sigma_logy[iso] ~ gamma(prec_logy_hyp[iso,1], prec_logy_hyp[iso,2]);
   }
 
-  // ----------------------------------------------------------------------------
-  // SUBJECT-LEVEL PRIORS AND OBSERVATION MODEL
-  // ----------------------------------------------------------------------------
-  for (subj in 1:nsubj) {
-    for (a in 1:n_antigen_isos) {
+  // ---------------------------------------------------------------------------
+  // 2. Hierarchical random effects for each subject × biomarker
+  // ---------------------------------------------------------------------------
 
-      // Random effects: each subject’s parameters drawn from the antigen’s distribution
-      par[subj, a] ~ multi_normal(mu_par[a], inverse_spd(prec_par[a]));
+  for (iso in 1:n_antigen_isos) {
+    for (subj in 1:nsubj) {
+      vector[n_params] par_vec;
 
-      // Observation likelihood:
-      // only use observed data (is_obs == 1) to avoid NA issues
-      for (obs in 1:nsmpl[subj]) {
-        if (is_obs[subj, obs, a] == 1) {
-          logy[subj, obs, a] ~ normal(mu_logy[subj, obs, a],
-                                      1 / sqrt(prec_logy[a]));
+      // Extract the 5 parameters for this subject and biomarker
+      for (p in 1:n_params)
+        par_vec[p] = par_raw[p][subj, iso];
+
+      // Multivariate normal with Cholesky covariance (better for Stan)
+      par_vec ~ multi_normal_cholesky(mu_par[iso]', L_par[iso]);
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // 3. Priors for missing values (simple normal imputation priors)
+  // ---------------------------------------------------------------------------
+
+  // We place very weak priors on missing times and log-antibody levels
+  to_vector(smpl_t_miss) ~ normal(0, 10);   // broad prior on missing times
+  
+  for (iso in 1:n_antigen_isos) {
+    for (subj in 1:nsubj) {
+      for (obs in 1:max_nsmpl) {
+        logy_miss[obs, iso, subj] ~ normal(0, 10);
         }
-      }
-    }
-  }
-}
+        }
+        }
 
-generated quantities {
-  // ----------------------------------------------------------------------------
-  // POSTERIOR PREDICTIVE CHECKING
-  // ----------------------------------------------------------------------------
-  // Generate replicated (simulated) log-antibody data
-  real logy_rep[nsubj, max_nsmpl, n_antigen_isos];
+  // to_vector(logy_miss) ~ normal(0, 10);     // broad prior on missing log-antibody levels
+
+  // ---------------------------------------------------------------------------
+  // 4. Likelihood: observed + imputed antibody levels over time
+  // ---------------------------------------------------------------------------
 
   for (subj in 1:nsubj) {
-    for (a in 1:n_antigen_isos) {
+    for (iso in 1:n_antigen_isos) {
       for (obs in 1:nsmpl[subj]) {
-        logy_rep[subj, obs, a] =
-          normal_rng(mu_logy[subj, obs, a], 1 / sqrt(prec_logy[a]));
+
+        // -------------------------------------------------
+        // Handle missing data by substituting imputed values
+        // -------------------------------------------------
+        // This code is an if then statement to say if the data is missing, use
+        // the imputed code, if not, use the observation. This applies to both
+        // smpl_t values and logy values. 
+        real t_obs = smpl_t_miss_mask[obs, subj] 
+                      ? smpl_t_miss[obs, subj] 
+                      : smpl_t_obs[obs, subj];
+        
+        real logy_val = logy_miss_mask[obs, iso, subj]
+                    ? logy_miss[obs, iso, subj]
+                    : logy_obs[obs, iso, subj];
+                    
+
+        // -------------------------------------------------
+        // Compute expected log antibody concentration μ_logy
+        // according to infection phase
+        // -------------------------------------------------
+        real mu_logy;
+
+        if (smpl_t_obs[subj,iso] <= t1[subj,iso]) {
+          // ----- ACTIVE INFECTION PHASE -----
+          // log(y(t)) = log(y0) + β * t
+          mu_logy = log(y0[subj,iso]) + beta[subj,iso] * smpl_t_obs[subj,iso];
+
+        } else {
+          // ----- RECOVERY PHASE -----
+          // log(y(t)) = [1 / (1 - r)] * log( y1^(1-r) - (1 - r)*α*(t - t1) )
+          mu_logy = (1 / (1 - shape[subj,iso])) *
+            log( pow(y1[subj,iso], (1 - shape[subj,iso])) -
+                 (1 - shape[subj,iso]) * alpha[subj,iso] * (smpl_t_obs[subj,iso] - t1[subj,iso]) );
+        }
+
+        // -------------------------------------------------
+        // Likelihood: log(y) ~ Normal(μ_logy, σ_logy)
+        // -------------------------------------------------
+        logy_val ~ normal(mu_logy, sigma_logy[iso]);
       }
     }
   }
 }
-
-
 
 
 
