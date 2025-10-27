@@ -83,10 +83,10 @@ mod <- cmdstan_model("~/Documents/GitHub/serodynamics/inst/extdata/model.stan")
 fit <- mod$sample(
   data = stan_data,
   seed = 42,
-  chains = 4,
-  parallel_chains = 4,
-  iter_warmup = 1000,
-  iter_sampling = 1000,
+  chains = 2,
+  parallel_chains = 2,
+  iter_warmup = 200,
+  iter_sampling = 200,
   adapt_delta = 0.9,
   max_treedepth = 12
 )

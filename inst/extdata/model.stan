@@ -27,11 +27,11 @@ data {
 
   // logy_obs: log antibody concentrations for each observation
   // array[n_antigen_isos] matrix[nsubj, max_nsmpl] logy_obs;
-  array[max_nsmpl, nsubj, n_antigen_isos] real logy_obs;
+  array[nsubj, max_nsmpl, n_antigen_isos] real logy_obs;
 
   // Binary masks (1 = missing, 0 = observed)
-  array[max_nsmpl, nsubj] int<lower=0, upper=1> smpl_t_miss_mask;
-  array[max_nsmpl, nsubj, n_antigen_isos] int<lower=0, upper=1> logy_miss_mask;
+  array[nsubj, max_nsmpl] int<lower=0, upper=1> smpl_t_miss_mask;
+  array[nsubj, max_nsmpl, n_antigen_isos] int<lower=0,upper=1> logy_miss_mask;
 
   // matrix[nsubj, max_nsmpl] smpl_t_miss_mask;
   // array[n_antigen_isos] matrix[nsubj, max_nsmpl] int<lower=0, upper=1> logy_miss_mask;
@@ -44,7 +44,7 @@ data {
   matrix[n_antigen_isos, n_params] mu_hyp;
 
   // Precision matrices for biomarker-level parameters
-  array[n_params] matrix[n_antigen_isos, n_params] prec_hyp;
+  array[n_antigen_isos] matrix[n_params, n_params] prec_hyp;
 
   // Wishart/LKJ-related hyperpriors (for random effects covariance)
   array[n_antigen_isos] cov_matrix[n_params] omega;
@@ -156,7 +156,7 @@ model {
   for (iso in 1:n_antigen_isos) {
     for (subj in 1:nsubj) {
       for (obs in 1:max_nsmpl) {
-        logy_miss[obs, iso, subj] ~ normal(0, 10);
+        logy_miss[iso, subj, obs] ~ normal(0, 10);
         }
         }
         }
@@ -177,13 +177,13 @@ model {
         // This code is an if then statement to say if the data is missing, use
         // the imputed code, if not, use the observation. This applies to both
         // smpl_t values and logy values. 
-        real t_obs = smpl_t_miss_mask[obs, subj] 
-                      ? smpl_t_miss[obs, subj] 
-                      : smpl_t_obs[obs, subj];
+        real t_obs = smpl_t_miss_mask[subj, obs] 
+                      ? smpl_t_miss[subj, obs] 
+                      : smpl_t_obs[subj, obs];
         
-        real logy_val = logy_miss_mask[obs, iso, subj]
-                    ? logy_miss[obs, iso, subj]
-                    : logy_obs[obs, iso, subj];
+        real logy_val = logy_miss_mask[subj, obs, iso]
+                    ? logy_miss[iso, subj, obs]
+                    : logy_obs[subj, obs, iso];
                     
 
         // -------------------------------------------------
@@ -201,8 +201,9 @@ model {
           // ----- RECOVERY PHASE -----
           // log(y(t)) = [1 / (1 - r)] * log( y1^(1-r) - (1 - r)*α*(t - t1) )
           mu_logy = (1 / (1 - shape[subj,iso])) *
-            log( pow(y1[subj,iso], (1 - shape[subj,iso])) -
-                 (1 - shape[subj,iso]) * alpha[subj,iso] * (smpl_t_obs[subj,iso] - t1[subj,iso]) );
+            log(fmax(pow(y1[subj,iso], (1 - shape[subj,iso])) -
+                 (1 - shape[subj,iso]) * alpha[subj,iso] * 
+                 (smpl_t_obs[subj,iso] - t1[subj,iso]), 1e-8));
         }
 
         // -------------------------------------------------
