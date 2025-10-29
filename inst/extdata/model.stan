@@ -63,10 +63,10 @@ parameters {
 
   // Imputed sample times for missing smpl_t. 
   // Need to track imputation for missing data
-  matrix[nsubj, max_nsmpl] smpl_t_miss;
+  matrix<lower=0>[nsubj, max_nsmpl] smpl_t_miss;
 
   // Imputed log antibody levels for missing logy
-  array[n_antigen_isos, nsubj, max_nsmpl] real logy_miss;
+  array[nsubj, max_nsmpl, n_antigen_isos] real logy_miss;
 
   // ------------------------
   // Hierarchical random effects
@@ -85,7 +85,7 @@ parameters {
   // ------------------------
   // Measurement noise (likelihood SD)
   // ------------------------
-  vector<lower=0>[n_antigen_isos] sigma_logy;
+  vector<lower=1e-3>[n_antigen_isos] sigma_logy;
 }
 
 transformed parameters {
@@ -119,7 +119,7 @@ model {
 
   for (iso in 1:n_antigen_isos) {
     // Biomarker-level means follow a multivariate normal
-    mu_par[iso] ~ multi_normal(mu_hyp[iso], inverse(prec_hyp[iso]));
+    mu_par[iso] ~ multi_normal_prec(mu_hyp[iso], prec_hyp[iso]);
 
     // LKJ prior for correlation matrix of random effects (instead of Wishart)
     L_par[iso] ~ lkj_corr_cholesky(2.0);  // weakly informative
@@ -156,7 +156,7 @@ model {
   for (iso in 1:n_antigen_isos) {
     for (subj in 1:nsubj) {
       for (obs in 1:max_nsmpl) {
-        logy_miss[iso, subj, obs] ~ normal(0, 10);
+        logy_miss[subj, obs, iso] ~ normal(0, 10);
         }
         }
         }
@@ -177,12 +177,12 @@ model {
         // This code is an if then statement to say if the data is missing, use
         // the imputed code, if not, use the observation. This applies to both
         // smpl_t values and logy values. 
-        real t_obs = smpl_t_miss_mask[subj, obs] 
+        real t_obs = (smpl_t_miss_mask[subj, obs] == 1)
                       ? smpl_t_miss[subj, obs] 
                       : smpl_t_obs[subj, obs];
         
-        real logy_val = logy_miss_mask[subj, obs, iso]
-                    ? logy_miss[iso, subj, obs]
+        real logy_val = (logy_miss_mask[subj, obs, iso] == 1)
+                    ? logy_miss[subj, obs, iso]
                     : logy_obs[subj, obs, iso];
                     
 
@@ -192,10 +192,10 @@ model {
         // -------------------------------------------------
         real mu_logy;
 
-        if (smpl_t_obs[subj,iso] <= t1[subj,iso]) {
+        if (t_obs <= t1[subj,iso]) {
           // ----- ACTIVE INFECTION PHASE -----
           // log(y(t)) = log(y0) + β * t
-          mu_logy = log(y0[subj,iso]) + beta[subj,iso] * smpl_t_obs[subj,iso];
+          mu_logy = log(y0[subj,iso]) + beta[subj,iso] * t_obs;
 
         } else {
           // ----- RECOVERY PHASE -----
@@ -203,7 +203,7 @@ model {
           mu_logy = (1 / (1 - shape[subj,iso])) *
             log(fmax(pow(y1[subj,iso], (1 - shape[subj,iso])) -
                  (1 - shape[subj,iso]) * alpha[subj,iso] * 
-                 (smpl_t_obs[subj,iso] - t1[subj,iso]), 1e-8));
+                 (t_obs - t1[subj,iso]), 1e-8));
         }
 
         // -------------------------------------------------

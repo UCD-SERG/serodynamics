@@ -61,7 +61,7 @@ priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos)
 ## Creating the stan data list 
 stan_data <- list(
   nsubj = longdata$nsubj,
-  n_antigen_isos = long$n_antigen_isos,
+  n_antigen_isos = longdata$n_antigen_isos,
   n_params = n_params,
   max_nsmpl = max_nsmpl,
   nsmpl = longdata$nsmpl,
@@ -83,11 +83,96 @@ mod <- cmdstan_model("~/Documents/GitHub/serodynamics/inst/extdata/model.stan")
 fit <- mod$sample(
   data = stan_data,
   seed = 42,
-  chains = 2,
+  chains = 1,
   parallel_chains = 2,
-  iter_warmup = 200,
-  iter_sampling = 200,
+  iter_warmup = 10,
+  iter_sampling = 10,
   adapt_delta = 0.9,
-  max_treedepth = 12
+  max_treedepth = 12,
+  init = 0
 )
+
+# Assigning the raw jags output to a list.
+# This object will include a raw output for the jags.post for each
+# stratification and will only be included if specified. 
+jags_post_final[[i]] <- jags_post
+
+# Unpacking and cleaning MCMC output.
+stan_unpack <- fit$summary()
+
+# Working with jags unpacked ggs outputs to clarify parameter and subject
+stan_unpack <- stan_unpack |>
+  dplyr::mutate(
+    Subnum = sub(".*,", "", .data$variable),
+    Parameter_sub = sub("\\[.*", "", .data$variable),
+    Subject = sub("\\,.*", "", .data$variable)
+  ) |>
+  dplyr::mutate(
+    Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
+    Subject = sub(".*\\[", "", .data$Subject)
+  ) 
+max_sub <- max(as.numeric(stan_unpack$Subject))
+stan_newperson <- stan_unpack %>%
+  filter(Subject == max(as.numeric(Subject)))
+
+
+
+# Adding attributes
+mod_atts <- attributes(jags_unpack)
+# Only keeping necessary attributes
+mod_atts <- mod_atts[4:8]
+
+# extracting antigen-iso combinations to correctly number
+# then by the order they are estimated by the program.
+iso_dat <- data.frame(longdata$antigens)
+iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
+
+# Merging isodat in to ensure we are classifying antigen_iso
+jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
+ids <- data.frame(attr(longdata, "ids")) |>
+  mutate(Subject = as.character(dplyr::row_number()))
+jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
+jags_final <- jags_unpack |>
+  dplyr::select(!c("Subnum", "Subject")) |>
+  dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
+                  "Subject" = "attr.longdata...ids.."))
+
+# Replace the pattern with an empty string, effectively keeping only what's before it
+result <- sub(pattern, "\\Q[\\E.*", my_string)
+
+# Adding attributes
+mod_atts <- attributes(jags_unpack)
+# Only keeping necessary attributes
+mod_atts <- mod_atts[4:8]
+
+# extracting antigen-iso combinations to correctly number
+# then by the order they are estimated by the program.
+iso_dat <- data.frame(attributes(longdata)$antigens)
+iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
+# Working with jags unpacked ggs outputs to clarify parameter and subject
+jags_unpack <- jags_unpack |>
+  dplyr::mutate(
+    Subnum = sub(".*,", "", .data$Parameter),
+    Parameter_sub = sub("\\[.*", "", .data$Parameter),
+    Subject = sub("\\,.*", "", .data$Parameter)
+  ) |>
+  dplyr::mutate(
+    Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
+    Subject = sub(".*\\[", "", .data$Subject)
+  )
+# Merging isodat in to ensure we are classifying antigen_iso
+jags_unpack <- dplyr::left_join(jags_unpack, iso_dat, by = "Subnum")
+ids <- data.frame(attr(longdata, "ids")) |>
+  mutate(Subject = as.character(dplyr::row_number()))
+jags_unpack <- dplyr::left_join(jags_unpack, ids, by = "Subject")
+jags_final <- jags_unpack |>
+  dplyr::select(!c("Subnum", "Subject")) |>
+  dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
+                  "Subject" = "attr.longdata...ids.."))
+# Creating a label for the stratification, if there is one.
+# If not, will add in "None".
+jags_final$Stratification <- i
+## Creating output
+jags_out <- data.frame(rbind(jags_out, jags_final))
+}
 
