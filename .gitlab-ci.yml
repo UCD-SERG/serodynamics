@@ -1,0 +1,66 @@
+---
+# GitLab CI/CD Pipeline for Documentation Check
+# Converted from .github/workflows/R-check-docs.yml
+
+stages:
+  - docs-check
+
+docs-check:
+  stage: docs-check
+  image: rocker/tidyverse:latest
+
+  # Equivalent to GitHub Actions triggers:
+  # push to main/master and merge requests
+  rules:
+    - if: >-
+        $CI_PIPELINE_SOURCE == "push" &&
+        ($CI_COMMIT_BRANCH == "main" || $CI_COMMIT_BRANCH == "master")
+    - if: '$CI_PIPELINE_SOURCE == "merge_request_event"'
+
+  variables:
+    # GitLab CI automatically provides CI_JOB_TOKEN
+    # which can be used like GITHUB_PAT
+    # For R packages, this may need to be set differently depending on usage
+    R_LIBS_USER: "$CI_PROJECT_DIR/R_libs"
+
+  before_script:
+    # Setup R environment and install dependencies
+    - mkdir -p $R_LIBS_USER
+    - >-
+      echo "options(repos = c(CRAN =
+      'https://packagemanager.rstudio.com/all/__linux__/jammy/latest'))"
+      > ~/.Rprofile
+    - >-
+      Rscript -e "install.packages('remotes',
+      lib = Sys.getenv('R_LIBS_USER'))"
+    - >-
+      Rscript -e "remotes::install_deps(dependencies = TRUE,
+      upgrade = 'never', lib = Sys.getenv('R_LIBS_USER'))"
+    - >-
+      Rscript -e "install.packages('roxygen2',
+      lib = Sys.getenv('R_LIBS_USER'))"
+
+  script:
+    # Generate documentation
+    - Rscript -e "roxygen2::roxygenise()"
+
+    # Check for changed files (equivalent to the GitHub Actions check)
+    - |
+      git add --all
+      changes=$(git diff-index HEAD --name-only -- man/ NAMESPACE DESCRIPTION)
+      if [ -n "$changes" ]; then
+        echo "Changes found after documenting."
+        git --no-pager diff
+        echo "$changes"
+        echo "Please update documentation using the \
+      devtools::document() command in R."
+        exit 1
+      else
+        echo "No changes found after documenting."
+        exit 0
+      fi
+
+  cache:
+    key: "${CI_COMMIT_REF_SLUG}"
+    paths:
+      - R_libs/
