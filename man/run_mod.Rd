@@ -38,10 +38,19 @@ the number of MCMC chains to be run per jags model.}
 entered in quotes.}
 
 \item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post}
-component
-should be included as an element of the \link{list} object returned by \code{run_mod()}
-(see \code{Value} section below for details).
-Note: These objects can be large.}
+component should be included as an element of the \link{list} object returned by
+\code{run_mod()} (see \code{Value} section below for details).
+\itemize{
+\item Note: These objects can be large.
+}}
+
+\item{param_out}{A \link{character} vector of population parameters to be
+included in the model output. Default is no population parameters. Can
+optionally include population parameters:
+\itemize{
+\item \code{mu.par} = The population mean of the hyperparameters.
+\item \code{prec.par} = The population covariance between the hyperparameters.
+}}
 
 \item{...}{
   Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
@@ -108,10 +117,16 @@ including the following:
 \item \code{t1} = Posterior estimate of time to peak
 \item \code{shape} = Posterior estimate of shape parameter
 \item \code{alpha} = Posterior estimate of decay rate
+\item \code{covariance [parameter, parameter]} = The parameters included in the
+\code{prec.par} estimates of covariances.
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model
-\item \code{Subject} = ID of subject being evaluated
+\item \code{Subject} = ID of subject being evaluated.
+\itemize{
+\item Includes \code{mu.par} and \code{prec.par} if specifying and including
+population parameters.
+}
 \item \code{value} = Estimated value of the parameter
 \item The following \link{attributes} are included in the output:
 \itemize{
