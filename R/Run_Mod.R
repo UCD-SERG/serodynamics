@@ -22,10 +22,14 @@
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
-#' component
-#' should be included as an element of the [list] object returned by `run_mod()`
-#' (see `Value` section below for details).
-#' Note: These objects can be large.
+#' component should be included as an element of the [list] object returned by
+#' `run_mod()` (see `Value` section below for details).
+#'   -  Note: These objects can be large.
+#' @param param_out A [character] vector of population parameters to be 
+#' included in the model output. Default is no population parameters. Can 
+#' optionally include population parameters:
+#'   - `mu.par` = The population mean of the hyperparameters.  
+#'   - `prec.par` = The population covariance between the hyperparameters.  
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -38,9 +42,13 @@
 #'     - `t1` = Posterior estimate of time to peak
 #'     - `shape` = Posterior estimate of shape parameter
 #'     - `alpha` = Posterior estimate of decay rate
+#'     - `covariance [parameter, parameter]` = The parameters included in the 
+#'     `prec.par` estimates of covariances.
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
-#'   - `Subject` = ID of subject being evaluated
+#'   - `Subject` = ID of subject being evaluated.
+#'      - Includes `mu.par` and `prec.par` if specifying and including 
+#'      population parameters.
 #'   - `value` = Estimated value of the parameter
 #' - The following [attributes] are included in the output:
 #'   - `class`: Class of the output object.
@@ -86,7 +94,6 @@ run_mod <- function(data,
     "Chain" = NA,
     "Parameter" = NA,
     "value" = NA,
-    "Parameter_sub" = NA,
     "Subject" = NA,
     "Iso_type" = NA,
     "Stratification" = NA
@@ -188,15 +195,18 @@ run_mod <- function(data,
     # Merging isodat in to ensure we are classifying antigen_iso. 
     jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
                                            by = "Subnum")
+    
+    # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
       mutate(Subject = as.character(dplyr::row_number()))
-    jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, ids, 
+    jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
                                            by = "Subject") |>
       mutate(attr.longdata...ids.. = ifelse(is.na(attr.longdata...ids..), 
                                             Subject, attr.longdata...ids..)) |>
-      dplyr::select(!c("Subnum", "Subject")) |>
+      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                      "Subject" = "attr.longdata...ids.."))
+                      "Subject" = "attr.longdata...ids..",
+                      "Parameter" = "Param"))
 
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
@@ -210,9 +220,7 @@ run_mod <- function(data,
   # jags output results for each stratification rbinded.
 
   # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)  |>
-    select(!c("Parameter")) |>
-    rename("Parameter" = "Parameter_sub")
+  jags_out <- dplyr::as_tibble(jags_out)
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
