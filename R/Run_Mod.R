@@ -216,12 +216,12 @@ run_mod <- function(data,
   
   # Preparing population parameters
   population_params <- jags_out |>
-    filter(Subject %in% c("mu.par", "prec.par")) |>
-    rename(Population_params = Subject)
+    filter(.data$Subject %in% c("mu.par", "prec.par")) |>
+    rename(.data$Population_params = .data$Subject)
   
   # Taking out population parameters
   jags_out <- jags_out |>
-    filter(!(Subject %in% c("mu.par", "prec.par")))
+    filter(!(.data$Subject %in% c("mu.par", "prec.par")))
   
   # Making output a tibble and restructing.
   jags_out <- dplyr::as_tibble(jags_out)
