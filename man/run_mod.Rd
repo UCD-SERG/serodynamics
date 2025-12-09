@@ -120,6 +120,11 @@ including the following:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item \code{population_params}: Modeled population parameters:
+\itemize{
+\item \code{mu.par} = The population mean of the hyperparameters.
+\item \code{prec.par} = The population covariance between the hyperparameters.
+}
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}
