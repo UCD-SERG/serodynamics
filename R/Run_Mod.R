@@ -159,20 +159,20 @@ run_mod <- function(data,
     #Separating population parameters from the rest of the data
     regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
     jags_mupar <- jags_unpack |>
-      filter(grepl("mu.par", Parameter)) |>
+      dplyr::filter(grepl("mu.par", .data$Parameter)) |>
       dplyr::mutate(
-        Subject= gsub(regex, "\\1", .data$Parameter),
+        Subject = gsub(regex, "\\1", .data$Parameter),
         Subnum = gsub(regex, "\\2", .data$Parameter),
         Param = param_recode(gsub(regex, "\\3", .data$Parameter))
       )
     # Unpacking prec.par
     regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
     jags_precpar <- jags_unpack |>
-      filter(grepl("prec.par", Parameter)) |>
+      filter(grepl("prec.par", .data$Parameter)) |>
       dplyr::mutate(
         Subject = gsub(regex2, "\\1", .data$Parameter),
         Subnum = gsub(regex2, "\\2", .data$Parameter),
-        Param = paste0(param_recode(gsub(regex2, "\\3", .data$Parameter)),", ",
+        Param = paste0(param_recode(gsub(regex2, "\\3", .data$Parameter)), ", ",
                        param_recode(gsub(regex2, "\\4", .data$Parameter)))
       ) 
     
@@ -182,7 +182,8 @@ run_mod <- function(data,
         Subject = gsub(regex, "\\2", .data$Parameter),
         Subnum = gsub(regex, "\\3", .data$Parameter),
         Param = param_recode(gsub(regex, "\\1", .data$Parameter))
-      ) |> filter(Param %in% c("y0", "y1", "t1", "alpha", "shape"))
+      ) |> 
+      filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
     
     # Putting data frame together
     jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar)
@@ -196,8 +197,9 @@ run_mod <- function(data,
       mutate(Subject = as.character(dplyr::row_number()))
     jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
                                    by = "Subject") |>
-      mutate(attr.longdata...ids.. = ifelse(is.na(attr.longdata...ids..), 
-                                            Subject, attr.longdata...ids..)) |>
+      mutate(attr.longdata...ids.. = ifelse(is.na(.data$attr.longdata...ids..), 
+                                            .data$Subject, 
+                                            .data$attr.longdata...ids..)) |>
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject" = "attr.longdata...ids..",
@@ -216,12 +218,12 @@ run_mod <- function(data,
   
   # Preparing population parameters
   population_params <- jags_out |>
-    filter(.data$Subject %in% c("mu.par", "prec.par")) |>
-    rename(.data$Population_params = .data$Subject)
+    dplyr::filter(.data$Subject %in% c("mu.par", "prec.par")) |>
+    dplyr::rename(Population_params = .data$Subject)
   
   # Taking out population parameters
   jags_out <- jags_out |>
-    filter(!(.data$Subject %in% c("mu.par", "prec.par")))
+    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par")))
   
   # Making output a tibble and restructing.
   jags_out <- dplyr::as_tibble(jags_out)
