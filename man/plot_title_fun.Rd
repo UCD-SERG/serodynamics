@@ -4,12 +4,14 @@
 \alias{plot_title_fun}
 \title{Plotting title for diagnostic functions}
 \usage{
-plot_title_fun(i, j)
+plot_title_fun(i, j, h)
 }
 \arguments{
 \item{i}{input strata}
 
 \item{j}{input antigen/iso combination}
+
+\item{h}{input subject}
 }
 \description{
 Plotting title for diagnostic functions
