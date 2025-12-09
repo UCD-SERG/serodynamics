@@ -117,7 +117,7 @@ test_that(
 
 test_that(
   desc = "results are consistent with unstratified SEES data with modified 
-  priors, population parameters, and jags post included.",
+  priors.",
   code = {
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     skip_on_os(c("windows", "linux"))
@@ -133,7 +133,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      param_out = c("mu.par", "prec.par"),
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
