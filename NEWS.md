@@ -4,6 +4,7 @@
 
 ## New features
 
+* Including population parameters as attributes in run_mod output. (#)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
