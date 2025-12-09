@@ -14,7 +14,6 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
-  param_out = NA,
   ...
 )
 }
@@ -42,14 +41,6 @@ component should be included as an element of the \link{list} object returned by
 \code{run_mod()} (see \code{Value} section below for details).
 \itemize{
 \item Note: These objects can be large.
-}}
-
-\item{param_out}{A \link{character} vector of population parameters to be
-included in the model output. Default is no population parameters. Can
-optionally include population parameters:
-\itemize{
-\item \code{mu.par} = The population mean of the hyperparameters.
-\item \code{prec.par} = The population covariance between the hyperparameters.
 }}
 
 \item{...}{
@@ -136,6 +127,11 @@ population parameters.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item \code{population_params}: Modeled population parameters:
+\itemize{
+\item \code{mu.par} = The population mean of the hyperparameters.
+\item \code{prec.par} = The population covariance between the hyperparameters.
+}
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}

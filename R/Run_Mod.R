@@ -25,11 +25,6 @@
 #' component should be included as an element of the [list] object returned by
 #' `run_mod()` (see `Value` section below for details).
 #'   -  Note: These objects can be large.
-#' @param param_out A [character] vector of population parameters to be 
-#' included in the model output. Default is no population parameters. Can 
-#' optionally include population parameters:
-#'   - `mu.par` = The population mean of the hyperparameters.  
-#'   - `prec.par` = The population covariance between the hyperparameters.  
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -57,6 +52,9 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
+#'   - `population_params`: Modeled population parameters:
+#'     - `mu.par` = The population mean of the hyperparameters.  
+#'     - `prec.par` = The population covariance between the hyperparameters.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
@@ -79,7 +77,6 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    param_out = NA,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -125,7 +122,7 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", param_out)
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par")
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -161,6 +158,7 @@ run_mod <- function(data,
       dplyr::recode(x, "1" = "y0", "2" = "y1", "3" = "t1", "4" = "alpha", 
              "5" = "shape")
     }
+    # Unpacking mu.par
     #Separating population parameters from the rest of the data
     regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
     jags_mupar <- jags_unpack |>
@@ -170,7 +168,7 @@ run_mod <- function(data,
         Subnum = gsub(regex, "\\2", .data$Parameter),
         Param = param_recode(gsub(regex, "\\3", .data$Parameter))
       )
-    
+    # Unpacking prec.par
     regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
     jags_precpar <- jags_unpack |>
       filter(grepl("prec.par", Parameter)) |>
@@ -214,10 +212,20 @@ run_mod <- function(data,
     ## Creating output
     jags_out <- data.frame(rbind(jags_out, jags_final))
   }
+  
   # Ensuring output does not have any NAs
   jags_out <- jags_out[complete.cases(jags_out), ]
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
+  
+  # Preparing population parameters
+  population_params <- jags_out |>
+    filter(Subject %in% c("mu.par", "prec.par")) |>
+    rename(Population_params = Subject)
+  
+  # Taking out population parameters
+  jags_out <- jags_out |>
+    filter(!(Subject %in% c("mu.par", "prec.par")))
 
   # Making output a tibble and restructing.
   jags_out <- dplyr::as_tibble(jags_out)
@@ -226,6 +234,10 @@ run_mod <- function(data,
   current_atts <- attributes(jags_out) 
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
+  
+  # Adding population parameters in as attributes
+  jags_out <- jags_out |>
+    structure("population_param" = population_params)
   
   # Adding priors
   jags_out <- jags_out |>
