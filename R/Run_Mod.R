@@ -86,11 +86,10 @@ run_mod <- function(data,
   jags_out <- data.frame(
     "Iteration" = NA,
     "Chain" = NA,
-    "Parameter" = NA,
     "value" = NA,
-    "Parameter_sub" = NA,
-    "Subject" = NA,
+    "Parameter" = NA,
     "Iso_type" = NA,
+    "Subject" = NA,
     "Stratification" = NA
   )
 
@@ -225,9 +224,7 @@ run_mod <- function(data,
     filter(!(Subject %in% c("mu.par", "prec.par")))
   
   # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)  |>
-    select(!c("Parameter")) |>
-    rename("Parameter" = "Parameter_sub")
+  jags_out <- dplyr::as_tibble(jags_out)
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
