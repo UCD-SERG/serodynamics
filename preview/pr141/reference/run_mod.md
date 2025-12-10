@@ -216,6 +216,8 @@ following:
     - `prec.par` = The population covariance between the
       hyperparameters.
 
+    - `prec.logy` = The population covariance between antigen/isotypes??
+
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
 
@@ -278,7 +280,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Dec  9 20:21:40 2025
+#> Welcome to JAGS 4.3.2 on Wed Dec 10 19:19:57 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -299,7 +301,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . . . Updating 2000
+#> . . . . . . . . . Updating 2000
 #> -------------------------------------------------| 2000
 #> ************************************************** 100%
 #> . . . . Updating 0
@@ -313,7 +315,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Dec  9 20:22:29 2025
+#> Welcome to JAGS 4.3.2 on Wed Dec 10 19:20:47 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -334,7 +336,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . . . Updating 2000
+#> . . . . . . . . . Updating 2000
 #> -------------------------------------------------| 2000
 #> ************************************************** 100%
 #> . . . . Updating 0
