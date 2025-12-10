@@ -52,6 +52,7 @@
 #'   - `population_params`: Modeled population parameters:
 #'     - `mu.par` = The population mean of the hyperparameters.  
 #'     - `prec.par` = The population covariance between the hyperparameters.  
+#'     - `prec.logy` = The population covariance between antigen/isotypes??
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
@@ -119,7 +120,8 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par")
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par",
+                   "prec.logy")
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -151,42 +153,9 @@ run_mod <- function(data,
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
-    param_recode <- function(x) {
-      dplyr::recode(x, "1" = "y0", "2" = "y1", "3" = "t1", "4" = "alpha", 
-                    "5" = "shape")
-    }
-    # Unpacking mu.par
-    #Separating population parameters from the rest of the data
-    regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
-    jags_mupar <- jags_unpack |>
-      dplyr::filter(grepl("mu.par", .data$Parameter)) |>
-      dplyr::mutate(
-        Subject = gsub(regex, "\\1", .data$Parameter),
-        Subnum = gsub(regex, "\\2", .data$Parameter),
-        Param = param_recode(gsub(regex, "\\3", .data$Parameter))
-      )
-    # Unpacking prec.par
-    regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
-    jags_precpar <- jags_unpack |>
-      filter(grepl("prec.par", .data$Parameter)) |>
-      dplyr::mutate(
-        Subject = gsub(regex2, "\\1", .data$Parameter),
-        Subnum = gsub(regex2, "\\2", .data$Parameter),
-        Param = paste0(param_recode(gsub(regex2, "\\3", .data$Parameter)), ", ",
-                       param_recode(gsub(regex2, "\\4", .data$Parameter)))
-      ) 
     
-    # Working with jags unpacked ggs outputs to clarify parameter and subject
-    jags_unpack_params <- jags_unpack |>
-      dplyr::mutate(
-        Subject = gsub(regex, "\\2", .data$Parameter),
-        Subnum = gsub(regex, "\\3", .data$Parameter),
-        Param = param_recode(gsub(regex, "\\1", .data$Parameter))
-      ) |> 
-      filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
-    
-    # Putting data frame together
-    jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar)
+    # Unpacking the mcmc object
+    jags_unpack_bind <- unpack_jags(jags_unpack)
     
     # Merging isodat in to ensure we are classifying antigen_iso. 
     jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
@@ -212,13 +181,13 @@ run_mod <- function(data,
     jags_out <- data.frame(rbind(jags_out, jags_final))
   }
   # Ensuring output does not have any NAs
-  jags_out <- jags_out[complete.cases(jags_out), ]
+  jags_out <- jags_out[complete.cases(jags_out$Iso_type), ]
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
   
   # Preparing population parameters
   population_params <- jags_out |>
-    dplyr::filter(.data$Subject %in% c("mu.par", "prec.par")) |>
+    dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
     dplyr::rename(Population_params = .data$Subject)
   
   # Taking out population parameters
