@@ -4,7 +4,7 @@
 \alias{unpack_jags}
 \title{Unpacking MCMC Object}
 \usage{
-unpack_jags(data, ...)
+unpack_jags(data)
 }
 \arguments{
 \item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} output object from run_mod}
@@ -21,3 +21,4 @@ including for all population parameters.
 \author{
 Sam Schildhauer
 }
+\keyword{internal}
