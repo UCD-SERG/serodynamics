@@ -39,6 +39,7 @@ reference:
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
+  - unpack_jags
 - title: Summarize seroresponse model estimates
   contents:
   - post_summ
