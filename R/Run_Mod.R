@@ -91,11 +91,7 @@ run_mod <- function(data,
     "Iteration" = NA,
     "Chain" = NA,
     "value" = NA,
-<<<<<<< HEAD
-    "Subject" = NA,
-=======
     "Parameter" = NA,
->>>>>>> mon_popparams
     "Iso_type" = NA,
     "Subject" = NA,
     "Stratification" = NA
@@ -127,12 +123,8 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-<<<<<<< HEAD
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par")
-=======
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par",
                    "prec.logy")
->>>>>>> mon_popparams
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -164,47 +156,6 @@ run_mod <- function(data,
     # then by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
-<<<<<<< HEAD
-    param_recode <- function(x) {
-      dplyr::recode(x, "1" = "y0", "2" = "y1", "3" = "t1", "4" = "alpha", 
-             "5" = "shape")
-    }
-    # Unpacking mu.par
-    #Separating population parameters from the rest of the data
-    regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
-    jags_mupar <- jags_unpack |>
-      filter(grepl("mu.par", Parameter)) |>
-      dplyr::mutate(
-        Subject= gsub(regex, "\\1", .data$Parameter),
-        Subnum = gsub(regex, "\\2", .data$Parameter),
-        Param = param_recode(gsub(regex, "\\3", .data$Parameter))
-      )
-    # Unpacking prec.par
-    regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
-    jags_precpar <- jags_unpack |>
-      filter(grepl("prec.par", Parameter)) |>
-      dplyr::mutate(
-        Subject = gsub(regex2, "\\1", .data$Parameter),
-        Subnum = gsub(regex2, "\\2", .data$Parameter),
-        Param = paste0(param_recode(gsub(regex2, "\\3", .data$Parameter)),", ",
-                       param_recode(gsub(regex2, "\\4", .data$Parameter)))
-      ) 
-    
-    # Working with jags unpacked ggs outputs to clarify parameter and subject
-    jags_unpack_params <- jags_unpack |>
-      dplyr::mutate(
-        Subject = gsub(regex, "\\2", .data$Parameter),
-        Subnum = gsub(regex, "\\3", .data$Parameter),
-        Param = param_recode(gsub(regex, "\\1", .data$Parameter))
-      ) |> filter(Param %in% c("y0", "y1", "t1", "alpha", "shape"))
-    
-    # Putting data frame together
-    jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar)
-    
-    # Merging isodat in to ensure we are classifying antigen_iso. 
-    jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
-                                           by = "Subnum")
-=======
     
     # Unpacking the mcmc object
     jags_unpack_bind <- unpack_jags(jags_unpack)
@@ -212,31 +163,20 @@ run_mod <- function(data,
     # Merging isodat in to ensure we are classifying antigen_iso. 
     jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
                                          by = "Subnum")
->>>>>>> mon_popparams
     
     # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
       mutate(Subject = as.character(dplyr::row_number()))
     jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
-<<<<<<< HEAD
-                                           by = "Subject") |>
-      mutate(attr.longdata...ids.. = ifelse(is.na(attr.longdata...ids..), 
-                                            Subject, attr.longdata...ids..)) |>
-=======
                                    by = "Subject") |>
       mutate(attr.longdata...ids.. = ifelse(is.na(.data$attr.longdata...ids..), 
                                             .data$Subject, 
                                             .data$attr.longdata...ids..)) |>
->>>>>>> mon_popparams
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject" = "attr.longdata...ids..",
                       "Parameter" = "Param"))
-<<<<<<< HEAD
-
-=======
-    
->>>>>>> mon_popparams
+  
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
@@ -251,23 +191,13 @@ run_mod <- function(data,
   
   # Preparing population parameters
   population_params <- jags_out |>
-<<<<<<< HEAD
-    filter(Subject %in% c("mu.par", "prec.par")) |>
-    rename(Population_params = Subject)
-  
-  # Taking out population parameters
-  jags_out <- jags_out |>
-    filter(!(Subject %in% c("mu.par", "prec.par")))
-
-=======
     dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
     dplyr::rename(Population_params = .data$Subject)
   
   # Taking out population parameters
   jags_out <- jags_out |>
-    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par")))
+    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
   
->>>>>>> mon_popparams
   # Making output a tibble and restructing.
   jags_out <- dplyr::as_tibble(jags_out)
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",

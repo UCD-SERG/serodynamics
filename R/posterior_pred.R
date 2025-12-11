@@ -1,37 +1,80 @@
 #' @title Posterior predictive check
 #' @author Sam Schildhauer
 #' @description
-#'  `posterior_pred()` 
+#'  `posterior_pred()` conducts posterior predictive checks.
 #' @param data A [base::data.frame()] with the following columns.
-#' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
-#' contains MCMC samples from the joint posterior distribution of the model
-#' parameters, conditional on the provided input `data`, 
-#' including the following:
-#' @inheritDotParams prep_priors
+#' @param raw_dat A [base::data.frame()] with the following columns.
+#' @param n_sample The number of simulated samples for posterior predictive
+#' checks.
+#' @param antigen_isos The antigen/isotype combinations to create posterior 
+#' predictive plots for.
+#' @param n_sim The number of simulations to run.
+#' @returns A [list] of [ggplot::ggplot] objects of posterior predictive checks. 
 #' @export
 #' @example inst/examples/run_mod-examples.R
-posterior_pred <- function(data, raw_dat
-                    file_mod = serodynamics_example("model.jags"),
-                    ...) {
+posterior_pred <- function(data = NA, 
+                           raw_dat = NA,
+                           n_sample = 1000,
+                           antigen_isos = unique(data$Iso_type),
+                           n_sim = 4,
+                           ...) {
 
-  # First calculate mu_logy or the expected outcome based on given parameters
+  # First attaching prec.logy to the modeled data 
+  prec_logy <- attributes(data)$population_param |>
+    dplyr::filter(Population_params == "prec.logy") |>
+    select(Iteration, Chain, value, Iso_type, Stratification) |>
+    rename(prec_logy = value)
+  
+  # First calculate mu_hat or the expected outcome based on given parameters
   dat_fit <- data |>
     tidyr::spread(Parameter, value)
-  
-  mu_logy <- calc_fit_mod(data, raw_dat)
-  
-  # Putting data together. Inside the JAGS model, must explicitly generate 
-  # a replicated dataset y_rep using the SAME likelihood as the real data.
-  
-  y_rep[i,j] ~ dnorm(mu_hat[i,j], prec.logy[j])
-  
-  
-    mutate(mu_logy = 
-             beta <- bt(y0, y1, t1)
-           yt <- ifelse(
-             t <= t1,
-             y0 * exp(beta * t),
-             (y1^(1 - shape) - (1 - shape) * alpha * (t - t1))^(1 / (1 - shape))
-           )))
- 
+
+    original_data <- raw_dat |> 
+      use_att_names() |>
+      select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+    
+    # Matching input data with modeled data
+    matched_dat <- merge(dat_fit, original_data, 
+                         by = c("Subject", "Iso_type"),
+                         all.x = TRUE)
+    
+    # Calculating fitted and residual
+    fitted_dat <- matched_dat |>
+      mutate(mu_hat = ab(.data$t, .data$y0, .data$y1, .data$t1,
+                         .data$alpha, .data$shape))
+    fitted_dat <- fitted_dat[complete.cases(fitted_dat$mu_hat),]
+    
+    ag_list <- list()
+    for (i in antigen_isos) {
+      plot_list <- list()
+      
+      for (j in n_sim) {
+        
+        plot_prep <- fitted_dat |>
+          filter(Iso_type == antigen_isos)
+    smpl_mod <- fitted_dat[sample(nrow(fitted_dat), n), ]
+    
+    # Attaching precision values to sampled data set 
+    smpl_mod <- merge(smpl_mod, prec_logy, by = c("Iteration", "Chain", 
+                                                  "Iso_type", "Stratification"), 
+                           all.x = TRUE)
+    
+    # Calculating logy simulated using the modeled precision
+    smpl_mod <- smpl_mod |>
+      mutate(sd = 1/sqrt(.data$prec_logy)) |>
+      rowwise() |>
+      mutate(logy_rep = mu_hat + rnorm(1, mean = 0, sd = sd)) |>
+      tidyr::gather(estimate, value, mu_hat, logy_rep)
+
+    ppc_plot <- ggplot2::ggplot(data = smpl_mod) +
+      ggplot2::geom_density(ggplot2::aes(x = value, fill = estimate), 
+                            alpha = 0.4) +
+      ggplot2::theme_bw() +
+      ggplot2::scale_x_log10()
+    
+    plot_list[j] <- ppc_plot
+      }
+    ag_list[i] <- plot_list
+    }
+  return(ag_list)
 }
