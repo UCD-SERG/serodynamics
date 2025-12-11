@@ -64,7 +64,7 @@ posterior_pred <- function(data = NA,
     smpl_mod <- smpl_mod |>
       mutate(sd = 1/sqrt(.data$prec_logy)) |>
       rowwise() |>
-      mutate(value = pmax(mu_hat + rnorm(1, mean = 0, sd = sd), 1e-3)) |>
+      mutate(value = pmax(rnorm(n(), mean = mu_hat, sd = sd), 1e-3)) |>
       select(Iso_type, value) |>
       mutate(estimate = "simulated")
     
