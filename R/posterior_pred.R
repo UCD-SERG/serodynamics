@@ -29,6 +29,7 @@ posterior_pred <- function(data = NA,
   dat_fit <- data |>
     tidyr::spread(Parameter, value)
 
+  # Renaming pieces of raw data 
     original_data <- raw_dat |> 
       use_att_names() |>
       select(.data$Subject, .data$Iso_type, .data$t, .data$result)
@@ -48,11 +49,11 @@ posterior_pred <- function(data = NA,
     for (i in antigen_isos) {
       plot_list <- list()
       
-      for (j in n_sim) {
+      for (j in 1:n_sim) {
         
         plot_prep <- fitted_dat |>
           filter(Iso_type == antigen_isos)
-    smpl_mod <- fitted_dat[sample(nrow(fitted_dat), n), ]
+    smpl_mod <- fitted_dat[sample(nrow(fitted_dat), n_sample), ]
     
     # Attaching precision values to sampled data set 
     smpl_mod <- merge(smpl_mod, prec_logy, by = c("Iteration", "Chain", 
@@ -63,18 +64,27 @@ posterior_pred <- function(data = NA,
     smpl_mod <- smpl_mod |>
       mutate(sd = 1/sqrt(.data$prec_logy)) |>
       rowwise() |>
-      mutate(logy_rep = mu_hat + rnorm(1, mean = 0, sd = sd)) |>
-      tidyr::gather(estimate, value, mu_hat, logy_rep)
+      mutate(value = pmax(mu_hat + rnorm(1, mean = 0, sd = sd), 1e-3)) |>
+      select(Iso_type, value) |>
+      mutate(estimate = "simulated")
+    
+    original_data_prep <- original_data |>
+      dplyr::select(Iso_type, result) |>
+      dplyr::rename(value = result) |>
+      mutate(estimate = "observed")
+    
+    plot_dat <- rbind(smpl_mod, original_data_prep)
 
-    ppc_plot <- ggplot2::ggplot(data = smpl_mod) +
+    ppc_plot <- ggplot2::ggplot(data = plot_dat) +
       ggplot2::geom_density(ggplot2::aes(x = value, fill = estimate), 
                             alpha = 0.4) +
       ggplot2::theme_bw() +
-      ggplot2::scale_x_log10()
+      ggplot2::scale_x_log10() +
+      ggplot2::labs(title = paste0("Posterior predictive check", i))
     
-    plot_list[j] <- ppc_plot
+    plot_list[[j]] <- ppc_plot
       }
-    ag_list[i] <- plot_list
+    ag_list[[i]] <- plot_list
     }
   return(ag_list)
 }
