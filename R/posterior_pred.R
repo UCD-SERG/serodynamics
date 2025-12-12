@@ -68,7 +68,11 @@ posterior_pred <- function(data = NA,
         mutate(sd = 1 / sqrt(.data$prec_logy)) |>
         rowwise() |>
         mutate(value = pmax(rnorm(n(), mean = .data$mu_hat, sd = .data$sd), 
-                            1e-3)) |>
+                            1e-3)) 
+      ids_underzero <- smpl_mod$Subject |>
+        filter(.data$value < 1e-2)
+  
+      smpl_mod <- smpl_mod |>
         select(.data$Iso_type, .data$value) |>
         mutate(estimate = "simulated", simulation = j)
     
@@ -91,6 +95,8 @@ posterior_pred <- function(data = NA,
       ggplot2::facet_wrap(.data$simulation)
       
     ag_list[[i]] <- ppc_plot
+    ag_list <- ag_list |>
+      structure(ids_underzero, "ID's with value under 0")
   }
   return(ag_list)
 }
