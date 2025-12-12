@@ -47,9 +47,11 @@ posterior_pred <- function(data = NA,
   fitted_dat <- fitted_dat[complete.cases(fitted_dat$mu_hat), ]
     
   ag_list <- list()
+  ids_under <- data.frame(Subject = NA, Iso_type = NA)
   for (i in antigen_isos) {
     plot_dat <- data.frame(Iso_type = NA, value = NA, estimate = NA,
                            simulation = NA)
+    ids_underzero <- data.frame(Subject = NA, Iso_type = NA)
       
     for (j in 1:n_sim) {
         
@@ -70,9 +72,11 @@ posterior_pred <- function(data = NA,
         mutate(value = pmax(rnorm(n(), mean = .data$mu_hat, sd = .data$sd), 
                             1e-3)) 
       
-      ids_underzero <- smpl_mod |>
+      # Creating a list of IDs that are under 0
+      ids_underzero_sim <- smpl_mod |>
         dplyr::filter(as.numeric(.data$value) < 1e-2) |>
-        dplyr::select(Subject)
+        dplyr::select(Subject, Iso_type)
+      ids_underzero <- rbind(ids_underzero, ids_underzero_sim)
   
       smpl_mod <- smpl_mod |>
         select(.data$Iso_type, .data$value) |>
@@ -96,10 +100,15 @@ posterior_pred <- function(data = NA,
       ggplot2::scale_x_log10() +
       ggplot2::labs(title = paste0("Posterior predictive check for ", i)) +
       ggplot2::facet_wrap(~.data$simulation, ncol = 3)
-      
+    
     ag_list[[i]] <- ppc_plot
+    
+    ## Gathering ID lists of people who have values below 0
+    ids_under <- rbind(ids_under, ids_underzero) |>
+      dplyr::distinct()
     ag_list <- ag_list |>
-      structure("ID's with value under 0" = ids_underzero)
+      structure("IDs under zero" = ids_under)
+
   }
   return(ag_list)
 }
