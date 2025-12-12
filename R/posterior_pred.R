@@ -9,7 +9,7 @@
 #' @param antigen_isos The antigen/isotype combinations to create posterior 
 #' predictive plots for.
 #' @param n_sim The number of simulations to run.
-#' @returns A [list] of [ggplot::ggplot] objects of posterior predictive checks.
+#' @returns A [list] of [ggplot2::ggplot] objects of posterior predictive checks.
 #' @export
 #' @example inst/examples/run_mod-examples.R
 posterior_pred <- function(data = NA, 
@@ -54,7 +54,7 @@ posterior_pred <- function(data = NA,
     for (j in 1:n_sim) {
         
       plot_prep <- fitted_dat |>
-        filter(.data$Iso_type == antigen_isos)
+        filter(.data$Iso_type == i)
       smpl_mod <- plot_prep[sample(nrow(plot_prep), n_sample), ]
     
       # Attaching precision values to sampled data set 
@@ -69,14 +69,17 @@ posterior_pred <- function(data = NA,
         rowwise() |>
         mutate(value = pmax(rnorm(n(), mean = .data$mu_hat, sd = .data$sd), 
                             1e-3)) 
-      ids_underzero <- smpl_mod$Subject |>
-        filter(.data$value < 1e-2)
+      
+      ids_underzero <- smpl_mod |>
+        dplyr::filter(as.numeric(.data$value) < 1e-2) |>
+        dplyr::select(Subject)
   
       smpl_mod <- smpl_mod |>
         select(.data$Iso_type, .data$value) |>
         mutate(estimate = "simulated", simulation = j)
     
       original_data_prep <- original_data |>
+        filter(.data$Iso_type == i) |>
         dplyr::select(.data$Iso_type, .data$result) |>
         dplyr::rename(value = .data$result) |>
         mutate(estimate = "observed", simulation = j)
@@ -84,19 +87,19 @@ posterior_pred <- function(data = NA,
       plot_dat <- rbind(plot_dat, smpl_mod, original_data_prep)
 
     }
+    plot_dat <- plot_dat[complete.cases(plot_dat$Iso_type),]
     ppc_plot <- ggplot2::ggplot(data = plot_dat) +
       ggplot2::geom_density(ggplot2::aes(x = .data$value, 
                                          fill = .data$estimate), 
                             alpha = 0.4) +
       ggplot2::theme_bw() +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = paste0("Posterior predictive check for ", i,
-                                   ", sim = ", .data$simulation)) +
-      ggplot2::facet_wrap(.data$simulation)
+      ggplot2::labs(title = paste0("Posterior predictive check for ", i)) +
+      ggplot2::facet_wrap(~.data$simulation, ncol = 3)
       
     ag_list[[i]] <- ppc_plot
     ag_list <- ag_list |>
-      structure(ids_underzero, "ID's with value under 0")
+      structure("ID's with value under 0" = ids_underzero)
   }
   return(ag_list)
 }

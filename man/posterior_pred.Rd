@@ -27,7 +27,7 @@ predictive plots for.}
 \item{n_sim}{The number of simulations to run.}
 }
 \value{
-A \link{list} of \link[ggplot:ggplot]{ggplot::ggplot} objects of posterior predictive checks.
+A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects of posterior predictive checks.
 }
 \description{
 \code{posterior_pred()} conducts posterior predictive checks.
