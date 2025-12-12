@@ -9,7 +9,7 @@
 #' @param antigen_isos The antigen/isotype combinations to create posterior 
 #' predictive plots for.
 #' @param n_sim The number of simulations to run.
-#' @returns A [list] of [ggplot::ggplot] objects of posterior predictive checks. 
+#' @returns A [list] of [ggplot::ggplot] objects of posterior predictive checks.
 #' @export
 #' @example inst/examples/run_mod-examples.R
 posterior_pred <- function(data = NA, 
@@ -21,70 +21,76 @@ posterior_pred <- function(data = NA,
 
   # First attaching prec.logy to the modeled data 
   prec_logy <- attributes(data)$population_param |>
-    dplyr::filter(Population_params == "prec.logy") |>
-    select(Iteration, Chain, value, Iso_type, Stratification) |>
-    rename(prec_logy = value)
+    dplyr::filter(.data$Population_params == "prec.logy") |>
+    select(.data$Iteration, .data$Chain, .data$value, .data$Iso_type, 
+           .data$Stratification) |>
+    rename(prec_logy = .data$value)
   
   # First calculate mu_hat or the expected outcome based on given parameters
   dat_fit <- data |>
-    tidyr::spread(Parameter, value)
+    tidyr::spread(.data$Parameter, .data$value)
 
   # Renaming pieces of raw data 
-    original_data <- raw_dat |> 
-      use_att_names() |>
-      select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+  original_data <- raw_dat |> 
+    use_att_names() |>
+    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
     
-    # Matching input data with modeled data
-    matched_dat <- merge(dat_fit, original_data, 
-                         by = c("Subject", "Iso_type"),
-                         all.x = TRUE)
+  # Matching input data with modeled data
+  matched_dat <- merge(dat_fit, original_data, 
+                       by = c("Subject", "Iso_type"),
+                       all.x = TRUE)
     
-    # Calculating fitted and residual
-    fitted_dat <- matched_dat |>
-      mutate(mu_hat = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                         .data$alpha, .data$shape))
-    fitted_dat <- fitted_dat[complete.cases(fitted_dat$mu_hat),]
+  # Calculating fitted and residual
+  fitted_dat <- matched_dat |>
+    mutate(mu_hat = ab(.data$t, .data$y0, .data$y1, .data$t1,
+                       .data$alpha, .data$shape))
+  fitted_dat <- fitted_dat[complete.cases(fitted_dat$mu_hat), ]
     
-    ag_list <- list()
-    for (i in antigen_isos) {
-      plot_list <- list()
+  ag_list <- list()
+  for (i in antigen_isos) {
+    plot_dat <- data.frame(Iso_type = NA, value = NA, estimate = NA,
+                           simulation = NA)
       
-      for (j in 1:n_sim) {
+    for (j in 1:n_sim) {
         
-        plot_prep <- fitted_dat |>
-          filter(Iso_type == antigen_isos)
-    smpl_mod <- fitted_dat[sample(nrow(fitted_dat), n_sample), ]
+      plot_prep <- fitted_dat |>
+        filter(.data$Iso_type == antigen_isos)
+      smpl_mod <- plot_prep[sample(nrow(plot_prep), n_sample), ]
     
-    # Attaching precision values to sampled data set 
-    smpl_mod <- merge(smpl_mod, prec_logy, by = c("Iteration", "Chain", 
-                                                  "Iso_type", "Stratification"), 
-                           all.x = TRUE)
+      # Attaching precision values to sampled data set 
+      smpl_mod <- merge(smpl_mod, prec_logy, by = c("Iteration", "Chain", 
+                                                    "Iso_type", 
+                                                    "Stratification"), 
+                        all.x = TRUE)
     
-    # Calculating logy simulated using the modeled precision
-    smpl_mod <- smpl_mod |>
-      mutate(sd = 1/sqrt(.data$prec_logy)) |>
-      rowwise() |>
-      mutate(value = pmax(rnorm(n(), mean = mu_hat, sd = sd), 1e-3)) |>
-      select(Iso_type, value) |>
-      mutate(estimate = "simulated")
+      # Calculating logy simulated using the modeled precision
+      smpl_mod <- smpl_mod |>
+        mutate(sd = 1 / sqrt(.data$prec_logy)) |>
+        rowwise() |>
+        mutate(value = pmax(rnorm(n(), mean = .data$mu_hat, sd = .data$sd), 
+                            1e-3)) |>
+        select(.data$Iso_type, .data$value) |>
+        mutate(estimate = "simulated", simulation = j)
     
-    original_data_prep <- original_data |>
-      dplyr::select(Iso_type, result) |>
-      dplyr::rename(value = result) |>
-      mutate(estimate = "observed")
+      original_data_prep <- original_data |>
+        dplyr::select(.data$Iso_type, .data$result) |>
+        dplyr::rename(value = .data$result) |>
+        mutate(estimate = "observed", simulation = j)
     
-    plot_dat <- rbind(smpl_mod, original_data_prep)
+      plot_dat <- rbind(plot_dat, smpl_mod, original_data_prep)
 
+    }
     ppc_plot <- ggplot2::ggplot(data = plot_dat) +
-      ggplot2::geom_density(ggplot2::aes(x = value, fill = estimate), 
+      ggplot2::geom_density(ggplot2::aes(x = .data$value, 
+                                         fill = .data$estimate), 
                             alpha = 0.4) +
       ggplot2::theme_bw() +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = paste0("Posterior predictive check", i))
-    
-    plot_list[[j]] <- ppc_plot
-      }
-    ag_list[[i]] <- plot_list
-    }
+      ggplot2::labs(title = paste0("Posterior predictive check for ", i,
+                                   ", sim = ", .data$simulation)) +
+      ggplot2::facet_wrap(.data$simulation)
+      
+    ag_list[[i]] <- ppc_plot
+  }
   return(ag_list)
 }
