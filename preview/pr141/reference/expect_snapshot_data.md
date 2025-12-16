@@ -32,6 +32,7 @@ expect_snapshot_data(x, name, digits = 6)
 ## Examples
 
 ``` r
-expect_snapshot_data(iris, name = iris)
-#> Error in testthat::expect_snapshot_file(path, paste0(name, ".csv"), compare = testthat::compare_file_text): `name` must be a single string, not a character vector.
+if (FALSE) { # \dontrun{
+expect_snapshot_data(iris, name = "iris")
+} # }
 ```
