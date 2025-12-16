@@ -87,5 +87,5 @@ email describing the problems.
 
 Please note that the serodynamics project is released with a
 [Contributor Code of
-Conduct](https:/ucd-serg.github.io/serodynamics/preview/pr114/CODE_OF_CONDUCT.md).
+Conduct](https://ucd-serg.github.io/serodynamics/preview/pr114/CODE_OF_CONDUCT.md).
 By contributing to this project you agree to abide by its terms.
