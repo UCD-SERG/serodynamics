@@ -79,7 +79,7 @@ jags_post <- runjags::run.jags(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Dec 16 09:22:20 2025
+#> Welcome to JAGS 4.3.2 on Thu Dec 18 20:53:33 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -120,15 +120,15 @@ print(curve_params)
 #> # A tibble: 400 × 8
 #>    antigen_iso  iter chain    y0     y1    t1    alpha     r
 #>    <fct>       <int> <int> <dbl>  <dbl> <dbl>    <dbl> <dbl>
-#>  1 HlyE_IgA        1     1 1.39   77.1  10.7  0.00202   1.50
-#>  2 HlyE_IgA        2     1 0.772  23.3  10.4  0.000669  1.38
-#>  3 HlyE_IgA        3     1 1.01   19.2   3.23 0.000132  1.52
-#>  4 HlyE_IgA        4     1 1.13    1.39  7.88 0.000579  1.49
-#>  5 HlyE_IgA        5     1 1.54   83.6   6.11 0.000722  1.51
-#>  6 HlyE_IgA        6     1 1.19  420.    8.36 0.00330   1.32
-#>  7 HlyE_IgA        7     1 1.03    5.44  7.98 0.000382  1.41
-#>  8 HlyE_IgA        8     1 1.40    3.24 11.0  0.00104   1.69
-#>  9 HlyE_IgA        9     1 1.01   12.4   7.19 0.000357  1.54
-#> 10 HlyE_IgA       10     1 1.12    2.18  6.46 0.000973  1.51
+#>  1 HlyE_IgA        1     1 1.14   67.1   7.24 0.000538  1.40
+#>  2 HlyE_IgA        2     1 0.841  17.5   6.86 0.00109   1.20
+#>  3 HlyE_IgA        3     1 1.15   17.1   3.54 0.000182  1.38
+#>  4 HlyE_IgA        4     1 1.04    2.18  7.87 0.000335  1.32
+#>  5 HlyE_IgA        5     1 1.43   69.5   5.51 0.000804  1.32
+#>  6 HlyE_IgA        6     1 1.05  368.    7.51 0.00713   1.21
+#>  7 HlyE_IgA        7     1 0.791   6.90  6.60 0.000543  1.27
+#>  8 HlyE_IgA        8     1 1.03    1.62  8.93 0.00161   1.50
+#>  9 HlyE_IgA        9     1 0.720  16.4   7.66 0.00102   1.27
+#> 10 HlyE_IgA       10     1 1.02    3.20  5.57 0.00173   1.31
 #> # ℹ 390 more rows
 ```
