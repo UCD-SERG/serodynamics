@@ -122,7 +122,7 @@ posterior_pred <- function(data = NA,
                             linewidth = 0.6) +
       ggplot2::theme_bw() +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = title, x = "OD value") +
+      ggplot2::labs(title = title, x = "Assay value") +
       ggplot2::scale_color_identity(name = "Sampling type", guide = "legend",
                                     labels = c("Simulated", "Observed"))
     
