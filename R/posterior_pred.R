@@ -48,25 +48,25 @@ posterior_pred <- function(data = NA,
                        .data$alpha, .data$shape))
     
   # The list of antigens that we will create a posterior predictive plots for.
-  antigen_list <- list()
+  ag_list <- list()
   
-  for (i in antigen_isos) {
+  for (i in unique(fitted_dat$Iso_type)) {
     
     prepare_plot_tab <- dplyr::tibble(Iso_type = NULL, value = NULL, estimate = NULL,
                            simulation = NULL)
+    
+    if (by_antigen) {
+      antigen_filter <- fitted_dat |>
+        filter(.data$Iso_type == i)
+    } else {
+      antigen_filter <- fitted_dat
+    }
       
     for (j in 1:n_sim) {
-        
-      if (by_antigen) {
-       antigen_filter <- fitted_dat |>
-        filter(.data$Iso_type == i)
-      } else {
-        antigen_filter <- fitted_dat
-      }
        
       # Randomly sampling iteration and chain from the posterior distribution of the 
        # parameter by antigen/isotype, person ID, and time point
-      sampled_posterior <- dplyr::slice_sample(fitted_dat, by = c("Subject", 
+      sampled_posterior <- dplyr::slice_sample(antigen_filter, by = c("Subject", 
                                                                   "Iso_type",
                                                                   "t"))
 
@@ -96,14 +96,14 @@ posterior_pred <- function(data = NA,
       filter(.data$Iso_type == i) |>
       dplyr::select(.data$Iso_type, .data$result) |>
       dplyr::rename(value = .data$result) |>
-      mutate(estimate = "observed", simulation = j)
+      mutate(estimate = "observed", simulation = NA)
     # Creating plot title 
     title <- paste0("Posterior predictive check for ", i)
   } else {
     obs_dat_prep <- obs_dat |>
       dplyr::select(.data$Iso_type, .data$result) |>
       dplyr::rename(value = .data$result) |>
-      mutate(estimate = "observed", simulation = j)
+      mutate(estimate = "observed", simulation = NA)
     title <- "Posterior predictive check"
   }
     
