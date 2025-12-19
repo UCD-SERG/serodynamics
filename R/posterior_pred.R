@@ -80,7 +80,8 @@ posterior_pred <- function(data = NA,
       sampled_posterior <- sampled_posterior |>
         mutate(sd = 1 / sqrt(.data$prec_logy)) |>
         rowwise() |>
-        mutate(value = exp(rnorm(n(), mean = log(.data$mu_hat), sd = .data$sd)))
+        mutate(value = exp(rnorm(n(), mean = log(.data$mu_hat), 
+                                 sd = .data$sd)))
       
       # Preparing data for rbind and ggplot
       sampled_posterior <- sampled_posterior |>
@@ -109,20 +110,21 @@ posterior_pred <- function(data = NA,
   # Creating ggplot object
     ppc_plot <- ggplot2::ggplot() +
       ggplot2::geom_density(data = prepare_plot_tab,
-                            ggplot2::aes(x = value, group = simulation), 
+                            ggplot2::aes(x = value, group = simulation,
+                                         color = "dodgerblue"), 
                             alpha = 0.2,
                             fill = NA,
-                            color = "dodgerblue",
                             linewidth = 0.2) +
       ggplot2::geom_density(data = obs_dat_prep,
-                            ggplot2::aes(x = value), 
+                            ggplot2::aes(x = value, color = "grey20"), 
                             alpha = 0.2,
                             fill = NA,
-                            color = "grey20",
                             linewidth = 0.6) +
       ggplot2::theme_bw() +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = title, x = "OD value")
+      ggplot2::labs(title = title, x = "OD value") +
+      ggplot2::scale_color_identity(name = "Sampling type", guide = "legend",
+                                    labels = c("Simulated", "Observed"))
     
     if (by_antigen) {
     ag_list[[i]] <- ppc_plot
