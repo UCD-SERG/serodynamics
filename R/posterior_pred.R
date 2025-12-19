@@ -3,7 +3,9 @@
 #' @description
 #'  `posterior_pred()` conducts posterior predictive checks.
 #' @param data A [base::data.frame()] with the following columns.
+#'  - MCMC samples of posterior distribution of the person specific 
 #' @param raw_dat A [base::data.frame()] with the following columns.
+#' - each row is single OD measurement per ...
 #' @param n_sample The number of simulated samples for posterior predictive
 #' checks.
 #' @param antigen_isos The antigen/isotype combinations to create posterior 
@@ -14,101 +16,119 @@
 #' @example inst/examples/run_mod-examples.R
 posterior_pred <- function(data = NA, 
                            raw_dat = NA,
-                           n_sample = 1000,
-                           antigen_isos = unique(data$Iso_type),
+                           by_antigen = FALSE,
                            n_sim = 4,
                            ...) {
 
   # First attaching prec.logy to the modeled data 
-  prec_logy <- attributes(data)$population_param |>
+  mod_prec_logy <- attributes(data)$population_param |>
     dplyr::filter(.data$Population_params == "prec.logy") |>
     select(.data$Iteration, .data$Chain, .data$value, .data$Iso_type, 
            .data$Stratification) |>
     rename(prec_logy = .data$value)
   
   # First calculate mu_hat or the expected outcome based on given parameters
-  dat_fit <- data |>
+  mod_dat <- data |>
     tidyr::spread(.data$Parameter, .data$value)
 
   # Renaming pieces of raw data 
-  original_data <- raw_dat |> 
+  obs_dat <- raw_dat |> 
     use_att_names() |>
     select(.data$Subject, .data$Iso_type, .data$t, .data$result)
     
   # Matching input data with modeled data
-  matched_dat <- merge(dat_fit, original_data, 
-                       by = c("Subject", "Iso_type"),
-                       all.x = TRUE)
+  matched_dat <- dplyr::right_join(mod_dat, obs_dat, 
+                       by = c("Subject", "Iso_type"))
+  # Change to all.y
+  ## Rename objects so we know which objects are parameter samples 
     
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
     mutate(mu_hat = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape))
-  fitted_dat <- fitted_dat[complete.cases(fitted_dat$mu_hat), ]
     
-  ag_list <- list()
-  ids_under <- data.frame(Subject = NA, Iso_type = NA)
+  # The list of antigens that we will create a posterior predictive plots for.
+  antigen_list <- list()
+  
   for (i in antigen_isos) {
-    plot_dat <- data.frame(Iso_type = NA, value = NA, estimate = NA,
-                           simulation = NA)
-    ids_underzero <- data.frame(Subject = NA, Iso_type = NA)
+    
+    prepare_plot_tab <- dplyr::tibble(Iso_type = NULL, value = NULL, estimate = NULL,
+                           simulation = NULL)
       
     for (j in 1:n_sim) {
         
-      plot_prep <- fitted_dat |>
+      if (by_antigen) {
+       antigen_filter <- fitted_dat |>
         filter(.data$Iso_type == i)
-      smpl_mod <- plot_prep[sample(nrow(plot_prep), n_sample), ]
-    
+      } else {
+        antigen_filter <- fitted_dat
+      }
+       
+      # Randomly sampling iteration and chain from the posterior distribution of the 
+       # parameter by antigen/isotype, person ID, and time point
+      sampled_posterior <- dplyr::slice_sample(fitted_dat, by = c("Subject", 
+                                                                  "Iso_type",
+                                                                  "t"))
+
       # Attaching precision values to sampled data set 
-      smpl_mod <- merge(smpl_mod, prec_logy, by = c("Iteration", "Chain", 
-                                                    "Iso_type", 
-                                                    "Stratification"), 
-                        all.x = TRUE)
+      sampled_posterior <- dplyr::left_join(sampled_posterior, mod_prec_logy, 
+                                            by = c("Iteration", "Chain", 
+                                                   "Iso_type", 
+                                                   "Stratification"))
     
       # Calculating logy simulated using the modeled precision
-      smpl_mod <- smpl_mod |>
+      sampled_posterior <- sampled_posterior |>
         mutate(sd = 1 / sqrt(.data$prec_logy)) |>
         rowwise() |>
-        mutate(value = pmax(rnorm(n(), mean = .data$mu_hat, sd = .data$sd), 
-                            1e-3)) 
+        mutate(value = exp(rnorm(n(), mean = log(.data$mu_hat), sd = .data$sd)))
       
-      # Creating a list of IDs that are under 0
-      ids_underzero_sim <- smpl_mod |>
-        dplyr::filter(as.numeric(.data$value) < 1e-2) |>
-        dplyr::select(Subject, Iso_type)
-      ids_underzero <- rbind(ids_underzero, ids_underzero_sim)
-  
-      smpl_mod <- smpl_mod |>
+      # Preparing data for rbind and ggplot
+      sampled_posterior <- sampled_posterior |>
         select(.data$Iso_type, .data$value) |>
         mutate(estimate = "simulated", simulation = j)
-    
-      original_data_prep <- original_data |>
-        filter(.data$Iso_type == i) |>
-        dplyr::select(.data$Iso_type, .data$result) |>
-        dplyr::rename(value = .data$result) |>
-        mutate(estimate = "observed", simulation = j)
-    
-      plot_dat <- rbind(plot_dat, smpl_mod, original_data_prep)
-
+      
+      prepare_plot_tab <- rbind(prepare_plot_tab, sampled_posterior)
     }
-    plot_dat <- plot_dat[complete.cases(plot_dat$Iso_type),]
-    ppc_plot <- ggplot2::ggplot(data = plot_dat) +
-      ggplot2::geom_density(ggplot2::aes(x = .data$value, 
-                                         fill = .data$estimate), 
-                            alpha = 0.4) +
+
+  if (by_antigen) {
+    obs_dat_prep <- obs_dat |>
+      filter(.data$Iso_type == i) |>
+      dplyr::select(.data$Iso_type, .data$result) |>
+      dplyr::rename(value = .data$result) |>
+      mutate(estimate = "observed", simulation = j)
+    # Creating plot title 
+    title <- paste0("Posterior predictive check for ", i)
+  } else {
+    obs_dat_prep <- obs_dat |>
+      dplyr::select(.data$Iso_type, .data$result) |>
+      dplyr::rename(value = .data$result) |>
+      mutate(estimate = "observed", simulation = j)
+    title <- "Posterior predictive check"
+  }
+    
+  # Creating ggplot object
+    ppc_plot <- ggplot2::ggplot() +
+      ggplot2::geom_density(data = prepare_plot_tab,
+                            ggplot2::aes(x = value, group = simulation), 
+                            alpha = 0.2,
+                            fill = NA,
+                            color = "dodgerblue",
+                            linewidth = 0.2) +
+      ggplot2::geom_density(data = obs_dat_prep,
+                            ggplot2::aes(x = value), 
+                            alpha = 0.2,
+                            fill = NA,
+                            color = "grey20",
+                            linewidth = 0.6) +
       ggplot2::theme_bw() +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = paste0("Posterior predictive check for ", i)) +
-      ggplot2::facet_wrap(~.data$simulation, ncol = 3)
+      ggplot2::labs(title = title, x = "OD value")
     
+    if (by_antigen) {
     ag_list[[i]] <- ppc_plot
-    
-    ## Gathering ID lists of people who have values below 0
-    ids_under <- rbind(ids_under, ids_underzero) |>
-      dplyr::distinct()
-    ag_list <- ag_list |>
-      structure("IDs under zero" = ids_under)
-
+    } else {
+      ag_list <- ppc_plot
+    }
   }
   return(ag_list)
 }
