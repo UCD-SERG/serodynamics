@@ -56,8 +56,6 @@
 
 - [`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/postprocess_jags_output.md)
   : Postprocess JAGS output
-- [`unpack_jags()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/unpack_jags.md)
-  : Unpacking MCMC Object
 
 ## Summarize seroresponse model estimates
 

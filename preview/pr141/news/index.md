@@ -6,7 +6,8 @@
 
 ### New features
 
-- Including population parameters as attributes in run_mod output. (#)
+- Including population parameters as attributes in run_mod output.
+  ([\#141](https://github.com/UCD-SERG/serodynamics/issues/141))
 - Including fitted and residual values as data frame in run_mod output.
   ([\#101](https://github.com/UCD-SERG/serodynamics/issues/101))
 - Added

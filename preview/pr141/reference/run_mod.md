@@ -216,7 +216,7 @@ following:
     - `prec.par` = The population covariance between the
       hyperparameters.
 
-    - `prec.logy` = The population covariance between antigen/isotypes??
+    - `prec.logy` = The population variance among each antigen/isotype.
 
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
@@ -280,7 +280,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Dec 18 20:53:39 2025
+#> Welcome to JAGS 4.3.2 on Sat Dec 20 02:57:21 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -315,7 +315,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Dec 18 20:54:27 2025
+#> Welcome to JAGS 4.3.2 on Sat Dec 20 02:58:12 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -341,6 +341,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
