@@ -52,7 +52,7 @@
 #'   - `population_params`: Modeled population parameters:
 #'     - `mu.par` = The population mean of the hyperparameters.  
 #'     - `prec.par` = The population covariance between the hyperparameters.  
-#'     - `prec.logy` = The population covariance between antigen/isotypes??
+#'     - `prec.logy` = The population variance among each antigen/isotype.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`

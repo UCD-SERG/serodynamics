@@ -124,7 +124,7 @@ including the following:
 \itemize{
 \item \code{mu.par} = The population mean of the hyperparameters.
 \item \code{prec.par} = The population covariance between the hyperparameters.
-\item \code{prec.logy} = The population covariance between antigen/isotypes??
+\item \code{prec.logy} = The population variance among each antigen/isotype.
 }
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
