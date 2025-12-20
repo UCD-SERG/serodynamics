@@ -39,34 +39,20 @@ posterior_pred <- function(data = NA,
   # Matching input data with modeled data
   matched_dat <- dplyr::right_join(mod_dat, obs_dat, 
                        by = c("Subject", "Iso_type"))
-  # Change to all.y
-  ## Rename objects so we know which objects are parameter samples 
     
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
     mutate(mu_hat = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape))
-    
-  # The list of antigens that we will create a posterior predictive plots for.
-  ag_list <- list()
   
-  for (i in unique(fitted_dat$Iso_type)) {
-    
     prepare_plot_tab <- dplyr::tibble(Iso_type = NULL, value = NULL, estimate = NULL,
                            simulation = NULL)
-    
-    if (by_antigen) {
-      antigen_filter <- fitted_dat |>
-        filter(.data$Iso_type == i)
-    } else {
-      antigen_filter <- fitted_dat
-    }
       
     for (j in 1:n_sim) {
        
       # Randomly sampling iteration and chain from the posterior distribution of the 
        # parameter by antigen/isotype, person ID, and time point
-      sampled_posterior <- dplyr::slice_sample(antigen_filter, by = c("Subject", 
+      sampled_posterior <- dplyr::slice_sample(fitted_dat, by = c("Subject", 
                                                                   "Iso_type",
                                                                   "t"))
 
@@ -91,46 +77,38 @@ posterior_pred <- function(data = NA,
       prepare_plot_tab <- rbind(prepare_plot_tab, sampled_posterior)
     }
 
-  if (by_antigen) {
-    obs_dat_prep <- obs_dat |>
-      filter(.data$Iso_type == i) |>
-      dplyr::select(.data$Iso_type, .data$result) |>
-      dplyr::rename(value = .data$result) |>
-      mutate(estimate = "observed", simulation = NA)
-    # Creating plot title 
-    title <- paste0("Posterior predictive check for ", i)
-  } else {
     obs_dat_prep <- obs_dat |>
       dplyr::select(.data$Iso_type, .data$result) |>
       dplyr::rename(value = .data$result) |>
-      mutate(estimate = "observed", simulation = NA)
+      mutate(estimate = "observed", simulation = "observed")
     title <- "Posterior predictive check"
-  }
+    
+    prepare_plot_tab <- rbind(prepare_plot_tab, obs_dat_prep)
     
   # Creating ggplot object
     ppc_plot <- ggplot2::ggplot() +
       ggplot2::geom_density(data = prepare_plot_tab,
-                            ggplot2::aes(x = value, group = simulation,
-                                         color = "dodgerblue"), 
-                            alpha = 0.2,
-                            fill = NA,
-                            linewidth = 0.2) +
-      ggplot2::geom_density(data = obs_dat_prep,
-                            ggplot2::aes(x = value, color = "grey20"), 
-                            alpha = 0.2,
-                            fill = NA,
-                            linewidth = 0.6) +
+                            ggplot2::aes(x = value,
+                                         color = estimate,
+                                         group = simulation,
+                                         linewidth = estimate,
+                                         alpha = estimate),
+                            fill = NA) +
+      ggplot2::scale_color_manual(values = c(observed = "black", 
+                                             simulated = "dodgerblue")) +
+      ggplot2::scale_linewidth_manual(values = c(observed = 0.7, 
+                                                 simulated = 0.3)) +
+      ggplot2::scale_alpha_manual(values = c(observed = 0.7, 
+                                                 simulated = 0.4)) +
       ggplot2::theme_bw() +
+      ggplot2::theme(legend.title = ggplot2::element_blank()) +
       ggplot2::scale_x_log10() +
-      ggplot2::labs(title = title, x = "Assay value") +
-      ggplot2::scale_color_identity(name = "Sampling type", guide = "legend",
-                                    labels = c("Simulated", "Observed"))
+      ggplot2::labs(title = title, x = "Assay value") 
     
     if (by_antigen) {
-    ag_list[[i]] <- ppc_plot
-    } else {
-      ag_list <- ppc_plot
+      ppc_plot <- ppc_plot +
+        ggplot2::facet_wrap(~Iso_type)
     }
-  }
-  return(ag_list)
+
+  return(ppc_plot)
 }
