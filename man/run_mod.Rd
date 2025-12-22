@@ -14,7 +14,9 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
-  ...
+  ...,
+  correlated = FALSE,
+  file_mod_kron = "model_ch2_kron.jags"
 )
 }
 \arguments{
@@ -91,6 +93,13 @@ If specified, must be 2 values long:
 \item defaults = 4.0, 1.0
 }}
   }}
+
+\item{correlated}{Logical; use Chapter-2 Kronecker prior across biomarkers.
+Default FALSE (independence).}
+
+\item{file_mod_kron}{Path to a JAGS file for the Kronecker model.If
+\code{correlated = TRUE} and this path does not exist, a temporary
+\code{model_ch2_kron.jags} is written and used automatically.}
 }
 \value{
 An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
@@ -149,6 +158,23 @@ infection. The antibody dynamic curve includes the following parameters:
 \item alpha = decay rate
 }
 }
+\details{
+When \code{correlated = TRUE}, \code{run_mod()} fits a Chapter-2 Kronecker prior
+across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = 
+ \Sigma_P \otimes \Sigma_B}.
+The likelihood for observed antibody data is unchanged; only the prior
+covariance differs. Internally this mode:
+\itemize{
+\item calls \code{clean_priors()} on the base priors from
+\code{prep_priors()},
+\item adds Kronecker hyperpriors via \code{prep_priors_multi_b()}
+(OmegaP, nuP, OmegaB, nuB)
+and \code{n_blocks = <# biomarkers>},
+\item uses \code{inits_kron()} to avoid conflicting legacy inits,
+\item and monitors \code{TauB} and \code{TauP} in addition to the
+core parameters.
+}
+}
 \examples{
 if (!is.element(runjags::findjags(), c("", NULL))) {
   library(runjags)
@@ -174,6 +200,52 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     strat = "strat"
   ) # Variable to be stratified
 }
+
+# \dontrun{
+# This example intentionally triggers the JAGS error:
+# "Error in node TauB: Unable to find appropriate sampler"
+# It happens when both TauP and TauB are Wishart in the Kronecker prior.
+
+if (!is.element(runjags::findjags(), c("", NULL))) {
+  set.seed(109)
+  
+  # Make tiny fake data with 2 biomarkers so Σ_B is identifiable
+  sim <- simulate_multi_b_long(
+    n_id      = 3,
+    n_blocks  = 2,
+    time_grid = c(0, 7, 14),
+    sigma_p   = diag(5) * 0.1,
+    sigma_b   = diag(2) * 0.2
+  )
+  
+  sim_tbl <- serodynamics::as_case_data(
+    sim$data,
+    id_var        = "Subject",
+    biomarker_var = "antigen_iso",
+    value_var     = "value",
+    time_in_days  = "time_days"
+  )
+  
+  # Write the Chapter-2 Kronecker model that has *both* TauP and TauB ~ Wishart
+  model_path <- write_model_ch2_kron(file.path(tempdir(), 
+                                               "model_ch2_kron.jags"))
+  
+  # This call will fail in JAGS with the 'TauB' sampler error described above
+  try(
+    fit_kron <- run_mod(
+      data          = sim_tbl,
+      file_mod      = serodynamics_example("model.jags"), 
+      file_mod_kron = model_path,                       # Kronecker model file
+      correlated    = TRUE,                             # <-- key switch
+      nchain = 2, nadapt = 100, nburn = 50, nmc = 10, niter = 100,
+      strat = NA
+    )
+  )
+}
+# }
+}
+\seealso{
+clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron
 }
 \author{
 Sam Schildhauer

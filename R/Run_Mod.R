@@ -11,6 +11,22 @@
 #'  - t1 = time to peak
 #'  - shape = shape parameter
 #'  - alpha = decay rate
+#' @details
+#'  When `correlated = TRUE`, `run_mod()` fits a Chapter-2 Kronecker prior
+#'  across biomarkers: \eqn{\mathrm{Cov}(\mathrm{vec}(\Theta_i)) = 
+#'  \Sigma_P \otimes \Sigma_B}.
+#'  The likelihood for observed antibody data is unchanged; only the prior
+#'  covariance differs. Internally this mode:
+#'  \itemize{
+#'    \item calls \code{clean_priors()} on the base priors from 
+#'    \code{prep_priors()},
+#'    \item adds Kronecker hyperpriors via \code{prep_priors_multi_b()} 
+#'    (OmegaP, nuP, OmegaB, nuB)
+#'          and \code{n_blocks = <# biomarkers>},
+#'    \item uses \code{inits_kron()} to avoid conflicting legacy inits,
+#'    \item and monitors \code{TauB} and \code{TauP} in addition to the 
+#'    core parameters.
+#'  }
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
 #' @param nchain An [integer] between 1 and 4 that specifies
@@ -26,6 +42,11 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
+#' @param correlated Logical; use Chapter-2 Kronecker prior across biomarkers.
+#'   Default FALSE (independence).
+#' @param file_mod_kron Path to a JAGS file for the Kronecker model.If
+#'   `correlated = TRUE` and this path does not exist, a temporary
+#'   `model_ch2_kron.jags` is written and used automatically.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -60,18 +81,22 @@
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
+#' @seealso clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod = serodynamics_example("model.jags"),
-                    nchain = 4,
-                    nadapt = 0,
-                    nburn = 0,
-                    nmc = 100,
-                    niter = 100,
-                    strat = NA,
-                    with_post = FALSE,
-                    ...) {
+  file_mod = serodynamics_example("model.jags"),
+  nchain = 4,
+  nadapt = 0,
+  nburn = 0,
+  nmc = 100,
+  niter = 100,
+  strat = NA,
+  with_post = FALSE,
+  ...,
+  correlated = FALSE, # (used when correlated = TRUE)
+  file_mod_kron = "model_ch2_kron.jags"
+) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
@@ -106,8 +131,41 @@ run_mod <- function(data,
 
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
-    priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
-                             ...)
+
+    # ---------- CHOOSE MODEL/PRIORS DEPENDING ON `correlated` ----------
+    if (!correlated) {
+      # original (independence) behavior
+      priorspec <- prep_priors(
+        max_antigens = longdata$n_antigen_isos, ...
+      )
+      model_path <- file_mod                      # UNCHANGED for independence
+      init_fun   <- initsfunction
+      to_monitor <- c("y0", "y1", "t1", "alpha", "shape")
+    } else {
+      # CH2 behavior: Kronecker prior across biomarkers
+      base_priors <- prep_priors(
+        max_antigens = longdata$n_antigen_isos, ...
+      )
+      base_priors <- serodynamics::clean_priors(base_priors)       
+      
+      kron_priors <- serodynamics::prep_priors_multi_b(            
+        n_blocks = longdata$n_antigen_isos
+      )
+      B_scalar   <- list(n_blocks = longdata$n_antigen_isos)       
+      
+      priorspec  <- c(base_priors, kron_priors, B_scalar)          
+      
+      # Changed: use file_mod_kron when correlated = TRUE
+      model_path <- file_mod_kron                   
+      if (!file.exists(model_path)) {               
+        model_path <- serodynamics::write_model_ch2_kron(
+          file.path(tempdir(), "model_ch2_kron.jags")
+        )
+      }
+      
+      init_fun   <- function(chain) serodynamics::inits_kron(chain)    
+      to_monitor <- c("y0", "y1", "t1", "alpha", "shape", "TauB", "TauP") 
+    }
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
@@ -117,19 +175,17 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
-
     jags_post <- runjags::run.jags(
-      model = file_mod,
+      model = model_path,
       data = c(longdata, priorspec),
-      inits = initsfunction,
+      inits = init_fun,
       method = "parallel",
       adapt = nadapt,
       burnin = nburnin,
       thin = nthin,
       sample = nmc,
       n.chains = nchains,
-      monitor = tomonitor,
+      monitor = to_monitor,
       summarise = FALSE
     )
     # Assigning the raw jags output to a list.
@@ -190,9 +246,11 @@ run_mod <- function(data,
   current_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- current_atts
   
-  # Adding priors
+  # Changed: Attach priors robustly
+  used_priors <- attr(priorspec, "used_priors", exact = TRUE)
+  if (is.null(used_priors)) used_priors <- names(priorspec)
   jags_out <- jags_out |>
-    structure("priors" = attributes(priorspec)$used_priors)
+    structure("priors" = used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
