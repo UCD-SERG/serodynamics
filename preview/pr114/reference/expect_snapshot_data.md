@@ -32,6 +32,7 @@ expect_snapshot_data(x, name, digits = 6)
 ## Examples
 
 ``` r
-expect_snapshot_data(iris, name = iris)
-#> Error in edition_require(3, "expect_snapshot_file()"): `expect_snapshot_file()` requires the 3rd edition.
+if (FALSE) { # \dontrun{
+expect_snapshot_data(iris, name = "iris")
+} # }
 ```
