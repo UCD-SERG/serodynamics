@@ -49,7 +49,9 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters:
+#'   - `population_params`: Modeled population parameters by `Iteration`, 
+#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
+#'   following modeled population parameters::
 #'     - `mu.par` = The population mean of the hyperparameters.  
 #'     - `prec.par` = The population covariance between the hyperparameters.  
 #'     - `prec.logy` = The population variance among each antigen/isotype.  
@@ -189,7 +191,7 @@ run_mod <- function(data,
   # Preparing population parameters
   population_params <- jags_out |>
     dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
-    dplyr::rename(Population_params = .data$Subject)
+    dplyr::rename(Population_Parameters = .data$Subject)
   
   # Taking out population parameters
   jags_out <- jags_out |>
