@@ -193,7 +193,7 @@ run_mod <- function(data,
   
   # Taking out population parameters
   jags_out <- jags_out |>
-    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par")))
+    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
   
   # Making output a tibble and restructing.
   jags_out <- dplyr::as_tibble(jags_out)
