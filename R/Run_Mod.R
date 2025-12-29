@@ -205,7 +205,7 @@ run_mod <- function(data,
   
   # Adding population parameters in as attributes
   jags_out <- jags_out |>
-    structure("population_param" = population_params)
+    structure("population_params" = population_params)
   
   # Adding priors
   jags_out <- jags_out |>
