@@ -1,10 +1,10 @@
 #' @title Unpacking MCMC Object
 #' @author Sam Schildhauer
 #' @description
-#'  `jags_unpack()` takes an MCMC output from run_mod and unpacks it correctly
-#'  including for all population parameters.
-#' @param data A [dplyr::tbl_df()] output object from run_mod
-#' @returns An [dplyr::tbl_df()] that
+#'  `unpack_jags()` takes an MCMC output from run_mod and unpacks it correctly
+#'  for all population parameters.
+#' @param data A [dplyr::tbl_df()] output object from run_mod with mcmc syntax.
+#' @returns A [dplyr::tbl_df()] that
 #' contains MCMC samples from the joint posterior distribution of the model 
 #' with unpacked parameters, isotypes, and subjects.
 #' @keywords internal
