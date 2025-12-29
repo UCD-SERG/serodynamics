@@ -166,12 +166,13 @@ run_mod <- function(data,
       mutate(Subject = as.character(dplyr::row_number()))
     jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
                                    by = "Subject") |>
-      mutate(attr.longdata...ids.. = ifelse(is.na(.data$attr.longdata...ids..), 
-                                            .data$Subject, 
-                                            .data$attr.longdata...ids..)) |>
-      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                      "Subject" = "attr.longdata...ids..",
+                      "Subject_mcmc" = "attr.longdata...ids..")) |>
+      mutate(attr.longdata...ids.. = ifelse(is.na(.data$Subject_mcmc), 
+                                            .data$Subject, 
+                                            .data$Subject_mcmc)) |>
+      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
+      dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
     
     # Creating a label for the stratification, if there is one.
