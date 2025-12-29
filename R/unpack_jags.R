@@ -27,7 +27,7 @@ unpack_jags <- function(data) {
   # Unpacking prec.par
   regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
   jags_precpar <- data |>
-    filter(grepl("prec.par", .data$Parameter)) |>
+    dplyr::filter(grepl("prec.par", .data$Parameter)) |>
     dplyr::mutate(
       Subject = gsub(regex2, "\\1", .data$Parameter),
       Subnum = gsub(regex2, "\\2", .data$Parameter),
@@ -38,7 +38,7 @@ unpack_jags <- function(data) {
   # Unpacking preclogy
   regex3 <- "([[:alnum:].]+)\\[([0-9]+)\\]" # For unpacking
   jags_preclogy <- data |>
-    filter(grepl("prec.logy", .data$Parameter)) |>
+    dplyr::filter(grepl("prec.logy", .data$Parameter)) |>
     dplyr::mutate(
       Subject = gsub(regex3, "\\1", .data$Parameter),
       Subnum = gsub(regex3, "\\2", .data$Parameter),
