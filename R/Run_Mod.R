@@ -191,7 +191,7 @@ run_mod <- function(data,
   # Preparing population parameters
   population_params <- jags_out |>
     dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
-    dplyr::rename(Population_Parameters = .data$Subject)
+    dplyr::rename(Population_Parameter = .data$Subject)
   
   # Taking out population parameters
   jags_out <- jags_out |>
