@@ -209,7 +209,9 @@ following:
 
   - `nThin`: Thinning number (niter/nmc).
 
-  - `population_params`: Modeled population parameters:
+  - `population_params`: Modeled population parameters by `Iteration`,
+    `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the
+    following modeled population parameters::
 
     - `mu.par` = The population mean of the hyperparameters.
 
@@ -280,7 +282,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Dec 22 19:55:53 2025
+#> Welcome to JAGS 4.3.2 on Mon Dec 29 19:00:25 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -306,7 +308,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -315,7 +316,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Dec 22 19:56:41 2025
+#> Welcome to JAGS 4.3.2 on Mon Dec 29 19:01:16 2025
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

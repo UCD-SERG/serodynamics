@@ -1,7 +1,7 @@
 # Unpacking MCMC Object
 
-`jags_unpack()` takes an MCMC output from run_mod and unpacks it
-correctly including for all population parameters.
+`unpack_jags()` takes an MCMC output from run_mod and unpacks it
+correctly for all population parameters.
 
 ## Usage
 
@@ -15,12 +15,11 @@ unpack_jags(data)
 
   A
   [`dplyr::tbl_df()`](https://dplyr.tidyverse.org/reference/tbl_df.html)
-  output object from run_mod
+  output object from run_mod with mcmc syntax.
 
 ## Value
 
-An
-[`dplyr::tbl_df()`](https://dplyr.tidyverse.org/reference/tbl_df.html)
+A [`dplyr::tbl_df()`](https://dplyr.tidyverse.org/reference/tbl_df.html)
 that contains MCMC samples from the joint posterior distribution of the
 model with unpacked parameters, isotypes, and subjects.
 
