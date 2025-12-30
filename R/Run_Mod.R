@@ -171,8 +171,8 @@ run_mod <- function(data,
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject_mcmc" = "attr.longdata...ids..")) |>
       mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
-                                            .data$Subject, 
-                                            .data$Subject_mcmc)) |>
+                                   .data$Subject, 
+                                   .data$Subject_mcmc)) |>
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
