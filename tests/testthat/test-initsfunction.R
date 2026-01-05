@@ -20,7 +20,7 @@ test_that(
     
     jags_unpack <- ggmcmc::ggs(jags_post0[["mcmc"]])
     
-    jags_unpack |> ssdtools:::expect_snapshot_data("dobson")
+    jags_unpack |> expect_snapshot_data("dobson")
     
   }
 )

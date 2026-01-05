@@ -4,8 +4,8 @@ test_that("results are consistent", {
   results |> plot(vars = "c", plot.type = "trace")
   results[["mcmc"]] |> 
     ggmcmc::ggs() |> 
-    ssdtools:::expect_snapshot_data(name = "example-head", 
-                                    variant = system_os())
+    expect_snapshot_data(name = "example-head", 
+                         variant = system_os())
 })
 
 
@@ -54,7 +54,7 @@ test_that("results are consistent with our model", {
   
   samples |> 
     dplyr::arrange(.data$Iteration) |> 
-    ssdtools:::expect_snapshot_data(name = "kinetics", variant = system_os())
+    expect_snapshot_data(name = "kinetics", variant = system_os())
   
   # running this on posit cloud (linux), the first discrepancy 
   # occurs at iteration 19, when person 6's model changes.
