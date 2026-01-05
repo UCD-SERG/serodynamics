@@ -244,6 +244,7 @@ Team members can trigger actions by commenting on PRs:
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
 
 ## Package Development Commands Summary
 
