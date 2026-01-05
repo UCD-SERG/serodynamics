@@ -35,16 +35,16 @@
 #' @example inst/examples/examples-plot_jags_rhatdx.R
 
 plot_jags_Rhat <- function(data,  # nolint: object_name_linter
-                           iso = unique(data$curve_params$Iso_type),
-                           param = unique(data$curve_params$Parameter_sub),
-                           strat = unique(data$curve_params$Stratification)) {
-  visualize_jags <- data[["curve_params"]]
+                           iso = unique(data$Iso_type),
+                           param = unique(data$Parameter),
+                           strat = unique(data$Stratification)) {
+  
   attributes_jags <- data[["attributes"]]
-
+  
   rhat_strat_list <- list()
   for (i in strat) {
-
-    visualize_jags_sub <- visualize_jags |>
+    
+    visualize_jags_sub <- data |>
       dplyr::filter(.data$Stratification == i) |>
       dplyr::filter(.data$Subject == "newperson")
 
@@ -54,15 +54,15 @@ plot_jags_Rhat <- function(data,  # nolint: object_name_linter
     for (j in iso) {
       visualize_jags_plot <- visualize_jags_sub |>
         dplyr::filter(.data$Iso_type == j)
-
+      
       # Will not loop through parameters, as we may want each to show on the
       # same plot by default.
       visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter_sub %in% param)
-
+        dplyr::filter(.data$Parameter %in% param)
+      
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter_sub,
+        dplyr::mutate(Parameter = .data$Parameter,
                       value = log(.data$value))
       # Assigning attributes, which are needed to run ggs_rhat
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),

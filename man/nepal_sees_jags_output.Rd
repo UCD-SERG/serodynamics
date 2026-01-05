@@ -5,17 +5,25 @@
 \alias{nepal_sees_jags_output}
 \title{SEES Typhoid run_mod jags output}
 \format{
-\subsection{\code{nepal_sees_jags_output}}{
-
-A \link{list} consisting of the following named elements:
-\describe{
-\item{curve_params}{A \link{data.frame} titled \code{curve_params} that contains the
+An S3 object of class \code{sr_model}: A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (\code{Subject = "newperson"}) and posterior
 distributions of the person-specific parameters for two arbitrarily-chosen
-subjects (\code{"sees_npl_1"} and \code{"sees_npl_2"})}
-\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs}
-}
+subjects (\code{"sees_npl_1"} and \code{"sees_npl_2"}).
+Contains 40,000 \code{rows}, 7 \code{columns}, and model \code{attributes}.
+\describe{
+\item{Iteration}{Number of sampling iterations: 500 iterations}
+\item{Chain}{Number of MCMC chains run: 2 chains run}
+\item{Parameter}{Parameter being estimated}
+\item{Iso_type}{Antibody/antigen type combination being evaluated:
+\code{HlyE_IgA} and \code{HlyE_IgG}}
+\item{Stratification}{The variable used to stratify jags model: \code{typhi} and
+\code{paratyphi}}
+\item{Subject}{ID of subject being evaluated: \code{newperson}, \code{sees_npl_1},
+\code{sees_npl_2}}
+\item{value}{Estimated value of the parameter}
+\item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs,
+priors, and optional jags_post mcmc object}
 }
 }
 \source{

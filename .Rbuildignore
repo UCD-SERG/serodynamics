@@ -11,6 +11,9 @@
 ^pkgdown$
 ^\.github$
 ^LICENSE\.md$
+^serodynamics\.Rcheck$
+^serodynamics.*\.tar\.gz$
+^serodynamics.*\.tgz$
 ^inst/extdata/sees_case_data_long_11012023\.rds$
 ^inst/extdata/elisa_clean_2023-11-01\.csv$
 ^\.lintr$
@@ -19,3 +22,9 @@
 ^\.project$
 ^\.settings$
 ^\.lintr\.R$
+^_extensions$
+^vignettes/\.quarto$
+^vignettes/.*_files$
+
+^_quarto\.yml$
+^\.quarto$

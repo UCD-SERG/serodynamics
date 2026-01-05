@@ -5,6 +5,16 @@
 ## New features
 
 * Made "newperson" optional in `prep_data()` (#73)
+* Including fitted and residual values as data frame in run_mod output. (#101)
+* Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
+* Replacing old data object with new run_mod output (#102)
+* Adding class assignment to run_mod output (#76)
+* Making prep_priors modifiable (#78)
+* Changes to `run_mod()` output:
+  - Taking out `include_subs` as an input option, default will include all
+  individuals
+  - Making a single tbl as output
+  - All other pieces will be attributes.
 * Changes to `run_mod()` (#79):
    - `jags.post` now optionally included in output, as specified by argument
    `with_post`
@@ -38,6 +48,8 @@ None yet
 
 ## Developer-facing changes
 
+* Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
+* vectorized `ab()` function (#116)
 * Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
 * Reformatted `.lintr` as R file (following 
 https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389) (#81)
