@@ -2,9 +2,6 @@
 
 ``` r
 library(serodynamics)
-#> Registered S3 method overwritten by 'GGally':
-#>   method from   
-#>   +.gg   ggplot2
 library(rjags)
 #> Loading required package: coda
 #> Linked to JAGS 4.3.2

@@ -1,9 +1,9 @@
 # SEES Typhoid run_mod jags output
 
 A
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
 output using the
-[nepal_sees](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/nepal_sees.md)
+[nepal_sees](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/nepal_sees.md)
 example data set as input and stratifying by column `"bldculres"`, which
 is the diagnosis type (typhoid or paratyphoid). Keeping only IDs
 `"newperson"`, `"sees_npl_1"`, `"sees_npl_2"`.
@@ -16,24 +16,48 @@ nepal_sees_jags_output
 
 ## Format
 
-### `nepal_sees_jags_output`
+An S3 object of class `sr_model`: A
+[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
+contains the posterior predictive distribution of the person-specific
+parameters for a "new person" with no observed data
+(`Subject = "newperson"`) and posterior distributions of the
+person-specific parameters for two arbitrarily-chosen subjects
+(`"sees_npl_1"` and `"sees_npl_2"`). Contains 40,000 `rows`, 7
+`columns`, and model `attributes`.
 
-A [list](https://rdrr.io/r/base/list.html) consisting of the following
-named elements:
+- Iteration:
 
-- curve_params:
+  Number of sampling iterations: 500 iterations
 
-  A [data.frame](https://rdrr.io/r/base/data.frame.html) titled
-  `curve_params` that contains the posterior predictive distribution of
-  the person-specific parameters for a "new person" with no observed
-  data (`Subject = "newperson"`) and posterior distributions of the
-  person-specific parameters for two arbitrarily-chosen subjects
-  (`"sees_npl_1"` and `"sees_npl_2"`)
+- Chain:
+
+  Number of MCMC chains run: 2 chains run
+
+- Parameter:
+
+  Parameter being estimated
+
+- Iso_type:
+
+  Antibody/antigen type combination being evaluated: `HlyE_IgA` and
+  `HlyE_IgG`
+
+- Stratification:
+
+  The variable used to stratify jags model: `typhi` and `paratyphi`
+
+- Subject:
+
+  ID of subject being evaluated: `newperson`, `sees_npl_1`, `sees_npl_2`
+
+- value:
+
+  Estimated value of the parameter
 
 - attributes:
 
   A [list](https://rdrr.io/r/base/list.html) of `attributes` that
-  summarize the jags inputs
+  summarize the jags inputs, priors, and optional jags_post mcmc object
 
 ## Source
 

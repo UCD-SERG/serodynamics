@@ -27,4 +27,4 @@ Authors:
 
 Other contributors:
 
-- Kwan Ho Lee \[contributor\]
+- Kwan Ho Lee <ksjlee@ucdavis.edu> \[contributor\]

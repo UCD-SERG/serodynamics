@@ -2,7 +2,7 @@
 
 plot_jags_Rhat() takes a [list](https://rdrr.io/r/base/list.html) output
 from
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
 to produce dotplots of potential scale reduction factors (Rhat) for each
 chain run in the mcmc estimation. Rhat values analyze the spread of
 chains compared to pooled values with a goal of observing rhat \< 1.10
@@ -27,9 +27,9 @@ parameters:
 ``` r
 plot_jags_Rhat(
   data,
-  iso = unique(data$curve_params$Iso_type),
-  param = unique(data$curve_params$Parameter_sub),
-  strat = unique(data$curve_params$Stratification)
+  iso = unique(data$Iso_type),
+  param = unique(data$Parameter),
+  strat = unique(data$Stratification)
 )
 ```
 

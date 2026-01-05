@@ -59,7 +59,7 @@ autoplot(object, log_y = TRUE, log_x = FALSE, ...)
 
   :   The statistical transformation to use on the data for this layer.
       When using a `geom_*()` function to construct a layer, the `stat`
-      argument can be used the override the default coupling between
+      argument can be used to override the default coupling between
       geoms and stats. The `stat` argument accepts the following:
 
       - A `Stat` ggproto subclass, for example `StatCount`.
@@ -104,7 +104,10 @@ autoplot(object, log_y = TRUE, log_x = FALSE, ...)
   :   logical. Should this layer be included in the legends? `NA`, the
       default, includes if any aesthetics are mapped. `FALSE` never
       includes, and `TRUE` always includes. It can also be a named
-      logical vector to finely select the aesthetics to display.
+      logical vector to finely select the aesthetics to display. To
+      include legend keys for all levels, even when no data exists, use
+      `TRUE`. If `NA`, all levels are shown in legend, but unobserved
+      levels are omitted.
 
   `inherit.aes`
 
@@ -112,7 +115,29 @@ autoplot(object, log_y = TRUE, log_x = FALSE, ...)
       combining with them. This is most useful for helper functions that
       define both data and aesthetics and shouldn't inherit behaviour
       from the default plot specification, e.g.
-      [`borders()`](https://ggplot2.tidyverse.org/reference/borders.html).
+      [`annotation_borders()`](https://ggplot2.tidyverse.org/reference/annotation_borders.html).
+
+  `arrow`
+
+  :   Arrow specification, as created by
+      [`grid::arrow()`](https://rdrr.io/r/grid/arrow.html).
+
+  `arrow.fill`
+
+  :   fill colour to use for the arrow head (if closed). `NULL` means
+      use `colour` aesthetic.
+
+  `lineend`
+
+  :   Line end style (round, butt, square).
+
+  `linejoin`
+
+  :   Line join style (round, mitre, bevel).
+
+  `linemitre`
+
+  :   Line mitre limit (number greater than 1).
 
   `orientation`
 

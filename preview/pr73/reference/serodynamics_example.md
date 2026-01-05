@@ -1,7 +1,7 @@
 # Get path to an example file
 
 The
-[serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/serodynamics-package.md)
+[serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/serodynamics-package.md)
 package comes bundled with a number of sample files in its
 `inst/extdata` directory. This `serodynamics_example()` function make
 those sample files easy to access.

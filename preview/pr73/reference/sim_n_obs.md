@@ -28,5 +28,5 @@ an [integer](https://rdrr.io/r/base/integer.html)
 ``` r
  dist_n_obs = tibble::tibble(n_obs = 1:5, prob = 1/5)
  dist_n_obs |> sim_n_obs(n = 10)
-#>  [1] 1 5 4 3 2 2 2 2 3 2
+#>  [1] 4 3 2 2 2 2 3 2 4 2
 ```

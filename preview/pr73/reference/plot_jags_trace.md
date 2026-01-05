@@ -2,7 +2,7 @@
 
 plot_jags_trace() takes a [list](https://rdrr.io/r/base/list.html)
 output from
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md)
 to create trace plots for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified. Antigen/antibody
@@ -24,9 +24,9 @@ dynamic curve includes the following parameters:
 ``` r
 plot_jags_trace(
   data,
-  iso = unique(data$curve_params$Iso_type),
-  param = unique(data$curve_params$Parameter_sub),
-  strat = unique(data$curve_params$Stratification)
+  iso = unique(data$Iso_type),
+  param = unique(data$Parameter),
+  strat = unique(data$Stratification)
 )
 ```
 
@@ -35,7 +35,7 @@ plot_jags_trace(
 - data:
 
   A [list](https://rdrr.io/r/base/list.html) outputted from
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md).
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr73/reference/run_mod.md).
 
 - iso:
 
