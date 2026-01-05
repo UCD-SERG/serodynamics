@@ -32,10 +32,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("sim-strat-curve-params", variant = system_os())
+      expect_snapshot_data("sim-strat-curve-params", variant = if (system_os() == "darwin") "darwin" else NULL)
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("sim-strat-fitted_residuals", variant = system_os())
+      expect_snapshot_data("sim-strat-fitted_residuals", variant = if (system_os() == "darwin") "darwin" else NULL)
     
   }
 )
@@ -66,10 +66,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("strat-curve-params", variant = system_os())
+      expect_snapshot_data("strat-curve-params", variant = if (system_os() == "darwin") "darwin" else NULL)
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("strat-fitted_residuals", variant = system_os())
+      expect_snapshot_data("strat-fitted_residuals", variant = if (system_os() == "darwin") "darwin" else NULL)
   }
 )
 
@@ -99,10 +99,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params", variant = system_os())
+      expect_snapshot_data("nostrat-curve-params", variant = if (system_os() == "darwin") "darwin" else NULL)
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("nostrat-fitted_residuals", variant = system_os())
+      expect_snapshot_data("nostrat-fitted_residuals", variant = if (system_os() == "darwin") "darwin" else NULL)
   }
 )
 
@@ -133,7 +133,7 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-withpost", variant = system_os())
+      expect_snapshot_data("nostrat-curve-params-withpost", variant = if (system_os() == "darwin") "darwin" else NULL)
   }
 )
 
@@ -168,6 +168,6 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-specpriors", variant = system_os())
+      expect_snapshot_data("nostrat-curve-params-specpriors", variant = if (system_os() == "darwin") "darwin" else NULL)
   }
 )
