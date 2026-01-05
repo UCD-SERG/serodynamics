@@ -66,7 +66,7 @@ prep_data <- function(
     visit_number = paste0("V", visits)
   )
   
-  dims1 <- sapply(FUN = length, X = dimnames1)
+  dims1 <- sapply(FUN = length, X = dimnames1) # nolint: undesirable_function_linter
   
   visit_times <- array(
     NA,
