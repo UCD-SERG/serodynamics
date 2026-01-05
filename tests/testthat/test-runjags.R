@@ -6,7 +6,7 @@ test_that("results are consistent", {
     ggmcmc::ggs() |> 
     expect_snapshot_data(
       name = "example-head",
-      variant = if (system_os() == "darwin") "darwin" else NULL
+      variant = snapshot_variant()
     )
 })
 
@@ -58,7 +58,7 @@ test_that("results are consistent with our model", {
     dplyr::arrange(.data$Iteration) |> 
     expect_snapshot_data(
       name = "kinetics",
-      variant = if (system_os() == "darwin") "darwin" else NULL
+      variant = snapshot_variant()
     )
   
   # Platform-specific MCMC differences:
