@@ -1,4 +1,6 @@
-# Analysis of OS-Specific Snapshot Variants
+---
+title: "Analysis of OS-Specific Snapshot Variants"
+---
 
 ## Summary
 
@@ -95,29 +97,26 @@ The repository currently maintains:
 
 1. **Base snapshots** (`tests/testthat/_snaps/run_mod/`) - Match Linux/Windows
 2. **darwin variants** (`tests/testthat/_snaps/darwin/run_mod/`) - macOS-specific
-3. **linux variants** (`tests/testthat/_snaps/linux/run_mod/`) - Identical to base
-4. **windows variants** (`tests/testthat/_snaps/windows/run_mod/`) - Identical to linux
+3. ~~**linux variants** (`tests/testthat/_snaps/linux/run_mod/`) - Identical to base~~ (Removed in consolidation)
+4. ~~**windows variants** (`tests/testthat/_snaps/windows/run_mod/`) - Identical to linux~~ (Removed in consolidation)
 
-This is **redundant** because:
-- Windows snapshots duplicate Linux snapshots
-- Linux snapshots duplicate base snapshots
+This was **redundant** because:
+- Windows snapshots duplicated Linux snapshots
+- Linux snapshots duplicated base snapshots
 - Only darwin snapshots provide unique value
 
-## Recommended Solutions
+## Implemented Solution
 
-### Option 1: Consolidate Redundant Snapshots (Recommended)
+### Option 1: Consolidate Redundant Snapshots
 
-**Remove duplicate snapshots for Linux and Windows**, keeping only:
+We **removed duplicate snapshots for Linux and Windows**, keeping only:
 - **Base snapshots** (no variant) - Used by Linux and Windows
 - **darwin variants** - Used by macOS only
 
-**Pros:**
+**Benefits:**
 - Eliminates ~50% of snapshot file duplication
 - Easier maintenance (fewer files to update)
 - Clearer intent (darwin is the special case)
-
-**Cons:**
-- If Windows diverges from Linux in future, need to recreate variants
 
 **Implementation:**
 ```r
@@ -125,7 +124,9 @@ This is **redundant** because:
 variant = if (system_os() == "darwin") "darwin" else NULL
 ```
 
-### Option 2: Use Statistical Tolerance Checks
+### Alternative Options Considered
+
+#### Option 2: Use Statistical Tolerance Checks
 
 **Replace exact snapshot matching with statistical tests** that check:
 - Parameter distributions are similar (K-S test, Wasserstein distance)
@@ -142,7 +143,7 @@ variant = if (system_os() == "darwin") "darwin" else NULL
 - Requires defining appropriate tolerances
 - May miss important changes
 
-### Option 3: Keep Current Strategy (Not Recommended)
+#### Option 3: Keep All OS Variants
 
 Maintain all three OS variants.
 
@@ -158,4 +159,4 @@ Maintain all three OS variants.
 
 The OS-specific snapshot variants exist because **JAGS MCMC sampling is inherently platform-dependent due to differences in floating-point arithmetic, mathematical library implementations, and compiler optimizations**. However, **Linux and Windows produce identical results**, making their separate variants redundant.
 
-**Recommendation**: Adopt Option 1 (consolidate snapshots) to reduce duplication while maintaining test coverage for the genuine macOS differences.
+We adopted Option 1 (consolidate snapshots) to reduce duplication while maintaining test coverage for the genuine macOS differences.
