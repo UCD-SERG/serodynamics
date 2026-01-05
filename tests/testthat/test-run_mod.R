@@ -10,39 +10,33 @@ test_that(
       mutate(strat = "stratum 2")
     withr::local_seed(2)
     strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-      sim_case_data(n = 100,
-                    antigen_isos = "HlyE_IgA") |>
+      sim_case_data(n = 100, antigen_isos = "HlyE_IgA") |>
       mutate(strat = "stratum 1")
     dataset <- dplyr::bind_rows(strat1, strat2)
-    withr::with_seed(
-      1,
-      code = {
-        withr::local_seed(1)
-        results <- run_mod(
-          data = dataset, # The data set input
-          file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
-          nchain = 2, # Number of mcmc chains to run
-          nadapt = 100, # Number of adaptations to run
-          nburn = 100, # Number of unrecorded samples before sampling begins
-          nmc = 10,
-          niter = 10, # Number of iterations
-          strat = "strat", # Variable to be stratified
-        ) |>
-          suppressWarnings()
-        
-        results |>
-          attributes() |>
-          rlist::list.remove(c("row.names", "fitted_residuals")) |>
-          expect_snapshot_value(style = "deparse")
-        
-        results |>
-          expect_snapshot_data("sim-strat-curve-params")
-
-        attributes(results)$fitted_residuals |>
-          expect_snapshot_data("sim-strat-fitted_residuals")
-        
-      }
-    )
+    results <- run_mod(
+      data = dataset, # The data set input
+      file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+      nchain = 2, # Number of mcmc chains to run
+      nadapt = 100, # Number of adaptations to run
+      nburn = 100, # Number of unrecorded samples before sampling begins
+      nmc = 10,
+      niter = 10, # Number of iterations
+      strat = "strat", # Variable to be stratified
+    ) |>
+      suppressWarnings()
+    
+    
+    results |>
+      attributes() |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
+      expect_snapshot_value(style = "deparse")
+    
+    results |>
+      expect_snapshot_data("sim-strat-curve-params")
+    
+    attributes(results)$fitted_residuals |>
+      expect_snapshot_data("sim-strat-fitted_residuals")
+    
   }
 )
 
@@ -53,7 +47,7 @@ test_that(
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
-
+    
     results <- run_mod(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
@@ -65,15 +59,15 @@ test_that(
       strat = "bldculres", # Variable to be stratified
     ) |>
       suppressWarnings()
-
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
-
+    
     results |>
       expect_snapshot_data("strat-curve-params")
-
+    
     attributes(results)$fitted_residuals |>
       expect_snapshot_data("strat-fitted_residuals")
   }
@@ -86,7 +80,7 @@ test_that(
     announce_snapshot_file("nostrat-fitted_residuals.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
-
+    
     results <- run_mod(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
@@ -98,15 +92,15 @@ test_that(
       strat = NA, # Variable to be stratified
     ) |>
       suppressWarnings()
-
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
-
+    
     results |>
       expect_snapshot_data("nostrat-curve-params")
-
+    
     attributes(results)$fitted_residuals |>
       expect_snapshot_data("nostrat-fitted_residuals")
   }
