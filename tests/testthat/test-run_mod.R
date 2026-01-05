@@ -32,10 +32,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("sim-strat-curve-params")
+      expect_snapshot_data("sim-strat-curve-params", variant = system_os())
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("sim-strat-fitted_residuals")
+      expect_snapshot_data("sim-strat-fitted_residuals", variant = system_os())
     
   }
 )
@@ -66,10 +66,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("strat-curve-params")
+      expect_snapshot_data("strat-curve-params", variant = system_os())
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("strat-fitted_residuals")
+      expect_snapshot_data("strat-fitted_residuals", variant = system_os())
   }
 )
 
@@ -99,10 +99,10 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params")
+      expect_snapshot_data("nostrat-curve-params", variant = system_os())
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("nostrat-fitted_residuals")
+      expect_snapshot_data("nostrat-fitted_residuals", variant = system_os())
   }
 )
 
