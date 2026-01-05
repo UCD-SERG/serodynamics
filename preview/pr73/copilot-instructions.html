@@ -136,10 +136,10 @@
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Lint specific file</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint</span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Key linting rules</strong>: - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> instead of <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> instead of <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> instead of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> - Use <code>::</code> instead of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> in package code - Use native pipe <code>|&gt;</code> (configured in project.Rproj) - Follow snake_case with uppercase acronyms allowed (e.g., <code>prep_IDs</code> is valid) - Avoid <code>undesirable_function_linter</code> warnings</p>
 <p>Exclusions: <code>data-raw/</code>, <code>vignettes/</code>, <code>inst/examples/</code>, and <code>inst/analyses/</code> are exempt from some linters.</p>
 </div>
@@ -257,7 +257,7 @@
 </div>
 <div class="section level3">
 <h3 id="tests-failing-on-specific-os">Tests Failing on Specific OS<a class="anchor" aria-label="anchor" href="#tests-failing-on-specific-os"></a></h3>
-<p><strong>Symptom</strong>: Some tests fail on Windows or Linux but pass on macOS. <strong>Solution</strong>: Many tests use <code>skip_on_os(c("windows", "linux"))</code> because MCMC results can vary by platform. This is expected. Only add OS-skips if results genuinely differ across platforms.</p>
+<p><strong>Symptom</strong>: Some tests fail on Windows or Linux but pass on macOS. <strong>Solution</strong>: Try to make output platform independent. As a fallback, use the <code>variant</code> option in <code><a href="https://testthat.r-lib.org/reference/expect_snapshot.html" class="external-link">testthat::expect_snapshot()</a></code>, <code><a href="https://testthat.r-lib.org/reference/expect_snapshot_value.html" class="external-link">testthat::expect_snapshot_value()</a></code>, and <code><a href="https://testthat.r-lib.org/reference/expect_snapshot_file.html" class="external-link">testthat::expect_snapshot_file()</a></code> to make snapshots platform-specific.</p>
 </div>
 <div class="section level3">
 <h3 id="documentation-out-of-sync">Documentation Out of Sync<a class="anchor" aria-label="anchor" href="#documentation-out-of-sync"></a></h3>
@@ -310,7 +310,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span>               <span class="co"># Run tests</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">use_version</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># Increment version</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
 <span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span> <span class="co"># Update README</span></span></code></pre></div>
 </div>
