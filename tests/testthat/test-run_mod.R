@@ -133,7 +133,7 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-withpost")
+      expect_snapshot_data("nostrat-curve-params-withpost", variant = system_os())
   }
 )
 
@@ -168,6 +168,6 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-specpriors")
+      expect_snapshot_data("nostrat-curve-params-specpriors", variant = system_os())
   }
 )
