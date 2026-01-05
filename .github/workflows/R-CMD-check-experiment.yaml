@@ -1,0 +1,135 @@
+# EXPERIMENTAL WORKFLOW - Testing PAK_PREFER_BINARY impact
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# GOT THE JAGS INSTALL FROM:
+# https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [copilot/test-pak-prefer-binary-option]
+
+name: R-CMD-check-experiment (PAK_PREFER_BINARY=false)
+
+jobs:
+  R-CMD-check-experiment:
+    runs-on: ${{ matrix.config.os }}
+
+    name: EXPERIMENT-no-binary ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: macos-latest,   r: 'release'}
+          - {os: windows-latest, r: 'release'}
+          - {os: ubuntu-latest,   r: 'devel', http-user-agent: 'release'}
+          - {os: ubuntu-latest,   r: 'release'}
+          - {os: ubuntu-latest,   r: 'oldrel-1'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+      PAK_PREFER_BINARY: "false"
+
+    steps:
+      - name: Install JAGS (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          wjags.exe /S
+          del wjags.exe
+        shell: cmd
+      
+      # from https://github.com/ku-awdc/runjags/issues/2:
+      - name: Install JAGS (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
+          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
+
+      - name: Install JAGS (Ubuntu)
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jags
+          
+      - uses: actions/checkout@v4
+
+      - name: Record workflow start time
+        run: echo "WORKFLOW_START=$(date +%s)" >> $GITHUB_ENV
+        shell: bash
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@HEAD
+        with:
+          r-version: ${{ matrix.config.r }}
+          http-user-agent: ${{ matrix.config.http-user-agent }}
+          use-public-rspm: true
+
+      - name: Record dependency installation start time
+        run: echo "DEPS_START=$(date +%s)" >> $GITHUB_ENV
+        shell: bash
+          
+      - uses: r-lib/actions/setup-r-dependencies@HEAD
+        with:
+          extra-packages: any::rcmdcheck
+          needs: test, check
+
+      - name: Record dependency installation end time and calculate duration
+        run: |
+          DEPS_END=$(date +%s)
+          DEPS_DURATION=$((DEPS_END - DEPS_START))
+          echo "Dependency installation took ${DEPS_DURATION} seconds"
+          echo "DEPS_DURATION=${DEPS_DURATION}" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Check installed packages and installation type
+        run: |
+          cat("=== Installed Packages Info ===\n")
+          ip <- installed.packages()
+          # Show package sources (binary vs source)
+          cat("\nPackage installation types:\n")
+          pkg_info <- as.data.frame(ip[, c("Package", "Version", "Built")])
+          print(head(pkg_info, 20))
+          
+          # Check if pak is available and show its settings
+          cat("\n=== PAK Settings ===\n")
+          cat("PAK_PREFER_BINARY:", Sys.getenv("PAK_PREFER_BINARY"), "\n")
+          
+          if (requireNamespace("pak", quietly = TRUE)) {
+            cat("pak version:", as.character(packageVersion("pak")), "\n")
+          }
+        shell: Rscript {0}
+      
+      - name: "install rjags"
+        run: |
+          install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
+                    type = "source",
+                    verbose = TRUE)
+           withr::local_options(warn = 2)
+           library(rjags)
+           library(runjags)
+           runjags::findJAGS()
+           runjags::testjags()
+        shell: Rscript {0}
+      
+      - uses: r-lib/actions/check-r-package@HEAD
+        with:
+          upload-snapshots: true
+          # see `rcmdcheck::rcmdcheck()` `error_on` argument
+          error-on: '"note"'
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'
+
+      - name: Record workflow end time and calculate total duration
+        if: always()
+        run: |
+          WORKFLOW_END=$(date +%s)
+          TOTAL_DURATION=$((WORKFLOW_END - WORKFLOW_START))
+          echo "=== EXPERIMENT TIMING SUMMARY ==="
+          echo "PAK_PREFER_BINARY: false"
+          echo "Dependency installation: ${DEPS_DURATION} seconds"
+          echo "Total workflow: ${TOTAL_DURATION} seconds"
+          echo "================================="
+        shell: bash
