@@ -347,7 +347,10 @@ structure, workflows, and configuration files. When making changes:
 4.  **ALWAYS** increment version in DESCRIPTION for PRs
 5.  **ALWAYS** update NEWS.md for user-facing changes
 6.  **ALWAYS** run tests before committing (`devtools::test()`)
-7.  **ALWAYS** check linting on changed files
+7.  **ALWAYS** check and fix lintr issues in changed files in PRs before
+    committing
+8.  **ALWAYS** make sure `devtools::check()` passes before requesting PR
+    review
 
 Only search for additional information if these instructions are
 incomplete or incorrect for your specific task.
