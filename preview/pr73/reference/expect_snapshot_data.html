@@ -53,7 +53,7 @@ with permission (<a href="https://github.com/bcgov/ssdtools/issues/379" class="e
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">expect_snapshot_data</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, digits <span class="op">=</span> <span class="fl">6</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">expect_snapshot_data</span><span class="op">(</span><span class="va">x</span>, <span class="va">name</span>, digits <span class="op">=</span> <span class="fl">6</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -70,6 +70,35 @@ with permission (<a href="https://github.com/bcgov/ssdtools/issues/379" class="e
 
 <dt id="arg-digits">digits<a class="anchor" aria-label="anchor" href="#arg-digits"></a></dt>
 <dd><p><a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> passed to <code><a href="https://rdrr.io/r/base/Round.html" class="external-link">signif()</a></code> for numeric variables</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Arguments passed on to <code><a href="https://testthat.r-lib.org/reference/expect_snapshot_file.html" class="external-link">testthat::expect_snapshot_file</a></code></p><dl><dt><code>binary</code></dt>
+<dd><p><a href="https://lifecycle.r-lib.org/articles/stages.html#deprecated" class="external-link"><img src="figures/lifecycle-deprecated.svg" alt="[Deprecated]"></a> Please use the
+<code>compare</code> argument instead.</p></dd>
+
+    <dt><code>cran</code></dt>
+<dd><p>Should these expectations be verified on CRAN? By default,
+they are not, because snapshot tests tend to be fragile because they
+often rely on minor details of dependencies.</p></dd>
+
+    <dt><code>transform</code></dt>
+<dd><p>Optionally, a function to scrub sensitive or stochastic
+text from the output. Should take a character vector of lines as input
+and return a modified character vector as output.</p></dd>
+
+    <dt><code>variant</code></dt>
+<dd><p>If not-<code>NULL</code>, results will be saved in
+<code>_snaps/{variant}/{test}/{name}</code>. This allows you to create
+different snapshots for different scenarios, like different operating
+systems or different R versions.</p>
+<p>Note that there's no way to declare all possible variants up front which
+means that as soon as you start using variants, you are responsible for
+deleting snapshot variants that are no longer used. (testthat will still
+delete all variants if you delete the test.)</p></dd>
+
+
+</dl></dd>
 
 </dl></div>
     <div class="section level2">
