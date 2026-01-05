@@ -111,7 +111,6 @@ test_that(
   included",
   code = {
     announce_snapshot_file("nostrat-curve-params-withpost.csv")
-    skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -143,7 +142,6 @@ test_that(
   priors",
   code = {
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
-    skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
