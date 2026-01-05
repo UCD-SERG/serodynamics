@@ -3,7 +3,6 @@ test_that(
   code = {
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
-    skip_on_os(c("windows", "linux"))
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -25,8 +24,8 @@ test_that(
           nchain = 2, # Number of mcmc chains to run
           nadapt = 100, # Number of adaptations to run
           nburn = 100, # Number of unrecorded samples before sampling begins
-          nmc = 2,
-          niter = 2, # Number of iterations
+          nmc = 10,
+          niter = 10, # Number of iterations
           strat = "strat", # Variable to be stratified
         ) |>
           suppressWarnings()
