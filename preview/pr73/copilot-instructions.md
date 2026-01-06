@@ -324,6 +324,10 @@ nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
+- **Avoid code duplication**: Don’t copy-paste substantial code chunks.
+  Instead, decompose reusable logic into well-named helper functions.
+  This improves maintainability, testability, and reduces the risk of
+  inconsistent behavior across similar code paths.
 
 ## Package Development Commands Summary
 
@@ -353,6 +357,11 @@ structure, workflows, and configuration files. When making changes:
 6.  **ALWAYS** run tests before committing (`devtools::test()`)
 7.  **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
+8.  **ALWAYS** run `devtools::document()` before requesting PR review
+9.  **ALWAYS** make sure `devtools::check()` passes before requesting PR
+    review
+10. **ALWAYS** make sure `devtools::spell_check()` passes before
+    requesting PR review
 
 Only search for additional information if these instructions are
 incomplete or incorrect for your specific task.

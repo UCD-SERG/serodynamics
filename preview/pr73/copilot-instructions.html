@@ -300,6 +300,8 @@
 <strong>Test snapshot changes</strong>: Use <code><a href="https://testthat.r-lib.org/reference/expect_snapshot_file.html" class="external-link">testthat::announce_snapshot_file()</a></code> for CSV snapshots</li>
 <li>
 <strong>Seed tests</strong>: Use <code><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">withr::local_seed()</a></code> for reproducible tests</li>
+<li>
+<strong>Avoid code duplication</strong>: Don’t copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.</li>
 </ul></div>
 <div class="section level2">
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
@@ -331,6 +333,12 @@
 <strong>ALWAYS</strong> run tests before committing (<code>devtools::test()</code>)</li>
 <li>
 <strong>ALWAYS</strong> check and fix lintr issues in changed files in PRs before committing</li>
+<li>
+<strong>ALWAYS</strong> run <code>devtools::document()</code> before requesting PR review</li>
+<li>
+<strong>ALWAYS</strong> make sure <code>devtools::check()</code> passes before requesting PR review</li>
+<li>
+<strong>ALWAYS</strong> make sure <code>devtools::spell_check()</code> passes before requesting PR review</li>
 </ol><p>Only search for additional information if these instructions are incomplete or incorrect for your specific task.</p>
 </div>
 </div>
