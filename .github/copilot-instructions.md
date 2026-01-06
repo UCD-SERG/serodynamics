@@ -12,6 +12,107 @@
 
 ## Critical Setup Requirements
 
+### R Installation and Development Dependencies (REQUIRED)
+
+**ALWAYS install R and all development dependencies when starting work on a pull request.** This ensures you avoid issues caused by missing dependencies or environment misconfiguration during the development process.
+
+#### Installing R (>= 4.1.0)
+
+The package requires R version 4.1.0 or higher. Install R for your platform:
+
+- **Ubuntu/Linux**: 
+  ```bash
+  # Add CRAN repository for latest R version
+  sudo apt-get update
+  sudo apt-get install -y software-properties-common dirmngr
+  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+  sudo apt-get update
+  sudo apt-get install -y r-base r-base-dev
+  
+  # Verify installation
+  R --version
+  ```
+
+- **macOS**: 
+  ```bash
+  # Install using Homebrew (recommended)
+  brew install r
+  
+  # Or download from CRAN: https://cran.r-project.org/bin/macosx/
+  # Verify installation
+  R --version
+  ```
+
+- **Windows**: 
+  Download and install from https://cran.r-project.org/bin/windows/base/
+  
+  Verify installation by opening R console and checking version:
+  ```r
+  R.version.string
+  ```
+
+#### Installing Development Dependencies
+
+After installing R, install all required development dependencies:
+
+```r
+# Install devtools (required for package development)
+install.packages("devtools", repos = "https://cloud.r-project.org")
+
+# Install all package dependencies (Imports, Suggests, and development needs)
+# This reads DESCRIPTION file and installs everything needed
+devtools::install_dev_deps(dependencies = TRUE)
+```
+
+**Alternative approach** using pak (faster parallel installation):
+```r
+install.packages("pak", repos = "https://cloud.r-project.org")
+pak::local_install_dev_deps(dependencies = TRUE)
+```
+
+#### Verify Development Environment
+
+After installation, verify your development environment is properly configured:
+
+```r
+# Load devtools
+library(devtools)
+
+# Check package dependencies
+devtools::dev_sitrep()
+
+# Load the package in development mode
+devtools::load_all()
+
+# Run a quick check
+devtools::check_man()
+```
+
+**Note**: If you encounter issues with dependencies, particularly with system libraries, install the following system dependencies first:
+
+- **Ubuntu/Linux**:
+  ```bash
+  sudo apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libfontconfig1-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev
+  ```
+
+- **macOS**: Most system dependencies are handled by Homebrew, but you may need:
+  ```bash
+  brew install pkg-config cairo
+  ```
+
+- **Windows**: Install Rtools from https://cran.r-project.org/bin/windows/Rtools/ (choose version matching your R version)
+
 ### JAGS Installation (REQUIRED)
 
 **ALWAYS install JAGS before attempting to build, test, or run this package.** The package will fail without it.
@@ -264,15 +365,16 @@ rmarkdown::render("README.Rmd") # Update README
 
 These instructions have been validated against the actual repository structure, workflows, and configuration files. When making changes:
 
-1. **ALWAYS** ensure JAGS is installed before any build/test operations
-2. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
-3. **ALWAYS** edit README.Rmd (not README.md) for README changes
-4. **ALWAYS** increment version in DESCRIPTION for PRs
-5. **ALWAYS** update NEWS.md for user-facing changes
-6. **ALWAYS** run tests before committing (`devtools::test()`)
-7. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
-8. **ALWAYS** run `devtools::document()` before requesting PR review
-9. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
-10. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+1. **ALWAYS** install R (>= 4.1.0) and all development dependencies when starting work on a PR
+2. **ALWAYS** ensure JAGS is installed before any build/test operations
+3. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
+4. **ALWAYS** edit README.Rmd (not README.md) for README changes
+5. **ALWAYS** increment version in DESCRIPTION for PRs
+6. **ALWAYS** update NEWS.md for user-facing changes
+7. **ALWAYS** run tests before committing (`devtools::test()`)
+8. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
+9. **ALWAYS** run `devtools::document()` before requesting PR review
+10. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+11. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
