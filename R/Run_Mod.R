@@ -165,7 +165,7 @@ run_mod <- function(data,
     
     # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
-      mutate(Subject = as.character(dplyr::row_number()))
+      dplyr::mutate(Subject = as.character(dplyr::row_number()))
     jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
                                    by = "Subject") |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
