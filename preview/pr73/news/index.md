@@ -2,7 +2,14 @@
 
 ## serodynamics (development version)
 
+- Consolidated OS-specific snapshot variants: removed redundant Linux
+  and Windows snapshot directories (which were identical), keeping only
+  base snapshots and darwin-specific variants for macOS platform
+  differences
+  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)).
+
 - Initial CRAN submission.
+
 - Updated Copilot instructions to encourage code decomposition and avoid
   copy-pasting substantial code chunks.
 
@@ -102,7 +109,9 @@ None yet
   ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
 - vectorized `ab()` function
   ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
-- Added `lintr::undesirable_function_linter()` to `.lintr.R`
+- Added
+  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
+  to `.lintr.R`
   ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
 - Reformatted `.lintr` as R file (following
   <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)
