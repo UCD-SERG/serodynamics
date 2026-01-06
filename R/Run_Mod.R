@@ -51,7 +51,7 @@
 #'   - `nThin`: Thinning number (niter/nmc).
 #'   - `population_params`: Modeled population parameters by `Iteration`, 
 #'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
-#'   following modeled population parameters::
+#'   following modeled population parameters:
 #'     - `mu.par` = The population mean of the hyperparameters.  
 #'     - `prec.par` = The population covariance between the hyperparameters.  
 #'     - `prec.logy` = The population variance among each antigen/isotype.  
