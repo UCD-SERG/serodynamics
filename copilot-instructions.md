@@ -320,6 +320,10 @@ nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
+- **Avoid code duplication**: Don’t copy-paste substantial code chunks.
+  Instead, decompose reusable logic into well-named helper functions.
+  This improves maintainability, testability, and reduces the risk of
+  inconsistent behavior across similar code paths.
 
 ## Package Development Commands Summary
 
