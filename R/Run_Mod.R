@@ -86,14 +86,14 @@ run_mod <- function(data,
   }
 
   ## Creating a shell to output results
-  jags_out <- data.frame(
-    "Iteration" = NA,
-    "Chain" = NA,
-    "value" = NA,
-    "Parameter" = NA,
-    "Iso_type" = NA,
-    "Subject" = NA,
-    "Stratification" = NA
+  jags_out <- tibble(
+    "Iteration" = NULL,
+    "Chain" = NULL,
+    "value" = NULL,
+    "Parameter" = NULL,
+    "Iso_type" = NULL,
+    "Subject" = NULL,
+    "Stratification" = NULL
   )
 
   ## Creating output list for jags.post
