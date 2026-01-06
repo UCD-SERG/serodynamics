@@ -120,11 +120,11 @@ including the following:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
-\item \code{population_params}: Modeled population parameters by \code{Iteration},
+\item \code{population_params}: Modeled population parameters, indexed by \code{Iteration},
 \code{Chain}, \code{Parameter}, \code{Iso_type}, and \code{Stratification}. Includes the
 following modeled population parameters:
 \itemize{
-\item \code{mu.par} = The population mean of the hyperparameters.
+\item \code{mu.par} = The population means of the host-specific model parameters (on logarithmic scales).
 \item \code{prec.par} = The population covariance between the hyperparameters.
 \item \code{prec.logy} = The population variance among each antigen/isotype.
 }
