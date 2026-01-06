@@ -48,6 +48,13 @@ reference:
   - nepal_sees
   - nepal_sees_jags_output
 
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - articles/getting-started
 
-  
-
+- title: Developer Notes
+  contents:
+  - articles/os-snapshot-analysis
+  - articles/test-snippets
