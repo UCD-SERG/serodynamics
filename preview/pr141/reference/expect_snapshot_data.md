@@ -6,7 +6,7 @@ copied from <https://github.com/bcgov/ssdtools> with permission
 ## Usage
 
 ``` r
-expect_snapshot_data(x, name, digits = 6)
+expect_snapshot_data(x, name, digits = 6, ...)
 ```
 
 ## Arguments
@@ -23,6 +23,34 @@ expect_snapshot_data(x, name, digits = 6)
 
   [integer](https://rdrr.io/r/base/integer.html) passed to
   [`signif()`](https://rdrr.io/r/base/Round.html) for numeric variables
+
+- ...:
+
+  Arguments passed on to
+  [`testthat::expect_snapshot_file`](https://testthat.r-lib.org/reference/expect_snapshot_file.html)
+
+  `binary`
+
+  :   **\[deprecated\]** Please use the `compare` argument instead.
+
+  `cran`
+
+  :   Should these expectations be verified on CRAN? By default, they
+      are not, because snapshot tests tend to be fragile because they
+      often rely on minor details of dependencies.
+
+  `transform`
+
+  :   Optionally, a function to scrub sensitive or stochastic text from
+      the output. Should take a character vector of lines as input and
+      return a modified character vector as output.
+
+  `variant`
+
+  :   If not-`NULL`, results will be saved in
+      `_snaps/{variant}/{test}/{name}.{ext}`. This allows you to create
+      different snapshots for different scenarios, like different
+      operating systems or different R versions.
 
 ## Value
 

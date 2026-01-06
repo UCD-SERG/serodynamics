@@ -8,7 +8,8 @@ prepare data for JAGs
 prep_data(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
-  verbose = FALSE
+  verbose = FALSE,
+  add_newperson = TRUE
 )
 ```
 
@@ -26,6 +27,10 @@ prep_data(
 - verbose:
 
   whether to produce verbose messaging
+
+- add_newperson:
+
+  whether to add an extra record with missing data
 
 ## Value
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9045</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9047</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
+    <li><a class="dropdown-item" href="../articles/os-snapshot-analysis.html">Analysis of OS-Specific Snapshot Variants</a></li>
     <li><a class="dropdown-item" href="../articles/test-snippets.html">test-snippets</a></li>
   </ul></li>
 <li class="active nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -45,10 +46,13 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="serodynamics-development-version">serodynamics (development version)<a class="anchor" aria-label="anchor" href="#serodynamics-development-version"></a></h2>
-<ul><li>Initial CRAN submission.</li>
+<ul><li><p>Consolidated OS-specific snapshot variants: removed redundant Linux and Windows snapshot directories (which were identical), keeping only base snapshots and darwin-specific variants for macOS platform differences (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>).</p></li>
+<li><p>Initial CRAN submission.</p></li>
+<li><p>Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.</p></li>
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>Including population parameters as attributes in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/141" class="external-link">#141</a>)</li>
+<li>Made “newperson” optional in <code><a href="../reference/prep_data.html">prep_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>)</li>
 <li>Including fitted and residual values as data frame in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/101" class="external-link">#101</a>)</li>
 <li>Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> with support for faceting by multiple IDs (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
 <li>Replacing old data object with new run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/102" class="external-link">#102</a>)</li>
@@ -96,7 +100,7 @@
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>
 <ul><li>Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (<a href="https://github.com/UCD-SERG/serodynamics/issues/135" class="external-link">#135</a>)</li>
 <li>vectorized <code>ab()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/116" class="external-link">#116</a>)</li>
-<li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Added <code>lintr::undesirable_function_linter()</code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
 <li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>

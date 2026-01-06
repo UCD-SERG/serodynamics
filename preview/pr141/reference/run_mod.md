@@ -87,7 +87,7 @@ run_mod(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -209,11 +209,12 @@ following:
 
   - `nThin`: Thinning number (niter/nmc).
 
-  - `population_params`: Modeled population parameters by `Iteration`,
-    `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the
-    following modeled population parameters::
+  - `population_params`: Modeled population parameters, indexed by
+    `Iteration`, `Chain`, `Parameter`, `Iso_type`, and `Stratification`.
+    Includes the following modeled population parameters:
 
-    - `mu.par` = The population mean of the hyperparameters.
+    - `mu.par` = The population means of the host-specific model
+      parameters (on logarithmic scales).
 
     - `prec.par` = The population covariance between the
       hyperparameters.
@@ -282,7 +283,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Dec 30 03:56:26 2025
+#> Welcome to JAGS 4.3.2 on Tue Jan  6 18:59:44 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -308,6 +309,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -316,7 +318,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Dec 30 03:57:16 2025
+#> Welcome to JAGS 4.3.2 on Tue Jan  6 19:00:33 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

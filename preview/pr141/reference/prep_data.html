@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9045</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9047</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,6 +19,7 @@
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/dobson.html">dobson</a></li>
+    <li><a class="dropdown-item" href="../articles/os-snapshot-analysis.html">Analysis of OS-Specific Snapshot Variants</a></li>
     <li><a class="dropdown-item" href="../articles/test-snippets.html">test-snippets</a></li>
   </ul></li>
 <li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
@@ -53,7 +54,8 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prep_data</span><span class="op">(</span></span>
 <span>  <span class="va">dataframe</span>,</span>
 <span>  biomarker_column <span class="op">=</span> <span class="fu"><a href="https://ucd-serg.github.io/serocalculator/reference/get_biomarker_names_var.html" class="external-link">get_biomarker_names_var</a></span><span class="op">(</span><span class="va">dataframe</span><span class="op">)</span>,</span>
-<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  verbose <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  add_newperson <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -72,6 +74,10 @@ which column contains antigen-isotype names</p></dd>
 
 <dt id="arg-verbose">verbose<a class="anchor" aria-label="anchor" href="#arg-verbose"></a></dt>
 <dd><p>whether to produce verbose messaging</p></dd>
+
+
+<dt id="arg-add-newperson">add_newperson<a class="anchor" aria-label="anchor" href="#arg-add-newperson"></a></dt>
+<dd><p>whether to add an extra record with missing data</p></dd>
 
 </dl></div>
     <div class="section level2">
