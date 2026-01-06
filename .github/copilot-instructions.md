@@ -381,5 +381,6 @@ These instructions have been validated against the actual repository structure, 
 9. **ALWAYS** run `devtools::document()` before requesting PR review
 10. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
 11. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+12. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
