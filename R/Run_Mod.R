@@ -152,7 +152,7 @@ run_mod <- function(data,
     mod_atts <- mod_atts[4:8]
     
     # extracting antigen-iso combinations to correctly number
-    # then by the order they are estimated by the program.
+    # them by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
     
