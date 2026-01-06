@@ -62,6 +62,93 @@
 <div class="section level2">
 <h2 id="critical-setup-requirements">Critical Setup Requirements<a class="anchor" aria-label="anchor" href="#critical-setup-requirements"></a></h2>
 <div class="section level3">
+<h3 id="r-installation-and-development-dependencies-required">R Installation and Development Dependencies (REQUIRED)<a class="anchor" aria-label="anchor" href="#r-installation-and-development-dependencies-required"></a></h3>
+<p><strong>ALWAYS install R and all development dependencies when starting work on a pull request.</strong> This ensures you avoid issues caused by missing dependencies or environment misconfiguration during the development process.</p>
+<div class="section level4">
+<h4 id="installing-r--410">Installing R (&gt;= 4.1.0)<a class="anchor" aria-label="anchor" href="#installing-r--410"></a></h4>
+<p>The package requires R version 4.1.0 or higher. Install R for your platform:</p>
+<ul><li>
+<p><strong>Ubuntu/Linux</strong>:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Add CRAN repository for latest R version</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> software-properties-common dirmngr</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a><span class="fu">wget</span> <span class="at">-qO-</span> https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc <span class="kw">|</span> <span class="fu">sudo</span> tee <span class="at">-a</span> /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc</span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="fu">sudo</span> add-apt-repository <span class="st">"deb https://cloud.r-project.org/bin/linux/ubuntu </span><span class="va">$(</span><span class="ex">lsb_release</span> <span class="at">-cs</span><span class="va">)</span><span class="st">-cran40/"</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">sudo</span> apt-get update</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> r-base r-base-dev</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="co"># Verify installation</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
+</li>
+<li>
+<p><strong>macOS</strong>:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Install using Homebrew (recommended)</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="ex">brew</span> install r</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># Or download from CRAN: https://cran.r-project.org/bin/macosx/</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="co"># Verify installation</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="ex">R</span> <span class="at">--version</span></span></code></pre></div>
+</li>
+<li>
+<p><strong>Windows</strong>: Download and install from <a href="https://cran.r-project.org/bin/windows/base/" class="external-link uri">https://cran.r-project.org/bin/windows/base/</a></p>
+<p>Verify installation by opening R console and checking version:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">R.version.string</span></span></code></pre></div>
+</li>
+</ul></div>
+<div class="section level4">
+<h4 id="installing-development-dependencies">Installing Development Dependencies<a class="anchor" aria-label="anchor" href="#installing-development-dependencies"></a></h4>
+<p>After installing R, install all required development dependencies:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Install devtools (required for package development)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Install all package dependencies (Imports, Suggests, and development needs)</span></span>
+<span><span class="co"># This reads DESCRIPTION file and installs everything needed</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_dev_deps</span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Alternative approach</strong> using pak (faster parallel installation):</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
+<span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/local_install_dev_deps.html" class="external-link">local_install_dev_deps</a></span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="verify-development-environment">Verify Development Environment<a class="anchor" aria-label="anchor" href="#verify-development-environment"></a></h4>
+<p>After installation, verify your development environment is properly configured:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Load devtools</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Check package dependencies</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">dev_sitrep</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Load the package in development mode</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Run a quick check</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check_man</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p><strong>Note</strong>: If you encounter issues with dependencies, particularly with system libraries, install the following system dependencies first:</p>
+<ul><li>
+<p><strong>Ubuntu/Linux</strong>:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a><span class="fu">sudo</span> apt-get install <span class="at">-y</span> <span class="dt">\</span></span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  libcurl4-openssl-dev <span class="dt">\</span></span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  libssl-dev <span class="dt">\</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  libxml2-dev <span class="dt">\</span></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  libfontconfig1-dev <span class="dt">\</span></span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  libharfbuzz-dev <span class="dt">\</span></span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  libfribidi-dev <span class="dt">\</span></span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  libfreetype6-dev <span class="dt">\</span></span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  libpng-dev <span class="dt">\</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  libtiff5-dev <span class="dt">\</span></span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  libjpeg-dev</span></code></pre></div>
+</li>
+<li>
+<p><strong>macOS</strong>: Most system dependencies are handled by Homebrew, but you may need:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a><span class="ex">brew</span> install pkg-config cairo</span></code></pre></div>
+</li>
+<li><p><strong>Windows</strong>: Install Rtools from <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link uri">https://cran.r-project.org/bin/windows/Rtools/</a> (choose version matching your R version)</p></li>
+</ul></div>
+</div>
+<div class="section level3">
 <h3 id="jags-installation-required">JAGS Installation (REQUIRED)<a class="anchor" aria-label="anchor" href="#jags-installation-required"></a></h3>
 <p><strong>ALWAYS install JAGS before attempting to build, test, or run this package.</strong> The package will fail without it.</p>
 <ul><li>
@@ -74,10 +161,10 @@
 <strong>Windows</strong>: Download from <a href="https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe" class="external-link uri">https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe</a>
 </li>
 </ul><p>After installing JAGS, install the R interface:</p>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rjags"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
 <p>Verify installation with:</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mcmc-jags.sourceforge.io" class="external-link">rjags</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
 <span><span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/findjags.html" class="external-link">findJAGS</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -88,7 +175,7 @@
 <h2 id="build-and-development-workflow">Build and Development Workflow<a class="anchor" aria-label="anchor" href="#build-and-development-workflow"></a></h2>
 <div class="section level3">
 <h3 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a></h3>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install development dependencies</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_dev_deps</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -98,7 +185,7 @@
 <div class="section level3">
 <h3 id="documentation-generation">Documentation Generation<a class="anchor" aria-label="anchor" href="#documentation-generation"></a></h3>
 <p><strong>ALWAYS regenerate documentation after modifying roxygen2 comments in <code>.R</code> files.</strong></p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate documentation from roxygen2 comments</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -109,13 +196,13 @@
 <h3 id="readme-updates">README Updates<a class="anchor" aria-label="anchor" href="#readme-updates"></a></h3>
 <p>README.md is generated from README.Rmd. <strong>ALWAYS edit README.Rmd, never README.md directly.</strong></p>
 <p>To regenerate:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="package-checking">Package Checking<a class="anchor" aria-label="anchor" href="#package-checking"></a></h3>
 <p>Run R CMD check to validate the package:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Full package check (takes several minutes)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -124,7 +211,7 @@
 </div>
 <div class="section level3">
 <h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run all tests</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -134,7 +221,7 @@
 <div class="section level3">
 <h3 id="linting">Linting<a class="anchor" aria-label="anchor" href="#linting"></a></h3>
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
 <span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -145,7 +232,7 @@
 </div>
 <div class="section level3">
 <h3 id="spelling-check">Spelling Check<a class="anchor" aria-label="anchor" href="#spelling-check"></a></h3>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check spelling</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Custom words are in <code>inst/WORDLIST</code>.</p>
@@ -305,7 +392,7 @@
 </ul></div>
 <div class="section level2">
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Complete development workflow</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Load package for interactive testing</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Update documentation</span></span>
@@ -320,6 +407,8 @@
 <h2 id="trust-these-instructions">Trust These Instructions<a class="anchor" aria-label="anchor" href="#trust-these-instructions"></a></h2>
 <p>These instructions have been validated against the actual repository structure, workflows, and configuration files. When making changes:</p>
 <ol style="list-style-type: decimal"><li>
+<strong>ALWAYS</strong> install R (&gt;= 4.1.0) and all development dependencies when starting work on a PR</li>
+<li>
 <strong>ALWAYS</strong> ensure JAGS is installed before any build/test operations</li>
 <li>
 <strong>ALWAYS</strong> run <code>devtools::document()</code> after modifying roxygen2 comments</li>
