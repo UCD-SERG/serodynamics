@@ -349,6 +349,8 @@ to make snapshots platform-specific.
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
 - **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base R functions where available (e.g., `sessioninfo::session_info()` instead of `sessionInfo()`, `tibble::tibble()` instead of `data.frame()`, `readr::read_csv()` instead of `read.csv()`)
 
 ## Package Development Commands Summary
 
