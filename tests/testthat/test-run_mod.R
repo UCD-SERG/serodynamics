@@ -34,13 +34,13 @@ test_that(
     results |>
       expect_snapshot_data(
         "sim-strat-curve-params",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
     
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
     
   }
@@ -74,13 +74,13 @@ test_that(
     results |>
       expect_snapshot_data(
         "strat-curve-params",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
     
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "strat-fitted_residuals",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
   }
 )
@@ -113,13 +113,13 @@ test_that(
     results |>
       expect_snapshot_data(
         "nostrat-curve-params",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
     
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "nostrat-fitted_residuals",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
   }
 )
@@ -153,7 +153,7 @@ test_that(
     results |>
       expect_snapshot_data(
         "nostrat-curve-params-withpost",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
   }
 )
@@ -191,7 +191,7 @@ test_that(
     results |>
       expect_snapshot_data(
         "nostrat-curve-params-specpriors",
-        variant = snapshot_variant()
+        variant = darwin_variant()
       )
   }
 )
