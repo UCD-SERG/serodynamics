@@ -1,6 +1,7 @@
 # serodynamics (development version)
 
 * Initial CRAN submission.
+* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
 
 ## New features
 

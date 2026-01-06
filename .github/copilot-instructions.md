@@ -247,6 +247,7 @@ to make snapshots platform-specific.
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
 
 ## Package Development Commands Summary
 
@@ -273,5 +274,8 @@ These instructions have been validated against the actual repository structure, 
 5. **ALWAYS** update NEWS.md for user-facing changes
 6. **ALWAYS** run tests before committing (`devtools::test()`)
 7. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
+8. **ALWAYS** run `devtools::document()` before requesting PR review
+9. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+10. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
