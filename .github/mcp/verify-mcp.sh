@@ -1,5 +1,8 @@
 #!/bin/bash
 # Test script to verify MCP configuration
+set -e
+set -u
+set -o pipefail
 
 echo "🔍 Verifying MCP Configuration..."
 echo ""
@@ -35,13 +38,13 @@ fi
 # Check environment variables
 echo ""
 echo "3. Checking environment variables..."
-if [ -n "$GITHUB_TOKEN" ]; then
+if [ -n "${GITHUB_TOKEN:-}" ]; then
     echo "   ✅ GITHUB_TOKEN is set"
 else
     echo "   ⚠️  GITHUB_TOKEN is not set (optional for some MCP features)"
 fi
 
-if [ -n "$BRAVE_API_KEY" ]; then
+if [ -n "${BRAVE_API_KEY:-}" ]; then
     echo "   ✅ BRAVE_API_KEY is set"
 else
     echo "   ⚠️  BRAVE_API_KEY is not set (optional for web search)"

@@ -72,7 +72,7 @@ The package requires R version 4.1.0 or higher. Install R for your platform:
   # Add CRAN repository for latest R version
   sudo apt-get update
   sudo apt-get install -y software-properties-common dirmngr
-  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
   sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
   sudo apt-get update
   sudo apt-get install -y r-base r-base-dev
