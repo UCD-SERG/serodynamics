@@ -1,5 +1,7 @@
 # serodynamics (development version)
 
+* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
+
 * Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
   snapshot directories (which were identical), keeping only base snapshots and 
   darwin-specific variants for macOS platform differences (#73).
