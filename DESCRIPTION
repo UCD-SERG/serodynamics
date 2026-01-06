@@ -67,4 +67,4 @@ Remotes:
 Depends: 
     R (>= 4.1.0)
 LazyData: true
-VignetteBuilder: knitr, quarto
+VignetteBuilder: knitr
