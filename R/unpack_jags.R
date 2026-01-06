@@ -42,7 +42,7 @@ unpack_jags <- function(data) {
     dplyr::mutate(
       Subject = gsub(regex3, "\\1", .data$Parameter),
       Subnum = gsub(regex3, "\\2", .data$Parameter),
-      Param = NA,
+      Param = NA
     )
 
   # Working with jags unpacked ggs outputs to clarify parameter and subject
