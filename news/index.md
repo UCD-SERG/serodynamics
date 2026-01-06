@@ -2,12 +2,22 @@
 
 ## serodynamics (development version)
 
+- Consolidated OS-specific snapshot variants: removed redundant Linux
+  and Windows snapshot directories (which were identical), keeping only
+  base snapshots and darwin-specific variants for macOS platform
+  differences
+  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)).
+
 - Initial CRAN submission.
+
 - Updated Copilot instructions to encourage code decomposition and avoid
   copy-pasting substantial code chunks.
 
 ### New features
 
+- Made “newperson” optional in
+  [`prep_data()`](https://ucd-serg.github.io/serodynamics/reference/prep_data.md)
+  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73))
 - Including fitted and residual values as data frame in run_mod output.
   ([\#101](https://github.com/UCD-SERG/serodynamics/issues/101))
 - Added

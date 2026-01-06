@@ -5,6 +5,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/LICENSE.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/articles/dobson.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/articles/index.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/articles/os-snapshot-analysis.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/articles/test-snippets.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/authors.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/copilot-instructions.html</loc></url>
@@ -507,6 +508,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/as_case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/autoplot.case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/calc_fit_mod.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/reference/darwin_variant.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/reference/initsfunction.html</loc></url>
