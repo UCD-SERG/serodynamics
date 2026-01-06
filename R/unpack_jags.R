@@ -15,7 +15,7 @@ unpack_jags <- function(data) {
                   "5" = "shape")
   }
   # Unpacking mu.par
-  #Separating population parameters from the rest of the data
+  # Separating population parameters from the rest of the data
   regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
   jags_mupar <- data |>
     dplyr::filter(grepl("mu.par", .data$Parameter)) |>
