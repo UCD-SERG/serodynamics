@@ -618,7 +618,8 @@ structure, workflows, and configuration files. When making changes:
 5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
     comments
 6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
-7.  **ALWAYS** increment version in DESCRIPTION for PRs
+7.  **ALWAYS** increment dev version number to be one ahead of main
+    branch before requesting PR review
 8.  **ALWAYS** update NEWS.md for user-facing changes
 9.  **ALWAYS** run tests before committing (`devtools::test()`)
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before
