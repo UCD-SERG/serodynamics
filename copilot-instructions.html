@@ -369,6 +369,70 @@
 </div>
 </div>
 <div class="section level2">
+<h2 id="testing-requirements-before-code-changes">Testing Requirements Before Code Changes<a class="anchor" aria-label="anchor" href="#testing-requirements-before-code-changes"></a></h2>
+<p><strong>ALWAYS establish value-based unit tests BEFORE modifying any functions.</strong> This ensures that changes preserve existing behavior and new behavior is correctly validated.</p>
+<div class="section level3">
+<h3 id="testing-strategy">Testing Strategy<a class="anchor" aria-label="anchor" href="#testing-strategy"></a></h3>
+<p>Choose the appropriate testing approach based on the context:</p>
+<div class="section level4">
+<h4 id="when-to-use-snapshot-tests">When to Use Snapshot Tests<a class="anchor" aria-label="anchor" href="#when-to-use-snapshot-tests"></a></h4>
+<p>Use snapshot tests (<code>expect_snapshot()</code>, <code>expect_snapshot_value()</code>, or <code><a href="reference/expect_snapshot_data.html">expect_snapshot_data()</a></code>) when: - Testing complex data structures (data.frames, lists, model outputs) - Validating MCMC outputs or statistical results - Output format stability is important - The exact values are less important than structural consistency</p>
+<p><strong>Examples from this repository:</strong></p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># For data frames with numeric precision control</span></span>
+<span><span class="va">dataset</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/expect_snapshot_data.html">expect_snapshot_data</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sees-data"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># For R objects with serialization</span></span>
+<span><span class="va">prepped_data</span> <span class="op">|&gt;</span> <span class="fu">expect_snapshot_value</span><span class="op">(</span>style <span class="op">=</span> <span class="st">"serialize"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># For simple output or error messages</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/post_summ.html">post_summ</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">expect_no_error</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_snapshot.html" class="external-link">expect_snapshot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="when-to-use-explicit-value-tests">When to Use Explicit Value Tests<a class="anchor" aria-label="anchor" href="#when-to-use-explicit-value-tests"></a></h4>
+<p>Use explicit value tests (<code>expect_equal()</code>, <code>expect_identical()</code>, etc.) when: - Testing simple scalar outputs - Validating specific numeric thresholds or boundaries - Testing Boolean returns or categorical outputs - Exact values are critical for correctness</p>
+<p><strong>Examples:</strong></p>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Testing exact numeric values</span></span>
+<span><span class="fu">expect_equal</span><span class="op">(</span><span class="fu">calculate_mean</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Testing with tolerance for floating point</span></span>
+<span><span class="fu">expect_equal</span><span class="op">(</span><span class="fu">calculate_ratio</span><span class="op">(</span><span class="fl">3</span>, <span class="fl">7</span><span class="op">)</span>, <span class="fl">0.4285714</span>, tolerance <span class="op">=</span> <span class="fl">1e-6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Testing logical conditions</span></span>
+<span><span class="fu">expect_true</span><span class="op">(</span><span class="fu">is_valid_input</span><span class="op">(</span><span class="va">data</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu">expect_false</span><span class="op">(</span><span class="fu">has_missing_values</span><span class="op">(</span><span class="va">complete_data</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="testing-best-practices">Testing Best Practices<a class="anchor" aria-label="anchor" href="#testing-best-practices"></a></h4>
+<ul><li>
+<strong>Seed randomness</strong>: Use <code><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">withr::local_seed()</a></code> or <code><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">withr::with_seed()</a></code> for reproducible tests involving random number generation</li>
+<li>
+<strong>Use small test cases</strong>: Particularly for MCMC tests, use minimal iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to keep tests fast</li>
+<li>
+<strong>Platform-specific snapshots</strong>: Use the <code>variant</code> parameter in snapshot functions when output differs by OS</li>
+<li>
+<strong>Test fixtures</strong>: Store complex test data in <code>tests/testthat/fixtures/</code> for reuse</li>
+<li>
+<strong>Custom snapshot helpers</strong>: Use <code><a href="reference/expect_snapshot_data.html">expect_snapshot_data()</a></code> for data frames with automatic CSV snapshot and numeric precision control</li>
+</ul></div>
+</div>
+<div class="section level3">
+<h3 id="test-driven-workflow">Test-Driven Workflow<a class="anchor" aria-label="anchor" href="#test-driven-workflow"></a></h3>
+<ol style="list-style-type: decimal"><li>
+<strong>Before modifying a function</strong>: Write or verify existing tests capture the current behavior</li>
+<li>
+<strong>Add new tests</strong>: Create tests for the new functionality you’re adding</li>
+<li>
+<strong>Make changes</strong>: Modify the function implementation</li>
+<li>
+<strong>Run tests</strong>: Validate all tests pass, updating snapshots only when changes are intentional</li>
+<li>
+<strong>Review snapshots</strong>: When snapshots change, review the diff to ensure changes are expected</li>
+</ol></div>
+</div>
+<div class="section level2">
 <h2 id="code-style-guidelines">Code Style Guidelines<a class="anchor" aria-label="anchor" href="#code-style-guidelines"></a></h2>
 <ul><li>
 <strong>Follow tidyverse style guide</strong>: <a href="https://style.tidyverse.org" class="external-link uri">https://style.tidyverse.org</a>
@@ -389,11 +453,13 @@
 <li>
 <strong>Seed tests</strong>: Use <code><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">withr::local_seed()</a></code> for reproducible tests</li>
 <li>
-<strong>Avoid code duplication</strong>: Don’t copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.</li>
+<strong>Write tidy code</strong>: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure</li>
+<li>
+<strong>Avoid code duplication</strong>: Don’t copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths</li>
 </ul></div>
 <div class="section level2">
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Complete development workflow</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Load package for interactive testing</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Update documentation</span></span>
@@ -411,6 +477,10 @@
 <strong>ALWAYS</strong> install R (&gt;= 4.1.0) and all development dependencies when starting work on a PR</li>
 <li>
 <strong>ALWAYS</strong> ensure JAGS is installed before any build/test operations</li>
+<li>
+<strong>ALWAYS</strong> establish value-based unit tests (snapshot or explicit value tests) BEFORE modifying functions</li>
+<li>
+<strong>ALWAYS</strong> write tidy, clean, and well-organized code</li>
 <li>
 <strong>ALWAYS</strong> run <code>devtools::document()</code> after modifying roxygen2 comments</li>
 <li>

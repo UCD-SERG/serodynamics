@@ -425,6 +425,91 @@ Using [`library()`](https://rdrr.io/r/base/library.html) instead of
 slow. Tests use small iteration counts (nchain=2, nadapt=100, nburn=100,
 nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 
+## Testing Requirements Before Code Changes
+
+**ALWAYS establish value-based unit tests BEFORE modifying any
+functions.** This ensures that changes preserve existing behavior and
+new behavior is correctly validated.
+
+### Testing Strategy
+
+Choose the appropriate testing approach based on the context:
+
+#### When to Use Snapshot Tests
+
+Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
+[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/reference/expect_snapshot_data.md))
+when: - Testing complex data structures (data.frames, lists, model
+outputs) - Validating MCMC outputs or statistical results - Output
+format stability is important - The exact values are less important than
+structural consistency
+
+**Examples from this repository:**
+
+``` r
+# For data frames with numeric precision control
+dataset |> expect_snapshot_data(name = "sees-data")
+
+# For R objects with serialization
+prepped_data |> expect_snapshot_value(style = "serialize")
+
+# For simple output or error messages
+results <- post_summ(data) |> expect_no_error()
+testthat::expect_snapshot(results)
+```
+
+#### When to Use Explicit Value Tests
+
+Use explicit value tests (`expect_equal()`, `expect_identical()`, etc.)
+when: - Testing simple scalar outputs - Validating specific numeric
+thresholds or boundaries - Testing Boolean returns or categorical
+outputs - Exact values are critical for correctness
+
+**Examples:**
+
+``` r
+# Testing exact numeric values
+expect_equal(calculate_mean(c(1, 2, 3)), 2)
+
+# Testing with tolerance for floating point
+expect_equal(calculate_ratio(3, 7), 0.4285714, tolerance = 1e-6)
+
+# Testing logical conditions
+expect_true(is_valid_input(data))
+expect_false(has_missing_values(complete_data))
+```
+
+#### Testing Best Practices
+
+- **Seed randomness**: Use
+  [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
+  or
+  [`withr::with_seed()`](https://withr.r-lib.org/reference/with_seed.html)
+  for reproducible tests involving random number generation
+- **Use small test cases**: Particularly for MCMC tests, use minimal
+  iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10)
+  to keep tests fast
+- **Platform-specific snapshots**: Use the `variant` parameter in
+  snapshot functions when output differs by OS
+- **Test fixtures**: Store complex test data in
+  `tests/testthat/fixtures/` for reuse
+- **Custom snapshot helpers**: Use
+  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/reference/expect_snapshot_data.md)
+  for data frames with automatic CSV snapshot and numeric precision
+  control
+
+### Test-Driven Workflow
+
+1.  **Before modifying a function**: Write or verify existing tests
+    capture the current behavior
+2.  **Add new tests**: Create tests for the new functionality you’re
+    adding
+3.  **Make changes**: Modify the function implementation
+4.  **Run tests**: Validate all tests pass, updating snapshots only when
+    changes are intentional
+5.  **Review snapshots**: When snapshots change, review the diff to
+    ensure changes are expected
+
 ## Code Style Guidelines
 
 - **Follow tidyverse style guide**: <https://style.tidyverse.org>
@@ -443,10 +528,13 @@ nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
+- **Write tidy code**: Keep code clean, readable, and well-organized.
+  Follow consistent formatting, use meaningful variable names, and
+  maintain logical structure
 - **Avoid code duplication**: Don’t copy-paste substantial code chunks.
   Instead, decompose reusable logic into well-named helper functions.
   This improves maintainability, testability, and reduces the risk of
-  inconsistent behavior across similar code paths.
+  inconsistent behavior across similar code paths
 
 ## Package Development Commands Summary
 
@@ -470,18 +558,21 @@ structure, workflows, and configuration files. When making changes:
 1.  **ALWAYS** install R (\>= 4.1.0) and all development dependencies
     when starting work on a PR
 2.  **ALWAYS** ensure JAGS is installed before any build/test operations
-3.  **ALWAYS** run `devtools::document()` after modifying roxygen2
+3.  **ALWAYS** establish value-based unit tests (snapshot or explicit
+    value tests) BEFORE modifying functions
+4.  **ALWAYS** write tidy, clean, and well-organized code
+5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
     comments
-4.  **ALWAYS** edit README.Rmd (not README.md) for README changes
-5.  **ALWAYS** increment version in DESCRIPTION for PRs
-6.  **ALWAYS** update NEWS.md for user-facing changes
-7.  **ALWAYS** run tests before committing (`devtools::test()`)
-8.  **ALWAYS** check and fix lintr issues in changed files in PRs before
+6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
+7.  **ALWAYS** increment version in DESCRIPTION for PRs
+8.  **ALWAYS** update NEWS.md for user-facing changes
+9.  **ALWAYS** run tests before committing (`devtools::test()`)
+10. **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
-9.  **ALWAYS** run `devtools::document()` before requesting PR review
-10. **ALWAYS** make sure `devtools::check()` passes before requesting PR
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** make sure `devtools::check()` passes before requesting PR
     review
-11. **ALWAYS** make sure `devtools::spell_check()` passes before
+13. **ALWAYS** make sure `devtools::spell_check()` passes before
     requesting PR review
 
 Only search for additional information if these instructions are
