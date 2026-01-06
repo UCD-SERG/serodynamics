@@ -52,7 +52,7 @@ unpack_jags <- function(data) {
       Subnum = gsub(regex, "\\3", .data$Parameter),
       Param = param_recode(gsub(regex, "\\1", .data$Parameter))
     ) |> 
-    filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
+    dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
   # Putting data frame together
   jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar,
