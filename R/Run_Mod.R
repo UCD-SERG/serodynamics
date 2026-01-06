@@ -202,8 +202,8 @@ run_mod <- function(data,
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
-  current_atts <- c(current_atts, mod_atts)
-  attributes(jags_out) <- current_atts
+  new_atts <- c(current_atts, mod_atts)
+  attributes(jags_out) <- new_atts
   
   # Adding population parameters in as attributes
   jags_out <- jags_out |>
