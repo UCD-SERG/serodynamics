@@ -310,7 +310,10 @@ Team members can trigger actions by commenting on PRs:
 
 ### Tests Failing on Specific OS
 **Symptom**: Some tests fail on Windows or Linux but pass on macOS.
-**Solution**: Many tests use `skip_on_os(c("windows", "linux"))` because MCMC results can vary by platform. This is expected. Only add OS-skips if results genuinely differ across platforms.
+**Solution**: Try to make output platform independent. 
+As a fallback, use the `variant` option in `testthat::expect_snapshot()`,
+`testthat::expect_snapshot_value()`, and `testthat::expect_snapshot_file()`
+to make snapshots platform-specific.
 
 ### Documentation Out of Sync
 **Symptom**: R-check-docs.yml workflow fails.
