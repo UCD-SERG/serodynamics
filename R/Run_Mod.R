@@ -180,13 +180,10 @@ run_mod <- function(data,
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
-    ## Creating output
+    # Creating output as a data frame with the
+    # jags output results for each stratification rbinded.
     jags_out <- data.frame(rbind(jags_out, jags_final))
   }
-  # Ensuring output does not have any NAs
-  jags_out <- jags_out[complete.cases(jags_out$Iso_type), ]
-  # Outputting the finalized jags output as a data frame with the
-  # jags output results for each stratification rbinded.
   
   # Preparing population parameters
   population_params <- jags_out |>
