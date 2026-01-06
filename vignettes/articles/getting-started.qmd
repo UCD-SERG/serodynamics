@@ -3,7 +3,8 @@ title: "Getting Started with serodynamics"
 format: html
 ---
 
-```{r, include = FALSE}
+```{r}
+#| include: false
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -38,7 +39,10 @@ pak::pak("UCD-SERG/serodynamics")
 
 ## Load Required Libraries
 
-```{r setup, message=FALSE, warning=FALSE}
+```{r}
+#| label: setup
+#| message: false
+#| warning: false
 library(serodynamics)
 library(runjags)
 library(dplyr)
@@ -52,7 +56,8 @@ runjags::findJAGS()
 
 The package includes example data from the SEES Typhoid study in Nepal:
 
-```{r load-data}
+```{r}
+#| label: load-data
 data(nepal_sees)
 head(nepal_sees)
 ```
@@ -61,7 +66,8 @@ head(nepal_sees)
 
 Convert the data to a `case_data` object:
 
-```{r prepare-data}
+```{r}
+#| label: prepare-data
 case_data <- as_case_data(
   nepal_sees,
   id_var = "person_id",
@@ -76,7 +82,10 @@ head(case_data)
 
 ### Visualize the Raw Data
 
-```{r plot-raw-data, fig.width=8, fig.height=6}
+```{r}
+#| label: plot-raw-data
+#| fig-width: 8
+#| fig-height: 6
 autoplot(case_data)
 ```
 
@@ -84,7 +93,8 @@ autoplot(case_data)
 
 You can also simulate case data using antibody curve parameters:
 
-```{r simulate-data}
+```{r}
+#| label: simulate-data
 set.seed(123)
 
 # Use typhoid curve parameters from serocalculator
@@ -98,7 +108,10 @@ simulated_data <- sim_case_data(
 head(simulated_data)
 ```
 
-```{r plot-simulated, fig.width=8, fig.height=6}
+```{r}
+#| label: plot-simulated
+#| fig-width: 8
+#| fig-height: 6
 autoplot(simulated_data)
 ```
 
@@ -112,7 +125,9 @@ The main function `run_mod()` fits a Bayesian MCMC model to estimate antibody dy
 - `shape`: Shape parameter
 - `alpha`: Decay rate
 
-```{r run-model, eval=FALSE}
+```{r}
+#| label: run-model
+#| eval: false
 # Note: This example uses reduced iterations for demonstration
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
@@ -133,7 +148,9 @@ head(fitted_model)
 
 After fitting the model, check convergence diagnostics:
 
-```{r diagnostics, eval=FALSE}
+```{r}
+#| label: diagnostics
+#| eval: false
 # Trace plots to assess chain mixing
 plot_jags_trace(fitted_model)
 
@@ -151,7 +168,9 @@ plot_jags_effect(fitted_model)
 
 Plot the predicted antibody curves with credible intervals:
 
-```{r plot-curves, eval=FALSE}
+```{r}
+#| label: plot-curves
+#| eval: false
 plot_predicted_curve(
   fitted_model,
   case_data = simulated_data,
@@ -163,7 +182,9 @@ plot_predicted_curve(
 
 Extract and summarize the posterior estimates:
 
-```{r postprocess, eval=FALSE}
+```{r}
+#| label: postprocess
+#| eval: false
 # Process JAGS output
 processed_output <- postprocess_jags_output(fitted_model)
 
@@ -176,7 +197,9 @@ print(summary_stats)
 
 You can stratify the analysis by a grouping variable:
 
-```{r stratified-example, eval=FALSE}
+```{r}
+#| label: stratified-example
+#| eval: false
 # Create stratified data
 strat1 <- sim_case_data(
   n = 30, 
@@ -207,12 +230,12 @@ fitted_stratified <- run_mod(
 
 ## Next Steps
 
-- Explore the methodology vignette for details on the statistical model
-- See the function reference for complete API documentation
+- See the [function reference](../reference/index.html) for complete API documentation
 - Check out example datasets: `?nepal_sees`, `?nepal_sees_jags_output`
 
 ## Session Info
 
-```{r session-info}
-sessionInfo()
+```{r}
+#| label: session-info
+sessioninfo::session_info()
 ```
