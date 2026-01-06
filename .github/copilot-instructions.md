@@ -12,6 +12,107 @@
 
 ## Critical Setup Requirements
 
+### R Installation and Development Dependencies (REQUIRED)
+
+**ALWAYS install R and all development dependencies when starting work on a pull request.** This ensures you avoid issues caused by missing dependencies or environment misconfiguration during the development process.
+
+#### Installing R (>= 4.1.0)
+
+The package requires R version 4.1.0 or higher. Install R for your platform:
+
+- **Ubuntu/Linux**: 
+  ```bash
+  # Add CRAN repository for latest R version
+  sudo apt-get update
+  sudo apt-get install -y software-properties-common dirmngr
+  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+  sudo apt-get update
+  sudo apt-get install -y r-base r-base-dev
+  
+  # Verify installation
+  R --version
+  ```
+
+- **macOS**: 
+  ```bash
+  # Install using Homebrew (recommended)
+  brew install r
+  
+  # Or download from CRAN: https://cran.r-project.org/bin/macosx/
+  # Verify installation
+  R --version
+  ```
+
+- **Windows**: 
+  Download and install from https://cran.r-project.org/bin/windows/base/
+  
+  Verify installation by opening R console and checking version:
+  ```r
+  R.version.string
+  ```
+
+#### Installing Development Dependencies
+
+After installing R, install all required development dependencies:
+
+```r
+# Install devtools (required for package development)
+install.packages("devtools", repos = "https://cloud.r-project.org")
+
+# Install all package dependencies (Imports, Suggests, and development needs)
+# This reads DESCRIPTION file and installs everything needed
+devtools::install_dev_deps(dependencies = TRUE)
+```
+
+**Alternative approach** using pak (faster parallel installation):
+```r
+install.packages("pak", repos = "https://cloud.r-project.org")
+pak::local_install_dev_deps(dependencies = TRUE)
+```
+
+#### Verify Development Environment
+
+After installation, verify your development environment is properly configured:
+
+```r
+# Load devtools
+library(devtools)
+
+# Check package dependencies
+devtools::dev_sitrep()
+
+# Load the package in development mode
+devtools::load_all()
+
+# Run a quick check
+devtools::check_man()
+```
+
+**Note**: If you encounter issues with dependencies, particularly with system libraries, install the following system dependencies first:
+
+- **Ubuntu/Linux**:
+  ```bash
+  sudo apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libfontconfig1-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev
+  ```
+
+- **macOS**: Most system dependencies are handled by Homebrew, but you may need:
+  ```bash
+  brew install pkg-config cairo
+  ```
+
+- **Windows**: Install Rtools from https://cran.r-project.org/bin/windows/Rtools/ (choose version matching your R version)
+
 ### JAGS Installation (REQUIRED)
 
 **ALWAYS install JAGS before attempting to build, test, or run this package.** The package will fail without it.
@@ -237,6 +338,68 @@ to make snapshots platform-specific.
 **Symptom**: Tests timeout during CI.
 **Solution**: MCMC sampling can be slow. Tests use small iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 
+## Testing Requirements Before Code Changes
+
+**ALWAYS establish value-based unit tests BEFORE modifying any functions.** This ensures that changes preserve existing behavior and new behavior is correctly validated.
+
+### Testing Strategy
+
+Choose the appropriate testing approach based on the context:
+
+#### When to Use Snapshot Tests
+Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or `expect_snapshot_data()`) when:
+- Testing complex data structures (data.frames, lists, model outputs)
+- Validating MCMC outputs or statistical results
+- Output format stability is important
+- The exact values are less important than structural consistency
+
+**Examples from this repository:**
+```r
+# For data frames with numeric precision control
+dataset |> expect_snapshot_data(name = "sees-data")
+
+# For R objects with serialization
+prepped_data |> expect_snapshot_value(style = "serialize")
+
+# For simple output or error messages
+results <- post_summ(data) |> expect_no_error()
+testthat::expect_snapshot(results)
+```
+
+#### When to Use Explicit Value Tests
+Use explicit value tests (`expect_equal()`, `expect_identical()`, etc.) when:
+- Testing simple scalar outputs
+- Validating specific numeric thresholds or boundaries
+- Testing Boolean returns or categorical outputs
+- Exact values are critical for correctness
+
+**Examples:**
+```r
+# Testing exact numeric values
+expect_equal(calculate_mean(c(1, 2, 3)), 2)
+
+# Testing with tolerance for floating point
+expect_equal(calculate_ratio(3, 7), 0.4285714, tolerance = 1e-6)
+
+# Testing logical conditions
+expect_true(is_valid_input(data))
+expect_false(has_missing_values(complete_data))
+```
+
+#### Testing Best Practices
+- **Seed randomness**: Use `withr::local_seed()` or `withr::with_seed()` for reproducible tests involving random number generation
+- **Use small test cases**: Particularly for MCMC tests, use minimal iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to keep tests fast
+- **Platform-specific snapshots**: Use the `variant` parameter in snapshot functions when output differs by OS
+- **Test fixtures**: Store complex test data in `tests/testthat/fixtures/` for reuse
+- **Custom snapshot helpers**: Use `expect_snapshot_data()` for data frames with automatic CSV snapshot and numeric precision control
+
+### Test-Driven Workflow
+1. **Before modifying a function**: Write or verify existing tests capture the current behavior
+2. **Add new tests**: Create tests for the new functionality you're adding
+3. **Make changes**: Modify the function implementation
+4. **Run tests**: Validate all tests pass, updating snapshots only when changes are intentional
+5. **Review snapshots**: When snapshots change, review the diff to ensure changes are expected
+
 ## Code Style Guidelines
 
 - **Follow tidyverse style guide**: https://style.tidyverse.org
@@ -247,7 +410,8 @@ to make snapshots platform-specific.
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
-- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths
 
 ## Package Development Commands Summary
 
@@ -267,15 +431,18 @@ rmarkdown::render("README.Rmd") # Update README
 
 These instructions have been validated against the actual repository structure, workflows, and configuration files. When making changes:
 
-1. **ALWAYS** ensure JAGS is installed before any build/test operations
-2. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
-3. **ALWAYS** edit README.Rmd (not README.md) for README changes
-4. **ALWAYS** increment version in DESCRIPTION for PRs
-5. **ALWAYS** update NEWS.md for user-facing changes
-6. **ALWAYS** run tests before committing (`devtools::test()`)
-7. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
-8. **ALWAYS** run `devtools::document()` before requesting PR review
-9. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
-10. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+1. **ALWAYS** install R (>= 4.1.0) and all development dependencies when starting work on a PR
+2. **ALWAYS** ensure JAGS is installed before any build/test operations
+3. **ALWAYS** establish value-based unit tests (snapshot or explicit value tests) BEFORE modifying functions
+4. **ALWAYS** write tidy, clean, and well-organized code
+5. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
+6. **ALWAYS** edit README.Rmd (not README.md) for README changes
+7. **ALWAYS** increment version in DESCRIPTION for PRs
+8. **ALWAYS** update NEWS.md for user-facing changes
+9. **ALWAYS** run tests before committing (`devtools::test()`)
+10. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
