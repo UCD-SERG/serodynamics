@@ -127,7 +127,6 @@ The main function `run_mod()` fits a Bayesian MCMC model to estimate antibody dy
 
 ```{r}
 #| label: run-model
-#| eval: false
 # Note: This example uses reduced iterations for demonstration
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
@@ -150,7 +149,6 @@ After fitting the model, check convergence diagnostics:
 
 ```{r}
 #| label: diagnostics
-#| eval: false
 # Trace plots to assess chain mixing
 plot_jags_trace(fitted_model)
 
@@ -170,7 +168,6 @@ Plot the predicted antibody curves with credible intervals:
 
 ```{r}
 #| label: plot-curves
-#| eval: false
 plot_predicted_curve(
   fitted_model,
   case_data = simulated_data,
@@ -184,7 +181,6 @@ Extract and summarize the posterior estimates:
 
 ```{r}
 #| label: postprocess
-#| eval: false
 # Process JAGS output
 processed_output <- postprocess_jags_output(fitted_model)
 
@@ -199,7 +195,6 @@ You can stratify the analysis by a grouping variable:
 
 ```{r}
 #| label: stratified-example
-#| eval: false
 # Create stratified data
 strat1 <- sim_case_data(
   n = 30, 
