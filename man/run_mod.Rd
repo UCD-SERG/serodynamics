@@ -122,7 +122,7 @@ including the following:
 \item \code{nThin}: Thinning number (niter/nmc).
 \item \code{population_params}: Modeled population parameters by \code{Iteration},
 \code{Chain}, \code{Parameter}, \code{Iso_type}, and \code{Stratification}. Includes the
-following modeled population parameters::
+following modeled population parameters:
 \itemize{
 \item \code{mu.par} = The population mean of the hyperparameters.
 \item \code{prec.par} = The population covariance between the hyperparameters.
