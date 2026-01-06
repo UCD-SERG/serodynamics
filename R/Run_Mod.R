@@ -207,11 +207,11 @@ run_mod <- function(data,
   
   # Adding population parameters in as attributes
   jags_out <- jags_out |>
-    structure("population_params" = population_params)
+    structure(population_params = population_params)
   
   # Adding priors
   jags_out <- jags_out |>
-    structure("priors" = attributes(priorspec)$used_priors)
+    structure(priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
