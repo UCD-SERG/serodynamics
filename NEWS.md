@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
+  snapshot directories (which were identical), keeping only base snapshots and 
+  darwin-specific variants for macOS platform differences (#73).
+
 * Initial CRAN submission.
 * Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
 

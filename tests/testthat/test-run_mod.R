@@ -32,10 +32,16 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("sim-strat-curve-params", variant = system_os())
+      expect_snapshot_data(
+        "sim-strat-curve-params",
+        variant = darwin_variant()
+      )
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("sim-strat-fitted_residuals", variant = system_os())
+      expect_snapshot_data(
+        "sim-strat-fitted_residuals",
+        variant = darwin_variant()
+      )
     
   }
 )
@@ -66,10 +72,16 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("strat-curve-params", variant = system_os())
+      expect_snapshot_data(
+        "strat-curve-params",
+        variant = darwin_variant()
+      )
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("strat-fitted_residuals", variant = system_os())
+      expect_snapshot_data(
+        "strat-fitted_residuals",
+        variant = darwin_variant()
+      )
   }
 )
 
@@ -99,10 +111,16 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params", variant = system_os())
+      expect_snapshot_data(
+        "nostrat-curve-params",
+        variant = darwin_variant()
+      )
     
     attributes(results)$fitted_residuals |>
-      expect_snapshot_data("nostrat-fitted_residuals", variant = system_os())
+      expect_snapshot_data(
+        "nostrat-fitted_residuals",
+        variant = darwin_variant()
+      )
   }
 )
 
@@ -133,7 +151,10 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-withpost", variant = system_os())
+      expect_snapshot_data(
+        "nostrat-curve-params-withpost",
+        variant = darwin_variant()
+      )
   }
 )
 
@@ -168,6 +189,9 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
-      expect_snapshot_data("nostrat-curve-params-specpriors", variant = system_os())
+      expect_snapshot_data(
+        "nostrat-curve-params-specpriors",
+        variant = darwin_variant()
+      )
   }
 )
