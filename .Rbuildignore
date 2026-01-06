@@ -30,3 +30,4 @@
 ^\.quarto$
 ^\.vscode$
 ^\.devcontainer$
+^DEVELOPMENT\.md$
