@@ -273,5 +273,6 @@ These instructions have been validated against the actual repository structure, 
 7. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
 8. **ALWAYS** run `devtools::document()` before requesting PR review
 9. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+10. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
