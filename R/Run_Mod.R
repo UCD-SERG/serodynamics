@@ -52,7 +52,7 @@
 #'   - `population_params`: Modeled population parameters, indexed by `Iteration`, 
 #'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
 #'   following modeled population parameters:
-#'     - `mu.par` = The population mean of the hyperparameters.  
+#'     - `mu.par` = The population means of the host-specific model parameters (on logarithmic scales).
 #'     - `prec.par` = The population covariance between the hyperparameters.  
 #'     - `prec.logy` = The population variance among each antigen/isotype.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
