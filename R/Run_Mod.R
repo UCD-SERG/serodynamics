@@ -157,16 +157,16 @@ run_mod <- function(data,
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
     
     # Unpacking the mcmc object
-    jags_unpack_bind <- unpack_jags(jags_packed)
+    jags_unpacked <- unpack_jags(jags_packed)
     
     # Merging isodat in to ensure we are classifying antigen_iso. 
-    jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
+    jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat, 
                                          by = "Subnum")
     
     # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
       dplyr::mutate(Subject = as.character(dplyr::row_number()))
-    jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
+    jags_final <- dplyr::left_join(jags_unpacked, ids, 
                                    by = "Subject") |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject_mcmc" = "attr.longdata...ids..")) |>
