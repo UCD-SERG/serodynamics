@@ -1,0 +1,103 @@
+{
+  "r.rterm.linux": "/usr/bin/R",
+  "r.rterm.mac": "/usr/local/bin/R",
+  "r.rterm.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\R.exe",
+  "r.rpath.linux": "/usr/bin/R",
+  "r.rpath.mac": "/usr/local/bin/R",
+  "r.rpath.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\R.exe",
+  "r.alwaysUseActiveTerminal": true,
+  "r.bracketedPaste": true,
+  "r.sessionWatcher": true,
+  "r.rtermSendDelay": 0,
+  
+  "[r]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.formatOnSave": false,
+    "editor.wordWrap": "on",
+    "editor.rulers": [80, 100],
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.trimFinalNewlines": true
+  },
+  
+  "[rmd]": {
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true
+  },
+  
+  "files.associations": {
+    "*.Rmd": "rmd",
+    "*.rmd": "rmd",
+    "*.R": "r",
+    "*.r": "r",
+    ".Rprofile": "r",
+    ".Renviron": "properties"
+  },
+  
+  "files.exclude": {
+    "**/.Rproj.user": true,
+    "**/.Rhistory": true,
+    "**/.RData": true,
+    "**/.Ruserdata": true,
+    "**/serodynamics.Rcheck": true,
+    "**/*.tar.gz": true,
+    "**/*.tgz": true
+  },
+  
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/.Rproj.user": true,
+    "**/serodynamics.Rcheck": true,
+    "**/docs": true,
+    "**/*.tar.gz": true
+  },
+  
+  "editor.formatOnSave": false,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "never"
+  },
+  
+  "github.copilot.enable": {
+    "*": true,
+    "r": true,
+    "rmd": true,
+    "markdown": true,
+    "yaml": true
+  },
+  
+  "terminal.integrated.env.linux": {
+    "R_LIBS_USER": "${workspaceFolder}/renv/library"
+  },
+  
+  "terminal.integrated.env.osx": {
+    "R_LIBS_USER": "${workspaceFolder}/renv/library"
+  },
+  
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  
+  "git.ignoreLimitWarning": true,
+  
+  "files.watcherExclude": {
+    "**/.Rproj.user/**": true,
+    "**/serodynamics.Rcheck/**": true,
+    "**/docs/**": true
+  },
+  
+  "yaml.schemas": {
+    "https://json.schemastore.org/github-workflow.json": ".github/workflows/*.{yml,yaml}"
+  },
+  
+  "editor.defaultFormatter": null,
+  
+  "R.lsp.debug": false,
+  "r.lsp.diagnostics": true,
+  "r.lsp.lang": "en",
+  
+  "task.autoDetect": "off",
+  
+  "testing.automaticallyOpenPeekView": "never"
+}

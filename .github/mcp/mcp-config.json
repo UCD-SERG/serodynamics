@@ -1,0 +1,60 @@
+{
+  "mcpServers": {
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/home/runner/work/serodynamics/serodynamics"
+      ],
+      "description": "Provides file system access to the serodynamics repository for reading and writing files, searching code, and managing the project structure"
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "description": "Integrates with GitHub for repository operations, issue tracking, pull requests, and workflow management"
+    },
+    "git": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-git",
+        "--repository",
+        "/home/runner/work/serodynamics/serodynamics"
+      ],
+      "description": "Provides Git version control operations including status, diff, log, commit, and branch management"
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-brave-search"
+      ],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "description": "Enables web search capabilities for finding R package documentation, CRAN resources, and troubleshooting information"
+    }
+  },
+  "globalShortcut": "CommandOrControl+Shift+.",
+  "hints": {
+    "development": [
+      "Use the filesystem server to navigate R source files in the R/ directory",
+      "Use the github server to check CI/CD workflow status and review pull requests",
+      "Use the git server to check repository status before making commits",
+      "Use brave-search to look up R package documentation or CRAN resources when needed"
+    ],
+    "r-package-workflow": [
+      "Always run devtools::document() after modifying roxygen2 comments",
+      "Use devtools::test() to run tests before committing",
+      "Check linting with lintr::lint_package() before pushing",
+      "Ensure JAGS is installed before running tests or examples"
+    ]
+  }
+}
