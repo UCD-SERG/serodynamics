@@ -90,9 +90,9 @@ run_mod <- function(data,
     "Iteration" = NULL,
     "Chain" = NULL,
     "value" = NULL,
+    "Subject" = NULL,
     "Parameter" = NULL,
     "Iso_type" = NULL,
-    "Subject" = NULL,
     "Stratification" = NULL
   )
 
