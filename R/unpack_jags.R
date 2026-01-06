@@ -10,10 +10,6 @@
 #' @keywords internal
 unpack_jags <- function(data) {
 
-  param_recode <- function(x) {
-    dplyr::recode(x, "1" = "y0", "2" = "y1", "3" = "t1", "4" = "alpha", 
-                  "5" = "shape")
-  }
   # Unpacking mu.par
   # Separating population parameters from the rest of the data
   regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
