@@ -41,8 +41,15 @@ calc_percent() {
         echo "N/A"
     else
         local diff=$((experiment - control))
-        local percent=$((diff * 100 / control))
-        echo "${percent}%"
+        # Use absolute value for percentage calculation to avoid issues with bc
+        local abs_diff=${diff#-}
+        local percent=$((abs_diff * 100 / control))
+        # Add sign back
+        if [ "$diff" -lt 0 ]; then
+            echo "-${percent}%"
+        else
+            echo "+${percent}%"
+        fi
     fi
 }
 

@@ -136,7 +136,7 @@ For your reference:
 | EXPERIMENT_PAK_PREFER_BINARY.md | ~130 | ~1,300 | 5.1 KB |
 | EXPERIMENT_SUMMARY.md | ~298 | ~2,600 | 10.5 KB |
 | EXPERIMENT_RESULTS_TEMPLATE.md | ~136 | ~800 | 4.3 KB |
-| EXPERIMENT_INDEX.md (this file) | ~135 | ~850 | 5.0 KB |
+| EXPERIMENT_INDEX.md (this file) | ~200 | ~850 | 5.0 KB |
 
 ## 🎓 Learning Path
 
