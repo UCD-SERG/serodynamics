@@ -49,7 +49,7 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters by `Iteration`, 
+#'   - `population_params`: Modeled population parameters, indexed by `Iteration`, 
 #'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
 #'   following modeled population parameters:
 #'     - `mu.par` = The population mean of the hyperparameters.  
