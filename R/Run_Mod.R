@@ -144,10 +144,10 @@ run_mod <- function(data,
     jags_post_final[[i]] <- jags_post
 
     # Unpacking and cleaning MCMC output.
-    jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
+    jags_packed <- ggmcmc::ggs(jags_post[["mcmc"]])
 
     # Adding attributes
-    mod_atts <- attributes(jags_unpack)
+    mod_atts <- attributes(jags_packed)
     # Only keeping necessary attributes
     mod_atts <- mod_atts[4:8]
     
@@ -157,7 +157,7 @@ run_mod <- function(data,
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
     
     # Unpacking the mcmc object
-    jags_unpack_bind <- unpack_jags(jags_unpack)
+    jags_unpack_bind <- unpack_jags(jags_packed)
     
     # Merging isodat in to ensure we are classifying antigen_iso. 
     jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
