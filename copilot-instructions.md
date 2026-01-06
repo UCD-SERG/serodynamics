@@ -18,6 +18,44 @@ peak, shape parameter, and decay rate.
 
 ## Critical Setup Requirements
 
+### Quick Start with Docker (RECOMMENDED)
+
+**For faster setup, consider using the rocker/verse Docker image** which
+includes R, RStudio, tidyverse, TeX, and many common R packages
+pre-installed. This can significantly speed up Copilot sessions by
+avoiding lengthy installation steps.
+
+To use Docker:
+
+``` bash
+# Pull the rocker/verse image (includes R >= 4.1.0, tidyverse, devtools, and more)
+docker pull rocker/verse:latest
+
+# Run container with repository mounted
+docker run -d \
+  -v /home/runner/work/serodynamics/serodynamics:/workspace \
+  -w /workspace \
+  --name serodynamics-dev \
+  rocker/verse:latest
+
+# Execute commands in the container
+docker exec serodynamics-dev R -e "devtools::install_dev_deps()"
+docker exec serodynamics-dev R -e "devtools::check()"
+
+# Or start an interactive R session
+docker exec -it serodynamics-dev R
+
+# Clean up when done
+docker stop serodynamics-dev
+docker rm serodynamics-dev
+```
+
+**Note**: You will still need to install JAGS inside the Docker
+container (see JAGS Installation section below).
+
+If Docker is not available or you prefer a native installation, follow
+the manual installation instructions below.
+
 ### R Installation and Development Dependencies (REQUIRED)
 
 **ALWAYS install R and all development dependencies when starting work
@@ -138,6 +176,22 @@ system libraries, install the following system dependencies first:
 
 **ALWAYS install JAGS before attempting to build, test, or run this
 package.** The package will fail without it.
+
+#### Installing JAGS in Docker (if using rocker/verse)
+
+``` bash
+# Install JAGS inside the Docker container
+docker exec serodynamics-dev apt-get update
+docker exec serodynamics-dev apt-get install -y jags
+
+# Install the R interface
+docker exec serodynamics-dev R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+
+# Verify installation
+docker exec serodynamics-dev R -e 'runjags::testjags()'
+```
+
+#### Installing JAGS on your local system
 
 - **Ubuntu/Linux**:
   `sudo apt-get update && sudo apt-get install -y jags`
