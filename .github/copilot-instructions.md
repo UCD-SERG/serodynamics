@@ -486,13 +486,12 @@ These instructions have been validated against the actual repository structure, 
 4. **ALWAYS** write tidy, clean, and well-organized code
 5. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
 6. **ALWAYS** edit README.Rmd (not README.md) for README changes
-7. **ALWAYS** increment version in DESCRIPTION for PRs to be one ahead of the main branch
+7. **ALWAYS** increment dev version number to be one ahead of main branch before requesting PR review
 8. **ALWAYS** update NEWS.md for user-facing changes
 9. **ALWAYS** run tests before committing (`devtools::test()`)
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
 11. **ALWAYS** run `devtools::document()` before requesting PR review
 12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
 13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
-14. **ALWAYS** increment dev version number to be one ahead of main branch before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
