@@ -195,7 +195,6 @@ run_mod <- function(data,
     dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
   
   # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out) 
