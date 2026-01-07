@@ -12,6 +12,56 @@
 
 ## Critical Setup Requirements
 
+### Copilot Setup Workflow (Automatic Environment Configuration)
+
+The repository includes a **`.github/workflows/copilot-setup-steps.yml`** workflow that automatically configures the GitHub Copilot coding agent's environment with all required dependencies. This workflow runs automatically when Copilot starts working on a task, ensuring a consistent and properly configured development environment.
+
+#### What the Workflow Does
+
+The copilot-setup-steps.yml workflow:
+
+1. **Installs system dependencies**: All required Ubuntu packages for R package development (libcurl, libssl, libxml2, graphics libraries, etc.)
+2. **Installs JAGS 4.3.1**: The required Bayesian MCMC system library
+3. **Sets up R (>= 4.1.0)**: Installs the R release version that meets the package's minimum requirement
+4. **Installs R package dependencies**: All Imports, Suggests, and development dependencies from DESCRIPTION
+5. **Verifies installation**: Runs comprehensive checks to ensure JAGS and R are properly configured
+
+#### When It Runs
+
+The workflow runs in the following scenarios:
+
+- **Automatically for Copilot**: When the GitHub Copilot coding agent starts working on a task, it uses this workflow to prepare the environment
+- **On workflow changes**: When `.github/workflows/copilot-setup-steps.yml` is modified (via push or pull request)
+- **Manual testing**: Can be triggered manually from the repository's "Actions" tab using workflow_dispatch
+
+#### Integration with CI Workflows
+
+The copilot-setup-steps.yml workflow complements but does not replace the CI workflows:
+
+- **Purpose**: Configures the Copilot agent's environment for development work, not for CI testing
+- **Scope**: Runs on ubuntu-latest only, while CI workflows test on multiple platforms (Ubuntu, macOS, Windows) and R versions (release, devel, oldrel-1)
+- **Alignment**: Uses the same JAGS installation and R setup approach as the R-CMD-check.yaml workflow, ensuring consistency
+- **Timeout**: Limited to 55 minutes (Copilot maximum is 59 minutes)
+
+#### Verification Steps
+
+The workflow includes detailed verification logging:
+
+- **JAGS verification**: Checks system JAGS version, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
+- **R version check**: Ensures R >= 4.1.0 requirement is met
+- **Package verification**: Lists key installed packages (devtools, rcmdcheck, lintr, spelling, testthat)
+- **Development environment check**: Runs `devtools::dev_sitrep()` for comprehensive environment validation
+
+#### Customization
+
+If you need to modify the Copilot environment setup:
+
+1. Edit `.github/workflows/copilot-setup-steps.yml`
+2. Test changes by pushing to a branch or using workflow_dispatch
+3. Ensure the job name remains `copilot-setup-steps` (required by Copilot)
+4. Keep timeout under 59 minutes
+5. Update this documentation to reflect any significant changes
+
 ### Quick Start with Docker (RECOMMENDED)
 
 **For faster setup, consider using the rocker/verse Docker image** which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed. This can significantly speed up Copilot sessions by avoiding lengthy installation steps.
@@ -294,6 +344,8 @@ The following workflows run on every PR. **All must pass** for merge:
 8. **version-check.yaml**: Verifies DESCRIPTION version number increased vs. main branch. Run `usethis::use_version()` to increment. (~1 min)
 
 9. **pkgdown.yaml**: Builds pkgdown website on PR (preview), tags, and main branch pushes. Requires Quarto setup. (~5-7 min)
+
+10. **copilot-setup-steps.yml**: Configures the GitHub Copilot coding agent's environment automatically. Runs when Copilot starts work, when the workflow file changes, or via manual dispatch. Not a required check for PR merges. See "Copilot Setup Workflow" section for details. (~5-10 min)
 
 ### PR Commands
 
