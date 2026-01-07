@@ -59,6 +59,39 @@ Use tasks via `Ctrl+Shift+P` → "Tasks: Run Task" or the Command Palette.
 
 ## Critical Setup Requirements
 
+### Quick Start with Docker (RECOMMENDED)
+
+**For faster setup, consider using the rocker/verse Docker image** which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed. This can significantly speed up Copilot sessions by avoiding lengthy installation steps.
+
+To use Docker:
+
+```bash
+# Pull the rocker/verse image (includes R >= 4.1.0, tidyverse, devtools, and more)
+docker pull rocker/verse:latest
+
+# Run container with repository mounted
+docker run -d \
+  -v /home/runner/work/serodynamics/serodynamics:/workspace \
+  -w /workspace \
+  --name serodynamics-dev \
+  rocker/verse:latest
+
+# Execute commands in the container
+docker exec serodynamics-dev R -e "devtools::install_dev_deps()"
+docker exec serodynamics-dev R -e "devtools::check()"
+
+# Or start an interactive R session
+docker exec -it serodynamics-dev R
+
+# Clean up when done
+docker stop serodynamics-dev
+docker rm serodynamics-dev
+```
+
+**Note**: You will still need to install JAGS inside the Docker container (see JAGS Installation section below).
+
+If Docker is not available or you prefer a native installation, follow the manual installation instructions below.
+
 ### R Installation and Development Dependencies (REQUIRED)
 
 **ALWAYS install R and all development dependencies when starting work on a pull request.** This ensures you avoid issues caused by missing dependencies or environment misconfiguration during the development process.
@@ -163,6 +196,22 @@ devtools::check_man()
 ### JAGS Installation (REQUIRED)
 
 **ALWAYS install JAGS before attempting to build, test, or run this package.** The package will fail without it.
+
+#### Installing JAGS in Docker (if using rocker/verse)
+
+```bash
+# Install JAGS inside the Docker container
+docker exec serodynamics-dev apt-get update
+docker exec serodynamics-dev apt-get install -y jags
+
+# Install the R interface
+docker exec serodynamics-dev R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+
+# Verify installation
+docker exec serodynamics-dev R -e 'runjags::testjags()'
+```
+
+#### Installing JAGS on your local system
 
 - **Ubuntu/Linux**: `sudo apt-get update && sudo apt-get install -y jags`
 - **macOS**: Download from https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
@@ -400,6 +449,68 @@ to make snapshots platform-specific.
 **Symptom**: Tests timeout during CI.
 **Solution**: MCMC sampling can be slow. Tests use small iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 
+## Testing Requirements Before Code Changes
+
+**ALWAYS establish value-based unit tests BEFORE modifying any functions.** This ensures that changes preserve existing behavior and new behavior is correctly validated.
+
+### Testing Strategy
+
+Choose the appropriate testing approach based on the context:
+
+#### When to Use Snapshot Tests
+Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or `expect_snapshot_data()`) when:
+- Testing complex data structures (data.frames, lists, model outputs)
+- Validating MCMC outputs or statistical results
+- Output format stability is important
+- The exact values are less important than structural consistency
+
+**Examples from this repository:**
+```r
+# For data frames with numeric precision control
+dataset |> expect_snapshot_data(name = "sees-data")
+
+# For R objects with serialization
+prepped_data |> expect_snapshot_value(style = "serialize")
+
+# For simple output or error messages
+results <- post_summ(data) |> expect_no_error()
+testthat::expect_snapshot(results)
+```
+
+#### When to Use Explicit Value Tests
+Use explicit value tests (`expect_equal()`, `expect_identical()`, etc.) when:
+- Testing simple scalar outputs
+- Validating specific numeric thresholds or boundaries
+- Testing Boolean returns or categorical outputs
+- Exact values are critical for correctness
+
+**Examples:**
+```r
+# Testing exact numeric values
+expect_equal(calculate_mean(c(1, 2, 3)), 2)
+
+# Testing with tolerance for floating point
+expect_equal(calculate_ratio(3, 7), 0.4285714, tolerance = 1e-6)
+
+# Testing logical conditions
+expect_true(is_valid_input(data))
+expect_false(has_missing_values(complete_data))
+```
+
+#### Testing Best Practices
+- **Seed randomness**: Use `withr::local_seed()` or `withr::with_seed()` for reproducible tests involving random number generation
+- **Use small test cases**: Particularly for MCMC tests, use minimal iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to keep tests fast
+- **Platform-specific snapshots**: Use the `variant` parameter in snapshot functions when output differs by OS
+- **Test fixtures**: Store complex test data in `tests/testthat/fixtures/` for reuse
+- **Custom snapshot helpers**: Use `expect_snapshot_data()` for data frames with automatic CSV snapshot and numeric precision control
+
+### Test-Driven Workflow
+1. **Before modifying a function**: Write or verify existing tests capture the current behavior
+2. **Add new tests**: Create tests for the new functionality you're adding
+3. **Make changes**: Modify the function implementation
+4. **Run tests**: Validate all tests pass, updating snapshots only when changes are intentional
+5. **Review snapshots**: When snapshots change, review the diff to ensure changes are expected
+
 ## Code Style Guidelines
 
 - **Follow tidyverse style guide**: https://style.tidyverse.org
@@ -410,7 +521,8 @@ to make snapshots platform-specific.
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
-- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths
 
 ## Package Development Commands Summary
 
@@ -432,14 +544,16 @@ These instructions have been validated against the actual repository structure, 
 
 1. **ALWAYS** install R (>= 4.1.0) and all development dependencies when starting work on a PR
 2. **ALWAYS** ensure JAGS is installed before any build/test operations
-3. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
-4. **ALWAYS** edit README.Rmd (not README.md) for README changes
-5. **ALWAYS** increment version in DESCRIPTION for PRs
-6. **ALWAYS** update NEWS.md for user-facing changes
-7. **ALWAYS** run tests before committing (`devtools::test()`)
-8. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
-9. **ALWAYS** run `devtools::document()` before requesting PR review
-10. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
-11. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+3. **ALWAYS** establish value-based unit tests (snapshot or explicit value tests) BEFORE modifying functions
+4. **ALWAYS** write tidy, clean, and well-organized code
+5. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
+6. **ALWAYS** edit README.Rmd (not README.md) for README changes
+7. **ALWAYS** increment dev version number to be one ahead of main branch before requesting PR review
+8. **ALWAYS** update NEWS.md for user-facing changes
+9. **ALWAYS** run tests before committing (`devtools::test()`)
+10. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
