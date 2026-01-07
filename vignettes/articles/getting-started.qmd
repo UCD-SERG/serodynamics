@@ -64,14 +64,16 @@ head(nepal_sees)
 
 ### Prepare the Data
 
-Convert the data to a `case_data` object:
+Convert the data to a `case_data` object
+(`nepal_sees` already is a `case_data` object, 
+but we can reconvert it just to demonstrate).
 
 ```{r}
 #| label: prepare-data
 case_data <- as_case_data(
   nepal_sees,
-  id_var = "person_id",
-  time_var = "dayssincefeveronset",
+  id_var = "id",
+  time_in_days = "dayssincefeveronset",
   value_var = "result",
   biomarker_var = "antigen_iso"
 )
@@ -170,8 +172,8 @@ Plot the predicted antibody curves with credible intervals:
 #| label: plot-curves
 plot_predicted_curve(
   fitted_model,
-  case_data = simulated_data,
-  n_samples = 100  # Number of posterior samples to plot
+  id = serocalculator::ids(case_data)[1],
+  antigen_iso = case_data$antigen_iso[1]
 )
 ```
 
