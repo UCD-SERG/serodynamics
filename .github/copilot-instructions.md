@@ -10,6 +10,53 @@
 - **Key Dependencies**: runjags, rjags, JAGS 4.3.1, serocalculator, ggmcmc, dplyr, ggplot2
 - **Lifecycle**: Experimental (under active development)
 
+## Development Environment Options
+
+The repository provides multiple ways to set up your development environment:
+
+### Option 1: Dev Container (Recommended for consistency)
+
+Use the preconfigured development container for a fully automated setup:
+
+1. Install Docker Desktop and VS Code with Dev Containers extension
+2. Open the repository in VS Code
+3. Click "Reopen in Container" when prompted
+4. All dependencies (R, JAGS, system libraries) are installed automatically
+
+See `.devcontainer/README.md` for details.
+
+### Option 2: Local Installation (Traditional)
+
+Install R, JAGS, and dependencies directly on your system (see Critical Setup Requirements below).
+
+### Option 3: GitHub Codespaces
+
+Use the dev container configuration in a cloud environment:
+1. Go to the repository on GitHub
+2. Click "Code" → "Codespaces" → "Create codespace"
+3. Development environment is ready in your browser
+
+## Model Context Protocol (MCP) Integration
+
+The repository includes MCP server configurations in `.github/mcp/mcp-config.json` for enhanced AI-assisted development:
+
+- **Filesystem Server**: Navigate and edit repository files
+- **GitHub Server**: Check CI/CD status, review PRs, manage issues
+- **Git Server**: Version control operations (status, diff, commit, branch)
+- **Brave Search Server**: Look up R documentation and CRAN resources
+
+These servers enhance GitHub Copilot and other AI assistants with context-aware capabilities. See `.github/mcp/README.md` for setup instructions.
+
+## VS Code Configuration
+
+The `.vscode/` directory contains optimized settings for R package development:
+
+- **settings.json**: R-specific editor settings, file associations, and Copilot configuration
+- **extensions.json**: Recommended VS Code extensions for R development
+- **tasks.json**: Quick tasks for common operations (document, test, check, lint)
+
+Use tasks via `Ctrl+Shift+P` → "Tasks: Run Task" or the Command Palette.
+
 ## Critical Setup Requirements
 
 ### Quick Start with Docker (RECOMMENDED)
@@ -58,7 +105,7 @@ The package requires R version 4.1.0 or higher. Install R for your platform:
   # Add CRAN repository for latest R version
   sudo apt-get update
   sudo apt-get install -y software-properties-common dirmngr
-  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
   sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
   sudo apt-get update
   sudo apt-get install -y r-base r-base-dev
@@ -338,6 +385,21 @@ Team members can trigger actions by commenting on PRs:
 
 - **pkgdown/**: pkgdown website configuration
   - `_pkgdown.yml`: Site structure, reference organization
+
+- **.github/**: GitHub configuration and workflows
+  - `.github/workflows/`: CI/CD workflow definitions
+  - `.github/mcp/`: Model Context Protocol server configurations
+  - `.github/copilot-instructions.md`: Custom instructions for GitHub Copilot
+
+- **.vscode/**: VS Code workspace configuration
+  - `settings.json`: Editor settings for R development
+  - `extensions.json`: Recommended VS Code extensions
+  - `tasks.json`: Quick tasks for common R package operations
+
+- **.devcontainer/**: Development container configuration
+  - `devcontainer.json`: Container specification and VS Code integration
+  - `setup.sh`: Automated environment setup script
+  - `README.md`: Dev container usage documentation
 
 ### Configuration Files
 

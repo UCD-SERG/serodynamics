@@ -1,0 +1,164 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "R: Load Package",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::load_all()"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Document Package",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::document()"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Run Tests",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::test()"
+      ],
+      "group": {
+        "kind": "test",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Check Package",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::check()"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Lint Package",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "lintr::lint_package()"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Spell Check",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "spelling::spell_check_package()"
+      ],
+      "group": "test",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Build README",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "rmarkdown::render('README.Rmd')"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Install Dependencies",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::install_dev_deps(dependencies = TRUE)"
+      ],
+      "group": "build",
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": true,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "R: Build Package",
+      "type": "shell",
+      "command": "Rscript",
+      "args": [
+        "-e",
+        "devtools::build()"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "echo": true,
+        "reveal": "always",
+        "focus": false,
+        "panel": "shared"
+      },
+      "problemMatcher": []
+    }
+  ]
+}
