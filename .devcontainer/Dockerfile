@@ -26,8 +26,8 @@ RUN apt-get update && apt-get install -y \
 
 # Install rjags and runjags
 # Note: rjags requires source installation to properly link with JAGS system library
-RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); \
-    install.packages('rjags', type = 'source'); \
+RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')) && \
+    install.packages('rjags', type = 'source') && \
     install.packages('runjags')"
 
 # Verify JAGS installation

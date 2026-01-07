@@ -13,6 +13,9 @@ ln -sf /commandhistory/.bash_history /home/rstudio/.bash_history
 
 # Install project-specific R dependencies
 echo "Installing R package dependencies..."
-Rscript -e 'devtools::install_dev_deps(dependencies = TRUE)'
+if ! Rscript -e 'devtools::install_dev_deps(dependencies = TRUE)'; then
+    echo "Error: Failed to install R dependencies. Please check the output above for details."
+    exit 1
+fi
 
 echo "Setup complete! The environment is ready for development."
