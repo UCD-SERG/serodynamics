@@ -6,8 +6,6 @@
 # more info: https://github.com/rstudio/education-workflows/tree/main/examples#deploy-pkgdown-to-github-pages-with-pr-previews-and-tagged-versions
 on:
   pull_request:
-    branches:
-      - main
     types:
       - opened
       - reopened
