@@ -1,5 +1,7 @@
 # serodynamics (development version)
 
+* Added `.github/copilot-setup-steps.yml` for structured environment setup automation with GitHub Copilot Workspace.
+
 * Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
   snapshot directories (which were identical), keeping only base snapshots and 
   darwin-specific variants for macOS platform differences (#73).

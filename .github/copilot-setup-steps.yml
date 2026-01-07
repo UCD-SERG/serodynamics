@@ -1,0 +1,307 @@
+# GitHub Copilot Setup Steps for serodynamics
+#
+# This file provides structured setup instructions for GitHub Copilot Workspace
+# to automate environment configuration when working on this R package.
+#
+# For detailed instructions, see copilot-instructions.md
+
+name: serodynamics Development Environment Setup
+description: Setup steps for developing the serodynamics R package
+
+# Platform-specific setup steps
+setup:
+  # Docker setup (recommended for faster setup)
+  docker:
+    enabled: true
+    recommended: true
+    image: rocker/verse:latest
+    steps:
+      - name: Pull Docker image
+        command: docker pull rocker/verse:latest
+        description: Pull rocker/verse image with R, RStudio, tidyverse, and TeX pre-installed
+      
+      - name: Run container
+        command: |
+          docker run -d \
+            -v /home/runner/work/serodynamics/serodynamics:/workspace \
+            -w /workspace \
+            --name serodynamics-dev \
+            rocker/verse:latest
+        description: Start container with repository mounted
+      
+      - name: Install JAGS in container
+        command: |
+          docker exec serodynamics-dev apt-get update
+          docker exec serodynamics-dev apt-get install -y jags
+        description: Install JAGS statistical software
+      
+      - name: Install R JAGS interface
+        command: docker exec serodynamics-dev R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+        description: Install rjags R package
+      
+      - name: Install development dependencies
+        command: docker exec serodynamics-dev R -e "devtools::install_dev_deps(dependencies = TRUE)"
+        description: Install all R package dependencies
+      
+      - name: Verify JAGS installation
+        command: docker exec serodynamics-dev R -e 'runjags::testjags()'
+        description: Test JAGS installation
+        verification: true
+      
+      - name: Verify development environment
+        command: docker exec serodynamics-dev R -e 'devtools::dev_sitrep()'
+        description: Check development environment status
+        verification: true
+
+  # Ubuntu/Linux native setup
+  ubuntu:
+    enabled: true
+    platform: linux
+    steps:
+      - name: Install system dependencies
+        command: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            software-properties-common \
+            dirmngr \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev
+        description: Install required system libraries
+      
+      - name: Add CRAN repository
+        command: |
+          wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+          sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+          sudo apt-get update
+        description: Add CRAN repository for latest R version
+      
+      - name: Install R
+        command: sudo apt-get install -y r-base r-base-dev
+        description: Install R (>= 4.1.0)
+        required_version: "4.1.0"
+      
+      - name: Verify R installation
+        command: R --version
+        description: Verify R version
+        verification: true
+      
+      - name: Install JAGS
+        command: sudo apt-get update && sudo apt-get install -y jags
+        description: Install JAGS statistical software
+      
+      - name: Install devtools
+        command: R -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
+        description: Install devtools package
+      
+      - name: Install rjags
+        command: R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+        description: Install rjags R package
+      
+      - name: Install development dependencies
+        command: R -e 'devtools::install_dev_deps(dependencies = TRUE)'
+        description: Install all package dependencies
+      
+      - name: Verify JAGS installation
+        command: R -e 'runjags::testjags()'
+        description: Test JAGS installation
+        verification: true
+      
+      - name: Verify development environment
+        command: R -e 'devtools::dev_sitrep()'
+        description: Check development environment status
+        verification: true
+
+  # macOS native setup
+  macos:
+    enabled: true
+    platform: darwin
+    steps:
+      - name: Install R via Homebrew
+        command: brew install r
+        description: Install R using Homebrew (recommended)
+        required_version: "4.1.0"
+        alternative: Download from https://cran.r-project.org/bin/macosx/
+      
+      - name: Verify R installation
+        command: R --version
+        description: Verify R version
+        verification: true
+      
+      - name: Install system dependencies
+        command: brew install pkg-config cairo
+        description: Install required system libraries
+      
+      - name: Install JAGS
+        command: echo "Download and install from https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg"
+        description: Install JAGS (manual download required)
+        manual: true
+        url: https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
+      
+      - name: Install devtools
+        command: R -e 'install.packages("devtools", repos = "https://cloud.r-project.org")'
+        description: Install devtools package
+      
+      - name: Install rjags
+        command: R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+        description: Install rjags R package
+      
+      - name: Install development dependencies
+        command: R -e 'devtools::install_dev_deps(dependencies = TRUE)'
+        description: Install all package dependencies
+        alternative_command: R -e 'pak::local_install_dev_deps(dependencies = TRUE)'
+        alternative_note: Using pak for faster parallel installation
+      
+      - name: Verify JAGS installation
+        command: R -e 'runjags::testjags()'
+        description: Test JAGS installation
+        verification: true
+      
+      - name: Verify development environment
+        command: R -e 'devtools::dev_sitrep()'
+        description: Check development environment status
+        verification: true
+
+  # Windows native setup
+  windows:
+    enabled: true
+    platform: win32
+    steps:
+      - name: Install R
+        command: echo "Download and install from https://cran.r-project.org/bin/windows/base/"
+        description: Install R (>= 4.1.0)
+        manual: true
+        url: https://cran.r-project.org/bin/windows/base/
+        required_version: "4.1.0"
+      
+      - name: Install Rtools
+        command: echo "Download and install from https://cran.r-project.org/bin/windows/Rtools/"
+        description: Install Rtools (choose version matching your R version)
+        manual: true
+        url: https://cran.r-project.org/bin/windows/Rtools/
+      
+      - name: Verify R installation
+        command: R -e 'R.version.string'
+        description: Verify R version
+        verification: true
+      
+      - name: Install JAGS
+        command: echo "Download and install from https://sourceforge.net/projects/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe"
+        description: Install JAGS (manual download required)
+        manual: true
+        url: https://sourceforge.net/projects/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+      
+      - name: Install devtools
+        command: R -e "install.packages('devtools', repos = 'https://cloud.r-project.org')"
+        description: Install devtools package
+      
+      - name: Install rjags
+        command: R -e "install.packages('rjags', repos = 'https://cloud.r-project.org', type = 'source')"
+        description: Install rjags R package
+      
+      - name: Install development dependencies
+        command: R -e "devtools::install_dev_deps(dependencies = TRUE)"
+        description: Install all package dependencies
+      
+      - name: Verify JAGS installation
+        command: R -e "runjags::testjags()"
+        description: Test JAGS installation
+        verification: true
+      
+      - name: Verify development environment
+        command: R -e "devtools::dev_sitrep()"
+        description: Check development environment status
+        verification: true
+
+# Common verification steps (run after platform-specific setup)
+verification:
+  - name: Load package in development mode
+    command: R -e 'devtools::load_all()'
+    description: Load the package to test basic functionality
+  
+  - name: Check documentation
+    command: R -e 'devtools::check_man()'
+    description: Verify documentation is properly formatted
+  
+  - name: Test JAGS connection
+    command: R -e 'library(rjags); library(runjags); runjags::findJAGS()'
+    description: Verify JAGS can be found and loaded
+
+# Required software versions
+requirements:
+  r:
+    version: ">= 4.1.0"
+    description: R programming language
+  
+  jags:
+    version: ">= 4.3.1"
+    description: Just Another Gibbs Sampler (JAGS) for Bayesian MCMC
+  
+  packages:
+    - devtools
+    - rjags
+    - runjags
+    - serocalculator
+    - ggmcmc
+    - dplyr
+    - ggplot2
+
+# Quick start recommendation
+recommended_approach:
+  description: Use Docker with rocker/verse image for fastest setup
+  reason: Includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed
+  setup_time: ~5-10 minutes
+  steps_reference: docker
+
+# Notes and warnings
+notes:
+  - JAGS must be installed before the package can be built, tested, or run
+  - All development dependencies should be installed when starting work on a PR
+  - System libraries may be required depending on platform
+  - Some installation steps may require manual download and installation
+  - MCMC sampling tests can be slow; tests use small iteration counts for speed
+
+# Development workflow commands
+development_commands:
+  document:
+    command: R -e 'devtools::document()'
+    description: Regenerate documentation from roxygen2 comments
+    when: After modifying roxygen2 comments in .R files
+  
+  test:
+    command: R -e 'devtools::test()'
+    description: Run all tests
+    when: Before committing changes
+  
+  check:
+    command: R -e 'devtools::check()'
+    description: Run R CMD check (full package validation)
+    when: Before requesting PR review
+    duration: 5-10 minutes
+  
+  lint:
+    command: R -e 'lintr::lint_package()'
+    description: Check code style
+    when: Before committing changes
+  
+  spell_check:
+    command: R -e 'spelling::spell_check_package()'
+    description: Check spelling
+    when: Before requesting PR review
+  
+  update_readme:
+    command: R -e 'rmarkdown::render("README.Rmd")'
+    description: Regenerate README.md from README.Rmd
+    when: After editing README.Rmd
+  
+  version_increment:
+    command: R -e 'usethis::use_version()'
+    description: Increment version number
+    when: Before requesting PR review
