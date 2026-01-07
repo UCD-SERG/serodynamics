@@ -37,6 +37,7 @@ Suggests:
     knitr,
     readr,
     rlist,
+    sessioninfo,
     spelling,
     stringr,
     testthat (>= 3.0.0),
