@@ -189,7 +189,7 @@ run_mod <- function(data,
   population_params <-prep_popparams(jags_out)
   
   # Taking out population parameters
-  jags_out <- ex_popparrams(jags_out)
+  jags_out <- ex_popparams(jags_out)
   
   # Making output a tibble and restructing.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
