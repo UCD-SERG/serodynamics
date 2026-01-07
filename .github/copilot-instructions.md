@@ -497,5 +497,6 @@ These instructions have been validated against the actual repository structure, 
 13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
 14. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
 15. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
+16. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
