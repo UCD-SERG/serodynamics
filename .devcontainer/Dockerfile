@@ -23,8 +23,10 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install rjags from source
-RUN R -e "install.packages('rjags', repos = 'https://cloud.r-project.org', type = 'source')"
+# Install rjags and runjags from source
+RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); \
+    install.packages('rjags', type = 'source'); \
+    install.packages('runjags', type = 'source')"
 
 # Verify JAGS installation
 RUN R -e "library(rjags); library(runjags); runjags::findJAGS(); runjags::testjags()"

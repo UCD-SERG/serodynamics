@@ -24,7 +24,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "Rscript -e 'devtools::install_dev_deps(dependencies = TRUE)'",
+  "postCreateCommand": "bash -c 'mkdir -p /commandhistory && touch /commandhistory/.bash_history && ln -sf /commandhistory/.bash_history /home/rstudio/.bash_history && Rscript -e \"devtools::install_dev_deps(dependencies = TRUE)\"'",
 
   // Set the default shell
   "remoteUser": "rstudio",
@@ -32,8 +32,8 @@
   // Forward ports for RStudio Server (optional)
   "forwardPorts": [8787],
   
-  // Persist bash history
+  // Persist command history across container rebuilds
   "mounts": [
-    "source=serodynamics-bashhistory,target=/home/rstudio/commandhistory,type=volume"
+    "source=serodynamics-bashhistory,target=/commandhistory,type=volume"
   ]
 }
