@@ -186,18 +186,15 @@ run_mod <- function(data,
   }
   
   # Preparing population parameters
-  population_params <- jags_out |>
-    dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
-    dplyr::rename(Population_Parameter = .data$Subject)
+  population_params <-prep_popparams(jags_out)
   
   # Taking out population parameters
-  jags_out <- jags_out |>
-    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
+  jags_out <- ex_popparrams(jags_out)
   
   # Making output a tibble and restructing.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
-  current_atts <- attributes(jags_out) 
+  current_atts <- attributes(jags_out)
   new_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- new_atts
   
