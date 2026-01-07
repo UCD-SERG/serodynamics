@@ -582,13 +582,25 @@ expect_false(has_missing_values(complete_data))
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
-- **Write tidy code**: Keep code clean, readable, and well-organized.
-  Follow consistent formatting, use meaningful variable names, and
-  maintain logical structure
 - **Avoid code duplication**: Don’t copy-paste substantial code chunks.
   Instead, decompose reusable logic into well-named helper functions.
   This improves maintainability, testability, and reduces the risk of
-  inconsistent behavior across similar code paths
+  inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix
+  (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown
+  comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base
+  R functions where available (e.g.,
+  [`sessioninfo::session_info()`](https://sessioninfo.r-lib.org/reference/session_info.html)
+  instead of
+  [`sessionInfo()`](https://rdrr.io/r/utils/sessionInfo.html),
+  [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html)
+  instead of [`data.frame()`](https://rdrr.io/r/base/data.frame.html),
+  [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html)
+  instead of [`read.csv()`](https://rdrr.io/r/utils/read.table.html))
+- **Write tidy code**: Keep code clean, readable, and well-organized.
+  Follow consistent formatting, use meaningful variable names, and
+  maintain logical structure
 
 ## Package Development Commands Summary
 
@@ -629,6 +641,20 @@ structure, workflows, and configuration files. When making changes:
     review
 13. **ALWAYS** make sure `devtools::spell_check()` passes before
     requesting PR review
+14. **ALWAYS** run
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+    before requesting PR review to ensure the pkgdown site builds
+    successfully
+15. **ALWAYS** verify Quarto documents render successfully locally -
+    don’t rely on CI workflows. For vignettes and articles, test
+    rendering with `quarto render path/to/file.qmd` or by building the
+    full site with
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+16. When
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+    has errors related to Quarto, use
+    `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)`
+    to debug and see detailed error messages
 
 Only search for additional information if these instructions are
 incomplete or incorrect for your specific task.
