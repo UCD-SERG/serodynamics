@@ -88,7 +88,7 @@ run_mod <- function(data,
   }
 
   ## Creating a shell to output results
-  jags_out <- tibble(
+  jags_out <- tibble::tibble(
     "Iteration" = NULL,
     "Chain" = NULL,
     "value" = NULL,
