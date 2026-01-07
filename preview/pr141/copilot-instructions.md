@@ -492,7 +492,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -548,7 +548,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 

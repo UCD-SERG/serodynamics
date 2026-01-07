@@ -302,17 +302,21 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/CONTRIBUTING.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/LICENSE-text.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/LICENSE.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/articles/os-snapshot-analysis.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/articles/test-snippets.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/dobson.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/index.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/os-snapshot-analysis.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/articles/test-snippets.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/authors.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/copilot-instructions.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/news/index.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/as_case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/autoplot.case_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/autoplot.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/calc_fit_mod.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/ex_popparams.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/get_biomarker_levels.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/get_biomarker_names_var.html</loc></url>
@@ -321,6 +325,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/load_data.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees_jags_output.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/param_recode.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/plot_jags_Rhat.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/plot_jags_dens.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/plot_jags_effect.html</loc></url>
@@ -330,6 +335,7 @@
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/post_summ.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_data.html</loc></url>
+<url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_popparams.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/reexports.html</loc></url>
 <url><loc>https://ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.html</loc></url>

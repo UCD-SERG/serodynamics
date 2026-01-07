@@ -2,6 +2,10 @@
 
 ## serodynamics (development version)
 
+- Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions
+  workflow to automate environment setup for GitHub Copilot coding
+  agent, preinstalling R, JAGS, and all dependencies.
+
 - Consolidated OS-specific snapshot variants: removed redundant Linux
   and Windows snapshot directories (which were identical), keeping only
   base snapshots and darwin-specific variants for macOS platform
