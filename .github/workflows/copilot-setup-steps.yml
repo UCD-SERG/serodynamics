@@ -93,4 +93,4 @@ jobs:
       # Verify R environment is properly configured
       - name: Verify development environment
         run: |
-          Rscript -e 'devtools::dev_sitrep()'
+          Rscript -e 'cat("R version:", R.version.string, "\n"); cat("Installed packages:\n"); installed.packages()[,"Package"] |> head(20) |> print()'
