@@ -49,10 +49,12 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters, indexed by `Iteration`, 
+#'   - `population_params`: Modeled population parameters, indexed by 
+#'   `Iteration`, 
 #'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
 #'   following modeled population parameters:
-#'     - `mu.par` = The population means of the host-specific model parameters (on logarithmic scales).
+#'     - `mu.par` = The population means of the host-specific model parameters 
+#'     (on logarithmic scales).
 #'     - `prec.par` = The population covariance between the hyperparameters.  
 #'     - `prec.logy` = The population variance among each antigen/isotype.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
@@ -161,7 +163,7 @@ run_mod <- function(data,
     
     # Merging isodat in to ensure we are classifying antigen_iso. 
     jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat, 
-                                         by = "Subnum")
+                                      by = "Subnum")
     
     # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
@@ -171,8 +173,8 @@ run_mod <- function(data,
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject_mcmc" = "attr.longdata...ids..")) |>
       dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
-                                   .data$Subject, 
-                                   .data$Subject_mcmc)) |>
+                                          .data$Subject, 
+                                          .data$Subject_mcmc)) |>
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
@@ -186,7 +188,7 @@ run_mod <- function(data,
   }
   
   # Preparing population parameters
-  population_params <-prep_popparams(jags_out)
+  population_params <- prep_popparams(jags_out)
   
   # Taking out population parameters
   jags_out <- ex_popparams(jags_out)
