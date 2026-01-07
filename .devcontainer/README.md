@@ -4,11 +4,11 @@ This directory contains the configuration for a development container that provi
 
 ## What's Included
 
-The development container is based on `rocker/verse:latest` and includes:
+The development container is based on `rocker/verse:4.4.2` (version pinned for reproducibility) and includes:
 
-- **R** (>= 4.1.0) with RStudio
-- **JAGS** (4.3.1) - Required for Bayesian MCMC modeling
-- **rjags** - R interface to JAGS
+- **R 4.4.2** with RStudio
+- **JAGS** - Required for Bayesian MCMC modeling
+- **rjags** and **runjags** - R interfaces to JAGS
 - **tidyverse** packages
 - **System libraries** for common R packages (libcurl, libssl, libxml2, etc.)
 - **Development tools**: devtools, testthat, roxygen2, pkgdown, covr, lintr, spelling, rcmdcheck
@@ -16,7 +16,8 @@ The development container is based on `rocker/verse:latest` and includes:
 ## Benefits
 
 - **Persistent environment**: The container persists between sessions, so you don't need to reinstall R, JAGS, or dependencies each time
-- **Consistent setup**: Everyone uses the same R version and system configuration
+- **Consistent setup**: Everyone uses the same R version (4.4.2) and system configuration
+- **Reproducible builds**: Pinned to specific rocker/verse version for consistency
 - **Faster startup**: After the initial build, subsequent sessions start much faster
 - **GitHub Copilot integration**: Works seamlessly with GitHub Copilot Workspace
 
