@@ -58,14 +58,12 @@ jobs:
             libfreetype6-dev \
             libpng-dev \
             libtiff5-dev \
-            libjpeg-dev \
-            pandoc
+            libjpeg-dev
       
       # Install JAGS (Just Another Gibbs Sampler) - REQUIRED for this package
       # Version 4.3.1 as documented in .github/copilot-instructions.md
       - name: Install JAGS
         run: |
-          sudo apt-get update
           sudo apt-get install -y jags
           echo "JAGS installed. Verifying version..."
           jags --version || echo "Warning: JAGS version check failed, but installation may have succeeded"
@@ -77,14 +75,14 @@ jobs:
       # Set up R using the standard GitHub Actions setup
       # R version >= 4.1.0 required (see DESCRIPTION and .github/copilot-instructions.md)
       - name: Set up R
-        uses: r-lib/actions/setup-r@v2
+        uses: r-lib/actions/setup-r@HEAD
         with:
           r-version: 'release'
           use-public-rspm: true
       
       # Install R dependencies with caching for faster subsequent runs
       - name: Install R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
+        uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: |
             any::devtools
@@ -93,6 +91,21 @@ jobs:
             any::spelling
             any::rmarkdown
           needs: check
+      
+      # Install rjags from source to ensure proper linking with JAGS
+      # See .github/copilot-instructions.md "JAGS Installation" section
+      - name: Install rjags
+        run: |
+          install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
+                    type = "source",
+                    verbose = TRUE)
+           withr::local_options(warn = 2)
+           library(rjags)
+           library(runjags)
+           runjags::findJAGS()
+           runjags::testjags()
+        shell: Rscript {0}
       
       # Verify JAGS installation
       # See .github/copilot-instructions.md "JAGS Installation" section for details
