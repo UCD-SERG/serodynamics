@@ -6,8 +6,8 @@
 #' @param x A [data.frame] with a `Subject` variable.
 #' @returns A filtered [data.frame] excluding population parameters.
 #' @keywords internal
-  ex_popparams <- function(x) { 
-    x <- x |>
-      dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
-    return(x)
-  }
+ex_popparams <- function(x) { 
+  x <- x |>
+    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
+  return(x)
+} 
