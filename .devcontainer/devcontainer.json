@@ -24,7 +24,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": "bash -c 'mkdir -p /commandhistory && touch /commandhistory/.bash_history && ln -sf /commandhistory/.bash_history /home/rstudio/.bash_history && Rscript -e \"devtools::install_dev_deps(dependencies = TRUE)\"'",
+  "postCreateCommand": ".devcontainer/setup.sh",
 
   // Set the default shell
   "remoteUser": "rstudio",

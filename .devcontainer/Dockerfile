@@ -1,6 +1,7 @@
 # Use the rocker/verse image as base (includes R, tidyverse, devtools, and more)
 # This image includes R >= 4.1.0, RStudio, tidyverse packages, and TeX
-FROM rocker/verse:latest
+# Version pinned for reproducible builds
+FROM rocker/verse:4.4.2
 
 # Install system dependencies for R packages
 RUN apt-get update && apt-get install -y \
@@ -23,10 +24,11 @@ RUN apt-get update && apt-get install -y \
     git \
     && rm -rf /var/lib/apt/lists/*
 
-# Install rjags and runjags from source
+# Install rjags and runjags
+# Note: rjags requires source installation to properly link with JAGS system library
 RUN R -e "options(repos = c(CRAN = 'https://cloud.r-project.org')); \
     install.packages('rjags', type = 'source'); \
-    install.packages('runjags', type = 'source')"
+    install.packages('runjags')"
 
 # Verify JAGS installation
 RUN R -e "library(rjags); library(runjags); runjags::findJAGS(); runjags::testjags()"
