@@ -65,8 +65,7 @@ jobs:
       - name: Install JAGS
         run: |
           sudo apt-get install -y jags
-          echo "JAGS installed. Verifying version..."
-          jags --version || echo "Warning: JAGS version check failed, but installation may have succeeded"
+          echo "JAGS installed successfully"
       
       # Set up pandoc for documentation
       - name: Set up Pandoc
@@ -112,8 +111,8 @@ jobs:
       - name: Verify JAGS installation
         run: |
           echo "=== Verifying JAGS Installation ==="
-          echo "System JAGS version:"
-          jags --version || echo "Warning: jags command not found in PATH"
+          echo "System JAGS command:"
+          which jags || echo "Warning: jags command not found in PATH"
           echo ""
           echo "R JAGS interface packages:"
           Rscript -e 'cat("rjags version:", as.character(packageVersion("rjags")), "\n")'
@@ -159,4 +158,6 @@ jobs:
           
           echo ""
           echo "=== Running devtools::dev_sitrep() ==="
-          Rscript -e 'devtools::dev_sitrep()' || echo "Warning: dev_sitrep() encountered issues, but setup may still be functional"
+          # Set GITHUB_PAT to empty to avoid 401 errors when running in GitHub Actions
+          # dev_sitrep tries to check GitHub credentials which aren't needed for this setup
+          Rscript -e 'Sys.setenv(GITHUB_PAT = ""); devtools::dev_sitrep()' || echo "Warning: dev_sitrep() encountered issues, but setup may still be functional"
