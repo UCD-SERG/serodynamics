@@ -51,3 +51,28 @@ test_that(
     dataset |> expect_snapshot_data(name = "sees-data")
   }
 )
+
+test_that(
+  desc = "validates required columns exist",
+  code = {
+    # Create test data missing required column
+    test_data <- data.frame(
+      id = 1:3,
+      value = c(100, 200, 300)
+      # Missing: antigen_iso and timeindays columns
+    )
+    
+    # Should error with clear message about missing columns
+    expect_error(
+      as_case_data(
+        test_data,
+        id_var = "id",
+        biomarker_var = "antigen_iso",
+        value_var = "value",
+        time_in_days = "timeindays"
+      ),
+      "Required column.*missing"
+    )
+  }
+)
+
