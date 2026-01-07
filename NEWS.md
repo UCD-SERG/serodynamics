@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies pre-installed, making Copilot
+  Workspace sessions much faster.
+
 * Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
   snapshot directories (which were identical), keeping only base snapshots and 
   darwin-specific variants for macOS platform differences (#73).
