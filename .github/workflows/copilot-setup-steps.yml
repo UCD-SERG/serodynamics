@@ -5,6 +5,11 @@
 #
 # See: https://docs.github.com/en/copilot/how-tos/use-copilot-agents/coding-agent/customize-the-agent-environment
 # For detailed setup instructions, see .github/copilot-instructions.md
+#
+# This workflow aligns with the setup requirements documented in .github/copilot-instructions.md:
+# - R version >= 4.1.0 (as specified in DESCRIPTION)
+# - JAGS 4.3.1 system library and R interface
+# - All package dependencies (Imports, Suggests, and development needs)
 
 name: "Copilot Setup Steps"
 
@@ -39,6 +44,7 @@ jobs:
         uses: actions/checkout@v4
       
       # Install system dependencies required for R packages
+      # See .github/copilot-instructions.md "Verify Development Environment" section
       - name: Install system dependencies
         run: |
           sudo apt-get update
@@ -52,29 +58,30 @@ jobs:
             libfreetype6-dev \
             libpng-dev \
             libtiff5-dev \
-            libjpeg-dev \
-            pandoc
+            libjpeg-dev
       
       # Install JAGS (Just Another Gibbs Sampler) - REQUIRED for this package
+      # Version 4.3.1 as documented in .github/copilot-instructions.md
       - name: Install JAGS
         run: |
-          sudo apt-get update
           sudo apt-get install -y jags
+          echo "JAGS installed successfully"
       
       # Set up pandoc for documentation
       - name: Set up Pandoc
         uses: r-lib/actions/setup-pandoc@v2
       
       # Set up R using the standard GitHub Actions setup
+      # R version >= 4.1.0 required (see DESCRIPTION and .github/copilot-instructions.md)
       - name: Set up R
-        uses: r-lib/actions/setup-r@v2
+        uses: r-lib/actions/setup-r@HEAD
         with:
           r-version: 'release'
           use-public-rspm: true
       
       # Install R dependencies with caching for faster subsequent runs
       - name: Install R dependencies
-        uses: r-lib/actions/setup-r-dependencies@v2
+        uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: |
             any::devtools
@@ -84,12 +91,68 @@ jobs:
             any::rmarkdown
           needs: check
       
+      # Install rjags from source to ensure proper linking with JAGS
+      # See .github/copilot-instructions.md "JAGS Installation" section
+      - name: Install rjags
+        run: |
+          install.packages("rjags",
+                    repos = "https://cloud.r-project.org",
+                    type = "source",
+                    verbose = TRUE)
+          withr::local_options(warn = 2)
+          library(rjags)
+          library(runjags)
+          runjags::findJAGS()
+          runjags::testjags()
+        shell: Rscript {0}
+      
       # Verify JAGS installation
+      # See .github/copilot-instructions.md "JAGS Installation" section for details
       - name: Verify JAGS installation
         run: |
-          Rscript -e 'library(rjags); library(runjags); print(runjags::findJAGS()); runjags::testjags()'
+          echo "=== Verifying JAGS Installation ==="
+          echo "System JAGS command:"
+          which jags || echo "Warning: jags command not found in PATH"
+          echo ""
+          echo "R JAGS interface packages:"
+          Rscript -e 'cat("rjags version:", as.character(packageVersion("rjags")), "\n")'
+          Rscript -e 'cat("runjags version:", as.character(packageVersion("runjags")), "\n")'
+          echo ""
+          echo "JAGS location (from runjags):"
+          Rscript -e 'print(runjags::findJAGS())'
+          echo ""
+          echo "Running JAGS test:"
+          Rscript -e 'runjags::testjags()'
       
       # Verify R environment is properly configured
+      # See .github/copilot-instructions.md "Verify Development Environment" section
       - name: Verify development environment
         run: |
-          Rscript -e 'cat("R version:", R.version.string, "\n"); cat("Installed packages:\n"); installed.packages()[,"Package"] |> head(20) |> print()'
+          echo "=== R Development Environment Status ==="
+          Rscript -e '
+            cat("R version:", R.version.string, "\n\n")
+            
+            # Check R version meets minimum requirement (>= 4.1.0)
+            r_version <- paste(R.version$major, R.version$minor, sep = ".")
+            cat("Checking R version >= 4.1.0... ")
+            if (getRversion() >= "4.1.0") {
+              cat("PASSED (", r_version, ")\n\n", sep = "")
+            } else {
+              cat("FAILED (", r_version, ")\n\n", sep = "")
+              stop("R version must be >= 4.1.0")
+            }
+            
+            # Display key installed packages
+            cat("Key installed packages:\n")
+            key_packages <- c("devtools", "rjags", "runjags", "rcmdcheck", "lintr", "spelling", "testthat")
+            for (pkg in key_packages) {
+              if (requireNamespace(pkg, quietly = TRUE)) {
+                cat("  -", pkg, ":", as.character(packageVersion(pkg)), "\n")
+              } else {
+                cat("  -", pkg, ": NOT INSTALLED\n")
+              }
+            }
+            
+            cat("\nTotal packages installed:", nrow(installed.packages()), "\n")
+            cat("\nDevelopment environment setup complete!\n")
+          '
