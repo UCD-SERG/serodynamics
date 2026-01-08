@@ -110,7 +110,23 @@ If you need to modify the Copilot environment setup:
 
 ### Quick Start with Docker (RECOMMENDED)
 
-**For faster setup, consider using the rocker/verse Docker image** which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed. This can significantly speed up Copilot sessions by avoiding lengthy installation steps.
+**The easiest way to get started is to use the provided dev container configuration**, which automatically sets up R, JAGS, and all dependencies in a persistent environment.
+
+**Benefits:**
+- **Cached setup**: Container persists between Copilot sessions - no need to reinstall everything
+- **Zero manual setup**: Everything is pre-configured and ready to use
+- **Consistent environment**: Same R version, JAGS, and system libraries every time
+
+**How to use:**
+1. **GitHub Copilot Workspace**: Automatically detects and uses the devcontainer
+2. **VS Code**: Install "Dev Containers" extension, then "Reopen in Container"
+3. **GitHub Codespaces**: Automatically uses the devcontainer configuration
+
+See `.devcontainer/README.md` for detailed documentation.
+
+### Alternative: Quick Start with Docker
+
+**If you prefer manual Docker setup**, you can use the rocker/verse Docker image which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed.
 
 To use Docker:
 
@@ -139,7 +155,9 @@ docker rm serodynamics-dev
 
 **Note**: You will still need to install JAGS inside the Docker container (see JAGS Installation section below).
 
-If Docker is not available or you prefer a native installation, follow the manual installation instructions below.
+### Manual Installation (if not using devcontainer or Docker)
+
+If the devcontainer or Docker is not available or you prefer a native installation, follow the manual installation instructions below.
 
 ### R Installation and Development Dependencies (REQUIRED)
 

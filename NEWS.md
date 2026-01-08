@@ -1,5 +1,8 @@
 # serodynamics (development version)
 
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies preinstalled, making Copilot
+  Workspace sessions much faster.
 * Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
 * Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
 

@@ -28,3 +28,4 @@ docs/
 
 **/*.quarto_ipynb
 *.pdf
+README.html
