@@ -252,7 +252,7 @@
 <h3 id="id_5-check-code-quality">5. Check Code Quality<a class="anchor" aria-label="anchor" href="#id_5-check-code-quality"></a></h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint your code</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Spell check</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -406,7 +406,7 @@
 <p>Before submitting a PR, ensure:</p>
 <ul class="task-list"><li><label><input type="checkbox">Tests pass locally (<code>devtools::test()</code>)</label></li>
 <li><label><input type="checkbox">R CMD check passes (<code>devtools::check()</code>)</label></li>
-<li><label><input type="checkbox">Code is linted (<code><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lintr::lint_package()</a></code>)</label></li>
+<li><label><input type="checkbox">Code is linted (<code>lintr::lint_package()</code>)</label></li>
 <li><label><input type="checkbox">Spelling is correct (<code><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spelling::spell_check_package()</a></code>)</label></li>
 <li><label><input type="checkbox">Documentation is up to date (<code>devtools::document()</code>)</label></li>
 <li><label><input type="checkbox">README.md is updated (if you edited README.Rmd)</label></li>

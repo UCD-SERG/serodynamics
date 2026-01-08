@@ -424,8 +424,7 @@ Tests pass locally (`devtools::test()`)
 
 R CMD check passes (`devtools::check()`)
 
-Code is linted
-([`lintr::lint_package()`](https://lintr.r-lib.org/reference/lint.html))
+Code is linted (`lintr::lint_package()`)
 
 Spelling is correct
 ([`spelling::spell_check_package()`](https://docs.ropensci.org/spelling//reference/spell_check_package.html))

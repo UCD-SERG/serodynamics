@@ -170,7 +170,14 @@
 </div>
 <div class="section level3">
 <h3 id="quick-start-with-docker-recommended">Quick Start with Docker (RECOMMENDED)<a class="anchor" aria-label="anchor" href="#quick-start-with-docker-recommended"></a></h3>
-<p><strong>For faster setup, consider using the rocker/verse Docker image</strong> which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed. This can significantly speed up Copilot sessions by avoiding lengthy installation steps.</p>
+<p><strong>The easiest way to get started is to use the provided dev container configuration</strong>, which automatically sets up R, JAGS, and all dependencies in a persistent environment.</p>
+<p><strong>Benefits:</strong> - <strong>Cached setup</strong>: Container persists between Copilot sessions - no need to reinstall everything - <strong>Zero manual setup</strong>: Everything is pre-configured and ready to use - <strong>Consistent environment</strong>: Same R version, JAGS, and system libraries every time</p>
+<p><strong>How to use:</strong> 1. <strong>GitHub Copilot Workspace</strong>: Automatically detects and uses the devcontainer 2. <strong>VS Code</strong>: Install “Dev Containers” extension, then “Reopen in Container” 3. <strong>GitHub Codespaces</strong>: Automatically uses the devcontainer configuration</p>
+<p>See <code>.devcontainer/README.md</code> for detailed documentation.</p>
+</div>
+<div class="section level3">
+<h3 id="alternative-quick-start-with-docker">Alternative: Quick Start with Docker<a class="anchor" aria-label="anchor" href="#alternative-quick-start-with-docker"></a></h3>
+<p><strong>If you prefer manual Docker setup</strong>, you can use the rocker/verse Docker image which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed.</p>
 <p>To use Docker:</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Pull the rocker/verse image (includes R &gt;= 4.1.0, tidyverse, devtools, and more)</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="ex">docker</span> pull rocker/verse:latest</span>
@@ -193,7 +200,10 @@
 <span id="cb1-19"><a href="#cb1-19" tabindex="-1"></a><span class="ex">docker</span> stop serodynamics-dev</span>
 <span id="cb1-20"><a href="#cb1-20" tabindex="-1"></a><span class="ex">docker</span> rm serodynamics-dev</span></code></pre></div>
 <p><strong>Note</strong>: You will still need to install JAGS inside the Docker container (see JAGS Installation section below).</p>
-<p>If Docker is not available or you prefer a native installation, follow the manual installation instructions below.</p>
+</div>
+<div class="section level3">
+<h3 id="manual-installation-if-not-using-devcontainer-or-docker">Manual Installation (if not using devcontainer or Docker)<a class="anchor" aria-label="anchor" href="#manual-installation-if-not-using-devcontainer-or-docker"></a></h3>
+<p>If the devcontainer or Docker is not available or you prefer a native installation, follow the manual installation instructions below.</p>
 </div>
 <div class="section level3">
 <h3 id="r-installation-and-development-dependencies-required">R Installation and Development Dependencies (REQUIRED)<a class="anchor" aria-label="anchor" href="#r-installation-and-development-dependencies-required"></a></h3>
@@ -372,10 +382,10 @@
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Lint specific file</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint</span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Key linting rules</strong>: - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> instead of <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> instead of <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> instead of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> - Use <code>::</code> instead of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> in package code - Use native pipe <code>|&gt;</code> (configured in project.Rproj) - Follow snake_case with uppercase acronyms allowed (e.g., <code>prep_IDs</code> is valid) - Avoid <code>undesirable_function_linter</code> warnings</p>
 <p>Exclusions: <code>data-raw/</code>, <code>vignettes/</code>, <code>inst/examples/</code>, and <code>inst/analyses/</code> are exempt from some linters.</p>
 </div>
@@ -646,7 +656,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span>               <span class="co"># Run tests</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">use_version</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># Increment version</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
 <span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span> <span class="co"># Update README</span></span></code></pre></div>
 </div>
