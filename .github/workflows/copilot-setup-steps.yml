@@ -99,11 +99,11 @@ jobs:
                     repos = "https://cloud.r-project.org",
                     type = "source",
                     verbose = TRUE)
-           withr::local_options(warn = 2)
-           library(rjags)
-           library(runjags)
-           runjags::findJAGS()
-           runjags::testjags()
+          withr::local_options(warn = 2)
+          library(rjags)
+          library(runjags)
+          runjags::findJAGS()
+          runjags::testjags()
         shell: Rscript {0}
       
       # Verify JAGS installation
@@ -154,10 +154,5 @@ jobs:
             }
             
             cat("\nTotal packages installed:", nrow(installed.packages()), "\n")
+            cat("\nDevelopment environment setup complete!\n")
           '
-          
-          echo ""
-          echo "=== Running devtools::dev_sitrep() ==="
-          # Set GITHUB_PAT to empty to avoid 401 errors when running in GitHub Actions
-          # dev_sitrep tries to check GitHub credentials which aren't needed for this setup
-          Rscript -e 'Sys.setenv(GITHUB_PAT = ""); devtools::dev_sitrep()' || echo "Warning: dev_sitrep() encountered issues, but setup may still be functional"

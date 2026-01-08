@@ -47,10 +47,9 @@ The copilot-setup-steps.yml workflow complements but does not replace the CI wor
 
 The workflow includes detailed verification logging:
 
-- **JAGS verification**: Checks system JAGS version, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
+- **JAGS verification**: Checks system JAGS command availability, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
 - **R version check**: Ensures R >= 4.1.0 requirement is met
-- **Package verification**: Lists key installed packages (devtools, rcmdcheck, lintr, spelling, testthat)
-- **Development environment check**: Runs `devtools::dev_sitrep()` for comprehensive environment validation
+- **Package verification**: Lists key installed packages (devtools, rjags, runjags, rcmdcheck, lintr, spelling, testthat)
 
 #### Customization
 
