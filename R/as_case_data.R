@@ -39,8 +39,7 @@ as_case_data <- function(
   
   if (length(missing_cols) > 0) {
     cli::cli_abort(c(
-      "Required column{?s} missing from data:",
-      "x" = "Missing: {.field {missing_cols}}",
+      "x" = "Required column{?s} missing from data: {.field {missing_cols}}",
       "i" = "Available columns: {.field {names(data)}}"
     ))
   }
