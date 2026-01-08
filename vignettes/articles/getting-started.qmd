@@ -172,8 +172,8 @@ Plot the predicted antibody curves with credible intervals:
 #| label: plot-curves
 plot_predicted_curve(
   fitted_model,
-  id = serocalculator::ids(case_data)[1],
-  antigen_iso = case_data$antigen_iso[1]
+  ids = serocalculator::ids(simulated_data)[1],
+  antigen_iso = simulated_data$antigen_iso[1]
 )
 ```
 
@@ -183,11 +183,8 @@ Extract and summarize the posterior estimates:
 
 ```{r}
 #| label: postprocess
-# Process JAGS output
-processed_output <- postprocess_jags_output(fitted_model)
-
 # Summarize parameter estimates
-summary_stats <- post_summ(processed_output)
+summary_stats <- post_summ(fitted_model)
 print(summary_stats)
 ```
 
