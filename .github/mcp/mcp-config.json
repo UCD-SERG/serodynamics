@@ -1,4 +1,6 @@
 {
+  "$schema": "https://github.com/modelcontextprotocol/specification/blob/main/schema/mcp-config-schema.json",
+  "$comment": "NOTE: Update the repository paths ('/home/runner/work/serodynamics/serodynamics') to match your local clone location before using this configuration. The current paths are specific to GitHub Actions CI environment.",
   "mcpServers": {
     "filesystem": {
       "command": "npx",
@@ -34,7 +36,7 @@
       "command": "npx",
       "args": [
         "-y",
-        "@modelcontextprotocol/server-brave-search"
+        "@brave/brave-search-mcp-server"
       ],
       "env": {
         "BRAVE_API_KEY": "${BRAVE_API_KEY}"

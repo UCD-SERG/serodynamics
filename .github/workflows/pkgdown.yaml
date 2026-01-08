@@ -89,11 +89,11 @@ jobs:
                     repos = "https://cloud.r-project.org",
                     type = "source",
                     verbose = TRUE)
-           withr::local_options(warn = 2)
-           library(rjags)
-           library(runjags)
-           runjags::findJAGS()
-           runjags::testjags()
+          withr::local_options(warn = 2)
+          library(rjags)
+          library(runjags)
+          runjags::findJAGS()
+          runjags::testjags()
         shell: Rscript {0}
        
       # If events is a PR, set subdir to 'preview/pr<pr_number>'

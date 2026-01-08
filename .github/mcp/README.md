@@ -32,6 +32,18 @@ The `mcp-config.json` file configures the following MCP servers:
 
 ## Setup Instructions
 
+### Important: Update Repository Paths
+
+**Before using this configuration**, you must update the hardcoded repository paths in `mcp-config.json` to match your local clone location:
+
+1. Open `.github/mcp/mcp-config.json`
+2. Find all instances of `/home/runner/work/serodynamics/serodynamics`
+3. Replace with your local repository path, for example:
+   - macOS/Linux: `/Users/yourname/projects/serodynamics` or `/home/yourname/serodynamics`
+   - Windows: `C:\\Users\\yourname\\projects\\serodynamics`
+
+The default paths are specific to GitHub Actions CI environment and will not work for local development.
+
 ### Prerequisites
 
 1. **Node.js**: Required to run the MCP servers via `npx`
@@ -62,12 +74,11 @@ The `mcp-config.json` file configures the following MCP servers:
 If you want to use these MCP servers with Claude Desktop:
 
 1. Copy the `mcpServers` section from `mcp-config.json`
-2. Add it to your Claude Desktop configuration:
+2. **Update the repository paths** (`/home/runner/work/serodynamics/serodynamics`) to your local clone path
+3. Add the modified configuration to your Claude Desktop configuration file:
    - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
    - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
    - **Linux**: `~/.config/Claude/claude_desktop_config.json`
-
-3. Update the repository path in the configuration to your local clone path
 
 ## Development Workflow Integration
 

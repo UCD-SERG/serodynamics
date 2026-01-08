@@ -43,7 +43,7 @@ Rscript -e "install.packages('rjags', repos = 'https://cloud.r-project.org', typ
 
 # Install package dependencies
 echo "Installing package dependencies..."
-Rscript -e "if (!requireNamespace('pak', quietly = TRUE)) install.packages('pak', repos = 'https://cloud.r-project.org'); pak::local_install_dev_deps(dependencies = TRUE)"
+Rscript -e "pak::local_install_dev_deps(dependencies = TRUE)"
 
 # Verify JAGS installation
 echo "Verifying JAGS installation..."

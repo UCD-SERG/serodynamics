@@ -1,10 +1,12 @@
 {
   "r.rterm.linux": "/usr/bin/R",
   "r.rterm.mac": "/usr/local/bin/R",
-  "r.rterm.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\R.exe",
+  // Update this path to match your installed R version on Windows, e.g. R-4.4.0
+  "r.rterm.windows": "C:\\Program Files\\R\\R-x.y.z\\bin\\R.exe",
   "r.rpath.linux": "/usr/bin/R",
   "r.rpath.mac": "/usr/local/bin/R",
-  "r.rpath.windows": "C:\\Program Files\\R\\R-4.1.0\\bin\\R.exe",
+  // Update this path to match your installed R version on Windows, e.g. R-4.4.0
+  "r.rpath.windows": "C:\\Program Files\\R\\R-x.y.z\\bin\\R.exe",
   "r.alwaysUseActiveTerminal": true,
   "r.bracketedPaste": true,
   "r.sessionWatcher": true,
