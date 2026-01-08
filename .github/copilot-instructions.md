@@ -12,7 +12,56 @@
 
 ## Critical Setup Requirements
 
-### Recommended: Use the Dev Container (FASTEST)
+### Copilot Setup Workflow (Automatic Environment Configuration)
+
+The repository includes a **`.github/workflows/copilot-setup-steps.yml`** workflow that automatically configures the GitHub Copilot coding agent's environment with all required dependencies. This workflow runs automatically when Copilot starts working on a task, ensuring a consistent and properly configured development environment.
+
+#### What the Workflow Does
+
+The copilot-setup-steps.yml workflow:
+
+1. **Installs system dependencies**: All required Ubuntu packages for R package development (libcurl, libssl, libxml2, graphics libraries, etc.)
+2. **Installs JAGS 4.3.1**: The required Bayesian MCMC system library
+3. **Sets up R (>= 4.1.0)**: Installs the R release version that meets the package's minimum requirement
+4. **Installs R package dependencies**: All Imports, Suggests, and development dependencies from DESCRIPTION
+5. **Verifies installation**: Runs comprehensive checks to ensure JAGS and R are properly configured
+
+#### When It Runs
+
+The workflow runs in the following scenarios:
+
+- **Automatically for Copilot**: When the GitHub Copilot coding agent starts working on a task, it uses this workflow to prepare the environment
+- **On workflow changes**: When `.github/workflows/copilot-setup-steps.yml` is modified (via push or pull request)
+- **Manual testing**: Can be triggered manually from the repository's "Actions" tab using workflow_dispatch
+
+#### Integration with CI Workflows
+
+The copilot-setup-steps.yml workflow complements but does not replace the CI workflows:
+
+- **Purpose**: Configures the Copilot agent's environment for development work, not for CI testing
+- **Scope**: Runs on ubuntu-latest only, while CI workflows test on multiple platforms (Ubuntu, macOS, Windows) and R versions (release, devel, oldrel-1)
+- **Alignment**: Uses the same JAGS installation and R setup approach as the R-CMD-check.yaml workflow, ensuring consistency
+- **Timeout**: Limited to 55 minutes (Copilot maximum is 59 minutes)
+
+#### Verification Steps
+
+The workflow includes detailed verification logging:
+
+- **JAGS verification**: Checks system JAGS command availability, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
+- **R version check**: Ensures R >= 4.1.0 requirement is met
+- **Package verification**: Lists key installed packages (devtools, rjags, runjags, rcmdcheck, lintr, spelling, testthat)
+
+#### Customization
+
+If you need to modify the Copilot environment setup:
+
+1. Edit `.github/workflows/copilot-setup-steps.yml`
+2. Test changes by pushing to a branch or using workflow_dispatch
+3. Ensure the job name remains `copilot-setup-steps` (required by Copilot)
+4. Keep timeout under 59 minutes
+5. Update this documentation to reflect any significant changes
+
+### Quick Start with Docker (RECOMMENDED)
 
 **The easiest way to get started is to use the provided dev container configuration**, which automatically sets up R, JAGS, and all dependencies in a persistent environment.
 
@@ -313,6 +362,8 @@ The following workflows run on every PR. **All must pass** for merge:
 
 9. **pkgdown.yaml**: Builds pkgdown website on PR (preview), tags, and main branch pushes. Requires Quarto setup. (~5-7 min)
 
+10. **copilot-setup-steps.yml**: Configures the GitHub Copilot coding agent's environment automatically. Runs when Copilot starts work, when the workflow file changes, or via manual dispatch. Not a required check for PR merges. See "Copilot Setup Workflow" section for details. (~5-10 min)
+
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs:
@@ -477,8 +528,10 @@ expect_false(has_missing_values(complete_data))
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base R functions where available (e.g., `sessioninfo::session_info()` instead of `sessionInfo()`, `tibble::tibble()` instead of `data.frame()`, `readr::read_csv()` instead of `read.csv()`)
 - **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
-- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths
 
 ## Package Development Commands Summary
 
@@ -511,5 +564,8 @@ These instructions have been validated against the actual repository structure, 
 11. **ALWAYS** run `devtools::document()` before requesting PR review
 12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
 13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+14. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
+15. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
+16. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
