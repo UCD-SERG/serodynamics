@@ -7,16 +7,16 @@
 unpack_jags(data)
 }
 \arguments{
-\item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} output object from run_mod}
+\item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} output object from run_mod with mcmc syntax.}
 }
 \value{
-An \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} that
+A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} that
 contains MCMC samples from the joint posterior distribution of the model
 with unpacked parameters, isotypes, and subjects.
 }
 \description{
-\code{jags_unpack()} takes an MCMC output from run_mod and unpacks it correctly
-including for all population parameters.
+\code{unpack_jags()} takes an MCMC output from run_mod and unpacks it correctly
+for all population parameters.
 }
 \author{
 Sam Schildhauer

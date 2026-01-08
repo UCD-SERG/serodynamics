@@ -1,11 +1,17 @@
 # serodynamics (development version)
 
+* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
+  snapshot directories (which were identical), keeping only base snapshots and 
+  darwin-specific variants for macOS platform differences (#73).
+
 * Initial CRAN submission.
+* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
 
 ## New features
 
 * Adding `id` parameter to diagnostic functions (#121)
-* Including population parameters as attributes in run_mod output. (#)
+* Including population parameters as attributes in run_mod output. (#141)
+* Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)

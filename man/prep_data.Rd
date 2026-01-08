@@ -7,7 +7,8 @@
 prep_data(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
-  verbose = FALSE
+  verbose = FALSE,
+  add_newperson = TRUE
 )
 }
 \arguments{
@@ -17,6 +18,8 @@ prep_data(
 which column contains antigen-isotype names}
 
 \item{verbose}{whether to produce verbose messaging}
+
+\item{add_newperson}{whether to add an extra record with missing data}
 }
 \value{
 a \code{prepped_jags_data} object (a \link{list} with extra attributes ...)

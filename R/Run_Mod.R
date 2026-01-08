@@ -52,10 +52,14 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters:
-#'     - `mu.par` = The population mean of the hyperparameters.  
+#'   - `population_params`: Modeled population parameters, indexed by 
+#'   `Iteration`, 
+#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
+#'   following modeled population parameters:
+#'     - `mu.par` = The population means of the host-specific model parameters 
+#'     (on logarithmic scales).
 #'     - `prec.par` = The population covariance between the hyperparameters.  
-#'     - `prec.logy` = The population covariance between antigen/isotypes??
+#'     - `prec.logy` = The population variance among each antigen/isotype.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
@@ -87,14 +91,14 @@ run_mod <- function(data,
   }
 
   ## Creating a shell to output results
-  jags_out <- data.frame(
-    "Iteration" = NA,
-    "Chain" = NA,
-    "value" = NA,
-    "Parameter" = NA,
-    "Iso_type" = NA,
-    "Subject" = NA,
-    "Stratification" = NA
+  jags_out <- tibble::tibble(
+    "Iteration" = NULL,
+    "Chain" = NULL,
+    "value" = NULL,
+    "Subject" = NULL,
+    "Parameter" = NULL,
+    "Iso_type" = NULL,
+    "Stratification" = NULL
   )
 
   ## Creating output list for jags.post
@@ -145,74 +149,67 @@ run_mod <- function(data,
     jags_post_final[[i]] <- jags_post
 
     # Unpacking and cleaning MCMC output.
-    jags_unpack <- ggmcmc::ggs(jags_post[["mcmc"]])
+    jags_packed <- ggmcmc::ggs(jags_post[["mcmc"]])
 
     # Adding attributes
-    mod_atts <- attributes(jags_unpack)
+    mod_atts <- attributes(jags_packed)
     # Only keeping necessary attributes
     mod_atts <- mod_atts[4:8]
     
     # extracting antigen-iso combinations to correctly number
-    # then by the order they are estimated by the program.
+    # them by the order they are estimated by the program.
     iso_dat <- data.frame(attributes(longdata)$antigens)
     iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
     
     # Unpacking the mcmc object
-    jags_unpack_bind <- unpack_jags(jags_unpack)
+    jags_unpacked <- unpack_jags(jags_packed)
     
     # Merging isodat in to ensure we are classifying antigen_iso. 
-    jags_unpack_bind <- dplyr::left_join(jags_unpack_bind, iso_dat, 
-                                         by = "Subnum")
+    jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat, 
+                                      by = "Subnum")
     
     # Adding in ID name
     ids <- data.frame(attr(longdata, "ids")) |>
-      mutate(Subject = as.character(dplyr::row_number()))
-    jags_final <- dplyr::left_join(jags_unpack_bind, ids, 
+      dplyr::mutate(Subject = as.character(dplyr::row_number()))
+    jags_final <- dplyr::left_join(jags_unpacked, ids, 
                                    by = "Subject") |>
-      mutate(attr.longdata...ids.. = ifelse(is.na(.data$attr.longdata...ids..), 
-                                            .data$Subject, 
-                                            .data$attr.longdata...ids..)) |>
-      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                      "Subject" = "attr.longdata...ids..",
+                      "Subject_mcmc" = "attr.longdata...ids..")) |>
+      dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
+                                          .data$Subject, 
+                                          .data$Subject_mcmc)) |>
+      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
+      dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
   
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
-    ## Creating output
+    # Creating output as a data frame with the
+    # jags output results for each stratification rbinded.
     jags_out <- data.frame(rbind(jags_out, jags_final))
   }
   
-  # Ensuring output does not have any NAs
-  jags_out <- jags_out[complete.cases(jags_out$Iso_type), ]
-  # Outputting the finalized jags output as a data frame with the
-  # jags output results for each stratification rbinded.
-  
   # Preparing population parameters
-  population_params <- jags_out |>
-    dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
-    dplyr::rename(Population_params = .data$Subject)
+  population_params <- prep_popparams(jags_out)
   
   # Taking out population parameters
-  jags_out <- jags_out |>
-    dplyr::filter(!(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")))
+  jags_out <- ex_popparams(jags_out)
   
   # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
-  current_atts <- attributes(jags_out) 
-  current_atts <- c(current_atts, mod_atts)
-  attributes(jags_out) <- current_atts
+  current_atts <- attributes(jags_out)
+  new_atts <- c(current_atts, mod_atts)
+  attributes(jags_out) <- new_atts
   
   # Adding population parameters in as attributes
   jags_out <- jags_out |>
-    structure("population_param" = population_params)
+    structure(population_params = population_params)
   
   # Adding priors
   jags_out <- jags_out |>
-    structure("priors" = attributes(priorspec)$used_priors)
+    structure(priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
