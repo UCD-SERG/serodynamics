@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jan  7 23:52:49 2026
+#> Welcome to JAGS 4.3.2 on Thu Jan  8 01:32:59 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -402,7 +402,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jan  7 23:53:02 2026
+#> Welcome to JAGS 4.3.2 on Thu Jan  8 01:33:11 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -437,7 +437,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jan  7 23:53:04 2026
+#> Welcome to JAGS 4.3.2 on Thu Jan  8 01:33:13 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -494,7 +494,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-01-07
+#>  date     2026-01-08
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   1.8.26 @ /usr/local/bin/quarto
 #> 
@@ -541,7 +541,7 @@ sessioninfo::session_info()
 #>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.2)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.2)
 #>  serocalculator   1.3.0.9061 2025-12-16 [1] Github (ucd-serg/serocalculator@4fc3b75)
-#>  serodynamics   * 0.0.0.9047 2026-01-07 [1] local
+#>  serodynamics   * 0.0.0.9047 2026-01-08 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] any (@1.2.3)
 #>  tibble           3.3.0      2025-06-08 [1] CRAN (R 4.5.2)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.2)
