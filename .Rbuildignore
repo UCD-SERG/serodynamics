@@ -28,4 +28,6 @@
 
 ^_quarto\.yml$
 ^\.quarto$
+^\.vscode$
 ^\.devcontainer$
+^DEVELOPMENT\.md$

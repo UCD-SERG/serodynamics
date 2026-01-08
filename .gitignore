@@ -27,4 +27,5 @@ docs/
 /.quarto/
 
 **/*.quarto_ipynb
+*.pdf
 README.html
