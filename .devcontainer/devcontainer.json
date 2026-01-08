@@ -24,7 +24,7 @@
   },
 
   // Use 'postCreateCommand' to run commands after the container is created
-  "postCreateCommand": ".devcontainer/setup.sh",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
 
   // Set the default shell
   "remoteUser": "rstudio",
