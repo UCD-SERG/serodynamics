@@ -31,7 +31,7 @@
 #' including the same structure as `run_mod()`.
 #' @inheritDotParams prep_priors_stan
 #' @export
-#' @example inst/examples/run_mod-examples.R
+#' @example inst/examples/run_mod_stan-examples.R
 run_mod_stan <- function(data,
                          file_mod = serodynamics_example("model.stan"),
                          nchain = 4,
@@ -46,7 +46,12 @@ run_mod_stan <- function(data,
     cli::cli_abort(
       c(
         "Package {.pkg cmdstanr} is required but not installed.",
-        "i" = "Install it with: {.code install.packages('cmdstanr', repos = c('https://stan-dev.r-universe.dev', getOption('repos')))}"
+        "i" = paste0(
+          "Install it with: ",
+          "{.code install.packages('cmdstanr', ",
+          "repos = c('https://stan-dev.r-universe.dev', ",
+          "getOption('repos')))}"
+        )
       )
     )
   }
@@ -151,8 +156,10 @@ run_mod_stan <- function(data,
     
     stan_final <- stan_unpack |>
       dplyr::select(!c("Subnum", "Subject")) |>
-      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                     "Subject" = "attr.longdata...ids.."))
+      dplyr::rename(
+        c("Iso_type" = "attributes.longdata..antigens",
+          "Subject" = "attr.longdata...ids..")
+      )
     
     # Creating a label for the stratification
     stan_final$Stratification <- i

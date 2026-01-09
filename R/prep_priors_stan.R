@@ -1,22 +1,25 @@
 #' @title Prepare priors for Stan
 #' @description
-#' Takes multiple [vector] inputs to allow for modifiable priors for Stan models.
-#' Converts JAGS precision-based priors to Stan covariance-based priors.
+#' Takes multiple [vector] inputs to allow for modifiable priors for Stan
+#' models. Converts JAGS precision-based priors to Stan covariance-based
+#' priors.
 #' 
 #' @inheritParams prep_priors
 #'
 #' @returns A "curve_params_priors_stan" object 
 #' (a subclass of [list] with the inputs to `prep_priors_stan()` attached 
-#' as [attributes] entry named `"used_priors"`), containing Stan-formatted priors.
+#' as [attributes] entry named `"used_priors"`), containing Stan-formatted
+#' priors.
 #' @export
-#' @example inst/examples/examples-prep_priors.R
+#' @example inst/examples/examples-prep_priors_stan.R
 
-prep_priors_stan <- function(max_antigens,
-                              mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-                              prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-                              omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-                              wishdf_param = 20,
-                              prec_logy_hyp_param = c(4.0, 1.0)) {
+prep_priors_stan <- function(
+    max_antigens,
+    mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4.0, 1.0)) {
   
   # Input validation (same as prep_priors)
   if (length(mu_hyp_param) != 5) {

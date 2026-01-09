@@ -68,20 +68,22 @@ If specified, must be 2 values long:
 \value{
 A "curve_params_priors_stan" object
 (a subclass of \link{list} with the inputs to \code{prep_priors_stan()} attached
-as \link{attributes} entry named \code{"used_priors"}), containing Stan-formatted priors.
+as \link{attributes} entry named \code{"used_priors"}), containing Stan-formatted
+priors.
 }
 \description{
-Takes multiple \link{vector} inputs to allow for modifiable priors for Stan models.
-Converts JAGS precision-based priors to Stan covariance-based priors.
+Takes multiple \link{vector} inputs to allow for modifiable priors for Stan
+models. Converts JAGS precision-based priors to Stan covariance-based
+priors.
 }
 \examples{
 
-prep_priors(max_antigens = 2,
-            mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-            prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-            omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-            wishdf_param = 20,
-            prec_logy_hyp_param = c(4.0, 1.0))
+prep_priors_stan(max_antigens = 2,
+                 mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                 prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                 omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                 wishdf_param = 20,
+                 prec_logy_hyp_param = c(4.0, 1.0))
 
-prep_priors(max_antigens = 2)
+prep_priors_stan(max_antigens = 2)
 }

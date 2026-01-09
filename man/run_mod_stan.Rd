@@ -107,10 +107,9 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
-  set.seed(1)
+if (requireNamespace("cmdstanr", quietly = TRUE)) {
   library(dplyr)
+  set.seed(1)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
     mutate(strat = "stratum 2")
@@ -120,16 +119,14 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   dataset <- bind_rows(strat1, strat2)
 
-  fitted_model <- run_mod(
+  fitted_model <- run_mod_stan(
     data = dataset, # The data set input
-    file_mod = serodynamics_example("model.jags"),
+    file_mod = serodynamics_example("model.stan"),
     nchain = 4, # Number of mcmc chains to run
-    nadapt = 100, # Number of adaptations to run
-    nburn = 100, # Number of unrecorded samples before sampling begins
-    nmc = 1000,
-    niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
+    nadapt = 500, # Number of warmup iterations
+    niter = 1000, # Number of sampling iterations
+    strat = "strat" # Variable to be stratified
+  )
 }
 }
 \author{
