@@ -17,6 +17,7 @@ on:
       - "man/**"
       - "LICENSE.*"
       - NAMESPACE
+      - ".github/workflows/docs.yaml"
   pull_request:
     types:
       - opened
@@ -36,6 +37,7 @@ on:
       - "man/**"
       - "LICENSE.*"
       - NAMESPACE
+      - ".github/workflows/docs.yaml"
   workflow_dispatch:
 
 concurrency:
