@@ -1,5 +1,6 @@
 # serodynamics (development version)
 
+* Implemented multi-version documentation with dropdown menu for package versions, based on insightsengineering/tern setup. Documentation is now versioned by tags and branch, with the latest release as the default landing page.
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.
