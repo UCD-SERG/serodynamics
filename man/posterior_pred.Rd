@@ -4,27 +4,26 @@
 \alias{posterior_pred}
 \title{Posterior predictive check}
 \usage{
-posterior_pred(
-  data = NA,
-  raw_dat = NA,
-  n_sample = 1000,
-  antigen_isos = unique(data$Iso_type),
-  n_sim = 4,
-  ...
-)
+posterior_pred(data = NA, raw_dat = NA, by_antigen = FALSE, n_sim = 4, ...)
 }
 \arguments{
-\item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
+\item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.
+\itemize{
+\item MCMC samples of posterior distribution of the person specific
+}}
 
-\item{raw_dat}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
+\item{raw_dat}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.
+\itemize{
+\item each row is single OD measurement per ...
+}}
+
+\item{n_sim}{The number of simulations to run.}
 
 \item{n_sample}{The number of simulated samples for posterior predictive
 checks.}
 
 \item{antigen_isos}{The antigen/isotype combinations to create posterior
 predictive plots for.}
-
-\item{n_sim}{The number of simulations to run.}
 }
 \value{
 A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects of posterior predictive checks.
