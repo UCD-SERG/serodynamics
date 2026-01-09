@@ -71,7 +71,7 @@ jobs:
         shell: bash
 
       - name: Checkout repo (PR) 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         if: github.event_name == 'pull_request'
         with:
           ref: ${{ steps.branch-name.outputs.head_ref_branch }}
@@ -79,7 +79,7 @@ jobs:
           repository: ${{ github.event.pull_request.head.repo.full_name }}
 
       - name: Checkout repo 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         if: github.event_name != 'pull_request'
         with:
           ref: ${{ steps.branch-name.outputs.current_branch }}
@@ -144,7 +144,7 @@ jobs:
 
       - name: Checkout gh-pages 🛎
         if: startsWith(github.ref, 'refs/tags/v') || github.event_name == 'push'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           path: "gh-pages"
           fetch-depth: 0
@@ -218,14 +218,14 @@ jobs:
 
       - name: Upload docs for review ⬆
         if: github.event_name == 'pull_request' || startsWith(github.ref, 'refs/tags/v')
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.6.2
         with:
           name: pkgdown.zip
           path: pkgdown.zip
 
       - name: Checkout gh-pages for PR preview 🛎
         if: github.event_name == 'pull_request'
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           path: "gh-pages-preview"
           fetch-depth: 0
@@ -281,7 +281,7 @@ jobs:
         && !contains(github.event.commits[0].message, '[skip docs]')
     steps:
       - name: Checkout repo 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           path: ${{ github.event.repository.name }}
           ref: "gh-pages"
@@ -303,10 +303,10 @@ jobs:
         && !contains(github.event.commits[0].message, '[skip docs]')
     steps:
       - name: Checkout repo 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
 
       - name: Download artifact ⏬
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v4.1.8
         with:
           name: pkgdown.zip
 
@@ -331,7 +331,7 @@ jobs:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'
     steps:
       - name: Checkout gh-pages 🛎
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.3.1
         with:
           ref: "gh-pages"
 
