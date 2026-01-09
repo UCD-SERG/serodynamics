@@ -32,6 +32,18 @@ as_case_data <- function(
     biomarker_var = "antigen_iso",
     value_var = "value",
     time_in_days = "timeindays") {
+  
+  # Validate that required columns exist in data
+  required_cols <- c(id_var, biomarker_var, value_var, time_in_days)
+  missing_cols <- setdiff(required_cols, names(data))
+  
+  if (length(missing_cols) > 0) {
+    cli::cli_abort(c(
+      "x" = "Required column{?s} missing from data: {.field {missing_cols}}",
+      "i" = "Available columns: {.field {names(data)}}"
+    ))
+  }
+  
   data |>
     tibble::as_tibble() |>
     dplyr::mutate(
