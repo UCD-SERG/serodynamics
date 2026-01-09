@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9047
+Version: 0.0.0.9048
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -33,6 +33,7 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    cmdstanr,
     Hmisc,
     knitr,
     readr,
@@ -63,6 +64,7 @@ Config/needs/test:
     rlist
 Config/needs/check: commonmark, xml2
 Remotes: 
+    stan-dev/cmdstanr,
     ucd-serg/serocalculator
 Depends: 
     R (>= 4.1.0)

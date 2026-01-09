@@ -2,12 +2,17 @@
 
 ## Repository Overview
 
-**serodynamics** is an R package for modeling longitudinal antibody responses to infection. It implements Bayesian MCMC methods using JAGS (Just Another Gibbs Sampler) to estimate antibody dynamic curve parameters including baseline concentration, peak concentration, time to peak, shape parameter, and decay rate.
+**serodynamics** is an R package for modeling longitudinal antibody responses to infection. It implements Bayesian MCMC methods to estimate antibody dynamic curve parameters including baseline concentration, peak concentration, time to peak, shape parameter, and decay rate.
+
+The package supports two Bayesian modeling backends:
+- **JAGS** (Just Another Gibbs Sampler) via `runjags` - the original implementation
+- **Stan** via `cmdstanr` - a modern, efficient alternative (optional)
 
 - **Type**: R package (statistical modeling)
 - **Size**: ~121MB, ~209 files, ~76 R source files, ~1,664 lines of R code
 - **Language**: R (>= 4.1.0)
 - **Key Dependencies**: runjags, rjags, JAGS 4.3.1, serocalculator, ggmcmc, dplyr, ggplot2
+- **Optional Dependencies**: cmdstanr (for Stan support)
 - **Lifecycle**: Experimental (under active development)
 
 ## Critical Setup Requirements
@@ -213,9 +218,9 @@ devtools::check_man()
 
 - **Windows**: Install Rtools from https://cran.r-project.org/bin/windows/Rtools/ (choose version matching your R version)
 
-### JAGS Installation (REQUIRED)
+### JAGS Installation (REQUIRED for JAGS models)
 
-**ALWAYS install JAGS before attempting to build, test, or run this package.** The package will fail without it.
+**Install JAGS if you plan to use `run_mod()` with JAGS models.** JAGS is required for the original JAGS-based modeling functions but is not needed if you only use Stan models via `run_mod_stan()`.
 
 #### Installing JAGS in Docker (if using rocker/verse)
 
@@ -249,6 +254,25 @@ library(runjags)
 runjags::findJAGS()
 runjags::testjags()
 ```
+
+### Stan Installation (OPTIONAL for Stan models)
+
+**Install cmdstanr and CmdStan if you plan to use `run_mod_stan()`.** Stan support is optional and provides a modern alternative to JAGS.
+
+```r
+# Install cmdstanr from r-universe
+install.packages("cmdstanr", 
+                 repos = c("https://stan-dev.r-universe.dev",
+                          getOption("repos")))
+
+# Then install CmdStan
+cmdstanr::install_cmdstan()
+
+# Verify installation
+cmdstanr::cmdstan_version()
+```
+
+See the [cmdstanr documentation](https://mc-stan.org/cmdstanr/) for more details and troubleshooting.
 
 ## Build and Development Workflow
 
@@ -374,10 +398,14 @@ Team members can trigger actions by commenting on PRs:
 
 ### Key Directories
 
-- **R/**: Package source code (30 R files)
+- **R/**: Package source code (30+ R files)
   - `Run_Mod.R`: Main function to run JAGS Bayesian models
+  - `run_mod_stan.R`: Main function to run Stan Bayesian models (new)
   - `as_case_data.R`: Convert data to case_data class
-  - `prep_data.r`, `prep_priors.R`: Data preparation for JAGS
+  - `prep_data.r`: Data preparation for JAGS
+  - `prep_data_stan.R`: Data preparation for Stan (new)
+  - `prep_priors.R`: Prior preparation for JAGS
+  - `prep_priors_stan.R`: Prior preparation for Stan (new)
   - `sim_case_data.R`: Simulate case data for testing
   - `post_summ.R`, `postprocess_jags_output.R`: Post-processing JAGS results
   - `plot_*.R`: Diagnostic plotting functions (trace, density, Rhat, effective sample size)
@@ -397,8 +425,13 @@ Team members can trigger actions by commenting on PRs:
 - **data-raw/**: Raw data processing scripts (not included in package build)
 
 - **inst/**: Installed files
-  - `inst/extdata/`: JAGS model files (`model.jags`, `model.dobson.jags`), example CSV data
+  - `inst/extdata/`: Model files
+    - `model.jags`, `model.dobson.jags`: JAGS model files
+    - `model.stan`, `model.dobson.stan`: Stan model files (new)
+    - Example CSV data files
   - `inst/examples/`: Example R scripts for documentation
+    - JAGS examples: `run_mod-examples.R`, `examples-prep_priors.R`
+    - Stan examples: `run_mod_stan-examples.R`, `examples-prep_priors_stan.R`, `examples-prep_data_stan.R` (new)
   - `inst/WORDLIST`: Custom spelling dictionary
 
 - **vignettes/**: Package vignettes
