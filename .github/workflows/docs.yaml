@@ -7,6 +7,17 @@ on:
       - main
     tags:
       - "v*"
+    paths:
+      - "inst/templates/**"
+      - "pkgdown/**"
+      - "_pkgdown.*"
+      - DESCRIPTION
+      - "**.md"
+      - "**.Rmd"
+      - "man/**"
+      - "LICENSE.*"
+      - NAMESPACE
+      - ".github/workflows/docs.yaml"
   pull_request:
     types:
       - opened
@@ -16,6 +27,17 @@ on:
       - closed
     branches:
       - main
+    paths:
+      - "inst/templates/**"
+      - "pkgdown/**"
+      - "_pkgdown.*"
+      - DESCRIPTION
+      - "**.md"
+      - "**.Rmd"
+      - "man/**"
+      - "LICENSE.*"
+      - NAMESPACE
+      - ".github/workflows/docs.yaml"
   workflow_dispatch:
 
 concurrency:
@@ -28,7 +50,6 @@ jobs:
     runs-on: ubuntu-latest
     if: >
       !contains(github.event.commits[0].message, '[skip docs]')
-        && (github.event_name != 'pull_request' || github.event.pull_request.draft == false)
         && !(github.event_name == 'pull_request' && github.event.action == 'closed')
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
