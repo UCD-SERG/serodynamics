@@ -8,7 +8,7 @@
 #' - each row is single OD measurement per ...
 #' @param n_sample The number of simulated samples for posterior predictive
 #' checks.
-#' @param antigen_isos The antigen/isotype combinations to create posterior 
+#' @param by_antigen The antigen/isotype combinations to create posterior 
 #' predictive plots for.
 #' @param n_sim The number of simulations to run.
 #' @returns A [list] of [ggplot2::ggplot] objects of posterior predictive checks.
