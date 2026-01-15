@@ -25,11 +25,20 @@ test_that(
     ) |>
       suppressWarnings()
     
+    testthat::announce_snapshot_file("sim-strat-population-params.csv")
     
+    # Snapshot population_params separately as CSV
+    attributes(results)$population_params |>
+      expect_snapshot_data(
+        "sim-strat-population-params",
+        variant = darwin_variant()
+      )
+    
+    # Snapshot other attributes (excluding large data structures)
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse")
+      rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
+      expect_snapshot()
     
     results |>
       expect_snapshot_data(
@@ -51,6 +60,7 @@ test_that(
   code = {
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
+    testthat::announce_snapshot_file("strat-population-params.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -66,10 +76,18 @@ test_that(
     ) |>
       suppressWarnings()
     
+    # Snapshot population_params separately as CSV
+    attributes(results)$population_params |>
+      expect_snapshot_data(
+        "strat-population-params",
+        variant = darwin_variant()
+      )
+    
+    # Snapshot other attributes (excluding large data structures)
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse")
+      rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
+      expect_snapshot()
     
     results |>
       expect_snapshot_data(
@@ -105,10 +123,20 @@ test_that(
     ) |>
       suppressWarnings()
     
+    testthat::announce_snapshot_file("nostrat-population-params.csv")
+    
+    # Snapshot population_params separately as CSV
+    attributes(results)$population_params |>
+      expect_snapshot_data(
+        "nostrat-population-params",
+        variant = darwin_variant()
+      )
+    
+    # Snapshot other attributes (excluding large data structures)
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse")
+      rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
+      expect_snapshot()
     
     results |>
       expect_snapshot_data(
@@ -145,10 +173,20 @@ test_that(
     ) |>
       suppressWarnings()
     
+    testthat::announce_snapshot_file("nostrat-withpost-population-params.csv")
+    
+    # Snapshot population_params separately as CSV
+    attributes(results)$population_params |>
+      expect_snapshot_data(
+        "nostrat-withpost-population-params",
+        variant = darwin_variant()
+      )
+    
+    # Snapshot other attributes (excluding large data structures)
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
+      rlist::list.remove(c("row.names", "jags.post", "fitted_residuals", "population_params")) |>
+      expect_snapshot()
     
     results |>
       expect_snapshot_data(
@@ -183,10 +221,20 @@ test_that(
     ) |>
       suppressWarnings()
     
+    testthat::announce_snapshot_file("nostrat-specpriors-population-params.csv")
+    
+    # Snapshot population_params separately as CSV
+    attributes(results)$population_params |>
+      expect_snapshot_data(
+        "nostrat-specpriors-population-params",
+        variant = darwin_variant()
+      )
+    
+    # Snapshot other attributes (excluding large data structures)
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
+      rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
+      expect_snapshot()
     
     results |>
       expect_snapshot_data(

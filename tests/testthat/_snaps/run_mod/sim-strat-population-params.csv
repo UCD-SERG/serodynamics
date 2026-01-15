@@ -1,0 +1,1241 @@
+Iteration,Chain,value,Parameter,Iso_type,Population_Parameter,Stratification
+1,1,0.795917,y0,HlyE_IgA,mu.par,stratum 2
+2,1,0.804689,y0,HlyE_IgA,mu.par,stratum 2
+3,1,0.822166,y0,HlyE_IgA,mu.par,stratum 2
+4,1,0.880734,y0,HlyE_IgA,mu.par,stratum 2
+5,1,0.835844,y0,HlyE_IgA,mu.par,stratum 2
+6,1,0.819589,y0,HlyE_IgA,mu.par,stratum 2
+7,1,0.892823,y0,HlyE_IgA,mu.par,stratum 2
+8,1,0.860239,y0,HlyE_IgA,mu.par,stratum 2
+9,1,0.788477,y0,HlyE_IgA,mu.par,stratum 2
+10,1,0.814979,y0,HlyE_IgA,mu.par,stratum 2
+1,2,0.940445,y0,HlyE_IgA,mu.par,stratum 2
+2,2,0.766886,y0,HlyE_IgA,mu.par,stratum 2
+3,2,0.737268,y0,HlyE_IgA,mu.par,stratum 2
+4,2,0.68084,y0,HlyE_IgA,mu.par,stratum 2
+5,2,0.773839,y0,HlyE_IgA,mu.par,stratum 2
+6,2,0.738673,y0,HlyE_IgA,mu.par,stratum 2
+7,2,0.616255,y0,HlyE_IgA,mu.par,stratum 2
+8,2,0.768062,y0,HlyE_IgA,mu.par,stratum 2
+9,2,0.634363,y0,HlyE_IgA,mu.par,stratum 2
+10,2,0.641615,y0,HlyE_IgA,mu.par,stratum 2
+1,1,6.13765,y1,HlyE_IgA,mu.par,stratum 2
+2,1,5.93116,y1,HlyE_IgA,mu.par,stratum 2
+3,1,6.08456,y1,HlyE_IgA,mu.par,stratum 2
+4,1,5.82587,y1,HlyE_IgA,mu.par,stratum 2
+5,1,5.96202,y1,HlyE_IgA,mu.par,stratum 2
+6,1,5.93955,y1,HlyE_IgA,mu.par,stratum 2
+7,1,5.65712,y1,HlyE_IgA,mu.par,stratum 2
+8,1,5.80512,y1,HlyE_IgA,mu.par,stratum 2
+9,1,6.14133,y1,HlyE_IgA,mu.par,stratum 2
+10,1,5.83712,y1,HlyE_IgA,mu.par,stratum 2
+1,2,5.3218,y1,HlyE_IgA,mu.par,stratum 2
+2,2,5.39455,y1,HlyE_IgA,mu.par,stratum 2
+3,2,5.12434,y1,HlyE_IgA,mu.par,stratum 2
+4,2,5.25688,y1,HlyE_IgA,mu.par,stratum 2
+5,2,5.14387,y1,HlyE_IgA,mu.par,stratum 2
+6,2,5.13832,y1,HlyE_IgA,mu.par,stratum 2
+7,2,4.98287,y1,HlyE_IgA,mu.par,stratum 2
+8,2,5.39695,y1,HlyE_IgA,mu.par,stratum 2
+9,2,5.39122,y1,HlyE_IgA,mu.par,stratum 2
+10,2,5.05111,y1,HlyE_IgA,mu.par,stratum 2
+1,1,0.425087,t1,HlyE_IgA,mu.par,stratum 2
+2,1,0.465174,t1,HlyE_IgA,mu.par,stratum 2
+3,1,0.498218,t1,HlyE_IgA,mu.par,stratum 2
+4,1,0.428967,t1,HlyE_IgA,mu.par,stratum 2
+5,1,0.354469,t1,HlyE_IgA,mu.par,stratum 2
+6,1,0.472278,t1,HlyE_IgA,mu.par,stratum 2
+7,1,0.491661,t1,HlyE_IgA,mu.par,stratum 2
+8,1,0.412254,t1,HlyE_IgA,mu.par,stratum 2
+9,1,0.448367,t1,HlyE_IgA,mu.par,stratum 2
+10,1,0.41284,t1,HlyE_IgA,mu.par,stratum 2
+1,2,0.660753,t1,HlyE_IgA,mu.par,stratum 2
+2,2,0.735709,t1,HlyE_IgA,mu.par,stratum 2
+3,2,0.68634,t1,HlyE_IgA,mu.par,stratum 2
+4,2,0.734134,t1,HlyE_IgA,mu.par,stratum 2
+5,2,0.692012,t1,HlyE_IgA,mu.par,stratum 2
+6,2,0.674392,t1,HlyE_IgA,mu.par,stratum 2
+7,2,0.706889,t1,HlyE_IgA,mu.par,stratum 2
+8,2,0.671723,t1,HlyE_IgA,mu.par,stratum 2
+9,2,0.751518,t1,HlyE_IgA,mu.par,stratum 2
+10,2,0.650222,t1,HlyE_IgA,mu.par,stratum 2
+1,1,-4.82812,alpha,HlyE_IgA,mu.par,stratum 2
+2,1,-4.73509,alpha,HlyE_IgA,mu.par,stratum 2
+3,1,-4.75085,alpha,HlyE_IgA,mu.par,stratum 2
+4,1,-4.75997,alpha,HlyE_IgA,mu.par,stratum 2
+5,1,-4.80809,alpha,HlyE_IgA,mu.par,stratum 2
+6,1,-4.67443,alpha,HlyE_IgA,mu.par,stratum 2
+7,1,-4.89267,alpha,HlyE_IgA,mu.par,stratum 2
+8,1,-4.72134,alpha,HlyE_IgA,mu.par,stratum 2
+9,1,-4.78645,alpha,HlyE_IgA,mu.par,stratum 2
+10,1,-4.82009,alpha,HlyE_IgA,mu.par,stratum 2
+1,2,-4.9786,alpha,HlyE_IgA,mu.par,stratum 2
+2,2,-5.01259,alpha,HlyE_IgA,mu.par,stratum 2
+3,2,-5.02214,alpha,HlyE_IgA,mu.par,stratum 2
+4,2,-5.15204,alpha,HlyE_IgA,mu.par,stratum 2
+5,2,-4.96335,alpha,HlyE_IgA,mu.par,stratum 2
+6,2,-4.96423,alpha,HlyE_IgA,mu.par,stratum 2
+7,2,-5.03243,alpha,HlyE_IgA,mu.par,stratum 2
+8,2,-5.04941,alpha,HlyE_IgA,mu.par,stratum 2
+9,2,-5.03391,alpha,HlyE_IgA,mu.par,stratum 2
+10,2,-5.15941,alpha,HlyE_IgA,mu.par,stratum 2
+1,1,-0.651247,shape,HlyE_IgA,mu.par,stratum 2
+2,1,-0.750593,shape,HlyE_IgA,mu.par,stratum 2
+3,1,-0.574332,shape,HlyE_IgA,mu.par,stratum 2
+4,1,-0.703308,shape,HlyE_IgA,mu.par,stratum 2
+5,1,-0.752907,shape,HlyE_IgA,mu.par,stratum 2
+6,1,-0.76249,shape,HlyE_IgA,mu.par,stratum 2
+7,1,-0.634825,shape,HlyE_IgA,mu.par,stratum 2
+8,1,-0.707261,shape,HlyE_IgA,mu.par,stratum 2
+9,1,-0.592827,shape,HlyE_IgA,mu.par,stratum 2
+10,1,-0.671159,shape,HlyE_IgA,mu.par,stratum 2
+1,2,-0.62084,shape,HlyE_IgA,mu.par,stratum 2
+2,2,-0.644356,shape,HlyE_IgA,mu.par,stratum 2
+3,2,-0.793429,shape,HlyE_IgA,mu.par,stratum 2
+4,2,-0.751918,shape,HlyE_IgA,mu.par,stratum 2
+5,2,-0.586384,shape,HlyE_IgA,mu.par,stratum 2
+6,2,-0.659702,shape,HlyE_IgA,mu.par,stratum 2
+7,2,-0.832814,shape,HlyE_IgA,mu.par,stratum 2
+8,2,-0.607587,shape,HlyE_IgA,mu.par,stratum 2
+9,2,-0.834066,shape,HlyE_IgA,mu.par,stratum 2
+10,2,-0.744806,shape,HlyE_IgA,mu.par,stratum 2
+1,1,9.2988,"y0, y0",HlyE_IgA,prec.par,stratum 2
+2,1,8.77589,"y0, y0",HlyE_IgA,prec.par,stratum 2
+3,1,7.50199,"y0, y0",HlyE_IgA,prec.par,stratum 2
+4,1,7.68697,"y0, y0",HlyE_IgA,prec.par,stratum 2
+5,1,8.7746,"y0, y0",HlyE_IgA,prec.par,stratum 2
+6,1,10.331,"y0, y0",HlyE_IgA,prec.par,stratum 2
+7,1,6.7901300000000004,"y0, y0",HlyE_IgA,prec.par,stratum 2
+8,1,9.22096,"y0, y0",HlyE_IgA,prec.par,stratum 2
+9,1,7.60833,"y0, y0",HlyE_IgA,prec.par,stratum 2
+10,1,7.28282,"y0, y0",HlyE_IgA,prec.par,stratum 2
+1,2,5.53238,"y0, y0",HlyE_IgA,prec.par,stratum 2
+2,2,5.9151,"y0, y0",HlyE_IgA,prec.par,stratum 2
+3,2,6.14614,"y0, y0",HlyE_IgA,prec.par,stratum 2
+4,2,5.16653,"y0, y0",HlyE_IgA,prec.par,stratum 2
+5,2,6.97979,"y0, y0",HlyE_IgA,prec.par,stratum 2
+6,2,6.61933,"y0, y0",HlyE_IgA,prec.par,stratum 2
+7,2,5.96891,"y0, y0",HlyE_IgA,prec.par,stratum 2
+8,2,6.81511,"y0, y0",HlyE_IgA,prec.par,stratum 2
+9,2,5.02792,"y0, y0",HlyE_IgA,prec.par,stratum 2
+10,2,6.98338,"y0, y0",HlyE_IgA,prec.par,stratum 2
+1,1,0.468115,"y0, y1",HlyE_IgA,prec.par,stratum 2
+2,1,0.936058,"y0, y1",HlyE_IgA,prec.par,stratum 2
+3,1,0.578383,"y0, y1",HlyE_IgA,prec.par,stratum 2
+4,1,0.810394,"y0, y1",HlyE_IgA,prec.par,stratum 2
+5,1,1.33404,"y0, y1",HlyE_IgA,prec.par,stratum 2
+6,1,0.798348,"y0, y1",HlyE_IgA,prec.par,stratum 2
+7,1,0.915061,"y0, y1",HlyE_IgA,prec.par,stratum 2
+8,1,0.891576,"y0, y1",HlyE_IgA,prec.par,stratum 2
+9,1,0.603244,"y0, y1",HlyE_IgA,prec.par,stratum 2
+10,1,0.527026,"y0, y1",HlyE_IgA,prec.par,stratum 2
+1,2,-0.145442,"y0, y1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.0852059,"y0, y1",HlyE_IgA,prec.par,stratum 2
+3,2,-0.120651,"y0, y1",HlyE_IgA,prec.par,stratum 2
+4,2,0.0607266,"y0, y1",HlyE_IgA,prec.par,stratum 2
+5,2,0.401857,"y0, y1",HlyE_IgA,prec.par,stratum 2
+6,2,0.193169,"y0, y1",HlyE_IgA,prec.par,stratum 2
+7,2,-0.11637,"y0, y1",HlyE_IgA,prec.par,stratum 2
+8,2,-0.0471368,"y0, y1",HlyE_IgA,prec.par,stratum 2
+9,2,-0.252965,"y0, y1",HlyE_IgA,prec.par,stratum 2
+10,2,-0.238962,"y0, y1",HlyE_IgA,prec.par,stratum 2
+1,1,0.129982,"y0, t1",HlyE_IgA,prec.par,stratum 2
+2,1,2.03371,"y0, t1",HlyE_IgA,prec.par,stratum 2
+3,1,3.44663,"y0, t1",HlyE_IgA,prec.par,stratum 2
+4,1,3.52253,"y0, t1",HlyE_IgA,prec.par,stratum 2
+5,1,3.14064,"y0, t1",HlyE_IgA,prec.par,stratum 2
+6,1,5.20009,"y0, t1",HlyE_IgA,prec.par,stratum 2
+7,1,5.97077,"y0, t1",HlyE_IgA,prec.par,stratum 2
+8,1,5.45281,"y0, t1",HlyE_IgA,prec.par,stratum 2
+9,1,6.10801,"y0, t1",HlyE_IgA,prec.par,stratum 2
+10,1,3.78794,"y0, t1",HlyE_IgA,prec.par,stratum 2
+1,2,3.27305,"y0, t1",HlyE_IgA,prec.par,stratum 2
+2,2,3.98189,"y0, t1",HlyE_IgA,prec.par,stratum 2
+3,2,1.44992,"y0, t1",HlyE_IgA,prec.par,stratum 2
+4,2,3.02123,"y0, t1",HlyE_IgA,prec.par,stratum 2
+5,2,3.98438,"y0, t1",HlyE_IgA,prec.par,stratum 2
+6,2,3.88687,"y0, t1",HlyE_IgA,prec.par,stratum 2
+7,2,2.95192,"y0, t1",HlyE_IgA,prec.par,stratum 2
+8,2,2.9936,"y0, t1",HlyE_IgA,prec.par,stratum 2
+9,2,2.84974,"y0, t1",HlyE_IgA,prec.par,stratum 2
+10,2,4.82853,"y0, t1",HlyE_IgA,prec.par,stratum 2
+1,1,-0.332167,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+2,1,-0.0978004,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+3,1,-0.503707,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+4,1,0.382229,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+5,1,-0.296636,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+6,1,0.157125,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+7,1,0.510235,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+8,1,0.109805,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+9,1,0.136801,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+10,1,0.121004,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+1,2,-0.143118,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+2,2,0.683913,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+3,2,-0.784139,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+4,2,0.380283,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+5,2,1.22727,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+6,2,0.543187,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+7,2,0.415459,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+8,2,-0.472906,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+9,2,0.627766,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+10,2,0.367505,"y0, alpha",HlyE_IgA,prec.par,stratum 2
+1,1,-3.32389,"y0, shape",HlyE_IgA,prec.par,stratum 2
+2,1,-2.58962,"y0, shape",HlyE_IgA,prec.par,stratum 2
+3,1,-3.41266,"y0, shape",HlyE_IgA,prec.par,stratum 2
+4,1,-3.44569,"y0, shape",HlyE_IgA,prec.par,stratum 2
+5,1,-3.42358,"y0, shape",HlyE_IgA,prec.par,stratum 2
+6,1,-4.20764,"y0, shape",HlyE_IgA,prec.par,stratum 2
+7,1,-3.03693,"y0, shape",HlyE_IgA,prec.par,stratum 2
+8,1,-3.48818,"y0, shape",HlyE_IgA,prec.par,stratum 2
+9,1,-1.62721,"y0, shape",HlyE_IgA,prec.par,stratum 2
+10,1,-2.141,"y0, shape",HlyE_IgA,prec.par,stratum 2
+1,2,-2.63688,"y0, shape",HlyE_IgA,prec.par,stratum 2
+2,2,-3.20038,"y0, shape",HlyE_IgA,prec.par,stratum 2
+3,2,-3.63487,"y0, shape",HlyE_IgA,prec.par,stratum 2
+4,2,-2.25947,"y0, shape",HlyE_IgA,prec.par,stratum 2
+5,2,-3.77356,"y0, shape",HlyE_IgA,prec.par,stratum 2
+6,2,-3.05713,"y0, shape",HlyE_IgA,prec.par,stratum 2
+7,2,-2.76962,"y0, shape",HlyE_IgA,prec.par,stratum 2
+8,2,-3.57432,"y0, shape",HlyE_IgA,prec.par,stratum 2
+9,2,-1.67793,"y0, shape",HlyE_IgA,prec.par,stratum 2
+10,2,-2.88259,"y0, shape",HlyE_IgA,prec.par,stratum 2
+1,1,0.468115,"y1, y0",HlyE_IgA,prec.par,stratum 2
+2,1,0.936058,"y1, y0",HlyE_IgA,prec.par,stratum 2
+3,1,0.578383,"y1, y0",HlyE_IgA,prec.par,stratum 2
+4,1,0.810394,"y1, y0",HlyE_IgA,prec.par,stratum 2
+5,1,1.33404,"y1, y0",HlyE_IgA,prec.par,stratum 2
+6,1,0.798348,"y1, y0",HlyE_IgA,prec.par,stratum 2
+7,1,0.915061,"y1, y0",HlyE_IgA,prec.par,stratum 2
+8,1,0.891576,"y1, y0",HlyE_IgA,prec.par,stratum 2
+9,1,0.603244,"y1, y0",HlyE_IgA,prec.par,stratum 2
+10,1,0.527026,"y1, y0",HlyE_IgA,prec.par,stratum 2
+1,2,-0.145442,"y1, y0",HlyE_IgA,prec.par,stratum 2
+2,2,-0.0852059,"y1, y0",HlyE_IgA,prec.par,stratum 2
+3,2,-0.120651,"y1, y0",HlyE_IgA,prec.par,stratum 2
+4,2,0.0607266,"y1, y0",HlyE_IgA,prec.par,stratum 2
+5,2,0.401857,"y1, y0",HlyE_IgA,prec.par,stratum 2
+6,2,0.193169,"y1, y0",HlyE_IgA,prec.par,stratum 2
+7,2,-0.11637,"y1, y0",HlyE_IgA,prec.par,stratum 2
+8,2,-0.0471368,"y1, y0",HlyE_IgA,prec.par,stratum 2
+9,2,-0.252965,"y1, y0",HlyE_IgA,prec.par,stratum 2
+10,2,-0.238962,"y1, y0",HlyE_IgA,prec.par,stratum 2
+1,1,0.788446,"y1, y1",HlyE_IgA,prec.par,stratum 2
+2,1,0.743497,"y1, y1",HlyE_IgA,prec.par,stratum 2
+3,1,0.842952,"y1, y1",HlyE_IgA,prec.par,stratum 2
+4,1,0.820623,"y1, y1",HlyE_IgA,prec.par,stratum 2
+5,1,0.896981,"y1, y1",HlyE_IgA,prec.par,stratum 2
+6,1,0.612219,"y1, y1",HlyE_IgA,prec.par,stratum 2
+7,1,0.855177,"y1, y1",HlyE_IgA,prec.par,stratum 2
+8,1,0.824163,"y1, y1",HlyE_IgA,prec.par,stratum 2
+9,1,0.743209,"y1, y1",HlyE_IgA,prec.par,stratum 2
+10,1,0.667403,"y1, y1",HlyE_IgA,prec.par,stratum 2
+1,2,0.610283,"y1, y1",HlyE_IgA,prec.par,stratum 2
+2,2,0.540538,"y1, y1",HlyE_IgA,prec.par,stratum 2
+3,2,0.495002,"y1, y1",HlyE_IgA,prec.par,stratum 2
+4,2,0.618984,"y1, y1",HlyE_IgA,prec.par,stratum 2
+5,2,0.739765,"y1, y1",HlyE_IgA,prec.par,stratum 2
+6,2,0.54703,"y1, y1",HlyE_IgA,prec.par,stratum 2
+7,2,0.626171,"y1, y1",HlyE_IgA,prec.par,stratum 2
+8,2,0.73515,"y1, y1",HlyE_IgA,prec.par,stratum 2
+9,2,0.75006,"y1, y1",HlyE_IgA,prec.par,stratum 2
+10,2,0.793641,"y1, y1",HlyE_IgA,prec.par,stratum 2
+1,1,0.419811,"y1, t1",HlyE_IgA,prec.par,stratum 2
+2,1,0.903281,"y1, t1",HlyE_IgA,prec.par,stratum 2
+3,1,0.734732,"y1, t1",HlyE_IgA,prec.par,stratum 2
+4,1,0.665967,"y1, t1",HlyE_IgA,prec.par,stratum 2
+5,1,0.326121,"y1, t1",HlyE_IgA,prec.par,stratum 2
+6,1,0.593723,"y1, t1",HlyE_IgA,prec.par,stratum 2
+7,1,0.156431,"y1, t1",HlyE_IgA,prec.par,stratum 2
+8,1,0.266653,"y1, t1",HlyE_IgA,prec.par,stratum 2
+9,1,0.478513,"y1, t1",HlyE_IgA,prec.par,stratum 2
+10,1,-0.00409452,"y1, t1",HlyE_IgA,prec.par,stratum 2
+1,2,-0.273882,"y1, t1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.552475,"y1, t1",HlyE_IgA,prec.par,stratum 2
+3,2,-0.275209,"y1, t1",HlyE_IgA,prec.par,stratum 2
+4,2,0.161195,"y1, t1",HlyE_IgA,prec.par,stratum 2
+5,2,0.265305,"y1, t1",HlyE_IgA,prec.par,stratum 2
+6,2,-0.510859,"y1, t1",HlyE_IgA,prec.par,stratum 2
+7,2,-0.224788,"y1, t1",HlyE_IgA,prec.par,stratum 2
+8,2,-0.58373,"y1, t1",HlyE_IgA,prec.par,stratum 2
+9,2,-0.752024,"y1, t1",HlyE_IgA,prec.par,stratum 2
+10,2,-1.1869,"y1, t1",HlyE_IgA,prec.par,stratum 2
+1,1,-0.12079,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+2,1,0.0801835,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+3,1,0.080449,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+4,1,-0.02539,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+5,1,0.0341155,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+6,1,-0.300152,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+7,1,-0.330456,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+8,1,-0.181555,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+9,1,0.0981476,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+10,1,-0.0349974,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+1,2,0.213144,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+2,2,-0.0356065,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+3,2,0.16481,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+4,2,0.0506524,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+5,2,0.430367,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+6,2,0.192295,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+7,2,0.432984,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+8,2,0.202594,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+9,2,-0.0277051,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+10,2,0.0116695,"y1, alpha",HlyE_IgA,prec.par,stratum 2
+1,1,-0.824378,"y1, shape",HlyE_IgA,prec.par,stratum 2
+2,1,-1.18057,"y1, shape",HlyE_IgA,prec.par,stratum 2
+3,1,-0.696859,"y1, shape",HlyE_IgA,prec.par,stratum 2
+4,1,-0.901418,"y1, shape",HlyE_IgA,prec.par,stratum 2
+5,1,-0.957357,"y1, shape",HlyE_IgA,prec.par,stratum 2
+6,1,-0.533809,"y1, shape",HlyE_IgA,prec.par,stratum 2
+7,1,-0.642311,"y1, shape",HlyE_IgA,prec.par,stratum 2
+8,1,-0.845801,"y1, shape",HlyE_IgA,prec.par,stratum 2
+9,1,-0.61552,"y1, shape",HlyE_IgA,prec.par,stratum 2
+10,1,-0.663703,"y1, shape",HlyE_IgA,prec.par,stratum 2
+1,2,-0.396073,"y1, shape",HlyE_IgA,prec.par,stratum 2
+2,2,-0.381334,"y1, shape",HlyE_IgA,prec.par,stratum 2
+3,2,-0.427453,"y1, shape",HlyE_IgA,prec.par,stratum 2
+4,2,-0.309867,"y1, shape",HlyE_IgA,prec.par,stratum 2
+5,2,-0.717999,"y1, shape",HlyE_IgA,prec.par,stratum 2
+6,2,-0.613293,"y1, shape",HlyE_IgA,prec.par,stratum 2
+7,2,-0.487452,"y1, shape",HlyE_IgA,prec.par,stratum 2
+8,2,-0.762795,"y1, shape",HlyE_IgA,prec.par,stratum 2
+9,2,-0.437415,"y1, shape",HlyE_IgA,prec.par,stratum 2
+10,2,-0.832595,"y1, shape",HlyE_IgA,prec.par,stratum 2
+1,1,0.129982,"t1, y0",HlyE_IgA,prec.par,stratum 2
+2,1,2.03371,"t1, y0",HlyE_IgA,prec.par,stratum 2
+3,1,3.44663,"t1, y0",HlyE_IgA,prec.par,stratum 2
+4,1,3.52253,"t1, y0",HlyE_IgA,prec.par,stratum 2
+5,1,3.14064,"t1, y0",HlyE_IgA,prec.par,stratum 2
+6,1,5.20009,"t1, y0",HlyE_IgA,prec.par,stratum 2
+7,1,5.97077,"t1, y0",HlyE_IgA,prec.par,stratum 2
+8,1,5.45281,"t1, y0",HlyE_IgA,prec.par,stratum 2
+9,1,6.10801,"t1, y0",HlyE_IgA,prec.par,stratum 2
+10,1,3.78794,"t1, y0",HlyE_IgA,prec.par,stratum 2
+1,2,3.27305,"t1, y0",HlyE_IgA,prec.par,stratum 2
+2,2,3.98189,"t1, y0",HlyE_IgA,prec.par,stratum 2
+3,2,1.44992,"t1, y0",HlyE_IgA,prec.par,stratum 2
+4,2,3.02123,"t1, y0",HlyE_IgA,prec.par,stratum 2
+5,2,3.98438,"t1, y0",HlyE_IgA,prec.par,stratum 2
+6,2,3.88687,"t1, y0",HlyE_IgA,prec.par,stratum 2
+7,2,2.95192,"t1, y0",HlyE_IgA,prec.par,stratum 2
+8,2,2.9936,"t1, y0",HlyE_IgA,prec.par,stratum 2
+9,2,2.84974,"t1, y0",HlyE_IgA,prec.par,stratum 2
+10,2,4.82853,"t1, y0",HlyE_IgA,prec.par,stratum 2
+1,1,0.419811,"t1, y1",HlyE_IgA,prec.par,stratum 2
+2,1,0.903281,"t1, y1",HlyE_IgA,prec.par,stratum 2
+3,1,0.734732,"t1, y1",HlyE_IgA,prec.par,stratum 2
+4,1,0.665967,"t1, y1",HlyE_IgA,prec.par,stratum 2
+5,1,0.326121,"t1, y1",HlyE_IgA,prec.par,stratum 2
+6,1,0.593723,"t1, y1",HlyE_IgA,prec.par,stratum 2
+7,1,0.156431,"t1, y1",HlyE_IgA,prec.par,stratum 2
+8,1,0.266653,"t1, y1",HlyE_IgA,prec.par,stratum 2
+9,1,0.478513,"t1, y1",HlyE_IgA,prec.par,stratum 2
+10,1,-0.00409452,"t1, y1",HlyE_IgA,prec.par,stratum 2
+1,2,-0.273882,"t1, y1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.552475,"t1, y1",HlyE_IgA,prec.par,stratum 2
+3,2,-0.275209,"t1, y1",HlyE_IgA,prec.par,stratum 2
+4,2,0.161195,"t1, y1",HlyE_IgA,prec.par,stratum 2
+5,2,0.265305,"t1, y1",HlyE_IgA,prec.par,stratum 2
+6,2,-0.510859,"t1, y1",HlyE_IgA,prec.par,stratum 2
+7,2,-0.224788,"t1, y1",HlyE_IgA,prec.par,stratum 2
+8,2,-0.58373,"t1, y1",HlyE_IgA,prec.par,stratum 2
+9,2,-0.752024,"t1, y1",HlyE_IgA,prec.par,stratum 2
+10,2,-1.1869,"t1, y1",HlyE_IgA,prec.par,stratum 2
+1,1,10.1683,"t1, t1",HlyE_IgA,prec.par,stratum 2
+2,1,15.0493,"t1, t1",HlyE_IgA,prec.par,stratum 2
+3,1,14.8992,"t1, t1",HlyE_IgA,prec.par,stratum 2
+4,1,15.0806,"t1, t1",HlyE_IgA,prec.par,stratum 2
+5,1,14.0983,"t1, t1",HlyE_IgA,prec.par,stratum 2
+6,1,17.5286,"t1, t1",HlyE_IgA,prec.par,stratum 2
+7,1,23.6888,"t1, t1",HlyE_IgA,prec.par,stratum 2
+8,1,17.6519,"t1, t1",HlyE_IgA,prec.par,stratum 2
+9,1,19.251,"t1, t1",HlyE_IgA,prec.par,stratum 2
+10,1,15.4481,"t1, t1",HlyE_IgA,prec.par,stratum 2
+1,2,13.9969,"t1, t1",HlyE_IgA,prec.par,stratum 2
+2,2,16.5758,"t1, t1",HlyE_IgA,prec.par,stratum 2
+3,2,14.6673,"t1, t1",HlyE_IgA,prec.par,stratum 2
+4,2,14.7194,"t1, t1",HlyE_IgA,prec.par,stratum 2
+5,2,16.4335,"t1, t1",HlyE_IgA,prec.par,stratum 2
+6,2,15.5351,"t1, t1",HlyE_IgA,prec.par,stratum 2
+7,2,15.6043,"t1, t1",HlyE_IgA,prec.par,stratum 2
+8,2,17.5875,"t1, t1",HlyE_IgA,prec.par,stratum 2
+9,2,16.9883,"t1, t1",HlyE_IgA,prec.par,stratum 2
+10,2,20.5944,"t1, t1",HlyE_IgA,prec.par,stratum 2
+1,1,1.24924,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+2,1,1.36089,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+3,1,0.0731285,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+4,1,1.12083,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+5,1,1.05478,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+6,1,0.332241,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+7,1,3.7549,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+8,1,0.329805,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+9,1,1.58395,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+10,1,1.188,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+1,2,0.992493,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+2,2,-0.286228,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+3,2,-0.297927,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+4,2,1.56554,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+5,2,2.16938,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+6,2,-0.146349,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+7,2,0.816649,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+8,2,-0.303418,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+9,2,1.23637,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+10,2,1.89385,"t1, alpha",HlyE_IgA,prec.par,stratum 2
+1,1,-1.27792,"t1, shape",HlyE_IgA,prec.par,stratum 2
+2,1,-2.48884,"t1, shape",HlyE_IgA,prec.par,stratum 2
+3,1,-2.92383,"t1, shape",HlyE_IgA,prec.par,stratum 2
+4,1,-2.36739,"t1, shape",HlyE_IgA,prec.par,stratum 2
+5,1,-1.91851,"t1, shape",HlyE_IgA,prec.par,stratum 2
+6,1,-3.29371,"t1, shape",HlyE_IgA,prec.par,stratum 2
+7,1,-3.86684,"t1, shape",HlyE_IgA,prec.par,stratum 2
+8,1,-2.60275,"t1, shape",HlyE_IgA,prec.par,stratum 2
+9,1,-1.47138,"t1, shape",HlyE_IgA,prec.par,stratum 2
+10,1,-2.31783,"t1, shape",HlyE_IgA,prec.par,stratum 2
+1,2,0.526198,"t1, shape",HlyE_IgA,prec.par,stratum 2
+2,2,0.656569,"t1, shape",HlyE_IgA,prec.par,stratum 2
+3,2,1.89059,"t1, shape",HlyE_IgA,prec.par,stratum 2
+4,2,1.02123,"t1, shape",HlyE_IgA,prec.par,stratum 2
+5,2,0.284202,"t1, shape",HlyE_IgA,prec.par,stratum 2
+6,2,1.29014,"t1, shape",HlyE_IgA,prec.par,stratum 2
+7,2,0.799325,"t1, shape",HlyE_IgA,prec.par,stratum 2
+8,2,2.92231,"t1, shape",HlyE_IgA,prec.par,stratum 2
+9,2,3.77172,"t1, shape",HlyE_IgA,prec.par,stratum 2
+10,2,2.14446,"t1, shape",HlyE_IgA,prec.par,stratum 2
+1,1,-0.332167,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+2,1,-0.0978004,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+3,1,-0.503707,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+4,1,0.382229,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+5,1,-0.296636,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+6,1,0.157125,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+7,1,0.510235,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+8,1,0.109805,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+9,1,0.136801,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+10,1,0.121004,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+1,2,-0.143118,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+2,2,0.683913,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+3,2,-0.784139,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+4,2,0.380283,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+5,2,1.22727,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+6,2,0.543187,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+7,2,0.415459,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+8,2,-0.472906,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+9,2,0.627766,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+10,2,0.367505,"alpha, y0",HlyE_IgA,prec.par,stratum 2
+1,1,-0.12079,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+2,1,0.0801835,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+3,1,0.080449,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+4,1,-0.02539,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+5,1,0.0341155,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+6,1,-0.300152,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+7,1,-0.330456,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+8,1,-0.181555,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+9,1,0.0981476,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+10,1,-0.0349974,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+1,2,0.213144,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.0356065,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+3,2,0.16481,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+4,2,0.0506524,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+5,2,0.430367,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+6,2,0.192295,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+7,2,0.432984,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+8,2,0.202594,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+9,2,-0.0277051,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+10,2,0.0116695,"alpha, y1",HlyE_IgA,prec.par,stratum 2
+1,1,1.24924,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+2,1,1.36089,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+3,1,0.0731285,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+4,1,1.12083,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+5,1,1.05478,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+6,1,0.332241,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+7,1,3.7549,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+8,1,0.329805,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+9,1,1.58395,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+10,1,1.188,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+1,2,0.992493,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.286228,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+3,2,-0.297927,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+4,2,1.56554,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+5,2,2.16938,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+6,2,-0.146349,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+7,2,0.816649,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+8,2,-0.303418,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+9,2,1.23637,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+10,2,1.89385,"alpha, t1",HlyE_IgA,prec.par,stratum 2
+1,1,2.97367,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+2,1,2.71107,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+3,1,2.15667,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+4,1,2.20237,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+5,1,2.80427,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+6,1,3.39048,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+7,1,3.50498,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+8,1,2.51742,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+9,1,2.7693,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+10,1,2.86089,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+1,2,4.314,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+2,2,4.42077,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+3,2,3.09516,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+4,2,3.9002,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+5,2,3.90408,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+6,2,3.32414,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+7,2,3.34617,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+8,2,3.12026,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+9,2,2.95418,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+10,2,2.79852,"alpha, alpha",HlyE_IgA,prec.par,stratum 2
+1,1,-0.0463697,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+2,1,-0.507089,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+3,1,-0.100211,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+4,1,-0.525149,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+5,1,-0.342825,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+6,1,-0.178265,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+7,1,-0.445321,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+8,1,-0.113067,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+9,1,-0.314359,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+10,1,-0.350673,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+1,2,-0.828741,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+2,2,-1.50201,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+3,2,-0.71067,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+4,2,-1.20561,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+5,2,-1.65714,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+6,2,-0.890356,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+7,2,-1.01625,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+8,2,-0.223754,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+9,2,-0.711981,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+10,2,-0.301453,"alpha, shape",HlyE_IgA,prec.par,stratum 2
+1,1,-3.32389,"shape, y0",HlyE_IgA,prec.par,stratum 2
+2,1,-2.58962,"shape, y0",HlyE_IgA,prec.par,stratum 2
+3,1,-3.41266,"shape, y0",HlyE_IgA,prec.par,stratum 2
+4,1,-3.44569,"shape, y0",HlyE_IgA,prec.par,stratum 2
+5,1,-3.42358,"shape, y0",HlyE_IgA,prec.par,stratum 2
+6,1,-4.20764,"shape, y0",HlyE_IgA,prec.par,stratum 2
+7,1,-3.03693,"shape, y0",HlyE_IgA,prec.par,stratum 2
+8,1,-3.48818,"shape, y0",HlyE_IgA,prec.par,stratum 2
+9,1,-1.62721,"shape, y0",HlyE_IgA,prec.par,stratum 2
+10,1,-2.141,"shape, y0",HlyE_IgA,prec.par,stratum 2
+1,2,-2.63688,"shape, y0",HlyE_IgA,prec.par,stratum 2
+2,2,-3.20038,"shape, y0",HlyE_IgA,prec.par,stratum 2
+3,2,-3.63487,"shape, y0",HlyE_IgA,prec.par,stratum 2
+4,2,-2.25947,"shape, y0",HlyE_IgA,prec.par,stratum 2
+5,2,-3.77356,"shape, y0",HlyE_IgA,prec.par,stratum 2
+6,2,-3.05713,"shape, y0",HlyE_IgA,prec.par,stratum 2
+7,2,-2.76962,"shape, y0",HlyE_IgA,prec.par,stratum 2
+8,2,-3.57432,"shape, y0",HlyE_IgA,prec.par,stratum 2
+9,2,-1.67793,"shape, y0",HlyE_IgA,prec.par,stratum 2
+10,2,-2.88259,"shape, y0",HlyE_IgA,prec.par,stratum 2
+1,1,-0.824378,"shape, y1",HlyE_IgA,prec.par,stratum 2
+2,1,-1.18057,"shape, y1",HlyE_IgA,prec.par,stratum 2
+3,1,-0.696859,"shape, y1",HlyE_IgA,prec.par,stratum 2
+4,1,-0.901418,"shape, y1",HlyE_IgA,prec.par,stratum 2
+5,1,-0.957357,"shape, y1",HlyE_IgA,prec.par,stratum 2
+6,1,-0.533809,"shape, y1",HlyE_IgA,prec.par,stratum 2
+7,1,-0.642311,"shape, y1",HlyE_IgA,prec.par,stratum 2
+8,1,-0.845801,"shape, y1",HlyE_IgA,prec.par,stratum 2
+9,1,-0.61552,"shape, y1",HlyE_IgA,prec.par,stratum 2
+10,1,-0.663703,"shape, y1",HlyE_IgA,prec.par,stratum 2
+1,2,-0.396073,"shape, y1",HlyE_IgA,prec.par,stratum 2
+2,2,-0.381334,"shape, y1",HlyE_IgA,prec.par,stratum 2
+3,2,-0.427453,"shape, y1",HlyE_IgA,prec.par,stratum 2
+4,2,-0.309867,"shape, y1",HlyE_IgA,prec.par,stratum 2
+5,2,-0.717999,"shape, y1",HlyE_IgA,prec.par,stratum 2
+6,2,-0.613293,"shape, y1",HlyE_IgA,prec.par,stratum 2
+7,2,-0.487452,"shape, y1",HlyE_IgA,prec.par,stratum 2
+8,2,-0.762795,"shape, y1",HlyE_IgA,prec.par,stratum 2
+9,2,-0.437415,"shape, y1",HlyE_IgA,prec.par,stratum 2
+10,2,-0.832595,"shape, y1",HlyE_IgA,prec.par,stratum 2
+1,1,-1.27792,"shape, t1",HlyE_IgA,prec.par,stratum 2
+2,1,-2.48884,"shape, t1",HlyE_IgA,prec.par,stratum 2
+3,1,-2.92383,"shape, t1",HlyE_IgA,prec.par,stratum 2
+4,1,-2.36739,"shape, t1",HlyE_IgA,prec.par,stratum 2
+5,1,-1.91851,"shape, t1",HlyE_IgA,prec.par,stratum 2
+6,1,-3.29371,"shape, t1",HlyE_IgA,prec.par,stratum 2
+7,1,-3.86684,"shape, t1",HlyE_IgA,prec.par,stratum 2
+8,1,-2.60275,"shape, t1",HlyE_IgA,prec.par,stratum 2
+9,1,-1.47138,"shape, t1",HlyE_IgA,prec.par,stratum 2
+10,1,-2.31783,"shape, t1",HlyE_IgA,prec.par,stratum 2
+1,2,0.526198,"shape, t1",HlyE_IgA,prec.par,stratum 2
+2,2,0.656569,"shape, t1",HlyE_IgA,prec.par,stratum 2
+3,2,1.89059,"shape, t1",HlyE_IgA,prec.par,stratum 2
+4,2,1.02123,"shape, t1",HlyE_IgA,prec.par,stratum 2
+5,2,0.284202,"shape, t1",HlyE_IgA,prec.par,stratum 2
+6,2,1.29014,"shape, t1",HlyE_IgA,prec.par,stratum 2
+7,2,0.799325,"shape, t1",HlyE_IgA,prec.par,stratum 2
+8,2,2.92231,"shape, t1",HlyE_IgA,prec.par,stratum 2
+9,2,3.77172,"shape, t1",HlyE_IgA,prec.par,stratum 2
+10,2,2.14446,"shape, t1",HlyE_IgA,prec.par,stratum 2
+1,1,-0.0463697,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+2,1,-0.507089,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+3,1,-0.100211,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+4,1,-0.525149,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+5,1,-0.342825,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+6,1,-0.178265,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+7,1,-0.445321,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+8,1,-0.113067,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+9,1,-0.314359,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+10,1,-0.350673,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+1,2,-0.828741,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+2,2,-1.50201,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+3,2,-0.71067,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+4,2,-1.20561,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+5,2,-1.65714,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+6,2,-0.890356,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+7,2,-1.01625,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+8,2,-0.223754,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+9,2,-0.711981,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+10,2,-0.301453,"shape, alpha",HlyE_IgA,prec.par,stratum 2
+1,1,4.68442,"shape, shape",HlyE_IgA,prec.par,stratum 2
+2,1,4.9035,"shape, shape",HlyE_IgA,prec.par,stratum 2
+3,1,5.19553,"shape, shape",HlyE_IgA,prec.par,stratum 2
+4,1,4.67161,"shape, shape",HlyE_IgA,prec.par,stratum 2
+5,1,4.35487,"shape, shape",HlyE_IgA,prec.par,stratum 2
+6,1,4.31114,"shape, shape",HlyE_IgA,prec.par,stratum 2
+7,1,3.70744,"shape, shape",HlyE_IgA,prec.par,stratum 2
+8,1,4.86701,"shape, shape",HlyE_IgA,prec.par,stratum 2
+9,1,2.75369,"shape, shape",HlyE_IgA,prec.par,stratum 2
+10,1,3.70495,"shape, shape",HlyE_IgA,prec.par,stratum 2
+1,2,4.28016,"shape, shape",HlyE_IgA,prec.par,stratum 2
+2,2,4.8542,"shape, shape",HlyE_IgA,prec.par,stratum 2
+3,2,5.9655,"shape, shape",HlyE_IgA,prec.par,stratum 2
+4,2,3.92049,"shape, shape",HlyE_IgA,prec.par,stratum 2
+5,2,4.87624,"shape, shape",HlyE_IgA,prec.par,stratum 2
+6,2,4.49927,"shape, shape",HlyE_IgA,prec.par,stratum 2
+7,2,4.07309,"shape, shape",HlyE_IgA,prec.par,stratum 2
+8,2,5.2975,"shape, shape",HlyE_IgA,prec.par,stratum 2
+9,2,4.44795,"shape, shape",HlyE_IgA,prec.par,stratum 2
+10,2,5.07132,"shape, shape",HlyE_IgA,prec.par,stratum 2
+1,1,1.76873,NA,NA,prec.logy,stratum 2
+2,1,1.66337,NA,NA,prec.logy,stratum 2
+3,1,1.75243,NA,NA,prec.logy,stratum 2
+4,1,1.67916,NA,NA,prec.logy,stratum 2
+5,1,1.76975,NA,NA,prec.logy,stratum 2
+6,1,1.87895,NA,NA,prec.logy,stratum 2
+7,1,1.73596,NA,NA,prec.logy,stratum 2
+8,1,1.63742,NA,NA,prec.logy,stratum 2
+9,1,1.88841,NA,NA,prec.logy,stratum 2
+10,1,1.6876,NA,NA,prec.logy,stratum 2
+1,2,2.1188,NA,NA,prec.logy,stratum 2
+2,2,2.49171,NA,NA,prec.logy,stratum 2
+3,2,2.36888,NA,NA,prec.logy,stratum 2
+4,2,2.34397,NA,NA,prec.logy,stratum 2
+5,2,2.20046,NA,NA,prec.logy,stratum 2
+6,2,2.53944,NA,NA,prec.logy,stratum 2
+7,2,2.43928,NA,NA,prec.logy,stratum 2
+8,2,2.51486,NA,NA,prec.logy,stratum 2
+9,2,2.2853,NA,NA,prec.logy,stratum 2
+10,2,2.14231,NA,NA,prec.logy,stratum 2
+1,1,0.694159,y0,HlyE_IgA,mu.par,stratum 1
+2,1,0.71304,y0,HlyE_IgA,mu.par,stratum 1
+3,1,0.673882,y0,HlyE_IgA,mu.par,stratum 1
+4,1,0.693038,y0,HlyE_IgA,mu.par,stratum 1
+5,1,0.683204,y0,HlyE_IgA,mu.par,stratum 1
+6,1,0.665051,y0,HlyE_IgA,mu.par,stratum 1
+7,1,0.711369,y0,HlyE_IgA,mu.par,stratum 1
+8,1,0.696015,y0,HlyE_IgA,mu.par,stratum 1
+9,1,0.644218,y0,HlyE_IgA,mu.par,stratum 1
+10,1,0.671073,y0,HlyE_IgA,mu.par,stratum 1
+1,2,0.62132,y0,HlyE_IgA,mu.par,stratum 1
+2,2,0.64164,y0,HlyE_IgA,mu.par,stratum 1
+3,2,0.697727,y0,HlyE_IgA,mu.par,stratum 1
+4,2,0.664208,y0,HlyE_IgA,mu.par,stratum 1
+5,2,0.702472,y0,HlyE_IgA,mu.par,stratum 1
+6,2,0.675042,y0,HlyE_IgA,mu.par,stratum 1
+7,2,0.66783,y0,HlyE_IgA,mu.par,stratum 1
+8,2,0.651884,y0,HlyE_IgA,mu.par,stratum 1
+9,2,0.654208,y0,HlyE_IgA,mu.par,stratum 1
+10,2,0.623542,y0,HlyE_IgA,mu.par,stratum 1
+1,1,5.90893,y1,HlyE_IgA,mu.par,stratum 1
+2,1,6.0932,y1,HlyE_IgA,mu.par,stratum 1
+3,1,6.04421,y1,HlyE_IgA,mu.par,stratum 1
+4,1,5.77442,y1,HlyE_IgA,mu.par,stratum 1
+5,1,5.93496,y1,HlyE_IgA,mu.par,stratum 1
+6,1,5.93835,y1,HlyE_IgA,mu.par,stratum 1
+7,1,5.62793,y1,HlyE_IgA,mu.par,stratum 1
+8,1,6.0679,y1,HlyE_IgA,mu.par,stratum 1
+9,1,5.67484,y1,HlyE_IgA,mu.par,stratum 1
+10,1,5.79158,y1,HlyE_IgA,mu.par,stratum 1
+1,2,6.09533,y1,HlyE_IgA,mu.par,stratum 1
+2,2,5.82101,y1,HlyE_IgA,mu.par,stratum 1
+3,2,5.8211,y1,HlyE_IgA,mu.par,stratum 1
+4,2,5.9833,y1,HlyE_IgA,mu.par,stratum 1
+5,2,5.90828,y1,HlyE_IgA,mu.par,stratum 1
+6,2,6.10505,y1,HlyE_IgA,mu.par,stratum 1
+7,2,5.68185,y1,HlyE_IgA,mu.par,stratum 1
+8,2,5.81538,y1,HlyE_IgA,mu.par,stratum 1
+9,2,6.04952,y1,HlyE_IgA,mu.par,stratum 1
+10,2,6.29563,y1,HlyE_IgA,mu.par,stratum 1
+1,1,0.596612,t1,HlyE_IgA,mu.par,stratum 1
+2,1,0.598099,t1,HlyE_IgA,mu.par,stratum 1
+3,1,0.644969,t1,HlyE_IgA,mu.par,stratum 1
+4,1,0.596115,t1,HlyE_IgA,mu.par,stratum 1
+5,1,0.534924,t1,HlyE_IgA,mu.par,stratum 1
+6,1,0.648739,t1,HlyE_IgA,mu.par,stratum 1
+7,1,0.61948,t1,HlyE_IgA,mu.par,stratum 1
+8,1,0.619722,t1,HlyE_IgA,mu.par,stratum 1
+9,1,0.634535,t1,HlyE_IgA,mu.par,stratum 1
+10,1,0.596858,t1,HlyE_IgA,mu.par,stratum 1
+1,2,0.684605,t1,HlyE_IgA,mu.par,stratum 1
+2,2,0.643383,t1,HlyE_IgA,mu.par,stratum 1
+3,2,0.643314,t1,HlyE_IgA,mu.par,stratum 1
+4,2,0.592392,t1,HlyE_IgA,mu.par,stratum 1
+5,2,0.616601,t1,HlyE_IgA,mu.par,stratum 1
+6,2,0.600197,t1,HlyE_IgA,mu.par,stratum 1
+7,2,0.623819,t1,HlyE_IgA,mu.par,stratum 1
+8,2,0.604461,t1,HlyE_IgA,mu.par,stratum 1
+9,2,0.571492,t1,HlyE_IgA,mu.par,stratum 1
+10,2,0.608554,t1,HlyE_IgA,mu.par,stratum 1
+1,1,-4.53939,alpha,HlyE_IgA,mu.par,stratum 1
+2,1,-4.40509,alpha,HlyE_IgA,mu.par,stratum 1
+3,1,-4.42368,alpha,HlyE_IgA,mu.par,stratum 1
+4,1,-4.41242,alpha,HlyE_IgA,mu.par,stratum 1
+5,1,-4.5245,alpha,HlyE_IgA,mu.par,stratum 1
+6,1,-4.45336,alpha,HlyE_IgA,mu.par,stratum 1
+7,1,-4.54899,alpha,HlyE_IgA,mu.par,stratum 1
+8,1,-4.46085,alpha,HlyE_IgA,mu.par,stratum 1
+9,1,-4.43254,alpha,HlyE_IgA,mu.par,stratum 1
+10,1,-4.48078,alpha,HlyE_IgA,mu.par,stratum 1
+1,2,-4.52413,alpha,HlyE_IgA,mu.par,stratum 1
+2,2,-4.71416,alpha,HlyE_IgA,mu.par,stratum 1
+3,2,-4.73836,alpha,HlyE_IgA,mu.par,stratum 1
+4,2,-4.81673,alpha,HlyE_IgA,mu.par,stratum 1
+5,2,-4.60971,alpha,HlyE_IgA,mu.par,stratum 1
+6,2,-4.64111,alpha,HlyE_IgA,mu.par,stratum 1
+7,2,-4.63293,alpha,HlyE_IgA,mu.par,stratum 1
+8,2,-4.75437,alpha,HlyE_IgA,mu.par,stratum 1
+9,2,-4.51829,alpha,HlyE_IgA,mu.par,stratum 1
+10,2,-4.66636,alpha,HlyE_IgA,mu.par,stratum 1
+1,1,-0.7019,shape,HlyE_IgA,mu.par,stratum 1
+2,1,-0.732341,shape,HlyE_IgA,mu.par,stratum 1
+3,1,-0.645112,shape,HlyE_IgA,mu.par,stratum 1
+4,1,-0.724555,shape,HlyE_IgA,mu.par,stratum 1
+5,1,-0.743522,shape,HlyE_IgA,mu.par,stratum 1
+6,1,-0.777321,shape,HlyE_IgA,mu.par,stratum 1
+7,1,-0.664296,shape,HlyE_IgA,mu.par,stratum 1
+8,1,-0.640275,shape,HlyE_IgA,mu.par,stratum 1
+9,1,-0.69698,shape,HlyE_IgA,mu.par,stratum 1
+10,1,-0.687289,shape,HlyE_IgA,mu.par,stratum 1
+1,2,-0.620567,shape,HlyE_IgA,mu.par,stratum 1
+2,2,-0.704045,shape,HlyE_IgA,mu.par,stratum 1
+3,2,-0.691049,shape,HlyE_IgA,mu.par,stratum 1
+4,2,-0.619346,shape,HlyE_IgA,mu.par,stratum 1
+5,2,-0.654206,shape,HlyE_IgA,mu.par,stratum 1
+6,2,-0.577074,shape,HlyE_IgA,mu.par,stratum 1
+7,2,-0.671334,shape,HlyE_IgA,mu.par,stratum 1
+8,2,-0.650917,shape,HlyE_IgA,mu.par,stratum 1
+9,2,-0.584797,shape,HlyE_IgA,mu.par,stratum 1
+10,2,-0.602084,shape,HlyE_IgA,mu.par,stratum 1
+1,1,25.156,"y0, y0",HlyE_IgA,prec.par,stratum 1
+2,1,22.8402,"y0, y0",HlyE_IgA,prec.par,stratum 1
+3,1,22.2115,"y0, y0",HlyE_IgA,prec.par,stratum 1
+4,1,21.376,"y0, y0",HlyE_IgA,prec.par,stratum 1
+5,1,25.6263,"y0, y0",HlyE_IgA,prec.par,stratum 1
+6,1,29.553,"y0, y0",HlyE_IgA,prec.par,stratum 1
+7,1,17.7399,"y0, y0",HlyE_IgA,prec.par,stratum 1
+8,1,25.8129,"y0, y0",HlyE_IgA,prec.par,stratum 1
+9,1,21.3612,"y0, y0",HlyE_IgA,prec.par,stratum 1
+10,1,18.2541,"y0, y0",HlyE_IgA,prec.par,stratum 1
+1,2,15.0787,"y0, y0",HlyE_IgA,prec.par,stratum 1
+2,2,13.7599,"y0, y0",HlyE_IgA,prec.par,stratum 1
+3,2,15.4605,"y0, y0",HlyE_IgA,prec.par,stratum 1
+4,2,12.2618,"y0, y0",HlyE_IgA,prec.par,stratum 1
+5,2,15.945,"y0, y0",HlyE_IgA,prec.par,stratum 1
+6,2,15.9979,"y0, y0",HlyE_IgA,prec.par,stratum 1
+7,2,14.619,"y0, y0",HlyE_IgA,prec.par,stratum 1
+8,2,18.7001,"y0, y0",HlyE_IgA,prec.par,stratum 1
+9,2,13.7896,"y0, y0",HlyE_IgA,prec.par,stratum 1
+10,2,18.9338,"y0, y0",HlyE_IgA,prec.par,stratum 1
+1,1,-0.255327,"y0, y1",HlyE_IgA,prec.par,stratum 1
+2,1,0.267823,"y0, y1",HlyE_IgA,prec.par,stratum 1
+3,1,0.0160034,"y0, y1",HlyE_IgA,prec.par,stratum 1
+4,1,0.473285,"y0, y1",HlyE_IgA,prec.par,stratum 1
+5,1,1.45943,"y0, y1",HlyE_IgA,prec.par,stratum 1
+6,1,0.546225,"y0, y1",HlyE_IgA,prec.par,stratum 1
+7,1,0.829775,"y0, y1",HlyE_IgA,prec.par,stratum 1
+8,1,0.826527,"y0, y1",HlyE_IgA,prec.par,stratum 1
+9,1,0.225336,"y0, y1",HlyE_IgA,prec.par,stratum 1
+10,1,0.100344,"y0, y1",HlyE_IgA,prec.par,stratum 1
+1,2,-0.716593,"y0, y1",HlyE_IgA,prec.par,stratum 1
+2,2,-0.474986,"y0, y1",HlyE_IgA,prec.par,stratum 1
+3,2,-0.60095,"y0, y1",HlyE_IgA,prec.par,stratum 1
+4,2,-0.276943,"y0, y1",HlyE_IgA,prec.par,stratum 1
+5,2,0.53639,"y0, y1",HlyE_IgA,prec.par,stratum 1
+6,2,0.221503,"y0, y1",HlyE_IgA,prec.par,stratum 1
+7,2,-0.333404,"y0, y1",HlyE_IgA,prec.par,stratum 1
+8,2,-0.33991,"y0, y1",HlyE_IgA,prec.par,stratum 1
+9,2,-0.683382,"y0, y1",HlyE_IgA,prec.par,stratum 1
+10,2,-0.523761,"y0, y1",HlyE_IgA,prec.par,stratum 1
+1,1,3.98637,"y0, t1",HlyE_IgA,prec.par,stratum 1
+2,1,7.11156,"y0, t1",HlyE_IgA,prec.par,stratum 1
+3,1,10.4881,"y0, t1",HlyE_IgA,prec.par,stratum 1
+4,1,9.69403,"y0, t1",HlyE_IgA,prec.par,stratum 1
+5,1,8.64376,"y0, t1",HlyE_IgA,prec.par,stratum 1
+6,1,13.0767,"y0, t1",HlyE_IgA,prec.par,stratum 1
+7,1,13.8102,"y0, t1",HlyE_IgA,prec.par,stratum 1
+8,1,14.7786,"y0, t1",HlyE_IgA,prec.par,stratum 1
+9,1,16.2119,"y0, t1",HlyE_IgA,prec.par,stratum 1
+10,1,8.33466,"y0, t1",HlyE_IgA,prec.par,stratum 1
+1,2,-3.50864,"y0, t1",HlyE_IgA,prec.par,stratum 1
+2,2,-2.61748,"y0, t1",HlyE_IgA,prec.par,stratum 1
+3,2,-9.35877,"y0, t1",HlyE_IgA,prec.par,stratum 1
+4,2,-3.47616,"y0, t1",HlyE_IgA,prec.par,stratum 1
+5,2,-6.27882,"y0, t1",HlyE_IgA,prec.par,stratum 1
+6,2,-4.70946,"y0, t1",HlyE_IgA,prec.par,stratum 1
+7,2,-5.74183,"y0, t1",HlyE_IgA,prec.par,stratum 1
+8,2,-6.13835,"y0, t1",HlyE_IgA,prec.par,stratum 1
+9,2,-4.44431,"y0, t1",HlyE_IgA,prec.par,stratum 1
+10,2,-1.59852,"y0, t1",HlyE_IgA,prec.par,stratum 1
+1,1,1.84479,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+2,1,2.05602,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+3,1,0.905531,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+4,1,1.01689,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+5,1,0.299221,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+6,1,1.64009,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+7,1,1.4547,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+8,1,1.76803,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+9,1,1.88066,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+10,1,1.01522,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+1,2,-0.140771,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+2,2,1.16108,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+3,2,0.871192,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+4,2,1.48307,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+5,2,1.61083,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+6,2,1.12624,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+7,2,1.39593,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+8,2,0.722838,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+9,2,1.77733,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+10,2,1.08638,"y0, alpha",HlyE_IgA,prec.par,stratum 1
+1,1,-3.52086,"y0, shape",HlyE_IgA,prec.par,stratum 1
+2,1,-1.08567,"y0, shape",HlyE_IgA,prec.par,stratum 1
+3,1,-4.05499,"y0, shape",HlyE_IgA,prec.par,stratum 1
+4,1,-3.10222,"y0, shape",HlyE_IgA,prec.par,stratum 1
+5,1,-4.58975,"y0, shape",HlyE_IgA,prec.par,stratum 1
+6,1,-5.17831,"y0, shape",HlyE_IgA,prec.par,stratum 1
+7,1,-3.63644,"y0, shape",HlyE_IgA,prec.par,stratum 1
+8,1,-5.56459,"y0, shape",HlyE_IgA,prec.par,stratum 1
+9,1,-0.00769539,"y0, shape",HlyE_IgA,prec.par,stratum 1
+10,1,-0.893773,"y0, shape",HlyE_IgA,prec.par,stratum 1
+1,2,0.709394,"y0, shape",HlyE_IgA,prec.par,stratum 1
+2,2,-1.4541,"y0, shape",HlyE_IgA,prec.par,stratum 1
+3,2,-2.20043,"y0, shape",HlyE_IgA,prec.par,stratum 1
+4,2,0.777687,"y0, shape",HlyE_IgA,prec.par,stratum 1
+5,2,-0.945633,"y0, shape",HlyE_IgA,prec.par,stratum 1
+6,2,-1.21571,"y0, shape",HlyE_IgA,prec.par,stratum 1
+7,2,-1.32894,"y0, shape",HlyE_IgA,prec.par,stratum 1
+8,2,-2.39891,"y0, shape",HlyE_IgA,prec.par,stratum 1
+9,2,1.13338,"y0, shape",HlyE_IgA,prec.par,stratum 1
+10,2,0.62903,"y0, shape",HlyE_IgA,prec.par,stratum 1
+1,1,-0.255327,"y1, y0",HlyE_IgA,prec.par,stratum 1
+2,1,0.267823,"y1, y0",HlyE_IgA,prec.par,stratum 1
+3,1,0.0160034,"y1, y0",HlyE_IgA,prec.par,stratum 1
+4,1,0.473285,"y1, y0",HlyE_IgA,prec.par,stratum 1
+5,1,1.45943,"y1, y0",HlyE_IgA,prec.par,stratum 1
+6,1,0.546225,"y1, y0",HlyE_IgA,prec.par,stratum 1
+7,1,0.829775,"y1, y0",HlyE_IgA,prec.par,stratum 1
+8,1,0.826527,"y1, y0",HlyE_IgA,prec.par,stratum 1
+9,1,0.225336,"y1, y0",HlyE_IgA,prec.par,stratum 1
+10,1,0.100344,"y1, y0",HlyE_IgA,prec.par,stratum 1
+1,2,-0.716593,"y1, y0",HlyE_IgA,prec.par,stratum 1
+2,2,-0.474986,"y1, y0",HlyE_IgA,prec.par,stratum 1
+3,2,-0.60095,"y1, y0",HlyE_IgA,prec.par,stratum 1
+4,2,-0.276943,"y1, y0",HlyE_IgA,prec.par,stratum 1
+5,2,0.53639,"y1, y0",HlyE_IgA,prec.par,stratum 1
+6,2,0.221503,"y1, y0",HlyE_IgA,prec.par,stratum 1
+7,2,-0.333404,"y1, y0",HlyE_IgA,prec.par,stratum 1
+8,2,-0.33991,"y1, y0",HlyE_IgA,prec.par,stratum 1
+9,2,-0.683382,"y1, y0",HlyE_IgA,prec.par,stratum 1
+10,2,-0.523761,"y1, y0",HlyE_IgA,prec.par,stratum 1
+1,1,0.705012,"y1, y1",HlyE_IgA,prec.par,stratum 1
+2,1,0.587723,"y1, y1",HlyE_IgA,prec.par,stratum 1
+3,1,0.745429,"y1, y1",HlyE_IgA,prec.par,stratum 1
+4,1,0.717698,"y1, y1",HlyE_IgA,prec.par,stratum 1
+5,1,0.782858,"y1, y1",HlyE_IgA,prec.par,stratum 1
+6,1,0.572356,"y1, y1",HlyE_IgA,prec.par,stratum 1
+7,1,0.764957,"y1, y1",HlyE_IgA,prec.par,stratum 1
+8,1,0.799152,"y1, y1",HlyE_IgA,prec.par,stratum 1
+9,1,0.724878,"y1, y1",HlyE_IgA,prec.par,stratum 1
+10,1,0.69323,"y1, y1",HlyE_IgA,prec.par,stratum 1
+1,2,0.622602,"y1, y1",HlyE_IgA,prec.par,stratum 1
+2,2,0.536371,"y1, y1",HlyE_IgA,prec.par,stratum 1
+3,2,0.495422,"y1, y1",HlyE_IgA,prec.par,stratum 1
+4,2,0.575935,"y1, y1",HlyE_IgA,prec.par,stratum 1
+5,2,0.653022,"y1, y1",HlyE_IgA,prec.par,stratum 1
+6,2,0.461704,"y1, y1",HlyE_IgA,prec.par,stratum 1
+7,2,0.53591,"y1, y1",HlyE_IgA,prec.par,stratum 1
+8,2,0.629396,"y1, y1",HlyE_IgA,prec.par,stratum 1
+9,2,0.684535,"y1, y1",HlyE_IgA,prec.par,stratum 1
+10,2,0.701383,"y1, y1",HlyE_IgA,prec.par,stratum 1
+1,1,0.276745,"y1, t1",HlyE_IgA,prec.par,stratum 1
+2,1,0.437913,"y1, t1",HlyE_IgA,prec.par,stratum 1
+3,1,-0.107047,"y1, t1",HlyE_IgA,prec.par,stratum 1
+4,1,0.146609,"y1, t1",HlyE_IgA,prec.par,stratum 1
+5,1,-0.224802,"y1, t1",HlyE_IgA,prec.par,stratum 1
+6,1,0.189047,"y1, t1",HlyE_IgA,prec.par,stratum 1
+7,1,-0.79346,"y1, t1",HlyE_IgA,prec.par,stratum 1
+8,1,-0.0621628,"y1, t1",HlyE_IgA,prec.par,stratum 1
+9,1,-0.17034,"y1, t1",HlyE_IgA,prec.par,stratum 1
+10,1,-0.920718,"y1, t1",HlyE_IgA,prec.par,stratum 1
+1,2,0.435095,"y1, t1",HlyE_IgA,prec.par,stratum 1
+2,2,0.126052,"y1, t1",HlyE_IgA,prec.par,stratum 1
+3,2,0.325525,"y1, t1",HlyE_IgA,prec.par,stratum 1
+4,2,0.327077,"y1, t1",HlyE_IgA,prec.par,stratum 1
+5,2,-0.118219,"y1, t1",HlyE_IgA,prec.par,stratum 1
+6,2,-0.419662,"y1, t1",HlyE_IgA,prec.par,stratum 1
+7,2,0.323052,"y1, t1",HlyE_IgA,prec.par,stratum 1
+8,2,0.253736,"y1, t1",HlyE_IgA,prec.par,stratum 1
+9,2,0.316263,"y1, t1",HlyE_IgA,prec.par,stratum 1
+10,2,-0.193292,"y1, t1",HlyE_IgA,prec.par,stratum 1
+1,1,-0.0327707,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+2,1,0.121509,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+3,1,0.136136,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+4,1,0.0896956,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+5,1,0.143307,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+6,1,-0.147204,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+7,1,-0.0322394,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+8,1,0.071107,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+9,1,0.234586,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+10,1,0.0451747,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+1,2,-0.0524818,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+2,2,-0.312865,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+3,2,-0.140644,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+4,2,-0.303689,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+5,2,-0.00467215,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+6,2,-0.097427,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+7,2,-0.0215898,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+8,2,-0.328472,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+9,2,-0.588052,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+10,2,-0.564775,"y1, alpha",HlyE_IgA,prec.par,stratum 1
+1,1,-1.03959,"y1, shape",HlyE_IgA,prec.par,stratum 1
+2,1,-1.34976,"y1, shape",HlyE_IgA,prec.par,stratum 1
+3,1,-0.730151,"y1, shape",HlyE_IgA,prec.par,stratum 1
+4,1,-1.03392,"y1, shape",HlyE_IgA,prec.par,stratum 1
+5,1,-1.22429,"y1, shape",HlyE_IgA,prec.par,stratum 1
+6,1,-0.773348,"y1, shape",HlyE_IgA,prec.par,stratum 1
+7,1,-1.18737,"y1, shape",HlyE_IgA,prec.par,stratum 1
+8,1,-1.58075,"y1, shape",HlyE_IgA,prec.par,stratum 1
+9,1,-1.14301,"y1, shape",HlyE_IgA,prec.par,stratum 1
+10,1,-1.45212,"y1, shape",HlyE_IgA,prec.par,stratum 1
+1,2,-1.06829,"y1, shape",HlyE_IgA,prec.par,stratum 1
+2,2,-0.801579,"y1, shape",HlyE_IgA,prec.par,stratum 1
+3,2,-0.916361,"y1, shape",HlyE_IgA,prec.par,stratum 1
+4,2,-0.849917,"y1, shape",HlyE_IgA,prec.par,stratum 1
+5,2,-1.13911,"y1, shape",HlyE_IgA,prec.par,stratum 1
+6,2,-0.879207,"y1, shape",HlyE_IgA,prec.par,stratum 1
+7,2,-0.944938,"y1, shape",HlyE_IgA,prec.par,stratum 1
+8,2,-1.23905,"y1, shape",HlyE_IgA,prec.par,stratum 1
+9,2,-0.968133,"y1, shape",HlyE_IgA,prec.par,stratum 1
+10,2,-1.5358,"y1, shape",HlyE_IgA,prec.par,stratum 1
+1,1,3.98637,"t1, y0",HlyE_IgA,prec.par,stratum 1
+2,1,7.11156,"t1, y0",HlyE_IgA,prec.par,stratum 1
+3,1,10.4881,"t1, y0",HlyE_IgA,prec.par,stratum 1
+4,1,9.69403,"t1, y0",HlyE_IgA,prec.par,stratum 1
+5,1,8.64376,"t1, y0",HlyE_IgA,prec.par,stratum 1
+6,1,13.0767,"t1, y0",HlyE_IgA,prec.par,stratum 1
+7,1,13.8102,"t1, y0",HlyE_IgA,prec.par,stratum 1
+8,1,14.7786,"t1, y0",HlyE_IgA,prec.par,stratum 1
+9,1,16.2119,"t1, y0",HlyE_IgA,prec.par,stratum 1
+10,1,8.33466,"t1, y0",HlyE_IgA,prec.par,stratum 1
+1,2,-3.50864,"t1, y0",HlyE_IgA,prec.par,stratum 1
+2,2,-2.61748,"t1, y0",HlyE_IgA,prec.par,stratum 1
+3,2,-9.35877,"t1, y0",HlyE_IgA,prec.par,stratum 1
+4,2,-3.47616,"t1, y0",HlyE_IgA,prec.par,stratum 1
+5,2,-6.27882,"t1, y0",HlyE_IgA,prec.par,stratum 1
+6,2,-4.70946,"t1, y0",HlyE_IgA,prec.par,stratum 1
+7,2,-5.74183,"t1, y0",HlyE_IgA,prec.par,stratum 1
+8,2,-6.13835,"t1, y0",HlyE_IgA,prec.par,stratum 1
+9,2,-4.44431,"t1, y0",HlyE_IgA,prec.par,stratum 1
+10,2,-1.59852,"t1, y0",HlyE_IgA,prec.par,stratum 1
+1,1,0.276745,"t1, y1",HlyE_IgA,prec.par,stratum 1
+2,1,0.437913,"t1, y1",HlyE_IgA,prec.par,stratum 1
+3,1,-0.107047,"t1, y1",HlyE_IgA,prec.par,stratum 1
+4,1,0.146609,"t1, y1",HlyE_IgA,prec.par,stratum 1
+5,1,-0.224802,"t1, y1",HlyE_IgA,prec.par,stratum 1
+6,1,0.189047,"t1, y1",HlyE_IgA,prec.par,stratum 1
+7,1,-0.79346,"t1, y1",HlyE_IgA,prec.par,stratum 1
+8,1,-0.0621628,"t1, y1",HlyE_IgA,prec.par,stratum 1
+9,1,-0.17034,"t1, y1",HlyE_IgA,prec.par,stratum 1
+10,1,-0.920718,"t1, y1",HlyE_IgA,prec.par,stratum 1
+1,2,0.435095,"t1, y1",HlyE_IgA,prec.par,stratum 1
+2,2,0.126052,"t1, y1",HlyE_IgA,prec.par,stratum 1
+3,2,0.325525,"t1, y1",HlyE_IgA,prec.par,stratum 1
+4,2,0.327077,"t1, y1",HlyE_IgA,prec.par,stratum 1
+5,2,-0.118219,"t1, y1",HlyE_IgA,prec.par,stratum 1
+6,2,-0.419662,"t1, y1",HlyE_IgA,prec.par,stratum 1
+7,2,0.323052,"t1, y1",HlyE_IgA,prec.par,stratum 1
+8,2,0.253736,"t1, y1",HlyE_IgA,prec.par,stratum 1
+9,2,0.316263,"t1, y1",HlyE_IgA,prec.par,stratum 1
+10,2,-0.193292,"t1, y1",HlyE_IgA,prec.par,stratum 1
+1,1,15.9022,"t1, t1",HlyE_IgA,prec.par,stratum 1
+2,1,23.5594,"t1, t1",HlyE_IgA,prec.par,stratum 1
+3,1,27.0715,"t1, t1",HlyE_IgA,prec.par,stratum 1
+4,1,24.6051,"t1, t1",HlyE_IgA,prec.par,stratum 1
+5,1,21.9961,"t1, t1",HlyE_IgA,prec.par,stratum 1
+6,1,26.1673,"t1, t1",HlyE_IgA,prec.par,stratum 1
+7,1,38.3432,"t1, t1",HlyE_IgA,prec.par,stratum 1
+8,1,29.596,"t1, t1",HlyE_IgA,prec.par,stratum 1
+9,1,36.4039,"t1, t1",HlyE_IgA,prec.par,stratum 1
+10,1,27.3307,"t1, t1",HlyE_IgA,prec.par,stratum 1
+1,2,18.7157,"t1, t1",HlyE_IgA,prec.par,stratum 1
+2,2,23.3939,"t1, t1",HlyE_IgA,prec.par,stratum 1
+3,2,27.5499,"t1, t1",HlyE_IgA,prec.par,stratum 1
+4,2,19.014,"t1, t1",HlyE_IgA,prec.par,stratum 1
+5,2,23.3341,"t1, t1",HlyE_IgA,prec.par,stratum 1
+6,2,18.1914,"t1, t1",HlyE_IgA,prec.par,stratum 1
+7,2,21.4453,"t1, t1",HlyE_IgA,prec.par,stratum 1
+8,2,22.5513,"t1, t1",HlyE_IgA,prec.par,stratum 1
+9,2,20.7264,"t1, t1",HlyE_IgA,prec.par,stratum 1
+10,2,21.6993,"t1, t1",HlyE_IgA,prec.par,stratum 1
+1,1,0.943476,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+2,1,0.776365,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+3,1,-0.116607,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+4,1,0.532705,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+5,1,0.571679,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+6,1,0.70289,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+7,1,3.35059,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+8,1,1.63288,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+9,1,3.61196,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+10,1,2.24488,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+1,2,-0.586325,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+2,2,-2.99032,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+3,2,-2.8731,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+4,2,-1.22023,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+5,2,-1.15328,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+6,2,-2.02252,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+7,2,-1.75469,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+8,2,-1.96058,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+9,2,-0.90875,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+10,2,-0.518255,"t1, alpha",HlyE_IgA,prec.par,stratum 1
+1,1,0.0294959,"t1, shape",HlyE_IgA,prec.par,stratum 1
+2,1,-0.056528,"t1, shape",HlyE_IgA,prec.par,stratum 1
+3,1,0.586237,"t1, shape",HlyE_IgA,prec.par,stratum 1
+4,1,1.91004,"t1, shape",HlyE_IgA,prec.par,stratum 1
+5,1,0.821956,"t1, shape",HlyE_IgA,prec.par,stratum 1
+6,1,0.0103519,"t1, shape",HlyE_IgA,prec.par,stratum 1
+7,1,2.35448,"t1, shape",HlyE_IgA,prec.par,stratum 1
+8,1,0.20562,"t1, shape",HlyE_IgA,prec.par,stratum 1
+9,1,5.81735,"t1, shape",HlyE_IgA,prec.par,stratum 1
+10,1,4.65294,"t1, shape",HlyE_IgA,prec.par,stratum 1
+1,2,1.15641,"t1, shape",HlyE_IgA,prec.par,stratum 1
+2,2,1.77464,"t1, shape",HlyE_IgA,prec.par,stratum 1
+3,2,3.92999,"t1, shape",HlyE_IgA,prec.par,stratum 1
+4,2,2.24516,"t1, shape",HlyE_IgA,prec.par,stratum 1
+5,2,3.49923,"t1, shape",HlyE_IgA,prec.par,stratum 1
+6,2,3.5545,"t1, shape",HlyE_IgA,prec.par,stratum 1
+7,2,2.13052,"t1, shape",HlyE_IgA,prec.par,stratum 1
+8,2,3.86905,"t1, shape",HlyE_IgA,prec.par,stratum 1
+9,2,4.05531,"t1, shape",HlyE_IgA,prec.par,stratum 1
+10,2,3.2657,"t1, shape",HlyE_IgA,prec.par,stratum 1
+1,1,1.84479,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+2,1,2.05602,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+3,1,0.905531,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+4,1,1.01689,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+5,1,0.299221,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+6,1,1.64009,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+7,1,1.4547,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+8,1,1.76803,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+9,1,1.88066,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+10,1,1.01522,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+1,2,-0.140771,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+2,2,1.16108,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+3,2,0.871192,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+4,2,1.48307,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+5,2,1.61083,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+6,2,1.12624,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+7,2,1.39593,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+8,2,0.722838,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+9,2,1.77733,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+10,2,1.08638,"alpha, y0",HlyE_IgA,prec.par,stratum 1
+1,1,-0.0327707,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+2,1,0.121509,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+3,1,0.136136,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+4,1,0.0896956,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+5,1,0.143307,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+6,1,-0.147204,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+7,1,-0.0322394,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+8,1,0.071107,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+9,1,0.234586,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+10,1,0.0451747,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+1,2,-0.0524818,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+2,2,-0.312865,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+3,2,-0.140644,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+4,2,-0.303689,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+5,2,-0.00467215,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+6,2,-0.097427,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+7,2,-0.0215898,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+8,2,-0.328472,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+9,2,-0.588052,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+10,2,-0.564775,"alpha, y1",HlyE_IgA,prec.par,stratum 1
+1,1,0.943476,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+2,1,0.776365,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+3,1,-0.116607,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+4,1,0.532705,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+5,1,0.571679,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+6,1,0.70289,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+7,1,3.35059,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+8,1,1.63288,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+9,1,3.61196,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+10,1,2.24488,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+1,2,-0.586325,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+2,2,-2.99032,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+3,2,-2.8731,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+4,2,-1.22023,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+5,2,-1.15328,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+6,2,-2.02252,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+7,2,-1.75469,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+8,2,-1.96058,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+9,2,-0.90875,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+10,2,-0.518255,"alpha, t1",HlyE_IgA,prec.par,stratum 1
+1,1,2.15976,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+2,1,1.98339,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+3,1,1.5329,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+4,1,1.57997,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+5,1,1.98157,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+6,1,2.56364,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+7,1,2.24432,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+8,1,1.86814,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+9,1,2.26333,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+10,1,2.13684,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+1,2,2.91613,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+2,2,3.78619,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+3,2,2.46778,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+4,2,3.14457,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+5,2,2.62913,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+6,2,2.76285,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+7,2,2.35846,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+8,2,2.46198,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+9,2,2.54065,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+10,2,2.31276,"alpha, alpha",HlyE_IgA,prec.par,stratum 1
+1,1,0.0768993,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+2,1,-0.372334,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+3,1,-0.314502,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+4,1,-0.231031,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+5,1,0.0763705,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+6,1,0.369317,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+7,1,0.425221,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+8,1,-0.146128,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+9,1,0.465802,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+10,1,0.358864,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+1,2,-0.587119,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+2,2,-0.52801,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+3,2,-1.11433,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+4,2,-0.75399,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+5,2,-0.839652,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+6,2,-0.35647,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+7,2,-0.739923,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+8,2,0.15598,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+9,2,-0.231301,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+10,2,0.928288,"alpha, shape",HlyE_IgA,prec.par,stratum 1
+1,1,-3.52086,"shape, y0",HlyE_IgA,prec.par,stratum 1
+2,1,-1.08567,"shape, y0",HlyE_IgA,prec.par,stratum 1
+3,1,-4.05499,"shape, y0",HlyE_IgA,prec.par,stratum 1
+4,1,-3.10222,"shape, y0",HlyE_IgA,prec.par,stratum 1
+5,1,-4.58975,"shape, y0",HlyE_IgA,prec.par,stratum 1
+6,1,-5.17831,"shape, y0",HlyE_IgA,prec.par,stratum 1
+7,1,-3.63644,"shape, y0",HlyE_IgA,prec.par,stratum 1
+8,1,-5.56459,"shape, y0",HlyE_IgA,prec.par,stratum 1
+9,1,-0.00769539,"shape, y0",HlyE_IgA,prec.par,stratum 1
+10,1,-0.893773,"shape, y0",HlyE_IgA,prec.par,stratum 1
+1,2,0.709394,"shape, y0",HlyE_IgA,prec.par,stratum 1
+2,2,-1.4541,"shape, y0",HlyE_IgA,prec.par,stratum 1
+3,2,-2.20043,"shape, y0",HlyE_IgA,prec.par,stratum 1
+4,2,0.777687,"shape, y0",HlyE_IgA,prec.par,stratum 1
+5,2,-0.945633,"shape, y0",HlyE_IgA,prec.par,stratum 1
+6,2,-1.21571,"shape, y0",HlyE_IgA,prec.par,stratum 1
+7,2,-1.32894,"shape, y0",HlyE_IgA,prec.par,stratum 1
+8,2,-2.39891,"shape, y0",HlyE_IgA,prec.par,stratum 1
+9,2,1.13338,"shape, y0",HlyE_IgA,prec.par,stratum 1
+10,2,0.62903,"shape, y0",HlyE_IgA,prec.par,stratum 1
+1,1,-1.03959,"shape, y1",HlyE_IgA,prec.par,stratum 1
+2,1,-1.34976,"shape, y1",HlyE_IgA,prec.par,stratum 1
+3,1,-0.730151,"shape, y1",HlyE_IgA,prec.par,stratum 1
+4,1,-1.03392,"shape, y1",HlyE_IgA,prec.par,stratum 1
+5,1,-1.22429,"shape, y1",HlyE_IgA,prec.par,stratum 1
+6,1,-0.773348,"shape, y1",HlyE_IgA,prec.par,stratum 1
+7,1,-1.18737,"shape, y1",HlyE_IgA,prec.par,stratum 1
+8,1,-1.58075,"shape, y1",HlyE_IgA,prec.par,stratum 1
+9,1,-1.14301,"shape, y1",HlyE_IgA,prec.par,stratum 1
+10,1,-1.45212,"shape, y1",HlyE_IgA,prec.par,stratum 1
+1,2,-1.06829,"shape, y1",HlyE_IgA,prec.par,stratum 1
+2,2,-0.801579,"shape, y1",HlyE_IgA,prec.par,stratum 1
+3,2,-0.916361,"shape, y1",HlyE_IgA,prec.par,stratum 1
+4,2,-0.849917,"shape, y1",HlyE_IgA,prec.par,stratum 1
+5,2,-1.13911,"shape, y1",HlyE_IgA,prec.par,stratum 1
+6,2,-0.879207,"shape, y1",HlyE_IgA,prec.par,stratum 1
+7,2,-0.944938,"shape, y1",HlyE_IgA,prec.par,stratum 1
+8,2,-1.23905,"shape, y1",HlyE_IgA,prec.par,stratum 1
+9,2,-0.968133,"shape, y1",HlyE_IgA,prec.par,stratum 1
+10,2,-1.5358,"shape, y1",HlyE_IgA,prec.par,stratum 1
+1,1,0.0294959,"shape, t1",HlyE_IgA,prec.par,stratum 1
+2,1,-0.056528,"shape, t1",HlyE_IgA,prec.par,stratum 1
+3,1,0.586237,"shape, t1",HlyE_IgA,prec.par,stratum 1
+4,1,1.91004,"shape, t1",HlyE_IgA,prec.par,stratum 1
+5,1,0.821956,"shape, t1",HlyE_IgA,prec.par,stratum 1
+6,1,0.0103519,"shape, t1",HlyE_IgA,prec.par,stratum 1
+7,1,2.35448,"shape, t1",HlyE_IgA,prec.par,stratum 1
+8,1,0.20562,"shape, t1",HlyE_IgA,prec.par,stratum 1
+9,1,5.81735,"shape, t1",HlyE_IgA,prec.par,stratum 1
+10,1,4.65294,"shape, t1",HlyE_IgA,prec.par,stratum 1
+1,2,1.15641,"shape, t1",HlyE_IgA,prec.par,stratum 1
+2,2,1.77464,"shape, t1",HlyE_IgA,prec.par,stratum 1
+3,2,3.92999,"shape, t1",HlyE_IgA,prec.par,stratum 1
+4,2,2.24516,"shape, t1",HlyE_IgA,prec.par,stratum 1
+5,2,3.49923,"shape, t1",HlyE_IgA,prec.par,stratum 1
+6,2,3.5545,"shape, t1",HlyE_IgA,prec.par,stratum 1
+7,2,2.13052,"shape, t1",HlyE_IgA,prec.par,stratum 1
+8,2,3.86905,"shape, t1",HlyE_IgA,prec.par,stratum 1
+9,2,4.05531,"shape, t1",HlyE_IgA,prec.par,stratum 1
+10,2,3.2657,"shape, t1",HlyE_IgA,prec.par,stratum 1
+1,1,0.0768993,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+2,1,-0.372334,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+3,1,-0.314502,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+4,1,-0.231031,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+5,1,0.0763705,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+6,1,0.369317,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+7,1,0.425221,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+8,1,-0.146128,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+9,1,0.465802,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+10,1,0.358864,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+1,2,-0.587119,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+2,2,-0.52801,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+3,2,-1.11433,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+4,2,-0.75399,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+5,2,-0.839652,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+6,2,-0.35647,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+7,2,-0.739923,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+8,2,0.15598,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+9,2,-0.231301,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+10,2,0.928288,"shape, alpha",HlyE_IgA,prec.par,stratum 1
+1,1,8.46026,"shape, shape",HlyE_IgA,prec.par,stratum 1
+2,1,9.28953,"shape, shape",HlyE_IgA,prec.par,stratum 1
+3,1,9.43244,"shape, shape",HlyE_IgA,prec.par,stratum 1
+4,1,8.57923,"shape, shape",HlyE_IgA,prec.par,stratum 1
+5,1,8.26077,"shape, shape",HlyE_IgA,prec.par,stratum 1
+6,1,7.94884,"shape, shape",HlyE_IgA,prec.par,stratum 1
+7,1,7.82014,"shape, shape",HlyE_IgA,prec.par,stratum 1
+8,1,11.9128,"shape, shape",HlyE_IgA,prec.par,stratum 1
+9,1,8.37064,"shape, shape",HlyE_IgA,prec.par,stratum 1
+10,1,10.1568,"shape, shape",HlyE_IgA,prec.par,stratum 1
+1,2,7.18612,"shape, shape",HlyE_IgA,prec.par,stratum 1
+2,2,6.91434,"shape, shape",HlyE_IgA,prec.par,stratum 1
+3,2,9.14755,"shape, shape",HlyE_IgA,prec.par,stratum 1
+4,2,7.29529,"shape, shape",HlyE_IgA,prec.par,stratum 1
+5,2,7.47468,"shape, shape",HlyE_IgA,prec.par,stratum 1
+6,2,7.85348,"shape, shape",HlyE_IgA,prec.par,stratum 1
+7,2,8.28895,"shape, shape",HlyE_IgA,prec.par,stratum 1
+8,2,8.66404,"shape, shape",HlyE_IgA,prec.par,stratum 1
+9,2,9.55367,"shape, shape",HlyE_IgA,prec.par,stratum 1
+10,2,10.2398,"shape, shape",HlyE_IgA,prec.par,stratum 1
+1,1,1.19773,NA,NA,prec.logy,stratum 1
+2,1,1.18087,NA,NA,prec.logy,stratum 1
+3,1,1.18174,NA,NA,prec.logy,stratum 1
+4,1,1.12725,NA,NA,prec.logy,stratum 1
+5,1,1.19441,NA,NA,prec.logy,stratum 1
+6,1,1.26177,NA,NA,prec.logy,stratum 1
+7,1,1.22949,NA,NA,prec.logy,stratum 1
+8,1,1.14227,NA,NA,prec.logy,stratum 1
+9,1,1.36255,NA,NA,prec.logy,stratum 1
+10,1,1.14249,NA,NA,prec.logy,stratum 1
+1,2,1.44612,NA,NA,prec.logy,stratum 1
+2,2,1.66017,NA,NA,prec.logy,stratum 1
+3,2,1.56526,NA,NA,prec.logy,stratum 1
+4,2,1.53712,NA,NA,prec.logy,stratum 1
+5,2,1.44501,NA,NA,prec.logy,stratum 1
+6,2,1.7046,NA,NA,prec.logy,stratum 1
+7,2,1.60421,NA,NA,prec.logy,stratum 1
+8,2,1.66066,NA,NA,prec.logy,stratum 1
+9,2,1.47564,NA,NA,prec.logy,stratum 1
+10,2,1.39679,NA,NA,prec.logy,stratum 1
