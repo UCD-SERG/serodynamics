@@ -51,8 +51,12 @@ unpack_jags <- function(data) {
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
   # Putting data frame together
-  jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar,
-                            jags_preclogy)
+  jags_unpack_bind <- dplyr::bind_rows(
+    jags_unpack_params,
+    jags_mupar,
+    jags_precpar,
+    jags_preclogy
+  )
 
   return(jags_unpack_bind)
 }
