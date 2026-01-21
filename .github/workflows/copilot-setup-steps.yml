@@ -106,6 +106,19 @@ jobs:
           runjags::testjags()
         shell: Rscript {0}
       
+      # Install cmdstanr for Stan modeling support (optional)
+      # See .github/copilot-instructions.md "Stan Installation" section
+      - name: Install cmdstanr
+        run: |
+          install.packages("cmdstanr",
+                    repos = c("https://stan-dev.r-universe.dev",
+                             "https://cloud.r-project.org"),
+                    verbose = TRUE)
+          cmdstanr::install_cmdstan(cores = 2)
+          cat("cmdstanr version:", as.character(packageVersion("cmdstanr")), "\n")
+          cat("CmdStan version:", cmdstanr::cmdstan_version(), "\n")
+        shell: Rscript {0}
+      
       # Verify JAGS installation
       # See .github/copilot-instructions.md "JAGS Installation" section for details
       - name: Verify JAGS installation
@@ -144,7 +157,7 @@ jobs:
             
             # Display key installed packages
             cat("Key installed packages:\n")
-            key_packages <- c("devtools", "rjags", "runjags", "rcmdcheck", "lintr", "spelling", "testthat")
+            key_packages <- c("devtools", "rjags", "runjags", "cmdstanr", "rcmdcheck", "lintr", "spelling", "testthat")
             for (pkg in key_packages) {
               if (requireNamespace(pkg, quietly = TRUE)) {
                 cat("  -", pkg, ":", as.character(packageVersion(pkg)), "\n")
