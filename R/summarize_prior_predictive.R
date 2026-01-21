@@ -4,6 +4,8 @@
 #' Provides diagnostic summaries of prior predictive simulations to identify
 #' potential issues with prior specifications before fitting the model.
 #'
+#' @importFrom stats median quantile
+#'
 #' @details
 #' This function checks for:
 #' - Non-finite values (NaN, Inf, -Inf)

@@ -6,6 +6,8 @@
 #' to data. This is useful for assessing whether priors generate realistic
 #' antibody values for a given pathogen and assay.
 #'
+#' @importFrom stats rWishart rgamma rnorm
+#'
 #' @details
 #' This function:
 #' 1. Draws kinetic parameters from the prior distributions specified by
