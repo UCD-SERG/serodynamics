@@ -43,7 +43,9 @@
 #' sim_data <- simulate_prior_predictive(prepped_data, prepped_priors)
 #'
 #' # Generate multiple simulations
-#' sim_list <- simulate_prior_predictive(prepped_data, prepped_priors, n_sims = 10)
+#' sim_list <- simulate_prior_predictive(
+#'   prepped_data, prepped_priors, n_sims = 10
+#' )
 simulate_prior_predictive <- function(prepped_data,
                                       prepped_priors,
                                       n_sims = 1,
@@ -51,13 +53,19 @@ simulate_prior_predictive <- function(prepped_data,
   # Input validation
   if (!inherits(prepped_data, "prepped_jags_data")) {
     cli::cli_abort(
-      "{.arg prepped_data} must be a {.cls prepped_jags_data} object from {.fn prep_data}"
+      c(
+        "{.arg prepped_data} must be a {.cls prepped_jags_data}",
+        "object from {.fn prep_data}"
+      )
     )
   }
 
   if (!inherits(prepped_priors, "curve_params_priors")) {
     cli::cli_abort(
-      "{.arg prepped_priors} must be a {.cls curve_params_priors} object from {.fn prep_priors}"
+      c(
+        "{.arg prepped_priors} must be a {.cls curve_params_priors}",
+        "object from {.fn prep_priors}"
+      )
     )
   }
 
@@ -65,8 +73,14 @@ simulate_prior_predictive <- function(prepped_data,
     cli::cli_abort(
       c(
         "Mismatch between data and priors:",
-        "i" = "{.arg prepped_data} has {prepped_data$n_antigen_isos} biomarkers",
-        "i" = "{.arg prepped_priors} is configured for {nrow(prepped_priors$mu.hyp)} biomarkers"
+        "i" = paste(
+          "{.arg prepped_data} has",
+          "{prepped_data$n_antigen_isos} biomarkers"
+        ),
+        "i" = paste(
+          "{.arg prepped_priors} is configured for",
+          "{nrow(prepped_priors$mu.hyp)} biomarkers"
+        )
       )
     )
   }

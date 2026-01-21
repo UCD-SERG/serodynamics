@@ -37,7 +37,9 @@
 #' prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 #'
 #' # Simulate and plot
-#' sim_data <- simulate_prior_predictive(prepped_data, prepped_priors, n_sims = 20)
+#' sim_data <- simulate_prior_predictive(
+#'   prepped_data, prepped_priors, n_sims = 20
+#' )
 #' plot_prior_predictive(sim_data, original_data = prepped_data)
 plot_prior_predictive <- function(sim_data,
                                   original_data = NULL,
@@ -65,24 +67,27 @@ plot_prior_predictive <- function(sim_data,
   subject_ids <- attr(sim_list[[1]], "ids")
 
   # Convert simulated data to long format for plotting
-  sim_plot_data <- do.call(rbind, lapply(seq_along(sim_list), function(sim_idx) {
-    sim <- sim_list[[sim_idx]]
+  sim_plot_data <- do.call(
+    rbind,
+    lapply(seq_along(sim_list), function(sim_idx) {
+      sim <- sim_list[[sim_idx]]
 
-    do.call(rbind, lapply(seq_len(sim$nsubj), function(subj) {
-      do.call(rbind, lapply(seq_len(sim$nsmpl[subj]), function(obs) {
-        do.call(rbind, lapply(seq_along(antigens), function(k) {
-          data.frame(
-            subject = subject_ids[subj],
-            time = sim$smpl.t[subj, obs],
-            logy = sim$logy[subj, obs, k],
-            biomarker = antigens[k],
-            sim_id = sim_idx,
-            stringsAsFactors = FALSE
-          )
+      do.call(rbind, lapply(seq_len(sim$nsubj), function(subj) {
+        do.call(rbind, lapply(seq_len(sim$nsmpl[subj]), function(obs) {
+          do.call(rbind, lapply(seq_along(antigens), function(k) {
+            data.frame(
+              subject = subject_ids[subj],
+              time = sim$smpl.t[subj, obs],
+              logy = sim$logy[subj, obs, k],
+              biomarker = antigens[k],
+              sim_id = sim_idx,
+              stringsAsFactors = FALSE
+            )
+          }))
         }))
       }))
-    }))
-  }))
+    })
+  )
 
   # Remove NA values
   sim_plot_data <- sim_plot_data[!is.na(sim_plot_data$time) &
@@ -104,22 +109,31 @@ plot_prior_predictive <- function(sim_data,
   # Add observed data if provided
   if (!is.null(original_data)) {
     if (inherits(original_data, "prepped_jags_data")) {
-      obs_plot_data <- do.call(rbind, lapply(seq_len(original_data$nsubj), function(subj) {
-        do.call(rbind, lapply(seq_len(original_data$nsmpl[subj]), function(obs) {
-          do.call(rbind, lapply(seq_along(antigens), function(k) {
-            data.frame(
-              subject = subject_ids[subj],
-              time = original_data$smpl.t[subj, obs],
-              logy = original_data$logy[subj, obs, k],
-              biomarker = antigens[k],
-              stringsAsFactors = FALSE
-            )
-          }))
-        }))
-      }))
+      obs_plot_data <- do.call(
+        rbind,
+        lapply(seq_len(original_data$nsubj), function(subj) {
+          do.call(
+            rbind,
+            lapply(seq_len(original_data$nsmpl[subj]), function(obs) {
+              do.call(rbind, lapply(seq_along(antigens), function(k) {
+                data.frame(
+                  subject = subject_ids[subj],
+                  time = original_data$smpl.t[subj, obs],
+                  logy = original_data$logy[subj, obs, k],
+                  biomarker = antigens[k],
+                  stringsAsFactors = FALSE
+                )
+              }))
+            })
+          )
+        })
+      )
 
-      obs_plot_data <- obs_plot_data[!is.na(obs_plot_data$time) &
-        !is.na(obs_plot_data$logy), ]
+      obs_plot_data <-
+        obs_plot_data[
+          !is.na(obs_plot_data$time) &
+            !is.na(obs_plot_data$logy),
+        ]
 
       if (!log_scale) {
         obs_plot_data$value <- exp(obs_plot_data$logy)

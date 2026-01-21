@@ -58,6 +58,8 @@ prepped_data <- prep_data(raw_data)
 prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 
 # Simulate and plot
-sim_data <- simulate_prior_predictive(prepped_data, prepped_priors, n_sims = 20)
+sim_data <- simulate_prior_predictive(
+  prepped_data, prepped_priors, n_sims = 20
+)
 plot_prior_predictive(sim_data, original_data = prepped_data)
 }

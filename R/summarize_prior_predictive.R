@@ -36,27 +36,32 @@
 #' prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 #'
 #' # Simulate and summarize
-#' sim_data <- simulate_prior_predictive(prepped_data, prepped_priors, n_sims = 10)
-#' summary <- summarize_prior_predictive(sim_data, original_data = prepped_data)
+#' sim_data <- simulate_prior_predictive(
+#'   prepped_data, prepped_priors, n_sims = 10
+#' )
+#' summary <- summarize_prior_predictive(
+#'   sim_data, original_data = prepped_data
+#' )
 #' print(summary)
 summarize_prior_predictive <- function(sim_data, original_data = NULL) {
   # Handle list of simulations or single simulation
   if (is.list(sim_data) && !inherits(sim_data, "prepped_jags_data")) {
     # It's a list of simulations
     n_sims <- length(sim_data)
-    all_logy <- do.call(c, lapply(sim_data, function(x) as.vector(x$logy)))
     antigens <- attr(sim_data[[1]], "antigens")
     n_antigens <- sim_data[[1]]$n_antigen_isos
 
     # Extract values by biomarker across all simulations
     logy_by_biomarker <- lapply(seq_len(n_antigens), function(k) {
-      vals <- do.call(c, lapply(sim_data, function(x) as.vector(x$logy[, , k])))
+      vals <- do.call(
+        c,
+        lapply(sim_data, function(x) as.vector(x$logy[, , k]))
+      )
       vals[!is.na(vals)]
     })
   } else {
     # Single simulation
     n_sims <- 1
-    all_logy <- as.vector(sim_data$logy)
     antigens <- attr(sim_data, "antigens")
     n_antigens <- sim_data$n_antigen_isos
 
@@ -69,30 +74,62 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
   # Validity check for each biomarker
   validity_check <- data.frame(
     biomarker = antigens,
-    n_finite = sapply(logy_by_biomarker, function(x) sum(is.finite(x))),
-    n_nonfinite = sapply(logy_by_biomarker, function(x) sum(!is.finite(x))),
-    n_negative = sapply(logy_by_biomarker, function(x) sum(is.finite(x) & x < log(0.01))),
+    n_finite = vapply(
+      logy_by_biomarker,
+      function(x) sum(is.finite(x)),
+      FUN.VALUE = integer(1)
+    ),
+    n_nonfinite = vapply(
+      logy_by_biomarker,
+      function(x) sum(!is.finite(x)),
+      FUN.VALUE = integer(1)
+    ),
+    n_negative = vapply(
+      logy_by_biomarker,
+      function(x) sum(is.finite(x) & x < log(0.01)),
+      FUN.VALUE = integer(1)
+    ),
     stringsAsFactors = FALSE
   )
 
   # Range summary for each biomarker (on log scale)
   range_summary <- data.frame(
     biomarker = antigens,
-    min = sapply(logy_by_biomarker, function(x) {
-      if (length(x) > 0 && any(is.finite(x))) min(x[is.finite(x)]) else NA
-    }),
-    q25 = sapply(logy_by_biomarker, function(x) {
-      if (length(x) > 0 && any(is.finite(x))) quantile(x[is.finite(x)], 0.25) else NA
-    }),
-    median = sapply(logy_by_biomarker, function(x) {
-      if (length(x) > 0 && any(is.finite(x))) median(x[is.finite(x)]) else NA
-    }),
-    q75 = sapply(logy_by_biomarker, function(x) {
-      if (length(x) > 0 && any(is.finite(x))) quantile(x[is.finite(x)], 0.75) else NA
-    }),
-    max = sapply(logy_by_biomarker, function(x) {
-      if (length(x) > 0 && any(is.finite(x))) max(x[is.finite(x)]) else NA
-    }),
+    min = vapply(logy_by_biomarker, function(x) {
+      if (length(x) > 0 && any(is.finite(x))) {
+        min(x[is.finite(x)])
+      } else {
+        NA_real_
+      }
+    }, FUN.VALUE = numeric(1)),
+    q25 = vapply(logy_by_biomarker, function(x) {
+      if (length(x) > 0 && any(is.finite(x))) {
+        quantile(x[is.finite(x)], 0.25)
+      } else {
+        NA_real_
+      }
+    }, FUN.VALUE = numeric(1)),
+    median = vapply(logy_by_biomarker, function(x) {
+      if (length(x) > 0 && any(is.finite(x))) {
+        median(x[is.finite(x)])
+      } else {
+        NA_real_
+      }
+    }, FUN.VALUE = numeric(1)),
+    q75 = vapply(logy_by_biomarker, function(x) {
+      if (length(x) > 0 && any(is.finite(x))) {
+        quantile(x[is.finite(x)], 0.75)
+      } else {
+        NA_real_
+      }
+    }, FUN.VALUE = numeric(1)),
+    max = vapply(logy_by_biomarker, function(x) {
+      if (length(x) > 0 && any(is.finite(x))) {
+        max(x[is.finite(x)])
+      } else {
+        NA_real_
+      }
+    }, FUN.VALUE = numeric(1)),
     stringsAsFactors = FALSE
   )
 

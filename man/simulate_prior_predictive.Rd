@@ -62,5 +62,7 @@ prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 sim_data <- simulate_prior_predictive(prepped_data, prepped_priors)
 
 # Generate multiple simulations
-sim_list <- simulate_prior_predictive(prepped_data, prepped_priors, n_sims = 10)
+sim_list <- simulate_prior_predictive(
+  prepped_data, prepped_priors, n_sims = 10
+)
 }
