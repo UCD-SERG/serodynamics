@@ -3,7 +3,9 @@ title: "Prior Predictive Checks"
 format: html
 ---
 
-```{r setup, include = FALSE}
+```{r}
+#| label: setup
+#| include: false
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -22,6 +24,14 @@ Prior predictive checks (PPCs) are a critical step in Bayesian workflow, allowin
 
 This vignette demonstrates how to perform prior predictive checks using the `serodynamics` package.
 
+## Load Required Libraries
+
+```{r load-packages}
+library(serodynamics)
+library(dplyr)
+set.seed(123)
+```
+
 ## Basic Workflow
 
 The basic prior predictive check workflow involves three steps:
@@ -33,12 +43,6 @@ The basic prior predictive check workflow involves three steps:
 ## Example: Typhoid Data
 
 Let's demonstrate with simulated typhoid data:
-
-```{r load-packages}
-library(serodynamics)
-library(dplyr)
-set.seed(123)
-```
 
 ### 1. Prepare Data and Priors
 
