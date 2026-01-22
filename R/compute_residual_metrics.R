@@ -60,12 +60,14 @@
 #'
 #' @example inst/examples/examples-compute_residual_metrics.R
 compute_residual_metrics <- function(model,
-                                    dataset,
-                                    ids,
-                                    antigen_iso,
-                                    scale = c("original", "log"),
-                                    summary_level = c("id_antigen", "pointwise",
-                                                     "antigen", "overall")) {
+                                      dataset,
+                                      ids,
+                                      antigen_iso,
+                                      scale = c("original", "log"),
+                                      summary_level = c("id_antigen",
+                                                        "pointwise",
+                                                        "antigen",
+                                                        "overall")) {
   
   # Validate arguments
   scale <- match.arg(scale)
@@ -130,7 +132,9 @@ compute_residual_metrics <- function(model,
     
     if (n_nonpos_obs > 0 || n_nonpos_pred > 0) {
       cli::cli_warn(c(
-        "Removing {n_nonpos_obs + n_nonpos_pred} observation(s) with non-positive values for log-scale residuals.",
+        paste0("Removing ", n_nonpos_obs + n_nonpos_pred, 
+               " observation(s) with non-positive values for ",
+               "log-scale residuals."),
         "i" = "Non-positive observed: {n_nonpos_obs}",
         "i" = "Non-positive predicted: {n_nonpos_pred}"
       ))

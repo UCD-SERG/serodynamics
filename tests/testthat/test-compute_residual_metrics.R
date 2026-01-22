@@ -236,7 +236,8 @@ test_that(
 )
 
 test_that(
-  desc = "compute_residual_metrics() pointwise output matches manual calculation",
+  desc = paste0("compute_residual_metrics() pointwise output matches ",
+                "manual calculation"),
   code = {
     sr_model <- serodynamics::nepal_sees_jags_output
     dataset <- serodynamics::nepal_sees
