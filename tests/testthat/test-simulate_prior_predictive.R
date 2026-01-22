@@ -34,7 +34,12 @@ test_that("simulate_prior_predictive with multiple simulations", {
 
   expect_type(sim_list, "list")
   expect_length(sim_list, n_sims)
-  expect_true(all(sapply(sim_list, inherits, "prepped_jags_data")))
+  expect_true(all(vapply(
+    sim_list,
+    inherits,
+    FUN.VALUE = logical(1),
+    "prepped_jags_data"
+  )))
 })
 
 test_that("simulate_prior_predictive respects seed", {

@@ -57,8 +57,12 @@ test_that("summarize_prior_predictive with observed data comparison", {
     nrow(summary$observed_range),
     nrow(summary$range_summary)
   )
-  expect_true(all(c("biomarker", "obs_min", "obs_median", "obs_max") %in%
-    names(summary$observed_range)))
+  expect_true(
+    all(
+      c("biomarker", "obs_min", "obs_median", "obs_max") %in%
+        names(summary$observed_range)
+    )
+  )
 })
 
 test_that("summarize_prior_predictive validity checks", {
@@ -73,8 +77,12 @@ test_that("summarize_prior_predictive validity checks", {
   summary <- summarize_prior_predictive(sim_data)
 
   # Check validity_check structure
-  expect_true(all(c("biomarker", "n_finite", "n_nonfinite", "n_negative") %in%
-    names(summary$validity_check)))
+  expect_true(
+    all(
+      c("biomarker", "n_finite", "n_nonfinite", "n_negative") %in%
+        names(summary$validity_check)
+    )
+  )
 
   # Check that we have counts for each biomarker
   expect_equal(
@@ -95,8 +103,12 @@ test_that("summarize_prior_predictive range summary", {
   summary <- summarize_prior_predictive(sim_data)
 
   # Check range_summary structure
-  expect_true(all(c("biomarker", "min", "q25", "median", "q75", "max") %in%
-    names(summary$range_summary)))
+  expect_true(
+    all(
+      c("biomarker", "min", "q25", "median", "q75", "max") %in%
+        names(summary$range_summary)
+    )
+  )
 
   # Check that quantiles are ordered (where finite)
   for (i in seq_len(nrow(summary$range_summary))) {
@@ -107,10 +119,18 @@ test_that("summarize_prior_predictive range summary", {
       summary$range_summary$q75[i],
       summary$range_summary$max[i]
     )))) {
-      expect_true(summary$range_summary$min[i] <= summary$range_summary$q25[i])
-      expect_true(summary$range_summary$q25[i] <= summary$range_summary$median[i])
-      expect_true(summary$range_summary$median[i] <= summary$range_summary$q75[i])
-      expect_true(summary$range_summary$q75[i] <= summary$range_summary$max[i])
+      expect_true(
+        summary$range_summary$min[i] <= summary$range_summary$q25[i]
+      )
+      expect_true(
+        summary$range_summary$q25[i] <= summary$range_summary$median[i]
+      )
+      expect_true(
+        summary$range_summary$median[i] <= summary$range_summary$q75[i]
+      )
+      expect_true(
+        summary$range_summary$q75[i] <= summary$range_summary$max[i]
+      )
     }
   }
 })

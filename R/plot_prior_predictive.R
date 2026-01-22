@@ -93,7 +93,7 @@ plot_prior_predictive <- function(sim_data,
   sim_plot_data <-
     sim_plot_data[
       !is.na(sim_plot_data$time) &
-        !is.na(sim_plot_data$logy),
+      !is.na(sim_plot_data$logy),
     ]
 
   # Transform to natural scale if requested
@@ -135,7 +135,7 @@ plot_prior_predictive <- function(sim_data,
       obs_plot_data <-
         obs_plot_data[
           !is.na(obs_plot_data$time) &
-            !is.na(obs_plot_data$logy),
+          !is.na(obs_plot_data$logy),
         ]
 
       if (!log_scale) {

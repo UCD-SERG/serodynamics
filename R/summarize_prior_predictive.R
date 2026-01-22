@@ -201,8 +201,8 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
 
       # If simulated range is much larger than observed (factor of 10+)
       if (is.finite(sim_range) &&
-        is.finite(obs_range) &&
-        sim_range > obs_range * 10) {
+            is.finite(obs_range) &&
+            sim_range > obs_range * 10) {
         issues <- c(
           issues,
           paste0(
@@ -240,6 +240,7 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
 #' @param ... Additional arguments (not used)
 #'
 #' @returns Invisibly returns `x`
+#' @keywords internal
 #' @export
 print.prior_predictive_summary <- function(x, ...) {
   cli::cli_h1("Prior Predictive Check Summary")

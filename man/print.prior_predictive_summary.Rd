@@ -17,3 +17,4 @@ Invisibly returns \code{x}
 \description{
 Print method for prior_predictive_summary
 }
+\keyword{internal}

@@ -146,7 +146,7 @@ simulate_one_prior_predictive <- function(prepped_data, prepped_priors) {
   }
 
   # Initialize arrays for subject-level parameters
-  par <- array(NA, dim = c(nsubj, n_antigen_isos, n_params))
+  params <- array(NA, dim = c(nsubj, n_antigen_isos, n_params))
   y0 <- array(NA, dim = c(nsubj, n_antigen_isos))
   y1 <- array(NA, dim = c(nsubj, n_antigen_isos))
   t1 <- array(NA, dim = c(nsubj, n_antigen_isos))
@@ -157,18 +157,20 @@ simulate_one_prior_predictive <- function(prepped_data, prepped_priors) {
   for (subj in seq_len(nsubj)) {
     for (k in seq_len(n_antigen_isos)) {
       # Sample individual parameters from population distribution
-      par[subj, k, ] <- MASS::mvrnorm(
+      params[subj, k, ] <- MASS::mvrnorm(
         n = 1,
         mu = mu_par[k, ],
         Sigma = solve(prec_par[k, , ])
       )
 
       # Transform to natural scale (matching JAGS model)
-      y0[subj, k] <- exp(par[subj, k, 1])
-      y1[subj, k] <- y0[subj, k] + exp(par[subj, k, 2]) # par[,,2] is log(y1-y0)
-      t1[subj, k] <- exp(par[subj, k, 3])
-      alpha[subj, k] <- exp(par[subj, k, 4])
-      shape[subj, k] <- exp(par[subj, k, 5]) + 1 # par[,,5] is log(shape-1)
+      y0[subj, k] <- exp(params[subj, k, 1])
+      # params[,,2] is log(y1-y0)
+      y1[subj, k] <- y0[subj, k] + exp(params[subj, k, 2])
+      t1[subj, k] <- exp(params[subj, k, 3])
+      alpha[subj, k] <- exp(params[subj, k, 4])
+      # params[,,5] is log(shape-1)
+      shape[subj, k] <- exp(params[subj, k, 5]) + 1
     }
   }
 
