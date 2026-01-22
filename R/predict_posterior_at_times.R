@@ -23,9 +23,9 @@
 #' @keywords internal
 #' @noRd
 predict_posterior_at_times <- function(model,
-                                        ids,
-                                        antigen_iso,
-                                        times) {
+                                       ids,
+                                       antigen_iso,
+                                       times) {
   
   # Filter to the subject(s) & antigen of interest
   sr_model_sub <- model |>
