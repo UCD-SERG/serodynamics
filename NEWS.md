@@ -1,5 +1,23 @@
 # serodynamics (development version)
 
+## New features
+
+* Added `compute_residual_metrics()` function for quantitative posterior predictive diagnostics (#new-issue-number)
+  - Computes residuals between observed data and posterior median predictions at observed timepoints
+  - Supports original scale and log scale residuals
+  - Returns pointwise residuals and summary metrics (MAE, RMSE, SSE)
+  - Provides multiple aggregation levels: pointwise, per id × antigen_iso, per antigen_iso, and overall
+  - Complements visual assessment from `plot_predicted_curve()` with objective fit measures
+
+* Added internal helper `predict_posterior_at_times()` to extract posterior predictions at arbitrary timepoints
+  - Shared prediction logic for `plot_predicted_curve()` and `compute_residual_metrics()`
+
+## Documentation
+
+* Updated getting-started vignette with new section on "Evaluating Individual-Level Fit Using Residual Metrics"
+  - Demonstrates computing summary metrics, pointwise residuals, and log-scale residuals
+  - Emphasizes residual metrics as a recommended posterior predictive diagnostic step
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

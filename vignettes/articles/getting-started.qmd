@@ -177,6 +177,108 @@ plot_predicted_curve(
 )
 ```
 
+## Evaluating Individual-Level Fit Using Residual Metrics
+
+After visualizing the model predictions, it's important to quantify how well the posterior predictions match the observed data. The `compute_residual_metrics()` function provides objective measures of model fit at the individual level.
+
+### Computing Residual Metrics
+
+Residual metrics complement visual assessments by providing quantitative summaries of prediction accuracy:
+
+```{r}
+#| label: residual-metrics
+# Compute summary metrics for the first individual
+first_id <- serocalculator::ids(simulated_data)[1]
+first_antigen <- simulated_data$antigen_iso[1]
+
+# Get summary metrics (MAE, RMSE, SSE)
+residual_summary <- compute_residual_metrics(
+  model = fitted_model,
+  dataset = simulated_data,
+  ids = first_id,
+  antigen_iso = first_antigen,
+  scale = "original",
+  summary_level = "id_antigen"
+)
+
+print(residual_summary)
+```
+
+The output shows:
+
+- **MAE** (Mean Absolute Error): Average absolute difference between observed and predicted values
+- **RMSE** (Root Mean Squared Error): Square root of average squared differences
+- **SSE** (Sum of Squared Errors): Total squared prediction error
+- **n_obs**: Number of observations used in the calculation
+
+### Examining Pointwise Residuals
+
+For detailed diagnostics, you can examine residuals at each observed timepoint:
+
+```{r}
+#| label: pointwise-residuals
+# Get pointwise residuals
+pointwise <- compute_residual_metrics(
+  model = fitted_model,
+  dataset = simulated_data,
+  ids = first_id,
+  antigen_iso = first_antigen,
+  scale = "original",
+  summary_level = "pointwise"
+)
+
+print(pointwise)
+```
+
+The pointwise output includes:
+
+- `obs`: Observed antibody value
+- `pred_med`: Posterior median prediction
+- `pred_lower` / `pred_upper`: 95% credible interval
+- `residual`: Raw residual (obs - pred)
+- `abs_residual`: Absolute residual
+- `sq_residual`: Squared residual
+
+### Comparing Multiple Individuals
+
+You can compute metrics across multiple individuals to assess overall model performance:
+
+```{r}
+#| label: multi-id-residuals
+# Get summary for multiple individuals
+multi_id_summary <- compute_residual_metrics(
+  model = fitted_model,
+  dataset = simulated_data,
+  ids = serocalculator::ids(simulated_data)[1:3],
+  antigen_iso = first_antigen,
+  scale = "original",
+  summary_level = "id_antigen"
+)
+
+print(multi_id_summary)
+```
+
+### Log-Scale Residuals
+
+For models fit on log-transformed data, compute residuals on the log scale:
+
+```{r}
+#| label: log-residuals
+# Compute log-scale residuals
+log_residuals <- compute_residual_metrics(
+  model = fitted_model,
+  dataset = simulated_data,
+  ids = first_id,
+  antigen_iso = first_antigen,
+  scale = "log",
+  summary_level = "id_antigen"
+)
+
+print(log_residuals)
+```
+
+**Recommendation**: Use residual metrics as a routine posterior predictive diagnostic step after fitting models with `run_mod()`. These metrics help identify individuals with poor fit and support objective model comparison.
+
 ## Post-Processing Results
 
 Extract and summarize the posterior estimates:
