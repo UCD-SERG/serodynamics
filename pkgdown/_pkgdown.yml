@@ -36,6 +36,7 @@ reference:
   - plot_jags_trace
   - plot_jags_effect
   - plot_predicted_curve
+  - compute_residual_metrics
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
