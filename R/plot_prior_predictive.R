@@ -90,8 +90,11 @@ plot_prior_predictive <- function(sim_data,
   )
 
   # Remove NA values
-  sim_plot_data <- sim_plot_data[!is.na(sim_plot_data$time) &
-    !is.na(sim_plot_data$logy), ]
+  sim_plot_data <-
+    sim_plot_data[
+      !is.na(sim_plot_data$time) &
+        !is.na(sim_plot_data$logy),
+    ]
 
   # Transform to natural scale if requested
   if (!log_scale) {

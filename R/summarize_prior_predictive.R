@@ -140,7 +140,10 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
   if (!is.null(original_data)) {
     if (!inherits(original_data, "prepped_jags_data")) {
       cli::cli_warn(
-        "{.arg original_data} is not a {.cls prepped_jags_data} object; skipping comparison"
+        c(
+          "{.arg original_data} is not a {.cls prepped_jags_data}",
+          "object; skipping comparison"
+        )
       )
     } else {
       obs_logy_by_biomarker <- lapply(seq_len(n_antigens), function(k) {
@@ -150,15 +153,15 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
 
       observed_range <- data.frame(
         biomarker = antigens,
-        obs_min = sapply(obs_logy_by_biomarker, function(x) {
-          if (length(x) > 0) min(x) else NA
-        }),
-        obs_median = sapply(obs_logy_by_biomarker, function(x) {
-          if (length(x) > 0) median(x) else NA
-        }),
-        obs_max = sapply(obs_logy_by_biomarker, function(x) {
-          if (length(x) > 0) max(x) else NA
-        }),
+        obs_min = vapply(obs_logy_by_biomarker, function(x) {
+          if (length(x) > 0) min(x) else NA_real_
+        }, FUN.VALUE = numeric(1)),
+        obs_median = vapply(obs_logy_by_biomarker, function(x) {
+          if (length(x) > 0) median(x) else NA_real_
+        }, FUN.VALUE = numeric(1)),
+        obs_max = vapply(obs_logy_by_biomarker, function(x) {
+          if (length(x) > 0) max(x) else NA_real_
+        }, FUN.VALUE = numeric(1)),
         stringsAsFactors = FALSE
       )
     }
@@ -197,13 +200,16 @@ summarize_prior_predictive <- function(sim_data, original_data = NULL) {
       obs_range <- observed_range$obs_max[i] - observed_range$obs_min[i]
 
       # If simulated range is much larger than observed (factor of 10+)
-      if (is.finite(sim_range) && is.finite(obs_range) && sim_range > obs_range * 10) {
+      if (is.finite(sim_range) &&
+        is.finite(obs_range) &&
+        sim_range > obs_range * 10) {
         issues <- c(
           issues,
           paste0(
             "Simulated range for ",
             antigens[i],
-            " is much wider than observed data (may indicate over-dispersed priors)"
+            " is much wider than observed data ",
+            "(may indicate over-dispersed priors)"
           )
         )
       }
@@ -258,9 +264,9 @@ print.prior_predictive_summary <- function(x, ...) {
   cli::cli_h2("Issues Detected")
   for (issue in x$issues) {
     if (issue == "No obvious issues detected") {
-      cli::cli_alert_success(issue)
+      cli::cli_inform(c("v" = issue))
     } else {
-      cli::cli_alert_warning(issue)
+      cli::cli_inform(c("!" = issue))
     }
   }
 

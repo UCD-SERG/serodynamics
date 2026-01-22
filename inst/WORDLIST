@@ -9,9 +9,12 @@ Iso
 JAGS's
 JAGs
 Lifecycle
+MFI
 MSVC
+PPCs
 Postprocess
 Rhat
+Shigella
 TSI
 Vectorization
 Wasserstein
@@ -52,5 +55,6 @@ strat
 stratifications
 tbl
 testthat
+titers
 unstratified
 wishdf
