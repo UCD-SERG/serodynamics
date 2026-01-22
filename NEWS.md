@@ -2,7 +2,7 @@
 
 * Repository polish:
   - Fixed DESCRIPTION file title to remove placeholder text
-  - Corrected README.md R-CMD-check badge URL (was pointing to wrong repository)
+  - Corrected R-CMD-check badge URL (was pointing to wrong repository)
   - Standardized file extensions: renamed `load_data.r` and `prep_data.r` to use uppercase `.R` extension for consistency
   - Completed `load_data()` function documentation (replaced "to add" placeholder)
 
