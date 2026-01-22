@@ -1,5 +1,11 @@
 # serodynamics (development version)
 
+* Added prior predictive check utilities for Bayesian workflow validation:
+  - `simulate_prior_predictive()` generates antibody trajectories from priors before model fitting
+  - `summarize_prior_predictive()` provides diagnostic summaries identifying invalid values and scale mismatches
+  - `plot_prior_predictive()` visualizes prior predictive trajectories with optional observed data overlay
+  - New vignette article demonstrating prior predictive checks as recommended workflow step
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

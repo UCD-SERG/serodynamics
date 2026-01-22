@@ -1,0 +1,241 @@
+---
+title: "Prior Predictive Checks"
+format: html
+---
+
+```{r}
+#| label: setup
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6
+)
+```
+
+## Introduction
+
+Prior predictive checks (PPCs) are a critical step in Bayesian workflow, allowing you to assess whether your prior distributions generate realistic data **before** fitting the model. This is especially important in serodynamics because:
+
+- Different pathogens and assays operate on **very different measurement scales** (e.g., Shigella MFI vs. ELISA OD or titers)
+- Poorly scaled priors can generate unrealistic antibody trajectories
+- Prior predictive checks help identify issues **before** expensive MCMC sampling
+
+This vignette demonstrates how to perform prior predictive checks using the `serodynamics` package.
+
+## Load Required Libraries
+
+```{r load-packages}
+library(serodynamics)
+library(dplyr)
+set.seed(123)
+```
+
+## Basic Workflow
+
+The basic prior predictive check workflow involves three steps:
+
+1. **Simulate** antibody trajectories from priors using `simulate_prior_predictive()`
+2. **Summarize** the simulated data using `summarize_prior_predictive()`
+3. **Visualize** the trajectories using `plot_prior_predictive()`
+
+## Example: Typhoid Data
+
+Let's demonstrate with simulated typhoid data:
+
+### 1. Prepare Data and Priors
+
+First, prepare your data and specify priors:
+
+```{r prepare-data}
+# Simulate some case data
+raw_data <- serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 10)
+
+# Prepare data for JAGS
+prepped_data <- prep_data(raw_data)
+
+# Prepare default priors
+prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
+```
+
+### 2. Simulate from Priors
+
+Generate simulated data using only the prior distributions:
+
+```{r simulate}
+# Generate a single simulation
+sim_data <- simulate_prior_predictive(
+  prepped_data, 
+  prepped_priors,
+  seed = 456
+)
+
+# Or generate multiple simulations for better coverage
+sim_list <- simulate_prior_predictive(
+  prepped_data,
+  prepped_priors,
+  n_sims = 50,
+  seed = 456
+)
+```
+
+### 3. Summarize Simulated Data
+
+Check for potential issues with the priors:
+
+```{r summarize}
+# Summarize the simulations
+summary <- summarize_prior_predictive(sim_list, original_data = prepped_data)
+print(summary)
+```
+
+The summary includes:
+
+- **Validity check**: Counts of finite, non-finite, and negative values by biomarker
+- **Range summary**: Quantiles of simulated values (on log scale)
+- **Observed range**: Comparison with actual data (when provided)
+- **Issues detected**: Warnings about potential problems
+
+### 4. Visualize Prior Predictive Trajectories
+
+Plot the simulated trajectories to visually assess whether they look realistic:
+
+```{r plot-basic}
+# Plot simulated trajectories only
+plot_prior_predictive(sim_list)
+```
+
+#### Overlay with Observed Data
+
+Compare simulated trajectories with actual data to assess scale:
+
+```{r plot-with-observed}
+# Plot with observed data overlay
+plot_prior_predictive(
+  sim_list, 
+  original_data = prepped_data,
+  max_traj = 30  # Limit number of trajectories for clarity
+)
+```
+
+Blue lines show simulated trajectories, while black lines/points show the observed data. If the simulated trajectories have a very different scale or pattern than the observed data, your priors may need adjustment.
+
+#### Natural Scale vs. Log Scale
+
+By default, plots use the log scale (matching the model). You can also view on the natural scale:
+
+```{r plot-natural-scale}
+# Plot on natural scale
+plot_prior_predictive(
+  sim_list,
+  original_data = prepped_data,
+  log_scale = FALSE,
+  max_traj = 30
+)
+```
+
+## Custom Priors
+
+If the default priors don't generate realistic trajectories, you can adjust them:
+
+```{r custom-priors}
+# Define custom priors with different parameter values
+custom_priors <- prep_priors(
+  max_antigens = prepped_data$n_antigen_isos,
+  mu_hyp_param = c(1.0, 5.0, 0.5, -3.0, -2.0),      # Adjust means
+  prec_hyp_param = c(0.5, 0.0001, 0.5, 0.002, 0.5),  # Adjust precisions
+  omega_param = c(2.0, 30.0, 2.0, 8.0, 2.0),         # Adjust variability
+  wishdf_param = 15,
+  prec_logy_hyp_param = c(3.0, 0.8)
+)
+
+# Simulate with custom priors
+custom_sim <- simulate_prior_predictive(
+  prepped_data,
+  custom_priors,
+  n_sims = 50,
+  seed = 789
+)
+
+# Check results
+custom_summary <- summarize_prior_predictive(custom_sim, original_data = prepped_data)
+print(custom_summary)
+```
+
+```{r plot-custom}
+plot_prior_predictive(
+  custom_sim,
+  original_data = prepped_data,
+  max_traj = 30
+)
+```
+
+## Interpreting Results
+
+### Good Prior Predictive Check
+
+A well-specified prior should generate:
+
+- **Finite values**: All simulated antibody levels should be finite (no NaN, Inf, or -Inf)
+- **Reasonable scale**: Simulated ranges should roughly overlap with observed data ranges
+- **Realistic trajectories**: Curves should show plausible antibody kinetics (rise and decay)
+
+### Warning Signs
+
+Be concerned if you see:
+
+- **Non-finite values**: Indicates mathematical issues with parameter combinations
+- **Extreme values**: Very large or very small antibody levels that are biologically implausible
+- **Scale mismatch**: Simulated data ranges orders of magnitude different from observed data
+- **Unrealistic patterns**: Trajectories that don't follow expected antibody kinetics
+
+## Integration with Model Fitting
+
+Once you're satisfied with the prior predictive check, proceed to model fitting:
+
+```{r fit-model, eval = FALSE}
+# After confirming priors are reasonable, fit the model
+fitted_model <- run_mod(
+  data = raw_data,
+  file_mod = serodynamics_example("model.jags"),
+  nchain = 4,
+  nadapt = 1000,
+  nburn = 1000,
+  nmc = 1000,
+  niter = 2000,
+  # Use the custom priors you validated
+  mu_hyp_param = c(1.0, 5.0, 0.5, -3.0, -2.0),
+  prec_hyp_param = c(0.5, 0.0001, 0.5, 0.002, 0.5),
+  omega_param = c(2.0, 30.0, 2.0, 8.0, 2.0),
+  wishdf_param = 15,
+  prec_logy_hyp_param = c(3.0, 0.8)
+)
+```
+
+## Best Practices
+
+1. **Always run prior predictive checks** before fitting models, especially when:
+   - Working with a new pathogen or assay
+   - Using non-default priors
+   - Data are on an unfamiliar scale
+
+2. **Generate enough simulations** (50-100) to see the full range of prior-implied trajectories
+
+3. **Compare with observed data** to ensure priors are on the right scale
+
+4. **Iterate on priors** if simulations show problems, then re-run the prior predictive check
+
+5. **Document your choices** about why you selected particular prior values
+
+## Summary
+
+Prior predictive checks are a simple but powerful tool for:
+
+- Validating that priors generate realistic antibody trajectories
+- Identifying scale mismatches before expensive MCMC fitting
+- Building intuition about how priors translate to observable data
+- Catching mathematical issues (e.g., negative values in log functions)
+
+By incorporating prior predictive checks into your workflow, you can avoid many common pitfalls in Bayesian modeling and ensure more robust inference.

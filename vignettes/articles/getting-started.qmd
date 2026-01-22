@@ -119,6 +119,35 @@ autoplot(simulated_data)
 
 ## Running the Bayesian Model
 
+### Prior Predictive Checks (Recommended)
+
+**Before fitting the model**, it's recommended to perform a prior predictive check to ensure your priors generate realistic antibody trajectories:
+
+```{r}
+#| label: prior-predictive-check
+# Prepare data and priors
+prepped_data <- prep_data(simulated_data)
+prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
+
+# Simulate from priors
+sim_prior <- simulate_prior_predictive(
+  prepped_data, 
+  prepped_priors, 
+  n_sims = 30,
+  seed = 456
+)
+
+# Summarize and check for issues
+summarize_prior_predictive(sim_prior, original_data = prepped_data)
+
+# Visualize prior predictive trajectories
+plot_prior_predictive(sim_prior, original_data = prepped_data)
+```
+
+If the prior predictive check shows issues (e.g., unrealistic scales, non-finite values), adjust the priors using `prep_priors()` with custom parameters before proceeding. See `vignette("prior-predictive-checks")` for detailed guidance.
+
+### Fitting the Model
+
 The main function `run_mod()` fits a Bayesian MCMC model to estimate antibody dynamic curve parameters:
 
 - `y0`: Baseline antibody concentration

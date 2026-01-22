@@ -26,6 +26,11 @@ reference:
   contents:
   - prep_priors
   - initsfunction
+- title: Prior predictive checks
+  contents:
+  - simulate_prior_predictive
+  - summarize_prior_predictive
+  - plot_prior_predictive
 - title: Model seroreponse
   contents:
   - run_mod
@@ -53,6 +58,7 @@ articles:
   navbar: ~
   contents:
   - articles/getting-started
+  - articles/prior-predictive-checks
 
 - title: Developer Notes
   contents:

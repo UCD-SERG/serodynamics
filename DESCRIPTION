@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9047
+Version: 0.0.0.9048
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -22,6 +22,7 @@ Imports:
     dplyr,
     ggmcmc (>= 1.5.1.2),
     ggplot2,
+    MASS,
     purrr,
     rlang,
     runjags,
