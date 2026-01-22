@@ -60,14 +60,14 @@
 #'
 #' @example inst/examples/examples-compute_residual_metrics.R
 compute_residual_metrics <- function(model,
-                                      dataset,
-                                      ids,
-                                      antigen_iso,
-                                      scale = c("original", "log"),
-                                      summary_level = c("id_antigen",
-                                                        "pointwise",
-                                                        "antigen",
-                                                        "overall")) {
+                                     dataset,
+                                     ids,
+                                     antigen_iso,
+                                     scale = c("original", "log"),
+                                     summary_level = c("id_antigen",
+                                                       "pointwise",
+                                                       "antigen",
+                                                       "overall")) {
   
   # Validate arguments
   scale <- match.arg(scale)
