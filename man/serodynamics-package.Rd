@@ -4,7 +4,7 @@
 \name{serodynamics-package}
 \alias{serodynamics}
 \alias{serodynamics-package}
-\title{serodynamics: What the Package Does (One Line, Title Case)}
+\title{serodynamics: Modeling Longitudinal Antibody Responses to Infection}
 \description{
 Modeling longitudinal immune seroresponses to pathogens.
 }
