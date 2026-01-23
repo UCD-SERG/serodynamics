@@ -18,6 +18,7 @@ plot_predicted_curve(
   alpha_samples = 0.3,
   xlim = NULL,
   ylab = NULL,
+  assay = NULL,
   facet_by_id = length(ids) > 1,
   ncol = NULL
 )
@@ -66,6 +67,15 @@ limits.}
 \item{ylab}{(Optional) A string for the y-axis label. If \code{NULL} (default),
 the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 based on the \code{log_y} argument.}
+
+\item{assay}{(Optional) A string specifying the assay type to determine the
+y-axis label. If provided, overrides automatic label inference.
+Supported values (case-insensitive): \code{"ELISA_OD"}, \code{"Kinetic_ELISA"},
+\code{"multiplex-bg"}. If \code{NULL} (default), the function attempts to infer the
+assay type from the \code{dataset} (checking columns named \code{assay}, \code{assay_type},
+or \code{assay_units}). If no assay information is found, falls back to the
+existing default label. If an unsupported assay type is provided, a warning
+is issued and the default label is used.}
 
 \item{facet_by_id}{\link{logical}; if \link{TRUE}, facets the plot by 'id'.
 Defaults to \link{TRUE} when multiple IDs are provided.}
@@ -138,4 +148,44 @@ p4 <- plot_predicted_curve(
   facet_by_id     = TRUE
 )
 print(p4)
+
+# Example with assay-specific Y-axis labels:
+# Using ELISA_OD assay type
+p5 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = FALSE,
+  show_all_curves    = FALSE,
+  assay              = "ELISA_OD"
+)
+print(p5)
+
+# Using Kinetic_ELISA assay type with log scale
+p6 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = TRUE,
+  show_all_curves    = FALSE,
+  assay              = "Kinetic_ELISA"
+)
+print(p6)
+
+# Using multiplex-bg assay type
+p7 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = FALSE,
+  show_all_curves    = FALSE,
+  assay              = "multiplex-bg"
+)
+print(p7)
 }

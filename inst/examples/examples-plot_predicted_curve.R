@@ -51,3 +51,43 @@ p4 <- plot_predicted_curve(
   facet_by_id     = TRUE
 )
 print(p4)
+
+# Example with assay-specific Y-axis labels:
+# Using ELISA_OD assay type
+p5 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = FALSE,
+  show_all_curves    = FALSE,
+  assay              = "ELISA_OD"
+)
+print(p5)
+
+# Using Kinetic_ELISA assay type with log scale
+p6 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = TRUE,
+  show_all_curves    = FALSE,
+  assay              = "Kinetic_ELISA"
+)
+print(p6)
+
+# Using multiplex-bg assay type
+p7 <- plot_predicted_curve(
+  model              = sees_model,
+  dataset            = sees_data,
+  id                 = "sees_npl_128",
+  antigen_iso        = "HlyE_IgA",
+  show_quantiles     = TRUE,
+  log_y              = FALSE,
+  show_all_curves    = FALSE,
+  assay              = "multiplex-bg"
+)
+print(p7)
