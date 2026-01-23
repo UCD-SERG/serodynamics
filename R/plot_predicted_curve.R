@@ -36,6 +36,14 @@
 #' @param ylab (Optional) A string for the y-axis label. If `NULL` (default), 
 #' the label is automatically set to "ELISA units" or "ELISA units (log scale)"
 #' based on the `log_y` argument.
+#' @param assay (Optional) A string specifying the assay type to determine the 
+#' y-axis label. If provided, overrides automatic label inference. 
+#' Supported values (case-insensitive): `"ELISA_OD"`, `"Kinetic_ELISA"`, 
+#' `"multiplex-bg"`. If `NULL` (default), the function attempts to infer the 
+#' assay type from the `dataset` (checking columns named `assay`, `assay_type`, 
+#' or `assay_units`). If no assay information is found, falls back to the 
+#' existing default label. If an unsupported assay type is provided, a warning 
+#' is issued and the default label is used.
 #' @param facet_by_id [logical]; if [TRUE], facets the plot by 'id'. 
 #' Defaults to [TRUE] when multiple IDs are provided.
 #' @param ncol [integer]; number of columns for faceting.
@@ -58,8 +66,64 @@ plot_predicted_curve <- function(model,
                                  alpha_samples = 0.3,
                                  xlim = NULL,
                                  ylab = NULL,
+                                 assay = NULL,
                                  facet_by_id = length(ids) > 1,
                                  ncol = NULL) {
+  
+  # Helper function to get assay-specific Y-axis label
+  get_assay_label <- function(assay_type, log_scale = FALSE) {
+    # Normalize to lowercase for case-insensitive matching
+    assay_lower <- tolower(as.character(assay_type))
+    
+    # Map assay types to labels
+    label <- switch(assay_lower,
+      "elisa_od" = "Optical density (OD)",
+      "kinetic_elisa" = "Kinetic ELISA signal",
+      "multiplex-bg" = "MFI (background-subtracted)",
+      NULL
+    )
+    
+    if (is.null(label)) {
+      # Unsupported assay type
+      cli::cli_warn(c(
+        "Unsupported assay type: {.val {assay_type}}",
+        "i" = "Using default label instead.",
+        "i" = "Supported assay types: {.val ELISA_OD}, {.val Kinetic_ELISA}, 
+        {.val multiplex-bg}"
+      ))
+      # Return NULL to trigger default behavior
+      return(NULL)
+    }
+    
+    # Append log scale notation if needed
+    if (log_scale && !is.null(label)) {
+      label <- paste0(label, " (log scale)")
+    }
+    
+    return(label)
+  }
+  
+  # Helper function to infer assay from dataset
+  infer_assay_from_dataset <- function(data) {
+    if (is.null(data)) {
+      return(NULL)
+    }
+    
+    # Check for common column names that might contain assay information
+    assay_cols <- c("assay", "assay_type", "assay_units")
+    
+    for (col in assay_cols) {
+      if (col %in% names(data)) {
+        # Get unique values (should typically be one value)
+        assay_values <- unique(data[[col]])
+        if (length(assay_values) > 0 && !is.na(assay_values[1])) {
+          return(assay_values[1])
+        }
+      }
+    }
+    
+    return(NULL)
+  }
   
   # Filter to the subject(s) & antigen of interest:
   sr_model_sub <- model |>
@@ -120,10 +184,24 @@ plot_predicted_curve <- function(model,
   
   # Determine Y-axis label
   if (is.null(ylab)) {
-    if (log_y) {
-      ylab <- "ELISA units (log scale)"
-    } else {
-      ylab <- "ELISA units"
+    # Try to use provided assay or infer from dataset
+    assay_to_use <- assay
+    if (is.null(assay_to_use)) {
+      assay_to_use <- infer_assay_from_dataset(dataset)
+    }
+    
+    # If we have an assay type, try to get assay-specific label
+    if (!is.null(assay_to_use)) {
+      ylab <- get_assay_label(assay_to_use, log_scale = log_y)
+    }
+    
+    # Fall back to default if no assay-specific label was found
+    if (is.null(ylab)) {
+      if (log_y) {
+        ylab <- "ELISA units (log scale)"
+      } else {
+        ylab <- "ELISA units"
+      }
     }
   }
   
