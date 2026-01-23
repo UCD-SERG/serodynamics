@@ -88,8 +88,10 @@ plot_predicted_curve <- function(model,
       cli::cli_warn(c(
         "Unsupported assay type: {.val {assay_type}}",
         "i" = "Using default label instead.",
-        "i" = "Supported assay types: {.val ELISA_OD}, {.val Kinetic_ELISA}, 
-        {.val multiplex-bg}"
+        "i" = paste(
+          "Supported assay types: {.val ELISA_OD}, {.val Kinetic_ELISA},",
+          "{.val multiplex-bg}"
+        )
       ))
       # Return NULL to trigger default behavior
       return(NULL)
