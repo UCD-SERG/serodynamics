@@ -177,6 +177,20 @@ plot_predicted_curve(
 )
 ```
 
+You can also customize the Y-axis label by specifying the assay type. The function supports assay-specific labels for common assay types:
+
+```{r}
+#| label: plot-curves-assay
+#| eval: false
+# Example with assay-specific Y-axis label
+plot_predicted_curve(
+  fitted_model,
+  ids = serocalculator::ids(simulated_data)[1],
+  antigen_iso = simulated_data$antigen_iso[1],
+  assay = "ELISA_OD"  # Options: "ELISA_OD", "Kinetic_ELISA", "multiplex-bg"
+)
+```
+
 ## Post-Processing Results
 
 Extract and summarize the posterior estimates:
