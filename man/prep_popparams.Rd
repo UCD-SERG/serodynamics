@@ -10,11 +10,12 @@ prep_popparams(x)
 \item{x}{A \link{data.frame} with a \code{Subject} variable.}
 }
 \value{
-A filtered \link{data.frame} with renamed \code{Subject} variable.
+A filtered \link{data.frame} with the \code{Subject} variable renamed to
+\code{Population_Parameter}.
 }
 \description{
 \code{prep_popparams} filters a \link{data.frame} to only include population
-parameters and renames the \code{Subject} variable as \code{Population_Parameters}.
+parameters and renames the \code{Subject} variable as \code{Population_Parameter}.
 }
 \author{
 Sam Schildhauer

@@ -5,7 +5,7 @@
 #'  for all population parameters.
 #' @param data A [dplyr::tbl_df()] output object from run_mod with mcmc syntax.
 #' @returns A [dplyr::tbl_df()] that
-#' contains MCMC samples from the joint posterior distribution of the model 
+#' contains MCMC samples from the joint posterior distribution of the model
 #' with unpacked parameters, isotypes, and subjects.
 #' @keywords internal
 unpack_jags <- function(data) {
@@ -62,7 +62,10 @@ unpack_jags <- function(data) {
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
-      NA
+      paste0(
+        param_recode(gsub(pattern, "\\3", param)), ", ",
+        param_recode(gsub(pattern, "\\4", param))
+  )
     }
   )
 
