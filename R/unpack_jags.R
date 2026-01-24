@@ -9,11 +9,16 @@
 #' with unpacked parameters, isotypes, and subjects.
 #' @keywords internal
 unpack_jags <- function(data) {
+  
+  # Convert Parameter column to character if it's a factor (from ggmcmc::ggs)
+  if (is.factor(data$Parameter)) {
+    data$Parameter <- as.character(data$Parameter)
+  }
 
   unpack_with_pattern <- function(data, filter_pattern, regex_pattern,
                                   subject_repl, subnum_repl, param_fun) {
     data |>
-      dplyr::filter(grepl(filter_pattern, .data$Parameter)) |>
+      dplyr::filter(startsWith(.data$Parameter, paste0(filter_pattern, "["))) |>
       dplyr::mutate(
         Subject = gsub(regex_pattern, subject_repl, .data$Parameter),
         Subnum = gsub(regex_pattern, subnum_repl, .data$Parameter),
