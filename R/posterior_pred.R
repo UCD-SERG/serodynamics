@@ -21,7 +21,7 @@ posterior_pred <- function(data = NA,
                            ...) {
 
   # First attaching prec.logy to the modeled data 
-  mod_prec_logy <- attributes(data)$population_param |>
+  mod_prec_logy <- attributes(data)$population_params |>
     dplyr::filter(.data$Population_params == "prec.logy") |>
     select(.data$Iteration, .data$Chain, .data$value, .data$Iso_type, 
            .data$Stratification) |>
