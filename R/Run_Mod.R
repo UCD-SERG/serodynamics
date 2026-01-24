@@ -173,9 +173,18 @@ run_mod <- function(data,
                                    by = "Subject") |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject_mcmc" = "attr.longdata...ids..")) |>
+      # Subject handling:
+      # * For individual-level parameters, the left join above finds a row in
+      #   attr(longdata, "ids"), so Subject_mcmc contains the subject ID.
+      # * For population-level parameters (e.g., mu.par, prec.par, prec.logy),
+      #   there is no matching ID, so Subject_mcmc is NA. In that case we
+      #   intentionally keep the original Subject value from unpack_jags,
+      #   which holds the parameter name and serves as the identifier.
       dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
                                           .data$Subject, 
                                           .data$Subject_mcmc)) |>
+      # Drop the temporary Subject (now only used as a fallback for population
+      # parameters) and rename Subject_mcmc back to Subject for downstream use.
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
