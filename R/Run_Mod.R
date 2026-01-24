@@ -183,6 +183,13 @@ run_mod <- function(data,
       dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
                                           .data$Subject, 
                                           .data$Subject_mcmc)) |>
+      # At this point, jags_unpacked contains:
+      # * Parameter: original JAGS parameter names (e.g., "y0[1,2]")
+      # * Param: cleaned parameter names used elsewhere in the package.
+      # We drop the original JAGS-style Parameter column and keep the
+      # cleaned names, then rename Param back to Parameter so that all
+      # downstream code consistently uses a single "Parameter" column
+      # containing cleaned parameter names.
       # Drop the temporary Subject (now only used as a fallback for population
       # parameters) and rename Subject_mcmc back to Subject for downstream use.
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
