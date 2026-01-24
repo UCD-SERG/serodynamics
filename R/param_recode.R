@@ -12,12 +12,5 @@ param_recode <- function(x) {
     "2" ~ "y1",
     "3" ~ "t1",
     "4" ~ "alpha",
-    "5" ~ "shape",
-    .default = {
-      invalid <- unique(x[!x %in% c("1", "2", "3", "4", "5")])
-      cli::cli_abort(
-        "param_recode(): invalid parameter index{?es}: {invalid}."
-      )
-    }
-  )
+    "5" ~ "shape")
 }
