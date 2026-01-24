@@ -63,8 +63,7 @@ unpack_jags <- function(data) {
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
       paste0(
-        param_recode(gsub(pattern, "\\3", param)), ", ",
-        param_recode(gsub(pattern, "\\4", param))
+        param_recode(gsub(pattern, "\\2", param))
   )
     }
   )
@@ -74,7 +73,7 @@ unpack_jags <- function(data) {
     dplyr::mutate(
       Subject = gsub(regex_2idx, "\\2", .data$Parameter),
       Subnum = gsub(regex_2idx, "\\3", .data$Parameter),
-      Param = param_recode(gsub(regex_2idx, "\\1", .data$Parameter))
+      Param = gsub(regex_2idx, "\\1", .data$Parameter)
     ) |> 
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
