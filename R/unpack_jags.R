@@ -22,16 +22,17 @@ unpack_jags <- function(data) {
   }
 
   # Regular expressions for unpacking
-  regex_2idx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]"          # e.g. x[1,2]
-  regex_3idx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]"  # e.g. x[1,2,3]
-  regex_1idx <- "([[:alnum:].]+)\\[([0-9]+)\\]"                    # e.g. x[1]
+  regex_twoidx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]"       # e.g. x[1,2]
+  regex_threeidx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]"
+  # e.g. x[1,2,3]
+  regex_oneidx <- "([[:alnum:].]+)\\[([0-9]+)\\]"                 # e.g. x[1]
 
   # Unpacking mu.par
   # Separating population parameters from the rest of the data
   jags_mupar <- unpack_with_pattern(
     data = data,
     filter_pattern = "mu.par",
-    regex_pattern = regex_2idx,
+    regex_pattern = regex_twoidx,
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
@@ -43,7 +44,7 @@ unpack_jags <- function(data) {
   jags_precpar <- unpack_with_pattern(
     data = data,
     filter_pattern = "prec.par",
-    regex_pattern = regex_3idx,
+    regex_pattern = regex_threeidx,
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
@@ -58,22 +59,22 @@ unpack_jags <- function(data) {
   jags_preclogy <- unpack_with_pattern(
     data = data,
     filter_pattern = "prec.logy",
-    regex_pattern = regex_1idx,
+    regex_pattern = regex_oneidx,
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
       paste0(
         param_recode(gsub(pattern, "\\2", param))
-  )
+      )
     }
   )
 
   # Working with jags unpacked ggs outputs to clarify parameter and subject
   jags_unpack_params <- data |>
     dplyr::mutate(
-      Subject = gsub(regex_2idx, "\\2", .data$Parameter),
-      Subnum = gsub(regex_2idx, "\\3", .data$Parameter),
-      Param = gsub(regex_2idx, "\\1", .data$Parameter)
+      Subject = gsub(regex_twoidx, "\\2", .data$Parameter),
+      Subnum = gsub(regex_twoidx, "\\3", .data$Parameter),
+      Param = gsub(regex_twoidx, "\\1", .data$Parameter)
     ) |> 
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
