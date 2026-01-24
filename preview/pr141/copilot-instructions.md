@@ -18,12 +18,102 @@ peak, shape parameter, and decay rate.
 
 ## Critical Setup Requirements
 
+### Copilot Setup Workflow (Automatic Environment Configuration)
+
+The repository includes a
+**`.github/workflows/copilot-setup-steps.yml`** workflow that
+automatically configures the GitHub Copilot coding agent’s environment
+with all required dependencies. This workflow runs automatically when
+Copilot starts working on a task, ensuring a consistent and properly
+configured development environment.
+
+#### What the Workflow Does
+
+The copilot-setup-steps.yml workflow:
+
+1.  **Installs system dependencies**: All required Ubuntu packages for R
+    package development (libcurl, libssl, libxml2, graphics libraries,
+    etc.)
+2.  **Installs JAGS 4.3.1**: The required Bayesian MCMC system library
+3.  **Sets up R (\>= 4.1.0)**: Installs the R release version that meets
+    the package’s minimum requirement
+4.  **Installs R package dependencies**: All Imports, Suggests, and
+    development dependencies from DESCRIPTION
+5.  **Verifies installation**: Runs comprehensive checks to ensure JAGS
+    and R are properly configured
+
+#### When It Runs
+
+The workflow runs in the following scenarios:
+
+- **Automatically for Copilot**: When the GitHub Copilot coding agent
+  starts working on a task, it uses this workflow to prepare the
+  environment
+- **On workflow changes**: When
+  `.github/workflows/copilot-setup-steps.yml` is modified (via push or
+  pull request)
+- **Manual testing**: Can be triggered manually from the repository’s
+  “Actions” tab using workflow_dispatch
+
+#### Integration with CI Workflows
+
+The copilot-setup-steps.yml workflow complements but does not replace
+the CI workflows:
+
+- **Purpose**: Configures the Copilot agent’s environment for
+  development work, not for CI testing
+- **Scope**: Runs on ubuntu-latest only, while CI workflows test on
+  multiple platforms (Ubuntu, macOS, Windows) and R versions (release,
+  devel, oldrel-1)
+- **Alignment**: Uses the same JAGS installation and R setup approach as
+  the R-CMD-check.yaml workflow, ensuring consistency
+- **Timeout**: Limited to 55 minutes (Copilot maximum is 59 minutes)
+
+#### Verification Steps
+
+The workflow includes detailed verification logging:
+
+- **JAGS verification**: Checks system JAGS command availability, R
+  interface package versions (rjags, runjags), and runs
+  [`runjags::testjags()`](https://rdrr.io/pkg/runjags/man/testjags.html)
+- **R version check**: Ensures R \>= 4.1.0 requirement is met
+- **Package verification**: Lists key installed packages (devtools,
+  rjags, runjags, rcmdcheck, lintr, spelling, testthat)
+
+#### Customization
+
+If you need to modify the Copilot environment setup:
+
+1.  Edit `.github/workflows/copilot-setup-steps.yml`
+2.  Test changes by pushing to a branch or using workflow_dispatch
+3.  Ensure the job name remains `copilot-setup-steps` (required by
+    Copilot)
+4.  Keep timeout under 59 minutes
+5.  Update this documentation to reflect any significant changes
+
 ### Quick Start with Docker (RECOMMENDED)
 
-**For faster setup, consider using the rocker/verse Docker image** which
-includes R, RStudio, tidyverse, TeX, and many common R packages
-pre-installed. This can significantly speed up Copilot sessions by
-avoiding lengthy installation steps.
+**The easiest way to get started is to use the provided dev container
+configuration**, which automatically sets up R, JAGS, and all
+dependencies in a persistent environment.
+
+**Benefits:** - **Cached setup**: Container persists between Copilot
+sessions - no need to reinstall everything - **Zero manual setup**:
+Everything is pre-configured and ready to use - **Consistent
+environment**: Same R version, JAGS, and system libraries every time
+
+**How to use:** 1. **GitHub Copilot Workspace**: Automatically detects
+and uses the devcontainer 2. **VS Code**: Install “Dev Containers”
+extension, then “Reopen in Container” 3. **GitHub Codespaces**:
+Automatically uses the devcontainer configuration
+
+See `.devcontainer/README.md` for detailed documentation.
+
+### Alternative: Quick Start with Docker
+
+**If you prefer manual Docker setup**, you can use the rocker/verse
+Docker image which includes R, RStudio, tidyverse, TeX, and many common
+R packages pre-installed.
 
 To use Docker:
 
@@ -53,8 +143,10 @@ docker rm serodynamics-dev
 **Note**: You will still need to install JAGS inside the Docker
 container (see JAGS Installation section below).
 
-If Docker is not available or you prefer a native installation, follow
-the manual installation instructions below.
+### Manual Installation (if not using devcontainer or Docker)
+
+If the devcontainer or Docker is not available or you prefer a native
+installation, follow the manual installation instructions below.
 
 ### R Installation and Development Dependencies (REQUIRED)
 
@@ -355,6 +447,12 @@ The following workflows run on every PR. **All must pass** for merge:
 9.  **pkgdown.yaml**: Builds pkgdown website on PR (preview), tags, and
     main branch pushes. Requires Quarto setup. (~5-7 min)
 
+10. **copilot-setup-steps.yml**: Configures the GitHub Copilot coding
+    agent’s environment automatically. Runs when Copilot starts work,
+    when the workflow file changes, or via manual dispatch. Not a
+    required check for PR merges. See “Copilot Setup Workflow” section
+    for details. (~5-10 min)
+
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs: - `/document` -
@@ -492,7 +590,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -548,7 +646,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -582,13 +680,25 @@ expect_false(has_missing_values(complete_data))
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
-- **Write tidy code**: Keep code clean, readable, and well-organized.
-  Follow consistent formatting, use meaningful variable names, and
-  maintain logical structure
 - **Avoid code duplication**: Don’t copy-paste substantial code chunks.
   Instead, decompose reusable logic into well-named helper functions.
   This improves maintainability, testability, and reduces the risk of
-  inconsistent behavior across similar code paths
+  inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix
+  (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown
+  comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base
+  R functions where available (e.g.,
+  [`sessioninfo::session_info()`](https://sessioninfo.r-lib.org/reference/session_info.html)
+  instead of
+  [`sessionInfo()`](https://rdrr.io/r/utils/sessionInfo.html),
+  [`tibble::tibble()`](https://tibble.tidyverse.org/reference/tibble.html)
+  instead of [`data.frame()`](https://rdrr.io/r/base/data.frame.html),
+  [`readr::read_csv()`](https://readr.tidyverse.org/reference/read_delim.html)
+  instead of [`read.csv()`](https://rdrr.io/r/utils/read.table.html))
+- **Write tidy code**: Keep code clean, readable, and well-organized.
+  Follow consistent formatting, use meaningful variable names, and
+  maintain logical structure
 
 ## Package Development Commands Summary
 
@@ -629,6 +739,20 @@ structure, workflows, and configuration files. When making changes:
     review
 13. **ALWAYS** make sure `devtools::spell_check()` passes before
     requesting PR review
+14. **ALWAYS** run
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+    before requesting PR review to ensure the pkgdown site builds
+    successfully
+15. **ALWAYS** verify Quarto documents render successfully locally -
+    don’t rely on CI workflows. For vignettes and articles, test
+    rendering with `quarto render path/to/file.qmd` or by building the
+    full site with
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+16. When
+    [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
+    has errors related to Quarto, use
+    `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)`
+    to debug and see detailed error messages
 
 Only search for additional information if these instructions are
 incomplete or incorrect for your specific task.

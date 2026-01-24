@@ -26,7 +26,7 @@ sim_case_data(
 - curve_params:
 
   a `curve_params` object from
-  [serocalculator::as_curve_params](https://ucd-serg.github.io/serocalculator/reference/as_curve_params.html),
+  [serocalculator::as_curve_params](https://ucd-serg.github.io/serocalculator/latest-tag/reference/as_curve_params.html),
   assumed to be unstratified
 
 - antigen_isos:

@@ -3,7 +3,7 @@
 `prep_popparams` filters a
 [data.frame](https://rdrr.io/r/base/data.frame.html) to only include
 population parameters and renames the `Subject` variable as
-`Population_Parameters`.
+`Population_Parameter`.
 
 ## Usage
 
@@ -20,8 +20,8 @@ prep_popparams(x)
 
 ## Value
 
-A filtered [data.frame](https://rdrr.io/r/base/data.frame.html) with
-rename `Subject` variable.
+A filtered [data.frame](https://rdrr.io/r/base/data.frame.html) with the
+`Subject` variable renamed to `Population_Parameter`.
 
 ## Author
 
