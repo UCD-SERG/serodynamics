@@ -127,8 +127,10 @@ following modeled population parameters:
 \itemize{
 \item \code{mu.par} = The population means of the host-specific model parameters
 (on logarithmic scales).
-\item \code{prec.par} = The population covariance between the hyperparameters.
-\item \code{prec.logy} = The population variance among each antigen/isotype.
+\item \code{prec.par} = The population precision matrix of the hyperparameters
+(with diagonal elements equal to inverse variances).
+\item \code{prec.logy} = A vector of population variances, one per antigen/isotype
+combination.
 }
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{

@@ -5,54 +5,84 @@
 #'  for all population parameters.
 #' @param data A [dplyr::tbl_df()] output object from run_mod with mcmc syntax.
 #' @returns A [dplyr::tbl_df()] that
-#' contains MCMC samples from the joint posterior distribution of the model 
+#' contains MCMC samples from the joint posterior distribution of the model
 #' with unpacked parameters, isotypes, and subjects.
 #' @keywords internal
 unpack_jags <- function(data) {
 
+  unpack_with_pattern <- function(data, filter_pattern, regex_pattern,
+                                  subject_repl, subnum_repl, param_fun) {
+    data |>
+      dplyr::filter(grepl(filter_pattern, .data$Parameter)) |>
+      dplyr::mutate(
+        Subject = gsub(regex_pattern, subject_repl, .data$Parameter),
+        Subnum = gsub(regex_pattern, subnum_repl, .data$Parameter),
+        Param = param_fun(.data$Parameter, regex_pattern)
+      )
+  }
+
+  # Regular expressions for unpacking
+  regex_twoidx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]"       # e.g. x[1,2]
+  regex_threeidx <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]"
+  # e.g. x[1,2,3]
+  regex_oneidx <- "([[:alnum:].]+)\\[([0-9]+)\\]"                 # e.g. x[1]
+
   # Unpacking mu.par
   # Separating population parameters from the rest of the data
-  regex <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+)\\]" # For unpacking
-  jags_mupar <- data |>
-    dplyr::filter(grepl("mu.par", .data$Parameter)) |>
-    dplyr::mutate(
-      Subject = gsub(regex, "\\1", .data$Parameter),
-      Subnum = gsub(regex, "\\2", .data$Parameter),
-      Param = param_recode(gsub(regex, "\\3", .data$Parameter))
-    )
+  jags_mupar <- unpack_with_pattern(
+    data = data,
+    filter_pattern = "mu.par",
+    regex_pattern = regex_twoidx,
+    subject_repl = "\\1",
+    subnum_repl = "\\2",
+    param_fun = function(param, pattern) {
+      param_recode(gsub(pattern, "\\3", param))
+    }
+  )
+
   # Unpacking prec.par
-  regex2 <- "([[:alnum:].]+)\\[([0-9]+),([0-9]+),([0-9]+)\\]" # For unpacking
-  jags_precpar <- data |>
-    dplyr::filter(grepl("prec.par", .data$Parameter)) |>
-    dplyr::mutate(
-      Subject = gsub(regex2, "\\1", .data$Parameter),
-      Subnum = gsub(regex2, "\\2", .data$Parameter),
-      Param = paste0(param_recode(gsub(regex2, "\\3", .data$Parameter)), ", ",
-                     param_recode(gsub(regex2, "\\4", .data$Parameter)))
-    ) 
-    
-  # Unpacking preclogy
-  regex3 <- "([[:alnum:].]+)\\[([0-9]+)\\]" # For unpacking
-  jags_preclogy <- data |>
-    dplyr::filter(grepl("prec.logy", .data$Parameter)) |>
-    dplyr::mutate(
-      Subject = gsub(regex3, "\\1", .data$Parameter),
-      Subnum = gsub(regex3, "\\2", .data$Parameter),
-      Param = NA
-    )
+  jags_precpar <- unpack_with_pattern(
+    data = data,
+    filter_pattern = "prec.par",
+    regex_pattern = regex_threeidx,
+    subject_repl = "\\1",
+    subnum_repl = "\\2",
+    param_fun = function(param, pattern) {
+      paste0(
+        param_recode(gsub(pattern, "\\3", param)), ", ",
+        param_recode(gsub(pattern, "\\4", param))
+      )
+    }
+  )
+
+  # Unpacking prec.logy
+  jags_preclogy <- unpack_with_pattern(
+    data = data,
+    filter_pattern = "prec.logy",
+    regex_pattern = regex_oneidx,
+    subject_repl = "\\1",
+    subnum_repl = "\\2",
+    param_fun = function(param, pattern) {
+      param_recode(gsub(pattern, "\\2", param))
+    }
+  )
 
   # Working with jags unpacked ggs outputs to clarify parameter and subject
   jags_unpack_params <- data |>
     dplyr::mutate(
-      Subject = gsub(regex, "\\2", .data$Parameter),
-      Subnum = gsub(regex, "\\3", .data$Parameter),
-      Param = param_recode(gsub(regex, "\\1", .data$Parameter))
+      Subject = gsub(regex_twoidx, "\\2", .data$Parameter),
+      Subnum = gsub(regex_twoidx, "\\3", .data$Parameter),
+      Param = gsub(regex_twoidx, "\\1", .data$Parameter)
     ) |> 
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
   # Putting data frame together
-  jags_unpack_bind <- rbind(jags_unpack_params, jags_mupar, jags_precpar,
-                            jags_preclogy)
+  jags_unpack_bind <- dplyr::bind_rows(
+    jags_unpack_params,
+    jags_mupar,
+    jags_precpar,
+    jags_preclogy
+  )
 
   return(jags_unpack_bind)
 }

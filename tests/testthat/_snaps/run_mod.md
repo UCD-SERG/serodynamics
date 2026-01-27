@@ -9,7 +9,7 @@
       [5] "Stratification" "Subject"        "value"         
       
       $class
-      [1] "sr_model"   "data.frame"
+      [1] "sr_model"   "tbl_df"     "tbl"        "data.frame"
       
       $nChains
       [1] 2
@@ -25,6 +25,9 @@
       
       $nThin
       [1] 1
+      
+      $description
+      [1] "jags_post[[\"mcmc\"]]"
       
       $priors
       $priors$mu_hyp_param
@@ -55,7 +58,7 @@
       [5] "Stratification" "Subject"        "value"         
       
       $class
-      [1] "sr_model"   "data.frame"
+      [1] "sr_model"   "tbl_df"     "tbl"        "data.frame"
       
       $nChains
       [1] 2
@@ -71,6 +74,9 @@
       
       $nThin
       [1] 1
+      
+      $description
+      [1] "jags_post[[\"mcmc\"]]"
       
       $priors
       $priors$mu_hyp_param
@@ -101,7 +107,7 @@
       [5] "Stratification" "Subject"        "value"         
       
       $class
-      [1] "sr_model"   "data.frame"
+      [1] "sr_model"   "tbl_df"     "tbl"        "data.frame"
       
       $nChains
       [1] 2
@@ -117,6 +123,9 @@
       
       $nThin
       [1] 1
+      
+      $description
+      [1] "jags_post[[\"mcmc\"]]"
       
       $priors
       $priors$mu_hyp_param
@@ -147,7 +156,7 @@
       [5] "Stratification" "Subject"        "value"         
       
       $class
-      [1] "sr_model"   "data.frame"
+      [1] "sr_model"   "tbl_df"     "tbl"        "data.frame"
       
       $nChains
       [1] 2
@@ -163,6 +172,9 @@
       
       $nThin
       [1] 1
+      
+      $description
+      [1] "jags_post[[\"mcmc\"]]"
       
       $priors
       $priors$mu_hyp_param
@@ -193,7 +205,7 @@
       [5] "Stratification" "Subject"        "value"         
       
       $class
-      [1] "sr_model"   "data.frame"
+      [1] "sr_model"   "tbl_df"     "tbl"        "data.frame"
       
       $nChains
       [1] 2
@@ -209,6 +221,9 @@
       
       $nThin
       [1] 1
+      
+      $description
+      [1] "jags_post[[\"mcmc\"]]"
       
       $priors
       $priors$mu_hyp_param

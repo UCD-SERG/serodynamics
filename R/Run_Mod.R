@@ -55,7 +55,8 @@
 #'   following modeled population parameters:
 #'     - `mu.par` = The population means of the host-specific model parameters 
 #'     (on logarithmic scales).
-#'     - `prec.par` = The population covariance between the hyperparameters.  
+#'     - `prec.par` = The population precision matrix of the hyperparameters
+#'     (with diagonal elements equal to inverse variances).  
 #'     - `prec.logy` = The population variance among each antigen/isotype.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
@@ -172,9 +173,25 @@ run_mod <- function(data,
                                    by = "Subject") |>
       dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
                       "Subject_mcmc" = "attr.longdata...ids..")) |>
+      # Subject handling:
+      # * For individual-level parameters, the left join above finds a row in
+      #   attr(longdata, "ids"), so Subject_mcmc contains the subject ID.
+      # * For population-level parameters (e.g., mu.par, prec.par, prec.logy),
+      #   there is no matching ID, so Subject_mcmc is NA. In that case we
+      #   intentionally keep the original Subject value from unpack_jags,
+      #   which holds the parameter name and serves as the identifier.
       dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
                                           .data$Subject, 
                                           .data$Subject_mcmc)) |>
+      # At this point, jags_unpacked contains:
+      # * Parameter: original JAGS parameter names (e.g., "y0[1,2]")
+      # * Param: cleaned parameter names used elsewhere in the package.
+      # We drop the original JAGS-style Parameter column and keep the
+      # cleaned names, then rename Param back to Parameter so that all
+      # downstream code consistently uses a single "Parameter" column
+      # containing cleaned parameter names.
+      # Drop the temporary Subject (now only used as a fallback for population
+      # parameters) and rename Subject_mcmc back to Subject for downstream use.
       dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
       dplyr::rename(c("Subject" = "Subject_mcmc",
                       "Parameter" = "Param"))
@@ -184,7 +201,7 @@ run_mod <- function(data,
     jags_final$Stratification <- i
     # Creating output as a data frame with the
     # jags output results for each stratification rbinded.
-    jags_out <- data.frame(rbind(jags_out, jags_final))
+    jags_out <- tibble::tibble(rbind(jags_out, jags_final))
   }
   
   # Preparing population parameters
@@ -200,13 +217,10 @@ run_mod <- function(data,
   new_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- new_atts
   
-  # Adding population parameters in as attributes
+  # Adding population parameters and priors in as attributes
   jags_out <- jags_out |>
-    structure(population_params = population_params)
-  
-  # Adding priors
-  jags_out <- jags_out |>
-    structure(priors = attributes(priorspec)$used_priors)
+    structure(population_params = population_params,
+              priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
