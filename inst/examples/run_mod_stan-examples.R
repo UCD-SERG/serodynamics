@@ -1,4 +1,7 @@
-if (requireNamespace("cmdstanr", quietly = TRUE)) {
+\dontrun{
+  # This example requires cmdstanr and CmdStan to be installed
+  # See ?run_mod_stan for installation instructions
+  
   library(dplyr)
   set.seed(1)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
