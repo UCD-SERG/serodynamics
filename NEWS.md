@@ -1,5 +1,14 @@
 # serodynamics (development version)
 
+## New features
+
+* Added Stan support as an alternative to JAGS for Bayesian modeling
+  * New `run_mod_stan()` function for fitting models with Stan/cmdstanr
+  * New `prep_data_stan()` function to prepare data in Stan format
+  * New `prep_priors_stan()` function to prepare priors for Stan models
+  * New Stan model files: `inst/extdata/model.stan` and `inst/extdata/model.dobson.stan`
+  * Stan support is optional (cmdstanr in Suggests) and can be used alongside JAGS
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.
