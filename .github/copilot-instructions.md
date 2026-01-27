@@ -10,6 +10,24 @@
 - **Key Dependencies**: runjags, rjags, JAGS 4.3.1, serocalculator, ggmcmc, dplyr, ggplot2
 - **Lifecycle**: Experimental (under active development)
 
+## Lab-Wide Guidance
+
+**Follow the guidance in the [UCD-SeRG Lab Manual](https://ucd-serg.github.io/lab-manual/)**, which provides comprehensive best practices for:
+- Culture and conduct
+- Communication
+- Reproducibility
+- Code repositories and version control
+- Coding practices and style
+- Working with big data
+- Quarto and documentation
+- GitHub workflows
+- Reproducible environments
+- Code and data publication
+- AI tools usage
+- And more
+
+If the web version is inaccessible, refer to the [source files on GitHub](https://github.com/UCD-SERG/lab-manual) for easier reading.
+
 ## Critical Setup Requirements
 
 ### Copilot Setup Workflow (Automatic Environment Configuration)
