@@ -35,6 +35,7 @@ test_that(
       )
     
     # Snapshot other attributes (excluding large data structures)
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
@@ -84,6 +85,7 @@ test_that(
       )
     
     # Snapshot other attributes (excluding large data structures)
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
@@ -133,6 +135,7 @@ test_that(
       )
     
     # Snapshot other attributes (excluding large data structures)
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
@@ -183,6 +186,7 @@ test_that(
       )
     
     # Snapshot other attributes (excluding large data structures)
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "jags.post", "fitted_residuals", "population_params")) |>
@@ -231,6 +235,7 @@ test_that(
       )
     
     # Snapshot other attributes (excluding large data structures)
+    
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "population_params")) |>
