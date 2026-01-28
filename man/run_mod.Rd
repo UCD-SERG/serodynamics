@@ -120,6 +120,18 @@ including the following:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
+\item \code{population_params}: Modeled population parameters, indexed by
+\code{Iteration},
+\code{Chain}, \code{Parameter}, \code{Iso_type}, and \code{Stratification}. Includes the
+following modeled population parameters:
+\itemize{
+\item \code{mu.par} = The population means of the host-specific model parameters
+(on logarithmic scales).
+\item \code{prec.par} = The population precision matrix of the hyperparameters
+(with diagonal elements equal to inverse variances).
+\item \code{prec.logy} = A vector of population precisions (inverse variances),
+one per antigen/isotype combination.
+}
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}
