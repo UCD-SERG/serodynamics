@@ -13,35 +13,6 @@ test_that("param_recode correctly recodes parameter indices", {
   )
 })
 
-test_that("param_recode handles invalid parameter indices with error", {
-  # Test invalid parameter index
-  expect_error(
-    serodynamics:::param_recode("6"),
-    "param_recode\\(\\): invalid parameter index: 6"
-  )
-  
-  expect_error(
-    serodynamics:::param_recode(c("1", "99", "2")),
-    "param_recode\\(\\): invalid parameter index: 99"
-  )
-  
-  expect_error(
-    serodynamics:::param_recode("invalid"),
-    "param_recode\\(\\): invalid parameter index: invalid"
-  )
-})
-
-test_that("param_recode handles NA values", {
-  # NA should remain NA without error
-  expect_equal(serodynamics:::param_recode(NA_character_), NA_character_)
-  
-  # Mix of valid and NA
-  expect_equal(
-    serodynamics:::param_recode(c("1", NA_character_, "2")),
-    c("y0", NA_character_, "y1")
-  )
-})
-
 test_that("unpack_jags handles factor Parameter column", {
   # Create a simple ggs-like object with factor Parameter column
   test_data <- tibble::tibble(

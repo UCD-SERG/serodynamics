@@ -212,17 +212,8 @@ run_mod <- function(data,
   jags_out <- ex_popparams(jags_out)
   
   # Making output a tibble and restructuring.
-  # Verify expected columns exist before reordering
-  expected_cols <- c("Iteration", "Chain", "Parameter", "Iso_type",
-                     "Stratification", "Subject", "value")
-  missing_cols <- setdiff(expected_cols, names(jags_out))
-  if (length(missing_cols) > 0) {
-    cli::cli_abort(
-      c("Missing expected columns in jags_out:",
-        "x" = "Columns not found: {.val {missing_cols}}")
-    )
-  }
-  jags_out <- jags_out[, expected_cols]
+  jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
+                           "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out)
   new_atts <- c(current_atts, mod_atts)
   attributes(jags_out) <- new_atts
