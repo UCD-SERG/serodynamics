@@ -207,6 +207,10 @@ run_mod <- function(data,
   
   # Preparing population parameters
   population_params <- prep_popparams(jags_out)
+  population_params <- population_params[, c(
+    "Iteration", "Chain", "Parameter", "Iso_type",
+    "Stratification", "Population_Parameter", "value"
+  )]
   
   # Taking out population parameters
   jags_out <- ex_popparams(jags_out)
