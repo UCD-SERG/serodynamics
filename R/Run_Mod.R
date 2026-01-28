@@ -57,7 +57,8 @@
 #'     (on logarithmic scales).
 #'     - `prec.par` = The population precision matrix of the hyperparameters
 #'     (with diagonal elements equal to inverse variances).  
-#'     - `prec.logy` = The population variance among each antigen/isotype.  
+#'     - `prec.logy` = A vector of population precisions (inverse variances), 
+#'     one per antigen/isotype combination.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
@@ -210,7 +211,7 @@ run_mod <- function(data,
   # Taking out population parameters
   jags_out <- ex_popparams(jags_out)
   
-  # Making output a tibble and restructing.
+  # Making output a tibble and restructuring.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out)

@@ -10,6 +10,6 @@
 prep_popparams <- function(x) { 
   x <- x |>
     dplyr::filter(.data$Subject %in% c("mu.par", "prec.par", "prec.logy")) |>
-    dplyr::rename(Population_Parameter = .data$Subject)
+    dplyr::rename(Population_Parameter = "Subject")
   return(x)
 } 
