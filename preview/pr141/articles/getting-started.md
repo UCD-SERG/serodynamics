@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jan 24 22:19:20 2026
+#> Welcome to JAGS 4.3.2 on Wed Jan 28 03:55:31 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -401,7 +401,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jan 24 22:19:33 2026
+#> Welcome to JAGS 4.3.2 on Wed Jan 28 03:55:43 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -436,7 +436,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jan 24 22:19:35 2026
+#> Welcome to JAGS 4.3.2 on Wed Jan 28 03:55:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -493,7 +493,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-01-24
+#>  date     2026-01-28
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   1.8.27 @ /usr/local/bin/quarto
 #> 
@@ -539,8 +539,8 @@ sessioninfo::session_info()
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.5.2)
 #>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.2)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.2)
-#>  serocalculator   1.4.0.9003 2026-01-24 [1] Github (ucd-serg/serocalculator@f340b9f)
-#>  serodynamics   * 0.0.0.9048 2026-01-24 [1] local
+#>  serocalculator   1.4.0.9003 2026-01-28 [1] Github (ucd-serg/serocalculator@da94b0d)
+#>  serodynamics   * 0.0.0.9048 2026-01-28 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] any (@1.2.3)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.5.2)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.2)

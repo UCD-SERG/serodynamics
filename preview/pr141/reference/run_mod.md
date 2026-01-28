@@ -220,8 +220,8 @@ following:
       hyperparameters (with diagonal elements equal to inverse
       variances).
 
-    - `prec.logy` = A vector of population variances, one per
-      antigen/isotype combination.
+    - `prec.logy` = A vector of population precisions (inverse
+      variances), one per antigen/isotype combination.
 
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
@@ -285,7 +285,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jan 24 22:17:41 2026
+#> Welcome to JAGS 4.3.2 on Wed Jan 28 03:53:10 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -311,6 +311,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -319,7 +320,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jan 24 22:18:27 2026
+#> Welcome to JAGS 4.3.2 on Wed Jan 28 03:54:18 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -345,7 +346,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

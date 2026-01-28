@@ -90,9 +90,13 @@ and return a modified character vector as output.</p></dd>
 
     <dt><code>variant</code></dt>
 <dd><p>If not-<code>NULL</code>, results will be saved in
-<code>_snaps/{variant}/{test}/{name}.{ext}</code>. This allows you to create
+<code>_snaps/{variant}/{test}/{name}</code>. This allows you to create
 different snapshots for different scenarios, like different operating
-systems or different R versions.</p></dd>
+systems or different R versions.</p>
+<p>Note that there's no way to declare all possible variants up front which
+means that as soon as you start using variants, you are responsible for
+deleting snapshot variants that are no longer used. (testthat will still
+delete all variants if you delete the test.)</p></dd>
 
 
 </dl></dd>

@@ -223,8 +223,8 @@ following modeled population parameters:</p><ul><li><p><code>mu.par</code> = The
 (on logarithmic scales).</p></li>
 <li><p><code>prec.par</code> = The population precision matrix of the hyperparameters
 (with diagonal elements equal to inverse variances).</p></li>
-<li><p><code>prec.logy</code> = A vector of population variances, one per antigen/isotype
-combination.</p></li>
+<li><p><code>prec.logy</code> = A vector of population precisions (inverse variances),
+one per antigen/isotype combination.</p></li>
 </ul></li>
 <li><p><code>priors</code>: A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> that summarizes the input priors, including:</p><ul><li><p><code>mu_hyp_param</code></p></li>
 <li><p><code>prec_hyp_param</code></p></li>
@@ -280,7 +280,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jan 24 22:17:41 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Jan 28 03:53:10 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -306,6 +306,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -314,7 +315,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Jan 24 22:18:27 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Jan 28 03:54:18 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -340,7 +341,6 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
