@@ -78,9 +78,9 @@ plot_predicted_curve <- function(model,
   has_stratification <- "Stratification" %in% names(sr_model_sub)
   
   # Determine if we're in stratification overlay mode
-  is_stratified_overlay <- overlay_strata && 
-                          ids[1] == "newperson" && 
-                          has_stratification
+  is_stratified_overlay <- overlay_strata &&
+    ids[1] == "newperson" &&
+    has_stratification
   
   # Select columns for pivoting (including Stratification if present)
   select_cols <- c("Chain", "Iteration", "Iso_type", "Parameter", 
