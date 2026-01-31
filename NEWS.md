@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Added support for overlaying stratified marginal curves in `plot_predicted_curve()`: 
+  When `ids = "newperson"` and `overlay_strata = TRUE`, the function now overlays 
+  median marginal predictions for each stratum in the same panel, with different 
+  strata distinguished by color (#73).
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

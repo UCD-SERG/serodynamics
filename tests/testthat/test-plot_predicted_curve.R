@@ -110,3 +110,55 @@ testthat::test_that(
     vdiffr::expect_doppelganger("predicted-curve-multi-id-4", plot_multi)
   }
 )
+
+testthat::test_that(
+  "plot_predicted_curve() works with stratified overlay for newperson",
+  {
+    plot_strat <- plot_predicted_curve(
+      model           = serodynamics::nepal_sees_jags_output,
+      ids             = "newperson",
+      antigen_iso     = "HlyE_IgA",
+      overlay_strata  = TRUE,
+      show_quantiles  = TRUE,
+      log_y           = FALSE
+    )
+    vdiffr::expect_doppelganger("predicted-curve-stratified-overlay", plot_strat)
+  }
+)
+
+testthat::test_that(
+  "plot_predicted_curve() stratified overlay works with show_all_curves",
+  {
+    plot_strat_curves <- plot_predicted_curve(
+      model           = serodynamics::nepal_sees_jags_output,
+      ids             = "newperson",
+      antigen_iso     = "HlyE_IgA",
+      overlay_strata  = TRUE,
+      show_all_curves = TRUE,
+      alpha_samples   = 0.1,
+      log_y           = FALSE
+    )
+    vdiffr::expect_doppelganger(
+      "predicted-curve-stratified-all-curves", 
+      plot_strat_curves
+    )
+  }
+)
+
+testthat::test_that(
+  "plot_predicted_curve() stratified overlay works with log_y",
+  {
+    plot_strat_log <- plot_predicted_curve(
+      model           = serodynamics::nepal_sees_jags_output,
+      ids             = "newperson",
+      antigen_iso     = "HlyE_IgA",
+      overlay_strata  = TRUE,
+      show_quantiles  = TRUE,
+      log_y           = TRUE
+    )
+    vdiffr::expect_doppelganger(
+      "predicted-curve-stratified-log", 
+      plot_strat_log
+    )
+  }
+)

@@ -51,3 +51,25 @@ p4 <- plot_predicted_curve(
   facet_by_id     = TRUE
 )
 print(p4)
+
+# Stratified marginal overlay plot (newperson with multiple strata):
+p5 <- plot_predicted_curve(
+  model           = sees_model,
+  ids             = "newperson",
+  antigen_iso     = "HlyE_IgA",
+  overlay_strata  = TRUE,
+  show_quantiles  = TRUE,
+  log_y           = FALSE
+)
+print(p5)
+
+# Stratified marginal overlay with log y-axis:
+p6 <- plot_predicted_curve(
+  model           = sees_model,
+  ids             = "newperson",
+  antigen_iso     = "HlyE_IgA",
+  overlay_strata  = TRUE,
+  show_quantiles  = TRUE,
+  log_y           = TRUE
+)
+print(p6)

@@ -9,6 +9,7 @@ plot_predicted_curve(
   ids,
   antigen_iso,
   dataset = NULL,
+  overlay_strata = FALSE,
   legend_obs = "Observed data",
   legend_median = "Median prediction",
   show_quantiles = TRUE,
@@ -26,7 +27,8 @@ plot_predicted_curve(
 \item{model}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}) containing
 samples from the posterior distribution of the model parameters.}
 
-\item{ids}{The participant IDs to plot; for example, \code{"sees_npl_128"}.}
+\item{ids}{The participant IDs to plot; for example, \code{"sees_npl_128"}.
+Use \code{"newperson"} to plot marginal ("new person") predictions.}
 
 \item{antigen_iso}{The antigen isotype to plot; for example, "HlyE_IgA" or
 "HlyE_IgG".}
@@ -40,6 +42,10 @@ Must contain:
 \item \code{id}
 \item \code{antigen_iso}
 }}
+
+\item{overlay_strata}{\link{logical}; if \link{TRUE}, overlays marginal predictions
+for each stratum in the same panel when \code{ids = "newperson"}.
+Different strata are distinguished by color. Defaults to \link{FALSE}.}
 
 \item{legend_obs}{Label for observed data in the legend.}
 
@@ -82,7 +88,8 @@ ribbon, using MCMC samples from the posterior distribution.
 Optionally overlays observed data,
 applies logarithmic spacing on the y- and x-axes,
 and shows all individual
-sampled curves.
+sampled curves. When \code{ids = "newperson"} and \code{overlay_strata = TRUE},
+overlays marginal predictions for each stratum in the same panel.
 }
 \examples{
 sees_model <- serodynamics::nepal_sees_jags_output
@@ -138,4 +145,26 @@ p4 <- plot_predicted_curve(
   facet_by_id     = TRUE
 )
 print(p4)
+
+# Stratified marginal overlay plot (newperson with multiple strata):
+p5 <- plot_predicted_curve(
+  model           = sees_model,
+  ids             = "newperson",
+  antigen_iso     = "HlyE_IgA",
+  overlay_strata  = TRUE,
+  show_quantiles  = TRUE,
+  log_y           = FALSE
+)
+print(p5)
+
+# Stratified marginal overlay with log y-axis:
+p6 <- plot_predicted_curve(
+  model           = sees_model,
+  ids             = "newperson",
+  antigen_iso     = "HlyE_IgA",
+  overlay_strata  = TRUE,
+  show_quantiles  = TRUE,
+  log_y           = TRUE
+)
+print(p6)
 }
