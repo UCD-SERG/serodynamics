@@ -42,7 +42,7 @@ All helper functions for this chapter have been moved to the `serodynamics` pack
 - `simulate_multi_b_long()`: Simulates correlated multi-biomarker data with Kronecker covariance
 - `prep_priors_multi_b()`: Prepares Wishart hyperparameters for the Kronecker model
 - `write_model_ch2_kron()`: Writes the JAGS model file with Kronecker precision
-- `clean_priors()`: Removes legacy fields from priors list
+- `clean_priors()`: Removes fields like `omega`, `wishdf`, `prec.par` that conflict with Kronecker priors
 - `build_kron_priors()`: Internal helper that combines base and Kronecker priors
 
 These functions are documented and tested. See `?simulate_multi_b_long` for examples.
@@ -216,7 +216,7 @@ For a Wishart distribution $\text{T} \sim \text{Wishart}(\Omega, \nu)$:
 - **$\Omega$** (scale matrix): Determines the expected scale of the precision. Smaller diagonal entries → higher expected precision → tighter covariance
 - **$\nu$** (degrees of freedom): Controls how informative the prior is. Larger $\nu$ → more concentrated around the expected value
 
-In JAGS notation: $\mathop{\mathbb{E}}[\text{T}] \approx \nu \cdot \Omega^{-1}$ when $\nu$ is reasonably large.
+In JAGS notation: $\mathop{\mathbb{E}}[\text{T}] \approx \nu \cdot \Omega^{-1}$ when $\nu$ exceeds the dimension of the matrix.
 
 ## Our Default Choices
 
