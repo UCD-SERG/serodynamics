@@ -24,7 +24,6 @@ bibliography: references.bib
 
 ## Overview
 
--   Incorporates feedback from Dr. Morrison and Dr. Aiemjoy\
 -   Builds on [@teunis2016] framework for antibody kinetics\
 -   Focus on covariance structure: parameter covariance within each biomarker ($\Sigma_{P,j}$, 5×5 per biomarker) and biomarker covariance across $j$ ($\Sigma_B$, across biomarkers)\
 -   Uses updated parameterization: $\log(y_0)$, $\log(y_1 - y_0)$, $\log(t_1)$, $\log(\alpha)$, $\log(\rho-1)$\
@@ -44,7 +43,7 @@ $$ {#eq-1}
 Where:
 
 -   $y_{\text{obs},ij}$: Observed antibody level for subject $i$ and biomarker $j$
--   $\mu_{\log y,ij}$ is the **expected log antibody level**, computed from the two-phase model using subject-level parameters $\theta_{ij}$.
+-   $\mu_{\log y,ij}$ is the **expected log antibody level** at time $t_{ijk}$ (without measurement error), computed from the two-phase model using subject-level parameters $\theta_{ij}$.
 -   $\theta_{ij}$: Subject-level latent parameters (e.g., $y_0, \alpha, \rho$) used to define the predicted antibody curve
 -   $\tau_j$: Measurement precision (inverse of variance) specific to biomarker $j$
 
@@ -65,9 +64,9 @@ Where:
 
 | Symbol   | Description                             |
 |----------|-----------------------------------------|
-| $\mu_y$  | Antibody production rate (growth phase) |
-| $\mu_b$  | Pathogen replication rate               |
-| $\gamma$ | Clearance rate (by antibodies)          |
+| $\gamma_y$  | Antibody production rate (growth phase) |
+| $\gamma_b$  | Pathogen replication rate               |
+| $\kappa$ | Clearance rate (by antibodies)          |
 | $\alpha$ | Antibody decay rate                     |
 | $\rho$   | Shape of antibody decay (power-law)     |
 | $t_1$    | Time of peak response                   |
@@ -84,11 +83,11 @@ Where:
 $$
 \frac{dy}{dt} = 
 \begin{cases}
-\mu_y y(t), & t \le t_1 \\
+\gamma_y y(t), & t \le t_1 \\
 - \alpha y(t)^\rho, & t > t_1
 \end{cases}
 \quad \text{with } 
-\frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+\frac{db}{dt} = \gamma_b b(t) - \kappa y(t)
 $$ {#eq-ode-system}
 
 **Initial conditions:** $y(0) = y_0$, $b(0) = b_0$\
@@ -103,7 +102,7 @@ $$ {#eq-ode-system}
 
 -   $t \le t_1$:\
     $$
-    y(t) = y_0 e^{\mu_y t}
+    y(t) = y_0 e^{\gamma_y t}
     $$
 
 -   $t > t_1$:\
@@ -115,7 +114,7 @@ $$ {#eq-ode-system}
 
 -   $t \le t_1$:\
     $$
-    b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left(e^{\mu_y t} - e^{\mu_b t} \right)
+    b(t) = b_0 e^{\gamma_b t} - \frac{\kappa y_0}{\gamma_y - \gamma_b} \left(e^{\gamma_y t} - e^{\gamma_b t} \right)
     $$
 
 -   $t > t_1$:\
@@ -130,60 +129,55 @@ $$ {#eq-ode-system}
 **Peak Time** $t_1$
 
 $$
-t_1 = \frac{1}{\mu_y - \mu_b} \log \left( 1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0} \right)
+t_1 = \frac{1}{\gamma_y - \gamma_b} \log \left( 1 + \frac{(\gamma_y - \gamma_b) b_0}{\kappa y_0} \right)
 $$ {#eq-t1}
 
 **Peak Antibody Level** $y_1$
 
 $$
-y_1 = y_0 e^{\mu_y t_1}
+y_1 = y_0 e^{\gamma_y t_1}
 $$ {#eq-y1}
 
 ------------------------------------------------------------------------
 
 ## Model Comparison: [@teunis2016] vs serodynamics
 
+The [@teunis2016] model and the `serodynamics` model are **identical in structure**. The only difference is in **notation**. The table below maps the notation used in each framework:
+
 | Component | [@teunis2016] | serodynamics |
 |------------------------|------------------------|------------------------|
-| Pathogen ODE | $\mu_0 b(t) - c y(t)$ | $\mu_b b(t) - \gamma y(t)$ |
-| Antibody ODE (pre-$t_1$) | $\mu y(t)$ | $\mu_y y(t)$ |
-| Antibody ODE (post-$t_1$) | $- \alpha y(t)^r$ | $- \alpha y(t)^\rho$ |
-| Antibody growth type | Pathogen-driven | Self-driven exponential |
-| Antibody rate name | $\mu$ | $\mu_y$ |
-| $t_1$ formula | Uses $\mu_0$, $\mu$, $b_0$, $c$, $y_0$ | Uses $\mu_b$, $\mu_y$, etc. |
+| Antibody production rate | $\mu$ | $\gamma_y$ |
+| Pathogen replication rate | $\mu_0$ | $\gamma_b$ |
+| Clearance rate | $c$ | $\kappa$ |
+| Antibody decay rate | $\alpha$ | $\alpha$ |
+| Shape of decay | $r$ | $\rho$ |
 
-: Comparison of Teunis (2016) model and serodynamic’s model assumptions. {#tbl-model-comparison}
-
-**Note:**
-
--   [@teunis2016] uses **linear clearance**: $c y(t)$, not bilinear\
--   Antibody production is **driven by pathogen** $b(t)$\
--   Our model simplifies by assuming self-expanding antibody dynamics
+: Notation mapping between Teunis (2016) and serodynamics. {#tbl-model-comparison}
 
 ------------------------------------------------------------------------
 
-## Full Parameter Model (7 Parameters)
+## Full Serokinetics Parameter Model (7 Parameters)
 
-**Subject-level parameters:**
+The full underlying serokinetics model includes 7 parameters that describe both antibody kinetics and pathogen dynamics:
 
 $$
-\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_{P,j}), \quad \theta_{ij} =
+\theta_{ij} =
 \begin{bmatrix}
 y_{0,ij} \\
 b_{0,ij} \\
-\mu_{b,ij} \\
-\mu_{y,ij} \\
-\gamma_{ij} \\
+\gamma_{b,ij} \\
+\gamma_{y,ij} \\
+\kappa_{ij} \\
 \alpha_{ij} \\
 \rho_{ij}
 \end{bmatrix}
-$$ **Where:**
+$$ 
+
+**Where:**
 
 -   $\theta_{ij}$: parameter vector for subject $i$, biomarker $j$\
--   $\mu_j$: population-level mean vector for biomarker $j$\
--   $\Sigma_{P,j} \in \mathbb{R}^{7 \times 7}$: covariance matrix **across parameters** for biomarker $j$
-    -   Subscript $P$: denotes that this is covariance over the **P parameters**\
-    -   Subscript $j$: indicates the biomarker index
+-   These are the raw serokinetics parameters (untransformed)\
+-   Note: We do **not** assume a Gaussian distribution for these untransformed parameters
 
 **Hyperparameters – Means:**
 
@@ -193,13 +187,19 @@ $$
 
 ------------------------------------------------------------------------
 
-## From Full 7 Parameters to 5 Latent Parameters
+## From Full 7 Serokinetic Parameters to 5 Serodynamic Parameters
 
--   Although the model estimates 7 parameters, for modeling antibody kinetics $y(t)$, we focus on **5-parameter subset**:
+-   Although the underlying serokinetics model includes 7 parameters, for the purposes of cross-sectional seroincidence estimation, we are only interested in the seroresponse function $y(t)$, and not in the pathogen prevalence function $b(t)$.
+
+-   If we further assume that $b_0 \to 0$, then we can combine $b_0$, $\gamma_b$, and $\kappa$ into two new parameters, $t_1$ and $y_1$.
+
+-   Since $t_1$ and $y_1$ fully specify $y(t)$, we focus on estimating the **5-parameter projection**:
 
 $$y_0,\ \ t_1 (\text{derived}),\ \  y_1 (\text{derived}),\ \  \alpha,\ \  \rho$$
 
--   These 5 parameters are **log-transformed** into the latent parameters $\theta\_{ij}$ used for modeling.
+-   We can refer to this reduced parameter set as the "serodynamic" parameter set, in contrast with the underlying "serokinetic" parameters.
+
+-   These 5 parameters are **log-transformed** to create latent parameters on which we **do** assume a Gaussian distribution for modeling.
 
 ------------------------------------------------------------------------
 
@@ -221,7 +221,7 @@ Note: $t_1$ and $y_1$ are **derived from the full model** - These 5 are sufficie
 
 **Estimated Parameters (7 total):**
 
--   **Core model parameters (5):** $\mu_b$, $\mu_y$, $\gamma$, $\alpha$, $\rho$
+-   **Core model parameters (5):** $\gamma_b$, $\gamma_y$, $\kappa$, $\alpha$, $\rho$
 
 -   **Initial conditions (2):** $y_0$, $b_0$
 
@@ -267,7 +267,7 @@ y_1 = y(t_1) \quad \text{where } b(t_1) = 0
 $$
 
 -   $y_1$ is not an “input” — it is **computed** from:
-    -   $\mu_y$, $y_0$, $b_0$, $\mu_b$, $\gamma$
+    -   $\gamma_y$, $y_0$, $b_0$, $\gamma_b$, $\kappa$
     -   via solution of ODEs to find $t_1$ and compute $y(t_1)$
 
 In other words: $y_1$ is a **derived output**, not a fit parameter.
@@ -279,13 +279,13 @@ In other words: $y_1$ is a **derived output**, not a fit parameter.
 -   $y_1$ is computed by solving the ODE system:
 
 $$
-\frac{dy}{dt} = \mu_y y(t), \quad \frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+\frac{dy}{dt} = \gamma_y y(t), \quad \frac{db}{dt} = \gamma_b b(t) - \kappa y(t)
 $$
 
 -   Evaluate $y(t)$ at $t = t_1$ using ODE solution:
 
 $$
-y_1 = y(t_1; \mu_y, y_0, b_0, \mu_b, \gamma)
+y_1 = y(t_1; \gamma_y, y_0, b_0, \gamma_b, \kappa)
 $$
 
 ------------------------------------------------------------------------
@@ -294,7 +294,7 @@ $$
 
 **Seven model parameters (**[7-parameter model for full dynamics]{.underline}**):**
 
--   $\mu_b$, $\mu_y$, $\gamma$, $\alpha$, $\rho$ (biological process)
+-   $\gamma_b$, $\gamma_y$, $\kappa$, $\alpha$, $\rho$ (biological process)
 -   $y_0$, $b_0$ (initial state)
 
 **Derived quantity:**
