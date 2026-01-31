@@ -97,7 +97,7 @@ If specified, must be 2 values long:
 \item{correlated}{Logical; use Chapter-2 Kronecker prior across biomarkers.
 Default FALSE (independence).}
 
-\item{file_mod_kron}{Path to a JAGS file for the Kronecker model.If
+\item{file_mod_kron}{Path to a JAGS file for the Kronecker model. If
 \code{correlated = TRUE} and this path does not exist, a temporary
 \code{model_ch2_kron.jags} is written and used automatically.}
 }
@@ -245,7 +245,8 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 # }
 }
 \seealso{
-clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron
+\code{\link[=clean_priors]{clean_priors()}}, \code{\link[=prep_priors_multi_b]{prep_priors_multi_b()}}, \code{\link[=inits_kron]{inits_kron()}},
+\code{\link[=write_model_ch2_kron]{write_model_ch2_kron()}}, \code{\link[=build_kron_priors]{build_kron_priors()}}
 }
 \author{
 Sam Schildhauer
