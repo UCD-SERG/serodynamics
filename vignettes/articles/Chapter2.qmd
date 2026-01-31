@@ -35,7 +35,17 @@ library(Matrix)    # kronecker
 library(serodynamics)
 ```
 
-# Step B — Minimal helpers
+# Step B — Helper functions (now in package)
+
+All helper functions for this chapter have been moved to the `serodynamics` package:
+
+- `simulate_multi_b_long()`: Simulates correlated multi-biomarker data with Kronecker covariance
+- `prep_priors_multi_b()`: Prepares Wishart hyperparameters for the Kronecker model
+- `write_model_ch2_kron()`: Writes the JAGS model file with Kronecker precision
+- `clean_priors()`: Removes legacy fields from priors list
+- `build_kron_priors()`: Internal helper that combines base and Kronecker priors
+
+These functions are documented and tested. See `?simulate_multi_b_long` for examples.
 
 
 # Step C — Choose a “truth” and simulate fake data
@@ -123,103 +133,194 @@ $$
 
 ## E.1 Priors for the Correlated Model
 
-We define a helper function `prep_priors_multiB()` that sets priors for both $\Sigma_P$ (within-biomarker) and $\Sigma_B$ (across-biomarkers).
+The function `prep_priors_multi_b()` sets Wishart priors for both precision matrices:
 
--   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$\
--   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$\
--   Kronecker precision: $\text{T} = \text{T}_B \otimes \text{T}_P$
+**Within-biomarker precision** (5×5 for the 5 parameters per biomarker):
+$$\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$$
 
+**Across-biomarker precision** (B×B for B biomarkers):
+$$\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$$
 
-## E.2 Write the new JAGS model file (Kronecker precision)
+**Kronecker structure** combines them:
+$$\text{T} = \text{T}_B \otimes \text{T}_P$$
 
-This is our `model.jags` with only one conceptual change:\
-instead of independent
+This is a $(5B) \times (5B)$ precision matrix that captures both within and across-biomarker correlations.
 
-$$
-par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.par}[\text{b},,] )
-$$
-where b is `cur_antigen_iso`
+### Default hyperparameters
 
-we draw **all biomarkers at once** for a subject with a **Kronecker precision**:
-
-$$
-\mathrm{vec}(par_{\text{subj},\cdot,\cdot}) \sim \mathcal{N}\!\big( \mathrm{vec}(\mu_{par}), \ \text{T}_B \otimes \text{T}_P \big).
-$$
-
--   Everything else (transforms, likelihood, measurement precisions) stays as before.\
--   We keep our hyperpriors for `mu.par` (the per-biomarker means), so it plugs right into our current `prep_priors()`.
-
-This is our new `model.jags` rename as `model_ch2_kron.jags`
-
-### What changed vs. our current `model.jags`
-
--   Removed the per-biomarker `prec.par[cur_antigen_iso,,] ~ dwish(...)` and `par[subj,cur_antigen_iso,] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])`.
-
--   Replaced with one prior per subject on the stacked vector using $\text{T} = \text{T}_B \otimes \text{T}_P$
-
--   Kept our `mu.par` prior and the likelihood exactly as is.
-
-## E.3: Minimal wrapper so we can keep calling one function
-
-
-# What are `OmegaP`, `nuP`, `OmegaB`, `nuB` — and why these defaults?
-
-These are the **Wishart hyperparameters** for the **precision matrices** (inverse covariances) used in the Kronecker prior:
-
--   $\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)$ -- within-biomarker parameter precision (5×5).
--   $\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)$ -- across-biomarker precision (B×B).
-
-Generally speaking (JAGS Wishart): $\mathop{\mathbb{E}}[\text{T}]\approx \nu \cdot \Omega^{-1}$ when $\nu$ is not tiny. So smaller diagonal entries in $\Omega$ imply larger expected precision (i.e., smaller covariance), and vice versa.
-
-## Chosen weakly-informative defaults
-
-``` r
-OmegaP_scale = rep(0.1, 5);  nuP = 6
-OmegaB_scale = rep(1.0, B);  nuB = B + 1
+```r
+prep_priors_multi_b(
+  n_blocks      = 2,           # Number of biomarkers
+  omega_p_scale = rep(0.1, 5), # Diffuse for within-biomarker
+  nu_p          = 6,           # Just above dimension (weakly informative)
+  omega_b_scale = rep(1.0, 2), # Scale for across-biomarker  
+  nu_b          = 3            # n_blocks + 1 (minimally informative)
+)
 ```
 
--   `nuP = 6` is just above the dimension (5): proper but not tight.
+These defaults are weakly informative, allowing the data to dominate. See `?prep_priors_multi_b` for details.
 
--   `OmegaP = 0.1 * I_5` is diffuse. With small `nuP`, the prior is wide; data will dominate.
 
--   `nuB = B + 1` is a minimally-informative choice for a B×B Wishart.
+## E.2 The JAGS model with Kronecker precision
 
--   `OmegaB = I_B` centers `TauB` near identity while letting the data learn cross-biomarker correlation.
+The function `write_model_ch2_kron()` creates a JAGS model file that differs from our baseline in one key way:
 
-These are starting values. Validate with prior predictive checks (simulate parameters → curves → sanity check ranges).
+**Baseline model** (independence): Each biomarker gets its own precision matrix
+$$\text{par}[\text{subj},b,] \sim \mathcal{N}( \mu_{\text{par}}[b,], \ \text{prec.par}[b,,] )$$
+where biomarkers are independent.
 
-# Putting it together
+**Kronecker model** (correlated): All biomarkers for a subject are drawn jointly
+$$\mathrm{vec}(\text{par}_{\text{subj},\cdot,\cdot}) \sim \mathcal{N}\!\big( \mathrm{vec}(\mu_{\text{par}}), \ \text{T}_B \otimes \text{T}_P \big)$$
+allowing correlation across biomarkers.
 
--   **Independence model (our baseline)**: no changes.
+Everything else remains unchanged:
+- Same transforms from parameters to natural scale
+- Same likelihood for observed antibody data  
+- Same hyperpriors on `mu.par` (parameter means)
 
--   **Correlated model**: we supply both the usual priors and the new Kronecker priors:
+The model file is written automatically when you call `run_mod(correlated = TRUE)`, or you can create it explicitly:
+
+```r
+# Optional: write model file to inspect
+model_path <- write_model_ch2_kron("model_ch2_kron.jags")
+```
+
+## E.3: Using the unified `run_mod()` function
+
+The correlated model functionality is integrated into `run_mod()`. Set `correlated = TRUE` to enable the Kronecker prior:
+
+```r
+# Independence model (default behavior)
+fit_indep <- run_mod(data = sim_tbl, ...)
+
+# Correlated model (Kronecker prior)
+fit_kron <- run_mod(data = sim_tbl, correlated = TRUE, ...)
+```
+
+When `correlated = TRUE`, `run_mod()` internally:
+
+1. Calls `build_kron_priors()` to combine base priors with Kronecker hyperparameters
+2. Writes or uses `file_mod_kron` for the JAGS model with Kronecker structure
+3. Uses `inits_kron()` for proper initialization
+4. Monitors additional parameters: `TauB` and `TauP` (the precision matrices)
+
+
+# Understanding the Wishart Hyperparameters
+
+The Wishart distribution is the multivariate generalization of the gamma distribution, commonly used as a prior for precision matrices (inverse covariances).
+
+## What are OmegaP, nuP, OmegaB, nuB?
+
+For a Wishart distribution $\text{T} \sim \text{Wishart}(\Omega, \nu)$:
+
+- **$\Omega$** (scale matrix): Determines the expected scale of the precision. Smaller diagonal entries → higher expected precision → tighter covariance
+- **$\nu$** (degrees of freedom): Controls how informative the prior is. Larger $\nu$ → more concentrated around the expected value
+
+In JAGS notation: $\mathop{\mathbb{E}}[\text{T}] \approx \nu \cdot \Omega^{-1}$ when $\nu$ is reasonably large.
+
+## Our Default Choices
+
+**Within-biomarker precision** ($\text{T}_P$, 5×5):
+```r
+OmegaP = diag(rep(0.1, 5))  # Small scale = diffuse prior
+nuP = 6                      # Just above dimension (5)
+```
+
+**Across-biomarker precision** ($\text{T}_B$, B×B):
+```r
+OmegaB = diag(rep(1.0, B))  # Moderate scale
+nuB = B + 1                  # Minimally informative
+```
+
+These defaults are **weakly informative**: they allow the data to dominate while ensuring the prior is proper (integrable). 
+
+## When to customize
+
+Consider adjusting these if:
+- You have strong prior information about parameter correlations
+- Convergence is poor (try slightly more informative priors)
+- You want to test sensitivity to prior choice
+
+**Recommendation**: Start with defaults, then validate with prior predictive checks (simulate parameters → curves → sanity check ranges).
+
+# Putting it all together
+
+The complete workflow compares two models:
+
+## Independence Model (Chapter 1 / Baseline)
 
 ```{r}
 #| echo: true
 #| eval: false
-#| code-fold: true
-#| code-summary: "Run Kronecker model (disabled for now)"
 
-# Step 1: simulate fake data (or load real Shigella data)
-sim_tbl 
-
-# Step 2: write the new Kronecker model file (once per session/project)
-write_model_ch2_kron()
-
-# Step 3: run the model in correlated (Chapter 2) mode using run_mod()
-fit_kron <- run_mod(
+# Fit with default independence prior
+fit_indep <- run_mod(
   data     = sim_tbl,
-  file_mod = serodynamics_example("model.jags"),  # baseline model path (unused here)
-  file_mod_kron = "model_ch2_kron.jags",          # use the Kronecker model
-  correlated = TRUE,                              # <-- key switch
-  nchain   = 4, nadapt = 1000, nburn = 500,
-  nmc      = 500,  niter = 5000,
-  strat    = NA,
-  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0)     # optional override
+  nchain   = 4,
+  nadapt   = 1000,
+  nburn    = 500,
+  nmc      = 500,
+  niter    = 5000,
+  strat    = NA
+)
+```
+
+## Correlated Model (Chapter 2 / Kronecker)
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Fit with Kronecker prior across biomarkers
+fit_kron <- run_mod(
+  data       = sim_tbl,
+  correlated = TRUE,                    # <-- Enable Kronecker prior
+  nchain     = 4,
+  nadapt     = 1000,
+  nburn      = 500,
+  nmc        = 500,
+  niter      = 5000,
+  strat      = NA
 )
 
-# Step 4: inspect results (same as with run_mod before)
+# Optionally override default Kronecker hyperparameters
+fit_kron_custom <- run_mod(
+  data       = sim_tbl,
+  correlated = TRUE,
+  nchain     = 4,
+  nadapt     = 1000,
+  nburn      = 500,
+  nmc        = 500,
+  niter      = 5000,
+  strat      = NA,
+  # Pass through to prep_priors_multi_b():
+  omega_p_scale = rep(0.2, 5),  # Custom within-biomarker scale
+  nu_p          = 7,            # Custom degrees of freedom
+  omega_b_scale = rep(1.5, 2),  # Custom across-biomarker scale
+  nu_b          = 4             # Custom degrees of freedom
+)
+```
+
+## Comparing Results
+
+Both models return the same `sr_model` object structure, so downstream analysis is identical:
+
+```{r}
+#| echo: true
+#| eval: false
+
+# Inspect posterior summaries
+fit_indep
 fit_kron
 
+# Plot predictions
+plot_predicted_curve(fit_indep, sim_tbl)
+plot_predicted_curve(fit_kron, sim_tbl)
+
+# For the Kronecker model, you can also examine the precision matrices
+library(ggmcmc)
+fit_kron |>
+  filter(Parameter %in% c("TauB[1,1]", "TauB[1,2]", "TauP[1,1]")) |>
+  ggs_density()
 ```
 
