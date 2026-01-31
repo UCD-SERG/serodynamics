@@ -44,7 +44,7 @@
 #' Note: These objects can be large.
 #' @param correlated Logical; use Chapter-2 Kronecker prior across biomarkers.
 #'   Default FALSE (independence).
-#' @param file_mod_kron Path to a JAGS file for the Kronecker model.If
+#' @param file_mod_kron Path to a JAGS file for the Kronecker model. If
 #'   `correlated = TRUE` and this path does not exist, a temporary
 #'   `model_ch2_kron.jags` is written and used automatically.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
@@ -81,7 +81,8 @@
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
-#' @seealso clean_priors, prep_priors_multi_b, inits_kron, write_model_ch2_kron
+#' @seealso [clean_priors()], [prep_priors_multi_b()], [inits_kron()],
+#'   [write_model_ch2_kron()], [build_kron_priors()]
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
@@ -132,28 +133,25 @@ run_mod <- function(data,
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
 
+    # Prepare base priors (used by both models)
+    base_priors <- prep_priors(
+      max_antigens = longdata$n_antigen_isos,
+      ...
+    )
+
     # ---------- CHOOSE MODEL/PRIORS DEPENDING ON `correlated` ----------
     if (!correlated) {
       # original (independence) behavior
-      priorspec <- prep_priors(
-        max_antigens = longdata$n_antigen_isos, ...
-      )
+      priorspec  <- base_priors
       model_path <- file_mod                      # UNCHANGED for independence
       init_fun   <- initsfunction
       to_monitor <- c("y0", "y1", "t1", "alpha", "shape")
     } else {
       # CH2 behavior: Kronecker prior across biomarkers
-      base_priors <- prep_priors(
-        max_antigens = longdata$n_antigen_isos, ...
-      )
-      base_priors <- serodynamics::clean_priors(base_priors)       
-      
-      kron_priors <- serodynamics::prep_priors_multi_b(            
+      priorspec <- build_kron_priors(
+        base_priors = base_priors,
         n_blocks = longdata$n_antigen_isos
       )
-      B_scalar   <- list(n_blocks = longdata$n_antigen_isos)       
-      
-      priorspec  <- c(base_priors, kron_priors, B_scalar)          
       
       # Changed: use file_mod_kron when correlated = TRUE
       model_path <- file_mod_kron                   

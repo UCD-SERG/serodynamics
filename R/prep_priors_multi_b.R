@@ -34,8 +34,9 @@ prep_priors_multi_b <- function(
     cli::cli_abort("`omega_p_scale` must be a numeric vector of length 5.")
   }
   if (!is.numeric(omega_b_scale) || length(omega_b_scale) != n_blocks) {
-    cli::cli_abort("`omega_b_scale` must be a numeric vector of length 
-                   `n_blocks`.")
+    cli::cli_abort(
+      "`omega_b_scale` must be a numeric vector of length `n_blocks`."
+    )
   }
   if (!is.numeric(nu_p) || length(nu_p) != 1L) {
     cli::cli_abort("`nu_p` must be a numeric scalar.")
