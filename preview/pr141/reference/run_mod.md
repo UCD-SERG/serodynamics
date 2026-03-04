@@ -165,7 +165,7 @@ run_mod(
 ## Value
 
 An `sr_model` class object: a subclass of
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
+[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html) that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input `data`, including the
 following:
@@ -285,7 +285,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jan 28 04:15:29 2026
+#> Welcome to JAGS 4.3.2 on Wed Mar  4 18:21:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -320,7 +320,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jan 28 04:16:38 2026
+#> Welcome to JAGS 4.3.2 on Wed Mar  4 18:22:21 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

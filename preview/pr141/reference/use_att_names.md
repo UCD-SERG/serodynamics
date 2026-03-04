@@ -5,7 +5,7 @@ modeling and names columns using attribute values to allow merging with
 a modeled
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
 output
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html). The
+[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html). The
 column names include `Subject`, `Iso_type`, `t`, and `result`.
 
 ## Usage
