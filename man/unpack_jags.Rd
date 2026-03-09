@@ -7,7 +7,10 @@
 unpack_jags(data)
 }
 \arguments{
-\item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} output object from run_mod with mcmc syntax.}
+\item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} in \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} / MCMC-long format,
+usually \code{ggmcmc::ggs(jags_post[["mcmc"]])} where \code{jags_post} comes from
+\code{\link[=run_mod]{run_mod()}}. Must contain at least \code{Iteration}, \code{Chain}, \code{Parameter},
+and \code{value} columns.}
 }
 \value{
 A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} that
@@ -15,8 +18,9 @@ contains MCMC samples from the joint posterior distribution of the model
 with unpacked parameters, isotypes, and subjects.
 }
 \description{
-\code{unpack_jags()} takes an MCMC output from run_mod and unpacks it correctly
-for all population parameters.
+\code{unpack_jags()} takes a long-format MCMC sample (typically created by
+applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \code{\link[=run_mod]{run_mod()}} output)
+and unpacks it correctly for all population parameters.
 }
 \author{
 Sam Schildhauer
