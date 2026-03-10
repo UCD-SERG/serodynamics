@@ -93,7 +93,7 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
+An \code{sr_model} class object: a subclass of \link[tibble:tbl_df-class]{tibble::tbl_df} that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the following:
