@@ -9,7 +9,7 @@ unpack_jags(data)
 \arguments{
 \item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} in \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} / MCMC-long format,
 usually \code{ggmcmc::ggs(jags_post[["mcmc"]])} where \code{jags_post} comes from
-\code{\link[=run_mod]{run_mod()}}. Must contain at least \code{Iteration}, \code{Chain}, \code{Parameter},
+\link{run_mod}. Must contain at least \code{Iteration}, \code{Chain}, \code{Parameter},
 and \code{value} columns.}
 }
 \value{
@@ -21,7 +21,7 @@ with unpacked individual-level parameters (e.g., \code{y0}, \code{y1}, \code{t1}
 }
 \description{
 \code{unpack_jags()} takes a long-format MCMC sample (typically created by
-applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \code{\link[=run_mod]{run_mod()}} output)
+applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \link{run_mod} output)
 and unpacks it into separate rows for individual-level curve parameters
 and population-level hyperparameters/precision terms.
 }

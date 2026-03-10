@@ -2,12 +2,12 @@
 #' @author Sam Schildhauer
 #' @description
 #'  `unpack_jags()` takes a long-format MCMC sample (typically created by
-#'  applying [ggmcmc::ggs()] to the `mcmc` component of [run_mod()] output)
+#'  applying [ggmcmc::ggs()] to the `mcmc` component of [run_mod] output)
 #'  and unpacks it into separate rows for individual-level curve parameters
 #'  and population-level hyperparameters/precision terms.
 #' @param data A [dplyr::tbl_df()] in [ggmcmc::ggs()] / MCMC-long format,
 #'   usually `ggmcmc::ggs(jags_post[["mcmc"]])` where `jags_post` comes from
-#'   [run_mod()]. Must contain at least `Iteration`, `Chain`, `Parameter`,
+#'   [run_mod]. Must contain at least `Iteration`, `Chain`, `Parameter`,
 #'   and `value` columns.
 #' @returns A [dplyr::tbl_df()] that
 #' contains MCMC samples from the joint posterior distribution of the model
