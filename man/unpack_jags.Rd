@@ -15,12 +15,15 @@ and \code{value} columns.}
 \value{
 A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} that
 contains MCMC samples from the joint posterior distribution of the model
-with unpacked parameters, isotypes, and subjects.
+with unpacked individual-level parameters (e.g., \code{y0}, \code{y1}, \code{t1},
+\code{alpha}, \code{shape}) and population-level parameters (e.g., \code{mu.par},
+\code{prec.par}, \code{prec.logy}), along with isotypes and subjects.
 }
 \description{
 \code{unpack_jags()} takes a long-format MCMC sample (typically created by
 applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \code{\link[=run_mod]{run_mod()}} output)
-and unpacks it correctly for all population parameters.
+and unpacks it into separate rows for individual-level curve parameters
+and population-level hyperparameters/precision terms.
 }
 \author{
 Sam Schildhauer
