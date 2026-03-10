@@ -72,7 +72,7 @@ unpack_jags <- function(data) {
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
-      param_recode(gsub(pattern, "\\2", param))
+      "prec.logy"
     }
   )
 
