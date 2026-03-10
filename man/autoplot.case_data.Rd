@@ -4,7 +4,7 @@
 \alias{autoplot.case_data}
 \title{Plot case data}
 \usage{
-\method{autoplot}{case_data}(object, log_y = TRUE, log_x = FALSE, ...)
+autoplot.case_data(object, log_y = TRUE, log_x = FALSE, ...)
 }
 \arguments{
 \item{object}{a \code{case_data} object}
