@@ -18,7 +18,7 @@ unpack_jags(data)
 - data:
 
   A
-  [`dplyr::tbl_df()`](https://dplyr.tidyverse.org/reference/defunct.html)
+  [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   in [`ggmcmc::ggs()`](https://rdrr.io/pkg/ggmcmc/man/ggs.html) /
   MCMC-long format, usually `ggmcmc::ggs(jags_post[["mcmc"]])` where
   `jags_post` comes from
@@ -29,7 +29,7 @@ unpack_jags(data)
 ## Value
 
 A
-[`dplyr::tbl_df()`](https://dplyr.tidyverse.org/reference/defunct.html)
+[tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
 that contains MCMC samples from the joint posterior distribution of the
 model with unpacked individual-level parameters (e.g., `y0`, `y1`, `t1`,
 `alpha`, `shape`) and population-level parameters (e.g., `mu.par`,

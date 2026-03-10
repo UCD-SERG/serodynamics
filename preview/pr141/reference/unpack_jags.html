@@ -68,7 +68,7 @@ and population-level hyperparameters/precision terms.</p>
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>A <code><a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">dplyr::tbl_df()</a></code> in <code><a href="https://rdrr.io/pkg/ggmcmc/man/ggs.html" class="external-link">ggmcmc::ggs()</a></code> / MCMC-long format,
+<dd><p>A <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> in <code><a href="https://rdrr.io/pkg/ggmcmc/man/ggs.html" class="external-link">ggmcmc::ggs()</a></code> / MCMC-long format,
 usually <code>ggmcmc::ggs(jags_post[["mcmc"]])</code> where <code>jags_post</code> comes from
 <a href="run_mod.html">run_mod</a>. Must contain at least <code>Iteration</code>, <code>Chain</code>, <code>Parameter</code>,
 and <code>value</code> columns.</p></dd>
@@ -76,7 +76,7 @@ and <code>value</code> columns.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <code><a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">dplyr::tbl_df()</a></code> that
+    <p>A <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> that
 contains MCMC samples from the joint posterior distribution of the model
 with unpacked individual-level parameters (e.g., <code>y0</code>, <code>y1</code>, <code>t1</code>,
 <code>alpha</code>, <code>shape</code>) and population-level parameters (e.g., <code>mu.par</code>,
