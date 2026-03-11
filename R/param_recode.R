@@ -6,7 +6,7 @@
 #' @returns A [vector] with recoded values.
 #' @keywords internal
 param_recode <- function(x) {
-  dplyr::recode_values(
+  dplyr::recode(
     x,
     "1" = "y0",
     "2" = "y1",
