@@ -29,3 +29,8 @@
 ^_quarto\.yml$
 ^\.quarto$
 ^\.devcontainer$
+^inst/stan/.*\.o$
+^inst/stan/.*\.so$
+^inst/stan/.*\.d$
+^inst/stan/.*_rng\.hpp$
+^inst/stan/.*\.rds$

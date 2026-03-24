@@ -1,9 +1,9 @@
 # results are consistent with simulated data
 
     list(names = c("id", "visit_num", "timeindays", "iter", "antigen_iso", 
-    "y0", "y1", "t1", "alpha", "r", "value"), class = c("case_data", 
-    "tbl_df", "tbl", "data.frame"), id_var = "id", biomarker_var = "antigen_iso", 
-        timeindays = "timeindays", value_var = "value")
+    "y0", "y1", "t1", "alpha", "r", "value"), id_var = "id", biomarker_var = "antigen_iso", 
+        timeindays = "timeindays", value_var = "value", class = c("case_data", 
+        "tbl_df", "tbl", "data.frame"))
 
 # results are consistent with SEES data
 

@@ -1,5 +1,15 @@
 # serodynamics (development version)
 
+* Added RStan backend with multivariate observation model (Model B):
+  `run_mod_stan()`, `prep_data_stan()`, and `postprocess_stan_output()`.
+  Model B replaces K independent univariate normal likelihoods with a
+  single K-variate normal likelihood per time point, capturing residual
+  correlations across antigen-isotype pairs.  Output is an `sr_model`
+  tibble identical in structure to `run_mod()`, so all existing plot and
+  summary functions work without modification.  Requires the optional
+  dependency `rstan` (`install.packages("rstan")`).  The JAGS backend is
+  fully backward-compatible and unchanged.
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

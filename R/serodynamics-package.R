@@ -28,3 +28,16 @@
 #' @importFrom utils read.csv
 ## usethis namespace: end
 NULL
+
+# Stan availability note -------------------------------------------------------
+#
+# The Stan-based functions `run_mod_stan()`, `prep_data_stan()`, and
+# `postprocess_stan_output()` require the `rstan` package, which is listed as
+# a *suggested* (optional) dependency of serodynamics.  These functions call
+# `requireNamespace("rstan")` at runtime and emit an informative error when
+# rstan is not installed.
+#
+# To use the Stan backend, install rstan from CRAN.
+#
+# The Stan model file is stored in inst/stan/model_b.stan and is compiled on
+# first use within each R session by `rstan::stan_model()`.
