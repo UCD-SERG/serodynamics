@@ -1,0 +1,186 @@
+---
+title: "Stan Backend: Multivariate Observation Model (Model B)"
+format: html
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment  = "#>",
+  fig.width  = 7,
+  fig.height = 5,
+  eval = FALSE
+)
+```
+
+## Overview
+
+Model B extends the JAGS antibody kinetics model by replacing the
+*K* independent univariate normal likelihoods (one per antigen-isotype) with a
+single *K*-variate normal likelihood per time point.  This captures residual
+correlations across antigen-isotype pairs within each observation, which the
+independent model ignores.
+
+The `run_mod_stan()` function implements Model B using RStan.  Its output is an
+`sr_model` tibble with the same column layout as `run_mod()`, so all existing
+plotting and summary functions (`plot_predicted_curve()`, `post_summ()`, etc.)
+work without modification.
+
+### Why Stan instead of JAGS?
+
+- **LKJ prior** for correlation matrices — better than the Wishart prior in
+  small samples (Gelman 2006).
+- **NUTS sampler** — more efficient exploration of correlated posteriors.
+- **Extendable** to Model C (Kronecker product covariance for cross-biomarker
+  parameter correlations), which JAGS cannot handle.
+
+### The two-phase kinetics curve
+
+The mathematical model is identical to `model.jags`:
+
+| Phase | Condition | Equation |
+|-------|-----------|----------|
+| Rising | $t \le t_1$ | $\log y(t) = \log y_0 + \beta t$ |
+| Decay | $t > t_1$ | $\log y(t) = \frac{1}{1-\rho}\log\!\bigl[y_1^{1-\rho} - (1-\rho)\,\alpha\,(t - t_1)\bigr]$ |
+
+where $\beta = (\log y_1 - \log y_0)/t_1$.
+
+### Model B likelihood
+
+$$
+\log \mathbf{y}_{i,t} \sim \mathcal{N}_K\!\left(\boldsymbol{\mu}_{i,t},\; \Sigma_\varepsilon\right)
+$$
+
+$\Sigma_\varepsilon = \mathrm{diag}(\boldsymbol{\tau}_\varepsilon)\,\Omega_\varepsilon\,\mathrm{diag}(\boldsymbol{\tau}_\varepsilon)$,
+with $\Omega_\varepsilon \sim \mathrm{LKJ}(2)$ and
+$\tau_{\varepsilon,k} \sim \mathrm{Cauchy}^+(0, 2.5)$.
+
+## Installation
+
+Install `rstan` if you have not already:
+
+```{r}
+install.packages("rstan")
+```
+
+Install `serodynamics`:
+
+```{r}
+# install.packages("pak")
+pak::pak("UCD-SERG/serodynamics")
+```
+
+## Quick start
+
+```{r}
+library(serodynamics)
+library(dplyr)
+
+# Simulate 20 subjects using typhoid curve parameters
+set.seed(42)
+sim_data <- serocalculator::typhoid_curves_nostrat_100 |>
+  sim_case_data(n = 20)
+```
+
+### Fit Model B
+
+```{r}
+fit <- run_mod_stan(
+  data   = sim_data,
+  model  = "model_b",
+  chains = 4,
+  iter   = 2000,
+  warmup = 1000,
+  seed   = 1
+)
+```
+
+### Inspect output
+
+```{r}
+# Same structure as run_mod() output
+print(fit)
+
+# Residual correlation matrix across antigen-isotype pairs
+attr(fit, "Omega_eps")
+
+# Residual covariance matrix
+attr(fit, "Sigma_eps")
+```
+
+### Fitted and residual values
+
+```{r}
+attr(fit, "fitted_residuals") |> head()
+```
+
+### Visualize predicted curves
+
+Because `fit` is an `sr_model` object, the standard plotting functions work
+directly:
+
+```{r}
+plot_predicted_curve(fit, sim_data)
+```
+
+### Posterior summaries
+
+```{r}
+post_summ(fit)
+```
+
+## Comparing JAGS and Stan backends
+
+Both `run_mod()` and `run_mod_stan()` return an `sr_model` tibble, so you can
+compare them side-by-side:
+
+```{r}
+jags_fit <- run_mod(
+  data   = sim_data,
+  nchain = 4,
+  nadapt = 500,
+  nburn  = 500,
+  nmc    = 500,
+  niter  = 500
+)
+
+# Column names are identical
+identical(names(jags_fit), names(fit))
+
+# Compare posterior medians for y0
+bind_rows(
+  jags_fit  |> filter(Parameter == "y0") |> mutate(backend = "JAGS"),
+  fit       |> filter(Parameter == "y0") |> mutate(backend = "Stan")
+) |>
+  group_by(backend, Iso_type) |>
+  summarise(median_y0 = median(value), .groups = "drop")
+```
+
+## Data flow
+
+```
+as_case_data(raw)          # unchanged
+    │
+    ▼
+prep_data(case_data,       # unchanged (add_newperson = FALSE used internally)
+          add_newperson = FALSE)
+    │
+    ▼
+prep_data_stan(prepped)    # NEW — reshape to Stan list
+    │
+    ▼
+rstan::sampling(model_b)   # Stan NUTS sampler
+    │
+    ▼
+postprocess_stan_output()  # NEW — stanfit → sr_model tibble
+    │
+    ▼
+sr_model tibble            # identical structure to run_mod() output
+```
+
+## Session info
+
+```{r}
+sessioninfo::session_info()
+```
