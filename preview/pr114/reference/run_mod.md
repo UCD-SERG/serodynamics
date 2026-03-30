@@ -87,7 +87,7 @@ run_mod(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -165,7 +165,7 @@ run_mod(
 ## Value
 
 An `sr_model` class object: a subclass of
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
+[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html) that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input `data`, including the
 following:
@@ -271,7 +271,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Dec 24 17:20:00 2025
+#> Welcome to JAGS 4.3.2 on Mon Mar 30 03:33:00 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -297,7 +297,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -306,7 +305,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Dec 24 17:20:46 2025
+#> Welcome to JAGS 4.3.2 on Mon Mar 30 03:33:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

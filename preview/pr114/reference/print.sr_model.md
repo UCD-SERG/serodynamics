@@ -1,4 +1,4 @@
-# Default print for [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md) output object of class `sr_model`
+# Default print for [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md) output object of class `sr_model`
 
 A default print method for class `sr_model` that includes the median
 posterior distribution for antibody kinetic curve parameters by
@@ -16,18 +16,18 @@ print(x, print_tbl = FALSE, ...)
 - x:
 
   An `sr_model` output object from
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md).
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md).
 
 - print_tbl:
 
   A [logical](https://rdrr.io/r/base/logical.html) indicator to print in
   style of
-  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html).
+  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html).
 
 - ...:
 
   Additional arguments affecting the summary produced.
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md)
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md)
   function.
 
 ## Value

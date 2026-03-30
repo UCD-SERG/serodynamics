@@ -9,5 +9,5 @@ to see their documentation.
 
 - serocalculator:
 
-  [`get_biomarker_levels`](https://ucd-serg.github.io/serocalculator/reference/get_biomarker_levels.html),
-  [`get_biomarker_names_var`](https://ucd-serg.github.io/serocalculator/reference/get_biomarker_names_var.html)
+  [`get_biomarker_levels`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/get_biomarker_levels.html),
+  [`get_biomarker_names_var`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/get_biomarker_names_var.html)
