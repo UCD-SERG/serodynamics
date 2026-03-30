@@ -28,3 +28,4 @@
 
 ^_quarto\.yml$
 ^\.quarto$
+^\.devcontainer$

@@ -1,11 +1,22 @@
 # serodynamics (development version)
 
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies preinstalled, making Copilot
+  Workspace sessions much faster.
+* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
+* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
+
+* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
+  snapshot directories (which were identical), keeping only base snapshots and 
+  darwin-specific variants for macOS platform differences (#73).
+
 * Initial CRAN submission.
+* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
 
 ## New features
 
-<<<<<<< HEAD
 * Creating default print.sr_model function for sr_model class (#114)
+* Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
