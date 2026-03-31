@@ -152,8 +152,9 @@ run_mod <- function(data,
 
     # Adding attributes
     mod_atts <- attributes(jags_packed)
-    # Only keeping necessary attributes
-    mod_atts <- mod_atts[4:8]
+    # Select necessary attributes by name for robustness across platforms
+    mod_atts <- mod_atts[c("nChains", "nParameters", "nIterations",
+                           "nBurnin", "nThin", "description")]
     
     # extracting antigen-iso combinations to correctly number
     # them by the order they are estimated by the program.
@@ -219,7 +220,23 @@ run_mod <- function(data,
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out)
-  new_atts <- c(current_atts, mod_atts)
+  # Explicitly build the attribute list in the correct order to ensure
+  # that `class` appears at position [2] (after `names` and `row.names`).
+  # The dplyr operations above can carry ggmcmc attributes (nChains, etc.)
+  # from jags_packed into jags_out, placing `class` at the end. We use
+  # mod_atts (named selection from jags_packed) as the authoritative source
+  # for the ggmcmc-style metadata attributes.
+  new_atts <- list(
+    names = current_atts$names,
+    row.names = current_atts$row.names,
+    class = union("sr_model", current_atts$class),
+    nChains = mod_atts$nChains,
+    nParameters = mod_atts$nParameters,
+    nIterations = mod_atts$nIterations,
+    nBurnin = mod_atts$nBurnin,
+    nThin = mod_atts$nThin,
+    description = mod_atts$description
+  )
   attributes(jags_out) <- new_atts
   
   # Adding population parameters and priors in as attributes
@@ -239,7 +256,5 @@ run_mod <- function(data,
     jags_out <- jags_out |>
       structure(jags.post = jags_post_final)
   }
-  jags_out <- jags_out |>
-    structure(class = union("sr_model", class(jags_out)))
   jags_out
 }
