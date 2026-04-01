@@ -14,6 +14,7 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
+  with_pop_params = TRUE,
   ...
 )
 }
@@ -40,6 +41,11 @@ entered in quotes.}
 component
 should be included as an element of the \link{list} object returned by \code{run_mod()}
 (see \code{Value} section below for details).
+Note: These objects can be large.}
+
+\item{with_pop_params}{A \link{logical} value specifying whether population
+level parameters should be included as an attribute entitled
+\code{population_params}. Included as default.
 Note: These objects can be large.}
 
 \item{...}{
@@ -120,10 +126,11 @@ including the following:
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
 \item \code{nThin}: Thinning number (niter/nmc).
-\item \code{population_params}: Modeled population parameters, indexed by
+\item \code{population_params}: Optionally included modeled population parameters
+indexed by
 \code{Iteration},
-\code{Chain}, \code{Parameter}, \code{Iso_type}, and \code{Stratification}. Includes the
-following modeled population parameters:
+\code{Chain}, \code{Parameter}, \code{Iso_type}, and \code{Stratification}. Included as
+default. Includes the following modeled population parameters:
 \itemize{
 \item \code{mu.par} = The population means of the host-specific model parameters
 (on logarithmic scales).
