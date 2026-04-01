@@ -91,6 +91,7 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  with_pop_params <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -138,6 +139,13 @@ entered in quotes.</p></dd>
 component
 should be included as an element of the <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> object returned by <code>run_mod()</code>
 (see <code>Value</code> section below for details).
+Note: These objects can be large.</p></dd>
+
+
+<dt id="arg-with-pop-params">with_pop_params<a class="anchor" aria-label="anchor" href="#arg-with-pop-params"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether population
+level parameters should be included as an attribute entitled
+<code>population_params</code>. Included as default.
 Note: These objects can be large.</p></dd>
 
 
@@ -216,10 +224,11 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
 <li><p><code>nThin</code>: Thinning number (niter/nmc).</p></li>
-<li><p><code>population_params</code>: Modeled population parameters, indexed by
+<li><p><code>population_params</code>: Optionally included modeled population parameters
+indexed by
 <code>Iteration</code>,
-<code>Chain</code>, <code>Parameter</code>, <code>Iso_type</code>, and <code>Stratification</code>. Includes the
-following modeled population parameters:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model parameters
+<code>Chain</code>, <code>Parameter</code>, <code>Iso_type</code>, and <code>Stratification</code>. Included as
+default. Includes the following modeled population parameters:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model parameters
 (on logarithmic scales).</p></li>
 <li><p><code>prec.par</code> = The population precision matrix of the hyperparameters
 (with diagonal elements equal to inverse variances).</p></li>
@@ -280,7 +289,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 31 10:37:05 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr  1 09:31:53 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -315,7 +324,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Mar 31 10:38:15 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed Apr  1 09:32:59 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>

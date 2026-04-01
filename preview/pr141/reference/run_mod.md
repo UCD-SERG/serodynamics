@@ -31,6 +31,7 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
+  with_pop_params = TRUE,
   ...
 )
 ```
@@ -83,6 +84,13 @@ run_mod(
   of the [list](https://rdrr.io/r/base/list.html) object returned by
   `run_mod()` (see `Value` section below for details). Note: These
   objects can be large.
+
+- with_pop_params:
+
+  A [logical](https://rdrr.io/r/base/logical.html) value specifying
+  whether population level parameters should be included as an attribute
+  entitled `population_params`. Included as default. Note: These objects
+  can be large.
 
 - ...:
 
@@ -209,9 +217,10 @@ the following:
 
   - `nThin`: Thinning number (niter/nmc).
 
-  - `population_params`: Modeled population parameters, indexed by
-    `Iteration`, `Chain`, `Parameter`, `Iso_type`, and `Stratification`.
-    Includes the following modeled population parameters:
+  - `population_params`: Optionally included modeled population
+    parameters indexed by `Iteration`, `Chain`, `Parameter`, `Iso_type`,
+    and `Stratification`. Included as default. Includes the following
+    modeled population parameters:
 
     - `mu.par` = The population means of the host-specific model
       parameters (on logarithmic scales).
@@ -285,7 +294,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Mar 31 10:37:05 2026
+#> Welcome to JAGS 4.3.2 on Wed Apr  1 09:31:53 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -320,7 +329,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Mar 31 10:38:15 2026
+#> Welcome to JAGS 4.3.2 on Wed Apr  1 09:32:59 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
