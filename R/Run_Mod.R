@@ -49,10 +49,11 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters, indexed by 
+#'   - `population_params`: Optionally included modeled population parameters
+#'   indexed by 
 #'   `Iteration`, 
-#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
-#'   following modeled population parameters:
+#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Included as 
+#'   default. Includes the following modeled population parameters:
 #'     - `mu.par` = The population means of the host-specific model parameters 
 #'     (on logarithmic scales).
 #'     - `prec.par` = The population precision matrix of the hyperparameters
@@ -81,6 +82,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
+                    population_params = TRUE,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -126,8 +128,12 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par",
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
+    # Conditional statement for including population parameters
+    if (population_params == TRUE) {
+    tomonitor <- c(tomonitor, "mu.par", "prec.par",
                    "prec.logy")
+    }
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -206,6 +212,7 @@ run_mod <- function(data,
     jags_out <- tibble::tibble(rbind(jags_out, jags_final))
   }
   
+  if (population_params == TRUE) {
   # Preparing population parameters
   population_params <- prep_popparams(jags_out)
   population_params <- population_params[, c(
@@ -215,6 +222,7 @@ run_mod <- function(data,
   
   # Taking out population parameters
   jags_out <- ex_popparams(jags_out)
+  }
   
   # Making output a tibble and restructuring.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
@@ -239,10 +247,13 @@ run_mod <- function(data,
   )
   attributes(jags_out) <- new_atts
   
-  # Adding population parameters and priors in as attributes
+  # Adding population parameters optionally and priors in as attributes
+  if (population_params == TRUE) {
   jags_out <- jags_out |>
-    structure(population_params = population_params,
-              priors = attributes(priorspec)$used_priors)
+    structure(population_params = population_params)
+  }
+  jags_out <- jags_out |>
+    structure(priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
