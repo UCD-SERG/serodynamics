@@ -26,6 +26,10 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
+#' @param with_pop_params A [logical] value specifying whether population 
+#' level parameters should be included as an attribute entitled 
+#' `population_params`. Included as default.
+#' Note: These objects can be large.
 #' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -82,7 +86,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    population_params = TRUE,
+                    with_pop_params = TRUE,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -130,7 +134,7 @@ run_mod <- function(data,
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
     # Conditional statement for including population parameters
-    if (population_params == TRUE) {
+    if (with_pop_params == TRUE) {
     tomonitor <- c(tomonitor, "mu.par", "prec.par",
                    "prec.logy")
     }
@@ -212,7 +216,7 @@ run_mod <- function(data,
     jags_out <- tibble::tibble(rbind(jags_out, jags_final))
   }
   
-  if (population_params == TRUE) {
+  if (with_pop_params == TRUE) {
   # Preparing population parameters
   population_params <- prep_popparams(jags_out)
   population_params <- population_params[, c(
@@ -248,7 +252,7 @@ run_mod <- function(data,
   attributes(jags_out) <- new_atts
   
   # Adding population parameters optionally and priors in as attributes
-  if (population_params == TRUE) {
+  if (with_pop_params == TRUE) {
   jags_out <- jags_out |>
     structure(population_params = population_params)
   }
