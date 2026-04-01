@@ -134,9 +134,9 @@ run_mod <- function(data,
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
     # Conditional statement for including population parameters
-    if (with_pop_params == TRUE) {
-    tomonitor <- c(tomonitor, "mu.par", "prec.par",
-                   "prec.logy")
+    if (with_pop_params) {
+      tomonitor <- c(tomonitor, "mu.par", "prec.par",
+                     "prec.logy")
     }
 
     jags_post <- runjags::run.jags(
@@ -216,16 +216,16 @@ run_mod <- function(data,
     jags_out <- tibble::tibble(rbind(jags_out, jags_final))
   }
   
-  if (with_pop_params == TRUE) {
-  # Preparing population parameters
-  population_params <- prep_popparams(jags_out)
-  population_params <- population_params[, c(
-    "Iteration", "Chain", "Parameter", "Iso_type",
-    "Stratification", "Population_Parameter", "value"
-  )]
+  if (with_pop_params) {
+    # Preparing population parameters
+    population_params <- prep_popparams(jags_out)
+    population_params <- population_params[, c(
+      "Iteration", "Chain", "Parameter", "Iso_type",
+      "Stratification", "Population_Parameter", "value"
+    )]
   
-  # Taking out population parameters
-  jags_out <- ex_popparams(jags_out)
+    # Taking out population parameters
+    jags_out <- ex_popparams(jags_out)
   }
   
   # Making output a tibble and restructuring.
@@ -252,9 +252,9 @@ run_mod <- function(data,
   attributes(jags_out) <- new_atts
   
   # Adding population parameters optionally and priors in as attributes
-  if (with_pop_params == TRUE) {
-  jags_out <- jags_out |>
-    structure(population_params = population_params)
+  if (with_pop_params) {
+    jags_out <- jags_out |>
+      structure(population_params = population_params)
   }
   jags_out <- jags_out |>
     structure(priors = attributes(priorspec)$used_priors)
