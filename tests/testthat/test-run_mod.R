@@ -70,13 +70,13 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = "bldculres", # Variable to be stratified
+      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "population_params", 
-                           "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
     
     results |>
@@ -106,13 +106,13 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
+      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "population_params", 
-                           "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse")
     
     results |>
@@ -146,7 +146,8 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE
+      with_post = TRUE,
+      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
     
@@ -180,6 +181,7 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
+      with_pop_params = FALSE,
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
@@ -190,8 +192,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "population_params",
-                           "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
