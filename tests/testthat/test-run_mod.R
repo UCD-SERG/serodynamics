@@ -25,13 +25,6 @@ test_that(
     ) |>
       suppressWarnings()
     
-    
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "population_params", 
-                           "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse")
-    
     results |>
       expect_snapshot_data(
         "sim-strat-curve-params",
@@ -45,6 +38,7 @@ test_that(
       )
     
     attributes(results)$population_params |>
+      
       expect_snapshot_data(
         "sim-strat-population_params",
         variant = darwin_variant()

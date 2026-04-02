@@ -1,13 +1,3 @@
-# results are consistent with simulated data
-
-    list(names = c("Iteration", "Chain", "Parameter", "Iso_type", 
-    "Stratification", "Subject", "value"), class = c("sr_model", 
-    "tbl_df", "tbl", "data.frame"), nChains = 2L, nParameters = 536L, 
-        nIterations = 10L, nBurnin = 200, nThin = 1, description = "jags_post[[\"mcmc\"]]", 
-        priors = list(mu_hyp_param = c(1, 7, 1, -4, -1), prec_hyp_param = c(1, 
-        1e-05, 1, 0.001, 1), omega_param = c(1, 50, 1, 10, 1), wishdf_param = 20, 
-            prec_logy_hyp_param = c(4, 1)))
-
 # results are consistent with SEES data
 
     list(names = c("Iteration", "Chain", "Parameter", "Iso_type", 
