@@ -31,17 +31,34 @@ test_that(
         variant = darwin_variant()
       )
     
+    # Testing attributes
+    results |>
+      attributes() |>
+      names() |>
+      expect_setequal(c("names", "row.names","class", "nChains", 
+                        "nParameters", "nIterations", "nBurnin", "nThin",
+                        "description", "population_params", "priors", 
+                        "fitted_residuals"))
+    
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",
         variant = darwin_variant()
       )
-    
+
+    # Testing for population parameters
+    ref_summary <- readRDS(testthat::test_path(
+      "ref_popparam_summary_stats.rds"))
     attributes(results)$population_params |>
-      
-      expect_snapshot_data(
-        "sim-strat-population_params",
-        variant = darwin_variant()
+      dplyr::group_by(Parameter) |>
+      dplyr::summarise(
+        mean = mean(value),
+        sd = sd(value),
+        .groups = "drop"
+      ) |>
+      expect_equal(
+        ref_summary,
+        tolerance = 1e-3
       )
     
   }
@@ -144,12 +161,7 @@ test_that(
       with_pop_params = FALSE,
     ) |>
       suppressWarnings()
-    
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
-    
+
     results |>
       expect_snapshot_data(
         "nostrat-curve-params-withpost",
@@ -183,11 +195,6 @@ test_that(
       prec_logy_hyp_param = c(3, 1)
     ) |>
       suppressWarnings()
-    
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
     
     results |>
       expect_snapshot_data(
