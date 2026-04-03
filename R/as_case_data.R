@@ -54,9 +54,9 @@ as_case_data <- function(
     serocalculator::set_id_var(id_var) |>
     (\(x) {
       current_atts <- attributes(x)
-      # Explicitly order attributes to ensure class is at position [2]
-      # (after names and row.names), which is the expected position for
-      # tibble subclasses. tibble::as_tibble() on a subclass can reorder
+      # Explicitly order attributes so that class comes immediately after
+      # names and row.names, which is the expected position for tibble
+      # subclasses. tibble::as_tibble() on a subclass can reorder
       # standard attributes, so we rebuild them in the correct order.
       # Use current_atts$id_var to preserve any standardization done by
       # serocalculator::set_id_var (e.g., renaming the ID column to "id").
