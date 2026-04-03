@@ -232,8 +232,8 @@ run_mod <- function(data,
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out)
-  # Explicitly build the attribute list in the correct order to ensure
-  # that `class` appears at position [2] (after `names` and `row.names`).
+  # Explicitly build the attribute list in the correct order to ensure that
+  # `class` appears immediately after `names` and `row.names`.
   # The dplyr operations above can carry ggmcmc attributes (nChains, etc.)
   # from jags_packed into jags_out, placing `class` at the end. We use
   # mod_atts (named selection from jags_packed) as the authoritative source
