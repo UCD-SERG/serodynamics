@@ -3,6 +3,7 @@ test_that(
   code = {
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
+    testthat::announce_snapshot_file("popparam-summary-stats.csv")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -55,9 +56,16 @@ test_that(
         sd = sd(value),
         .groups = "drop"
       ) |>
+<<<<<<< HEAD
       expect_snapshot_data("popparam-summary-stats", 
                            variant = darwin_variant()
                            )
+=======
+      expect_snapshot_data(
+        "popparam-summary-stats",
+        variant = darwin_variant()
+      )
+>>>>>>> c14bba8d1c91d58f644ba5557551d353d48aca91
     
   }
 )
