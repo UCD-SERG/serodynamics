@@ -28,8 +28,8 @@
 
 ### New features
 
-- Including population parameters as attributes in run_mod output.
-  ([\#141](https://github.com/UCD-SERG/serodynamics/issues/141))
+- Including optional population parameters as attributes in run_mod
+  output. ([\#141](https://github.com/UCD-SERG/serodynamics/issues/141))
 - Made “newperson” optional in
   [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_data.md)
   ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73))

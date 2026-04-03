@@ -31,7 +31,7 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
-  with_pop_params = TRUE,
+  with_pop_params = FALSE,
   ...
 )
 ```
@@ -89,7 +89,7 @@ run_mod(
 
   A [logical](https://rdrr.io/r/base/logical.html) value specifying
   whether population level parameters should be included as an attribute
-  entitled `population_params`. Included as default. Note: These objects
+  entitled `population_params`. Excluded as default. Note: These objects
   can be large.
 
 - ...:
@@ -219,7 +219,7 @@ the following:
 
   - `population_params`: Optionally included modeled population
     parameters indexed by `Iteration`, `Chain`, `Parameter`, `Iso_type`,
-    and `Stratification`. Included as default. Includes the following
+    and `Stratification`. Excluded as default. Includes the following
     modeled population parameters:
 
     - `mu.par` = The population means of the host-specific model
@@ -294,7 +294,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:56:18 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 13:01:35 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -315,7 +315,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . . . . Updating 2000
+#> . . . . . . Updating 2000
 #> -------------------------------------------------| 2000
 #> ************************************************** 100%
 #> . . . . Updating 0
@@ -329,7 +329,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:57:24 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 13:02:36 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -350,7 +350,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . . . . Updating 2000
+#> . . . . . . Updating 2000
 #> -------------------------------------------------| 2000
 #> ************************************************** 100%
 #> . . . . Updating 0
