@@ -28,7 +28,7 @@
 #' Note: These objects can be large.
 #' @param with_pop_params A [logical] value specifying whether population 
 #' level parameters should be included as an attribute entitled 
-#' `population_params`. Included as default.
+#' `population_params`. Excluded as default.
 #' Note: These objects can be large.
 #' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
@@ -56,7 +56,7 @@
 #'   - `population_params`: Optionally included modeled population parameters
 #'   indexed by 
 #'   `Iteration`, 
-#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Included as 
+#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Excluded as 
 #'   default. Includes the following modeled population parameters:
 #'     - `mu.par` = The population means of the host-specific model parameters 
 #'     (on logarithmic scales).
@@ -86,7 +86,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
-                    with_pop_params = TRUE,
+                    with_pop_params = FALSE,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
