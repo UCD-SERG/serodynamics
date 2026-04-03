@@ -3,6 +3,7 @@ test_that(
   code = {
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
+    testthat::announce_snapshot_file("popparam-summary-stats.csv")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -22,6 +23,7 @@ test_that(
       nmc = 10,
       niter = 10, # Number of iterations
       strat = "strat", # Variable to be stratified
+      with_pop_params = TRUE,
     ) |>
       suppressWarnings()
     
@@ -47,8 +49,6 @@ test_that(
       )
 
     # Testing for population parameters
-    ref_summary <- readRDS(testthat::test_path(
-      "ref_popparam_summary_stats.rds"))
     attributes(results)$population_params |>
       dplyr::group_by(Parameter) |>
       dplyr::summarise(
@@ -56,9 +56,9 @@ test_that(
         sd = sd(value),
         .groups = "drop"
       ) |>
-      expect_equal(
-        ref_summary,
-        tolerance = 1e-3
+      expect_snapshot_data(
+        "popparam-summary-stats",
+        variant = darwin_variant()
       )
     
   }
