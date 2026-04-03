@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:26 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:58:37 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -197,7 +197,7 @@ fitted_model <- run_mod(
 head(fitted_model)
 #> # A tibble: 6 × 7
 #>   Iteration Chain Parameter Iso_type Stratification Subject  value
-#>       <int> <int> <chr>     <fct>    <chr>          <chr>    <dbl>
+#>       <int> <int> <chr>     <chr>    <chr>          <chr>    <dbl>
 #> 1         1     1 alpha     HlyE_IgA None           1       0.0114
 #> 2         2     1 alpha     HlyE_IgA None           1       0.0114
 #> 3         3     1 alpha     HlyE_IgA None           1       0.0114
@@ -353,7 +353,7 @@ summary_stats <- post_summ(fitted_model)
 print(summary_stats)
 #> # A tibble: 25 × 11
 #>    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`
-#>    <fct>    <chr>     <chr>               <dbl>    <dbl>   <dbl>   <dbl>   <dbl>
+#>    <chr>    <chr>     <chr>               <dbl>    <dbl>   <dbl>   <dbl>   <dbl>
 #>  1 HlyE_IgA alpha     None              0.0132   9.15e-3 1.08e-2 3.87e-3 6.37e-3
 #>  2 HlyE_IgA shape     None              1.47     1.01e-1 1.44e+0 1.34e+0 1.39e+0
 #>  3 HlyE_IgA t1        None              2.02     4.93e-1 2.07e+0 1.15e+0 1.67e+0
@@ -402,7 +402,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:38 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:58:50 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -437,7 +437,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:40 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:58:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
