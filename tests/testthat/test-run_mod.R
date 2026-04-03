@@ -56,16 +56,9 @@ test_that(
         sd = sd(value),
         .groups = "drop"
       ) |>
-<<<<<<< HEAD
       expect_snapshot_data("popparam-summary-stats", 
                            variant = darwin_variant()
                            )
-=======
-      expect_snapshot_data(
-        "popparam-summary-stats",
-        variant = darwin_variant()
-      )
->>>>>>> c14bba8d1c91d58f644ba5557551d353d48aca91
     
   }
 )
