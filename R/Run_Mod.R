@@ -97,13 +97,13 @@ run_mod <- function(data,
 
   ## Creating a shell to output results
   jags_out <- tibble::tibble(
-    "Iteration" = NULL,
-    "Chain" = NULL,
-    "value" = NULL,
-    "Subject" = NULL,
-    "Parameter" = NULL,
-    "Iso_type" = NULL,
-    "Stratification" = NULL
+    "Iteration" = integer(),
+    "Chain" = integer(),
+    "value" = numeric(),
+    "Subject" = character(),
+    "Parameter" = character(),
+    "Iso_type" = character(),
+    "Stratification" = character()
   )
 
   ## Creating output list for jags.post
