@@ -22,6 +22,7 @@ test_that(
       nmc = 10,
       niter = 10, # Number of iterations
       strat = "strat", # Variable to be stratified
+      with_pop_params = TRUE,
     ) |>
       suppressWarnings()
     
@@ -47,8 +48,6 @@ test_that(
       )
 
     # Testing for population parameters
-    ref_summary <- readRDS(testthat::test_path(
-      "ref_popparam_summary_stats.rds"))
     attributes(results)$population_params |>
       dplyr::group_by(Parameter) |>
       dplyr::summarise(
@@ -56,10 +55,9 @@ test_that(
         sd = sd(value),
         .groups = "drop"
       ) |>
-      expect_equal(
-        ref_summary,
-        tolerance = 1e-3
-      )
+      expect_snapshot_data("popparam-summary-stats", 
+                           variant = darwin_variant()
+                           )
     
   }
 )
@@ -81,7 +79,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = "bldculres", # Variable to be stratified
-      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
     
@@ -117,7 +114,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
     
@@ -158,7 +154,6 @@ test_that(
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
       with_post = TRUE,
-      with_pop_params = FALSE,
     ) |>
       suppressWarnings()
 
@@ -187,7 +182,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_pop_params = FALSE,
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
