@@ -37,7 +37,7 @@ test_that(
     results |>
       attributes() |>
       names() |>
-      expect_setequal(c("names", "row.names","class", "nChains", 
+      expect_setequal(c("names", "row.names", "class", "nChains", 
                         "nParameters", "nIterations", "nBurnin", "nThin",
                         "description", "population_params", "priors", 
                         "fitted_residuals"))
@@ -57,8 +57,8 @@ test_that(
         .groups = "drop"
       ) |>
       expect_snapshot_data("popparam-summary-stats", 
-                           variant = darwin_variant()
-                           )
+        variant = darwin_variant()    
+      )
     
   }
 )
