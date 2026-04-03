@@ -213,7 +213,7 @@ run_mod <- function(data,
     jags_final$Stratification <- i
     # Creating output as a data frame with the
     # jags output results for each stratification rbinded.
-    jags_out <- tibble::tibble(rbind(jags_out, jags_final))
+    jags_out <- dplyr::bind_rows(jags_out, jags_final)
   }
   
   if (with_pop_params) {
