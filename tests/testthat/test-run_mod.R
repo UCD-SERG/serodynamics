@@ -94,7 +94,12 @@ test_that(
         variant = darwin_variant()
       )
     
-
+    attributes(results)$fitted_residuals |>
+      expect_snapshot_data(
+        "strat-fitted_residuals",
+        variant = darwin_variant()
+      )
+    
   }
 )
 
