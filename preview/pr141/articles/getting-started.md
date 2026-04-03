@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  2 14:01:02 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:26 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -402,7 +402,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  2 14:01:15 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:38 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -437,7 +437,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  2 14:01:17 2026
+#> Welcome to JAGS 4.3.2 on Fri Apr  3 12:48:40 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -494,7 +494,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-02
+#>  date     2026-04-03
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   1.9.36 @ /usr/local/bin/quarto
 #> 
@@ -505,7 +505,7 @@ sessioninfo::session_info()
 #>  codetools        0.2-20     2024-03-31 [3] CRAN (R 4.5.3)
 #>  digest           0.6.39     2025-11-19 [1] CRAN (R 4.5.3)
 #>  doParallel       1.0.17     2022-02-07 [1] CRAN (R 4.5.3)
-#>  dplyr          * 1.2.0      2026-02-03 [1] CRAN (R 4.5.3)
+#>  dplyr          * 1.2.1      2026-04-03 [1] CRAN (R 4.5.3)
 #>  evaluate         1.0.5      2025-08-27 [1] CRAN (R 4.5.3)
 #>  farver           2.1.2      2024-05-13 [1] CRAN (R 4.5.3)
 #>  fastmap          1.2.0      2024-05-15 [1] CRAN (R 4.5.3)
@@ -541,7 +541,7 @@ sessioninfo::session_info()
 #>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.3)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.3)
 #>  serocalculator   1.4.0.9009 2026-03-29 [1] Github (ucd-serg/serocalculator@ae4e72c)
-#>  serodynamics   * 0.0.0.9048 2026-04-02 [1] local
+#>  serodynamics   * 0.0.0.9048 2026-04-03 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.5.3)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.5.3)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.3)
