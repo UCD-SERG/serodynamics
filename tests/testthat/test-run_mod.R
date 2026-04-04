@@ -23,7 +23,7 @@ test_that(
       nmc = 10,
       niter = 10, # Number of iterations
       strat = "strat", # Variable to be stratified
-      with_pop_params = TRUE,
+      with_pop_params = TRUE
     ) |>
       suppressWarnings()
     
@@ -79,7 +79,7 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres", # Variable to be stratified
+      strat = "bldculres" # Variable to be stratified
     ) |>
       suppressWarnings()
     
@@ -119,7 +119,7 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = NA, # Variable to be stratified
+      strat = NA # Variable to be stratified
     ) |>
       suppressWarnings()
     
@@ -159,7 +159,7 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE,
+      with_post = TRUE
     ) |>
       suppressWarnings()
 
