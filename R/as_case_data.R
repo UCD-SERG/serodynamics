@@ -44,7 +44,6 @@ as_case_data <- function(
     ))
   }
   
-  data_class <- class(data)
   data |>
     tibble::as_tibble() |>
     dplyr::mutate(
@@ -63,7 +62,7 @@ as_case_data <- function(
       new_atts <- list(
         names = current_atts$names,
         row.names = current_atts$row.names,
-        class = union("case_data", data_class),
+        class = union("case_data", current_atts$class),
         id_var = current_atts$id_var,
         biomarker_var = biomarker_var,
         timeindays = time_in_days,
