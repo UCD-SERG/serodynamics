@@ -58,7 +58,7 @@ and <code>Stratification</code> (if specified).</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'sr_model'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, print_tbl <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">x</span>, print_tbl <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -71,11 +71,6 @@ and <code>Stratification</code> (if specified).</p>
 
 <dt id="arg-print-tbl">print_tbl<a class="anchor" aria-label="anchor" href="#arg-print-tbl"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> indicator to print in style of <a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">dplyr::tbl_df</a>.</p></dd>
-
-
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments affecting the summary produced.
-<code><a href="run_mod.html">run_mod()</a></code> function.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -90,11 +85,11 @@ parameters by <code>Iso_type</code> and <code>Stratification</code> (if specifie
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">nepal_sees_jags_output</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> An sr_model with the following median values:</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   Stratification Iso_type       alpha    shape      t1       y0       y1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1          typhi HlyE_IgA 0.000869201 1.587970 6.41418 2.486935 317.1110</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2      paratyphi HlyE_IgA 0.001556295 1.561960 3.90369 2.852925 191.8805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 3          typhi HlyE_IgG 0.001337480 1.304980 5.88293 1.805900 297.7720</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4      paratyphi HlyE_IgG 0.001432405 1.386685 4.72698 2.330555 272.8455</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Stratification Iso_type       alpha    shape       t1       y0       y1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1          typhi HlyE_IgA 0.001508265 1.673340 6.358405 2.340330 258.1235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2      paratyphi HlyE_IgA 0.001556295 1.561960 3.903690 2.852925 191.8805</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3          typhi HlyE_IgG 0.001393980 1.385280 6.019110 1.788035 243.9110</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4      paratyphi HlyE_IgG 0.001432405 1.386685 4.726980 2.330555 272.8455</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
