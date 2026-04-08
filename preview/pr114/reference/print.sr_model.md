@@ -1,14 +1,14 @@
 # Default print for [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md) output object of class `sr_model`
 
 A default print method for class `sr_model` that includes the median
-posterior distribution for antibody kinetic curve parameters by
-`Iso_type` and `Stratification` (if specified).
+predictive posterior distribution for antibody kinetic curve parameters
+by `Iso_type` and `Stratification` (if specified).
 
 ## Usage
 
 ``` r
 # S3 method for class 'sr_model'
-print(x, print_tbl = FALSE)
+print(x, print_tbl = FALSE, ...)
 ```
 
 ## Arguments
@@ -23,6 +23,12 @@ print(x, print_tbl = FALSE)
   A [logical](https://rdrr.io/r/base/logical.html) indicator to print in
   style of
   [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html).
+
+- ...:
+
+  Additional arguments affecting the summary produced.
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md)
+  function.
 
 ## Value
 
