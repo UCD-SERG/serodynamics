@@ -5,11 +5,11 @@
     Output
       An sr_model with the following median values:
       
-        Stratification Iso_type       alpha    shape      t1       y0       y1
-      1          typhi HlyE_IgA 0.000869201 1.587970 6.41418 2.486935 317.1110
-      2      paratyphi HlyE_IgA 0.001556295 1.561960 3.90369 2.852925 191.8805
-      3          typhi HlyE_IgG 0.001337480 1.304980 5.88293 1.805900 297.7720
-      4      paratyphi HlyE_IgG 0.001432405 1.386685 4.72698 2.330555 272.8455
+        Stratification Iso_type       alpha    shape       t1       y0       y1
+      1          typhi HlyE_IgA 0.001508265 1.673340 6.358405 2.340330 258.1235
+      2      paratyphi HlyE_IgA 0.001556295 1.561960 3.903690 2.852925 191.8805
+      3          typhi HlyE_IgG 0.001393980 1.385280 6.019110 1.788035 243.9110
+      4      paratyphi HlyE_IgG 0.001432405 1.386685 4.726980 2.330555 272.8455
 
 # results are consistent with printed output for sr_model class as tbl
 
@@ -38,7 +38,7 @@
     Output
       An sr_model with the following median values:
       
-        Iso_type      alpha   shape      t1      y0      y1
-      1 HlyE_IgA 0.01831560 1.36788 2.71828 2.71828 1099.35
-      2 HlyE_IgG 0.00965289 1.30665 2.76880 2.71828 1099.35
+        Iso_type      alpha    shape      t1      y0        y1
+      1 HlyE_IgA 0.01637070 1.352345 2.74673 2.68448  968.6465
+      2 HlyE_IgG 0.00938515 1.288250 2.97289 2.61949 1099.8900
 

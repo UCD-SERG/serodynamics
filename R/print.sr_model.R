@@ -25,6 +25,7 @@ print.sr_model <- function(x,
     cat("\n")
     cat("\n")
     x <- x |>
+      dplyr::filter(Subject == "newperson") |>
       dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
                                .data$Parameter), 
                        median_val = stats::median(.data$value)) |>
