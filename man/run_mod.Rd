@@ -93,7 +93,7 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
+An \code{sr_model} class object: a subclass of \link[dplyr:defunct]{dplyr::tbl_df} that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the following:
@@ -132,6 +132,10 @@ including the following:
 for all observations.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
+\item \code{population_params}: A \link[dplyr:defunct]{dplyr::tbl_df} with posterior samples of the
+population-level parameters (\code{mu.par}), transformed to the original
+parameter scale.  Columns: \code{Chain}, \code{Iteration}, \code{antigen_iso}, \code{y0},
+\code{y1}, \code{t1}, \code{alpha}, \code{shape}, \code{Stratification}.
 }
 }
 }

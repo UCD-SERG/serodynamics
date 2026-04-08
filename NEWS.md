@@ -1,5 +1,15 @@
 # serodynamics (development version)
 
+* Added `plot_serocurve()` for graphical visualization of population-level
+  serodynamic curves using posterior samples of the `mu.par` hyperparameter
+  (or optionally the "newperson" subject).  Supports 95% credible interval
+  ribbons, stratified curves with colour or faceting, and multiple
+  antigen-isotypes (#74).
+
+* `run_mod()` now monitors the `mu.par` hyperparameter and stores its
+  posterior samples (transformed to the original parameter scale) in a
+  `population_params` attribute of the returned `sr_model` object (#74).
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.
