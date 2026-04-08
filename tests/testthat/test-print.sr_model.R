@@ -26,10 +26,11 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
     ) |>
-      suppressWarnings()|>
-      expect_snapshot_data(
-        "nostrat-defaultprint",
-        variant = darwin_variant()
-      )
+      suppressWarnings()
+
+    testthat::expect_snapshot(
+      print(results, print_tbl = TRUE),
+      variant = darwin_variant()
+    )
   }
 )
