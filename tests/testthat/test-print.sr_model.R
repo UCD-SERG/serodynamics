@@ -13,7 +13,7 @@ test_that(
 )
 
 test_that(
-  desc = "results are consistent with printed output for sr_model class as tbl with no stratification",
+  desc = "results consistent with printed output for sr_model as tbl no strat",
   code = {
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees
