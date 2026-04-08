@@ -11,7 +11,7 @@
 \item{x}{An \code{sr_model} output object from \code{\link[=run_mod]{run_mod()}}.}
 
 \item{print_tbl}{A \link{logical} indicator to print \code{x} in the style of a
-\link[dplyr:defunct]{dplyr::tbl_df}.}
+\link[tibble:tbl_df-class]{tibble::tbl_df}.}
 
 \item{...}{Additional arguments passed to the print method.}
 }

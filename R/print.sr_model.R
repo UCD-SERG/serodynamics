@@ -6,7 +6,7 @@
 #' `Stratification` (if specified).
 #' @param x An `sr_model` output object from [run_mod()].
 #' @param print_tbl A [logical] indicator to print `x` in the style of a
-#'   [dplyr::tbl_df].
+#'   [tibble::tbl_df].
 #' @param ... Additional arguments passed to the print method.
 #' @returns Invisibly returns either:
 #' \itemize{
