@@ -6,8 +6,6 @@
 #'  and `Stratification` (if specified).
 #' @param x An `sr_model` output object from [run_mod()].
 #' @param print_tbl A [logical] indicator to print in style of [dplyr::tbl_df].
-#' @param ... Additional arguments affecting the summary produced.
-#' [serodynamics::run_mod()] function.
 #' @returns A data summary that
 #' contains the median posterior distribution for antibody kinetic curve
 #' parameters by `Iso_type` and `Stratification` (if specified).
@@ -15,8 +13,7 @@
 #' @examples
 #' print(nepal_sees_jags_output)
 print.sr_model <- function(x, 
-                           print_tbl = FALSE,
-                           ...) { # nolint
+                           print_tbl = FALSE) { # nolint
   if (print_tbl) {
     x <- dplyr::as_tibble(x)
     print(x)
