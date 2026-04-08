@@ -22,8 +22,8 @@ parameters by \code{Iso_type} and \code{Stratification} (if specified).
 }
 \description{
 A default print method for class \code{sr_model} that includes the median
-posterior distribution for antibody kinetic curve parameters by \code{Iso_type}
-and \code{Stratification} (if specified).
+predictive posterior distribution for antibody kinetic curve parameters
+by \code{Iso_type} and \code{Stratification} (if specified).
 }
 \examples{
 print(nepal_sees_jags_output)
