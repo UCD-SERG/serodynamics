@@ -15,6 +15,7 @@ test_that(
 test_that(
   desc = "results are consistent with printed output for sr_model class as tbl with no stratification",
   code = {
+    withr::local_seed(1)
     dataset <- serodynamics::nepal_sees
     results <- run_mod(
       data = dataset, # The data set input
@@ -25,8 +26,10 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
     ) |>
-      suppressWarnings()
-
-    testthat::expect_snapshot(print(results)) 
+      suppressWarnings()|>
+      expect_snapshot_data(
+        "nostrat-defaultprint",
+        variant = darwin_variant()
+      )
   }
 )
