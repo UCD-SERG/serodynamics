@@ -29,7 +29,7 @@ test_that(
       suppressWarnings()
 
     testthat::expect_snapshot(
-      print(results, print_tbl = TRUE),
+      print(results),
       variant = darwin_variant()
     )
   }
