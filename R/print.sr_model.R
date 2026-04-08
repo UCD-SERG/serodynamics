@@ -8,11 +8,11 @@
 #' @param print_tbl A [logical] indicator to print `x` in the style of a
 #'   [dplyr::tbl_df].
 #' @param ... Additional arguments passed to the print method.
-#' @returns Invisibly returns either:
+#' @return Invisibly returns either:
 #' \itemize{
-#'   \item when `print_tbl = TRUE`, a tibble containing the raw `sr_model`
+#'   \item When `print_tbl = TRUE`, a tibble containing the raw `sr_model`
 #'   draws;
-#'   \item otherwise, a data summary containing posterior medians for
+#'   \item Otherwise, a data summary containing posterior medians for
 #'   antibody kinetic curve parameters by `Iso_type` and `Stratification`
 #'   (if specified).
 #' }

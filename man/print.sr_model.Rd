@@ -10,20 +10,25 @@
 \arguments{
 \item{x}{An \code{sr_model} output object from \code{\link[=run_mod]{run_mod()}}.}
 
-\item{print_tbl}{A \link{logical} indicator to print in style of \link[dplyr:tbl_df]{dplyr::tbl_df}.}
+\item{print_tbl}{A \link{logical} indicator to print \code{x} in the style of a
+\link[dplyr:tbl_df]{dplyr::tbl_df}.}
 
-\item{...}{Additional arguments affecting the summary produced.
-\code{\link[=run_mod]{run_mod()}} function.}
+\item{...}{Additional arguments passed to the print method.}
 }
 \value{
-A data summary that
-contains the median posterior distribution for antibody kinetic curve
-parameters by \code{Iso_type} and \code{Stratification} (if specified).
+Invisibly returns either:
+\itemize{
+\item When \code{print_tbl = TRUE}, a tibble containing the raw \code{sr_model}
+draws;
+\item Otherwise, a data summary containing posterior medians for
+antibody kinetic curve parameters by \code{Iso_type} and \code{Stratification}
+(if specified).
+}
 }
 \description{
-A default print method for class \code{sr_model} that includes the median
-predictive posterior distribution for antibody kinetic curve parameters
-by \code{Iso_type} and \code{Stratification} (if specified).
+A default print method for class \code{sr_model} that prints posterior medians
+for antibody kinetic curve parameters by \code{Iso_type} and
+\code{Stratification} (if specified).
 }
 \examples{
 print(nepal_sees_jags_output)
