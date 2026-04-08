@@ -1,16 +1,21 @@
 #' @title Default print for [serodynamics::run_mod()] output object of class
 #' `sr_model`
 #' @description
-#'  A default print method for class `sr_model` that includes the median
-#'  predictive posterior distribution for antibody kinetic curve parameters 
-#'  by `Iso_type` and `Stratification` (if specified).
+#' A default print method for class `sr_model` that prints posterior medians
+#' for antibody kinetic curve parameters by `Iso_type` and
+#' `Stratification` (if specified).
 #' @param x An `sr_model` output object from [run_mod()].
-#' @param print_tbl A [logical] indicator to print in style of [dplyr::tbl_df].
-#' @param ... Additional arguments affecting the summary produced.
-#' [serodynamics::run_mod()] function.
-#' @returns A data summary that
-#' contains the median posterior distribution for antibody kinetic curve
-#' parameters by `Iso_type` and `Stratification` (if specified).
+#' @param print_tbl A [logical] indicator to print `x` in the style of a
+#'   [dplyr::tbl_df].
+#' @param ... Additional arguments passed to the print method.
+#' @returns Invisibly returns either:
+#' \itemize{
+#'   \item when `print_tbl = TRUE`, a tibble containing the raw `sr_model`
+#'   draws;
+#'   \item otherwise, a data summary containing posterior medians for
+#'   antibody kinetic curve parameters by `Iso_type` and `Stratification`
+#'   (if specified).
+#' }
 #' @export
 #' @examples
 #' print(nepal_sees_jags_output)
