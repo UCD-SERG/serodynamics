@@ -42,6 +42,12 @@ test_that(
                         "description", "population_params", "priors", 
                         "fitted_residuals"))
     
+    # Verify class appears immediately after names and row.names
+    expect_equal(
+      names(attributes(results))[1:3],
+      c("names", "row.names", "class")
+    )
+    
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",
@@ -56,6 +62,7 @@ test_that(
         sd = sd(value),
         .groups = "drop"
       ) |>
+      dplyr::arrange(Parameter) |>
       expect_snapshot_data("popparam-summary-stats", 
         variant = darwin_variant()    
       )
