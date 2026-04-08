@@ -9,7 +9,7 @@
 
     list(names = c("Country", "id", "sample_id", "bldculres", "antigen_iso", 
     "studyvisit", "dayssincefeveronset", "result", "visit_num"), 
-        class = c("case_data", "tbl_df", "tbl", "data.frame"), id_var = "id", 
-        biomarker_var = "antigen_iso", timeindays = "dayssincefeveronset", 
+        class = c("case_data", "spec_tbl_df", "tbl_df", "tbl", "data.frame"
+        ), id_var = "id", biomarker_var = "antigen_iso", timeindays = "dayssincefeveronset", 
         value_var = "result")
 
