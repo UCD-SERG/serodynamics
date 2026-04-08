@@ -31,7 +31,7 @@
       10        10     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00852
       # i 69,990 more rows
 
-# results are consistent with printed output for sr_model class as tbl  with no stratification
+# results are consistent with printed output for sr_model class as tbl with no stratification
 
     Code
       print(results)
