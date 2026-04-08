@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sun Apr  5 11:14:18 2026
+#> Welcome to JAGS 4.3.2 on Wed Apr  8 03:03:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -402,7 +402,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sun Apr  5 11:14:31 2026
+#> Welcome to JAGS 4.3.2 on Wed Apr  8 03:03:27 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -437,7 +437,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sun Apr  5 11:14:33 2026
+#> Welcome to JAGS 4.3.2 on Wed Apr  8 03:03:29 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -494,7 +494,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-05
+#>  date     2026-04-08
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   1.9.36 @ /usr/local/bin/quarto
 #> 
@@ -534,14 +534,14 @@ sessioninfo::session_info()
 #>  R6               2.6.1      2025-02-15 [1] CRAN (R 4.5.3)
 #>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.5.3)
 #>  Rcpp             1.1.1      2026-01-10 [1] CRAN (R 4.5.3)
-#>  rlang            1.1.7      2026-01-09 [1] CRAN (R 4.5.3)
+#>  rlang            1.2.0      2026-04-06 [1] CRAN (R 4.5.3)
 #>  rmarkdown        2.31       2026-03-26 [1] CRAN (R 4.5.3)
 #>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.5.3)
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.5.3)
 #>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.3)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.3)
 #>  serocalculator   1.4.0.9009 2026-03-29 [1] Github (ucd-serg/serocalculator@ae4e72c)
-#>  serodynamics   * 0.0.0.9048 2026-04-05 [1] local
+#>  serodynamics   * 0.0.0.9048 2026-04-08 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.5.3)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.5.3)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.3)
