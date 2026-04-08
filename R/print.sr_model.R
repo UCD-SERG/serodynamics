@@ -25,15 +25,16 @@ print.sr_model <- function(x,
     cat("An sr_model with the following median values:")
     cat("\n")
     cat("\n")
-    x <- x |>
-      dplyr::filter(.data$Subject == "newperson") |>
-      dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
-                               .data$Parameter), 
-                       median_val = stats::median(.data$value)) |>
-      tidyr::pivot_wider(names_from = .data$Parameter, 
-                         values_from = .data$median_val) |>
-      dplyr::arrange(.data$Iso_type) |>
-      suppressWarnings()
+    x <- suppressWarnings({
+      x |>
+        dplyr::filter(.data$Subject == "newperson") |>
+        dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
+                                 .data$Parameter), 
+                         median_val = stats::median(.data$value)) |>
+        tidyr::pivot_wider(names_from = .data$Parameter, 
+                           values_from = .data$median_val) |>
+        dplyr::arrange(.data$Iso_type)
+    })
     # Taking out stratification column if not specified
     if (!"Stratification" %in% names(x) || all(x$Stratification == "None", 
                                                na.rm = TRUE)) {
