@@ -33,11 +33,10 @@ print.sr_model <- function(x,
     x <- suppressWarnings({
       x |>
         dplyr::filter(.data$Subject == "newperson") |>
-        dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
-                                 .data$Parameter), 
+        dplyr::summarise(.by = c("Stratification", "Iso_type", "Parameter"),
                          median_val = stats::median(.data$value)) |>
-        tidyr::pivot_wider(names_from = .data$Parameter, 
-                           values_from = .data$median_val) |>
+        tidyr::pivot_wider(names_from = "Parameter",
+                           values_from = "median_val") |>
         dplyr::arrange(.data$Iso_type)
     })
     # Taking out stratification column if not specified
