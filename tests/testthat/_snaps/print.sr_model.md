@@ -31,3 +31,14 @@
       10        10     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00852
       # i 69,990 more rows
 
+# results are consistent with printed output for sr_model class as tbl  with no stratification
+
+    Code
+      print(results)
+    Output
+      An sr_model with the following median values:
+      
+        Iso_type      alpha   shape      t1      y0      y1
+      1 HlyE_IgA 0.01831560 1.36788 2.71828 2.71828 1099.35
+      2 HlyE_IgG 0.00965289 1.30665 2.76880 2.71828 1099.35
+
