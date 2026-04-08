@@ -1,4 +1,4 @@
-# results are consistent with printed output for sr_model class as tbl with no stratification
+# results consistent with printed output for sr_model as tbl no strat
 
     Code
       print(results)
