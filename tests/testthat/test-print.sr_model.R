@@ -24,7 +24,7 @@ test_that(
       nadapt = 10, # Number of adaptations to run
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
-      niter = 100, # Number of iterations
+      niter = 100 # Number of iterations
     ) |>
       suppressWarnings()
 
