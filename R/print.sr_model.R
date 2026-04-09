@@ -6,7 +6,7 @@
 #' `Stratification` (if specified).
 #' @param x An `sr_model` output object from [run_mod()].
 #' @param print_tbl A [logical] indicator to print `x` in the style of a
-#'   [dplyr::tbl_df].
+#'   [tibble::tbl_df].
 #' @param ... Additional arguments passed to the print method.
 #' @return Invisibly returns either:
 #' \itemize{
@@ -33,11 +33,10 @@ print.sr_model <- function(x,
     x <- suppressWarnings({
       x |>
         dplyr::filter(.data$Subject == "newperson") |>
-        dplyr::summarise(.by = c(.data$Stratification, .data$Iso_type, 
-                                 .data$Parameter), 
+        dplyr::summarise(.by = c("Stratification", "Iso_type", "Parameter"),
                          median_val = stats::median(.data$value)) |>
-        tidyr::pivot_wider(names_from = .data$Parameter, 
-                           values_from = .data$median_val) |>
+        tidyr::pivot_wider(names_from = "Parameter",
+                           values_from = "median_val") |>
         dplyr::arrange(.data$Iso_type)
     })
     # Taking out stratification column if not specified
