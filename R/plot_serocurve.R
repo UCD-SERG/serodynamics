@@ -14,7 +14,8 @@
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
-#'     in `attr(model, "population_params")`.
+#'     in `attr(model, "population_params")`. Requires the model to have been
+#'     fitted with `run_mod(..., with_pop_params = TRUE)`.
 #'   - `"newperson"`: uses posterior samples for the `"newperson"` subject
 #'     (a subject with no observed data whose posterior is drawn entirely from
 #'     the population-level prior).
@@ -23,7 +24,7 @@
 #' @param show_all_curves [logical]; if [TRUE], overlays all individual
 #'   posterior-sample curves (can be slow for large numbers of samples).
 #'   Defaults to [FALSE].
-#' @param alpha_samples [numeric]; transparency level (0–1) for individual
+#' @param alpha_samples [numeric]; transparency level (0-1) for individual
 #'   sample curves when `show_all_curves = TRUE`.  Defaults to `0.3`.
 #' @param log_y [logical]; if [TRUE], applies a [log10] transformation to the
 #'   y-axis.  Defaults to [FALSE].
@@ -70,21 +71,48 @@ plot_serocurve <- function(
           "The {.arg model} object does not have a {.field population_params}",
           " attribute.",
           "i" = paste0(
-            "Re-fit the model with a version of {.fun run_mod} that monitors",
-            " {.code mu.par}."
+            "Re-fit the model with",
+            " {.code run_mod(..., with_pop_params = TRUE)}."
           )
         )
       )
     }
+    # The population_params tibble has columns:
+    # Iteration, Chain, Parameter, Iso_type, Stratification,
+    # Population_Parameter, value
+    # Filter to mu.par rows only, then pivot wider and transform from log scale.
     param_samples <- pop_params |>
       dplyr::filter(
-        .data$antigen_iso %in% .env$antigen_iso,
+        .data$Population_Parameter == "mu.par",
+        .data$Iso_type %in% .env$antigen_iso,
         .data$Stratification %in% .env$strat
       ) |>
+      dplyr::select(
+        all_of(
+          c("Chain", "Iteration", "Parameter", "Iso_type", "Stratification",
+            "value")
+        )
+      ) |>
+      tidyr::pivot_wider(
+        names_from = "Parameter",
+        values_from = "value",
+        names_prefix = "log_"
+      ) |>
       dplyr::mutate(
-        antigen_iso = factor(.data$antigen_iso),
+        y0    = exp(.data$log_y0),
+        y1    = .data$y0 + exp(.data$log_y1),
+        t1    = exp(.data$log_t1),
+        alpha = exp(.data$log_alpha),
+        shape = exp(.data$log_shape) + 1
+      ) |>
+      dplyr::select(
+        -dplyr::starts_with("log_")
+      ) |>
+      dplyr::mutate(
+        Iso_type = factor(.data$Iso_type),
         Stratification = factor(.data$Stratification)
       )
+    antigen_iso_col <- "Iso_type"
   } else {
     # "newperson": extract from the long-format sr_model tibble
     param_samples <- model |>
@@ -103,19 +131,20 @@ plot_serocurve <- function(
         names_from = "Parameter",
         values_from = "value"
       ) |>
-      dplyr::rename(antigen_iso = "Iso_type") |>
       dplyr::mutate(
-        antigen_iso = factor(.data$antigen_iso),
+        Iso_type = factor(.data$Iso_type),
         Stratification = factor(.data$Stratification)
       )
-    # "shape" column is already on the untransformed scale in the sr_model
+    antigen_iso_col <- "Iso_type"
   }
 
   # Add a unique sample identifier for line grouping
   param_samples <- param_samples |>
     dplyr::mutate(
-      sample_id = paste0(.data$Chain, "_", .data$Iteration, "_",
-                         .data$antigen_iso, "_", .data$Stratification)
+      sample_id = paste0(
+        .data$Chain, "_", .data$Iteration, "_",
+        .data[[antigen_iso_col]], "_", .data$Stratification
+      )
     )
 
   # ---- Compute predicted curves over a grid of time points ---------------
@@ -127,14 +156,14 @@ plot_serocurve <- function(
       res = ab(.data$t, .data$y0, .data$y1, .data$t1, .data$alpha,
                .data$shape),
       .by = all_of(
-        c("Chain", "Iteration", "antigen_iso", "Stratification", "sample_id")
+        c("Chain", "Iteration", antigen_iso_col, "Stratification", "sample_id")
       )
     )
 
   # ---- Summarise to median + 95 % CI -------------------------------------
   curve_summary <- serocourse_all |>
     dplyr::summarise(
-      .by = all_of(c("antigen_iso", "Stratification", "t")),
+      .by = all_of(c(antigen_iso_col, "Stratification", "t")),
       res_med  = stats::quantile(.data$res, probs = 0.50, na.rm = TRUE),
       res_low  = stats::quantile(.data$res, probs = 0.025, na.rm = TRUE),
       res_high = stats::quantile(.data$res, probs = 0.975, na.rm = TRUE)
@@ -265,7 +294,7 @@ plot_serocurve <- function(
 
   # ---- Faceting ----------------------------------------------------------
   facet_vars <- character(0)
-  if (facet_by_antigen_iso) facet_vars <- c(facet_vars, "antigen_iso")
+  if (facet_by_antigen_iso) facet_vars <- c(facet_vars, antigen_iso_col)
   if (facet_by_strat)       facet_vars <- c(facet_vars, "Stratification")
 
   if (length(facet_vars) > 0) {

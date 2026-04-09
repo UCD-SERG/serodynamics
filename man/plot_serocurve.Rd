@@ -33,7 +33,8 @@ Defaults to all stratification levels present in \code{model}.}
 curve.  Options:
 \itemize{
 \item \code{"population"} (default): uses population-level \code{mu.par} samples stored
-in \code{attr(model, "population_params")}.
+in \code{attr(model, "population_params")}. Requires the model to have been
+fitted with \code{run_mod(..., with_pop_params = TRUE)}.
 \item \code{"newperson"}: uses posterior samples for the \code{"newperson"} subject
 (a subject with no observed data whose posterior is drawn entirely from
 the population-level prior).
@@ -46,7 +47,7 @@ interval ribbon around the median curve.}
 posterior-sample curves (can be slow for large numbers of samples).
 Defaults to \link{FALSE}.}
 
-\item{alpha_samples}{\link{numeric}; transparency level (0–1) for individual
+\item{alpha_samples}{\link{numeric}; transparency level (0-1) for individual
 sample curves when \code{show_all_curves = TRUE}.  Defaults to \code{0.3}.}
 
 \item{log_y}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
@@ -80,9 +81,10 @@ ribbon is produced for each requested antigen-isotype and stratification
 combination.
 }
 \examples{
+# nepal_sees_jags_output already includes population_params
 model <- serodynamics::nepal_sees_jags_output
 
-# Population-level curve for a single antigen-isotype
+# Population-level curve for a single antigen-isotype and stratum
 p1 <- plot_serocurve(
   model       = model,
   antigen_iso = "HlyE_IgA",
@@ -107,10 +109,10 @@ print(p3)
 
 # Multiple antigen-isotypes, faceted, without CI
 p4 <- plot_serocurve(
-  model               = model,
-  antigen_iso         = c("HlyE_IgA", "HlyE_IgG"),
+  model                = model,
+  antigen_iso          = c("HlyE_IgA", "HlyE_IgG"),
   facet_by_antigen_iso = TRUE,
-  show_ci             = FALSE
+  show_ci              = FALSE
 )
 print(p4)
 
