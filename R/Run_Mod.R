@@ -26,7 +26,7 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
+#' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
 #' including the following:
