@@ -181,7 +181,7 @@ run_mod <- function(data,
   # jags output results for each stratification rbinded.
 
   # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)  |>
+  jags_out <- tibble::as_tibble(jags_out)  |>
     select(!c("Parameter")) |>
     rename("Parameter" = "Parameter_sub")
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
