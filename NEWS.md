@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Added standalone documentation page for the `sr_model` class, describing all
+  data columns and attributes including the upcoming `population_params`
+  attribute from PR #141.
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

@@ -29,6 +29,7 @@ reference:
 - title: Model seroreponse
   contents:
   - run_mod
+  - sr_model-class
 - title: Model diagnostics
   contents:
   - plot_jags_dens
