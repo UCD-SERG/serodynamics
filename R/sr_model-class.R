@@ -96,7 +96,8 @@
 #'
 #' The class hierarchy is
 #' `sr_model` > `tbl_df` > `tbl` > `data.frame`,
-#' so standard [dplyr] and [tibble] operations work on `sr_model` objects.
+#' so standard [dplyr::dplyr-package] and [tibble::tibble-package] operations
+#' work on `sr_model` objects.
 #'
 #' @seealso
 #' * [run_mod()] -- the constructor function.

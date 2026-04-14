@@ -107,7 +107,8 @@ be constructed directly.
 
 The class hierarchy is
 \code{sr_model} > \code{tbl_df} > \code{tbl} > \code{data.frame},
-so standard \link[dplyr:dplyr-package]{dplyr::dplyr} and \link[tibble:tibble]{tibble::tibble} operations work on \code{sr_model} objects.
+so standard \link[dplyr:dplyr-package]{dplyr::dplyr-package} and \link[tibble:tibble-package]{tibble::tibble-package} operations
+work on \code{sr_model} objects.
 }
 
 \seealso{
