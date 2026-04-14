@@ -10,8 +10,6 @@ plot_serocurve(
   strat = unique(model$Stratification),
   param_source = "population",
   show_ci = TRUE,
-  show_all_curves = FALSE,
-  alpha_samples = 0.3,
   log_y = FALSE,
   log_x = FALSE,
   xlim = NULL,
@@ -35,20 +33,12 @@ curve.  Options:
 \item \code{"population"} (default): uses population-level \code{mu.par} samples stored
 in \code{attr(model, "population_params")}. Requires the model to have been
 fitted with \code{run_mod(..., with_pop_params = TRUE)}.
-\item \code{"newperson"}: uses posterior samples for the \code{"newperson"} subject
-(a subject with no observed data whose posterior is drawn entirely from
-the population-level prior).
+\item \code{"newperson"}: uses the predictive distribution for a new individual
+drawn from the population-level prior.
 }}
 
 \item{show_ci}{\link{logical}; if \link{TRUE} (default), draws a 95\% credible
 interval ribbon around the median curve.}
-
-\item{show_all_curves}{\link{logical}; if \link{TRUE}, overlays all individual
-posterior-sample curves (can be slow for large numbers of samples).
-Defaults to \link{FALSE}.}
-
-\item{alpha_samples}{\link{numeric}; transparency level (0-1) for individual
-sample curves when \code{show_all_curves = TRUE}.  Defaults to \code{0.3}.}
 
 \item{log_y}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
 y-axis.  Defaults to \link{FALSE}.}
@@ -75,7 +65,7 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
 Plots the estimated antibody response curve derived from posterior samples
-of population-level (\code{mu.par}) or "new person" parameters from a fitted
+of population-level (\code{mu.par}) or the predictive distribution from a fitted
 \code{\link[=run_mod]{run_mod()}} model.  A median curve with an optional 95\% credible interval
 ribbon is produced for each requested antigen-isotype and stratification
 combination.
@@ -116,7 +106,7 @@ p4 <- plot_serocurve(
 )
 print(p4)
 
-# Using "newperson" posterior samples instead of mu.par
+# Using the predictive distribution for a new individual (newperson posterior)
 p5 <- plot_serocurve(
   model        = model,
   antigen_iso  = "HlyE_IgA",
