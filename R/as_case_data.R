@@ -44,17 +44,29 @@ as_case_data <- function(
     ))
   }
   
-  data |>
+  result <- data |>
     tibble::as_tibble() |>
     dplyr::mutate(
       .by = all_of(c(id_var, biomarker_var)),
       visit_num = dplyr::row_number()
-    ) |>
-    serocalculator::set_id_var(id_var) |>
-    structure(
-      class = union("case_data", class(data)),
-      biomarker_var = biomarker_var,
-      timeindays = time_in_days,
-      value_var = value_var
     )
+
+  # Strip any custom attributes inherited from the input data so that we can
+  # re-add them in a consistent order regardless of the input class.
+  attr(result, "id_var") <- NULL
+  attr(result, "biomarker_var") <- NULL
+  attr(result, "timeindays") <- NULL
+  attr(result, "value_var") <- NULL
+
+  # Set class first so it appears before the custom attributes in the
+  # attribute list, matching the expected snapshot order.
+  class(result) <- union("case_data", class(data))
+
+  result <- serocalculator::set_id_var(result, id_var)
+
+  attr(result, "biomarker_var") <- biomarker_var
+  attr(result, "timeindays") <- time_in_days
+  attr(result, "value_var") <- value_var
+
+  result
 }
