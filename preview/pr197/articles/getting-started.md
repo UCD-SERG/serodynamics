@@ -161,7 +161,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Apr 14 13:08:43 2026
+#> Welcome to JAGS 4.3.2 on Tue Apr 21 10:49:02 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -402,7 +402,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Apr 14 13:08:56 2026
+#> Welcome to JAGS 4.3.2 on Tue Apr 21 10:49:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -426,7 +426,6 @@ fitted_stratified <- run_mod(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
@@ -437,7 +436,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Apr 14 13:08:58 2026
+#> Welcome to JAGS 4.3.2 on Tue Apr 21 10:49:16 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -494,7 +493,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-14
+#>  date     2026-04-21
 #>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
 #>  quarto   1.9.37 @ /usr/local/bin/quarto
 #> 
@@ -510,13 +509,13 @@ sessioninfo::session_info()
 #>  farver           2.1.2      2024-05-13 [1] CRAN (R 4.5.3)
 #>  fastmap          1.2.0      2024-05-15 [1] CRAN (R 4.5.3)
 #>  foreach          1.5.2      2022-02-02 [1] CRAN (R 4.5.3)
-#>  fs               2.0.1      2026-03-24 [1] CRAN (R 4.5.3)
+#>  fs               2.1.0      2026-04-18 [1] CRAN (R 4.5.3)
 #>  generics         0.1.4      2025-05-09 [1] CRAN (R 4.5.3)
 #>  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.5.3)
 #>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.5.3)
 #>  ggplot2        * 4.0.2      2026-02-03 [1] CRAN (R 4.5.3)
 #>  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.5.3)
-#>  glue             1.8.0      2024-09-30 [1] CRAN (R 4.5.3)
+#>  glue             1.8.1      2026-04-17 [1] CRAN (R 4.5.3)
 #>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.5.3)
 #>  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.5.3)
 #>  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.5.3)
@@ -533,15 +532,15 @@ sessioninfo::session_info()
 #>  purrr            1.2.2      2026-04-10 [1] CRAN (R 4.5.3)
 #>  R6               2.6.1      2025-02-15 [1] CRAN (R 4.5.3)
 #>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.5.3)
-#>  Rcpp             1.1.1      2026-01-10 [1] CRAN (R 4.5.3)
+#>  Rcpp             1.1.1-1    2026-04-21 [1] Custom
 #>  rlang            1.2.0      2026-04-06 [1] CRAN (R 4.5.3)
 #>  rmarkdown        2.31       2026-03-26 [1] CRAN (R 4.5.3)
 #>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.5.3)
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.5.3)
-#>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.3)
+#>  S7               0.2.1-1    2025-11-14 [1] CRAN (R 4.5.3)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.3)
 #>  serocalculator   1.4.0.9009 2026-04-14 [1] Github (ucd-serg/serocalculator@ae4e72c)
-#>  serodynamics   * 0.0.0.9048 2026-04-14 [1] local
+#>  serodynamics   * 0.0.0.9048 2026-04-21 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.5.3)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.5.3)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.3)
