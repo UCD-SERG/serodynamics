@@ -53,10 +53,9 @@ as_case_data <- function(
 
   # Strip any custom attributes inherited from the input data so that we can
   # re-add them in a consistent order regardless of the input class.
-  attr(result, "id_var") <- NULL
-  attr(result, "biomarker_var") <- NULL
-  attr(result, "timeindays") <- NULL
-  attr(result, "value_var") <- NULL
+  for (nm in c("id_var", "biomarker_var", "timeindays", "value_var")) {
+    attr(result, nm) <- NULL
+  }
 
   # Set class first so it appears before the custom attributes in the
   # attribute list, matching the expected snapshot order.
