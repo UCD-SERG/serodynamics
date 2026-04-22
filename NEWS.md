@@ -15,6 +15,7 @@
 
 ## New features
 
+* Updating `as_case_data()` to force order of attributes (#199)
 * Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
