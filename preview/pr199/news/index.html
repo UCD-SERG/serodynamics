@@ -54,8 +54,7 @@
 <li><p>Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.</p></li>
 </ul><div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
-<ul><li>Updating <code><a href="../reference/as_case_data.html">as_case_data()</a></code> to force order of attributes (<a href="https://github.com/UCD-SERG/serodynamics/issues/199" class="external-link">#199</a>)</li>
-<li>Made “newperson” optional in <code><a href="../reference/prep_data.html">prep_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>)</li>
+<ul><li>Made “newperson” optional in <code><a href="../reference/prep_data.html">prep_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>)</li>
 <li>Including fitted and residual values as data frame in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/101" class="external-link">#101</a>)</li>
 <li>Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> with support for faceting by multiple IDs (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
 <li>Replacing old data object with new run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/102" class="external-link">#102</a>)</li>
@@ -97,13 +96,13 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<p>None yet</p>
-</div>
+<ul><li>Updating <code><a href="../reference/as_case_data.html">as_case_data()</a></code> to force order of attributes (<a href="https://github.com/UCD-SERG/serodynamics/issues/199" class="external-link">#199</a>)</li>
+</ul></div>
 <div class="section level3">
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>
 <ul><li>Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (<a href="https://github.com/UCD-SERG/serodynamics/issues/135" class="external-link">#135</a>)</li>
 <li>vectorized <code>ab()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/116" class="external-link">#116</a>)</li>
-<li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Added <code>lintr::undesirable_function_linter()</code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
 <li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
