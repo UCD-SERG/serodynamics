@@ -180,7 +180,7 @@ run_mod <- function(data,
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
 
-  # Making output a tibble and restructing.
+  # Making output a tibble and restructuring.
   jags_out <- tibble::as_tibble(jags_out) |>
     select(!c("Parameter")) |>
     rename("Parameter" = "Parameter_sub")
