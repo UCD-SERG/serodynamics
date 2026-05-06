@@ -2,11 +2,10 @@
 
 ## serodynamics (development version)
 
-- Added R 4.6 snapshot variants to handle the changed attribute ordering
-  in
-  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr203/reference/as_case_data.md)
-  when called on an existing `case_data` object, ensuring test suite
-  compatibility with R 4.6
+- Added R 4.5+ snapshot variants to handle the changed attribute
+  ordering in
+  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr203/reference/as_case_data.md),
+  ensuring test suite compatibility with R 4.5 and later
   ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
 
 - Added dev container configuration for persistent, cached development
