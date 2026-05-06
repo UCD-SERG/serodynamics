@@ -24,7 +24,7 @@ object from \link[serocalculator:as_curve_params]{serocalculator::as_curve_param
 
 \item{max_n_obs}{maximum number of observations}
 
-\item{dist_n_obs}{distribution of number of observations (\link[tibble:tbl_df-class]{tibble::tbl_df})}
+\item{dist_n_obs}{distribution of number of observations (\link[tibble:tbl_df]{tibble::tbl_df})}
 
 \item{followup_interval}{\link{integer}}
 
