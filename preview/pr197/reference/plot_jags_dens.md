@@ -76,6 +76,7 @@ Sam Schildhauer
 ## Examples
 
 ``` r
+
 data <- serodynamics::nepal_sees_jags_output
 
 # Specifying isotype and stratification for traceplot.
