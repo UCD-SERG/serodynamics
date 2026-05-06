@@ -3,17 +3,20 @@
 ## 1 Current Model (what we already fit)
 
 - Chapter 1 model fits subject-level parameters for each biomarker
-  $\left( y_{0},t_{1},y_{1},\alpha,\rho \right)$.
+  $`(y_0, t_1, y_1, \alpha, \rho)`$.
 - Within each biomarker: variation is captured by a covariance
-  $\left( \Sigma_{P} \right)$.
-- Across biomarkers: independence (block-diagonal),
-  i.e. $${Cov}\!({vec}\left( \Theta_{i} \right)) = \Sigma_{P} \otimes I_{B}$$
+  $`(\Sigma_P)`$.
+- Across biomarkers: independence (block-diagonal), i.e. 
+  ``` math
+  \mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big) = \Sigma_P \otimes I_B
+  ```
 
 ## 2 Step A — Set up
 
 Show R Code
 
 ``` r
+
 set.seed(123)
 library(tidyverse)
 library(mvtnorm)   # rmvnorm
@@ -28,6 +31,7 @@ library(serodynamics)
 Show R Code
 
 ``` r
+
 # Choose B biomarkers and visit schedule
 n_blocks  <- 2
 time_grid <- c(0, 7, 14, 30)
@@ -64,6 +68,7 @@ sim$data |> dplyr::slice_head(n = 8)
 Show R Code
 
 ``` r
+
 # If our package is loaded, this is all we need:
 
 sim_tbl <- serodynamics::as_case_data(
@@ -96,18 +101,22 @@ fit_v0
 - Mathematically, we replace the block-diagonal assumption with a
   **Kronecker structure**:
 
-$${Cov}\!({vec}\left( \Theta_{i} \right)) = \Sigma_{P} \otimes \Sigma_{B}$$
+``` math
+\mathrm{Cov}\!\big(\mathrm{vec}(\Theta_i)\big)
+   = \Sigma_P \otimes \Sigma_B
+```
 
 - Here:
-  - $\Sigma_{P}$ = covariance of the 5 parameters
-    $\left( y_{0},y_{1},t_{1},\alpha,\rho \right)$ within a biomarker.
-  - $\Sigma_{B}$ = covariance across biomarkers.
-  - The Kronecker product $\otimes$ builds a $5B \times 5B$ covariance.
+  - $`\Sigma_P`$ = covariance of the 5 parameters
+    $`(y_0, y_1, t_1, \alpha, \rho)`$ within a biomarker.
+  - $`\Sigma_B`$ = covariance across biomarkers.
+  - The Kronecker product $`\otimes`$ builds a $`5B \times 5B`$
+    covariance.
 - Implementation plan:
-  1.  Define priors for $\Sigma_{P}$ and $\Sigma_{B}$ separately (via
+  1.  Define priors for $`\Sigma_P`$ and $`\Sigma_B`$ separately (via
       Wishart distributions).
   2.  Build the Kronecker precision matrix
-      $\text{T} = \text{T}_{B} \otimes \text{T}_{P}$ inside JAGS.
+      $`\text{T} = \text{T}_B \otimes \text{T}_P`$ inside JAGS.
   3.  Draw each subject’s stacked parameter vector from this
       multivariate prior.
   4.  Likelihood for observed antibody data is unchanged — only the
@@ -118,25 +127,29 @@ $${Cov}\!({vec}\left( \Theta_{i} \right)) = \Sigma_{P} \otimes \Sigma_{B}$$
 ### 6.1 E.1 Priors for the Correlated Model
 
 We define a helper function `prep_priors_multiB()` that sets priors for
-both $\Sigma_{P}$ (within-biomarker) and $\Sigma_{B}$
+both $`\Sigma_P`$ (within-biomarker) and $`\Sigma_B`$
 (across-biomarkers).
 
-- $\text{T}_{P} \sim \text{Wishart}\left( \Omega_{P},\nu_{P} \right)$  
-- $\text{T}_{B} \sim \text{Wishart}\left( \Omega_{B},\nu_{B} \right)$  
-- Kronecker precision: $\text{T} = \text{T}_{B} \otimes \text{T}_{P}$
+- $`\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)`$  
+- $`\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)`$  
+- Kronecker precision: $`\text{T} = \text{T}_B \otimes \text{T}_P`$
 
 ### 6.2 E.2 Write the new JAGS model file (Kronecker precision)
 
 This is our `model.jags` with only one conceptual change:  
 instead of independent
 
-$$par\left\lbrack \text{subj},\text{b}, \right\rbrack \sim \mathcal{N}\left( \mu.par\left\lbrack \text{b}, \right\rbrack,\ \text{prec.par}\left\lbrack \text{b},, \right\rbrack \right)$$
+``` math
+par[\text{subj},\text{b},] \sim \mathcal{N}( \mu.par[\text{b},], \ \text{prec.par}[\text{b},,] )
+```
 where b is `cur_antigen_iso`
 
 we draw **all biomarkers at once** for a subject with a **Kronecker
 precision**:
 
-$${vec}\left( par_{\text{subj},\cdot,\cdot} \right) \sim \mathcal{N}\!({vec}\left( \mu_{par} \right),\ \text{T}_{B} \otimes \text{T}_{P}).$$
+``` math
+\mathrm{vec}(par_{\text{subj},\cdot,\cdot}) \sim \mathcal{N}\!\big( \mathrm{vec}(\mu_{par}), \ \text{T}_B \otimes \text{T}_P \big).
+```
 
 - Everything else (transforms, likelihood, measurement precisions) stays
   as before.  
@@ -153,7 +166,7 @@ This is our new `model.jags` rename as `model_ch2_kron.jags`
   `par[subj,cur_antigen_iso,] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])`.
 
 - Replaced with one prior per subject on the stacked vector using
-  $\text{T} = \text{T}_{B} \otimes \text{T}_{P}$
+  $`\text{T} = \text{T}_B \otimes \text{T}_P`$
 
 - Kept our `mu.par` prior and the likelihood exactly as is.
 
@@ -164,19 +177,20 @@ This is our new `model.jags` rename as `model_ch2_kron.jags`
 These are the **Wishart hyperparameters** for the **precision matrices**
 (inverse covariances) used in the Kronecker prior:
 
-- $\text{T}_{P} \sim \text{Wishart}\left( \Omega_{P},\nu_{P} \right)$ –
-  within-biomarker parameter precision (5×5).
-- $\text{T}_{B} \sim \text{Wishart}\left( \Omega_{B},\nu_{B} \right)$ –
-  across-biomarker precision (B×B).
+- $`\text{T}_P \sim \text{Wishart}(\Omega_P, \nu_P)`$ – within-biomarker
+  parameter precision (5×5).
+- $`\text{T}_B \sim \text{Wishart}(\Omega_B, \nu_B)`$ – across-biomarker
+  precision (B×B).
 
 Generally speaking (JAGS Wishart):
-$\mathbb{E}\left\lbrack \text{T} \right\rbrack \approx \nu \cdot \Omega^{-1}$
-when $\nu$ is not tiny. So smaller diagonal entries in $\Omega$ imply
+$`\mathop{\mathbb{E}}[\text{T}]\approx \nu \cdot \Omega^{-1}`$ when
+$`\nu`$ is not tiny. So smaller diagonal entries in $`\Omega`$ imply
 larger expected precision (i.e., smaller covariance), and vice versa.
 
 ### 7.1 Chosen weakly-informative defaults
 
 ``` r
+
 OmegaP_scale = rep(0.1, 5);  nuP = 6
 OmegaB_scale = rep(1.0, B);  nuB = B + 1
 ```
@@ -204,6 +218,7 @@ These are starting values. Validate with prior predictive checks
 Run Kronecker model (disabled for now)
 
 ``` r
+
 # Step 1: simulate fake data (or load real Shigella data)
 sim_tbl 
 

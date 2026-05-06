@@ -21,12 +21,12 @@ simulate_prior_predictive(
 - prepped_data:
 
   A `prepped_jags_data` object from
-  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_data.md)
+  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_data.md)
 
 - prepped_priors:
 
   A `curve_params_priors` object from
-  [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
+  [`prep_priors()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
 
 - n_sims:
 
@@ -50,7 +50,7 @@ values replacing the observed values. If `n_sims > 1`, a
 This function:
 
 1.  Draws kinetic parameters from the prior distributions specified by
-    [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
+    [`prep_priors()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
 
 2.  Generates latent antibody trajectories using the same within-host
     antibody model used in the JAGS model

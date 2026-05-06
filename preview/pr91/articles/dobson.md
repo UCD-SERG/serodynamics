@@ -1,6 +1,7 @@
 # dobson
 
 ``` r
+
 library(serodynamics)
 #> Registered S3 method overwritten by 'GGally':
 #>   method from   
@@ -15,6 +16,7 @@ runjags::findJAGS()
 ```
 
 ``` r
+
 
 set.seed(1)
 data1 <- rbinom(n = 91, size = 1, prob = .6)
@@ -37,6 +39,7 @@ jags_post0 <- run.jags(
 ```
 
 ``` r
+
 jags_post0$mcmc |> as.array() |> head()
 #>       chain
 #> iter        [,1]      [,2]

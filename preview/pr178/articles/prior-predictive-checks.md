@@ -19,6 +19,7 @@ the `serodynamics` package.
 ## Load Required Libraries
 
 ``` r
+
 library(serodynamics)
 library(dplyr)
 #> 
@@ -37,11 +38,11 @@ set.seed(123)
 The basic prior predictive check workflow involves three steps:
 
 1.  **Simulate** antibody trajectories from priors using
-    [`simulate_prior_predictive()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/simulate_prior_predictive.md)
+    [`simulate_prior_predictive()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/simulate_prior_predictive.md)
 2.  **Summarize** the simulated data using
-    [`summarize_prior_predictive()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/summarize_prior_predictive.md)
+    [`summarize_prior_predictive()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/summarize_prior_predictive.md)
 3.  **Visualize** the trajectories using
-    [`plot_prior_predictive()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/plot_prior_predictive.md)
+    [`plot_prior_predictive()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/plot_prior_predictive.md)
 
 ## Example: Typhoid Data
 
@@ -52,6 +53,7 @@ Let’s demonstrate with simulated typhoid data:
 First, prepare your data and specify priors:
 
 ``` r
+
 # Simulate some case data
 raw_data <- serocalculator::typhoid_curves_nostrat_100 |>
   sim_case_data(n = 10)
@@ -68,6 +70,7 @@ prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 Generate simulated data using only the prior distributions:
 
 ``` r
+
 # Generate a single simulation
 sim_data <- simulate_prior_predictive(
   prepped_data, 
@@ -89,6 +92,7 @@ sim_list <- simulate_prior_predictive(
 Check for potential issues with the priors:
 
 ``` r
+
 # Summarize the simulations
 summary <- summarize_prior_predictive(sim_list, original_data = prepped_data)
 print(summary)
@@ -153,6 +157,7 @@ Plot the simulated trajectories to visually assess whether they look
 realistic:
 
 ``` r
+
 # Plot simulated trajectories only
 plot_prior_predictive(sim_list)
 ```
@@ -164,6 +169,7 @@ plot_prior_predictive(sim_list)
 Compare simulated trajectories with actual data to assess scale:
 
 ``` r
+
 # Plot with observed data overlay
 plot_prior_predictive(
   sim_list, 
@@ -186,6 +192,7 @@ By default, plots use the log scale (matching the model). You can also
 view on the natural scale:
 
 ``` r
+
 # Plot on natural scale
 plot_prior_predictive(
   sim_list,
@@ -204,6 +211,7 @@ If the default priors don’t generate realistic trajectories, you can
 adjust them:
 
 ``` r
+
 # Define custom priors with different parameter values
 custom_priors <- prep_priors(
   max_antigens = prepped_data$n_antigen_isos,
@@ -273,6 +281,7 @@ print(custom_summary)
 ```
 
 ``` r
+
 plot_prior_predictive(
   custom_sim,
   original_data = prepped_data,
@@ -315,6 +324,7 @@ Once you’re satisfied with the prior predictive check, proceed to model
 fitting:
 
 ``` r
+
 # After confirming priors are reasonable, fit the model
 fitted_model <- run_mod(
   data = raw_data,

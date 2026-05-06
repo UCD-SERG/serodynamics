@@ -26,6 +26,7 @@ Bayesian MCMC):
 Then install the package:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("UCD-SERG/serodynamics")
 ```
@@ -33,6 +34,7 @@ pak::pak("UCD-SERG/serodynamics")
 ## Load Required Libraries
 
 ``` r
+
 library(serodynamics)
 library(runjags)
 library(dplyr)
@@ -48,6 +50,7 @@ runjags::findJAGS()
 The package includes example data from the SEES Typhoid study in Nepal:
 
 ``` r
+
 data(nepal_sees)
 head(nepal_sees)
 #> # A tibble: 6 × 9
@@ -68,6 +71,7 @@ Convert the data to a `case_data` object (`nepal_sees` already is a
 `case_data` object, but we can reconvert it just to demonstrate).
 
 ``` r
+
 case_data <- as_case_data(
   nepal_sees,
   id_var = "id",
@@ -93,6 +97,7 @@ head(case_data)
 ### Visualize the Raw Data
 
 ``` r
+
 autoplot(case_data)
 ```
 
@@ -103,6 +108,7 @@ autoplot(case_data)
 You can also simulate case data using antibody curve parameters:
 
 ``` r
+
 set.seed(123)
 
 # Use typhoid curve parameters from serocalculator
@@ -127,6 +133,7 @@ head(simulated_data)
 ```
 
 ``` r
+
 autoplot(simulated_data)
 ```
 
@@ -141,6 +148,7 @@ predictive check to ensure your priors generate realistic antibody
 trajectories:
 
 ``` r
+
 # Prepare data and priors
 prepped_data <- prep_data(simulated_data)
 prepped_priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
@@ -209,14 +217,14 @@ plot_prior_predictive(sim_prior, original_data = prepped_data)
 
 If the prior predictive check shows issues (e.g., unrealistic scales,
 non-finite values), adjust the priors using
-[`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
+[`prep_priors()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_priors.md)
 with custom parameters before proceeding. See
 `vignette("prior-predictive-checks")` for detailed guidance.
 
 ### Fitting the Model
 
 The main function
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/run_mod.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -227,6 +235,7 @@ parameters:
 - `alpha`: Decay rate
 
 ``` r
+
 # Note: This example uses reduced iterations for demonstration
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
@@ -292,6 +301,7 @@ head(fitted_model)
 After fitting the model, check convergence diagnostics:
 
 ``` r
+
 # Trace plots to assess chain mixing
 plot_jags_trace(fitted_model)
 #> $None
@@ -321,6 +331,7 @@ plot_jags_trace(fitted_model)
 ![](getting-started_files/figure-html/diagnostics-5.png)
 
 ``` r
+
 
 # Density plots of posterior distributions
 plot_jags_dens(fitted_model)
@@ -352,6 +363,7 @@ plot_jags_dens(fitted_model)
 
 ``` r
 
+
 # Rhat statistics (values near 1.0 indicate convergence)
 plot_jags_Rhat(fitted_model)
 #> $None
@@ -381,6 +393,7 @@ plot_jags_Rhat(fitted_model)
 ![](getting-started_files/figure-html/diagnostics-15.png)
 
 ``` r
+
 
 # Effective sample size
 plot_jags_effect(fitted_model)
@@ -415,6 +428,7 @@ plot_jags_effect(fitted_model)
 Plot the predicted antibody curves with credible intervals:
 
 ``` r
+
 plot_predicted_curve(
   fitted_model,
   ids = serocalculator::ids(simulated_data)[1],
@@ -429,6 +443,7 @@ plot_predicted_curve(
 Extract and summarize the posterior estimates:
 
 ``` r
+
 # Summarize parameter estimates
 summary_stats <- post_summ(fitted_model)
 print(summary_stats)
@@ -454,6 +469,7 @@ print(summary_stats)
 You can stratify the analysis by a grouping variable:
 
 ``` r
+
 # Create stratified data
 strat1 <- sim_case_data(
   n = 30, 
@@ -555,15 +571,16 @@ fitted_stratified <- run_mod(
 ## Next Steps
 
 - See the [function
-  reference](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/index.md)
+  reference](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
 ``` r
+
 sessioninfo::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value

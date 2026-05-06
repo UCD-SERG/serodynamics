@@ -17,7 +17,7 @@ nepal_sees_jags_output
 ## Format
 
 An S3 object of class `sr_model`: A
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
+[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html) that
 contains the posterior predictive distribution of the person-specific
 parameters for a "new person" with no observed data
 (`Subject = "newperson"`) and posterior distributions of the

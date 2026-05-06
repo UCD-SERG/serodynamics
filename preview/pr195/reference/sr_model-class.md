@@ -1,7 +1,7 @@
 # `sr_model` class
 
 An S3 class representing the output of a Bayesian MCMC model fitted by
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
 The `sr_model` object is a subclass of
 [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
 containing MCMC samples from the joint posterior distribution of
@@ -22,7 +22,7 @@ antigen-isotype combination, one subject, and one stratification level.
 
   [integer](https://rdrr.io/r/base/integer.html) MCMC chain index
   (between 1 and the number of chains specified in
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)).
+  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)).
 
 - Parameter:
 
@@ -101,7 +101,7 @@ the following custom attributes:
   [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   of modeled population-level parameters, included when
   `with_pop_params = TRUE` in
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
+  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
   Indexed by `Iteration`, `Chain`, `Parameter`, `Iso_type`, and
   `Stratification`. Contains the following population parameters:
 
@@ -151,13 +151,13 @@ the following custom attributes:
   [`runjags::run.jags()`](https://rdrr.io/pkg/runjags/man/run.jags.html)
   output objects, one per stratification level. Included when
   `with_post = TRUE` in
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
+  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md).
   These objects can be large.
 
 ## Construction
 
 `sr_model` objects are created by
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
 and should not normally be constructed directly.
 
 ## Inheritance
@@ -171,23 +171,23 @@ operations work on `sr_model` objects.
 
 ## See also
 
-- [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
+- [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
   – the constructor function.
 
-- [`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/post_summ.md)
+- [`post_summ()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/post_summ.md)
   – posterior summary table.
 
-- [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_predicted_curve.md)
+- [`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_predicted_curve.md)
   – predicted antibody response curves.
 
-- [`plot_jags_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_trace.md)
+- [`plot_jags_trace()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_trace.md)
   – MCMC trace plots.
 
-- [`plot_jags_dens()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_dens.md)
+- [`plot_jags_dens()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_dens.md)
   – posterior density plots.
 
-- [`plot_jags_Rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_Rhat.md)
+- [`plot_jags_Rhat()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_Rhat.md)
   – Rhat diagnostic plots.
 
-- [`plot_jags_effect()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_effect.md)
+- [`plot_jags_effect()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/plot_jags_effect.md)
   – effect size plots.

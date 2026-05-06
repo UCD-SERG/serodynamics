@@ -47,7 +47,7 @@ plot_predicted_curve(
 - dataset:
 
   (Optional) A
-  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html)
+  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html)
   with observed antibody response data. Must contain:
 
   - `timeindays`

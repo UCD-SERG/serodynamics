@@ -18,6 +18,8 @@ Useful links:
 
 Authors:
 
+- Samuel Schildhauer <sschildhauer@ucdavis.edu>
+
 - Peter Teunis <p.teunis@emory.edu> (Author of the method and original
   code.) \[copyright holder\]
 

@@ -93,10 +93,27 @@ If you need to modify the Copilot environment setup:
 
 ### Quick Start with Docker (RECOMMENDED)
 
-**For faster setup, consider using the rocker/verse Docker image** which
-includes R, RStudio, tidyverse, TeX, and many common R packages
-pre-installed. This can significantly speed up Copilot sessions by
-avoiding lengthy installation steps.
+**The easiest way to get started is to use the provided dev container
+configuration**, which automatically sets up R, JAGS, and all
+dependencies in a persistent environment.
+
+**Benefits:** - **Cached setup**: Container persists between Copilot
+sessions - no need to reinstall everything - **Zero manual setup**:
+Everything is pre-configured and ready to use - **Consistent
+environment**: Same R version, JAGS, and system libraries every time
+
+**How to use:** 1. **GitHub Copilot Workspace**: Automatically detects
+and uses the devcontainer 2. **VS Code**: Install “Dev Containers”
+extension, then “Reopen in Container” 3. **GitHub Codespaces**:
+Automatically uses the devcontainer configuration
+
+See `.devcontainer/README.md` for detailed documentation.
+
+### Alternative: Quick Start with Docker
+
+**If you prefer manual Docker setup**, you can use the rocker/verse
+Docker image which includes R, RStudio, tidyverse, TeX, and many common
+R packages pre-installed.
 
 To use Docker:
 
@@ -126,8 +143,10 @@ docker rm serodynamics-dev
 **Note**: You will still need to install JAGS inside the Docker
 container (see JAGS Installation section below).
 
-If Docker is not available or you prefer a native installation, follow
-the manual installation instructions below.
+### Manual Installation (if not using devcontainer or Docker)
+
+If the devcontainer or Docker is not available or you prefer a native
+installation, follow the manual installation instructions below.
 
 ### R Installation and Development Dependencies (REQUIRED)
 
@@ -173,6 +192,7 @@ platform:
   Verify installation by opening R console and checking version:
 
   ``` r
+
   R.version.string
   ```
 
@@ -181,6 +201,7 @@ platform:
 After installing R, install all required development dependencies:
 
 ``` r
+
 # Install devtools (required for package development)
 install.packages("devtools", repos = "https://cloud.r-project.org")
 
@@ -192,6 +213,7 @@ devtools::install_dev_deps(dependencies = TRUE)
 **Alternative approach** using pak (faster parallel installation):
 
 ``` r
+
 install.packages("pak", repos = "https://cloud.r-project.org")
 pak::local_install_dev_deps(dependencies = TRUE)
 ```
@@ -202,6 +224,7 @@ After installation, verify your development environment is properly
 configured:
 
 ``` r
+
 # Load devtools
 library(devtools)
 
@@ -276,12 +299,14 @@ docker exec serodynamics-dev R -e 'runjags::testjags()'
 After installing JAGS, install the R interface:
 
 ``` r
+
 install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
 ```
 
 Verify installation with:
 
 ``` r
+
 library(rjags)
 library(runjags)
 runjags::findJAGS()
@@ -293,6 +318,7 @@ runjags::testjags()
 ### Initial Setup
 
 ``` r
+
 # Install development dependencies
 devtools::install_dev_deps()
 
@@ -306,6 +332,7 @@ install.packages("devtools")
 `.R` files.**
 
 ``` r
+
 # Generate documentation from roxygen2 comments
 devtools::document()
 # or
@@ -323,6 +350,7 @@ README.md directly.**
 To regenerate:
 
 ``` r
+
 rmarkdown::render("README.Rmd")
 ```
 
@@ -331,6 +359,7 @@ rmarkdown::render("README.Rmd")
 Run R CMD check to validate the package:
 
 ``` r
+
 # Full package check (takes several minutes)
 devtools::check()
 # or
@@ -343,6 +372,7 @@ and documentation checks. Allow 5-10 minutes for completion.
 ### Testing
 
 ``` r
+
 # Run all tests
 devtools::test()
 # or
@@ -359,6 +389,7 @@ The package uses a custom lintr configuration (`.lintr.R`) with strict
 requirements:
 
 ``` r
+
 # Lint the entire package
 lintr::lint_package()
 
@@ -384,6 +415,7 @@ Exclusions: `data-raw/`, `vignettes/`, `inst/examples/`, and
 ### Spelling Check
 
 ``` r
+
 # Check spelling
 spelling::spell_check_package()
 ```
@@ -412,10 +444,9 @@ The following workflows run on every PR. **All must pass** for merge:
 5.  **check-readme.yaml**: Renders README.Rmd and verifies it matches
     README.md. (~2-3 min)
 
-6.  **R-check-docs.yml**: Runs
-    [`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-    and checks if `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails
-    if documentation is out of sync. (~2-3 min)
+6.  **R-check-docs.yml**: Runs `roxygen2::roxygenise()` and checks if
+    `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails if
+    documentation is out of sync. (~2-3 min)
 
 7.  **news.yaml**: Ensures NEWS.md is updated for every PR. Can be
     bypassed with `no-changelog` label. (~1 min)
@@ -437,10 +468,8 @@ The following workflows run on every PR. **All must pass** for merge:
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs: - `/document` -
-Runs
-[`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-and commits changes - `/style` - Runs `styler::style_pkg()` and commits
-changes
+Runs `roxygen2::roxygenise()` and commits changes - `/style` - Runs
+`styler::style_pkg()` and commits changes
 
 ## Repository Structure
 
@@ -580,6 +609,7 @@ structural consistency
 **Examples from this repository:**
 
 ``` r
+
 # For data frames with numeric precision control
 dataset |> expect_snapshot_data(name = "sees-data")
 
@@ -601,6 +631,7 @@ outputs - Exact values are critical for correctness
 **Examples:**
 
 ``` r
+
 # Testing exact numeric values
 expect_equal(calculate_mean(c(1, 2, 3)), 2)
 
@@ -684,6 +715,7 @@ expect_false(has_missing_values(complete_data))
 ## Package Development Commands Summary
 
 ``` r
+
 # Complete development workflow
 devtools::load_all()           # Load package for interactive testing
 devtools::document()           # Update documentation

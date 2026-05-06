@@ -2,6 +2,16 @@
 
 ## serodynamics (development version)
 
+- Added R 4.5+ snapshot variants to handle the changed attribute
+  ordering in
+  [`as_case_data()`](https://ucd-serg.github.io/serodynamics/reference/as_case_data.md),
+  ensuring test suite compatibility with R 4.5 and later
+  ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
+
+- Added dev container configuration for persistent, cached development
+  environment that includes R, JAGS, and all dependencies preinstalled,
+  making Copilot Workspace sessions much faster.
+
 - Reorganized pkgdown documentation with new “Getting Started” guide
   demonstrating main API workflow, organized articles into “Get started”
   and “Developer Notes” sections

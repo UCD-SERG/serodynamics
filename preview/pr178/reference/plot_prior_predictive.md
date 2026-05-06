@@ -21,13 +21,13 @@ plot_prior_predictive(
 - sim_data:
 
   A simulated `prepped_jags_data` object from
-  [`simulate_prior_predictive()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/simulate_prior_predictive.md),
+  [`simulate_prior_predictive()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/simulate_prior_predictive.md),
   or a [list](https://rdrr.io/r/base/list.html) of such objects
 
 - original_data:
 
   Optional original `prepped_jags_data` object from
-  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_data.md)
+  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr178/reference/prep_data.md)
   to overlay observed data
 
 - log_scale:

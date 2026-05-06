@@ -192,6 +192,7 @@ platform:
   Verify installation by opening R console and checking version:
 
   ``` r
+
   R.version.string
   ```
 
@@ -200,6 +201,7 @@ platform:
 After installing R, install all required development dependencies:
 
 ``` r
+
 # Install devtools (required for package development)
 install.packages("devtools", repos = "https://cloud.r-project.org")
 
@@ -211,6 +213,7 @@ devtools::install_dev_deps(dependencies = TRUE)
 **Alternative approach** using pak (faster parallel installation):
 
 ``` r
+
 install.packages("pak", repos = "https://cloud.r-project.org")
 pak::local_install_dev_deps(dependencies = TRUE)
 ```
@@ -221,6 +224,7 @@ After installation, verify your development environment is properly
 configured:
 
 ``` r
+
 # Load devtools
 library(devtools)
 
@@ -295,12 +299,14 @@ docker exec serodynamics-dev R -e 'runjags::testjags()'
 After installing JAGS, install the R interface:
 
 ``` r
+
 install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
 ```
 
 Verify installation with:
 
 ``` r
+
 library(rjags)
 library(runjags)
 runjags::findJAGS()
@@ -312,6 +318,7 @@ runjags::testjags()
 ### Initial Setup
 
 ``` r
+
 # Install development dependencies
 devtools::install_dev_deps()
 
@@ -325,6 +332,7 @@ install.packages("devtools")
 `.R` files.**
 
 ``` r
+
 # Generate documentation from roxygen2 comments
 devtools::document()
 # or
@@ -342,6 +350,7 @@ README.md directly.**
 To regenerate:
 
 ``` r
+
 rmarkdown::render("README.Rmd")
 ```
 
@@ -350,6 +359,7 @@ rmarkdown::render("README.Rmd")
 Run R CMD check to validate the package:
 
 ``` r
+
 # Full package check (takes several minutes)
 devtools::check()
 # or
@@ -362,6 +372,7 @@ and documentation checks. Allow 5-10 minutes for completion.
 ### Testing
 
 ``` r
+
 # Run all tests
 devtools::test()
 # or
@@ -378,6 +389,7 @@ The package uses a custom lintr configuration (`.lintr.R`) with strict
 requirements:
 
 ``` r
+
 # Lint the entire package
 lintr::lint_package()
 
@@ -403,6 +415,7 @@ Exclusions: `data-raw/`, `vignettes/`, `inst/examples/`, and
 ### Spelling Check
 
 ``` r
+
 # Check spelling
 spelling::spell_check_package()
 ```
@@ -587,7 +600,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -596,6 +609,7 @@ structural consistency
 **Examples from this repository:**
 
 ``` r
+
 # For data frames with numeric precision control
 dataset |> expect_snapshot_data(name = "sees-data")
 
@@ -617,6 +631,7 @@ outputs - Exact values are critical for correctness
 **Examples:**
 
 ``` r
+
 # Testing exact numeric values
 expect_equal(calculate_mean(c(1, 2, 3)), 2)
 
@@ -643,7 +658,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -700,6 +715,7 @@ expect_false(has_missing_values(complete_data))
 ## Package Development Commands Summary
 
 ``` r
+
 # Complete development workflow
 devtools::load_all()           # Load package for interactive testing
 devtools::document()           # Update documentation

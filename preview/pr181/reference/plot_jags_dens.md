@@ -2,7 +2,7 @@
 
 plot_jags_dens() takes a [list](https://rdrr.io/r/base/list.html) output
 from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md)
 to create density plots for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified. Antigen/antibody
@@ -76,6 +76,7 @@ Sam Schildhauer
 ## Examples
 
 ``` r
+
 data <- serodynamics::nepal_sees_jags_output
 
 # Specifying isotype and stratification for traceplot.

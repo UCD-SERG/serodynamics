@@ -19,10 +19,12 @@ This is a perfect use case for a **hierarchical Bayesian model**.
 
 ## Step 1: Individual-Level Parameters (Subject-Level)
 
-Each person ($i$), for biomarker ($j$), has their own unique set of
+Each person ($`i`$), for biomarker ($`j`$), has their own unique set of
 parameters:
 
-$$\theta_{ij} = \begin{bmatrix}
+``` math
+\theta_{ij} =
+\begin{bmatrix}
 y_{0,ij} \\
 b_{0,ij} \\
 \mu_{b,ij} \\
@@ -30,39 +32,44 @@ b_{0,ij} \\
 \gamma_{ij} \\
 \alpha_{ij} \\
 \rho_{ij}
-\end{bmatrix}$$
+\end{bmatrix}
+```
 
-These describe the antibody curve for person ( $i$ ) and biomarker ( $j$
-): the starting level, how fast it rises, peaks, and decays.
+These describe the antibody curve for person ( $`i`$ ) and biomarker (
+$`j`$ ): the starting level, how fast it rises, peaks, and decays.
 
 ------------------------------------------------------------------------
 
-## Step 2: Population-Level Parameters (Per Biomarker $j$)
+## Step 2: Population-Level Parameters (Per Biomarker $`j`$)
 
 Now we summarize how people typically behave for each **biomarker**:
 
-$$\mu_{j} = {\text{population mean vector for biomarker}\mspace{6mu}}j$$
+``` math
+\mu_j = \text{population mean vector for biomarker } j
+```
 
 This means:
 
-- For biomarker ( $j$ ), we believe the true average antibody trajectory
-  is governed by parameters ( $\mu_{j}$ ).
+- For biomarker ( $`j`$ ), we believe the true average antibody
+  trajectory is governed by parameters ( $`\mu_j`$ ).
 
-- But we don’t know ( $\mu_{j}$ ) — so we estimate it using data across
+- But we don’t know ( $`\mu_j`$ ) — so we estimate it using data across
   all individuals.
 
 ------------------------------------------------------------------------
 
 ## Step 3: Hierarchical Modeling Structure
 
-We assume each individual’s parameter vector $\theta_{ij}$ is drawn from
-a multivariate normal distribution:
+We assume each individual’s parameter vector $`\theta_{ij}`$ is drawn
+from a multivariate normal distribution:
 
-$$\theta_{ij} \sim \mathcal{N}\left( \mu_{j},\Sigma_{j} \right)$$
+``` math
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+```
 
-- $\mu_{j}$ : the population-level mean for biomarker ( $j$ )  
-- $\Sigma_{j}$ : $j \times j$ covariance matrix describing how the
-  parameters co-vary
+- $`\mu_j`$ : the population-level mean for biomarker ( $`j`$ )  
+- $`\Sigma_j`$ : $`j×j`$ covariance matrix describing how the parameters
+  co-vary
 
 This is where the “**borrowing strength**” happens. Even if someone has
 sparse data, we can still make good inferences by **using the
@@ -73,16 +80,18 @@ group-level pattern**.
 ## Step 4: Priors on Population Means — “Hyperpriors”
 
 But wait — since we are Bayesian, so we also need a prior belief about
-$\mu_{j}$ :
+$`\mu_j`$ :
 
-$$\mu_{j} \sim \mathcal{N}\left( \mu_{\text{hyp},j},\Omega_{\text{hyp},j} \right)$$
+``` math
+\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})
+```
 
 Where:
 
-- $\mu_{\text{hyp},j}$ : prior guess for the population mean (e.g., a
+- $`\mu_{\text{hyp},j}`$ : prior guess for the population mean (e.g., a
   vector of zeros ))  
-- $\Omega_{\text{hyp},j}$ : uncertainty about that guess (e.g.,
-  $100 \cdot I_{7}$ for weakly informative prior)
+- $`\Omega_{\text{hyp},j}`$ : uncertainty about that guess (e.g.,
+  $`100 \cdot I_7`$ for weakly informative prior)
 
 This is a **hyperprior**, because it’s a prior on a prior-level
 parameter.
@@ -94,26 +103,30 @@ parameter.
 We also don’t know how much individual parameters vary. So we assign a
 **Wishart prior** to the **inverse** covariance matrix:
 
-$$\Sigma_{j}^{-1} \sim \mathcal{W}\left( \Omega_{j},\nu_{j} \right)$$
+``` math
+\Sigma_j^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+```
 
-- $\Omega_{j}$ : prior scale matrix (small variance across parameters,
-  often $0.1 \cdot I_{7}$)
-- $\nu_{j}$ : degrees of freedom
+- $`\Omega_j`$ : prior scale matrix (small variance across parameters,
+  often $`0.1 \cdot I_7`$)
+- $`\nu_j`$ : degrees of freedom
 
 This tells the model how much we expect individuals to vary from the
-average for biomarker $j$.
+average for biomarker $`j`$.
 
 ------------------------------------------------------------------------
 
 ## Step 6: Measurement Error Model
 
 Our observations are noisy! So we model the observed log-antibody levels
-$log\left( y_{obs,ij} \right)$ like this:
+$`log(y_{obs,ij})`$ like this:
 
-$$\log\left( y_{\text{obs},ij} \right) \sim \mathcal{N}\left( \log\left( y_{\text{pred},ij} \right),\tau_{j}^{-1} \right)$$
+``` math
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\log(y_{\text{pred},ij}), \tau_j^{-1})
+```
 
-Where $\tau_{j} \sim \text{Gamma}\left( a_{j},b_{j} \right)$ is a prior
-on measurement precision for biomarker $j$.
+Where $`\tau_j \sim \text{Gamma}(a_j, b_j)`$ is a prior on measurement
+precision for biomarker $`j`$.
 
 ------------------------------------------------------------------------
 
@@ -142,19 +155,19 @@ Let’s stack it up top-down:
 
 1.  **Top Level**:
 
-    - For each biomarker $j$, the true mean antibody trajectory
-      parameters $\mu_{j}$ come from a prior
-      $\mathcal{N}\left( \mu_{\text{hyp},j},\Omega_{\text{hyp},j} \right)$
+    - For each biomarker $`j`$, the true mean antibody trajectory
+      parameters $`\mu_j`$ come from a prior
+      $`\mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})`$
 
 2.  **Middle Level**:
 
-    - For each person $i$, their parameters
-      $\theta_{ij} \sim \mathcal{N}\left( \mu_{j},\Sigma_{j} \right)$
+    - For each person $`i`$, their parameters
+      $`\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)`$
 
 3.  **Bottom Level**:
 
     - Their actual observed antibody levels are noisy measurements of
-      predictions from $\theta_{ij}$
+      predictions from $`\theta_{ij}`$
 
 ------------------------------------------------------------------------
 
@@ -164,25 +177,27 @@ Let’s stack it up top-down:
 
 We say:
 
-$$\theta_{ij} \sim \mathcal{N}\left( \mu_{j},\Sigma_{j} \right)$$
+``` math
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+```
 
 This means:
 
-- For biomarker $j$, each subject $i$ has their own parameter vector
-  $\theta_{ij}$
+- For biomarker $`j`$, each subject $`i`$ has their own parameter vector
+  $`\theta_{ij}`$
 - These vectors come from a **Normal distribution** centered at
-  $\mu_{j}$ (the population mean for that biomarker)
-- $\Sigma_{j}$ is the covariance matrix capturing variation across
+  $`\mu_j`$ (the population mean for that biomarker)
+- $`\Sigma_j`$ is the covariance matrix capturing variation across
   individuals for that biomarker
 
-*But here’s the catch*: **we don’t know** $\mu_{j}$ or $\Sigma_{j}$ yet.
+*But here’s the catch*: **we don’t know** $`\mu_j`$ or $`\Sigma_j`$ yet.
 
 ------------------------------------------------------------------------
 
 ## So How Do We Handle the Unknowns?
 
 In **Bayesian modeling**, we treat unknowns as **random variables** too.
-So instead of fixing $\mu_{j}$ and $\Sigma_{j}$, we say:
+So instead of fixing $`\mu_j`$ and $`\Sigma_j`$, we say:
 
 > “Let’s estimate them, but we’ll put a prior belief on them to guide
 > the learning.”
@@ -191,29 +206,31 @@ This brings us to:
 
 ------------------------------------------------------------------------
 
-## Step 4: Priors on $\mu_{j}$
+## Step 4: Priors on $`\mu_j`$
 
-$$\mu_{j} \sim \mathcal{N}\left( \mu_{\text{hyp},j},\Omega_{\text{hyp},j} \right)$$
+``` math
+\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})
+```
 
 **Explanation:**
 
-- $\mu_{j}$: unknown population-level mean of the parameters for
-  biomarker $j$
+- $`\mu_j`$: unknown population-level mean of the parameters for
+  biomarker $`j`$
 - We say:
 
-> “We believe $\mu_{j}$ comes from another normal distribution”
+> “We believe $`\mu_j`$ comes from another normal distribution”
 >
-> - Centered at $\mu_{\text{hyp},j}$ — a guess for what the mean might
+> - Centered at $`\mu_{\text{hyp},j}`$ — a guess for what the mean might
 >   be
 >
-> - With spread $\Omega_{\text{hyp},j}$ — how confident we are in that
+> - With spread $`\Omega_{\text{hyp},j}`$ — how confident we are in that
 >   guess
 
 If we want to be very flexible, we make this prior **weakly
 informative**:
 
-- Set $\mu_{\text{hyp},j} = 0$
-- Set $\Omega_{\text{hyp},j} = 100 \cdot I_{7}$, where $I_{7}$ is the
+- Set $`\mu_{\text{hyp},j} = 0`$
+- Set $`\Omega_{\text{hyp},j} = 100 \cdot I_7`$, where $`I_7`$ is the
   identity matrix (saying we are uncertain)
 
 This is a **prior on a population-level parameter** — a
@@ -221,24 +238,26 @@ This is a **prior on a population-level parameter** — a
 
 ------------------------------------------------------------------------
 
-## Step 5: Priors on $\Sigma_{j}$
+## Step 5: Priors on $`\Sigma_j`$
 
 We also don’t know how much individual parameters vary, so we say:
 
-$$\Sigma_{j}^{-1} \sim \mathcal{W}\left( \Omega_{j},\nu_{j} \right)$$
+``` math
+\Sigma_j^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+```
 
 This is a **Wishart prior** on the **precision matrix** (inverse of
 covariance). Why?
 
 - In multivariate stats, it’s common to use the Wishart distribution as
   a prior for covariance matrices
-- $\Omega_{j}$: the scale (like the average covariance we expect)
-- $\nu_{j}$: degrees of freedom (how confident we are)
+- $`\Omega_j`$: the scale (like the average covariance we expect)
+- $`\nu_j`$: degrees of freedom (how confident we are)
 
 If we want to be uninformative, we might say:
 
-- $\Omega_{j} = 0.1 \cdot I_{7}$  
-- $\nu_{j} = 8$
+- $`\Omega_j = 0.1 \cdot I_7`$  
+- $`\nu_j = 8`$
 
 That allows a wide range of possible covariance matrices.
 

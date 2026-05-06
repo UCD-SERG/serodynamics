@@ -121,6 +121,7 @@ special case)
 **Implementation:**
 
 ``` r
+
 # In test files, use conditional variant:
 variant = if (system_os() == "darwin") "darwin" else NULL
 ```

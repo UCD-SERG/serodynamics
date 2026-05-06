@@ -27,7 +27,7 @@ The fastest way to get started with a fully configured environment:
 ```
 
 See
-[.devcontainer/README.md](https:/ucd-serg.github.io/serodynamics/preview/pr163/.devcontainer/README.md)
+[.devcontainer/README.md](https://ucd-serg.github.io/serodynamics/preview/pr163/.devcontainer/README.md)
 for details.
 
 ### Option 2: Local Setup
@@ -110,6 +110,7 @@ brew install pkg-config cairo
 #### 4. Install R Development Packages
 
 ``` r
+
 # Install devtools
 install.packages("devtools", repos = "https://cloud.r-project.org")
 
@@ -123,6 +124,7 @@ install.packages("rjags", repos = "https://cloud.r-project.org", type = "source"
 #### 5. Verify Installation
 
 ``` r
+
 library(rjags)
 library(runjags)
 runjags::testjags()  # Should show JAGS is working
@@ -201,7 +203,7 @@ MCP is automatically detected by GitHub Copilot in VS Code when the
 configuration file is present in `.github/mcp/mcp-config.json`.
 
 See
-[.github/mcp/README.md](https:/ucd-serg.github.io/serodynamics/preview/pr163/mcp/README.md)
+[.github/mcp/README.md](https://ucd-serg.github.io/serodynamics/preview/pr163/mcp/README.md)
 for detailed setup instructions.
 
 ## Development Workflow
@@ -209,6 +211,7 @@ for detailed setup instructions.
 ### 1. Load the Package
 
 ``` r
+
 devtools::load_all()
 ```
 
@@ -225,6 +228,7 @@ guidelines](#code-style-guidelines).
 After modifying roxygen2 comments:
 
 ``` r
+
 devtools::document()
 ```
 
@@ -234,6 +238,7 @@ are auto-generated.
 ### 4. Test Your Changes
 
 ``` r
+
 # Run all tests
 devtools::test()
 
@@ -244,6 +249,7 @@ testthat::test_file("tests/testthat/test-your-feature.R")
 ### 5. Check Code Quality
 
 ``` r
+
 # Lint your code
 lintr::lint_package()
 
@@ -256,6 +262,7 @@ spelling::spell_check_package()
 Before committing:
 
 ``` r
+
 devtools::check()
 ```
 
@@ -266,6 +273,7 @@ This runs the full package validation suite (takes 5-10 minutes).
 If you edited `README.Rmd`:
 
 ``` r
+
 rmarkdown::render("README.Rmd")
 ```
 
@@ -287,6 +295,7 @@ testing.
 ### Writing Tests
 
 ``` r
+
 test_that("your feature works correctly", {
   # Use seed for reproducible tests
   withr::local_seed(123)
@@ -304,6 +313,7 @@ test_that("your feature works correctly", {
 For MCMC output validation:
 
 ``` r
+
 test_that("JAGS output is consistent", {
   withr::local_seed(123)
   
@@ -319,6 +329,7 @@ test_that("JAGS output is consistent", {
 Use `variant` for platform-specific snapshots:
 
 ``` r
+
 expect_snapshot_value(
   platform_dependent_output,
   variant = Sys.info()[["sysname"]]
@@ -353,6 +364,7 @@ All PRs must pass these checks:
 Use roxygen2 for all exported functions:
 
 ``` r
+
 #' Brief function description
 #'
 #' Detailed description of what the function does.
@@ -376,6 +388,7 @@ your_function <- function(x, y) {
 Use `cli` package functions:
 
 ``` r
+
 # Information
 cli::cli_inform("Operation completed")
 
@@ -402,6 +415,7 @@ cli::cli_abort("Operation failed")
 Don’t copy-paste code. Instead, create helper functions:
 
 ``` r
+
 # Bad - duplicated code
 result1 <- transform_data(data1, param = "A")
 result2 <- transform_data(data2, param = "A")
@@ -464,5 +478,5 @@ DESCRIPTION version is incremented
 ## License
 
 See
-[LICENSE.md](https:/ucd-serg.github.io/serodynamics/preview/pr163/LICENSE.md)
+[LICENSE.md](https://ucd-serg.github.io/serodynamics/preview/pr163/LICENSE.md)
 for license information.

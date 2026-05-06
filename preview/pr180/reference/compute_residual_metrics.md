@@ -6,7 +6,7 @@ and/or summary metrics (MAE, RMSE, SSE) at multiple aggregation levels.
 
 This function provides quantitative posterior predictive diagnostics to
 complement visual assessments from
-[`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr180/reference/plot_predicted_curve.md).
+[`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/preview/pr180/reference/plot_predicted_curve.md).
 It evaluates how well the model predictions match observed data at the
 individual level.
 
@@ -28,7 +28,7 @@ compute_residual_metrics(
 - model:
 
   An `sr_model` object (returned by
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr180/reference/run_mod.md))
+  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr180/reference/run_mod.md))
   containing samples from the posterior distribution of the model
   parameters.
 

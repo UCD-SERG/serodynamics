@@ -79,6 +79,7 @@ Sam Schildhauer
 ## Examples
 
 ``` r
+
 data <- serodynamics::nepal_sees_jags_post
 
 plot_jags_effect(data = data,

@@ -130,6 +130,7 @@ A "curve_params_priors" object (a subclass of
 ## Examples
 
 ``` r
+
 prep_priors(max_antigens = 2,
             mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
             prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),

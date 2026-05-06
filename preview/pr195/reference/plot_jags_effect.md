@@ -2,7 +2,7 @@
 
 plot_jags_effect() takes a [list](https://rdrr.io/r/base/list.html)
 output from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr195/reference/run_mod.md)
 to create summary diagnostics for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified. At least 2 chains are
@@ -79,6 +79,7 @@ Sam Schildhauer
 ## Examples
 
 ``` r
+
 data <- serodynamics::nepal_sees_jags_output
 
 plot_jags_effect(data = data,
