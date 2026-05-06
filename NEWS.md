@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Fixed `as_case_data()` to set attributes in a stable order regardless of
+  whether the input is already a `case_data` object or fresh data, ensuring
+  compatibility with R 4.6 (#109).
+
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.
