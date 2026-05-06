@@ -44,30 +44,17 @@ as_case_data <- function(
     ))
   }
   
-  result <- data |>
+  data |>
     tibble::as_tibble() |>
     dplyr::mutate(
       .by = all_of(c(id_var, biomarker_var)),
       visit_num = dplyr::row_number()
     ) |>
-    serocalculator::set_id_var(id_var)
-
-  # Capture the id_var set by set_id_var (may be standardized to "id")
-  current_id_var <- attr(result, "id_var")
-
-  # Explicitly set attributes in a stable order, consistent across R versions
-  # and regardless of whether the input was already a case_data object.
-  attributes(result) <- c(
-    list(names = names(result)),
-    attributes(result)["row.names"],
-    list(
+    serocalculator::set_id_var(id_var) |>
+    structure(
       class = union("case_data", class(data)),
-      id_var = current_id_var,
       biomarker_var = biomarker_var,
       timeindays = time_in_days,
       value_var = value_var
     )
-  )
-
-  result
 }

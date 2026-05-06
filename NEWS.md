@@ -1,8 +1,8 @@
 # serodynamics (development version)
 
-* Fixed `as_case_data()` to set attributes in a stable order regardless of
-  whether the input is already a `case_data` object or fresh data, ensuring
-  compatibility with R 4.6 (#109).
+* Added R 4.6 snapshot variants to handle the changed attribute ordering in
+  `as_case_data()` when called on an existing `case_data` object, ensuring
+  test suite compatibility with R 4.6 (#109).
 
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot

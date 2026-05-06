@@ -21,7 +21,7 @@ test_that(
     test_obj |>
       attributes() |>
       rlist::list.remove("row.names") |>
-      expect_snapshot_value(style = "deparse")
+      expect_snapshot_value(style = "deparse", variant = r46_variant())
     
     test_obj |> expect_snapshot_data(name = "sim-data")
   }
@@ -46,7 +46,7 @@ test_that(
     dataset |>
       attributes() |>
       rlist::list.remove("row.names") |>
-      expect_snapshot_value(style = "deparse")
+      expect_snapshot_value(style = "deparse", variant = r46_variant())
     
     dataset |> expect_snapshot_data(name = "sees-data")
   }
