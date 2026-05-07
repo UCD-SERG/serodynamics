@@ -5,7 +5,7 @@
 \alias{nepal_sees_jags_output}
 \title{SEES Typhoid run_mod jags output}
 \format{
-An S3 object of class \code{sr_model}: A \link[tibble:tbl_df-class]{tibble::tbl_df} that contains
+An S3 object of class \code{sr_model}: A \link[tibble:tbl_df]{tibble::tbl_df} that contains
 the
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (\code{Subject = "newperson"}) and posterior

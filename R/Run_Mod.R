@@ -53,17 +53,19 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Optionally included modeled population parameters
-#'   indexed by 
-#'   `Iteration`, 
-#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Excluded as 
-#'   default. Includes the following modeled population parameters:
-#'     - `mu.par` = The population means of the host-specific model parameters 
-#'     (on logarithmic scales).
-#'     - `prec.par` = The population precision matrix of the hyperparameters
-#'     (with diagonal elements equal to inverse variances).  
-#'     - `prec.logy` = A vector of population precisions (inverse variances), 
-#'     one per antigen/isotype combination.  
+#'   - `population_params`: Optionally included modeled population parameters,
+#'   returned as a [data.frame] and excluded by default.
+#'   Columns include
+#'   `Iteration`, `Chain`, `Parameter`, `Population_Parameter`, `Iso_type`,
+#'   `Stratification`, and `value`.
+#'     - `Population_Parameter` identifies which modeled population parameter
+#'     is represented:
+#'       - `mu.par` = The population means of the host-specific model
+#'       parameters (on logarithmic scales).
+#'       - `prec.par` = The population precision matrix of the
+#'       hyperparameters (with diagonal elements equal to inverse variances).
+#'       - `prec.logy` = A vector of population precisions (inverse
+#'       variances), one per antigen/isotype combination.
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`

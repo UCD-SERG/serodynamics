@@ -31,7 +31,7 @@ samples from the posterior distribution of the model parameters.}
 \item{antigen_iso}{The antigen isotype to plot; for example, "HlyE_IgA" or
 "HlyE_IgG".}
 
-\item{dataset}{(Optional) A \link[tibble:tbl_df-class]{tibble::tbl_df} with observed antibody response
+\item{dataset}{(Optional) A \link[tibble:tbl_df]{tibble::tbl_df} with observed antibody response
 data.
 Must contain:
 \itemize{
