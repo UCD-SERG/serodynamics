@@ -56,37 +56,19 @@ run_mod_stan <- function(data,
     )
   }
   
-  ## Conditionally creating a stratification list to loop through
-  if (is.na(strat)) {
-    strat_list <- "None"
-  } else {
-    strat_list <- unique(data[[strat]])
-  }
+  ## Setup stratification
+  strat_list <- setup_stratification(data, strat)
   
-  ## Creating a shell to output results
-  stan_out <- data.frame(
-    "Iteration" = NA,
-    "Chain" = NA,
-    "Parameter" = NA,
-    "value" = NA,
-    "Parameter_sub" = NA,
-    "Subject" = NA,
-    "Iso_type" = NA,
-    "Stratification" = NA
-  )
+  ## Create output shell
+  stan_out <- create_output_shell()
   
   ## Creating output list for stan fit objects
   stan_fit_final <- list()
   
   # For loop for running stratifications
   for (i in strat_list) {
-    # Creating if else statement for running the loop
-    if (is.na(strat)) {
-      dl_sub <- data
-    } else {
-      dl_sub <- data |>
-        dplyr::filter(.data[[strat]] == i)
-    }
+    # Filter data by stratification
+    dl_sub <- filter_by_stratification(data, strat, i)
     
     # prepare data for modeling
     longdata <- prep_data_stan(dl_sub)
@@ -132,74 +114,35 @@ run_mod_stan <- function(data,
     # Only keeping necessary attributes
     mod_atts <- mod_atts[4:8]
     
-    # extracting antigen-iso combinations
-    iso_dat <- data.frame(attributes(longdata)$antigens)
-    iso_dat <- iso_dat |> dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
-    
-    # Working with stan unpacked ggs outputs to clarify parameter and subject
-    stan_unpack <- stan_unpack |>
-      dplyr::mutate(
-        Subnum = sub(".*,", "", .data$Parameter),
-        Parameter_sub = sub("\\[.*", "", .data$Parameter),
-        Subject = sub("\\,.*", "", .data$Parameter)
-      ) |>
-      dplyr::mutate(
-        Subnum = as.numeric(sub("\\].*", "", .data$Subnum)),
-        Subject = sub(".*\\[", "", .data$Subject)
-      )
-    
-    # Merging isodat
-    stan_unpack <- dplyr::left_join(stan_unpack, iso_dat, by = "Subnum")
-    ids <- data.frame(attr(longdata, "ids")) |>
-      mutate(Subject = as.character(dplyr::row_number()))
-    stan_unpack <- dplyr::left_join(stan_unpack, ids, by = "Subject")
-    
-    stan_final <- stan_unpack |>
-      dplyr::select(!c("Subnum", "Subject")) |>
-      dplyr::rename(
-        c("Iso_type" = "attributes.longdata..antigens",
-          "Subject" = "attr.longdata...ids..")
-      )
-    
-    # Creating a label for the stratification
-    stan_final$Stratification <- i
+    # Process MCMC output to add antigen-iso and subject information
+    stan_final <- process_mcmc_output(stan_unpack, longdata, i)
     
     ## Creating output
     stan_out <- data.frame(rbind(stan_out, stan_final))
   }
   
-  # Ensuring output does not have any NAs
+  # Remove NAs before calculating fitted values
   stan_out <- stan_out[complete.cases(stan_out), ]
   
-  # Making output a tibble and restructuring
-  stan_out <- dplyr::as_tibble(stan_out) |>
-    select(!c("Parameter")) |>
-    rename("Parameter" = "Parameter_sub")
-  stan_out <- stan_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
-                           "Stratification", "Subject", "value")]
-  
-  current_atts <- attributes(stan_out)
-  current_atts <- c(current_atts, mod_atts)
-  attributes(stan_out) <- current_atts
-  
-  # Adding priors
+  # Rename Parameter_sub to Parameter before calc_fit_mod
   stan_out <- stan_out |>
-    structure("priors" = attributes(priorspec)$used_priors)
+    dplyr::select(!c("Parameter")) |>
+    dplyr::rename("Parameter" = "Parameter_sub")
   
-  # Calculating fitted and residuals
+  # Calculate fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = stan_out,
                           original_data = dl_sub)
-  stan_out <- stan_out |>
-    structure(fitted_residuals = fit_res)
   
-  # Conditionally adding stan fit
-  if (with_post) {
-    stan_out <- stan_out |>
-      structure(stan.fit = stan_fit_final)
-  }
-  
-  stan_out <- stan_out |>
-    structure(class = union("sr_model", class(stan_out)))
+  # Format final output
+  stan_out <- format_model_output(
+    model_out = stan_out,
+    mod_atts = mod_atts,
+    priorspec = priorspec,
+    fit_res = fit_res,
+    post_fit = stan_fit_final,
+    with_post = with_post,
+    post_attr_name = "stan.fit"
+  )
   
   stan_out
 }

@@ -71,55 +71,33 @@ prep_priors <- function(max_antigens,
                         wishdf_param = 20,
                         prec_logy_hyp_param = c(4.0, 1.0)) {
 
-  # Ensuring the length of specified priors is correct.
-  # mu_hyp_param
-  if (length(mu_hyp_param) != 5) {
-    cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
-  }
-  # prec_hyp_param
-  if (length(mu_hyp_param) != 5) {
-    cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
-  }
-  # omega_hyp_param
-  if (length(omega_param) != 5) {
-    cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
-  }
-  # wishdf_param
-  if (length(wishdf_param) != 1) {
-    cli::cli_abort("Need to specify 1 prior for {.arg wishdf_param}")
-  }
-  # prec_logy_hyp_param
-  if (length(prec_logy_hyp_param) != 2) {
-    cli::cli_abort("Need to specify 2 priors for {.arg prec_logy_hyp_param}")
-  }
+  # Validate input parameters
+  validate_prior_params(
+    mu_hyp_param = mu_hyp_param,
+    prec_hyp_param = prec_hyp_param,
+    omega_param = omega_param,
+    wishdf_param = wishdf_param,
+    prec_logy_hyp_param = prec_logy_hyp_param
+  )
 
+  # Initialize and fill prior arrays
+  prior_arrays <- initialize_prior_arrays(
+    max_antigens = max_antigens,
+    mu_hyp_param = mu_hyp_param,
+    prec_hyp_param = prec_hyp_param,
+    omega_param = omega_param,
+    wishdf_param = wishdf_param,
+    prec_logy_hyp_param = prec_logy_hyp_param
+  )
 
-  # Model parameters
-  n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
-  mu_hyp <- array(NA, dim = c(max_antigens, n_params))
-  prec_hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
-  omega <- array(NA, dim = c(max_antigens, n_params, n_params))
-  wishdf <- rep(NA, max_antigens)
-  prec_logy_hyp <- array(NA, dim = c(max_antigens, 2))
-
-  # Fill parameter arrays
-  # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
-  for (k.test in 1:max_antigens) {
-    mu_hyp[k.test, ] <- mu_hyp_param
-    prec_hyp[k.test, , ] <- diag(prec_hyp_param)
-    omega[k.test, , ] <- diag(omega_param)
-    wishdf[k.test] <- wishdf_param
-    prec_logy_hyp[k.test, ] <- prec_logy_hyp_param
-  }
-
-  # Return results as a list
+  # Return results as a list with JAGS-specific naming
   prepped_priors <- list(
-    "n_params" = n_params,
-    "mu.hyp" = mu_hyp,
-    "prec.hyp" = prec_hyp,
-    "omega" = omega,
-    "wishdf" = wishdf,
-    "prec.logy.hyp" = prec_logy_hyp
+    "n_params" = prior_arrays$n_params,
+    "mu.hyp" = prior_arrays$mu_hyp,
+    "prec.hyp" = prior_arrays$prec_hyp,
+    "omega" = prior_arrays$omega,
+    "wishdf" = prior_arrays$wishdf,
+    "prec.logy.hyp" = prior_arrays$prec_logy_hyp
   ) |>
     structure(
               class = c("curve_params_priors", "list"))
