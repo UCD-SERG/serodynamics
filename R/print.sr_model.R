@@ -30,6 +30,8 @@ print.sr_model <- function(x,
     cat("An sr_model with the following median values:")
     cat("\n")
     cat("\n")
+    # Suppresses warnings from pivot_wider() when column names come from model
+    # parameters (e.g. "alpha", "shape", etc.) with no naming conflict issues
     x <- suppressWarnings({
       x |>
         dplyr::filter(.data$Subject == "newperson") |>
@@ -40,6 +42,8 @@ print.sr_model <- function(x,
         dplyr::arrange(.data$Iso_type)
     })
     # Taking out stratification column if not specified
+    # "None" is the sentinel value used when no stratification variable is
+    # specified in run_mod(); see the `strat` argument in run_mod().
     if (!"Stratification" %in% names(x) || all(x$Stratification == "None", 
                                                na.rm = TRUE)) {
       x <- dplyr::select(x, -dplyr::any_of("Stratification"))

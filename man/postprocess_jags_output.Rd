@@ -16,7 +16,7 @@ postprocess_jags_output(jags_output, ids, antigen_isos)
 (JAGS discards this information, so it has to be re-attached)}
 }
 \value{
-a \link[tibble:tbl_df-class]{tibble::tbl_df}
+a \link[tibble:tbl_df]{tibble::tbl_df}
 }
 \description{
 Postprocess JAGS output
