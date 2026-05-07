@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  9 14:35:00 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 00:45:01 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -193,6 +193,7 @@ fitted_model <- run_mod(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
@@ -416,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  9 14:35:12 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 00:45:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -451,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Apr  9 14:35:14 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 00:45:16 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -488,11 +489,11 @@ fitted_stratified <- run_mod(
 ## Next Steps
 
 - See the [function
-  reference](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/index.md)
+  reference](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
@@ -501,7 +502,7 @@ fitted_stratified <- run_mod(
 sessioninfo::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
-#>  version  R version 4.5.3 (2026-03-11)
+#>  version  R version 4.6.0 (2026-04-24)
 #>  os       Ubuntu 24.04.4 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
@@ -509,67 +510,67 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-04-09
-#>  pandoc   3.1.11 @ /opt/hostedtoolcache/pandoc/3.1.11/x64/ (via rmarkdown)
+#>  date     2026-05-07
+#>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.9.37 @ /usr/local/bin/quarto
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  package        * version    date (UTC) lib source
-#>  cli              3.6.6      2026-04-09 [1] CRAN (R 4.5.3)
-#>  coda             0.19-4.1   2024-01-31 [1] CRAN (R 4.5.3)
-#>  codetools        0.2-20     2024-03-31 [3] CRAN (R 4.5.3)
-#>  digest           0.6.39     2025-11-19 [1] CRAN (R 4.5.3)
-#>  doParallel       1.0.17     2022-02-07 [1] CRAN (R 4.5.3)
-#>  dplyr          * 1.2.1      2026-04-03 [1] CRAN (R 4.5.3)
-#>  evaluate         1.0.5      2025-08-27 [1] CRAN (R 4.5.3)
-#>  farver           2.1.2      2024-05-13 [1] CRAN (R 4.5.3)
-#>  fastmap          1.2.0      2024-05-15 [1] CRAN (R 4.5.3)
-#>  foreach          1.5.2      2022-02-02 [1] CRAN (R 4.5.3)
-#>  fs               2.0.1      2026-03-24 [1] CRAN (R 4.5.3)
-#>  generics         0.1.4      2025-05-09 [1] CRAN (R 4.5.3)
-#>  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.5.3)
-#>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.5.3)
-#>  ggplot2        * 4.0.2      2026-02-03 [1] CRAN (R 4.5.3)
-#>  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.5.3)
-#>  glue             1.8.0      2024-09-30 [1] CRAN (R 4.5.3)
-#>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.5.3)
-#>  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.5.3)
-#>  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.5.3)
-#>  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.5.3)
-#>  knitr            1.51       2025-12-20 [1] CRAN (R 4.5.3)
-#>  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.5.3)
-#>  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.5.3)
-#>  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.5.3)
-#>  magrittr         2.0.5      2026-04-04 [1] CRAN (R 4.5.3)
-#>  MASS             7.3-65     2025-02-28 [3] CRAN (R 4.5.3)
-#>  otel             0.2.0      2025-08-29 [1] CRAN (R 4.5.3)
-#>  pillar           1.11.1     2025-09-17 [1] CRAN (R 4.5.3)
-#>  pkgconfig        2.0.3      2019-09-22 [1] CRAN (R 4.5.3)
-#>  purrr            1.2.1      2026-01-09 [1] CRAN (R 4.5.3)
-#>  R6               2.6.1      2025-02-15 [1] CRAN (R 4.5.3)
-#>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.5.3)
-#>  Rcpp             1.1.1      2026-01-10 [1] CRAN (R 4.5.3)
-#>  rlang            1.2.0      2026-04-06 [1] CRAN (R 4.5.3)
-#>  rmarkdown        2.31       2026-03-26 [1] CRAN (R 4.5.3)
-#>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.5.3)
-#>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.5.3)
-#>  S7               0.2.1      2025-11-14 [1] CRAN (R 4.5.3)
-#>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.5.3)
-#>  serocalculator   1.4.0.9009 2026-03-29 [1] Github (ucd-serg/serocalculator@ae4e72c)
-#>  serodynamics   * 0.0.0.9048 2026-04-09 [1] local
-#>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.5.3)
-#>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.5.3)
-#>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.5.3)
-#>  tidyselect       1.2.1      2024-03-11 [1] CRAN (R 4.5.3)
-#>  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.5.3)
-#>  vctrs            0.7.2      2026-03-21 [1] CRAN (R 4.5.3)
-#>  withr            3.0.2      2024-10-28 [1] CRAN (R 4.5.3)
-#>  xfun             0.57       2026-03-20 [1] CRAN (R 4.5.3)
-#>  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.5.3)
+#>  cli              3.6.6      2026-04-09 [1] CRAN (R 4.6.0)
+#>  coda             0.19-4.1   2024-01-31 [1] CRAN (R 4.6.0)
+#>  codetools        0.2-20     2024-03-31 [3] CRAN (R 4.6.0)
+#>  digest           0.6.39     2025-11-19 [1] CRAN (R 4.6.0)
+#>  doParallel       1.0.17     2022-02-07 [1] CRAN (R 4.6.0)
+#>  dplyr          * 1.2.1      2026-04-03 [1] CRAN (R 4.6.0)
+#>  evaluate         1.0.5      2025-08-27 [1] CRAN (R 4.6.0)
+#>  farver           2.1.2      2024-05-13 [1] CRAN (R 4.6.0)
+#>  fastmap          1.2.0      2024-05-15 [1] CRAN (R 4.6.0)
+#>  foreach          1.5.2      2022-02-02 [1] CRAN (R 4.6.0)
+#>  fs               2.1.0      2026-04-18 [1] CRAN (R 4.6.0)
+#>  generics         0.1.4      2025-05-09 [1] CRAN (R 4.6.0)
+#>  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.6.0)
+#>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.6.0)
+#>  ggplot2        * 4.0.3      2026-04-22 [1] CRAN (R 4.6.0)
+#>  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.6.0)
+#>  glue             1.8.1      2026-04-17 [1] CRAN (R 4.6.0)
+#>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.6.0)
+#>  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.6.0)
+#>  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.6.0)
+#>  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.6.0)
+#>  knitr            1.51       2025-12-20 [1] CRAN (R 4.6.0)
+#>  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.6.0)
+#>  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.6.0)
+#>  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.6.0)
+#>  magrittr         2.0.5      2026-04-04 [1] CRAN (R 4.6.0)
+#>  MASS             7.3-65     2025-02-28 [3] CRAN (R 4.6.0)
+#>  otel             0.2.0      2025-08-29 [1] CRAN (R 4.6.0)
+#>  pillar           1.11.1     2025-09-17 [1] CRAN (R 4.6.0)
+#>  pkgconfig        2.0.3      2019-09-22 [1] CRAN (R 4.6.0)
+#>  purrr            1.2.2      2026-04-10 [1] CRAN (R 4.6.0)
+#>  R6               2.6.1      2025-02-15 [1] CRAN (R 4.6.0)
+#>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.6.0)
+#>  Rcpp             1.1.1-1.1  2026-04-24 [1] CRAN (R 4.6.0)
+#>  rlang            1.2.0      2026-04-06 [1] CRAN (R 4.6.0)
+#>  rmarkdown        2.31       2026-03-26 [1] CRAN (R 4.6.0)
+#>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.6.0)
+#>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.0)
+#>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
+#>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
+#>  serocalculator   1.4.0.9009 2026-05-06 [1] Github (ucd-serg/serocalculator@ae4e72c)
+#>  serodynamics   * 0.0.0.9049 2026-05-07 [1] local
+#>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.6.0)
+#>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
+#>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)
+#>  tidyselect       1.2.1      2024-03-11 [1] CRAN (R 4.6.0)
+#>  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.6.0)
+#>  vctrs            0.7.3      2026-04-11 [1] CRAN (R 4.6.0)
+#>  withr            3.0.2      2024-10-28 [1] CRAN (R 4.6.0)
+#>  xfun             0.57       2026-03-20 [1] CRAN (R 4.6.0)
+#>  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.6.0)
 #> 
 #>  [1] /home/runner/work/_temp/Library
-#>  [2] /opt/R/4.5.3/lib/R/site-library
-#>  [3] /opt/R/4.5.3/lib/R/library
+#>  [2] /opt/R/4.6.0/lib/R/site-library
+#>  [3] /opt/R/4.6.0/lib/R/library
 #>  * ── Packages attached to the search path.
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────

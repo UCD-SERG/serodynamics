@@ -58,6 +58,10 @@ expect_snapshot_data(x, name, digits = 6, ...)
       used. (testthat will still delete all variants if you delete the
       test.)
 
+  `old,new`
+
+  :   Paths to old and new snapshot files.
+
 ## Value
 
 [NULL](https://rdrr.io/r/base/NULL.html) (from
