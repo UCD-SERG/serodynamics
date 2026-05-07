@@ -170,8 +170,10 @@ run_mod <- function(data,
     
     # extracting antigen-iso combinations to correctly number
     # them by the order they are estimated by the program.
-    iso_dat <- data.frame(attributes(longdata)$antigens)
-    iso_dat <- iso_dat |> dplyr::mutate(Subnum = row.names(iso_dat))
+    iso_dat <- tibble::tibble(
+      Iso_type = attr(longdata, "antigens"),
+      Subnum = as.character(seq_along(attr(longdata, "antigens")))
+    )
     
     # Unpacking the mcmc object
     jags_unpacked <- unpack_jags(jags_packed)
@@ -181,12 +183,12 @@ run_mod <- function(data,
                                       by = "Subnum")
     
     # Adding in ID name
-    ids <- data.frame(attr(longdata, "ids")) |>
-      dplyr::mutate(Subject = as.character(dplyr::row_number()))
+    ids <- tibble::tibble(
+      Subject_mcmc = as.character(attr(longdata, "ids")),
+      Subject = as.character(seq_along(attr(longdata, "ids")))
+    )
     jags_final <- dplyr::left_join(jags_unpacked, ids, 
                                    by = "Subject") |>
-      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                      "Subject_mcmc" = "attr.longdata...ids..")) |>
       # Subject handling:
       # * For individual-level parameters, the left join above finds a row in
       #   attr(longdata, "ids"), so Subject_mcmc contains the subject ID.
