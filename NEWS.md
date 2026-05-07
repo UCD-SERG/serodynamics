@@ -8,6 +8,7 @@
 * `run_mod()` now monitors the `mu.par` hyperparameter and stores its
   posterior samples (transformed to the original parameter scale) in a
   `population_params` attribute of the returned `sr_model` object (#74).
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 * Added R 4.5+ snapshot variants to handle the changed attribute ordering in
   `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
