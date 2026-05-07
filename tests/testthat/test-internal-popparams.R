@@ -103,8 +103,8 @@ test_that("unpack_jags correctly unpacks individual-level parameters", {
   result <- serodynamics:::unpack_jags(test_data)
   
   # Check individual-level parameters are unpacked
-  expect_true("1" %in% result$Subject | "2" %in% result$Subject)
-  expect_true("y0" %in% result$Param | "alpha" %in% result$Param)
+  expect_true(all(c("1", "2") %in% result$Subject))
+  expect_true(all(c("y0", "alpha") %in% result$Param))
 })
 
 test_that("prep_popparams filters to population parameters only", {
