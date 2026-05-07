@@ -49,7 +49,7 @@ level parameters should be included as an attribute entitled
 Note: These objects can be large.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
+  Arguments passed on to \code{\link{prep_priors}}
   \describe{
     \item{\code{max_antigens}}{An \link{integer} specifying how many
 antigen-isotypes (biomarkers) will be modeled.}
