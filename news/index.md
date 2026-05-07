@@ -2,6 +2,18 @@
 
 ## serodynamics (development version)
 
+- Fixed
+  [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  references to
+  [`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  in
+  [`post_summ()`](https://ucd-serg.github.io/serodynamics/reference/post_summ.md)
+  and
+  [`run_mod()`](https://ucd-serg.github.io/serodynamics/reference/run_mod.md),
+  since
+  [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  is exported from the `tibble` package, not `dplyr`.
+
 - Added R 4.5+ snapshot variants to handle the changed attribute
   ordering in
   [`as_case_data()`](https://ucd-serg.github.io/serodynamics/reference/as_case_data.md),
