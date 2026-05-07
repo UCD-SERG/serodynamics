@@ -13,17 +13,10 @@
 \item{print_tbl}{A \link{logical} indicator to print \code{x} in the style of a
 \link[tibble:tbl_df]{tibble::tbl_df}.}
 
-\item{...}{Additional arguments passed to the print method.}
+\item{...}{Additional arguments passed to the underlying \code{\link[=print]{print()}} method.}
 }
 \value{
-Invisibly returns either:
-\itemize{
-\item when \code{print_tbl = TRUE}, a tibble containing the raw \code{sr_model}
-draws;
-\item otherwise, a data summary containing posterior medians for
-antibody kinetic curve parameters by \code{Iso_type} and \code{Stratification}
-(if specified).
-}
+The original \code{sr_model} object \code{x}, returned invisibly.
 }
 \description{
 A default print method for class \code{sr_model} that prints posterior medians

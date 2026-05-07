@@ -16,7 +16,7 @@ test_that(
   desc = "results consistent with printed output for sr_model as tbl no strat",
   code = {
     results <- nepal_sees_jags_output
-    results$Stratification <- "none"
+    results$Stratification <- "None"
 
     testthat::expect_snapshot(
       print(results),
