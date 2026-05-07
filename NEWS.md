@@ -9,6 +9,7 @@
   * New Stan model files: `inst/extdata/model.stan` and `inst/extdata/model.dobson.stan`
   * Stan support is optional (cmdstanr in Suggests) and can be used alongside JAGS
 
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 * Added R 4.5+ snapshot variants to handle the changed attribute ordering in
   `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
