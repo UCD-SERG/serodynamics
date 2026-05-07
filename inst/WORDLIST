@@ -29,6 +29,7 @@ geoms
 ggmcmc
 ggproto
 glibc
+hv
 hyp
 hyperprior
 hyperpriors
@@ -57,4 +58,5 @@ stratifications
 tbl
 testthat
 unstratified
+vh
 wishdf

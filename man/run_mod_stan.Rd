@@ -38,7 +38,7 @@ by \code{run_mod_stan()} (see \code{Value} section below for details).
 Note: These objects can be large.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=prep_priors_stan]{prep_priors_stan}}
+  Arguments passed on to \code{\link{prep_priors_stan}}
   \describe{
     \item{\code{max_antigens}}{An \link{integer} specifying how many
 antigen-isotypes (biomarkers) will be modeled.}
