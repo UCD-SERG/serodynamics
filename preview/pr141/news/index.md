@@ -2,6 +2,11 @@
 
 ## serodynamics (development version)
 
+- Expanded `.github/copilot-instructions.md` with additional guidance on
+  evidence-based claims, Quarto markdown/cross-reference conventions, R
+  style practices, and phrase-level line-break formatting for source
+  text.
+
 - Fixed
   [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
   references to
@@ -142,7 +147,9 @@ None yet
   ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
 - vectorized `ab()` function
   ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
-- Added `lintr::undesirable_function_linter()` to `.lintr.R`
+- Added
+  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
+  to `.lintr.R`
   ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
 - Reformatted `.lintr` as R file (following
   <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)

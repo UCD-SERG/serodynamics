@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9049</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9050</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -337,10 +337,10 @@
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Lint specific file</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint</span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Key linting rules</strong>: - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> instead of <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> instead of <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> instead of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> - Use <code>::</code> instead of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> in package code - Use native pipe <code>|&gt;</code> (configured in project.Rproj) - Follow snake_case with uppercase acronyms allowed (e.g., <code>prep_IDs</code> is valid) - Avoid <code>undesirable_function_linter</code> warnings</p>
 <p>Exclusions: <code>data-raw/</code>, <code>vignettes/</code>, <code>inst/examples/</code>, and <code>inst/analyses/</code> are exempt from some linters.</p>
 </div>
@@ -555,6 +555,8 @@
 <strong>Use native pipe</strong>: <code>|&gt;</code> not <code>%&gt;%</code>
 </li>
 <li>
+<strong>Avoid redundant logical comparisons</strong>: Use logical values directly (e.g., <code>if (is_ready)</code> not <code>if (is_ready == TRUE)</code>)</li>
+<li>
 <strong>Naming</strong>: snake_case, acronyms may be uppercase (e.g., <code>prep_IDs_data</code>)</li>
 <li>
 <strong>Messaging</strong>: Use <code>cli::cli_*()</code> functions for all user-facing messages</li>
@@ -567,6 +569,8 @@
 <li>
 <strong>Seed tests</strong>: Use <code><a href="https://withr.r-lib.org/reference/with_seed.html" class="external-link">withr::local_seed()</a></code> for reproducible tests</li>
 <li>
+<strong>Prefer data-first pipelines</strong>: Design and call functions so the primary data object flows through <code>|&gt;</code> naturally</li>
+<li>
 <strong>Avoid code duplication</strong>: Don’t copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.</li>
 <li>
 <strong>Quarto vignettes</strong>: Use Quarto-style chunk options with <code>#|</code> prefix (e.g., <code>#| label: my-chunk</code>, <code>#| eval: false</code>) instead of R Markdown comma-separated options (e.g., <code>{r my-chunk, eval=FALSE}</code>)</li>
@@ -574,6 +578,27 @@
 <strong>Tidyverse replacements</strong>: Use tidyverse/modern replacements for base R functions where available (e.g., <code><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">sessioninfo::session_info()</a></code> instead of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code>, <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code> instead of <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code>, <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_csv()</a></code> instead of <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code>)</li>
 <li>
 <strong>Write tidy code</strong>: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure</li>
+</ul></div>
+<div class="section level2">
+<h2 id="documentation-and-evidence-standards">Documentation and Evidence Standards<a class="anchor" aria-label="anchor" href="#documentation-and-evidence-standards"></a></h2>
+<ul><li>
+<strong>Do not assume behavior</strong>: Run the relevant command(s) and verify outputs before claiming something works.</li>
+<li>
+<strong>Use markdown syntax in <code>.qmd</code> prose</strong>: Wrap code in backticks, use markdown links, and avoid raw HTML links.</li>
+<li>
+<strong>Use semantic line breaks and list spacing in <code>.qmd</code></strong>: Break long prose across lines and include a blank line before bullet/numbered lists.</li>
+<li>
+<strong>Use Quarto cross-references</strong>: Reference sections/figures/tables with labels (for example <code>@sec-...</code>, <code>@fig-...</code>, <code>@tbl-...</code>) instead of plain text references.</li>
+<li>
+<strong>Support factual claims</strong>: Back factual statements with citations or direct verification evidence, and verify external links/resources before describing them.</li>
+</ul></div>
+<div class="section level2">
+<h2 id="code-formatting-guidelines">Code Formatting Guidelines<a class="anchor" aria-label="anchor" href="#code-formatting-guidelines"></a></h2>
+<p>When adding or editing text in source code (for example comments, documentation strings, or error messages) or in Quarto document text chunks:</p>
+<ul><li>Add a newline at the end of every phrase or logical unit of text</li>
+<li>Put each phrase on its own line in source files</li>
+<li>Treat a phrase as a complete thought, clause, or sentence</li>
+<li>Prefer this structure to improve readability and make diffs clearer</li>
 </ul></div>
 <div class="section level2">
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
@@ -584,7 +609,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span>               <span class="co"># Run tests</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">use_version</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># Increment version</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
 <span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span> <span class="co"># Update README</span></span></code></pre></div>
 </div>
