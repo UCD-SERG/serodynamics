@@ -543,6 +543,15 @@ expect_false(has_missing_values(complete_data))
 - **Use Quarto cross-references**: Reference sections/figures/tables with labels (for example `@sec-...`, `@fig-...`, `@tbl-...`) instead of plain text references.
 - **Support factual claims**: Back factual statements with citations or direct verification evidence, and verify external links/resources before describing them.
 
+## Code Formatting Guidelines
+
+When adding or editing text in source code (for example comments, documentation strings, or error messages) or in Quarto document text chunks:
+
+- Add a newline at the end of every phrase or logical unit of text
+- Put each phrase on its own line in source files
+- Treat a phrase as a complete thought, clause, or sentence
+- Prefer this structure to improve readability and make diffs clearer
+
 ## Package Development Commands Summary
 
 ```r
