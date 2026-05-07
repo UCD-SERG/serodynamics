@@ -28,7 +28,7 @@
 #' Note: These objects can be large.
 #' @param with_pop_params A [logical] value specifying whether population 
 #' level parameters should be included as an attribute entitled 
-#' `population_params`. Excluded as default.
+#' `population_params`. Excluded by default.
 #' Note: These objects can be large.
 #' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
