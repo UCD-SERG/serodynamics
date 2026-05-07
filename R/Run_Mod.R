@@ -209,5 +209,4 @@ run_mod <- function(data,
   jags_out <- jags_out |>
     structure(class = union("sr_model", class(jags_out)))
   jags_out
-  
 }
