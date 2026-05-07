@@ -53,7 +53,7 @@
 
 - Creating default print.sr_model function for sr_model class
   ([\#114](https://github.com/UCD-SERG/serodynamics/issues/114))
-- Made “newperson” optional in
+- Made `newperson` optional in
   [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/prep_data.md)
   ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73))
 - Including fitted and residual values as data frame in run_mod output.
