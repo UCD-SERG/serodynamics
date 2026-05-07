@@ -45,7 +45,7 @@ Note: These objects can be large.}
 
 \item{with_pop_params}{A \link{logical} value specifying whether population
 level parameters should be included as an attribute entitled
-\code{population_params}. Excluded as default.
+\code{population_params}. Excluded by default.
 Note: These objects can be large.}
 
 \item{...}{
