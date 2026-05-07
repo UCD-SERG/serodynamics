@@ -1,19 +1,31 @@
 #' @title Unpacking MCMC Object
 #' @author Sam Schildhauer
 #' @description
-#'  `unpack_jags()` takes an MCMC output from run_mod and unpacks it correctly
-#'  for all population parameters.
-#' @param data A [dplyr::tbl_df()] output object from run_mod with mcmc syntax.
-#' @returns A [dplyr::tbl_df()] that
+#'  `unpack_jags()` takes a long-format MCMC sample (typically created by
+#'  applying [ggmcmc::ggs()] to the `mcmc` component of [run_mod] output)
+#'  and unpacks it into separate rows for individual-level curve parameters
+#'  and population-level hyperparameters/precision terms.
+#' @param data A [tibble::tbl_df] in [ggmcmc::ggs()] / MCMC-long format,
+#'   usually `ggmcmc::ggs(jags_post[["mcmc"]])` where `jags_post` comes from
+#'   [run_mod]. Must contain at least `Iteration`, `Chain`, `Parameter`,
+#'   and `value` columns.
+#' @returns A [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
-#' with unpacked parameters, isotypes, and subjects.
+#' with unpacked individual-level parameters (e.g., `y0`, `y1`, `t1`,
+#' `alpha`, `shape`) and population-level parameters (e.g., `mu.par`,
+#' `prec.par`, `prec.logy`), along with isotypes and subjects.
 #' @keywords internal
 unpack_jags <- function(data) {
+  
+  # Convert Parameter column to character if it's a factor (from ggmcmc::ggs)
+  if (is.factor(data$Parameter)) {
+    data$Parameter <- as.character(data$Parameter)
+  }
 
   unpack_with_pattern <- function(data, filter_pattern, regex_pattern,
                                   subject_repl, subnum_repl, param_fun) {
     data |>
-      dplyr::filter(grepl(filter_pattern, .data$Parameter)) |>
+      dplyr::filter(startsWith(.data$Parameter, paste0(filter_pattern, "["))) |>
       dplyr::mutate(
         Subject = gsub(regex_pattern, subject_repl, .data$Parameter),
         Subnum = gsub(regex_pattern, subnum_repl, .data$Parameter),
@@ -63,7 +75,7 @@ unpack_jags <- function(data) {
     subject_repl = "\\1",
     subnum_repl = "\\2",
     param_fun = function(param, pattern) {
-      param_recode(gsub(pattern, "\\2", param))
+      "prec.logy"
     }
   )
 

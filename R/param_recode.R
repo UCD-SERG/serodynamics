@@ -6,11 +6,12 @@
 #' @returns A [vector] with recoded values.
 #' @keywords internal
 param_recode <- function(x) {
-  dplyr::case_match(
+  dplyr::recode(
     x,
-    "1" ~ "y0",
-    "2" ~ "y1",
-    "3" ~ "t1",
-    "4" ~ "alpha",
-    "5" ~ "shape")
+    "1" = "y0",
+    "2" = "y1",
+    "3" = "t1",
+    "4" = "alpha",
+    "5" = "shape"
+  )
 }

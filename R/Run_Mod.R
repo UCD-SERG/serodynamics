@@ -26,7 +26,11 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
+#' @param with_pop_params A [logical] value specifying whether population 
+#' level parameters should be included as an attribute entitled 
+#' `population_params`. Excluded as default.
+#' Note: These objects can be large.
+#' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
 #' including the following:
@@ -49,15 +53,17 @@
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
 #'   - `nThin`: Thinning number (niter/nmc).
-#'   - `population_params`: Modeled population parameters, indexed by 
+#'   - `population_params`: Optionally included modeled population parameters
+#'   indexed by 
 #'   `Iteration`, 
-#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Includes the 
-#'   following modeled population parameters:
+#'   `Chain`, `Parameter`, `Iso_type`, and `Stratification`. Excluded as 
+#'   default. Includes the following modeled population parameters:
 #'     - `mu.par` = The population means of the host-specific model parameters 
 #'     (on logarithmic scales).
 #'     - `prec.par` = The population precision matrix of the hyperparameters
 #'     (with diagonal elements equal to inverse variances).  
-#'     - `prec.logy` = The population variance among each antigen/isotype.  
+#'     - `prec.logy` = A vector of population precisions (inverse variances), 
+#'     one per antigen/isotype combination.  
 #'   - `priors`: A [list] that summarizes the input priors, including:
 #'     - `mu_hyp_param`
 #'     - `prec_hyp_param`
@@ -80,6 +86,7 @@ run_mod <- function(data,
                     niter = 100,
                     strat = NA,
                     with_post = FALSE,
+                    with_pop_params = FALSE,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -90,13 +97,13 @@ run_mod <- function(data,
 
   ## Creating a shell to output results
   jags_out <- tibble::tibble(
-    "Iteration" = NULL,
-    "Chain" = NULL,
-    "value" = NULL,
-    "Subject" = NULL,
-    "Parameter" = NULL,
-    "Iso_type" = NULL,
-    "Stratification" = NULL
+    "Iteration" = integer(),
+    "Chain" = integer(),
+    "value" = numeric(),
+    "Subject" = character(),
+    "Parameter" = character(),
+    "Iso_type" = character(),
+    "Stratification" = character()
   )
 
   ## Creating output list for jags.post
@@ -125,8 +132,12 @@ run_mod <- function(data,
     niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape", "mu.par", "prec.par",
-                   "prec.logy")
+    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
+    # Conditional statement for including population parameters
+    if (with_pop_params) {
+      tomonitor <- c(tomonitor, "mu.par", "prec.par",
+                     "prec.logy")
+    }
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -151,8 +162,9 @@ run_mod <- function(data,
 
     # Adding attributes
     mod_atts <- attributes(jags_packed)
-    # Only keeping necessary attributes
-    mod_atts <- mod_atts[4:8]
+    # Select necessary attributes by name for robustness across platforms
+    mod_atts <- mod_atts[c("nChains", "nParameters", "nIterations",
+                           "nBurnin", "nThin", "description")]
     
     # extracting antigen-iso combinations to correctly number
     # them by the order they are estimated by the program.
@@ -201,26 +213,51 @@ run_mod <- function(data,
     jags_final$Stratification <- i
     # Creating output as a data frame with the
     # jags output results for each stratification rbinded.
-    jags_out <- tibble::tibble(rbind(jags_out, jags_final))
+    jags_out <- dplyr::bind_rows(jags_out, jags_final)
   }
   
-  # Preparing population parameters
-  population_params <- prep_popparams(jags_out)
+  if (with_pop_params) {
+    # Preparing population parameters
+    population_params <- prep_popparams(jags_out)
+    population_params <- population_params[, c(
+      "Iteration", "Chain", "Parameter", "Iso_type",
+      "Stratification", "Population_Parameter", "value"
+    )]
   
-  # Taking out population parameters
-  jags_out <- ex_popparams(jags_out)
+    # Taking out population parameters
+    jags_out <- ex_popparams(jags_out)
+  }
   
-  # Making output a tibble and restructing.
+  # Making output a tibble and restructuring.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   current_atts <- attributes(jags_out)
-  new_atts <- c(current_atts, mod_atts)
+  # Explicitly build the attribute list in the correct order to ensure that
+  # `class` appears immediately after `names` and `row.names`.
+  # The dplyr operations above can carry ggmcmc attributes (nChains, etc.)
+  # from jags_packed into jags_out, placing `class` at the end. We use
+  # mod_atts (named selection from jags_packed) as the authoritative source
+  # for the ggmcmc-style metadata attributes.
+  new_atts <- list(
+    names = current_atts$names,
+    row.names = current_atts$row.names,
+    class = union("sr_model", current_atts$class),
+    nChains = mod_atts$nChains,
+    nParameters = mod_atts$nParameters,
+    nIterations = mod_atts$nIterations,
+    nBurnin = mod_atts$nBurnin,
+    nThin = mod_atts$nThin,
+    description = mod_atts$description
+  )
   attributes(jags_out) <- new_atts
   
-  # Adding population parameters and priors in as attributes
+  # Adding population parameters optionally and priors in as attributes
+  if (with_pop_params) {
+    jags_out <- jags_out |>
+      structure(population_params = population_params)
+  }
   jags_out <- jags_out |>
-    structure(population_params = population_params,
-              priors = attributes(priorspec)$used_priors)
+    structure(priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
@@ -234,7 +271,5 @@ run_mod <- function(data,
     jags_out <- jags_out |>
       structure(jags.post = jags_post_final)
   }
-  jags_out <- jags_out |>
-    structure(class = union("sr_model", class(jags_out)))
   jags_out
 }
