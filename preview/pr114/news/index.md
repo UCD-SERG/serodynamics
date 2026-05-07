@@ -2,6 +2,29 @@
 
 ## serodynamics (development version)
 
+- Expanded `.github/copilot-instructions.md` with additional guidance on
+  evidence-based claims, Quarto markdown/cross-reference conventions, R
+  style practices, and phrase-level line-break formatting for source
+  text.
+
+- Fixed
+  [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  references to
+  [`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  in
+  [`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/post_summ.md)
+  and
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md),
+  since
+  [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
+  is exported from the `tibble` package, not `dplyr`.
+
+- Added R 4.5+ snapshot variants to handle the changed attribute
+  ordering in
+  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/as_case_data.md),
+  ensuring test suite compatibility with R 4.5 and later
+  ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
+
 - Added dev container configuration for persistent, cached development
   environment that includes R, JAGS, and all dependencies preinstalled,
   making Copilot Workspace sessions much faster.
@@ -124,7 +147,9 @@ None yet
   ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
 - vectorized `ab()` function
   ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
-- Added `lintr::undesirable_function_linter()` to `.lintr.R`
+- Added
+  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
+  to `.lintr.R`
   ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
 - Reformatted `.lintr` as R file (following
   <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)

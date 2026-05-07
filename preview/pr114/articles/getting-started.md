@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu May  7 06:12:41 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 06:40:29 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -193,7 +193,6 @@ fitted_model <- run_mod(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
@@ -412,7 +411,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu May  7 06:12:53 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 06:40:42 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -447,7 +446,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu May  7 06:12:55 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 06:40:44 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -552,7 +551,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
 #>  serocalculator   1.4.0.9009 2026-05-06 [1] Github (ucd-serg/serocalculator@ae4e72c)
-#>  serodynamics   * 0.0.0.9048 2026-05-07 [1] local
+#>  serodynamics   * 0.0.0.9052 2026-05-07 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)

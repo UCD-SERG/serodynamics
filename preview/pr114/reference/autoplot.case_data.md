@@ -147,6 +147,12 @@ autoplot(object, log_y = TRUE, log_x = FALSE, ...)
       `orientation` to either `"x"` or `"y"`. See the *Orientation*
       section for more detail.
 
+  `direction`
+
+  :   direction of stairs: 'vh' for vertical then horizontal, 'hv' for
+      horizontal then vertical, or 'mid' for step half-way between
+      adjacent x-values.
+
 ## Value
 
 a [ggplot2::ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html)
