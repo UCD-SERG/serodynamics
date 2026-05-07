@@ -2,7 +2,7 @@
 
 `post_summ()` takes a [list](https://rdrr.io/r/base/list.html) output
 from
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md)
 to summary table for parameter, antigen/antibody, and stratification
 combination. Defaults will produce every combination of
 antigen/antibody, parameters, and stratifications, unless otherwise
@@ -36,7 +36,7 @@ post_summ(
 - data:
 
   A [list](https://rdrr.io/r/base/list.html) outputted from
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md).
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/run_mod.md).
 
 - iso:
 
