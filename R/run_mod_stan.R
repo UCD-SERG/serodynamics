@@ -91,7 +91,9 @@ run_mod_stan <- function(data,
     )
     
     # Store raw Stan fit if requested
-    stan_fit_final[[i]] <- stan_fit
+    if (with_post) {
+      stan_fit_final[[i]] <- stan_fit
+    }
     
     # Extract samples and convert to ggmcmc format
     draws <- stan_fit$draws(
@@ -100,9 +102,10 @@ run_mod_stan <- function(data,
     )
     
     # Convert to mcmc.list format compatible with ggmcmc
+    # draws_array has dimensions [iteration, chain, variable]
     mcmc_list <- list()
     for (ch in 1:nchain) {
-      mcmc_list[[ch]] <- coda::as.mcmc(draws[ch, , ])
+      mcmc_list[[ch]] <- coda::as.mcmc(draws[, ch, ])
     }
     mcmc_list <- coda::as.mcmc.list(mcmc_list)
     

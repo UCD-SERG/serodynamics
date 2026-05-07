@@ -6,7 +6,7 @@ data {
   int<lower=1> nsubj;                             // number of subjects
   int<lower=1> n_antigen_isos;                    // number of biomarkers
   int<lower=1> n_params;                          // number of parameters (5)
-  array[nsubj] int<lower=1> nsmpl;                // number of samples per subject
+  array[nsubj] int<lower=0> nsmpl;                // number of samples per subject (can be 0)
   int<lower=1> max_nsmpl;                         // maximum number of samples
   array[nsubj, max_nsmpl] real smpl_t;            // sample times
   array[nsubj, max_nsmpl, n_antigen_isos] real logy;  // log antibody measurements
@@ -87,30 +87,33 @@ model {
   
   // Likelihood
   for (subj in 1:nsubj) {
-    for (obs in 1:nsmpl[subj]) {
-      for (k in 1:n_antigen_isos) {
-        real mu_logy;
-        real sigma_logy;
-        
-        sigma_logy = 1.0 / sqrt(prec_logy[k]);
-        
-        // Determine phase: active infection or recovery
-        if (smpl_t[subj, obs] <= t1[subj, k]) {
-          // Active infection period (t <= t1)
-          mu_logy = log(y0[subj, k]) + beta[subj, k] * smpl_t[subj, obs];
-        } else {
-          // Recovery period (t > t1)
-          real shape_term = shape[subj, k];
-          real y1_val = y1[subj, k];
-          real t_diff = smpl_t[subj, obs] - t1[subj, k];
-          real alpha_val = alpha[subj, k];
+    // Only process subjects with observations
+    if (nsmpl[subj] > 0) {
+      for (obs in 1:nsmpl[subj]) {
+        for (k in 1:n_antigen_isos) {
+          real mu_logy;
+          real sigma_logy;
           
-          mu_logy = (1.0 / (1.0 - shape_term)) * 
-                    log(y1_val^(1.0 - shape_term) - 
-                        (1.0 - shape_term) * alpha_val * t_diff);
+          sigma_logy = 1.0 / sqrt(prec_logy[k]);
+          
+          // Determine phase: active infection or recovery
+          if (smpl_t[subj, obs] <= t1[subj, k]) {
+            // Active infection period (t <= t1)
+            mu_logy = log(y0[subj, k]) + beta[subj, k] * smpl_t[subj, obs];
+          } else {
+            // Recovery period (t > t1)
+            real shape_term = shape[subj, k];
+            real y1_val = y1[subj, k];
+            real t_diff = smpl_t[subj, obs] - t1[subj, k];
+            real alpha_val = alpha[subj, k];
+            
+            mu_logy = (1.0 / (1.0 - shape_term)) * 
+                      log(y1_val^(1.0 - shape_term) - 
+                          (1.0 - shape_term) * alpha_val * t_diff);
+          }
+          
+          logy[subj, obs, k] ~ normal(mu_logy, sigma_logy);
         }
-        
-        logy[subj, obs, k] ~ normal(mu_logy, sigma_logy);
       }
     }
   }

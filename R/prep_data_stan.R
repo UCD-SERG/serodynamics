@@ -4,7 +4,10 @@
 #' @param biomarker_column [character] string indicating
 #' which column contains antigen-isotype names
 #' @param verbose whether to produce verbose messaging
-#' @param add_newperson whether to add an extra record with missing data
+#' @param add_newperson whether to add an extra record with missing data.
+#'   **Note:** Stan cannot handle NA values in data, so this parameter is
+#'   currently ignored and treated as `FALSE`. Posterior predictive sampling
+#'   for Stan should be done separately using the fitted model object.
 #'
 #' @returns a `prepped_stan_data` object (a [list] with Stan-formatted data)
 #' @export
@@ -21,12 +24,27 @@ prep_data_stan <- function(
     verbose = FALSE,
     add_newperson = TRUE) {
   
+  # Stan cannot handle NA values in data, so we force add_newperson = FALSE
+  # regardless of what the user specifies
+  if (add_newperson) {
+    cli::cli_warn(
+      c(
+        "Stan cannot handle NA values in data.",
+        "i" = "Setting {.arg add_newperson = FALSE}.",
+        "i" = paste(
+          "Use posterior predictive sampling on the fitted Stan model",
+          "for predictions."
+        )
+      )
+    )
+  }
+  
   # First use existing prep_data function to get the base structure
   jags_data <- prep_data(
     dataframe = dataframe,
     biomarker_column = biomarker_column,
     verbose = verbose,
-    add_newperson = add_newperson
+    add_newperson = FALSE  # Force FALSE for Stan
   )
   
   # Convert to Stan format

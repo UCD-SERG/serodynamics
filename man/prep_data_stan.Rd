@@ -19,7 +19,10 @@ which column contains antigen-isotype names}
 
 \item{verbose}{whether to produce verbose messaging}
 
-\item{add_newperson}{whether to add an extra record with missing data}
+\item{add_newperson}{whether to add an extra record with missing data.
+\strong{Note:} Stan cannot handle NA values in data, so this parameter is
+currently ignored and treated as \code{FALSE}. Posterior predictive sampling
+for Stan should be done separately using the fitted model object.}
 }
 \value{
 a \code{prepped_stan_data} object (a \link{list} with Stan-formatted data)
