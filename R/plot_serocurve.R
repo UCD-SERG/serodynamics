@@ -1,7 +1,7 @@
 #' @title Plot Estimated Serodynamic Curves at the Population Level
 #' @description
 #' Plots the estimated antibody response curve derived from posterior samples
-#' of population-level (`mu.par`) or "new person" parameters from a fitted
+#' of population-level (`mu.par`) or the predictive distribution from a fitted
 #' [run_mod()] model.  A median curve with an optional 95% credible interval
 #' ribbon is produced for each requested antigen-isotype and stratification
 #' combination.
@@ -16,16 +16,10 @@
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
 #'     fitted with `run_mod(..., with_pop_params = TRUE)`.
-#'   - `"newperson"`: uses posterior samples for the `"newperson"` subject
-#'     (a subject with no observed data whose posterior is drawn entirely from
-#'     the population-level prior).
+#'   - `"newperson"`: uses the predictive distribution for a new individual
+#'     drawn from the population-level prior.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
 #'   interval ribbon around the median curve.
-#' @param show_all_curves [logical]; if [TRUE], overlays all individual
-#'   posterior-sample curves (can be slow for large numbers of samples).
-#'   Defaults to [FALSE].
-#' @param alpha_samples [numeric]; transparency level (0-1) for individual
-#'   sample curves when `show_all_curves = TRUE`.  Defaults to `0.3`.
 #' @param log_y [logical]; if [TRUE], applies a [log10] transformation to the
 #'   y-axis.  Defaults to [FALSE].
 #' @param log_x [logical]; if [TRUE], applies a pseudo-log10 transformation to
@@ -51,8 +45,6 @@ plot_serocurve <- function(
     strat = unique(model$Stratification),
     param_source = "population",
     show_ci = TRUE,
-    show_all_curves = FALSE,
-    alpha_samples = 0.3,
     log_y = FALSE,
     log_x = FALSE,
     xlim = NULL,
@@ -114,7 +106,8 @@ plot_serocurve <- function(
       )
     antigen_iso_col <- "Iso_type"
   } else {
-    # "newperson": extract from the long-format sr_model tibble
+    # "newperson": predictive distribution for a new individual drawn from
+    # the population-level prior
     param_samples <- model |>
       dplyr::filter(
         .data$Subject == "newperson",
@@ -138,15 +131,6 @@ plot_serocurve <- function(
     antigen_iso_col <- "Iso_type"
   }
 
-  # Add a unique sample identifier for line grouping
-  param_samples <- param_samples |>
-    dplyr::mutate(
-      sample_id = paste0(
-        .data$Chain, "_", .data$Iteration, "_",
-        .data[[antigen_iso_col]], "_", .data$Stratification
-      )
-    )
-
   # ---- Compute predicted curves over a grid of time points ---------------
   tx <- seq(0, 1200, by = 5)
 
@@ -156,7 +140,7 @@ plot_serocurve <- function(
       res = ab(.data$t, .data$y0, .data$y1, .data$t1, .data$alpha,
                .data$shape),
       .by = all_of(
-        c("Chain", "Iteration", antigen_iso_col, "Stratification", "sample_id")
+        c("Chain", "Iteration", antigen_iso_col, "Stratification")
       )
     )
 
@@ -178,34 +162,6 @@ plot_serocurve <- function(
     ggplot2::theme_minimal() +
     ggplot2::labs(x = "Time since onset", y = "Assay result") +
     ggplot2::theme(legend.position = "bottom")
-
-  if (show_all_curves) {
-    if (multi_strat) {
-      p <- p +
-        ggplot2::geom_line(
-          data = serocourse_all,
-          ggplot2::aes(
-            x = .data$t,
-            y = .data$res,
-            group = .data$sample_id,
-            colour = .data$Stratification
-          ),
-          alpha = alpha_samples
-        )
-    } else {
-      p <- p +
-        ggplot2::geom_line(
-          data = serocourse_all,
-          ggplot2::aes(
-            x = .data$t,
-            y = .data$res,
-            group = .data$sample_id,
-            colour = "samples"
-          ),
-          alpha = alpha_samples
-        )
-    }
-  }
 
   if (show_ci) {
     if (multi_strat) {
@@ -268,11 +224,6 @@ plot_serocurve <- function(
   if (!multi_strat) {
     color_vals <- c("median" = "red")
     color_labels <- c("median" = "Median")
-
-    if (show_all_curves) {
-      color_vals["samples"] <- "gray"
-      color_labels["samples"] <- "Posterior samples"
-    }
 
     fill_vals <- c("ci" = "red")
     fill_labels <- c("ci" = "95% credible interval")
