@@ -15,19 +15,8 @@ test_that(
 test_that(
   desc = "results consistent with printed output for sr_model as tbl no strat",
   code = {
-    withr::local_seed(1)
-    dataset <- serodynamics::nepal_sees
-    results <- suppressWarnings( # JAGS adaptation/convergence warnings
-      run_mod(
-        data = dataset, # The data set input
-        file_mod = serodynamics_example("model.jags"),
-        nchain = 2, # Number of mcmc chains to run
-        nadapt = 10, # Number of adaptations to run
-        nburn = 10, # Number of unrecorded samples before sampling begins
-        nmc = 100,
-        niter = 100 # Number of iterations
-      )
-    )
+    results <- nepal_sees_jags_output
+    results$Stratification <- "none"
 
     testthat::expect_snapshot(
       print(results),
