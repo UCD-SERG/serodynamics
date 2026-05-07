@@ -20,7 +20,7 @@
 ## New features
 
 * Creating default print.sr_model function for sr_model class (#114)
-* Made "newperson" optional in `prep_data()` (#73)
+* Made `newperson` optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
