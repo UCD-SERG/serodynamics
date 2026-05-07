@@ -47,6 +47,18 @@ prep_data_stan <- function(
     add_newperson = FALSE  # Force FALSE for Stan
   )
   
+  # Check for NA values in the data (Stan cannot handle NA)
+  if (any(is.na(jags_data$logy)) || any(is.na(jags_data$smpl.t))) {
+    cli::cli_abort(
+      c(
+        "Stan data cannot contain NA values.",
+        "i" = "The input data contains missing antibody measurements or time points.",
+        "i" = "Stan requires complete data for all observations.",
+        "i" = "Consider removing subjects/visits with missing data or imputing values."
+      )
+    )
+  }
+  
   # Convert to Stan format
   # Stan requires explicit max dimensions
   max_nsmpl <- max(jags_data$nsmpl)

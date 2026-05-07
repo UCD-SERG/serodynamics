@@ -65,6 +65,9 @@ run_mod_stan <- function(data,
   ## Creating output list for stan fit objects
   stan_fit_final <- list()
   
+  # Compile Stan model once (outside loop to avoid recompilation)
+  mod <- cmdstanr::cmdstan_model(file_mod)
+  
   # For loop for running stratifications
   for (i in strat_list) {
     # Filter data by stratification
@@ -77,9 +80,7 @@ run_mod_stan <- function(data,
     # Combine data and priors for Stan
     stan_data <- c(longdata, priorspec)
     
-    # Compile and fit the Stan model
-    mod <- cmdstanr::cmdstan_model(file_mod)
-    
+    # Fit the Stan model (model already compiled)
     stan_fit <- mod$sample(
       data = stan_data,
       chains = nchain,
@@ -112,10 +113,11 @@ run_mod_stan <- function(data,
     # Use ggmcmc to process
     stan_unpack <- ggmcmc::ggs(mcmc_list)
     
-    # Adding attributes
+    # Adding attributes - select by name for robustness
     mod_atts <- attributes(stan_unpack)
-    # Only keeping necessary attributes
-    mod_atts <- mod_atts[4:8]
+    # Keep only the attributes needed for downstream processing
+    needed_atts <- c("nChains", "nParameters", "nIterations", "nBurnin", "nThin")
+    mod_atts <- mod_atts[names(mod_atts) %in% needed_atts]
     
     # Process MCMC output to add antigen-iso and subject information
     stan_final <- process_mcmc_output(stan_unpack, longdata, i)
@@ -132,9 +134,9 @@ run_mod_stan <- function(data,
     dplyr::select(!c("Parameter")) |>
     dplyr::rename("Parameter" = "Parameter_sub")
   
-  # Calculate fitted and residuals
+  # Calculate fitted and residuals using the full original data
   fit_res <- calc_fit_mod(modeled_dat = stan_out,
-                          original_data = dl_sub)
+                          original_data = data)
   
   # Format final output
   stan_out <- format_model_output(

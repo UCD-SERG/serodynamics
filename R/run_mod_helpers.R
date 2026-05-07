@@ -10,7 +10,8 @@ setup_stratification <- function(data, strat) {
   if (is.na(strat)) {
     "None"
   } else {
-    unique(data[[strat]])
+    # Coerce to character to avoid factor indexing issues
+    as.character(unique(data[[strat]]))
   }
 }
 
@@ -121,7 +122,7 @@ format_model_output <- function(model_out,
                                  with_post = FALSE,
                                  post_attr_name = "jags.post") {
   # Convert to tibble and reorder columns
-  model_out <- dplyr::as_tibble(model_out)
+  model_out <- tibble::as_tibble(model_out)
   
   model_out <- model_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                              "Stratification", "Subject", "value")]
