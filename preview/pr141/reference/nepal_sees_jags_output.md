@@ -16,7 +16,7 @@ nepal_sees_jags_output
 
 ## Format
 
-\<\<\<\<\<\<\< HEAD An S3 object of class `sr_model`: A
+An S3 object of class `sr_model`: A
 [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
 that contains the posterior predictive distribution of the
 person-specific parameters for a "new person" with no observed data

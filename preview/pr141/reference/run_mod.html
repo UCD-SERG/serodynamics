@@ -224,16 +224,18 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
 <li><p><code>nThin</code>: Thinning number (niter/nmc).</p></li>
-<li><p><code>population_params</code>: Optionally included modeled population parameters
-indexed by
-<code>Iteration</code>,
-<code>Chain</code>, <code>Parameter</code>, <code>Iso_type</code>, and <code>Stratification</code>. Excluded as
-default. Includes the following modeled population parameters:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model parameters
-(on logarithmic scales).</p></li>
-<li><p><code>prec.par</code> = The population precision matrix of the hyperparameters
-(with diagonal elements equal to inverse variances).</p></li>
-<li><p><code>prec.logy</code> = A vector of population precisions (inverse variances),
-one per antigen/isotype combination.</p></li>
+<li><p><code>population_params</code>: Optionally included modeled population parameters,
+returned as a <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> and excluded by default.
+Columns include
+<code>Iteration</code>, <code>Chain</code>, <code>Parameter</code>, <code>Population_Parameter</code>, <code>Iso_type</code>,
+<code>Stratification</code>, and <code>value</code>.</p><ul><li><p><code>Population_Parameter</code> identifies which modeled population parameter
+is represented:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model
+parameters (on logarithmic scales).</p></li>
+<li><p><code>prec.par</code> = The population precision matrix of the
+hyperparameters (with diagonal elements equal to inverse variances).</p></li>
+<li><p><code>prec.logy</code> = A vector of population precisions (inverse
+variances), one per antigen/isotype combination.</p></li>
+</ul></li>
 </ul></li>
 <li><p><code>priors</code>: A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> that summarizes the input priors, including:</p><ul><li><p><code>mu_hyp_param</code></p></li>
 <li><p><code>prec_hyp_param</code></p></li>
@@ -289,7 +291,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May  7 01:52:31 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May  7 02:01:31 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -324,7 +326,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May  7 01:53:35 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May  7 02:02:25 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>

@@ -218,19 +218,23 @@ the following:
   - `nThin`: Thinning number (niter/nmc).
 
   - `population_params`: Optionally included modeled population
-    parameters indexed by `Iteration`, `Chain`, `Parameter`, `Iso_type`,
-    and `Stratification`. Excluded as default. Includes the following
-    modeled population parameters:
+    parameters, returned as a
+    [data.frame](https://rdrr.io/r/base/data.frame.html) and excluded by
+    default. Columns include `Iteration`, `Chain`, `Parameter`,
+    `Population_Parameter`, `Iso_type`, `Stratification`, and `value`.
 
-    - `mu.par` = The population means of the host-specific model
-      parameters (on logarithmic scales).
+    - `Population_Parameter` identifies which modeled population
+      parameter is represented:
 
-    - `prec.par` = The population precision matrix of the
-      hyperparameters (with diagonal elements equal to inverse
-      variances).
+      - `mu.par` = The population means of the host-specific model
+        parameters (on logarithmic scales).
 
-    - `prec.logy` = A vector of population precisions (inverse
-      variances), one per antigen/isotype combination.
+      - `prec.par` = The population precision matrix of the
+        hyperparameters (with diagonal elements equal to inverse
+        variances).
+
+      - `prec.logy` = A vector of population precisions (inverse
+        variances), one per antigen/isotype combination.
 
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
@@ -294,7 +298,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu May  7 01:52:31 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 02:01:31 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -329,7 +333,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu May  7 01:53:35 2026
+#> Welcome to JAGS 4.3.2 on Thu May  7 02:02:25 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
