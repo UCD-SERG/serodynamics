@@ -16,11 +16,18 @@ knitr::opts_chunk$set(
 # `{serodynamics}`
 
 <!-- badges: start -->
-[![Codecov test coverage](https://codecov.io/gh/UCD-SERG/serodynamics/graph/badge.svg)](https://app.codecov.io/gh/UCD-SERG/serodynamics)
-[![CodeFactor](https://www.codefactor.io/repository/github/ucd-serg/serodynamics/badge)](https://www.codefactor.io/repository/github/ucd-serg/serodynamics)
-[![R-CMD-check](https://github.com/ucdavis/serodynamics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ucdavis/serodynamics/actions/workflows/R-CMD-check.yaml)
-[![CRAN status](https://www.r-pkg.org/badges/version/serodynamics)](https://CRAN.R-project.org/package=serodynamics)
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
+
+```{r badges, echo=FALSE, results='asis'}
+# Use badger package to generate badges
+cat(
+  badger::badge_codecov("ucdavis/serodynamics", branch = "main"), "\n",
+  "[![CodeFactor](https://www.codefactor.io/repository/github/ucdavis/serodynamics/badge)](https://www.codefactor.io/repository/github/ucdavis/serodynamics)\n",
+  badger::badge_github_actions("ucdavis/serodynamics", "R-CMD-check.yaml"), "\n",
+  badger::badge_cran_release("serodynamics", "orange"), "\n",
+  badger::badge_lifecycle("experimental"), "\n"
+)
+```
+
 <!-- badges: end -->
 
 The goal of `{serodynamics}` is to implement methods for modeling longitudinal antibody responses to infection.

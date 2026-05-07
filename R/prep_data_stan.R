@@ -47,8 +47,12 @@ prep_data_stan <- function(
     add_newperson = FALSE  # Force FALSE for Stan
   )
   
-  # Check for NA values in the data (Stan cannot handle NA)
-  if (any(is.na(jags_data$logy)) || any(is.na(jags_data$smpl.t))) {
+  # Check for NA values in the original input data (Stan cannot handle NA)
+  # Note: jags_data arrays are padded with NA, so we check the original dataframe
+  value_var <- serocalculator::get_values_varname(dataframe)
+  timeindays_var <- serocalculator::get_timeindays_varname(dataframe)
+  
+  if (any(is.na(dataframe[[value_var]])) || any(is.na(dataframe[[timeindays_var]]))) {
     cli::cli_abort(
       c(
         "Stan data cannot contain NA values.",
