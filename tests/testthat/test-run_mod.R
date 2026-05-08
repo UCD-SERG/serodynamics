@@ -150,37 +150,8 @@ test_that(
 )
 
 test_that(
-  desc = "results are consistent with unstratified SEES data with jags.post
-  included",
-  code = {
-    announce_snapshot_file("nostrat-curve-params-withpost.csv")
-    withr::local_seed(1)
-    dataset <- serodynamics::nepal_sees 
-    
-    results <- run_mod(
-      data = dataset, # The data set input
-      file_mod = serodynamics_example("model.jags"),
-      nchain = 2, # Number of mcmc chains to run
-      nadapt = 10, # Number of adaptations to run
-      nburn = 10, # Number of unrecorded samples before sampling begins
-      nmc = 100,
-      niter = 100, # Number of iterations
-      strat = NA, # Variable to be stratified
-      with_post = TRUE
-    ) |>
-      suppressWarnings()
-
-    results |>
-      expect_snapshot_data(
-        "nostrat-curve-params-withpost",
-        variant = darwin_variant()
-      )
-  }
-)
-
-test_that(
   desc = "results are consistent with unstratified SEES data with modified 
-  priors",
+  priors and post",
   code = {
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
@@ -195,6 +166,7 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
+      with_post = TRUE,
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
@@ -208,6 +180,9 @@ test_that(
         "nostrat-curve-params-specpriors",
         variant = darwin_variant()
       )
+    
+    attributes(results)$jags.post$None |>
+      expect_snapshot_value(style = "deparse")
     
   }
 )
