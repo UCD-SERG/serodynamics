@@ -181,7 +181,7 @@ test_that(
         variant = darwin_variant()
       )
     
-    attributes(results)$jags.post$None |>
+    attributes(results)$jags.post$None$mcmc |>
       expect_snapshot_value(style = "deparse")
     
   }
