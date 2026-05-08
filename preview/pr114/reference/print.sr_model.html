@@ -75,17 +75,13 @@ for antibody kinetic curve parameters by <code>Iso_type</code> and
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Additional arguments passed to the print method.</p></dd>
+<dd><p>Additional arguments passed to the underlying <code><a href="https://rdrr.io/r/base/print.html" class="external-link">print()</a></code> method.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>Invisibly returns either:</p><ul><li><p>when <code>print_tbl = TRUE</code>, a tibble containing the raw <code>sr_model</code>
-draws;</p></li>
-<li><p>otherwise, a data summary containing posterior medians for
-antibody kinetic curve parameters by <code>Iso_type</code> and <code>Stratification</code>
-(if specified).</p></li>
-</ul></div>
+    <p>The original <code>sr_model</code> object <code>x</code>, returned invisibly.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>

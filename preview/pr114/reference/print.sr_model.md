@@ -26,17 +26,12 @@ print(x, print_tbl = FALSE, ...)
 
 - ...:
 
-  Additional arguments passed to the print method.
+  Additional arguments passed to the underlying
+  [`print()`](https://rdrr.io/r/base/print.html) method.
 
 ## Value
 
-Invisibly returns either:
-
-- when `print_tbl = TRUE`, a tibble containing the raw `sr_model` draws;
-
-- otherwise, a data summary containing posterior medians for antibody
-  kinetic curve parameters by `Iso_type` and `Stratification` (if
-  specified).
+The original `sr_model` object `x`, returned invisibly.
 
 ## Examples
 

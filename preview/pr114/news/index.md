@@ -51,7 +51,9 @@
 
 ### New features
 
-- Creating default print.sr_model function for sr_model class
+- Added a default
+  [`print.sr_model()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/print.sr_model.md)
+  method for `sr_model` objects
   ([\#114](https://github.com/UCD-SERG/serodynamics/issues/114))
 - Made `newperson` optional in
   [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr114/reference/prep_data.md)
