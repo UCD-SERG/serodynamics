@@ -26,7 +26,7 @@
 #' should be included as an element of the [list] object returned by `run_mod()`
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
+#' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
 #' including the following:
@@ -180,8 +180,8 @@ run_mod <- function(data,
   # Outputting the finalized jags output as a data frame with the
   # jags output results for each stratification rbinded.
 
-  # Making output a tibble and restructing.
-  jags_out <- dplyr::as_tibble(jags_out)  |>
+  # Making output a tibble and restructuring.
+  jags_out <- tibble::as_tibble(jags_out) |>
     select(!c("Parameter")) |>
     rename("Parameter" = "Parameter_sub")
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
@@ -209,5 +209,4 @@ run_mod <- function(data,
   jags_out <- jags_out |>
     structure(class = union("sr_model", class(jags_out)))
   jags_out
-  
 }

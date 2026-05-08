@@ -22,6 +22,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Samuel Schildhauer \email{sschildhauer@ucdavis.edu}
   \item Peter Teunis \email{p.teunis@emory.edu} (Author of the method and original code.) [copyright holder]
   \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu}
   \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu}

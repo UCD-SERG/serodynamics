@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
+* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
+* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
+  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.
@@ -15,8 +19,8 @@
 
 ## New features
 
-* Creating default print.sr_model function for sr_model class (#114)
-* Made "newperson" optional in `prep_data()` (#73)
+* Added a default `print.sr_model()` method for `sr_model` objects (#114)
+* Made `newperson` optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
