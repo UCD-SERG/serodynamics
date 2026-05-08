@@ -19,7 +19,7 @@ test_that(
     results$Stratification <- "None"
 
     testthat::expect_snapshot(
-      print(results),
+      print(results, print_tbl = TRUE),
       variant = darwin_variant()
     )
   }
