@@ -20,12 +20,10 @@ data {
 }
 
 transformed data {
-  // Convert precision matrices to covariance matrices for Stan
-  array[n_antigen_isos] matrix[n_params, n_params] sigma_hyp;
+  // Convert omega precision matrix to covariance for inverse Wishart
   array[n_antigen_isos] matrix[n_params, n_params] omega_inv;
   
   for (k in 1:n_antigen_isos) {
-    sigma_hyp[k] = inverse(prec_hyp[k]);
     omega_inv[k] = inverse(omega[k]);
   }
 }
@@ -73,7 +71,7 @@ transformed parameters {
 model {
   // Hyperpriors
   for (k in 1:n_antigen_isos) {
-    mu_par[k] ~ multi_normal(mu_hyp[k], sigma_hyp[k]);
+    mu_par[k] ~ multi_normal_prec(mu_hyp[k], prec_hyp[k]);
     Sigma_par[k] ~ inv_wishart(wishdf[k], omega_inv[k]);
     prec_logy[k] ~ gamma(prec_logy_hyp[k, 1], prec_logy_hyp[k, 2]);
   }

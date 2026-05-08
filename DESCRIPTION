@@ -32,6 +32,7 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    badger,
     cmdstanr,
     Hmisc,
     knitr,

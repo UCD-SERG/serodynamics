@@ -48,17 +48,24 @@ prep_data_stan <- function(
   )
   
   # Check for NA values in the original input data (Stan cannot handle NA)
-  # Note: jags_data arrays are padded with NA, so we check the original dataframe
-  value_var <- serocalculator::get_values_varname(dataframe)
-  timeindays_var <- serocalculator::get_timeindays_varname(dataframe)
+  # Note: jags_data arrays are padded with NA, so check original dataframe
+  value_var <- serocalculator::get_values_var(dataframe)
+  timeindays_var <- get_timeindays_var(dataframe)
   
-  if (any(is.na(dataframe[[value_var]])) || any(is.na(dataframe[[timeindays_var]]))) {
+  if (any(is.na(dataframe[[value_var]])) ||
+      any(is.na(dataframe[[timeindays_var]]))) {
     cli::cli_abort(
       c(
         "Stan data cannot contain NA values.",
-        "i" = "The input data contains missing antibody measurements or time points.",
+        "i" = paste(
+          "The input data contains missing antibody measurements",
+          "or time points."
+        ),
         "i" = "Stan requires complete data for all observations.",
-        "i" = "Consider removing subjects/visits with missing data or imputing values."
+        "i" = paste(
+          "Consider removing subjects/visits with missing data",
+          "or imputing values."
+        )
       )
     )
   }

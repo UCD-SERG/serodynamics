@@ -10,8 +10,11 @@ setup_stratification <- function(data, strat) {
   if (is.na(strat)) {
     "None"
   } else {
-    # Coerce to character to avoid factor indexing issues
-    as.character(unique(data[[strat]]))
+    # Get unique levels, excluding NA
+    levels <- unique(data[[strat]])
+    levels <- levels[!is.na(levels)]
+    # Return as-is to preserve type for filtering
+    levels
   }
 }
 
@@ -46,8 +49,14 @@ filter_by_stratification <- function(data, strat, strat_level) {
   if (is.na(strat)) {
     data
   } else {
-    data |>
-      dplyr::filter(.data[[strat]] == strat_level)
+    # Handle NA strat_level explicitly
+    if (is.na(strat_level)) {
+      data |>
+        dplyr::filter(is.na(.data[[strat]]))
+    } else {
+      data |>
+        dplyr::filter(.data[[strat]] == strat_level)
+    }
   }
 }
 
@@ -115,12 +124,12 @@ process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
 #' @keywords internal
 #' @noRd
 format_model_output <- function(model_out,
-                                 mod_atts,
-                                 priorspec,
-                                 fit_res,
-                                 post_fit = NULL,
-                                 with_post = FALSE,
-                                 post_attr_name = "jags.post") {
+                                mod_atts,
+                                priorspec,
+                                fit_res,
+                                post_fit = NULL,
+                                with_post = FALSE,
+                                post_attr_name = "jags.post") {
   # Convert to tibble and reorder columns
   model_out <- tibble::as_tibble(model_out)
   

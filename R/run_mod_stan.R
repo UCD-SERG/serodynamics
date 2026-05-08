@@ -116,7 +116,9 @@ run_mod_stan <- function(data,
     # Adding attributes - select by name for robustness
     mod_atts <- attributes(stan_unpack)
     # Keep only the attributes needed for downstream processing
-    needed_atts <- c("nChains", "nParameters", "nIterations", "nBurnin", "nThin")
+    needed_atts <- c(
+      "nChains", "nParameters", "nIterations", "nBurnin", "nThin"
+    )
     mod_atts <- mod_atts[names(mod_atts) %in% needed_atts]
     
     # Process MCMC output to add antigen-iso and subject information
