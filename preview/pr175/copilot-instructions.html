@@ -676,16 +676,32 @@
 <li>
 <strong>ALWAYS</strong> run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code> before requesting PR review</li>
 <li>
-<strong>ALWAYS</strong> make sure <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code> passes before requesting PR review</li>
+<strong>ALWAYS</strong> run <code><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lintr::lint_package()</a></code> before requesting PR review and fix all linting issues</li>
 <li>
-<strong>ALWAYS</strong> make sure <code><a href="https://devtools.r-lib.org/reference/spell_check.html" class="external-link">devtools::spell_check()</a></code> passes before requesting PR review</li>
+<strong>ALWAYS</strong> run <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code> before requesting PR review and ensure it passes with 0 errors, 0 warnings, 0 notes</li>
+<li>
+<strong>ALWAYS</strong> make sure <code><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spelling::spell_check_package()</a></code> passes before requesting PR review</li>
 <li>
 <strong>ALWAYS</strong> run <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> before requesting PR review to ensure the pkgdown site builds successfully</li>
 <li>
 <strong>ALWAYS</strong> verify Quarto documents render successfully locally - don’t rely on CI workflows. For vignettes and articles, test rendering with <code>quarto render path/to/file.qmd</code> or by building the full site with <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code>
 </li>
 <li>When <code><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">pkgdown::build_site()</a></code> has errors related to Quarto, use <code>quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)</code> to debug and see detailed error messages</li>
-</ol><p>Only search for additional information if these instructions are incomplete or incorrect for your specific task.</p>
+</ol><p><strong>CRITICAL PRE-REVIEW VALIDATION</strong>: Before requesting PR review, you MUST run the following validation commands locally and ensure they all pass:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 1. Lint the package - must have 0 linting issues</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 2. Run R CMD check - must pass with 0 errors, 0 warnings, 0 notes</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 3. Check spelling - must have no spelling errors</span></span>
+<span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># 4. Build pkgdown site - must build successfully</span></span>
+<span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<p>Do NOT request review if any of these checks fail. Fix all issues first, then re-run the checks to verify.</p>
+<p>Only search for additional information if these instructions are incomplete or incorrect for your specific task.</p>
 </div>
 </div>
 

@@ -9,7 +9,7 @@ prep_data_stan(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
   verbose = FALSE,
-  add_newperson = TRUE
+  add_newperson = FALSE
 )
 ```
 
@@ -49,7 +49,4 @@ raw_data <-
   serocalculator::typhoid_curves_nostrat_100 |>
   sim_case_data(n = 5)
 prepped_data <- prep_data_stan(raw_data)
-#> Warning: Stan cannot handle NA values in data.
-#> ℹ Setting `add_newperson = FALSE`.
-#> ℹ Use posterior predictive sampling on the fitted Stan model for predictions.
 ```
