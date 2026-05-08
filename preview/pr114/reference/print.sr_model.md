@@ -21,17 +21,24 @@ print(x, print_tbl = FALSE, ...)
 - print_tbl:
 
   A [logical](https://rdrr.io/r/base/logical.html) indicator to print
-  `x` in the style of a
-  [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html).
+  `x` in the style of a \<\<\<\<\<\<\< HEAD
+  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/defunct.html).
 
-- ...:
-
-  Additional arguments passed to the underlying
-  [`print()`](https://rdrr.io/r/base/print.html) method.
+=======
+[tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html).
 
 ## Value
 
-The original `sr_model` object `x`, returned invisibly.
+\<\<\<\<\<\<\< HEAD Invisibly returns either:
+
+- When `print_tbl = TRUE`, a tibble containing the raw `sr_model` draws;
+
+- Otherwise, a data summary containing posterior medians for antibody
+  kinetic curve parameters by `Iso_type` and `Stratification` (if
+  specified).
+
+======= The original `sr_model` object `x`, returned invisibly.
+\>\>\>\>\>\>\> 82cd42446c6533356d29768ff08e34dca0748998
 
 ## Examples
 
