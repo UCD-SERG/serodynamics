@@ -187,8 +187,10 @@ run_mod <- function(data,
       dplyr::mutate(Subject = as.character(dplyr::row_number()))
     jags_final <- dplyr::left_join(jags_unpacked, ids, 
                                    by = "Subject") |>
-      dplyr::rename(c("Iso_type" = "attributes.longdata..antigens",
-                      "Subject_mcmc" = "attr.longdata...ids..")) |>
+      dplyr::rename(
+        Iso_type = "attributes.longdata..antigens",
+        Subject_mcmc = "attr.longdata...ids.."
+      ) |>
       # Subject handling:
       # * For individual-level parameters, the left join above finds a row in
       #   attr(longdata, "ids"), so Subject_mcmc contains the subject ID.
@@ -208,9 +210,11 @@ run_mod <- function(data,
       # containing cleaned parameter names.
       # Drop the temporary Subject (now only used as a fallback for population
       # parameters) and rename Subject_mcmc back to Subject for downstream use.
-      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
-      dplyr::rename(c("Subject" = "Subject_mcmc",
-                      "Parameter" = "Param"))
+      dplyr::select(-dplyr::all_of(c("Subnum", "Subject", "Parameter"))) |>
+      dplyr::rename(
+        Subject = "Subject_mcmc",
+        Parameter = "Param"
+      )
     
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
