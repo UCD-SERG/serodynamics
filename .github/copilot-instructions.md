@@ -614,10 +614,28 @@ These instructions have been validated against the actual repository structure, 
 9. **ALWAYS** run tests before committing (`devtools::test()`)
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
 11. **ALWAYS** run `devtools::document()` before requesting PR review
-12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
-13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
-14. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
-15. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
-16. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
+12. **ALWAYS** run `lintr::lint_package()` before requesting PR review and fix all linting issues
+13. **ALWAYS** run `devtools::check()` before requesting PR review and ensure it passes with 0 errors, 0 warnings, 0 notes
+14. **ALWAYS** make sure `spelling::spell_check_package()` passes before requesting PR review
+15. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
+16. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
+17. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
+
+**CRITICAL PRE-REVIEW VALIDATION**: Before requesting PR review, you MUST run the following validation commands locally and ensure they all pass:
+```r
+# 1. Lint the package - must have 0 linting issues
+lintr::lint_package()
+
+# 2. Run R CMD check - must pass with 0 errors, 0 warnings, 0 notes
+devtools::check()
+
+# 3. Check spelling - must have no spelling errors
+spelling::spell_check_package()
+
+# 4. Build pkgdown site - must build successfully
+pkgdown::build_site()
+```
+
+Do NOT request review if any of these checks fail. Fix all issues first, then re-run the checks to verify.
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
