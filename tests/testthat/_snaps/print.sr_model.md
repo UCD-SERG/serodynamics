@@ -31,23 +31,14 @@
       10        10     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00852
       # i 69,990 more rows
 
-# results consistent with printed output for sr_model as tbl no strat
+# results consistent with printed output for sr_model no strat
 
     Code
-      print(results, print_tbl = TRUE)
+      print(results)
     Output
-      # A tibble: 70,000 x 7
-         Iteration Chain Parameter Iso_type Stratification Subject      value
-             <int> <int> <chr>     <chr>    <chr>          <chr>        <dbl>
-       1         1     1 alpha     HlyE_IgA None           sees_npl_1 0.00757
-       2         2     1 alpha     HlyE_IgA None           sees_npl_1 0.00794
-       3         3     1 alpha     HlyE_IgA None           sees_npl_1 0.00794
-       4         4     1 alpha     HlyE_IgA None           sees_npl_1 0.0103 
-       5         5     1 alpha     HlyE_IgA None           sees_npl_1 0.00925
-       6         6     1 alpha     HlyE_IgA None           sees_npl_1 0.00925
-       7         7     1 alpha     HlyE_IgA None           sees_npl_1 0.00950
-       8         8     1 alpha     HlyE_IgA None           sees_npl_1 0.00950
-       9         9     1 alpha     HlyE_IgA None           sees_npl_1 0.00852
-      10        10     1 alpha     HlyE_IgA None           sees_npl_1 0.00852
-      # i 69,990 more rows
+      An sr_model with the following median values:
+      
+        Iso_type      alpha    shape       t1       y0      y1
+      1 HlyE_IgA 0.00152385 1.617035 4.902425 2.558535 224.890
+      2 HlyE_IgG 0.00140960 1.386160 5.203165 2.132115 260.798
 
