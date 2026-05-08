@@ -38,7 +38,6 @@ libm
 linux
 mcmc
 mitre
-newperson
 nmc
 onwards
 params
@@ -53,6 +52,7 @@ strat
 stratifications
 tbl
 testthat
+tibble
 unstratified
 vh
 wishdf
