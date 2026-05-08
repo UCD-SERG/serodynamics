@@ -59,6 +59,19 @@ run_mod_stan <- function(data,
   ## Setup stratification
   strat_list <- setup_stratification(data, strat)
   
+  # Handle case where all strat values are NA (empty strat_list)
+  if (length(strat_list) == 0) {
+    cli::cli_abort(
+      c(
+        "All values in stratification column are NA.",
+        "i" = paste(
+          "Either provide a valid stratification column",
+          "or use {.arg strat = NA}."
+        )
+      )
+    )
+  }
+  
   ## Create output shell
   stan_out <- create_output_shell()
   

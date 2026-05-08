@@ -8,7 +8,7 @@ prep_data_stan(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
   verbose = FALSE,
-  add_newperson = TRUE
+  add_newperson = FALSE
 )
 }
 \arguments{

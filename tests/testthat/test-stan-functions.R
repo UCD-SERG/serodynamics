@@ -93,8 +93,6 @@ test_that("run_mod_stan works with cmdstanr installed", {
     file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
     nchain = 2,
     nadapt = 100,
-    nburn = 100,
-    nmc = 10,
     niter = 10
   ) |>
     suppressWarnings()
@@ -143,8 +141,6 @@ test_that("run_mod_stan works with stratification", {
     file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
     nchain = 2,
     nadapt = 100,
-    nburn = 100,
-    nmc = 10,
     niter = 10,
     strat = "strat"
   ) |>

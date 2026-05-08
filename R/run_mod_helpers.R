@@ -151,10 +151,7 @@ format_model_output <- function(model_out,
   
   # Conditionally add raw posterior
   if (with_post && !is.null(post_fit)) {
-    attr_list <- list()
-    attr_list[[post_attr_name]] <- post_fit
-    model_out <- model_out |>
-      structure(!!!attr_list)
+    attr(model_out, post_attr_name) <- post_fit
   }
   
   # Add sr_model class

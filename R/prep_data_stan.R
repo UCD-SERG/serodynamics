@@ -22,10 +22,10 @@ prep_data_stan <- function(
     dataframe,
     biomarker_column = get_biomarker_names_var(dataframe),
     verbose = FALSE,
-    add_newperson = TRUE) {
+    add_newperson = FALSE) {
   
   # Stan cannot handle NA values in data, so we force add_newperson = FALSE
-  # regardless of what the user specifies
+  # Warn only if user explicitly requested TRUE
   if (add_newperson) {
     cli::cli_warn(
       c(
