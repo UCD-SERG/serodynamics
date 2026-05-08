@@ -39,8 +39,9 @@ print.sr_model <- function(x,
     # "None" is the sentinel value used when no stratification variable is
     # specified in run_mod(); see the `strat` argument in run_mod().
     if (!"Stratification" %in% names(summary_tbl) ||
-        all(summary_tbl$Stratification == "None", na.rm = TRUE)) {
-      summary_tbl <- dplyr::select(summary_tbl, -dplyr::any_of("Stratification"))
+          all(summary_tbl$Stratification == "None", na.rm = TRUE)) {
+      summary_tbl <- dplyr::select(summary_tbl, 
+                                   -dplyr::any_of("Stratification"))
     }
     print(as.data.frame(summary_tbl), ...)
   }
