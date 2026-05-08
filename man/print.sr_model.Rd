@@ -31,5 +31,5 @@ for antibody kinetic curve parameters by \code{Iso_type} and
 \code{Stratification} (if specified).
 }
 \examples{
-print(nepal_sees_jags_output)
+print(serodynamics::nepal_sees_jags_output)
 }
