@@ -11,16 +11,11 @@
 \item{x}{An \code{sr_model} output object from \code{\link[=run_mod]{run_mod()}}.}
 
 \item{print_tbl}{A \link{logical} indicator to print \code{x} in the style of a
-<<<<<<< HEAD
-\link[dplyr:tbl_df]{dplyr::tbl_df}.}
-=======
 \link[tibble:tbl_df]{tibble::tbl_df}.}
->>>>>>> 82cd42446c6533356d29768ff08e34dca0748998
 
-\item{...}{Additional arguments passed to the underlying \code{\link[=print]{print()}} method.}
+\item{...}{Additional arguments passed to the print method.}
 }
 \value{
-<<<<<<< HEAD
 Invisibly returns either:
 \itemize{
 \item When \code{print_tbl = TRUE}, a tibble containing the raw \code{sr_model}
@@ -29,9 +24,6 @@ draws;
 antibody kinetic curve parameters by \code{Iso_type} and \code{Stratification}
 (if specified).
 }
-=======
-The original \code{sr_model} object \code{x}, returned invisibly.
->>>>>>> 82cd42446c6533356d29768ff08e34dca0748998
 }
 \description{
 A default print method for class \code{sr_model} that prints posterior medians
