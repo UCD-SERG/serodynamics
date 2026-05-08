@@ -1,39 +1,55 @@
 {
-  "name": "serodynamics R Development",
-  "build": {
-    "dockerfile": "Dockerfile"
-  },
+  "name": "serodynamics R Package Development",
+  "image": "rocker/tidyverse:latest",
   
-  // Features to add to the dev container
   "features": {
-    "ghcr.io/devcontainers/features/git:1": {}
-  },
-
-  // Configure tool-specific properties
-  "customizations": {
-    "vscode": {
-      "extensions": [
-        "REditorSupport.r",
-        "GitHub.copilot"
-      ],
-      "settings": {
-        "r.rterm.linux": "/usr/local/bin/R",
-        "r.rpath.linux": "/usr/local/bin/R"
-      }
+    "ghcr.io/devcontainers/features/git:1": {},
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
     }
   },
-
-  // Use 'postCreateCommand' to run commands after the container is created
+  
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "r.rterm.linux": "/usr/local/bin/R",
+        "r.rpath.linux": "/usr/local/bin/R",
+        "terminal.integrated.defaultProfile.linux": "bash"
+      },
+      "extensions": [
+        "rdebugger.r-debugger",
+        "reditorsupport.r",
+        "github.copilot",
+        "github.copilot-chat",
+        "quarto.quarto",
+        "redhat.vscode-yaml",
+        "yzhang.markdown-all-in-one",
+        "streetsidesoftware.code-spell-checker",
+        "eamodio.gitlens"
+      ]
+    }
+  },
+  
   "postCreateCommand": "bash .devcontainer/setup.sh",
-
-  // Set the default shell
+  
   "remoteUser": "rstudio",
   
-  // Forward ports for RStudio Server (optional)
   "forwardPorts": [8787],
   
-  // Persist command history across container rebuilds
+  "portsAttributes": {
+    "8787": {
+      "label": "RStudio Server",
+      "onAutoForward": "notify"
+    }
+  },
+  
   "mounts": [
-    "source=serodynamics-bashhistory,target=/commandhistory,type=volume"
-  ]
+    "source=${localWorkspaceFolder}/.Rprofile,target=/home/rstudio/.Rprofile,type=bind,consistency=cached"
+  ],
+  
+  "containerEnv": {
+    "GITHUB_TOKEN": "${localEnv:GITHUB_TOKEN}",
+    "TZ": "UTC"
+  }
 }

@@ -16,23 +16,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      - name: Install JAGS (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
-          wjags.exe /S
-          del wjags.exe
-        shell: cmd
-      
-      # from https://github.com/ku-awdc/runjags/issues/2:
-      - name: Install JAGS (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
-          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
-      
-      - name: Install JAGS (Ubuntu)
-        if: runner.os == 'Linux'
+      - name: Install JAGS
         run: |
           sudo apt-get update
           sudo apt-get install -y jags

@@ -1,0 +1,18 @@
+{
+  "recommendations": [
+    "rdebugger.r-debugger",
+    "reditorsupport.r",
+    "github.copilot",
+    "github.copilot-chat",
+    "quarto.quarto",
+    "redhat.vscode-yaml",
+    "yzhang.markdown-all-in-one",
+    "streetsidesoftware.code-spell-checker",
+    "eamodio.gitlens",
+    "ms-vscode.live-server",
+    "tamasfe.even-better-toml"
+  ],
+  "unwantedRecommendations": [
+    "ms-python.python"
+  ]
+}

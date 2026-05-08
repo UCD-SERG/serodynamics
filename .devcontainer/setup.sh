@@ -1,21 +1,63 @@
 #!/bin/bash
-# Post-creation setup script for the serodynamics dev container
-
-set -e  # Exit on error
+set -e
 
 echo "Setting up serodynamics development environment..."
 
-# Set up persistent bash history
-echo "Configuring bash history persistence..."
-mkdir -p /commandhistory
-touch /commandhistory/.bash_history
-ln -sf /commandhistory/.bash_history /home/rstudio/.bash_history
+# Update package list
+echo "Updating package list..."
+apt-get update
 
-# Install project-specific R dependencies
-echo "Installing R package dependencies..."
-if ! Rscript -e 'devtools::install_dev_deps(dependencies = TRUE)'; then
-    echo "Error: Failed to install R dependencies. Please check the output above for details."
-    exit 1
-fi
+# Install JAGS (required for serodynamics)
+echo "Installing JAGS..."
+apt-get install -y jags
 
-echo "Setup complete! The environment is ready for development."
+# Install system dependencies for R packages
+echo "Installing system dependencies..."
+apt-get install -y \
+  libcurl4-openssl-dev \
+  libssl-dev \
+  libxml2-dev \
+  libfontconfig1-dev \
+  libharfbuzz-dev \
+  libfribidi-dev \
+  libfreetype6-dev \
+  libpng-dev \
+  libtiff5-dev \
+  libjpeg-dev \
+  libgit2-dev
+
+# Install Quarto
+echo "Installing Quarto..."
+QUARTO_VERSION="1.6.40"  # Updated to latest stable version (January 2026)
+wget -q https://github.com/quarto-dev/quarto-cli/releases/download/v${QUARTO_VERSION}/quarto-${QUARTO_VERSION}-linux-amd64.deb
+dpkg -i quarto-${QUARTO_VERSION}-linux-amd64.deb
+rm quarto-${QUARTO_VERSION}-linux-amd64.deb
+
+# Install R packages needed for development
+echo "Installing R development packages..."
+Rscript -e "install.packages(c('devtools', 'roxygen2', 'testthat', 'lintr', 'spelling', 'covr', 'rcmdcheck', 'pak'), repos = 'https://cloud.r-project.org')"
+
+# Install rjags from source (required for JAGS interface)
+echo "Installing rjags..."
+Rscript -e "install.packages('rjags', repos = 'https://cloud.r-project.org', type = 'source')"
+
+# Install package dependencies
+echo "Installing package dependencies..."
+Rscript -e "pak::local_install_dev_deps(dependencies = TRUE)"
+
+# Verify JAGS installation
+echo "Verifying JAGS installation..."
+Rscript -e "library(rjags); library(runjags); runjags::testjags()"
+
+# Clean up
+echo "Cleaning up..."
+apt-get clean
+rm -rf /var/lib/apt/lists/*
+
+echo "Development environment setup complete!"
+echo ""
+echo "You can now:"
+echo "  - Run 'devtools::load_all()' to load the package"
+echo "  - Run 'devtools::test()' to run tests"
+echo "  - Run 'devtools::check()' to check the package"
+echo "  - Use VS Code tasks (Ctrl+Shift+P -> Tasks: Run Task)"
