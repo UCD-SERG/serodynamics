@@ -53,7 +53,7 @@ prep_data_stan <- function(
   timeindays_var <- get_timeindays_var(dataframe)
   
   if (any(is.na(dataframe[[value_var]])) ||
-      any(is.na(dataframe[[timeindays_var]]))) {
+        any(is.na(dataframe[[timeindays_var]]))) {
     cli::cli_abort(
       c(
         "Stan data cannot contain NA values.",

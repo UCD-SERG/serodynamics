@@ -26,9 +26,14 @@ reference:
   contents:
   - prep_priors
   - initsfunction
+- title: Prepare auxiliary Stan inputs
+  contents:
+  - prep_priors_stan
+  - prep_data_stan
 - title: Model seroreponse
   contents:
   - run_mod
+  - run_mod_stan
 - title: Model diagnostics
   contents:
   - plot_jags_dens

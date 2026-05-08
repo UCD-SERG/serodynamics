@@ -27,7 +27,7 @@ test_that("prep_data_stan validates NA values in input data", {
   case_data_with_na$value[1] <- NA
   
   expect_error(
-    prep_data_stan(case_data_with_na),
+    suppressWarnings(prep_data_stan(case_data_with_na)),
     "Stan data cannot contain NA values"
   )
 })
@@ -47,11 +47,14 @@ test_that("prep_data_stan results are consistent", {
   case_data <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 20, antigen_isos = "HlyE_IgA")
   
-  prepped_data <- prep_data_stan(case_data)
+  prepped_data <- suppressWarnings(prep_data_stan(case_data))
   
   # Check structure
   expect_type(prepped_data, "list")
-  expect_true(all(c("nsubj", "n_antigen_isos", "n_params", "nsmpl", "max_nsmpl", "smpl_t", "logy") %in% names(prepped_data)))
+  expect_true(
+    all(c("nsubj", "n_antigen_isos", "n_params", "nsmpl",
+          "max_nsmpl", "smpl_t", "logy") %in% names(prepped_data))
+  )
   
   # Check that data is padded (rectangular arrays)
   expect_equal(length(dim(prepped_data$logy)), 3)
@@ -76,8 +79,10 @@ test_that("run_mod_stan errors when cmdstanr not available", {
 
 test_that("run_mod_stan works with cmdstanr installed", {
   skip_if_not_installed("cmdstanr")
-  skip_if(is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
-          "CmdStan not installed")
+  skip_if(
+    is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+    "CmdStan not installed"
+  )
   
   withr::local_seed(1)
   case_data <- serocalculator::typhoid_curves_nostrat_100 |>
@@ -99,7 +104,9 @@ test_that("run_mod_stan works with cmdstanr installed", {
   expect_s3_class(results, "tbl_df")
   
   # Check required columns
-  expect_true(all(c("Parameter", "value", "Stratification") %in% names(results)))
+  expect_true(
+    all(c("Parameter", "value", "Stratification") %in% names(results))
+  )
   
   # Check attributes
   attrs <- attributes(results)
@@ -114,8 +121,10 @@ test_that("run_mod_stan works with cmdstanr installed", {
 
 test_that("run_mod_stan works with stratification", {
   skip_if_not_installed("cmdstanr")
-  skip_if(is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
-          "CmdStan not installed")
+  skip_if(
+    is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+    "CmdStan not installed"
+  )
   
   withr::local_seed(1)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
