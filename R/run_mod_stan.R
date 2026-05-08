@@ -93,7 +93,7 @@ run_mod_stan <- function(data,
     
     # Store raw Stan fit if requested
     if (with_post) {
-      stan_fit_final[[i]] <- stan_fit
+      stan_fit_final[[as.character(i)]] <- stan_fit
     }
     
     # Extract samples and convert to ggmcmc format

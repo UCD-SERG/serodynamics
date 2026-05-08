@@ -3,7 +3,7 @@
 #' @param data Input data frame
 #' @param strat Stratification variable name (or NA)
 #'
-#' @returns A character vector of stratification levels
+#' @returns A vector of stratification levels (type preserved from input column)
 #' @keywords internal
 #' @noRd
 setup_stratification <- function(data, strat) {

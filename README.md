@@ -33,7 +33,7 @@ You can install the development version of `{serodynamics}` from
 
 ``` r
 # install.packages("pak")
-pak::pak("UCD-SERG/serodynamics")
+pak::pak("ucdavis/serodynamics")
 ```
 
 ### Stan Support (Optional)

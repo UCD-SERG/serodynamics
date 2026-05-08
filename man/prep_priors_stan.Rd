@@ -73,8 +73,8 @@ priors.
 }
 \description{
 Takes multiple \link{vector} inputs to allow for modifiable priors for Stan
-models. Converts JAGS precision-based priors to Stan covariance-based
-priors.
+models. Returns Stan-compatible prior specifications (matrix inversions
+are handled in the Stan model itself).
 }
 \examples{
 
