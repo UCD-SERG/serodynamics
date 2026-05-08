@@ -38,11 +38,7 @@ libm
 linux
 mcmc
 mitre
-newperson
 nmc
-npl
-overfit
-otimes
 onwards
 params
 pkgdown
@@ -52,11 +48,11 @@ rhat
 seroconversion
 seroresponse
 seroresponses
-sr
 strat
 stratifications
 tbl
 testthat
+tibble
 unstratified
 vh
 wishdf
