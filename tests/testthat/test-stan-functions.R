@@ -1,0 +1,152 @@
+# Tests for Stan backend functions
+# These tests validate prep_data_stan(), prep_priors_stan(), and run_mod_stan()
+
+test_that("prep_priors_stan results are consistent", {
+  prep_priors_stan(max_antigens = 2) |>
+    expect_snapshot_value(style = "deparse")
+})
+
+test_that("prep_priors_stan priors are modifiable", {
+  prep_priors_stan(
+    max_antigens = 2,
+    mu_hyp_param = c(1.0, 5.0, 0.0, -2.0, -3.0),
+    prec_hyp_param = c(0.01, 0.01, 0.01, 0.01, 0.01),
+    omega_param = c(1.0, 50.0, 1.0, 5.0, 1.0),
+    wishdf_param = 15,
+    prec_logy_hyp_param = c(4.0, 1.0)
+  ) |>
+    expect_snapshot_value(style = "deparse")
+})
+
+test_that("prep_data_stan validates NA values in input data", {
+  # Create data with NA values
+  case_data_with_na <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 10, antigen_isos = "HlyE_IgA")
+  
+  # Introduce NA in value column
+  case_data_with_na$value[1] <- NA
+  
+  expect_error(
+    prep_data_stan(case_data_with_na),
+    "Stan data cannot contain NA values"
+  )
+})
+
+test_that("prep_data_stan forces add_newperson to FALSE", {
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 10, antigen_isos = "HlyE_IgA")
+  
+  expect_warning(
+    prep_data_stan(case_data, add_newperson = TRUE),
+    "Setting.*add_newperson = FALSE"
+  )
+})
+
+test_that("prep_data_stan results are consistent", {
+  withr::local_seed(1)
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA")
+  
+  prepped_data <- prep_data_stan(case_data)
+  
+  # Check structure
+  expect_type(prepped_data, "list")
+  expect_true(all(c("nsubj", "n_antigen_isos", "n_params", "nsmpl", "max_nsmpl", "smpl_t", "logy") %in% names(prepped_data)))
+  
+  # Check that data is padded (rectangular arrays)
+  expect_equal(length(dim(prepped_data$logy)), 3)
+  expect_equal(length(dim(prepped_data$smpl_t)), 2)
+  
+  # Snapshot the structure
+  prepped_data |> expect_snapshot_value(style = "serialize")
+})
+
+test_that("run_mod_stan errors when cmdstanr not available", {
+  skip_if(requireNamespace("cmdstanr", quietly = TRUE),
+          "cmdstanr is available, skipping unavailability test")
+  
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 10, antigen_isos = "HlyE_IgA")
+  
+  expect_error(
+    run_mod_stan(case_data),
+    "cmdstanr"
+  )
+})
+
+test_that("run_mod_stan works with cmdstanr installed", {
+  skip_if_not_installed("cmdstanr")
+  skip_if(is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+          "CmdStan not installed")
+  
+  withr::local_seed(1)
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA")
+  
+  results <- run_mod_stan(
+    data = case_data,
+    file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
+    nchain = 2,
+    nadapt = 100,
+    nburn = 100,
+    nmc = 10,
+    niter = 10
+  ) |>
+    suppressWarnings()
+  
+  # Check output structure
+  expect_s3_class(results, "sr_model")
+  expect_s3_class(results, "tbl_df")
+  
+  # Check required columns
+  expect_true(all(c("Parameter", "value", "Stratification") %in% names(results)))
+  
+  # Check attributes
+  attrs <- attributes(results)
+  expect_true("priors" %in% names(attrs))
+  expect_true("fitted_residuals" %in% names(attrs))
+  
+  # Snapshot attributes (excluding row.names and fitted_residuals for stability)
+  attrs |>
+    rlist::list.remove(c("row.names", "fitted_residuals")) |>
+    expect_snapshot_value(style = "deparse")
+})
+
+test_that("run_mod_stan works with stratification", {
+  skip_if_not_installed("cmdstanr")
+  skip_if(is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+          "CmdStan not installed")
+  
+  withr::local_seed(1)
+  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA") |>
+    dplyr::mutate(strat = "stratum 1")
+  
+  withr::local_seed(2)
+  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA") |>
+    dplyr::mutate(strat = "stratum 2")
+  
+  dataset <- dplyr::bind_rows(strat1, strat2)
+  
+  results <- run_mod_stan(
+    data = dataset,
+    file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
+    nchain = 2,
+    nadapt = 100,
+    nburn = 100,
+    nmc = 10,
+    niter = 10,
+    strat = "strat"
+  ) |>
+    suppressWarnings()
+  
+  # Check stratification column exists and has correct values
+  expect_true("Stratification" %in% names(results))
+  expect_true(all(c("stratum 1", "stratum 2") %in% results$Stratification))
+  
+  # Check that both strata have results
+  strat_counts <- table(results$Stratification)
+  expect_equal(length(strat_counts), 2)
+  expect_true(all(strat_counts > 0))
+})
