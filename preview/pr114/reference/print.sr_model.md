@@ -41,7 +41,7 @@ Invisibly returns either:
 ## Examples
 
 ``` r
-print(nepal_sees_jags_output)
+print(serodynamics::nepal_sees_jags_output)
 #> An sr_model with the following median values:
 #> 
 #>   Stratification Iso_type       alpha    shape       t1       y0       y1
