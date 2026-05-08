@@ -18,7 +18,7 @@
 #' }
 #' @export
 #' @examples
-#' print(nepal_sees_jags_output)
+#' print(serodynamics::nepal_sees_jags_output)
 print.sr_model <- function(x, 
                            print_tbl = FALSE,
                            ...) { # nolint
