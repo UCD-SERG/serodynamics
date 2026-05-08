@@ -13,13 +13,13 @@ test_that(
 )
 
 test_that(
-  desc = "results consistent with printed output for sr_model as tbl no strat",
+  desc = "results consistent with printed output for sr_model no strat",
   code = {
     results <- nepal_sees_jags_output
     results$Stratification <- "None"
 
     testthat::expect_snapshot(
-      print(results, print_tbl = TRUE),
+      print(results),
       variant = darwin_variant()
     )
   }
