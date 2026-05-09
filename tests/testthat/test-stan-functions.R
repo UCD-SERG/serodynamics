@@ -80,7 +80,7 @@ test_that("run_mod_stan works with cmdstanr installed", {
   
   results <- run_mod_stan(
     data = case_data,
-    file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
+    file_mod = serodynamics_example("model.stan"),
     nchain = 2,
     nadapt = 100,
     niter = 10
@@ -128,7 +128,7 @@ test_that("run_mod_stan works with stratification", {
   
   results <- run_mod_stan(
     data = dataset,
-    file_mod = fs::path_package("serodynamics", "extdata/model.stan"),
+    file_mod = serodynamics_example("model.stan"),
     nchain = 2,
     nadapt = 100,
     niter = 10,

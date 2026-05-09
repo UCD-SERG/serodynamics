@@ -10,6 +10,15 @@ setup_stratification <- function(data, strat) {
   if (is.na(strat)) {
     "None"
   } else {
+    # Validate that strat is a column name
+    if (!strat %in% names(data)) {
+      cli::cli_abort(
+        c(
+          "Stratification variable {.var {strat}} not found in data.",
+          "i" = "Available columns: {.val {names(data)}}"
+        )
+      )
+    }
     # Get unique levels, excluding NA
     levels <- unique(data[[strat]])
     levels <- levels[!is.na(levels)]

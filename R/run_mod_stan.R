@@ -78,6 +78,9 @@ run_mod_stan <- function(data,
   ## Creating output list for stan fit objects
   stan_fit_final <- list()
   
+  ## Create shell for fitted/residuals
+  fit_res_combined <- data.frame()
+  
   # Compile Stan model once (outside loop to avoid recompilation)
   mod <- cmdstanr::cmdstan_model(file_mod)
   
@@ -137,28 +140,38 @@ run_mod_stan <- function(data,
     # Process MCMC output to add antigen-iso and subject information
     stan_final <- process_mcmc_output(stan_unpack, longdata, i)
     
+    # Calculate fitted and residuals for this stratum
+    # Rename Parameter_sub to Parameter before calc_fit_mod
+    stan_final_for_fit <- stan_final |>
+      dplyr::select(!c("Parameter")) |>
+      dplyr::rename("Parameter" = "Parameter_sub")
+    
+    fit_res_stratum <- calc_fit_mod(
+      modeled_dat = stan_final_for_fit,
+      original_data = dl_sub
+    )
+    
+    # Combine fitted/residuals across strata
+    fit_res_combined <- dplyr::bind_rows(fit_res_combined, fit_res_stratum)
+    
     ## Creating output
     stan_out <- data.frame(rbind(stan_out, stan_final))
   }
   
-  # Remove NAs before calculating fitted values
+  # Remove NAs before final processing
   stan_out <- stan_out[complete.cases(stan_out), ]
   
-  # Rename Parameter_sub to Parameter before calc_fit_mod
+  # Rename Parameter_sub to Parameter for final output
   stan_out <- stan_out |>
     dplyr::select(!c("Parameter")) |>
     dplyr::rename("Parameter" = "Parameter_sub")
   
-  # Calculate fitted and residuals using the full original data
-  fit_res <- calc_fit_mod(modeled_dat = stan_out,
-                          original_data = data)
-  
-  # Format final output
+  # Format final output with combined fitted/residuals
   stan_out <- format_model_output(
     model_out = stan_out,
     mod_atts = mod_atts,
     priorspec = priorspec,
-    fit_res = fit_res,
+    fit_res = fit_res_combined,
     post_fit = stan_fit_final,
     with_post = with_post,
     post_attr_name = "stan.fit"

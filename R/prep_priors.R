@@ -7,24 +7,24 @@
 #' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
 #' mean for the population level parameters
-#' parameters (y0, y1, t1, r, alpha) for each biomarker.
+#' parameters (y0, y1, t1, alpha, shape) for each biomarker.
 #' If specified, must be 5 values long, representing the following parameters:
 #'    - y0 = baseline antibody concentration (default = 1.0)
 #'    - y1 = peak antibody concentration (default = 7.0)
 #'    - t1 = time to peak (default = 1.0)
-#'    - r = shape parameter (default = -4.0)
-#'    - alpha = decay rate (default = -1.0)
+#'    - alpha = decay rate (default = -4.0)
+#'    - shape = shape parameter (default = -1.0)
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 #' representing prior covariance of uncertainty around `mu_hyp_param`.
 #' If specified, must be 5 values long:
-#'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+#'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape = 1.0
 #' @param omega_param A [numeric] [vector] of 5 values corresponding to the
 #' diagonal entries representing the Wishart hyperprior
 #' distributions of `prec_hyp_param`, describing how much we expect parameters
 #' to vary between individuals.
 #' If specified, must be 5 values long:
-#'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+#'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, alpha = 10.0, shape = 1.0
 #' @param wishdf_param An [integer] [vector] of 1 value specifying the degrees
 #' of freedom for the Wishart hyperprior distribution of `prec_hyp_param`.
 #' If specified, must be 1 value long.
@@ -46,8 +46,8 @@
 #' - "n_params": Corresponds to the 5 parameters being estimated.
 #' - "mu.hyp": A [matrix] of hyperpriors with dimensions
 #' `max_antigens` x 5 (# of parameters), representing the mean of the
-#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, 
-#' and alpha).
+#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1,
+#' alpha, and shape).
 #' - "prec.hyp": A three-dimensional [numeric] [array] 
 #' with dimensions `max_antigens` x 5 (# of parameters), 
 #' containing the precision matrices of the hyperprior distributions of
@@ -65,7 +65,7 @@
 #' @example inst/examples/examples-prep_priors.R
 
 prep_priors <- function(max_antigens,
-                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),  # (y0, y1, t1, alpha, shape)
                         prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
                         omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
                         wishdf_param = 20,
