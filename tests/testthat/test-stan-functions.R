@@ -32,16 +32,6 @@ test_that("prep_data_stan validates NA values in input data", {
   )
 })
 
-test_that("prep_data_stan forces add_newperson to FALSE", {
-  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 10, antigen_isos = "HlyE_IgA")
-  
-  expect_warning(
-    prep_data_stan(case_data, add_newperson = TRUE),
-    "Setting.*add_newperson = FALSE"
-  )
-})
-
 test_that("prep_data_stan results are consistent", {
   withr::local_seed(1)
   case_data <- serocalculator::typhoid_curves_nostrat_100 |>

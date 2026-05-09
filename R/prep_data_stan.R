@@ -4,10 +4,6 @@
 #' @param biomarker_column [character] string indicating
 #' which column contains antigen-isotype names
 #' @param verbose whether to produce verbose messaging
-#' @param add_newperson whether to add an extra record with missing data.
-#'   **Note:** Stan cannot handle NA values in data, so this parameter is
-#'   currently ignored and treated as `FALSE`. Posterior predictive sampling
-#'   for Stan should be done separately using the fitted model object.
 #'
 #' @returns a `prepped_stan_data` object (a [list] with Stan-formatted data)
 #' @export
@@ -18,26 +14,13 @@
 #'   serocalculator::typhoid_curves_nostrat_100 |>
 #'   sim_case_data(n = 5)
 #' prepped_data <- prep_data_stan(raw_data)
+#'
+#' @seealso [sample_predictive_stan()] for posterior predictive
+#'   sampling with Stan models
 prep_data_stan <- function(
     dataframe,
     biomarker_column = get_biomarker_names_var(dataframe),
-    verbose = FALSE,
-    add_newperson = FALSE) {
-  
-  # Stan cannot handle NA values in data, so we force add_newperson = FALSE
-  # Warn only if user explicitly requested TRUE
-  if (add_newperson) {
-    cli::cli_warn(
-      c(
-        "Stan cannot handle NA values in data.",
-        "i" = "Setting {.arg add_newperson = FALSE}.",
-        "i" = paste(
-          "Use posterior predictive sampling on the fitted Stan model",
-          "for predictions."
-        )
-      )
-    )
-  }
+    verbose = FALSE) {
   
   # First use existing prep_data function to get the base structure
   jags_data <- prep_data(

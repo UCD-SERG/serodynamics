@@ -7,8 +7,7 @@
 prep_data_stan(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
-  verbose = FALSE,
-  add_newperson = FALSE
+  verbose = FALSE
 )
 }
 \arguments{
@@ -18,11 +17,6 @@ prep_data_stan(
 which column contains antigen-isotype names}
 
 \item{verbose}{whether to produce verbose messaging}
-
-\item{add_newperson}{whether to add an extra record with missing data.
-\strong{Note:} Stan cannot handle NA values in data, so this parameter is
-currently ignored and treated as \code{FALSE}. Posterior predictive sampling
-for Stan should be done separately using the fitted model object.}
 }
 \value{
 a \code{prepped_stan_data} object (a \link{list} with Stan-formatted data)
@@ -36,4 +30,9 @@ raw_data <-
   serocalculator::typhoid_curves_nostrat_100 |>
   sim_case_data(n = 5)
 prepped_data <- prep_data_stan(raw_data)
+
+}
+\seealso{
+\code{\link[=sample_predictive_stan]{sample_predictive_stan()}} for posterior predictive
+sampling with Stan models
 }
