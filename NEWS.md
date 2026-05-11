@@ -1,4 +1,10 @@
-# serodynamics (development version)
+# serodynamics 1.0.0
+
+## Initial CRAN release
+
+This is the first CRAN release of `serodynamics`, a package for Bayesian
+hierarchical modeling of antibody kinetics from longitudinal serological
+data. It serves as the upstream companion to the `serocalculator` package.
 
 * Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
