@@ -1,6 +1,6 @@
 Package: serodynamics
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9050
+Title: Modeling Longitudinal Antibody Responses to Infection
+Version: 1.0.0
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
@@ -9,7 +9,14 @@ Authors@R: c(
     person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
     person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
   )
-Description: Modeling longitudinal immune seroresponses to pathogens.
+Description: Implements Bayesian hierarchical models for estimating
+    antibody kinetic parameters from longitudinal serological data. Fits
+    two-phase within-host models capturing antibody rise, peak, and decay
+    following pathogen infection, using 'JAGS' for posterior inference.
+    Designed as the upstream companion to the 'serocalculator' package
+    for end-to-end seroepidemiologic analysis. Methods are described in
+    Teunis et al. (2016) <doi:10.1016/j.epidem.2016.04.001> and Teunis
+    and van Eijkeren (2020) <doi:10.1002/sim.8578>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -25,7 +32,7 @@ Imports:
     rlang,
     runjags,
     scales,
-    serocalculator (>= 1.3.0.9037),
+    serocalculator (>= 1.4.1),
     stats,
     tibble,
     tidyr,
@@ -61,8 +68,6 @@ Config/needs/test:
     readr,
     rlist
 Config/needs/check: commonmark, xml2
-Remotes: 
-    ucd-serg/serocalculator
 Depends: 
     R (>= 4.1.0)
 LazyData: true
