@@ -1,5 +1,4 @@
 #' @title Run Stan Model
-#' @author Sam Schildhauer, GitHub Copilot
 #' @description
 #'  `run_mod_stan()` takes a data frame and adjustable MCMC inputs to fit a
 #'  Bayesian model using Stan (via cmdstanr) to estimate antibody dynamic 
@@ -8,8 +7,8 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - shape = shape parameter
 #'  - alpha = decay rate
+#'  - shape = shape parameter
 #' @param data A [base::data.frame()] with the required columns (see details).
 #' @param file_mod The name of the file that contains model structure 
 #' (a .stan file).

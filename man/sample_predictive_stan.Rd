@@ -31,15 +31,17 @@ for each antigen at each time point}
 \description{
 Generate posterior predictive samples for new observations using a fitted
 Stan model. This function samples from the marginal posterior distribution
-of model parameters to generate predictions for specified time points.
+of model parameters to generate predictions for specified time points using
+the antibody dynamic curve model.
 }
 \examples{
 \dontrun{
-# Fit a Stan model
+# Fit a Stan model with posterior samples
 model_output <- run_mod_stan(
   data = my_data,
   file_mod = "model.stan",
-  nchain = 4
+  nchain = 4,
+  with_post = TRUE
 )
 
 # Generate posterior predictive samples

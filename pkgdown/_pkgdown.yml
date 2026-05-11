@@ -34,6 +34,9 @@ reference:
   contents:
   - run_mod
   - run_mod_stan
+- title: Posterior predictive sampling
+  contents:
+  - sample_predictive_stan
 - title: Model diagnostics
   contents:
   - plot_jags_dens

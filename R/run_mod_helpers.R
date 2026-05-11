@@ -58,14 +58,11 @@ filter_by_stratification <- function(data, strat, strat_level) {
   if (is.na(strat)) {
     data
   } else {
-    # Handle NA strat_level explicitly
-    if (is.na(strat_level)) {
-      data |>
-        dplyr::filter(is.na(.data[[strat]]))
-    } else {
-      data |>
-        dplyr::filter(.data[[strat]] == strat_level)
-    }
+    # Filter to this stratification level
+    # Note: NA levels are excluded by setup_stratification(),
+    # so no need to handle them here
+    data |>
+      dplyr::filter(.data[[strat]] == strat_level)
   }
 }
 
@@ -79,10 +76,11 @@ filter_by_stratification <- function(data, strat, strat_level) {
 #' @keywords internal
 #' @noRd
 process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
-  # Extract antigen-iso combinations
-  iso_dat <- data.frame(attributes(longdata)$antigens)
-  iso_dat <- iso_dat |>
-    dplyr::mutate(Subnum = as.numeric(row.names(iso_dat)))
+  # Extract antigen-iso combinations with explicit column names
+  iso_dat <- tibble::tibble(
+    Iso_type = attributes(longdata)$antigens,
+    Subnum = seq_along(attributes(longdata)$antigens)
+  )
   
   # Parse parameter names to extract subject and parameter info
   mcmc_unpack <- mcmc_unpack |>
@@ -99,18 +97,17 @@ process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
   # Merge antigen-iso information
   mcmc_unpack <- dplyr::left_join(mcmc_unpack, iso_dat, by = "Subnum")
   
-  # Merge subject IDs
-  ids <- data.frame(attr(longdata, "ids")) |>
-    dplyr::mutate(Subject = as.character(dplyr::row_number()))
+  # Merge subject IDs with explicit column names
+  ids <- tibble::tibble(
+    Subject_ID = attr(longdata, "ids"),
+    Subject = as.character(seq_along(attr(longdata, "ids")))
+  )
   mcmc_unpack <- dplyr::left_join(mcmc_unpack, ids, by = "Subject")
   
   # Clean up and rename columns
   mcmc_final <- mcmc_unpack |>
     dplyr::select(!c("Subnum", "Subject")) |>
-    dplyr::rename(
-      c("Iso_type" = "attributes.longdata..antigens",
-        "Subject" = "attr.longdata...ids..")
-    )
+    dplyr::rename("Subject" = "Subject_ID")
   
   # Add stratification label
   mcmc_final$Stratification <- strat_level

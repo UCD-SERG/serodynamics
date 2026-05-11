@@ -145,3 +145,92 @@ test_that("run_mod_stan works with stratification", {
   expect_equal(length(strat_counts), 2)
   expect_true(all(strat_counts > 0))
 })
+
+test_that("sample_predictive_stan works with fitted Stan model", {
+  skip_if_not_installed("cmdstanr")
+  skip_if(
+    is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+    "CmdStan not installed"
+  )
+  
+  withr::local_seed(1)
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA")
+  
+  # Fit model with posterior samples
+  model_output <- run_mod_stan(
+    data = case_data,
+    file_mod = serodynamics_example("model.stan"),
+    nchain = 2,
+    nadapt = 100,
+    niter = 10,
+    with_post = TRUE
+  ) |>
+    suppressWarnings()
+  
+  # Generate predictions
+  predictions <- sample_predictive_stan(
+    model_output,
+    time_points = c(5, 30, 90),
+    n_samples = 10
+  )
+  
+  # Check structure
+  expect_s3_class(predictions, "posterior_predictive_stan")
+  expect_type(predictions, "list")
+  expect_true(all(c("samples", "time_points", "summary") %in% names(predictions)))
+  
+  # Check samples array dimensions
+  # 10 samples, 3 timepoints, 1 antigen
+  expect_equal(dim(predictions$samples), c(10, 3, 1))
+  
+  # Check time points
+  expect_equal(predictions$time_points, c(5, 30, 90))
+  
+  # Check summary structure
+  expect_type(predictions$summary, "list")
+  # 1 antigen
+  expect_equal(length(predictions$summary), 1)
+  expect_true("HlyE_IgA" %in% names(predictions$summary))
+  
+  # Check summary data frame
+  summary_df <- predictions$summary$HlyE_IgA
+  expect_s3_class(summary_df, "data.frame")
+  # 3 timepoints
+  expect_equal(nrow(summary_df), 3)
+  expect_true(
+    all(
+      c("time_point", "mean", "median", "lower_95", "upper_95") %in%
+        names(summary_df)
+    )
+  )
+})
+
+test_that("sample_predictive_stan errors without posterior samples", {
+  skip_if_not_installed("cmdstanr")
+  skip_if(
+    is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+    "CmdStan not installed"
+  )
+  
+  withr::local_seed(1)
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 20, antigen_isos = "HlyE_IgA")
+  
+  # Fit model WITHOUT posterior samples
+  model_output <- run_mod_stan(
+    data = case_data,
+    file_mod = serodynamics_example("model.stan"),
+    nchain = 2,
+    nadapt = 100,
+    niter = 10,
+    with_post = FALSE
+  ) |>
+    suppressWarnings()
+  
+  # Should error when trying to generate predictions
+  expect_error(
+    sample_predictive_stan(model_output),
+    "Posterior samples not found"
+  )
+})
