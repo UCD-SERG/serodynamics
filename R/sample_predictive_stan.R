@@ -157,11 +157,12 @@ sample_predictive_stan <- function(
     )
     
     # Average across subjects for population-level predictions
-    y0_mean <- rowMeans(combined_draws[, y0_cols, drop = FALSE])
-    y1_mean <- rowMeans(combined_draws[, y1_cols, drop = FALSE])
-    t1_mean <- rowMeans(combined_draws[, t1_cols, drop = FALSE])
-    alpha_mean <- rowMeans(combined_draws[, alpha_cols, drop = FALSE])
-    shape_mean <- rowMeans(combined_draws[, shape_cols, drop = FALSE])
+    # These represent population-level parameter estimates
+    y0_pop <- rowMeans(combined_draws[, y0_cols, drop = FALSE])
+    y1_pop <- rowMeans(combined_draws[, y1_cols, drop = FALSE])
+    t1_pop <- rowMeans(combined_draws[, t1_cols, drop = FALSE])
+    alpha_pop <- rowMeans(combined_draws[, alpha_cols, drop = FALSE])
+    shape_pop <- rowMeans(combined_draws[, shape_cols, drop = FALSE])
     
     # Generate predictions for each time point using ab() function
     for (t_idx in seq_along(time_points)) {
@@ -170,11 +171,11 @@ sample_predictive_stan <- function(
       # Use the ab() function for consistency with the model
       y_pred <- ab(
         t = t,
-        y0 = y0_mean,
-        y1 = y1_mean,
-        t1 = t1_mean,
-        alpha = alpha_mean,
-        shape = shape_mean
+        y0 = y0_pop,
+        y1 = y1_pop,
+        t1 = t1_pop,
+        alpha = alpha_pop,
+        shape = shape_pop
       )
       
       predictions[, t_idx, k] <- y_pred

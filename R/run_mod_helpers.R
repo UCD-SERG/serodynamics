@@ -77,6 +77,7 @@ filter_by_stratification <- function(data, strat, strat_level) {
 #' @noRd
 process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
   # Extract antigen-iso combinations with explicit column names
+  # Subnum is 1-based index matching the antigen position
   iso_dat <- tibble::tibble(
     Iso_type = attributes(longdata)$antigens,
     Subnum = seq_along(attributes(longdata)$antigens)
