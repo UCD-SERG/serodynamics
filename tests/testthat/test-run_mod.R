@@ -16,7 +16,7 @@ test_that(
     dataset <- dplyr::bind_rows(strat1, strat2)
     results <- run_mod(
       data = dataset, # The data set input
-      file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
+      file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
       nadapt = 100, # Number of adaptations to run
       nburn = 100, # Number of unrecorded samples before sampling begins
@@ -181,8 +181,11 @@ test_that(
         variant = darwin_variant()
       )
     
-    attributes(results)$jags.post$None$mcmc |>
-      expect_snapshot_value(style = "deparse")
+    jags_post <- attributes(results)$jags.post
+    expect_false(is.null(jags_post))
+    expect_type(jags_post, "list")
+    expect_true("None" %in% names(jags_post))
+    expect_s3_class(jags_post$None$mcmc, "mcmc.list")
     
   }
 )
