@@ -7,7 +7,6 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/ucdavis/serodynamics/graph/badge.svg)](https://app.codecov.io/gh/ucdavis/serodynamics)
-[![CodeFactor](https://www.codefactor.io/repository/github/ucdavis/serodynamics/badge)](https://www.codefactor.io/repository/github/ucdavis/serodynamics)
 [![R-CMD-check](https://github.com/ucdavis/serodynamics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ucdavis/serodynamics/actions/workflows/R-CMD-check.yaml)
 [![CRAN
 status](https://www.r-pkg.org/badges/version/serodynamics)](https://CRAN.R-project.org/package=serodynamics)

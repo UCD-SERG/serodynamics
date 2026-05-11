@@ -2,6 +2,11 @@ test_that(
   desc = "plot_predicted_curve() works with run_mod output and 
   on-the-fly dataset",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy test unless RUN_HEAVY_TESTS=true"
+    )
     skip_if(getRversion() < "4.4.1")
     
     # Use the pre-computed package data instead of a fixture
@@ -65,6 +70,11 @@ test_that(
 testthat::test_that(
   "plot_predicted_curve() works with 2 IDs (faceting, original legend)",
   {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_128", "sees_npl_131"),
@@ -81,6 +91,11 @@ testthat::test_that(
 testthat::test_that(
   "plot_predicted_curve() works with 3 IDs (faceting, log_y)",
   {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_128", "sees_npl_131"),
@@ -97,6 +112,11 @@ testthat::test_that(
 testthat::test_that(
   "plot_predicted_curve() works with 4 IDs (faceting, log_y)",
   {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 

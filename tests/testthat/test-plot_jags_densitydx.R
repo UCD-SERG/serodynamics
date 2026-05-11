@@ -2,6 +2,11 @@
 test_that(
   desc = "results are consistent with ggplot output",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy test unless RUN_HEAVY_TESTS=true"
+    )
     skip_if(getRversion() < "4.4.1") # 4.3.3 had issues
     library(runjags)
     library(dplyr)

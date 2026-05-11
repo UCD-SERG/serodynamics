@@ -1,12 +1,15 @@
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
+0 errors | 0 warnings | 2 note
 
-* This is a new release.
+* This is a new submission.
+
+* HTML validation of the manual was skipped in the local Posit Cloud
+  environment because the system command `tidy` was not installed.
 
 ## Test environments
 
-* Local: Ubuntu 24.04, R 4.5.3
+* Local: Ubuntu 20.04.6 LTS, R 4.5.3
 * Win-builder: R-devel
 * GitHub Actions: macOS-latest (R-release), windows-latest (R-release),
   ubuntu-latest (R-devel, R-release, R-oldrel)

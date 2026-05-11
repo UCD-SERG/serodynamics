@@ -30,3 +30,5 @@
 ^\.quarto$
 ^\.devcontainer$
 ^cran-comments\.md$
+^doc$
+^Meta$

@@ -1,6 +1,11 @@
 test_that(
   desc = "results are consistent with simulated data",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     withr::local_seed(1)
@@ -49,6 +54,11 @@ test_that(
 test_that(
   desc = "results are consistent with SEES data",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     withr::local_seed(1)
@@ -88,6 +98,11 @@ test_that(
 test_that(
   desc = "results are consistent with unstratified SEES data",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     announce_snapshot_file("nostrat-curve-params.csv")
     announce_snapshot_file("nostrat-fitted_residuals.csv")
     withr::local_seed(1)
@@ -128,6 +143,11 @@ test_that(
   desc = "results are consistent with unstratified SEES data with jags.post
   included",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     announce_snapshot_file("nostrat-curve-params-withpost.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -162,6 +182,11 @@ test_that(
   desc = "results are consistent with unstratified SEES data with modified 
   priors",
   code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 

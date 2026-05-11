@@ -20,8 +20,8 @@ Description: Implements Bayesian hierarchical models for estimating
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
-BugReports: https://github.com/UCD-SERG/serodynamics/issues
+URL: https://github.com/ucdavis/serodynamics
+BugReports: https://github.com/ucdavis/serodynamics/issues
 Imports: 
     cli,
     coda,

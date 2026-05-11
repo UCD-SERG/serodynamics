@@ -4,16 +4,15 @@
 \name{serodynamics-package}
 \alias{serodynamics}
 \alias{serodynamics-package}
-\title{serodynamics: What the Package Does (One Line, Title Case)}
+\title{serodynamics: Modeling Longitudinal Antibody Responses to Infection}
 \description{
-Modeling longitudinal immune seroresponses to pathogens.
+Implements Bayesian hierarchical models for estimating antibody kinetic parameters from longitudinal serological data. Fits two-phase within-host models capturing antibody rise, peak, and decay following pathogen infection, using 'JAGS' for posterior inference. Designed as the upstream companion to the 'serocalculator' package for end-to-end seroepidemiologic analysis. Methods are described in Teunis et al. (2016) \doi{10.1016/j.epidem.2016.04.001} and Teunis and van Eijkeren (2020) \doi{10.1002/sim.8578}.
 }
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/UCD-SERG/serodynamics}
-  \item \url{https://ucd-serg.github.io/serodynamics/}
-  \item Report bugs at \url{https://github.com/UCD-SERG/serodynamics/issues}
+  \item \url{https://github.com/ucdavis/serodynamics}
+  \item Report bugs at \url{https://github.com/ucdavis/serodynamics/issues}
 }
 
 }
