@@ -178,7 +178,9 @@ test_that("sample_predictive_stan works with fitted Stan model", {
   # Check structure
   expect_s3_class(predictions, "posterior_predictive_stan")
   expect_type(predictions, "list")
-  expect_true(all(c("samples", "time_points", "summary") %in% names(predictions)))
+  expect_true(
+    all(c("samples", "time_points", "summary") %in% names(predictions))
+  )
   
   # Check samples array dimensions
   # 10 samples, 3 timepoints, 1 antigen

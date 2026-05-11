@@ -65,7 +65,8 @@
 #' @example inst/examples/examples-prep_priors.R
 
 prep_priors <- function(max_antigens,
-                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),  # (y0, y1, t1, alpha, shape)
+                        # (y0, y1, t1, alpha, shape)
+                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
                         prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
                         omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
                         wishdf_param = 20,
