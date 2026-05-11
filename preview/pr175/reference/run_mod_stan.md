@@ -11,9 +11,9 @@ infection. The antibody dynamic curve includes the following parameters:
 
 - t1 = time to peak
 
-- shape = shape parameter
-
 - alpha = decay rate
+
+- shape = shape parameter
 
 ## Usage
 
@@ -85,7 +85,7 @@ run_mod_stan(
   :   A [numeric](https://rdrr.io/r/base/numeric.html)
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
-      parameters (y0, y1, t1, r, alpha) for each biomarker. If
+      parameters (y0, y1, t1, alpha, shape) for each biomarker. If
       specified, must be 5 values long, representing the following
       parameters:
 
@@ -95,9 +95,9 @@ run_mod_stan(
 
       - t1 = time to peak (default = 1.0)
 
-      - r = shape parameter (default = -4.0)
+      - alpha = decay rate (default = -4.0)
 
-      - alpha = decay rate (default = -1.0)
+      - shape = shape parameter (default = -1.0)
 
   `prec_hyp_param`
 
@@ -108,8 +108,8 @@ run_mod_stan(
       uncertainty around `mu_hyp_param`. If specified, must be 5 values
       long:
 
-      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha =
-        1.0
+      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape
+        = 1.0
 
   `omega_param`
 
@@ -120,7 +120,8 @@ run_mod_stan(
       we expect parameters to vary between individuals. If specified,
       must be 5 values long:
 
-      - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+      - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, alpha = 10.0, shape =
+        1.0
 
   `wishdf_param`
 
@@ -156,10 +157,6 @@ contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input `data`, including the same
 structure as
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
-
-## Author
-
-Sam Schildhauer, GitHub Copilot
 
 ## Examples
 

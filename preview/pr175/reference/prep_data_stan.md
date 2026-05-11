@@ -8,8 +8,7 @@ Prepare data for Stan
 prep_data_stan(
   dataframe,
   biomarker_column = get_biomarker_names_var(dataframe),
-  verbose = FALSE,
-  add_newperson = FALSE
+  verbose = FALSE
 )
 ```
 
@@ -29,17 +28,15 @@ prep_data_stan(
 
   whether to produce verbose messaging
 
-- add_newperson:
-
-  whether to add an extra record with missing data. **Note:** Stan
-  cannot handle NA values in data, so this parameter is currently
-  ignored and treated as `FALSE`. Posterior predictive sampling for Stan
-  should be done separately using the fitted model object.
-
 ## Value
 
 a `prepped_stan_data` object (a [list](https://rdrr.io/r/base/list.html)
 with Stan-formatted data)
+
+## See also
+
+[`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md)
+for posterior predictive sampling with Stan models
 
 ## Examples
 

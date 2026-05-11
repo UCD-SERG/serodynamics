@@ -99,7 +99,7 @@ run_mod(
   :   A [numeric](https://rdrr.io/r/base/numeric.html)
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
-      parameters (y0, y1, t1, r, alpha) for each biomarker. If
+      parameters (y0, y1, t1, alpha, shape) for each biomarker. If
       specified, must be 5 values long, representing the following
       parameters:
 
@@ -109,9 +109,9 @@ run_mod(
 
       - t1 = time to peak (default = 1.0)
 
-      - r = shape parameter (default = -4.0)
+      - alpha = decay rate (default = -4.0)
 
-      - alpha = decay rate (default = -1.0)
+      - shape = shape parameter (default = -1.0)
 
   `prec_hyp_param`
 
@@ -122,8 +122,8 @@ run_mod(
       uncertainty around `mu_hyp_param`. If specified, must be 5 values
       long:
 
-      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha =
-        1.0
+      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape
+        = 1.0
 
   `omega_param`
 
@@ -134,7 +134,8 @@ run_mod(
       we expect parameters to vary between individuals. If specified,
       must be 5 values long:
 
-      - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+      - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, alpha = 10.0, shape =
+        1.0
 
   `wishdf_param`
 
@@ -271,7 +272,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May  8 23:15:59 2026
+#> Welcome to JAGS 4.3.2 on Mon May 11 07:51:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -306,7 +307,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May  8 23:16:49 2026
+#> Welcome to JAGS 4.3.2 on Mon May 11 07:52:42 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -332,6 +333,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

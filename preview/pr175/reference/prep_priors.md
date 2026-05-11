@@ -29,8 +29,8 @@ prep_priors(
   A [numeric](https://rdrr.io/r/base/numeric.html)
   [vector](https://rdrr.io/r/base/vector.html) of 5 values representing
   the prior mean for the population level parameters parameters (y0, y1,
-  t1, r, alpha) for each biomarker. If specified, must be 5 values long,
-  representing the following parameters:
+  t1, alpha, shape) for each biomarker. If specified, must be 5 values
+  long, representing the following parameters:
 
   - y0 = baseline antibody concentration (default = 1.0)
 
@@ -38,9 +38,9 @@ prep_priors(
 
   - t1 = time to peak (default = 1.0)
 
-  - r = shape parameter (default = -4.0)
+  - alpha = decay rate (default = -4.0)
 
-  - alpha = decay rate (default = -1.0)
+  - shape = shape parameter (default = -1.0)
 
 - prec_hyp_param:
 
@@ -50,7 +50,8 @@ prep_priors(
   variance) representing prior covariance of uncertainty around
   `mu_hyp_param`. If specified, must be 5 values long:
 
-  - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+  - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape =
+    1.0
 
 - omega_param:
 
@@ -61,7 +62,7 @@ prep_priors(
   parameters to vary between individuals. If specified, must be 5 values
   long:
 
-  - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+  - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, alpha = 10.0, shape = 1.0
 
 - wishdf_param:
 
@@ -101,7 +102,7 @@ A "curve_params_priors" object (a subclass of
 - "mu.hyp": A [matrix](https://rdrr.io/r/base/matrix.html) of
   hyperpriors with dimensions `max_antigens` x 5 (# of parameters),
   representing the mean of the hyperprior distribution for the five
-  seroresponse parameters: y0, y1, t1, r, and alpha).
+  seroresponse parameters: y0, y1, t1, alpha, and shape).
 
 - "prec.hyp": A three-dimensional
   [numeric](https://rdrr.io/r/base/numeric.html)
