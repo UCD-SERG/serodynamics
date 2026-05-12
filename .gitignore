@@ -29,3 +29,4 @@ docs/
 **/*.quarto_ipynb
 README.html
 *.knit.*
+..Rcheck/

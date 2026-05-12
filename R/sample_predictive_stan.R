@@ -24,9 +24,10 @@
 #' @details
 #' This function generates true posterior predictive samples by:
 #' \enumerate{
-#'   \item Extracting population-level parameter draws (mu_par) from the
-#'         fitted model
-#'   \item Computing the mean antibody curve at each time point using [ab()]
+#'   \item Extracting population-level parameter draws (mu_par, prec_logy)
+#'         from the fitted model
+#'   \item Computing the mean log-antibody concentration (mu_logy) directly
+#'         using the Stan model formula for each time point
 #'   \item Adding measurement error sampled from Normal(0, sigma_logy) where
 #'         sigma_logy = 1/sqrt(prec_logy)
 #'   \item Transforming back to the original antibody concentration scale

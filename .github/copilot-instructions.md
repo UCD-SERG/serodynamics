@@ -638,4 +638,15 @@ pkgdown::build_site()
 
 Do NOT request review if any of these checks fail. Fix all issues first, then re-run the checks to verify.
 
+**AUTOMATED CODE REVIEW ITERATION**: After completing all changes and passing the validation checks above, you MUST iterate with the automated code review (parallel_validation tool) until it provides no further valid feedback:
+
+1. Run `parallel_validation` with appropriate PR title, description, and triviality assessment
+2. Carefully review all feedback from both Code Review and CodeQL Security Scan
+3. Address all valid issues identified by the automated review
+4. Re-run `parallel_validation` after making changes
+5. Repeat steps 2-4 until the automated review provides no further valid feedback
+6. Only then request human review
+
+This iterative process catches issues early and ensures high code quality before human review.
+
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.
