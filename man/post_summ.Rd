@@ -12,7 +12,7 @@ post_summ(
 )
 }
 \arguments{
-\item{data}{A \link{list} outputted from \link{run_mod}.}
+\item{data}{An \code{sr_model} tibble returned by \link{run_mod}.}
 
 \item{iso}{Specify \link{character} string to produce tables of only a
 specific antigen/antibody combination, entered with quotes. Default outputs
@@ -36,7 +36,7 @@ A \link{data.frame} summarizing estimate mean, standard deviation (SD),
 median, and quantiles (2.5\%, 25.0\%, 50.0\%, 75.0\%, 97.5\%).
 }
 \description{
-\code{post_summ()} takes a \link{list} output from \link{run_mod}
+\code{post_summ()} takes an \code{sr_model} tibble returned by \link{run_mod}
 to summary table for parameter, antigen/antibody, and stratification
 combination.
 Defaults will produce every combination of antigen/antibody, parameters,
@@ -47,7 +47,7 @@ The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item r = shape parameter
+\item shape = shape parameter
 \item alpha = decay rate
 }
 }

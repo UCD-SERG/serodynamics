@@ -2,7 +2,7 @@
 #' @title Summary Table of Jags Posterior Estimates
 #' @author Sam Schildhauer
 #' @description
-#'  `post_summ()` takes a [list] output from [run_mod]
+#'  `post_summ()` takes an `sr_model` tibble returned by [run_mod]
 #'  to summary table for parameter, antigen/antibody, and stratification
 #'  combination.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
@@ -12,9 +12,9 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - r = shape parameter
+#'  - shape = shape parameter
 #'  - alpha = decay rate
-#' @param data A [list] outputted from [run_mod].
+#' @param data An `sr_model` tibble returned by [run_mod].
 #' @param iso Specify [character] string to produce tables of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.

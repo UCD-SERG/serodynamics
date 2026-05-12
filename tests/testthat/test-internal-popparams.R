@@ -14,6 +14,7 @@ test_that("param_recode correctly recodes parameter indices", {
 })
 
 test_that("unpack_jags handles factor Parameter column", {
+  withr::local_seed(42)
   # Create a simple ggs-like object with factor Parameter column
   test_data <- tibble::tibble(
     Iteration = rep(1:5, 3),
@@ -33,6 +34,7 @@ test_that("unpack_jags handles factor Parameter column", {
 })
 
 test_that("unpack_jags correctly unpacks mu.par parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -54,6 +56,7 @@ test_that("unpack_jags correctly unpacks mu.par parameters", {
 })
 
 test_that("unpack_jags correctly unpacks prec.par parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -75,6 +78,7 @@ test_that("unpack_jags correctly unpacks prec.par parameters", {
 })
 
 test_that("unpack_jags correctly unpacks prec.logy parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -93,6 +97,7 @@ test_that("unpack_jags correctly unpacks prec.logy parameters", {
 })
 
 test_that("unpack_jags correctly unpacks individual-level parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -108,6 +113,7 @@ test_that("unpack_jags correctly unpacks individual-level parameters", {
 })
 
 test_that("prep_popparams filters to population parameters only", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = 1:10,
     Chain = rep(1, 10),
@@ -131,6 +137,7 @@ test_that("prep_popparams filters to population parameters only", {
 })
 
 test_that("ex_popparams excludes population parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = 1:10,
     Chain = rep(1, 10),
@@ -152,6 +159,7 @@ test_that("ex_popparams excludes population parameters", {
 })
 
 test_that("prep_popparams and ex_popparams are complementary", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:5, 4),
     Chain = rep(1, 20),
