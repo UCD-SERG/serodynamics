@@ -38,8 +38,8 @@ the number of MCMC chains to be run per jags model.}
 entered in quotes.}
 
 \item{with_post}{A \link{logical} value specifying whether a raw \code{jags.post}
-component
-should be included as an element of the \link{list} object returned by \code{run_mod()}
+object should be included as an optional \code{"jags.post"} attribute on the
+returned \code{sr_model} tibble
 (see \code{Value} section below for details).
 Note: These objects can be large.}
 
