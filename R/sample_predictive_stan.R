@@ -1,9 +1,10 @@
 #' Sample from posterior predictive distribution (Stan models)
 #'
 #' Generate posterior predictive samples for new observations using a fitted
-#' Stan model. This function samples from the marginal posterior distribution
-#' of model parameters to generate predictions for specified time points using
-#' the antibody dynamic curve model.
+#' Stan model. This function samples from the population-level parameter
+#' distribution and includes measurement error to generate true posterior
+#' predictive samples (not just mean curve draws). Predictions are made on
+#' the original antibody concentration scale.
 #'
 #' @param stan_model_output Output from [run_mod_stan()], an object of class
 #'   `sr_model` containing the fitted Stan model
@@ -14,12 +15,27 @@
 #'
 #' @returns A list of class `posterior_predictive_stan` containing:
 #'   \item{samples}{Array of posterior predictive samples with dimensions
-#'     `[n_samples, n_timepoints, n_antigens]`}
+#'     `[n_samples, n_timepoints, n_antigens]`. These include measurement
+#'     error and represent plausible new observations.}
 #'   \item{time_points}{The time points used for prediction}
 #'   \item{summary}{Summary statistics (mean, median, 95\% credible intervals)
 #'     for each antigen at each time point}
 #'
-#' @importFrom stats median quantile
+#' @details
+#' This function generates true posterior predictive samples by:
+#' \enumerate{
+#'   \item Extracting population-level parameter draws (mu_par) from the
+#'         fitted model
+#'   \item Computing the mean antibody curve at each time point using [ab()]
+#'   \item Adding measurement error sampled from Normal(0, sigma_logy) where
+#'         sigma_logy = 1/sqrt(prec_logy)
+#'   \item Transforming back to the original antibody concentration scale
+#' }
+#'
+#' The resulting samples represent plausible new observations, not just the
+#' mean curve. For stratified models, draws from all strata are combined.
+#'
+#' @importFrom stats median quantile rnorm
 #' @export
 #'
 #' @examples
@@ -78,20 +94,23 @@ sample_predictive_stan <- function(
   all_draws <- list()
   
   # Extract draws from each stratification level
+  # We extract population-level parameters (mu_par, prec_logy)
+  # which are consistent across strata and can be combined
   for (strat_name in names(stan_fit_list)) {
     stan_fit <- stan_fit_list[[strat_name]]
     
-    # Extract parameter draws from CmdStan fit
-    # Parameters: y0, y1, t1, alpha, shape (5 parameters per antigen)
+    # Extract population-level parameter draws (not subject-specific)
+    # mu_par: population mean for each parameter and antigen
+    # prec_logy: measurement error precision
     draws <- stan_fit$draws(
-      variables = c("y0", "y1", "t1", "alpha", "shape"),
+      variables = c("mu_par", "prec_logy"),
       format = "draws_matrix"
     )
     
     all_draws[[strat_name]] <- draws
   }
   
-  # Combine draws from all strata
+  # Combine draws from all strata (these have same dimensions)
   combined_draws <- do.call(rbind, all_draws)
   
   # Determine number of samples to use
@@ -130,46 +149,25 @@ sample_predictive_stan <- function(
     # Extract parameter columns for this antigen
     # CmdStan names: y0[subj,k], y1[subj,k], etc.
     # We need to find columns matching pattern for antigen k
-    y0_cols <- grep(
-      paste0("y0\\[\\d+,", k, "\\]"),
-      colnames(combined_draws),
-      value = TRUE
-    )
-    y1_cols <- grep(
-      paste0("y1\\[\\d+,", k, "\\]"),
-      colnames(combined_draws),
-      value = TRUE
-    )
-    t1_cols <- grep(
-      paste0("t1\\[\\d+,", k, "\\]"),
-      colnames(combined_draws),
-      value = TRUE
-    )
-    alpha_cols <- grep(
-      paste0("alpha\\[\\d+,", k, "\\]"),
-      colnames(combined_draws),
-      value = TRUE
-    )
-    shape_cols <- grep(
-      paste0("shape\\[\\d+,", k, "\\]"),
-      colnames(combined_draws),
-      value = TRUE
-    )
+    # Extract population-level parameters for this antigen
+    # mu_par has dimensions [param, antigen] where param = 1:5
+    # (y0, y1, t1, alpha, shape)
+    y0_pop <- combined_draws[, paste0("mu_par[1,", k, "]")]
+    y1_pop <- combined_draws[, paste0("mu_par[2,", k, "]")]
+    t1_pop <- combined_draws[, paste0("mu_par[3,", k, "]")]
+    alpha_pop <- combined_draws[, paste0("mu_par[4,", k, "]")]
+    shape_pop <- combined_draws[, paste0("mu_par[5,", k, "]")]
     
-    # Average across subjects for population-level predictions
-    # These represent population-level parameter estimates
-    y0_pop <- rowMeans(combined_draws[, y0_cols, drop = FALSE])
-    y1_pop <- rowMeans(combined_draws[, y1_cols, drop = FALSE])
-    t1_pop <- rowMeans(combined_draws[, t1_cols, drop = FALSE])
-    alpha_pop <- rowMeans(combined_draws[, alpha_cols, drop = FALSE])
-    shape_pop <- rowMeans(combined_draws[, shape_cols, drop = FALSE])
+    # Extract measurement error precision for this antigen
+    prec_logy_k <- combined_draws[, paste0("prec_logy[", k, "]")]
+    sigma_logy_k <- 1 / sqrt(prec_logy_k)  # Convert precision to SD
     
-    # Generate predictions for each time point using ab() function
+    # Generate posterior predictive samples for each time point
     for (t_idx in seq_along(time_points)) {
       t <- time_points[t_idx]
       
-      # Use the ab() function for consistency with the model
-      y_pred <- ab(
+      # Compute mean log(antibody) using ab() function
+      mu_logy <- ab(
         t = t,
         y0 = y0_pop,
         y1 = y1_pop,
@@ -177,6 +175,16 @@ sample_predictive_stan <- function(
         alpha = alpha_pop,
         shape = shape_pop
       )
+      
+      # Add measurement error to get posterior predictive samples
+      logy_pred <- stats::rnorm(
+        n = length(mu_logy),
+        mean = mu_logy,
+        sd = sigma_logy_k
+      )
+      
+      # Transform back to original scale
+      y_pred <- exp(logy_pred)
       
       predictions[, t_idx, k] <- y_pred
     }

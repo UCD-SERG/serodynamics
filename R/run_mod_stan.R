@@ -93,7 +93,9 @@ run_mod_stan <- function(data,
     priorspec <- prep_priors_stan(max_antigens = longdata$n_antigen_isos, ...)
     
     # Combine data and priors for Stan
-    stan_data <- c(longdata, priorspec)
+    # Remove n_params from priorspec to avoid duplicate (already in longdata)
+    priorspec_clean <- priorspec[names(priorspec) != "n_params"]
+    stan_data <- c(longdata, priorspec_clean)
     
     # Fit the Stan model (model already compiled)
     stan_fit <- mod$sample(

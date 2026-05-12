@@ -23,16 +23,32 @@ uses all available posterior samples from the model.}
 \value{
 A list of class \code{posterior_predictive_stan} containing:
 \item{samples}{Array of posterior predictive samples with dimensions
-\verb{[n_samples, n_timepoints, n_antigens]}}
+\verb{[n_samples, n_timepoints, n_antigens]}. These include measurement
+error and represent plausible new observations.}
 \item{time_points}{The time points used for prediction}
 \item{summary}{Summary statistics (mean, median, 95\\% credible intervals)
 for each antigen at each time point}
 }
 \description{
 Generate posterior predictive samples for new observations using a fitted
-Stan model. This function samples from the marginal posterior distribution
-of model parameters to generate predictions for specified time points using
-the antibody dynamic curve model.
+Stan model. This function samples from the population-level parameter
+distribution and includes measurement error to generate true posterior
+predictive samples (not just mean curve draws). Predictions are made on
+the original antibody concentration scale.
+}
+\details{
+This function generates true posterior predictive samples by:
+\enumerate{
+\item Extracting population-level parameter draws (mu_par) from the
+fitted model
+\item Computing the mean antibody curve at each time point using \code{\link[serocalculator:ab]{ab()}}
+\item Adding measurement error sampled from Normal(0, sigma_logy) where
+sigma_logy = 1/sqrt(prec_logy)
+\item Transforming back to the original antibody concentration scale
+}
+
+The resulting samples represent plausible new observations, not just the
+mean curve. For stratified models, draws from all strata are combined.
 }
 \examples{
 \dontrun{
