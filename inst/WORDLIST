@@ -54,6 +54,7 @@ strat
 stratifications
 tbl
 testthat
+tibble
 unstratified
 vh
 wishdf
