@@ -119,7 +119,8 @@ test_that("prep_popparams filters to population parameters only", {
     Chain = rep(1, 10),
     Parameter = rep(c("y0", "mu.par"), each = 5),
     Subject = rep(c("1", "mu.par"), each = 5),
-    value = rnorm(10)
+    value = rnorm(10),
+    .is_population_parameter = rep(c(FALSE, TRUE), each = 5)
   )
   
   result <- serodynamics:::prep_popparams(test_data)
@@ -132,6 +133,9 @@ test_that("prep_popparams filters to population parameters only", {
   expect_true("Population_Parameter" %in% names(result))
   expect_false("Subject" %in% names(result))
   
+  # .is_population_parameter column should be removed
+  expect_false(".is_population_parameter" %in% names(result))
+  
   # Should have 5 rows (only mu.par rows)
   expect_equal(nrow(result), 5)
 })
@@ -143,7 +147,8 @@ test_that("ex_popparams excludes population parameters", {
     Chain = rep(1, 10),
     Parameter = rep(c("y0", "mu.par"), each = 5),
     Subject = rep(c("1", "mu.par"), each = 5),
-    value = rnorm(10)
+    value = rnorm(10),
+    .is_population_parameter = rep(c(FALSE, TRUE), each = 5)
   )
   
   result <- serodynamics:::ex_popparams(test_data)
@@ -154,8 +159,8 @@ test_that("ex_popparams excludes population parameters", {
   # Should have 5 rows (only y0 rows)
   expect_equal(nrow(result), 5)
   
-  # Should keep original structure
-  expect_equal(names(result), names(test_data))
+  # .is_population_parameter column should be removed
+  expect_false(".is_population_parameter" %in% names(result))
 })
 
 test_that("prep_popparams and ex_popparams are complementary", {
@@ -165,7 +170,8 @@ test_that("prep_popparams and ex_popparams are complementary", {
     Chain = rep(1, 20),
     Parameter = rep(c("y0", "mu.par", "prec.par", "prec.logy"), each = 5),
     Subject = rep(c("1", "mu.par", "prec.par", "prec.logy"), each = 5),
-    value = rnorm(20)
+    value = rnorm(20),
+    .is_population_parameter = rep(c(FALSE, TRUE, TRUE, TRUE), each = 5)
   )
   
   pop_params <- serodynamics:::prep_popparams(test_data)

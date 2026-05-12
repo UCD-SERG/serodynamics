@@ -88,12 +88,12 @@ unpack_jags <- function(data) {
     ) |> 
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
-  # Putting data frame together
+  # Putting data frame together, marking population-parameter rows explicitly
   jags_unpack_bind <- dplyr::bind_rows(
-    jags_unpack_params,
-    jags_mupar,
-    jags_precpar,
-    jags_preclogy
+    dplyr::mutate(jags_unpack_params, .is_population_parameter = FALSE),
+    dplyr::mutate(jags_mupar,         .is_population_parameter = TRUE),
+    dplyr::mutate(jags_precpar,       .is_population_parameter = TRUE),
+    dplyr::mutate(jags_preclogy,      .is_population_parameter = TRUE)
   )
 
   return(jags_unpack_bind)

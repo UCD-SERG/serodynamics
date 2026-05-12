@@ -21,7 +21,7 @@
 #' @param param Specify [character] string to produce tables of only a
 #' specific parameter, entered with quotes. Options include:
 #' - `alpha` = posterior estimate of decay rate
-#' - `r` = posterior estimate of shape parameter
+#' - `shape` = posterior estimate of shape parameter
 #' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration

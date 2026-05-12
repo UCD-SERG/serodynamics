@@ -22,8 +22,8 @@
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
-#' component
-#' should be included as an element of the [list] object returned by `run_mod()`
+#' object should be included as an optional `"jags.post"` attribute on the
+#' returned `sr_model` tibble
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
 #' @param with_pop_params A [logical] value specifying whether population 
