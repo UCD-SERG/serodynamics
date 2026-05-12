@@ -84,6 +84,10 @@ run_mod_stan <- function(data,
   mod <- cmdstanr::cmdstan_model(file_mod)
   
   # For loop for running stratifications
+  # Track first stratum's dimensions for validation
+  first_n_antigen_isos <- NULL
+  first_antigens <- NULL
+  
   for (i in strat_list) {
     # Filter data by stratification
     dl_sub <- filter_by_stratification(data, strat, i)
@@ -91,6 +95,35 @@ run_mod_stan <- function(data,
     # prepare data for modeling
     longdata <- prep_data_stan(dl_sub)
     priorspec <- prep_priors_stan(max_antigens = longdata$n_antigen_isos, ...)
+    
+    # For stratified runs, validate that dimensions are consistent across strata
+    # This is critical because we store only one set of priors/attributes
+    if (is.null(first_n_antigen_isos)) {
+      first_n_antigen_isos <- longdata$n_antigen_isos
+      first_antigens <- attr(longdata, "antigens")$Iso_type
+    } else {
+      current_antigens <- attr(longdata, "antigens")$Iso_type
+      if (longdata$n_antigen_isos != first_n_antigen_isos ||
+            !identical(current_antigens, first_antigens)) {
+        cli::cli_abort(
+          c(
+            "Inconsistent antigen dimensions across strata.",
+            "i" = paste(
+              "First stratum has {first_n_antigen_isos} antigens:",
+              "{paste(first_antigens, collapse = ', ')}"
+            ),
+            "i" = paste(
+              "Current stratum '{i}' has {longdata$n_antigen_isos} antigens:",
+              "{paste(current_antigens, collapse = ', ')}"
+            ),
+            "i" = paste(
+              "All strata must have the same antigens in the same order",
+              "for stratified Stan models."
+            )
+          )
+        )
+      }
+    }
     
     # Combine data and priors for Stan
     # Remove n_params from priorspec to avoid duplicate (already in longdata)

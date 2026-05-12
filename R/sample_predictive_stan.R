@@ -14,12 +14,12 @@
 #'   uses all available posterior samples from the model.
 #'
 #' @returns A list of class `posterior_predictive_stan` containing:
-#'   \item{samples}{Array of posterior predictive samples with dimensions
+#'   - `samples`: Array of posterior predictive samples with dimensions
 #'     `[n_samples, n_timepoints, n_antigens]`. These include measurement
-#'     error and represent plausible new observations.}
-#'   \item{time_points}{The time points used for prediction}
-#'   \item{summary}{Summary statistics (mean, median, 95\% credible intervals)
-#'     for each antigen at each time point}
+#'     error and represent plausible new observations.
+#'   - `time_points`: The time points used for prediction
+#'   - `summary`: Summary statistics (mean, median, 95% credible intervals)
+#'     for each antigen at each time point
 #'
 #' @details
 #' This function generates true posterior predictive samples by:
@@ -85,13 +85,38 @@ sample_predictive_stan <- function(
   # Extract CmdStan fit object(s)
   stan_fit_list <- attr(stan_model_output, "stan.fit")
   
-  # Get number of antigens and stratification levels
-  n_antigens <- length(unique(stan_model_output$Iso_type))
-  antigen_names <- unique(stan_model_output$Iso_type)
+  # Get antigen names from the stored antigens attribute (preserves order)
+  # This ensures we use the same antigen ordering as was used in the Stan model
+  antigens_attr <- attr(stan_model_output, "antigens")
+  if (is.null(antigens_attr)) {
+    cli::cli_abort(
+      c(
+        "Antigens attribute not found in model output.",
+        "i" = "This may indicate an issue with the model fitting process."
+      )
+    )
+  }
+  
+  # Extract antigen names in the correct order
+  antigen_names <- antigens_attr$Iso_type
+  n_antigens <- length(antigen_names)
   n_timepoints <- length(time_points)
   
   # Initialize list to collect draws from all strata
   all_draws <- list()
+  
+  # For stratified models, inform user that draws are being combined
+  # Note: Antigen consistency is validated in run_mod_stan() during fitting
+  if (length(stan_fit_list) > 1) {
+    cli::cli_inform(
+      c(
+        "i" = paste(
+          "Combining posterior draws from {length(stan_fit_list)} strata.",
+          "Antigen ordering is consistent across strata."
+        )
+      )
+    )
+  }
   
   # Extract draws from each stratification level
   # We extract population-level parameters (mu_par, prec_logy)

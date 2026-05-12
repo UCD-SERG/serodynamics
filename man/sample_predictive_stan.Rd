@@ -22,12 +22,14 @@ uses all available posterior samples from the model.}
 }
 \value{
 A list of class \code{posterior_predictive_stan} containing:
-\item{samples}{Array of posterior predictive samples with dimensions
+\itemize{
+\item \code{samples}: Array of posterior predictive samples with dimensions
 \verb{[n_samples, n_timepoints, n_antigens]}. These include measurement
-error and represent plausible new observations.}
-\item{time_points}{The time points used for prediction}
-\item{summary}{Summary statistics (mean, median, 95\\% credible intervals)
-for each antigen at each time point}
+error and represent plausible new observations.
+\item \code{time_points}: The time points used for prediction
+\item \code{summary}: Summary statistics (mean, median, 95\% credible intervals)
+for each antigen at each time point
+}
 }
 \description{
 Generate posterior predictive samples for new observations using a fitted

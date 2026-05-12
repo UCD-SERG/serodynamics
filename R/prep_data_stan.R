@@ -77,13 +77,43 @@ prep_data_stan <- function(
   smpl_t_padded <- array(0, dim = c(nsubj, max_nsmpl))
   logy_padded <- array(0, dim = c(nsubj, max_nsmpl, n_antigen_isos))
   
-  # Fill in actual data
+  # Fill in actual data and validate no NA values in the arrays
   for (subj in 1:nsubj) {
     n_obs <- jags_data$nsmpl[subj]
     if (n_obs > 0) {
-      smpl_t_padded[subj, 1:n_obs] <- jags_data$smpl.t[subj, 1:n_obs]
+      # Validate smpl.t has no NA values for this subject's observations
+      subj_times <- jags_data$smpl.t[subj, 1:n_obs]
+      if (any(is.na(subj_times))) {
+        cli::cli_abort(
+          c(
+            "Stan data cannot contain NA values in time points.",
+            "i" = "Subject {subj} has NA values in observation times.",
+            "i" = "Stan requires complete data for all observations."
+          )
+        )
+      }
+      smpl_t_padded[subj, 1:n_obs] <- subj_times
+      
+      # Validate and copy logy values for each antigen
       for (k in 1:n_antigen_isos) {
-        logy_padded[subj, 1:n_obs, k] <- jags_data$logy[subj, 1:n_obs, k]
+        subj_logy <- jags_data$logy[subj, 1:n_obs, k]
+        if (any(is.na(subj_logy))) {
+          cli::cli_abort(
+            c(
+              "Stan data cannot contain NA values in antibody measurements.",
+              "i" = paste(
+                "Subject {subj}, antigen {k} has NA values in",
+                "log(antibody)."
+              ),
+              "i" = paste(
+                "This can occur when a subject/visit exists but a particular",
+                "antigen-isotype measurement is missing."
+              ),
+              "i" = "Stan requires complete data for all observations."
+            )
+          )
+        }
+        logy_padded[subj, 1:n_obs, k] <- subj_logy
       }
     }
   }
@@ -99,10 +129,12 @@ prep_data_stan <- function(
   )
   
   # Add attributes from JAGS data
+  # Store antigens in a consistent order for use in predictions
+  antigens_attr <- attributes(jags_data)$antigens
   stan_data <- stan_data |>
     structure(
       class = c("prepped_stan_data", "list"),
-      antigens = attributes(jags_data)$antigens,
+      antigens = antigens_attr,
       n_antigens = attributes(jags_data)$n_antigens,
       ids = attributes(jags_data)$ids
     )
