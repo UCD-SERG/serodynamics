@@ -1,9 +1,10 @@
 # Sample from posterior predictive distribution (Stan models)
 
 Generate posterior predictive samples for new observations using a
-fitted Stan model. This function samples from the marginal posterior
-distribution of model parameters to generate predictions for specified
-time points using the antibody dynamic curve model.
+fitted Stan model. This function samples from the population-level
+parameter distribution and includes measurement error to generate true
+posterior predictive samples (not just mean curve draws). Predictions
+are made on the original antibody concentration scale.
 
 ## Usage
 
@@ -40,7 +41,8 @@ A list of class `posterior_predictive_stan` containing:
 - samples:
 
   Array of posterior predictive samples with dimensions
-  `[n_samples, n_timepoints, n_antigens]`
+  `[n_samples, n_timepoints, n_antigens]`. These include measurement
+  error and represent plausible new observations.
 
 - time_points:
 
@@ -50,6 +52,24 @@ A list of class `posterior_predictive_stan` containing:
 
   Summary statistics (mean, median, 95\\ for each antigen at each time
   point
+
+## Details
+
+This function generates true posterior predictive samples by:
+
+1.  Extracting population-level parameter draws (mu_par) from the fitted
+    model
+
+2.  Computing the mean antibody curve at each time point using
+    [`ab()`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/ab.html)
+
+3.  Adding measurement error sampled from Normal(0, sigma_logy) where
+    sigma_logy = 1/sqrt(prec_logy)
+
+4.  Transforming back to the original antibody concentration scale
+
+The resulting samples represent plausible new observations, not just the
+mean curve. For stratified models, draws from all strata are combined.
 
 ## Examples
 
