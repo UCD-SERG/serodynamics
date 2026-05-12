@@ -272,7 +272,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 12 00:41:12 2026
+#> Welcome to JAGS 4.3.2 on Tue May 12 02:31:11 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -307,7 +307,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 12 00:42:01 2026
+#> Welcome to JAGS 4.3.2 on Tue May 12 02:31:58 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
