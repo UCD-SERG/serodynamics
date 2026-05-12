@@ -147,16 +147,28 @@ sample_predictive_stan <- function(
   # Generate predictions for each antigen
   for (k in seq_len(n_antigens)) {
     # Extract parameter columns for this antigen
-    # CmdStan names: y0[subj,k], y1[subj,k], etc.
-    # We need to find columns matching pattern for antigen k
     # Extract population-level parameters for this antigen
     # mu_par has dimensions [antigen, param] where param = 1:5
-    # (y0, y1, t1, alpha, shape)
-    y0_pop <- combined_draws[, paste0("mu_par[", k, ",1]")]
-    y1_pop <- combined_draws[, paste0("mu_par[", k, ",2]")]
-    t1_pop <- combined_draws[, paste0("mu_par[", k, ",3]")]
-    alpha_pop <- combined_draws[, paste0("mu_par[", k, ",4]")]
-    shape_pop <- combined_draws[, paste0("mu_par[", k, ",5]")]
+    # mu_par is on TRANSFORMED scale:
+    # (log(y0), log(y1-y0), log(t1), log(alpha), log(shape-1))
+    # Need to transform to natural scale like Stan model does
+    log_y0 <- combined_draws[, paste0("mu_par[", k, ",1]")]
+    log_y1_minus_y0 <- combined_draws[, paste0("mu_par[", k, ",2]")]
+    log_t1 <- combined_draws[, paste0("mu_par[", k, ",3]")]
+    log_alpha <- combined_draws[, paste0("mu_par[", k, ",4]")]
+    log_shape_minus1 <- combined_draws[, paste0("mu_par[", k, ",5]")]
+    
+    # Transform to natural scale
+    y0_pop <- exp(log_y0)
+    y1_pop <- y0_pop + exp(log_y1_minus_y0)
+    t1_pop <- exp(log_t1)
+    alpha_pop <- exp(log_alpha)
+    shape_pop <- exp(log_shape_minus1) + 1
+    
+    # Compute beta (growth rate)
+    # Note: t1_pop > 0 by construction (exp of real number)
+    # Guard against y0_pop = 0 or y1_pop <= y0_pop
+    beta_pop <- log(pmax(y1_pop / y0_pop, .Machine$double.eps)) / t1_pop
     
     # Extract measurement error precision for this antigen
     prec_logy_k <- combined_draws[, paste0("prec_logy[", k, "]")]
@@ -166,17 +178,24 @@ sample_predictive_stan <- function(
     for (t_idx in seq_along(time_points)) {
       t <- time_points[t_idx]
       
-      # Compute mean log(antibody) using ab() function
-      mu_logy <- ab(
-        t = t,
-        y0 = y0_pop,
-        y1 = y1_pop,
-        t1 = t1_pop,
-        alpha = alpha_pop,
-        shape = shape_pop
+      # Compute mu_logy directly (mean on log scale) matching Stan model
+      # This is NOT log(ab(...)), but actual log-scale mean from model
+      mu_logy <- ifelse(
+        t <= t1_pop,
+        # Active infection period: log(y0) + beta * t
+        log(y0_pop) + beta_pop * t,
+        # Recovery period: power-law decay formula on log scale
+        {
+          one_minus_shape <- 1 - shape_pop
+          # Compute the argument to log, ensuring it stays positive
+          log_arg <- y1_pop^one_minus_shape -
+            one_minus_shape * alpha_pop * (t - t1_pop)
+          # Use pmax to ensure log_arg > 0 (avoid NaN from log of negative)
+          (1 / one_minus_shape) * log(pmax(log_arg, .Machine$double.eps))
+        }
       )
       
-      # Add measurement error to get posterior predictive samples
+      # Add measurement error to get posterior predictive samples on log scale
       logy_pred <- stats::rnorm(
         n = length(mu_logy),
         mean = mu_logy,
