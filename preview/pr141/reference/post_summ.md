@@ -1,7 +1,6 @@
 # Summary Table of Jags Posterior Estimates
 
-`post_summ()` takes a [list](https://rdrr.io/r/base/list.html) output
-from
+`post_summ()` takes an `sr_model` tibble returned by
 [run_mod](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
 to summary table for parameter, antigen/antibody, and stratification
 combination. Defaults will produce every combination of
@@ -16,7 +15,7 @@ parameters:
 
 - t1 = time to peak
 
-- r = shape parameter
+- shape = shape parameter
 
 - alpha = decay rate
 
@@ -35,7 +34,7 @@ post_summ(
 
 - data:
 
-  A [list](https://rdrr.io/r/base/list.html) outputted from
+  An `sr_model` tibble returned by
   [run_mod](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md).
 
 - iso:
