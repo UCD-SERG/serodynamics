@@ -107,9 +107,10 @@ for each antigen at each time point</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>This function generates true posterior predictive samples by:</p><ol><li><p>Extracting population-level parameter draws (mu_par) from the
-fitted model</p></li>
-<li><p>Computing the mean antibody curve at each time point using <code><a href="https://ucd-serg.github.io/serocalculator/latest-tag/reference/ab.html" class="external-link">ab()</a></code></p></li>
+    <p>This function generates true posterior predictive samples by:</p><ol><li><p>Extracting population-level parameter draws (mu_par, prec_logy)
+from the fitted model</p></li>
+<li><p>Computing the mean log-antibody concentration (mu_logy) directly
+using the Stan model formula for each time point</p></li>
 <li><p>Adding measurement error sampled from Normal(0, sigma_logy) where
 sigma_logy = 1/sqrt(prec_logy)</p></li>
 <li><p>Transforming back to the original antibody concentration scale</p></li>

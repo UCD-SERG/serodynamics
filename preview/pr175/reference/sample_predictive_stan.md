@@ -57,11 +57,11 @@ A list of class `posterior_predictive_stan` containing:
 
 This function generates true posterior predictive samples by:
 
-1.  Extracting population-level parameter draws (mu_par) from the fitted
-    model
+1.  Extracting population-level parameter draws (mu_par, prec_logy) from
+    the fitted model
 
-2.  Computing the mean antibody curve at each time point using
-    [`ab()`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/ab.html)
+2.  Computing the mean log-antibody concentration (mu_logy) directly
+    using the Stan model formula for each time point
 
 3.  Adding measurement error sampled from Normal(0, sigma_logy) where
     sigma_logy = 1/sqrt(prec_logy)

@@ -730,6 +730,10 @@ expect_false(has_missing_values(complete_data))
   code**: Use `::` or DESCRIPTION Imports
 - **Document all exports**: Use roxygen2 (@title, @description, @param,
   @returns, @examples)
+- **Use markdown syntax in roxygen2**: Use markdown syntax (numbered
+  lists: `1.`, `2.`, etc.; bullet lists: `-` or `*`) instead of Rd
+  syntax (`\enumerate{}`, `\itemize{}`, `\item`) in roxygen2
+  documentation comments
 - **Test snapshot changes**: Use
   [`testthat::announce_snapshot_file()`](https://testthat.r-lib.org/reference/expect_snapshot_file.html)
   for CSV snapshots
