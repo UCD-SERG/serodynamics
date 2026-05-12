@@ -560,6 +560,7 @@ expect_false(has_missing_values(complete_data))
 - **Messaging**: Use `cli::cli_*()` functions for all user-facing messages
 - **No `library()` in package code**: Use `::` or DESCRIPTION Imports
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
+- **Use markdown syntax in roxygen2**: Use markdown syntax (numbered lists: `1.`, `2.`, etc.; bullet lists: `-` or `*`) instead of Rd syntax (`\enumerate{}`, `\itemize{}`, `\item`) in roxygen2 documentation comments
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
 - **Prefer data-first pipelines**: Design and call functions so the primary data object flows through `|>` naturally
