@@ -80,10 +80,9 @@ run_mod(
 - with_post:
 
   A [logical](https://rdrr.io/r/base/logical.html) value specifying
-  whether a raw `jags.post` component should be included as an element
-  of the [list](https://rdrr.io/r/base/list.html) object returned by
-  `run_mod()` (see `Value` section below for details). Note: These
-  objects can be large.
+  whether a raw `jags.post` object should be included as an optional
+  `"jags.post"` attribute on the returned `sr_model` tibble (see `Value`
+  section below for details). Note: These objects can be large.
 
 - with_pop_params:
 
@@ -298,7 +297,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 12 21:43:46 2026
+#> Welcome to JAGS 4.3.2 on Tue May 12 22:35:18 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -324,6 +323,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -332,7 +332,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 12 21:44:52 2026
+#> Welcome to JAGS 4.3.2 on Tue May 12 22:36:23 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -358,6 +358,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

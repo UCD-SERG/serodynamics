@@ -14,7 +14,7 @@ ex_popparams(x)
 - x:
 
   A [data.frame](https://rdrr.io/r/base/data.frame.html) with a
-  `Subject` variable.
+  `.is_population_parameter` variable.
 
 ## Value
 

@@ -15,8 +15,8 @@ prep_popparams(x)
 
 - x:
 
-  A [data.frame](https://rdrr.io/r/base/data.frame.html) with a
-  `Subject` variable.
+  A [data.frame](https://rdrr.io/r/base/data.frame.html) with `Subject`
+  and `.is_population_parameter` variables.
 
 ## Value
 

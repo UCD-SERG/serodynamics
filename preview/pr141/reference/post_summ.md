@@ -52,7 +52,7 @@ post_summ(
 
   - `alpha` = posterior estimate of decay rate
 
-  - `r` = posterior estimate of shape parameter
+  - `shape` = posterior estimate of shape parameter
 
   - `t1` = posterior estimate of time to peak
 
