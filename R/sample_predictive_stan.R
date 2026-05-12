@@ -98,7 +98,8 @@ sample_predictive_stan <- function(
   }
   
   # Extract antigen names in the correct order
-  antigen_names <- antigens_attr$Iso_type
+  # antigens_attr is a plain vector of antigen-isotype names
+  antigen_names <- antigens_attr
   n_antigens <- length(antigen_names)
   n_timepoints <- length(time_points)
   

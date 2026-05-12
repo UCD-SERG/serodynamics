@@ -100,9 +100,9 @@ run_mod_stan <- function(data,
     # This is critical because we store only one set of priors/attributes
     if (is.null(first_n_antigen_isos)) {
       first_n_antigen_isos <- longdata$n_antigen_isos
-      first_antigens <- attr(longdata, "antigens")$Iso_type
+      first_antigens <- attr(longdata, "antigens")
     } else {
-      current_antigens <- attr(longdata, "antigens")$Iso_type
+      current_antigens <- attr(longdata, "antigens")
       if (longdata$n_antigen_isos != first_n_antigen_isos ||
             !identical(current_antigens, first_antigens)) {
         cli::cli_abort(
@@ -210,6 +210,10 @@ run_mod_stan <- function(data,
     with_post = with_post,
     post_attr_name = "stan.fit"
   )
+  
+  # Attach antigens and ids attributes for sample_predictive_stan()
+  attr(stan_out, "antigens") <- attr(longdata, "antigens")
+  attr(stan_out, "ids") <- attr(longdata, "ids")
   
   stan_out
 }
