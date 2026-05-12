@@ -38,20 +38,14 @@ sample_predictive_stan(
 
 A list of class `posterior_predictive_stan` containing:
 
-- samples:
-
-  Array of posterior predictive samples with dimensions
+- `samples`: Array of posterior predictive samples with dimensions
   `[n_samples, n_timepoints, n_antigens]`. These include measurement
   error and represent plausible new observations.
 
-- time_points:
+- `time_points`: The time points used for prediction
 
-  The time points used for prediction
-
-- summary:
-
-  Summary statistics (mean, median, 95\\ for each antigen at each time
-  point
+- `summary`: Summary statistics (mean, median, 95% credible intervals)
+  for each antigen at each time point
 
 ## Details
 

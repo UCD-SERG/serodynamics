@@ -91,20 +91,13 @@ uses all available posterior samples from the model.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A list of class <code>posterior_predictive_stan</code> containing:</p>
-<dl><dt>samples</dt>
-<dd><p>Array of posterior predictive samples with dimensions
+    <p>A list of class <code>posterior_predictive_stan</code> containing:</p><ul><li><p><code>samples</code>: Array of posterior predictive samples with dimensions
 <code>[n_samples, n_timepoints, n_antigens]</code>. These include measurement
-error and represent plausible new observations.</p></dd>
-
-<dt>time_points</dt>
-<dd><p>The time points used for prediction</p></dd>
-
-<dt>summary</dt>
-<dd><p>Summary statistics (mean, median, 95\<!-- % credible intervals) -->
-for each antigen at each time point</p></dd>
-
-</dl></div>
+error and represent plausible new observations.</p></li>
+<li><p><code>time_points</code>: The time points used for prediction</p></li>
+<li><p><code>summary</code>: Summary statistics (mean, median, 95% credible intervals)
+for each antigen at each time point</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>This function generates true posterior predictive samples by:</p><ol><li><p>Extracting population-level parameter draws (mu_par, prec_logy)
