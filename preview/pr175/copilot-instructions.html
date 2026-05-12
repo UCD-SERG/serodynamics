@@ -701,6 +701,14 @@
 <span><span class="co"># 4. Build pkgdown site - must build successfully</span></span>
 <span><span class="fu">pkgdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgdown.r-lib.org/reference/build_site.html" class="external-link">build_site</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Do NOT request review if any of these checks fail. Fix all issues first, then re-run the checks to verify.</p>
+<p><strong>AUTOMATED CODE REVIEW ITERATION</strong>: After completing all changes and passing the validation checks above, you MUST iterate with the automated code review (parallel_validation tool) until it provides no further valid feedback:</p>
+<ol style="list-style-type: decimal"><li>Run <code>parallel_validation</code> with appropriate PR title, description, and triviality assessment</li>
+<li>Carefully review all feedback from both Code Review and CodeQL Security Scan</li>
+<li>Address all valid issues identified by the automated review</li>
+<li>Re-run <code>parallel_validation</code> after making changes</li>
+<li>Repeat steps 2-4 until the automated review provides no further valid feedback</li>
+<li>Only then request human review</li>
+</ol><p>This iterative process catches issues early and ensures high code quality before human review.</p>
 <p>Only search for additional information if these instructions are incomplete or incorrect for your specific task.</p>
 </div>
 </div>
