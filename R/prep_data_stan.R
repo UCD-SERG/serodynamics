@@ -55,6 +55,17 @@ prep_data_stan <- function(
   
   # Convert to Stan format
   # Stan requires explicit max dimensions
+  # Validate that we have at least one subject with observations
+  if (length(jags_data$nsmpl) == 0 || all(jags_data$nsmpl == 0)) {
+    cli::cli_abort(
+      c(
+        "No observations found in input data.",
+        "i" = "Stan models require at least one subject with observations.",
+        "i" = "Check that your input data is not empty."
+      )
+    )
+  }
+  
   max_nsmpl <- max(jags_data$nsmpl)
   
   # Create padded arrays (Stan doesn't handle ragged arrays like JAGS)

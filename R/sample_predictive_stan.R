@@ -150,13 +150,13 @@ sample_predictive_stan <- function(
     # CmdStan names: y0[subj,k], y1[subj,k], etc.
     # We need to find columns matching pattern for antigen k
     # Extract population-level parameters for this antigen
-    # mu_par has dimensions [param, antigen] where param = 1:5
+    # mu_par has dimensions [antigen, param] where param = 1:5
     # (y0, y1, t1, alpha, shape)
-    y0_pop <- combined_draws[, paste0("mu_par[1,", k, "]")]
-    y1_pop <- combined_draws[, paste0("mu_par[2,", k, "]")]
-    t1_pop <- combined_draws[, paste0("mu_par[3,", k, "]")]
-    alpha_pop <- combined_draws[, paste0("mu_par[4,", k, "]")]
-    shape_pop <- combined_draws[, paste0("mu_par[5,", k, "]")]
+    y0_pop <- combined_draws[, paste0("mu_par[", k, ",1]")]
+    y1_pop <- combined_draws[, paste0("mu_par[", k, ",2]")]
+    t1_pop <- combined_draws[, paste0("mu_par[", k, ",3]")]
+    alpha_pop <- combined_draws[, paste0("mu_par[", k, ",4]")]
+    shape_pop <- combined_draws[, paste0("mu_par[", k, ",5]")]
     
     # Extract measurement error precision for this antigen
     prec_logy_k <- combined_draws[, paste0("prec_logy[", k, "]")]

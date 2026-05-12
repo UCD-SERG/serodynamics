@@ -208,6 +208,74 @@ test_that("sample_predictive_stan works with fitted Stan model", {
   )
 })
 
+test_that("sample_predictive_stan works with multiple antigens", {
+  skip_if_not_installed("cmdstanr")
+  skip_if(
+    is.null(tryCatch(cmdstanr::cmdstan_version(), error = function(e) NULL)),
+    "CmdStan not installed"
+  )
+  
+  withr::local_seed(2)
+  # Use two antigens to test multi-antigen indexing
+  # n=15 provides sufficient data while keeping test runtime reasonable
+  # Two antigens (HlyE_IgA, HlyE_IgG) test parameter extraction for each antigen
+  case_data <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 15, antigen_isos = c("HlyE_IgA", "HlyE_IgG"))
+  
+  # Fit model with posterior samples
+  model_output <- run_mod_stan(
+    data = case_data,
+    file_mod = serodynamics_example("model.stan"),
+    nchain = 2,
+    nadapt = 100,
+    niter = 10,
+    with_post = TRUE
+  ) |>
+    suppressWarnings()
+  
+  # Generate predictions
+  n_samples <- 8
+  time_points <- c(10, 50)
+  antigen_isos <- c("HlyE_IgA", "HlyE_IgG")
+  
+  predictions <- sample_predictive_stan(
+    model_output,
+    time_points = time_points,
+    n_samples = n_samples
+  )
+  
+  # Check structure
+  expect_s3_class(predictions, "posterior_predictive_stan")
+  
+  # Check samples array dimensions
+  # Dimensions: [n_samples, n_timepoints, n_antigens]
+  expect_equal(
+    dim(predictions$samples),
+    c(n_samples, length(time_points), length(antigen_isos))
+  )
+  
+  # Check time points
+  expect_equal(predictions$time_points, time_points)
+  
+  # Check summary structure - should have 2 antigens
+  expect_type(predictions$summary, "list")
+  expect_equal(length(predictions$summary), length(antigen_isos))
+  expect_true(all(antigen_isos %in% names(predictions$summary)))
+  
+  # Check that each antigen has summary stats for each time point
+  for (antigen in antigen_isos) {
+    summary_df <- predictions$summary[[antigen]]
+    expect_s3_class(summary_df, "data.frame")
+    expect_equal(nrow(summary_df), length(time_points))
+    expect_true(
+      all(
+        c("time_point", "mean", "median", "lower_95", "upper_95") %in%
+          names(summary_df)
+      )
+    )
+  }
+})
+
 test_that("sample_predictive_stan errors without posterior samples", {
   skip_if_not_installed("cmdstanr")
   skip_if(
