@@ -12,8 +12,8 @@
 #' @param data A [base::data.frame()] with the required columns (see details).
 #' @param file_mod The name of the file that contains model structure 
 #' (a .stan file).
-#' @param nchain An [integer] between 1 and 4 that specifies
-#' the number of MCMC chains to be run per Stan model.
+#' @param nchain A positive [integer] specifying the number of MCMC chains 
+#' to be run per Stan model.
 #' @param nadapt An [integer] specifying the number of warmup/adaptation 
 #' iterations per chain (Stan equivalent of JAGS adapt + burnin).
 #' @param niter An [integer] specifying the number of post-warmup iterations.
@@ -51,6 +51,17 @@ run_mod_stan <- function(data,
           "repos = c('https://stan-dev.r-universe.dev', ",
           "getOption('repos')))}"
         )
+      )
+    )
+  }
+  
+  # Validate nchain
+  if (!is.numeric(nchain) || length(nchain) != 1 || nchain < 1 || 
+      nchain != as.integer(nchain)) {
+    cli::cli_abort(
+      c(
+        "{.arg nchain} must be a positive integer.",
+        "x" = "You provided: {.val {nchain}}"
       )
     )
   }

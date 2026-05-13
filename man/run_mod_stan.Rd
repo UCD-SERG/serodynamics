@@ -21,8 +21,8 @@ run_mod_stan(
 \item{file_mod}{The name of the file that contains model structure
 (a .stan file).}
 
-\item{nchain}{An \link{integer} between 1 and 4 that specifies
-the number of MCMC chains to be run per Stan model.}
+\item{nchain}{A positive \link{integer} specifying the number of MCMC chains
+to be run per Stan model.}
 
 \item{nadapt}{An \link{integer} specifying the number of warmup/adaptation
 iterations per chain (Stan equivalent of JAGS adapt + burnin).}

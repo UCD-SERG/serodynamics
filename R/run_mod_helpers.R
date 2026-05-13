@@ -19,9 +19,20 @@ setup_stratification <- function(data, strat) {
         )
       )
     }
-    # Get unique levels, excluding NA
+    # Get unique levels
     levels <- unique(data[[strat]])
-    levels <- levels[!is.na(levels)]
+    
+    # Check for NA values in stratification column
+    if (any(is.na(levels))) {
+      cli::cli_abort(
+        c(
+          "Stratification variable {.var {strat}} contains NA values.",
+          "i" = "Please remove or impute NA values before stratifying.",
+          "i" = "Rows with NA in stratification column: {sum(is.na(data[[strat]]))}"
+        )
+      )
+    }
+    
     # Return as-is to preserve type for filtering
     levels
   }
