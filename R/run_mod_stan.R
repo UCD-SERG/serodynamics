@@ -57,7 +57,7 @@ run_mod_stan <- function(data,
   
   # Validate nchain
   if (!is.numeric(nchain) || length(nchain) != 1 || nchain < 1 || 
-      nchain != as.integer(nchain)) {
+        nchain != as.integer(nchain)) {
     cli::cli_abort(
       c(
         "{.arg nchain} must be a positive integer.",
@@ -87,6 +87,25 @@ run_mod_stan <- function(data,
   
   ## Create shell for fitted/residuals
   fit_res_combined <- data.frame()
+  
+  # Check if CmdStan is installed
+  cmdstan_installed <- tryCatch(
+    {
+      cmdstanr::cmdstan_version()
+      TRUE
+    },
+    error = function(e) FALSE
+  )
+  
+  if (!cmdstan_installed) {
+    cli::cli_abort(
+      c(
+        "CmdStan is not installed or not configured properly.",
+        "i" = "Install CmdStan with: {.code cmdstanr::install_cmdstan()}",
+        "i" = "See {.url https://mc-stan.org/cmdstanr/} for more information."
+      )
+    )
+  }
   
   # Compile Stan model once (outside loop to avoid recompilation)
   mod <- cmdstanr::cmdstan_model(file_mod)

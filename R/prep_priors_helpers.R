@@ -88,6 +88,17 @@ initialize_prior_arrays <- function(max_antigens,
                                     omega_param,
                                     wishdf_param,
                                     prec_logy_hyp_param) {
+  # Validate max_antigens is positive
+  if (!is.numeric(max_antigens) || length(max_antigens) != 1 ||
+        max_antigens < 1 || max_antigens != as.integer(max_antigens)) {
+    cli::cli_abort(
+      c(
+        "{.arg max_antigens} must be a positive integer,",
+        "not {.val {max_antigens}}."
+      )
+    )
+  }
+  
   n_params <- 5
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
   prec_hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
@@ -95,7 +106,8 @@ initialize_prior_arrays <- function(max_antigens,
   wishdf <- rep(NA, max_antigens)
   prec_logy_hyp <- array(NA, dim = c(max_antigens, 2))
   
-  for (k in 1:max_antigens) {
+  # Use seq_len() to avoid 1:0 issue when max_antigens == 0
+  for (k in seq_len(max_antigens)) {
     mu_hyp[k, ] <- mu_hyp_param
     prec_hyp[k, , ] <- diag(prec_hyp_param)
     omega[k, , ] <- diag(omega_param)
