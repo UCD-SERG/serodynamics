@@ -65,10 +65,11 @@ run_mod_stan(
 - with_post:
 
   A [logical](https://rdrr.io/r/base/logical.html) value specifying
-  whether a raw `stan_fit` component should be included as an element of
-  the [list](https://rdrr.io/r/base/list.html) object returned by
-  `run_mod_stan()` (see `Value` section below for details). Note: These
-  objects can be large.
+  whether the raw CmdStanR fit object(s) should be stored as an
+  attribute (`stan.fit`) of the returned `sr_model` object. When `TRUE`,
+  the posterior draws are accessible for functions like
+  [`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md).
+  Note: These objects can be large.
 
 - ...:
 
@@ -157,6 +158,8 @@ contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input `data`, including the same
 structure as
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
+When `with_post = TRUE`, the raw CmdStanR fit object(s) are stored as an
+attribute named `stan.fit`.
 
 ## Examples
 

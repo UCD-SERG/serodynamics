@@ -76,7 +76,10 @@ the original antibody concentration scale.</p>
 
 <dl><dt id="arg-stan-model-output">stan_model_output<a class="anchor" aria-label="anchor" href="#arg-stan-model-output"></a></dt>
 <dd><p>Output from <code><a href="run_mod_stan.html">run_mod_stan()</a></code>, an object of class
-<code>sr_model</code> containing the fitted Stan model</p></dd>
+<code>sr_model</code> containing the fitted Stan model. <strong>Important</strong>: The model must
+have been fit with <code>with_post = TRUE</code> to include the posterior draws
+required for prediction. Note that storing posterior draws increases memory
+usage.</p></dd>
 
 
 <dt id="arg-time-points">time_points<a class="anchor" aria-label="anchor" href="#arg-time-points"></a></dt>

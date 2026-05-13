@@ -123,10 +123,10 @@ entered in quotes.</p></dd>
 
 
 <dt id="arg-with-post">with_post<a class="anchor" aria-label="anchor" href="#arg-with-post"></a></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether a raw <code>stan_fit</code>
-component should be included as an element of the <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> object returned
-by <code>run_mod_stan()</code> (see <code>Value</code> section below for details).
-Note: These objects can be large.</p></dd>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether the raw CmdStanR fit
+object(s) should be stored as an attribute (<code>stan.fit</code>) of the returned
+<code>sr_model</code> object. When <code>TRUE</code>, the posterior draws are accessible for
+functions like <code><a href="sample_predictive_stan.html">sample_predictive_stan()</a></code>. Note: These objects can be large.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -186,7 +186,8 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
     <p>An <code>sr_model</code> class object: a subclass of <a href="https://dplyr.tidyverse.org/reference/defunct.html" class="external-link">dplyr::tbl_df</a> that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input <code>data</code>,
-including the same structure as <code><a href="run_mod.html">run_mod()</a></code>.</p>
+including the same structure as <code><a href="run_mod.html">run_mod()</a></code>. When <code>with_post = TRUE</code>,
+the raw CmdStanR fit object(s) are stored as an attribute named <code>stan.fit</code>.</p>
     </div>
 
     <div class="section level2">
