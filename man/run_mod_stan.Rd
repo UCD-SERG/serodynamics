@@ -32,10 +32,10 @@ iterations per chain (Stan equivalent of JAGS adapt + burnin).}
 \item{strat}{A \link{character} string specifying the stratification variable,
 entered in quotes.}
 
-\item{with_post}{A \link{logical} value specifying whether a raw \code{stan_fit}
-component should be included as an element of the \link{list} object returned
-by \code{run_mod_stan()} (see \code{Value} section below for details).
-Note: These objects can be large.}
+\item{with_post}{A \link{logical} value specifying whether the raw CmdStanR fit
+object(s) should be stored as an attribute (\code{stan.fit}) of the returned
+\code{sr_model} object. When \code{TRUE}, the posterior draws are accessible for
+functions like \code{\link[=sample_predictive_stan]{sample_predictive_stan()}}. Note: These objects can be large.}
 
 \item{...}{
   Arguments passed on to \code{\link{prep_priors_stan}}
@@ -91,7 +91,8 @@ If specified, must be 2 values long:
 An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
-including the same structure as \code{run_mod()}.
+including the same structure as \code{run_mod()}. When \code{with_post = TRUE},
+the raw CmdStanR fit object(s) are stored as an attribute named \code{stan.fit}.
 }
 \description{
 \code{run_mod_stan()} takes a data frame and adjustable MCMC inputs to fit a

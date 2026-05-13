@@ -12,7 +12,10 @@ sample_predictive_stan(
 }
 \arguments{
 \item{stan_model_output}{Output from \code{\link[=run_mod_stan]{run_mod_stan()}}, an object of class
-\code{sr_model} containing the fitted Stan model}
+\code{sr_model} containing the fitted Stan model. \strong{Important}: The model must
+have been fit with \code{with_post = TRUE} to include the posterior draws
+required for prediction. Note that storing posterior draws increases memory
+usage.}
 
 \item{time_points}{Numeric vector of time points (in days) at which to
 generate predictions. Default is \code{c(5, 30, 90)}.}

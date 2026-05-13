@@ -7,7 +7,10 @@
 #' the original antibody concentration scale.
 #'
 #' @param stan_model_output Output from [run_mod_stan()], an object of class
-#'   `sr_model` containing the fitted Stan model
+#'   `sr_model` containing the fitted Stan model. **Important**: The model must
+#'   have been fit with `with_post = TRUE` to include the posterior draws
+#'   required for prediction. Note that storing posterior draws increases memory
+#'   usage.
 #' @param time_points Numeric vector of time points (in days) at which to
 #'   generate predictions. Default is `c(5, 30, 90)`.
 #' @param n_samples Number of posterior samples to draw. If `NULL` (default),

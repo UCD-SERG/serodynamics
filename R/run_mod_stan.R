@@ -19,15 +19,16 @@
 #' @param niter An [integer] specifying the number of post-warmup iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
-#' @param with_post A [logical] value specifying whether a raw `stan_fit`
-#' component should be included as an element of the [list] object returned 
-#' by `run_mod_stan()` (see `Value` section below for details).
-#' Note: These objects can be large.
+#' @param with_post A [logical] value specifying whether the raw CmdStanR fit
+#' object(s) should be stored as an attribute (`stan.fit`) of the returned
+#' `sr_model` object. When `TRUE`, the posterior draws are accessible for
+#' functions like [sample_predictive_stan()]. Note: These objects can be large.
 #' @param ... Additional arguments passed to `prep_priors_stan()`.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
-#' including the same structure as `run_mod()`.
+#' including the same structure as `run_mod()`. When `with_post = TRUE`,
+#' the raw CmdStanR fit object(s) are stored as an attribute named `stan.fit`.
 #' @inheritDotParams prep_priors_stan
 #' @export
 #' @example inst/examples/run_mod_stan-examples.R
