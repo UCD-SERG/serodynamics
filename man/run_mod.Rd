@@ -49,21 +49,21 @@ Note: These objects can be large.}
 antigen-isotypes (biomarkers) will be modeled.}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker.
+parameters (y0, y1, t1, alpha, shape) for each biomarker.
 If specified, must be 5 values long, representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration (default = 1.0)
 \item y1 = peak antibody concentration (default = 7.0)
 \item t1 = time to peak (default = 1.0)
-\item r = shape parameter (default = -4.0)
-\item alpha = decay rate (default = -1.0)
+\item alpha = decay rate (default = -4.0)
+\item shape = shape parameter (default = -1.0)
 }}
     \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
 If specified, must be 5 values long:
 \itemize{
-\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape = 1.0
 }}
     \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
@@ -71,7 +71,7 @@ distributions of \code{prec_hyp_param}, describing how much we expect parameters
 to vary between individuals.
 If specified, must be 5 values long:
 \itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, alpha = 10.0, shape = 1.0
 }}
     \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.

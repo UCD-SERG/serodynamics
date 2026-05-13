@@ -18,6 +18,8 @@ Wasserstein
 behaviour
 biomarker
 biomarkers
+burnin
+cmdstanr
 colour
 darwin
 dev
@@ -49,6 +51,8 @@ rhat
 seroconversion
 seroresponse
 seroresponses
+stan
+stanfit
 strat
 stratifications
 tbl

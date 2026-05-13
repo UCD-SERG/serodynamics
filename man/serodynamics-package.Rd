@@ -11,9 +11,9 @@ Modeling longitudinal immune seroresponses to pathogens.
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/UCD-SERG/serodynamics}
-  \item \url{https://ucd-serg.github.io/serodynamics/}
-  \item Report bugs at \url{https://github.com/UCD-SERG/serodynamics/issues}
+  \item \url{https://github.com/ucdavis/serodynamics}
+  \item \url{https://ucdavis.github.io/serodynamics/}
+  \item Report bugs at \url{https://github.com/ucdavis/serodynamics/issues}
 }
 
 }
