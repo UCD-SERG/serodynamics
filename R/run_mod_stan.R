@@ -69,15 +69,12 @@ run_mod_stan <- function(data,
   ## Setup stratification
   strat_list <- setup_stratification(data, strat)
   
-  # Handle case where all strat values are NA (empty strat_list)
+  # Handle case where strat_list is empty (e.g., empty input data)
   if (length(strat_list) == 0) {
     cli::cli_abort(
       c(
-        "All values in stratification column are NA.",
-        "i" = paste(
-          "Either provide a valid stratification column",
-          "or use {.arg strat = NA}."
-        )
+        "Input data is empty or has no valid stratification levels.",
+        "i" = "Please provide data with at least one row."
       )
     )
   }
