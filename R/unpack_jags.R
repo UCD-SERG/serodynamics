@@ -25,10 +25,21 @@ unpack_jags <- function(data) {
   unpack_with_pattern <- function(data, filter_pattern, regex_pattern,
                                   subject_repl, subnum_repl, param_fun) {
     data |>
-      dplyr::filter(startsWith(.data$Parameter, paste0(filter_pattern, "["))) |>
+      dplyr::filter(
+        startsWith(.data$Parameter, paste0(filter_pattern, "[")) |
+          .data$Parameter == filter_pattern
+      ) |>
       dplyr::mutate(
-        Subject = gsub(regex_pattern, subject_repl, .data$Parameter),
-        Subnum = gsub(regex_pattern, subnum_repl, .data$Parameter),
+        Subject = ifelse(
+          .data$Parameter == filter_pattern,
+          filter_pattern,
+          gsub(regex_pattern, subject_repl, .data$Parameter)
+        ),
+        Subnum = ifelse(
+          .data$Parameter == filter_pattern,
+          "1",
+          gsub(regex_pattern, subnum_repl, .data$Parameter)
+        ),
         Param = param_fun(.data$Parameter, regex_pattern)
       )
   }
