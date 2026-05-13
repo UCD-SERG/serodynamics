@@ -43,8 +43,8 @@ run_mod_stan(
 
 - nchain:
 
-  An [integer](https://rdrr.io/r/base/integer.html) between 1 and 4 that
-  specifies the number of MCMC chains to be run per Stan model.
+  A positive [integer](https://rdrr.io/r/base/integer.html) specifying
+  the number of MCMC chains to be run per Stan model.
 
 - nadapt:
 
