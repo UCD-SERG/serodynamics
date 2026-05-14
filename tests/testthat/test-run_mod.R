@@ -67,10 +67,15 @@ test_that(
         variant = darwin_variant()    
       )
     
+    pop_params <- attributes(results)$population_params
+    expect_s3_class(pop_params, "data.frame")
+    expect_true(all(c("Population_Parameter", "value") %in% names(pop_params)))
+    
     expect_setequal(
-      unique(attributes(results)$population_params$Population_Parameter),
+      unique(pop_params$Population_Parameter),
       c("mu.par", "prec.par", "prec.logy")
     )
+    expect_true(all(is.finite(pop_params$value)))
     
   }
 )
