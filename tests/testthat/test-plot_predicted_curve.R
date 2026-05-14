@@ -15,7 +15,7 @@ test_that(
     # 5a. Plot (linear axes) with both model curves + observed points
     plot1 <- plot_predicted_curve(
       model              = sr_model,
-      id                 = "sees_npl_128",
+      ids                = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       show_quantiles     = TRUE,
@@ -28,7 +28,7 @@ test_that(
     # 5b. Plot (log10 axes) with both model curves + observed points
     plot2 <- plot_predicted_curve(
       model              = sr_model,
-      id                 = "sees_npl_128",
+      ids                = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       show_quantiles     = TRUE,
@@ -41,7 +41,7 @@ test_that(
     # 5c. Plot with log10 x-axis
     plot3 <- plot_predicted_curve(
       model              = sr_model,
-      id                 = "sees_npl_128",
+      ids                = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       show_quantiles     = TRUE,
@@ -54,7 +54,7 @@ test_that(
     # 5d. Plot with custom x-axis limits
     plot4 <- plot_predicted_curve(
       model              = sr_model,
-      id                 = "sees_npl_128",
+      ids                = "sees_npl_128",
       antigen_iso        = "HlyE_IgA",
       dataset            = serodynamics::nepal_sees,
       log_y              = FALSE,
