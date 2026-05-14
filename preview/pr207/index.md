@@ -6,15 +6,6 @@ infection.
 
 ## Installation
 
-You can install the released version of
-[serodynamics](https://github.com/UCD-SERG/serodynamics) from
-[CRAN](https://CRAN.R-project.org):
-
-``` r
-
-install.packages("serodynamics")
-```
-
 You can install the development version of
 [serodynamics](https://github.com/UCD-SERG/serodynamics) from
 [GitHub](https://github.com/) with:
