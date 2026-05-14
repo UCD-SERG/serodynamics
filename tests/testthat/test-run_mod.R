@@ -67,6 +67,11 @@ test_that(
         variant = darwin_variant()    
       )
     
+    expect_setequal(
+      unique(attributes(results)$population_params$Population_Parameter),
+      c("mu.par", "prec.par", "prec.logy")
+    )
+    
   }
 )
 

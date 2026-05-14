@@ -96,6 +96,22 @@ test_that("unpack_jags correctly unpacks prec.logy parameters", {
   expect_true("prec.logy" %in% result$Subject)
 })
 
+test_that("unpack_jags correctly unpacks scalar prec.logy parameters", {
+  withr::local_seed(42)
+  test_data <- tibble::tibble(
+    Iteration = 1:3,
+    Chain = rep(1, 3),
+    Parameter = rep("prec.logy", 3),
+    value = rnorm(3)
+  )
+  
+  result <- serodynamics:::unpack_jags(test_data)
+  
+  expect_true(all(result$Subject == "prec.logy"))
+  expect_true(all(result$Subnum == "1"))
+  expect_true(all(result$Param == "prec.logy"))
+})
+
 test_that("unpack_jags correctly unpacks individual-level parameters", {
   withr::local_seed(42)
   test_data <- tibble::tibble(

@@ -30,12 +30,12 @@ unpack_jags <- function(data) {
           .data$Parameter == filter_pattern
       ) |>
       dplyr::mutate(
-        Subject = ifelse(
+        Subject = dplyr::if_else(
           .data$Parameter == filter_pattern,
           filter_pattern,
           gsub(regex_pattern, subject_repl, .data$Parameter)
         ),
-        Subnum = ifelse(
+        Subnum = dplyr::if_else(
           .data$Parameter == filter_pattern,
           "1",
           gsub(regex_pattern, subnum_repl, .data$Parameter)
