@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The [serodynamics](https://github.com/ucdavis/serodynamics) package
+The [serodynamics](https://github.com/UCD-SERG/serodynamics) package
 provides tools for modeling longitudinal antibody responses to infection
 using Bayesian MCMC methods. This vignette demonstrates the main
 workflow for:
@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 21:56:12 2026
+#> Welcome to JAGS 4.3.2 on Thu May 14 00:24:10 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 21:56:24 2026
+#> Welcome to JAGS 4.3.2 on Thu May 14 00:24:22 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 21:56:26 2026
+#> Welcome to JAGS 4.3.2 on Thu May 14 00:24:24 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -510,7 +510,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-13
+#>  date     2026-05-14
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.9.37 @ /usr/local/bin/quarto
 #> 
@@ -557,7 +557,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2     2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0     2025-04-24 [1] CRAN (R 4.6.0)
 #>  serocalculator   1.4.1     2026-03-25 [1] CRAN (R 4.6.0)
-#>  serodynamics   * 1.0.0     2026-05-13 [1] local
+#>  serodynamics   * 1.0.0     2026-05-14 [1] local
 #>  sessioninfo      1.2.3     2025-02-05 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1     2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2     2025-12-19 [1] CRAN (R 4.6.0)

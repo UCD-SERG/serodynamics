@@ -15,9 +15,9 @@ and Teunis and van Eijkeren (2020)
 
 Useful links:
 
-- <https://github.com/ucdavis/serodynamics>
+- <https://github.com/UCD-SERG/serodynamics>
 
-- Report bugs at <https://github.com/ucdavis/serodynamics/issues>
+- Report bugs at <https://github.com/UCD-SERG/serodynamics/issues>
 
 ## Author
 

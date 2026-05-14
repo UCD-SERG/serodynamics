@@ -46,7 +46,7 @@
 <li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json">
 </form></li>
-<li class="nav-item"><a class="external-link nav-link" href="https://github.com/ucdavis/serodynamics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/UCD-SERG/serodynamics/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-lightswitch" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true" aria-label="Light switch"><span class="fa fa-sun"></span></button>
   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-lightswitch">
@@ -69,7 +69,7 @@
 
 
 
-      <small class="dont-index">Source: <a href="https://github.com/ucdavis/serodynamics/blob/cran-submission/vignettes/articles/getting-started.qmd" class="external-link"><code>vignettes/articles/getting-started.qmd</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/UCD-SERG/serodynamics/blob/cran-submission/vignettes/articles/getting-started.qmd" class="external-link"><code>vignettes/articles/getting-started.qmd</code></a></small>
       <div class="d-none name"><code></code></div>
     </div>
 
@@ -80,7 +80,7 @@
 
     <section class="level2"><h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
 </h2>
-<p>The <a href="https://github.com/ucdavis/serodynamics" class="external-link">serodynamics</a> package provides tools for modeling longitudinal antibody responses to infection using Bayesian MCMC methods. This vignette demonstrates the main workflow for:</p>
+<p>The <a href="https://github.com/UCD-SERG/serodynamics" class="external-link">serodynamics</a> package provides tools for modeling longitudinal antibody responses to infection using Bayesian MCMC methods. This vignette demonstrates the main workflow for:</p>
 <ol type="1">
 <li>Loading or simulating case data</li>
 <li>Preparing data for MCMC analysis</li>
@@ -108,7 +108,7 @@
 </h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ucdavis/serodynamics" class="external-link">serodynamics</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/UCD-SERG/serodynamics" class="external-link">serodynamics</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
@@ -243,7 +243,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed May 13 21:56:12 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Thu May 14 00:24:10 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -542,7 +542,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed May 13 21:56:24 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Thu May 14 00:24:22 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -577,7 +577,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed May 13 21:56:26 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Thu May 14 00:24:24 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -631,7 +631,7 @@
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2026-05-13</span></span>
+<span><span class="co">#&gt;  date     2026-05-14</span></span>
 <span><span class="co">#&gt;  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt;  quarto   1.9.37 @ /usr/local/bin/quarto</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -678,7 +678,7 @@
 <span><span class="co">#&gt;  S7               0.2.2     2026-04-22 [1] CRAN (R 4.6.0)</span></span>
 <span><span class="co">#&gt;  scales           1.4.0     2025-04-24 [1] CRAN (R 4.6.0)</span></span>
 <span><span class="co">#&gt;  serocalculator   1.4.1     2026-03-25 [1] CRAN (R 4.6.0)</span></span>
-<span><span class="co">#&gt;  serodynamics   * 1.0.0     2026-05-13 [1] local</span></span>
+<span><span class="co">#&gt;  serodynamics   * 1.0.0     2026-05-14 [1] local</span></span>
 <span><span class="co">#&gt;  sessioninfo      1.2.3     2025-02-05 [1] CRAN (R 4.6.0)</span></span>
 <span><span class="co">#&gt;  tibble           3.3.1     2026-01-11 [1] CRAN (R 4.6.0)</span></span>
 <span><span class="co">#&gt;  tidyr            1.3.2     2025-12-19 [1] CRAN (R 4.6.0)</span></span>
