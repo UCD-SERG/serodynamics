@@ -11,8 +11,8 @@ Implements Bayesian hierarchical models for estimating antibody kinetic paramete
 \seealso{
 Useful links:
 \itemize{
-  \item \url{https://github.com/ucdavis/serodynamics}
-  \item Report bugs at \url{https://github.com/ucdavis/serodynamics/issues}
+  \item \url{https://github.com/UCD-SERG/serodynamics}
+  \item Report bugs at \url{https://github.com/UCD-SERG/serodynamics/issues}
 }
 
 }
