@@ -2,7 +2,6 @@ data(nepal_sees_jags_output, package = "serodynamics")
 post_summ(nepal_sees_jags_output)
 
 if (interactive() && nzchar(runjags::findjags())) {
-  library(runjags)
   set.seed(1)
   library(dplyr)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
