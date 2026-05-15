@@ -49,16 +49,7 @@
 <div class="section level3">
 <h3 id="initial-cran-release-0-1-0">Initial CRAN release<a class="anchor" aria-label="anchor" href="#initial-cran-release-0-1-0"></a></h3>
 <p>This is the first CRAN release of <code>serodynamics</code>, a package for Bayesian hierarchical modeling of antibody kinetics from longitudinal serological data. It serves as the upstream companion to the <code>serocalculator</code> package.</p>
-<ul><li><p>Expanded <code>.github/copilot-instructions.md</code> with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.</p></li>
-<li><p>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code><a href="../reference/post_summ.html">post_summ()</a></code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</p></li>
-<li><p>Added R 4.5+ snapshot variants to handle the changed attribute ordering in <code><a href="../reference/as_case_data.html">as_case_data()</a></code>, ensuring test suite compatibility with R 4.5 and later (<a href="https://github.com/UCD-SERG/serodynamics/issues/109" class="external-link">#109</a>).</p></li>
-<li><p>Added dev container configuration for persistent, cached development environment that includes R, JAGS, and all dependencies preinstalled, making Copilot Workspace sessions much faster.</p></li>
-<li><p>Reorganized pkgdown documentation with new “Getting Started” guide demonstrating main API workflow, organized articles into “Get started” and “Developer Notes” sections (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>).</p></li>
-<li><p>Added <code>.github/workflows/copilot-setup-steps.yml</code> GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.</p></li>
-<li><p>Consolidated OS-specific snapshot variants: removed redundant Linux and Windows snapshot directories (which were identical), keeping only base snapshots and darwin-specific variants for macOS platform differences (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>).</p></li>
-<li><p>Initial CRAN submission.</p></li>
-<li><p>Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.</p></li>
-</ul></div>
+</div>
 <div class="section level3">
 <h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
 <ul><li>Made “newperson” optional in <code><a href="../reference/prep_data.html">prep_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>)</li>

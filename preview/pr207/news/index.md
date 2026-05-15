@@ -9,53 +9,6 @@ hierarchical modeling of antibody kinetics from longitudinal serological
 data. It serves as the upstream companion to the `serocalculator`
 package.
 
-- Expanded `.github/copilot-instructions.md` with additional guidance on
-  evidence-based claims, Quarto markdown/cross-reference conventions, R
-  style practices, and phrase-level line-break formatting for source
-  text.
-
-- Fixed
-  [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
-  references to
-  [`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
-  in
-  [`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/post_summ.md)
-  and
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/run_mod.md),
-  since
-  [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
-  is exported from the `tibble` package, not `dplyr`.
-
-- Added R 4.5+ snapshot variants to handle the changed attribute
-  ordering in
-  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/as_case_data.md),
-  ensuring test suite compatibility with R 4.5 and later
-  ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
-
-- Added dev container configuration for persistent, cached development
-  environment that includes R, JAGS, and all dependencies preinstalled,
-  making Copilot Workspace sessions much faster.
-
-- Reorganized pkgdown documentation with new “Getting Started” guide
-  demonstrating main API workflow, organized articles into “Get started”
-  and “Developer Notes” sections
-  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)).
-
-- Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions
-  workflow to automate environment setup for GitHub Copilot coding
-  agent, preinstalling R, JAGS, and all dependencies.
-
-- Consolidated OS-specific snapshot variants: removed redundant Linux
-  and Windows snapshot directories (which were identical), keeping only
-  base snapshots and darwin-specific variants for macOS platform
-  differences
-  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)).
-
-- Initial CRAN submission.
-
-- Updated Copilot instructions to encourage code decomposition and avoid
-  copy-pasting substantial code chunks.
-
 ### New features
 
 - Made “newperson” optional in
