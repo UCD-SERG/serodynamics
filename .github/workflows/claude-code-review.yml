@@ -80,13 +80,23 @@ jobs:
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
-          # Post a single sticky comment on the PR with the review summary,
-          # so the run is never silent even when Claude has no inline comments.
-          # (display_report only writes to the Actions step summary page, not the PR.)
-          # The previous sticky is deleted in the step above so this comment
-          # always lands at the bottom of the conversation rather than getting
-          # buried in place.
+          # Force tag mode (anthropics/claude-code-action src/modes/detector.ts).
+          # In the default agent mode for pull_request events, the action never
+          # posts any non-inline PR comment by itself (src/modes/agent/index.ts:
+          # "No tracking comment in agent mode", commentId: undefined). The
+          # code-review plugin will only post a top-level comment if it finds
+          # issues scoring >= 80, so silent runs are common on small/mechanical
+          # PRs. track_progress forces tag mode, which creates a tracking
+          # comment up front via createInitialComment() and updates it at the
+          # end — guaranteeing a PR comment regardless of plugin output.
+          track_progress: 'true'
+          # Bundle the tracking comment into a single sticky per PR rather than
+          # a new comment each run. (Only consulted in tag mode.) The previous
+          # sticky is deleted in the step above so the new one always lands at
+          # the bottom of the conversation rather than getting buried in place.
           use_sticky_comment: 'true'
+          # Also archive the formatted report to the Actions step summary page
+          # (does not affect PR comments).
           display_report: 'true'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
