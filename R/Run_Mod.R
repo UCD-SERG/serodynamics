@@ -168,7 +168,7 @@ run_mod <- function(data,
     mod_atts <- attributes(jags_packed)
     # Select necessary attributes by name for robustness across platforms
     mod_atts <- mod_atts[c("nChains", "nParameters", "nIterations",
-                           "nBurnin", "nThin", "description")]
+                           "nBurnin", "nThin")]
     
     # extracting antigen-iso combinations to correctly number
     # them by the order they are estimated by the program.
@@ -253,7 +253,6 @@ run_mod <- function(data,
     nIterations = mod_atts$nIterations,
     nBurnin = mod_atts$nBurnin,
     nThin = mod_atts$nThin,
-    description = mod_atts$description
   )
   attributes(jags_out) <- new_atts
   
