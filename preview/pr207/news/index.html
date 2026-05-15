@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">1.0.0</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -45,9 +45,9 @@
     </div>
 
     <div class="section level2">
-<h2 class="pkg-version" data-toc-text="1.0.0" id="serodynamics-100">serodynamics 1.0.0<a class="anchor" aria-label="anchor" href="#serodynamics-100"></a></h2>
+<h2 class="pkg-version" data-toc-text="0.1.0" id="serodynamics-010">serodynamics 0.1.0<a class="anchor" aria-label="anchor" href="#serodynamics-010"></a></h2>
 <div class="section level3">
-<h3 id="initial-cran-release-1-0-0">Initial CRAN release<a class="anchor" aria-label="anchor" href="#initial-cran-release-1-0-0"></a></h3>
+<h3 id="initial-cran-release-0-1-0">Initial CRAN release<a class="anchor" aria-label="anchor" href="#initial-cran-release-0-1-0"></a></h3>
 <p>This is the first CRAN release of <code>serodynamics</code>, a package for Bayesian hierarchical modeling of antibody kinetics from longitudinal serological data. It serves as the upstream companion to the <code>serocalculator</code> package.</p>
 <ul><li><p>Expanded <code>.github/copilot-instructions.md</code> with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.</p></li>
 <li><p>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code><a href="../reference/post_summ.html">post_summ()</a></code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</p></li>
@@ -60,7 +60,7 @@
 <li><p>Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.</p></li>
 </ul></div>
 <div class="section level3">
-<h3 id="new-features-1-0-0">New features<a class="anchor" aria-label="anchor" href="#new-features-1-0-0"></a></h3>
+<h3 id="new-features-0-1-0">New features<a class="anchor" aria-label="anchor" href="#new-features-0-1-0"></a></h3>
 <ul><li>Made “newperson” optional in <code><a href="../reference/prep_data.html">prep_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>)</li>
 <li>Including fitted and residual values as data frame in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/101" class="external-link">#101</a>)</li>
 <li>Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> with support for faceting by multiple IDs (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
@@ -102,11 +102,11 @@
 <li>Changed package name to serodynamics. (<a href="https://github.com/UCD-SERG/serodynamics/issues/19" class="external-link">#19</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/20" class="external-link">#20</a>)</li>
 </ul></div>
 <div class="section level3">
-<h3 id="bug-fixes-1-0-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-1-0-0"></a></h3>
+<h3 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
 <p>None yet</p>
 </div>
 <div class="section level3">
-<h3 id="developer-facing-changes-1-0-0">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-1-0-0"></a></h3>
+<h3 id="developer-facing-changes-0-1-0">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-0-1-0"></a></h3>
 <ul><li>Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (<a href="https://github.com/UCD-SERG/serodynamics/issues/135" class="external-link">#135</a>)</li>
 <li>vectorized <code>ab()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/116" class="external-link">#116</a>)</li>
 <li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
