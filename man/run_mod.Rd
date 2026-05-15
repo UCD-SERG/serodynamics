@@ -153,8 +153,7 @@ infection. The antibody dynamic curve includes the following parameters:
 data(nepal_sees_jags_output, package = "serodynamics")
 post_summ(nepal_sees_jags_output)
 
-\dontrun{
-if (!is.element(runjags::findjags(), c("", NULL))) {
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
   library(runjags)
   set.seed(1)
   library(dplyr)
@@ -177,7 +176,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     niter = 2000, # Number of iterations
     strat = "strat"
   ) # Variable to be stratified
-}
 }
 }
 \author{
