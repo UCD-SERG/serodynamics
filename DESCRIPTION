@@ -22,6 +22,7 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/UCD-SERG/serodynamics
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
+SystemRequirements: JAGS (>= 4.3.1)
 Imports: 
     cli,
     coda,

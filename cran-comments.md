@@ -18,7 +18,7 @@
 
 * `serodynamics` depends on the `serocalculator` package, which is on CRAN.
 * JAGS is required as a system dependency; this is declared in the
-  `SystemRequirements` field (if applicable) and clearly noted in the README.
+  `SystemRequirements` field and clearly noted in the README.
 
 ## Downstream dependencies
 

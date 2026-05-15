@@ -7,6 +7,7 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if_not_installed("vdiffr")
     skip_if(getRversion() < "4.4.1")
     
     # Use the pre-computed package data instead of a fixture
@@ -75,6 +76,7 @@ testthat::test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if_not_installed("vdiffr")
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_128", "sees_npl_131"),
@@ -96,6 +98,7 @@ testthat::test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if_not_installed("vdiffr")
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_128", "sees_npl_131"),
@@ -117,6 +120,7 @@ testthat::test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if_not_installed("vdiffr")
     plot_multi <- plot_predicted_curve(
       model           = serodynamics::nepal_sees_jags_output,
       ids             = c("sees_npl_2", "sees_npl_133", "sees_npl_128", 
