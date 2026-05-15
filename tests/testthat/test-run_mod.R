@@ -39,7 +39,7 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", 
                         "nParameters", "nIterations", "nBurnin", "nThin",
-                        "description", "population_params", "priors", 
+                        "population_params", "priors", 
                         "fitted_residuals"))
     
     # Verify class appears immediately after names and row.names
