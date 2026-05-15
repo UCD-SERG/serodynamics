@@ -4,9 +4,6 @@
 
 * This is a new submission.
 
-* HTML validation of the manual was skipped in the local Posit Cloud
-  environment because the system command `tidy` was not installed.
-
 ## Test environments
 
 * Local: Ubuntu 20.04.6 LTS, R 4.5.3

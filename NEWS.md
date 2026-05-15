@@ -6,23 +6,6 @@ This is the first CRAN release of `serodynamics`, a package for Bayesian
 hierarchical modeling of antibody kinetics from longitudinal serological
 data. It serves as the upstream companion to the `serocalculator` package.
 
-* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
-* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
-* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
-  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
-* Added dev container configuration for persistent, cached development environment
-  that includes R, JAGS, and all dependencies preinstalled, making Copilot
-  Workspace sessions much faster.
-* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
-* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
-
-* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
-  snapshot directories (which were identical), keeping only base snapshots and 
-  darwin-specific variants for macOS platform differences (#73).
-
-* Initial CRAN submission.
-* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
-
 ## New features
 
 * Made "newperson" optional in `prep_data()` (#73)
