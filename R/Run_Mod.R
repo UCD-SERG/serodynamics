@@ -252,7 +252,7 @@ run_mod <- function(data,
     nParameters = mod_atts$nParameters,
     nIterations = mod_atts$nIterations,
     nBurnin = mod_atts$nBurnin,
-    nThin = mod_atts$nThin,
+    nThin = mod_atts$nThin
   )
   attributes(jags_out) <- new_atts
   
