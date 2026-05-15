@@ -444,9 +444,10 @@ The following workflows run on every PR. **All must pass** for merge:
 5.  **check-readme.yaml**: Renders README.Rmd and verifies it matches
     README.md. (~2-3 min)
 
-6.  **R-check-docs.yml**: Runs `roxygen2::roxygenise()` and checks if
-    `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails if
-    documentation is out of sync. (~2-3 min)
+6.  **R-check-docs.yml**: Runs
+    [`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
+    and checks if `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails
+    if documentation is out of sync. (~2-3 min)
 
 7.  **news.yaml**: Ensures NEWS.md is updated for every PR. Can be
     bypassed with `no-changelog` label. (~1 min)
@@ -468,8 +469,10 @@ The following workflows run on every PR. **All must pass** for merge:
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs: - `/document` -
-Runs `roxygen2::roxygenise()` and commits changes - `/style` - Runs
-`styler::style_pkg()` and commits changes
+Runs
+[`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
+and commits changes - `/style` - Runs `styler::style_pkg()` and commits
+changes
 
 ## Repository Structure
 
@@ -600,7 +603,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -658,7 +661,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
