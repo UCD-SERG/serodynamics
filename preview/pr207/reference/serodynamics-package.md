@@ -17,6 +17,8 @@ Useful links:
 
 - <https://github.com/UCD-SERG/serodynamics>
 
+- <https://ucd-serg.github.io/serodynamics/>
+
 - Report bugs at <https://github.com/UCD-SERG/serodynamics/issues>
 
 ## Author
