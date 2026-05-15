@@ -21,7 +21,7 @@ sample_predictive_stan(
 - stan_model_output:
 
   Output from
-  [`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md),
+  [`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md),
   an object of class `sr_model` containing the fitted Stan model.
   **Important**: The model must have been fit with `with_post = TRUE` to
   include the posterior draws required for prediction. Note that storing

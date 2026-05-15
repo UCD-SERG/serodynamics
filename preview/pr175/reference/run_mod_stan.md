@@ -68,13 +68,13 @@ run_mod_stan(
   whether the raw CmdStanR fit object(s) should be stored as an
   attribute (`stan.fit`) of the returned `sr_model` object. When `TRUE`,
   the posterior draws are accessible for functions like
-  [`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md).
+  [`sample_predictive_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md).
   Note: These objects can be large.
 
 - ...:
 
   Arguments passed on to
-  [`prep_priors_stan`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_priors_stan.md)
+  [`prep_priors_stan`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_priors_stan.md)
 
   `max_antigens`
 
@@ -157,7 +157,7 @@ An `sr_model` class object: a subclass of
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input `data`, including the same
 structure as
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
 When `with_post = TRUE`, the raw CmdStanR fit object(s) are stored as an
 attribute named `stan.fit`.
 

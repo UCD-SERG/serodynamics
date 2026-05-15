@@ -2,6 +2,11 @@
 
 ## serodynamics (development version)
 
+- Expanded `.github/copilot-instructions.md` with additional guidance on
+  evidence-based claims, Quarto markdown/cross-reference conventions, R
+  style practices, and phrase-level line-break formatting for source
+  text.
+
 - Fixed
   [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
   references to

@@ -28,7 +28,7 @@ pak::pak("ucdavis/serodynamics")
 ### Stan Support (Optional)
 
 To use Stan models (via
-[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md)),
+[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md)),
 you’ll also need to install `cmdstanr`:
 
 ``` r

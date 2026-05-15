@@ -35,7 +35,7 @@ with Stan-formatted data)
 
 ## See also
 
-[`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md)
+[`sample_predictive_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md)
 for posterior predictive sampling with Stan models
 
 ## Examples

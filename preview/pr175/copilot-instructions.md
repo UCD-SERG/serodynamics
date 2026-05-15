@@ -275,10 +275,10 @@ system libraries, install the following system dependencies first:
 ### JAGS Installation (REQUIRED for JAGS models)
 
 **Install JAGS if you plan to use
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
 with JAGS models.** JAGS is required for the original JAGS-based
 modeling functions but is not needed if you only use Stan models via
-[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).
+[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).
 
 #### Installing JAGS in Docker (if using rocker/verse)
 
@@ -323,7 +323,7 @@ runjags::testjags()
 ### Stan Installation (OPTIONAL for Stan models)
 
 **Install cmdstanr and CmdStan if you plan to use
-[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).**
+[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).**
 Stan support is optional and provides a modern alternative to JAGS.
 
 ``` r
@@ -642,7 +642,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -700,7 +700,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
