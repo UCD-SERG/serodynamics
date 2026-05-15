@@ -1,4 +1,4 @@
-# serodynamics 1.0.0
+# serodynamics 0.1.0
 
 ## Initial CRAN release
 
