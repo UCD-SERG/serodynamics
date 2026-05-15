@@ -22,7 +22,7 @@ jobs:
     permissions:
       contents: read
       pull-requests: write
-      issues: read
+      issues: write
       id-token: write
 
     steps:
@@ -52,6 +52,26 @@ jobs:
                   --input - || true
           fi
 
+      - name: Delete prior Claude sticky comment so the new one lands at the bottom
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          # Mirrors how anthropics/claude-code-action locates its sticky comment to update.
+          # See create-initial.ts in:
+          # https://github.com/anthropics/claude-code-action/tree/main/src/github/operations/comments
+          CLAUDE_APP_BOT_ID: '209825114'
+        run: |
+          CID=$(gh api --paginate \
+            "repos/${{ github.repository }}/issues/$PR_NUMBER/comments" \
+            --jq ".[] | select(.user.id == $CLAUDE_APP_BOT_ID or (.user.type == \"Bot\" and (.user.login | ascii_downcase | contains(\"claude\")))) | .id" \
+            | head -n 1)
+          if [ -n "$CID" ]; then
+            echo "Deleting prior Claude comment $CID so the new sticky lands at the bottom."
+            gh api -X DELETE "repos/${{ github.repository }}/issues/comments/$CID" || true
+          else
+            echo "No prior Claude comment found; action will create a fresh sticky."
+          fi
+
       - name: Run Claude Code Review
         id: claude-review
         uses: anthropics/claude-code-action@v1
@@ -63,6 +83,9 @@ jobs:
           # Post a single sticky comment on the PR with the review summary,
           # so the run is never silent even when Claude has no inline comments.
           # (display_report only writes to the Actions step summary page, not the PR.)
+          # The previous sticky is deleted in the step above so this comment
+          # always lands at the bottom of the conversation rather than getting
+          # buried in place.
           use_sticky_comment: 'true'
           display_report: 'true'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
