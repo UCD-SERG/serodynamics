@@ -139,7 +139,7 @@ is represented:
 parameters (on logarithmic scales).
 \item \code{prec.par} = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
-The two parameters listed (seperated by commas) represent the pairwise
+The two parameters listed (separated by commas) represent the pairwise
 precision relationship between specified parameters
 \item \code{prec.logy} = A vector of population precisions (inverse
 variances), one per antigen/isotype combination.
