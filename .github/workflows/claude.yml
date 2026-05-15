@@ -18,8 +18,6 @@ jobs:
       (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
       (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
     runs-on: ubuntu-latest
-    env:
-      MY_REVIEWER: d-morrison
     permissions:
       contents: read
       pull-requests: write
@@ -48,14 +46,27 @@ jobs:
               ;;
           esac
 
-      - name: Drop my review request while Claude works
+      - name: Stash and clear all review requests while Claude works
+        id: stash
         if: steps.pr.outputs.number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
         run: |
-          gh api -X DELETE \
-            "repos/${{ github.repository }}/pulls/${{ steps.pr.outputs.number }}/requested_reviewers" \
-            -f "reviewers[]=$MY_REVIEWER" || true
+          REVIEWERS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers")
+          USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
+          TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
+          echo "users=$USERS" >> "$GITHUB_OUTPUT"
+          echo "teams=$TEAMS" >> "$GITHUB_OUTPUT"
+          echo "Stashed users: $USERS"
+          echo "Stashed teams: $TEAMS"
+          if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X DELETE \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+          fi
 
       - name: Run Claude Code
         id: claude
@@ -75,17 +86,26 @@ jobs:
           # or https://code.claude.com/docs/en/cli-reference for available options
           # claude_args: '--allowed-tools Bash(gh pr *)'
 
-      - name: Re-request my review now that Claude is done
-        if: always() && steps.pr.outputs.number != ''
+      - name: Restore review requests now that Claude is done
+        if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          USERS: ${{ steps.stash.outputs.users }}
+          TEAMS: ${{ steps.stash.outputs.teams }}
         run: |
-          PR_AUTHOR=$(gh api "repos/${{ github.repository }}/pulls/${{ steps.pr.outputs.number }}" --jq .user.login)
-          if [ "$PR_AUTHOR" = "$MY_REVIEWER" ]; then
-            echo "PR author is $MY_REVIEWER; skipping self-review request."
+          if [ -z "$USERS" ] && [ -z "$TEAMS" ]; then
+            echo "Nothing to restore."
             exit 0
           fi
-          gh api -X POST \
-            "repos/${{ github.repository }}/pulls/${{ steps.pr.outputs.number }}/requested_reviewers" \
-            -f "reviewers[]=$MY_REVIEWER" || true
-
+          USERS=${USERS:-[]}
+          TEAMS=${TEAMS:-[]}
+          if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+            echo "No reviewers were originally requested."
+            exit 0
+          fi
+          jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+            '{reviewers: $users, team_reviewers: $teams}' \
+            | gh api -X POST \
+                "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                --input - || true
