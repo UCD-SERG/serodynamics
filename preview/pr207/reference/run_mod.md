@@ -263,8 +263,7 @@ post_summ(nepal_sees_jags_output)
 #> 20 HlyE_IgG y1        typhi           512.       9.65e+2 2.44e+2 2.77e+1 1.11e+2
 #> # ℹ 3 more variables: `50.0%` <dbl>, `75.0%` <dbl>, `97.5%` <dbl>
 
-if (FALSE) { # \dontrun{
-if (!is.element(runjags::findjags(), c("", NULL))) {
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
   library(runjags)
   set.seed(1)
   library(dplyr)
@@ -288,5 +287,4 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     strat = "strat"
   ) # Variable to be stratified
 }
-} # }
 ```
