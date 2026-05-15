@@ -104,8 +104,8 @@ contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the following:
 \itemize{
-\item \code{iteration} = Number of sampling iterations
-\item \code{chain} = Number of MCMC chains run; between 1 and 4
+\item \code{Iteration} = Number of sampling iterations
+\item \code{Chain} = Number of MCMC chains run; between 1 and 4
 \item \code{Parameter} = Parameter being estimated. Includes the following:
 \itemize{
 \item \code{y0} = Posterior estimate of baseline antibody concentration
@@ -121,7 +121,7 @@ including the following:
 \item The following \link{attributes} are included in the output:
 \itemize{
 \item \code{class}: Class of the output object.
-\item \code{nChain}: Number of chains run.
+\item \code{nChains}: Number of chains run.
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.

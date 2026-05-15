@@ -34,8 +34,8 @@
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
 #' including the following:
-#'   - `iteration` = Number of sampling iterations
-#'   - `chain` = Number of MCMC chains run; between 1 and 4
+#'   - `Iteration` = Number of sampling iterations
+#'   - `Chain` = Number of MCMC chains run; between 1 and 4
 #'   - `Parameter` = Parameter being estimated. Includes the following:
 #'     - `y0` = Posterior estimate of baseline antibody concentration
 #'     - `y1` = Posterior estimate of peak antibody concentration
@@ -48,7 +48,7 @@
 #'   - `value` = Estimated value of the parameter
 #' - The following [attributes] are included in the output:
 #'   - `class`: Class of the output object.
-#'   - `nChain`: Number of chains run.
+#'   - `nChains`: Number of chains run.
 #'   - `nParameters`: The amount of parameters estimated in the model.
 #'   - `nIterations`: Number of iteration specified.
 #'   - `nBurnin`: Number of burn ins.
