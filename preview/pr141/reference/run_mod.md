@@ -94,7 +94,7 @@ run_mod(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -177,9 +177,9 @@ that contains MCMC samples from the joint posterior distribution of the
 model parameters, conditional on the provided input `data`, including
 the following:
 
-- `iteration` = Number of sampling iterations
+- `Iteration` = Number of sampling iterations
 
-- `chain` = Number of MCMC chains run; between 1 and 4
+- `Chain` = Number of MCMC chains run; between 1 and 4
 
 - `Parameter` = Parameter being estimated. Includes the following:
 
@@ -206,7 +206,7 @@ the following:
 
   - `class`: Class of the output object.
 
-  - `nChain`: Number of chains run.
+  - `nChains`: Number of chains run.
 
   - `nParameters`: The amount of parameters estimated in the model.
 
@@ -230,7 +230,9 @@ the following:
 
       - `prec.par` = The population precision matrix of the
         hyperparameters (with diagonal elements equal to inverse
-        variances).
+        variances). The two parameters listed (seperated by commas)
+        represent the pairwise precision relationship between specified
+        parameters
 
       - `prec.logy` = A vector of population precisions (inverse
         variances), one per antigen/isotype combination.
@@ -297,7 +299,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 15 04:31:22 2026
+#> Welcome to JAGS 4.3.2 on Fri May 15 18:12:25 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -323,6 +325,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -331,7 +334,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 15 04:32:29 2026
+#> Welcome to JAGS 4.3.2 on Fri May 15 18:13:30 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

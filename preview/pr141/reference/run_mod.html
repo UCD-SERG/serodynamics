@@ -206,8 +206,8 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
     <p>An <code>sr_model</code> class object: a subclass of <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input <code>data</code>,
-including the following:</p><ul><li><p><code>iteration</code> = Number of sampling iterations</p></li>
-<li><p><code>chain</code> = Number of MCMC chains run; between 1 and 4</p></li>
+including the following:</p><ul><li><p><code>Iteration</code> = Number of sampling iterations</p></li>
+<li><p><code>Chain</code> = Number of MCMC chains run; between 1 and 4</p></li>
 <li><p><code>Parameter</code> = Parameter being estimated. Includes the following:</p><ul><li><p><code>y0</code> = Posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = Posterior estimate of peak antibody concentration</p></li>
 <li><p><code>t1</code> = Posterior estimate of time to peak</p></li>
@@ -219,7 +219,7 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <li><p><code>Subject</code> = ID of subject being evaluated</p></li>
 <li><p><code>value</code> = Estimated value of the parameter</p></li>
 <li><p>The following <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> are included in the output:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
-<li><p><code>nChain</code>: Number of chains run.</p></li>
+<li><p><code>nChains</code>: Number of chains run.</p></li>
 <li><p><code>nParameters</code>: The amount of parameters estimated in the model.</p></li>
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
@@ -232,7 +232,9 @@ Columns include
 is represented:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model
 parameters (on logarithmic scales).</p></li>
 <li><p><code>prec.par</code> = The population precision matrix of the
-hyperparameters (with diagonal elements equal to inverse variances).</p></li>
+hyperparameters (with diagonal elements equal to inverse variances).
+The two parameters listed (seperated by commas) represent the pairwise
+precision relationship between specified parameters</p></li>
 <li><p><code>prec.logy</code> = A vector of population precisions (inverse
 variances), one per antigen/isotype combination.</p></li>
 </ul></li>
@@ -291,7 +293,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri May 15 04:31:22 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri May 15 18:12:25 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -317,6 +319,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -325,7 +328,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri May 15 04:32:29 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Fri May 15 18:13:30 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
