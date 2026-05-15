@@ -39,9 +39,9 @@ post_summ <- function(data,
                       strat = unique(data$Stratification)) {
 
   summarize_jags <- data |>
-    filter(.data$Iso_type %in% iso) |>
-    filter(.data$Parameter %in% param) |>
-    filter(.data$Stratification %in% strat)  |>
+    dplyr::filter(.data$Iso_type %in% iso) |>
+    dplyr::filter(.data$Parameter %in% param) |>
+    dplyr::filter(.data$Stratification %in% strat)  |>
     dplyr::filter(.data$Subject == "newperson")
 
   summarize_jags <- summarize_jags |>
