@@ -117,6 +117,8 @@ test_that(
         variant = darwin_variant()
       )
     
+    expect_null(attr(results, "population_params"))
+    
   }
 )
 
