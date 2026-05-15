@@ -60,8 +60,10 @@ jobs:
           plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
           plugins: 'code-review@claude-code-plugins'
           prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
-          # Always post a summary comment so the run is never silent — even when
-          # Claude has no inline comments to make.
+          # Post a single sticky comment on the PR with the review summary,
+          # so the run is never silent even when Claude has no inline comments.
+          # (display_report only writes to the Actions step summary page, not the PR.)
+          use_sticky_comment: 'true'
           display_report: 'true'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
