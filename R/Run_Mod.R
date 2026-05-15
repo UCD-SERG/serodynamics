@@ -63,7 +63,9 @@
 #'       - `mu.par` = The population means of the host-specific model
 #'       parameters (on logarithmic scales).
 #'       - `prec.par` = The population precision matrix of the
-#'       hyperparameters (with diagonal elements equal to inverse variances).
+#'       hyperparameters (with diagonal elements equal to inverse variances). 
+#'       The two parameters listed (seperated by commas) represent the pairwise 
+#'       precision relationship between specified parameters
 #'       - `prec.logy` = A vector of population precisions (inverse
 #'       variances), one per antigen/isotype combination.
 #'   - `priors`: A [list] that summarizes the input priors, including:
