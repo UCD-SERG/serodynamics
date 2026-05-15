@@ -46,13 +46,18 @@ jobs:
               ;;
           esac
 
-      - name: Stash and clear all review requests while Claude works
+      - name: Stash and clear reviewers; record starting head SHA
         id: stash
         if: steps.pr.outputs.number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.pr.outputs.number }}
         run: |
+          PR_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER")
+          HEAD_SHA=$(echo "$PR_JSON" | jq -r '.head.sha')
+          echo "head_before=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "Starting PR head: $HEAD_SHA"
+
           REVIEWERS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers")
           USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
           TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
@@ -86,26 +91,45 @@ jobs:
           # or https://code.claude.com/docs/en/cli-reference for available options
           # claude_args: '--allowed-tools Bash(gh pr *)'
 
-      - name: Restore review requests now that Claude is done
+      - name: Re-assign reviewers after Claude finishes
         if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           PR_NUMBER: ${{ steps.pr.outputs.number }}
-          USERS: ${{ steps.stash.outputs.users }}
-          TEAMS: ${{ steps.stash.outputs.teams }}
+          HEAD_BEFORE: ${{ steps.stash.outputs.head_before }}
+          USERS_BEFORE: ${{ steps.stash.outputs.users }}
+          TEAMS_BEFORE: ${{ steps.stash.outputs.teams }}
         run: |
-          if [ -z "$USERS" ] && [ -z "$TEAMS" ]; then
-            echo "Nothing to restore."
+          PR_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER")
+          HEAD_AFTER=$(echo "$PR_JSON" | jq -r '.head.sha')
+          echo "Head before Claude: $HEAD_BEFORE"
+          echo "Head after Claude:  $HEAD_AFTER"
+
+          if [ "$HEAD_AFTER" = "$HEAD_BEFORE" ]; then
+            # No new commits — restore the original reviewer set.
+            USERS=${USERS_BEFORE:-[]}
+            TEAMS=${TEAMS_BEFORE:-[]}
+            if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+              echo "Claude made no commits and no reviewers were originally requested."
+              exit 0
+            fi
+            echo "Claude made no commits; restoring original reviewers."
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X POST \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
             exit 0
           fi
-          USERS=${USERS:-[]}
-          TEAMS=${TEAMS:-[]}
-          if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
-            echo "No reviewers were originally requested."
+
+          # Claude added commits — request review only from human assignees.
+          ASSIGNEES=$(echo "$PR_JSON" | jq -c '[.assignees[] | select(.type == "User") | .login]')
+          echo "Human assignees: $ASSIGNEES"
+          if [ "$ASSIGNEES" = "[]" ]; then
+            echo "Claude added commits but PR has no human assignees; leaving reviewers cleared."
             exit 0
           fi
-          jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
-            '{reviewers: $users, team_reviewers: $teams}' \
+          jq -n --argjson users "$ASSIGNEES" '{reviewers: $users}' \
             | gh api -X POST \
                 "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
                 --input - || true
