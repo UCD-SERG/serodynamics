@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      pull-requests: read
+      pull-requests: write
       issues: read
       id-token: write
       actions: read # Required for Claude to read CI results on PRs
@@ -29,6 +29,44 @@ jobs:
         uses: actions/checkout@v4
         with:
           fetch-depth: 1
+
+      - name: Resolve PR number (if any)
+        id: pr
+        env:
+          ISSUE_HAS_PR: ${{ github.event.issue.pull_request != null }}
+        run: |
+          case "${{ github.event_name }}" in
+            issue_comment)
+              if [ "$ISSUE_HAS_PR" = "true" ]; then
+                echo "number=${{ github.event.issue.number }}" >> "$GITHUB_OUTPUT"
+              fi
+              ;;
+            pull_request_review_comment|pull_request_review)
+              echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Stash and clear all review requests while Claude works
+        id: stash
+        if: steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          REVIEWERS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers")
+          USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
+          TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
+          echo "users=$USERS" >> "$GITHUB_OUTPUT"
+          echo "teams=$TEAMS" >> "$GITHUB_OUTPUT"
+          echo "Stashed users: $USERS"
+          echo "Stashed teams: $TEAMS"
+          if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X DELETE \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+          fi
 
       - name: Run Claude Code
         id: claude
@@ -48,3 +86,26 @@ jobs:
           # or https://code.claude.com/docs/en/cli-reference for available options
           # claude_args: '--allowed-tools Bash(gh pr *)'
 
+      - name: Restore review requests now that Claude is done
+        if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          USERS: ${{ steps.stash.outputs.users }}
+          TEAMS: ${{ steps.stash.outputs.teams }}
+        run: |
+          if [ -z "$USERS" ] && [ -z "$TEAMS" ]; then
+            echo "Nothing to restore."
+            exit 0
+          fi
+          USERS=${USERS:-[]}
+          TEAMS=${TEAMS:-[]}
+          if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+            echo "No reviewers were originally requested."
+            exit 0
+          fi
+          jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+            '{reviewers: $users, team_reviewers: $teams}' \
+            | gh api -X POST \
+                "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                --input - || true
