@@ -1,9 +1,9 @@
 # SEES Typhoid run_mod jags output
 
 A
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md)
 output using the
-[nepal_sees](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/nepal_sees.md)
+[nepal_sees](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/nepal_sees.md)
 example data set as input and stratifying by column `"bldculres"`, which
 is the diagnosis type (typhoid or paratyphoid). Keeping only IDs
 `"newperson"`, `"sees_npl_1"`, `"sees_npl_2"`.
@@ -17,9 +17,9 @@ nepal_sees_jags_output
 ## Format
 
 An S3 object of class `sr_model`: A
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
-contains the posterior predictive distribution of the person-specific
-parameters for a "new person" with no observed data
+[tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
+that contains the posterior predictive distribution of the
+person-specific parameters for a "new person" with no observed data
 (`Subject = "newperson"`) and posterior distributions of the
 person-specific parameters for two arbitrarily-chosen subjects
 (`"sees_npl_1"` and `"sees_npl_2"`). Contains 40,000 `rows`, 7

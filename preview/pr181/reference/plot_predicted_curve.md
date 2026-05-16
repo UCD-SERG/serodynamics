@@ -32,7 +32,7 @@ plot_predicted_curve(
 - model:
 
   An `sr_model` object (returned by
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md))
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/run_mod.md))
   containing samples from the posterior distribution of the model
   parameters.
 
@@ -47,7 +47,7 @@ plot_predicted_curve(
 - dataset:
 
   (Optional) A
-  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html)
+  [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   with observed antibody response data. Must contain:
 
   - `timeindays`

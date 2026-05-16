@@ -603,7 +603,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -661,7 +661,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr181/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr181/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -681,6 +681,8 @@ expect_false(has_missing_values(complete_data))
 
 - **Follow tidyverse style guide**: <https://style.tidyverse.org>
 - **Use native pipe**: `|>` not `%>%`
+- **Avoid redundant logical comparisons**: Use logical values directly
+  (e.g., `if (is_ready)` not `if (is_ready == TRUE)`)
 - **Naming**: snake_case, acronyms may be uppercase (e.g.,
   `prep_IDs_data`)
 - **Messaging**: Use `cli::cli_*()` functions for all user-facing
@@ -695,6 +697,8 @@ expect_false(has_missing_values(complete_data))
 - **Seed tests**: Use
   [`withr::local_seed()`](https://withr.r-lib.org/reference/with_seed.html)
   for reproducible tests
+- **Prefer data-first pipelines**: Design and call functions so the
+  primary data object flows through `|>` naturally
 - **Avoid code duplication**: Don’t copy-paste substantial code chunks.
   Instead, decompose reusable logic into well-named helper functions.
   This improves maintainability, testability, and reduces the risk of
@@ -714,6 +718,33 @@ expect_false(has_missing_values(complete_data))
 - **Write tidy code**: Keep code clean, readable, and well-organized.
   Follow consistent formatting, use meaningful variable names, and
   maintain logical structure
+
+## Documentation and Evidence Standards
+
+- **Do not assume behavior**: Run the relevant command(s) and verify
+  outputs before claiming something works.
+- **Use markdown syntax in `.qmd` prose**: Wrap code in backticks, use
+  markdown links, and avoid raw HTML links.
+- **Use semantic line breaks and list spacing in `.qmd`**: Break long
+  prose across lines and include a blank line before bullet/numbered
+  lists.
+- **Use Quarto cross-references**: Reference sections/figures/tables
+  with labels (for example `@sec-...`, `@fig-...`, `@tbl-...`) instead
+  of plain text references.
+- **Support factual claims**: Back factual statements with citations or
+  direct verification evidence, and verify external links/resources
+  before describing them.
+
+## Code Formatting Guidelines
+
+When adding or editing text in source code (for example comments,
+documentation strings, or error messages) or in Quarto document text
+chunks:
+
+- Add a newline at the end of every phrase or logical unit of text
+- Put each phrase on its own line in source files
+- Treat a phrase as a complete thought, clause, or sentence
+- Prefer this structure to improve readability and make diffs clearer
 
 ## Package Development Commands Summary
 
