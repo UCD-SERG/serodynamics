@@ -9,8 +9,8 @@ x-axes, and shows all individual sampled curves.
 
 ``` r
 plot_predicted_curve(
-  sr_model,
-  id,
+  model,
+  ids,
   antigen_iso,
   dataset = NULL,
   legend_obs = "Observed data",
@@ -21,22 +21,24 @@ plot_predicted_curve(
   show_all_curves = FALSE,
   alpha_samples = 0.3,
   xlim = NULL,
-  ylab = NULL
+  ylab = NULL,
+  facet_by_id = length(ids) > 1,
+  ncol = NULL
 )
 ```
 
 ## Arguments
 
-- sr_model:
+- model:
 
   An `sr_model` object (returned by
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr119/reference/run_mod.md))
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/run_mod.md))
   containing samples from the posterior distribution of the model
   parameters.
 
-- id:
+- ids:
 
-  The participant ID to plot; for example, "sees_npl_128".
+  The participant IDs to plot; for example, `"sees_npl_128"`.
 
 - antigen_iso:
 
@@ -45,7 +47,7 @@ plot_predicted_curve(
 - dataset:
 
   (Optional) A
-  [dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html)
+  [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   with observed antibody response data. Must contain:
 
   - `timeindays`
@@ -103,6 +105,18 @@ plot_predicted_curve(
   label is automatically set to "ELISA units" or "ELISA units (log
   scale)" based on the `log_y` argument.
 
+- facet_by_id:
+
+  [logical](https://rdrr.io/r/base/logical.html); if
+  [TRUE](https://rdrr.io/r/base/logical.html), facets the plot by 'id'.
+  Defaults to [TRUE](https://rdrr.io/r/base/logical.html) when multiple
+  IDs are provided.
+
+- ncol:
+
+  [integer](https://rdrr.io/r/base/integer.html); number of columns for
+  faceting.
+
 ## Value
 
 A [ggplot2::ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html)
@@ -112,74 +126,60 @@ and a 95% credible interval band as default.
 ## Examples
 
 ``` r
-# 1) Prepare the on-the-fly dataset
-dataset <- serodynamics::nepal_sees |>
-  as_case_data(
-    id_var        = "id",
-    biomarker_var = "antigen_iso",
-    value_var     = "value",
-    time_in_days  = "timeindays"
-  ) |>
-  dplyr::rename(
-    strat      = bldculres,
-    timeindays = dayssincefeveronset,
-    value      = result
-  )
+sees_model <- serodynamics::nepal_sees_jags_output
+sees_data <- serodynamics::nepal_sees
 
-# 2) Extract just the one subject/antigen for overlay later
-dat <- dataset |>
-  dplyr::filter(id == "sees_npl_128", antigen_iso == "HlyE_IgA")
-
-# 3) Load the pre-computed model output included with the package.
-# This is much faster than running the model live.
-model <- serodynamics::nepal_sees_jags_output
-
-
-# 4a) Plot (linear axes) with all individual curves + median ribbon
+# Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
-  sr_model           = model,
+  model              = sees_model,
+  dataset            = sees_data,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
-  dataset            = dat,
-  legend_obs         = "Observed data",
-  legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_y          = FALSE,
+  log_y              = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
 print(p1)
 
 
-# 4b) Plot (log10 y-axis) with all individual curves + median ribbon
+# Plot (log10 y-axis) with all individual curves + median ribbon
 p2 <- plot_predicted_curve(
-  sr_model           = model,
+  model              = sees_model,
+  dataset            = sees_data,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
-  dataset            = dat,
-  legend_obs         = "Observed data",
-  legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_y          = TRUE,
+  log_y              = TRUE,
   log_x              = FALSE,
   show_all_curves    = TRUE
 )
 print(p2)
 
 
-# 4c) Plot with custom x-axis limits (0-600 days)
+# Plot with custom x-axis limits (0-600 days)
 p3 <- plot_predicted_curve(
-  sr_model           = model,
+  model              = sees_model,
+  dataset            = sees_data,
   id                 = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
-  dataset            = dat,
-  legend_obs         = "Observed data",
-  legend_median        = "Median prediction",
   show_quantiles     = TRUE,
-  log_y          = FALSE,
+  log_y              = FALSE,
   log_x              = FALSE,
   show_all_curves    = TRUE,
   xlim               = c(0, 600)
 )
 print(p3)
+
+
+# Multi-ID, faceted plot (single antigen):
+p4 <- plot_predicted_curve(
+  model           = sees_model,
+  dataset         = sees_data,
+  id              = c("sees_npl_128", "sees_npl_131"),
+  antigen_iso     = "HlyE_IgA",
+  show_all_curves = TRUE,
+  facet_by_id     = TRUE
+)
+print(p4)
 ```

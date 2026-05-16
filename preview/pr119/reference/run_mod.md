@@ -87,7 +87,7 @@ run_mod(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr119/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -165,10 +165,10 @@ run_mod(
 ## Value
 
 An `sr_model` class object: a subclass of
-[dplyr::tbl_df](https://dplyr.tidyverse.org/reference/tbl_df.html) that
-contains MCMC samples from the joint posterior distribution of the model
-parameters, conditional on the provided input `data`, including the
-following:
+[tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
+that contains MCMC samples from the joint posterior distribution of the
+model parameters, conditional on the provided input `data`, including
+the following:
 
 - `iteration` = Number of sampling iterations
 
@@ -207,7 +207,7 @@ following:
 
   - `nBurnin`: Number of burn ins.
 
-  - `nThin`: Thinning number (niter/nmc)
+  - `nThin`: Thinning number (niter/nmc).
 
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
@@ -222,8 +222,12 @@ following:
 
     - `prec_logy_hyp_param`
 
-    - An optional `"jags.post"` attribute, included when argument
-      `with_post` = TRUE.
+  - `fitted_residuals`: A
+    [data.frame](https://rdrr.io/r/base/data.frame.html) containing
+    fitted and residual values for all observations.
+
+  - An optional `"jags.post"` attribute, included when argument
+    `with_post` = TRUE.
 
 ## Author
 
@@ -267,7 +271,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jul 16 20:02:41 2025
+#> Welcome to JAGS 4.3.2 on Sat May 16 03:52:58 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -302,7 +306,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Jul 16 20:03:32 2025
+#> Welcome to JAGS 4.3.2 on Sat May 16 03:53:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

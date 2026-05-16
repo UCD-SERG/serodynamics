@@ -4,13 +4,18 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/LICENSE-text.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/LICENSE.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/articles/dobson.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/articles/getting-started.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/articles/index.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/articles/os-snapshot-analysis.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/articles/test-snippets.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/authors.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/copilot-instructions.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/news/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/as_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/autoplot.case_data.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/calc_fit_mod.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/initsfunction.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/load_data.html</loc></url>
@@ -32,5 +37,6 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/serodynamics_example.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/sim_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/sim_n_obs.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr119/reference/use_att_names.html</loc></url>
 </urlset>
 
