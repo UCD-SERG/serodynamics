@@ -1,5 +1,7 @@
 #' @title load and format data
-#' @description to add
+#' @description Load and format typhoid case data from a CSV file into a
+#' structured list for use with JAGS Bayesian modeling. The function processes
+#' longitudinal antibody measurements across multiple biomarkers and visits.
 #'
 #' @param datapath path to data folder
 #' @param datafile data file name
