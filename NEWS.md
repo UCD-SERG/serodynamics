@@ -6,6 +6,14 @@
   - Standardized file extensions: renamed `load_data.r` and `prep_data.r` to use uppercase `.R` extension for consistency
   - Completed `load_data()` function documentation (replaced "to add" placeholder)
 
+* Hardened the Claude code-review workflow against races and silent failures:
+  serialized concurrent runs per PR, made reviewer restore fail loudly instead
+  of silently dropping reviewers, and cleaned up all stale Claude top-level
+  comments per run (#216).
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
+* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
+* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
+  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
 * Added dev container configuration for persistent, cached development environment
   that includes R, JAGS, and all dependencies preinstalled, making Copilot
   Workspace sessions much faster.

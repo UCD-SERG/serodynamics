@@ -1,11 +1,11 @@
 Package: serodynamics
-Title: Modeling Longitudinal Antibody Responses to Infection
-Version: 0.0.0.9047
+Title: What the Package Does (One Line, Title Case)
+Version: 0.0.0.9051
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = "Author of the method and original code."),
     person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre")),
-    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "ctb"),
+    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "aut"),
     person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
     person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
   )
@@ -13,7 +13,6 @@ Description: Modeling longitudinal immune seroresponses to pathogens.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.3
 URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
 Imports: 
@@ -68,3 +67,4 @@ Depends:
     R (>= 4.1.0)
 LazyData: true
 VignetteBuilder: knitr, quarto
+Config/roxygen2/version: 8.0.0

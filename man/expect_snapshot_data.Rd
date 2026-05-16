@@ -33,6 +33,7 @@ Note that there's no way to declare all possible variants up front which
 means that as soon as you start using variants, you are responsible for
 deleting snapshot variants that are no longer used. (testthat will still
 delete all variants if you delete the test.)}
+    \item{\code{old,new}}{Paths to old and new snapshot files.}
   }}
 }
 \value{
