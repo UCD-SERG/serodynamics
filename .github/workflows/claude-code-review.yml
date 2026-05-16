@@ -61,6 +61,10 @@ jobs:
           echo "Stashed users: $USERS"
           echo "Stashed teams: $TEAMS"
           if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            # `|| true` is intentional and asymmetric with the restore step:
+            # a failed stash leaves reviewers in place, which only causes a
+            # mid-run notification (recoverable). A failed restore would
+            # silently drop them entirely (not recoverable) — see that step.
             jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
               '{reviewers: $users, team_reviewers: $teams}' \
               | gh api -X DELETE \
@@ -78,6 +82,10 @@ jobs:
           # https://github.com/anthropics/claude-code-action/tree/main/src/github/operations/comments
           CLAUDE_APP_BOT_ID: '209825114'
         run: |
+          # pipefail so a failure in `gh api --paginate` isn't masked by the
+          # while loop's exit-0 on empty input (the default bash pipeline
+          # exit status is the last command's).
+          set -o pipefail
           # Delete every Claude-authored top-level comment, not just the most
           # recent one — PRs predating use_sticky_comment may have multiple.
           gh api --paginate \
