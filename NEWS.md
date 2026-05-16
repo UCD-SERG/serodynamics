@@ -1,10 +1,27 @@
 # serodynamics (development version)
 
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
+* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
+* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
+  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies preinstalled, making Copilot
+  Workspace sessions much faster.
+* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
+* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
+
+* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
+  snapshot directories (which were identical), keeping only base snapshots and 
+  darwin-specific variants for macOS platform differences (#73).
+
 * Initial CRAN submission.
+* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
 
 ## New features
 
-* Added `plot_predicted_curve()`  (#68)
+* Made "newperson" optional in `prep_data()` (#73)
+* Including fitted and residual values as data frame in run_mod output. (#101)
+* Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
@@ -46,6 +63,8 @@ None yet
 
 ## Developer-facing changes
 
+* Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
+* vectorized `ab()` function (#116)
 * Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
 * Reformatted `.lintr` as R file (following 
 https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389) (#81)

@@ -43,7 +43,7 @@ should be included as an element of the \link{list} object returned by \code{run
 Note: These objects can be large.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
+  Arguments passed on to \code{\link{prep_priors}}
   \describe{
     \item{\code{max_antigens}}{An \link{integer} specifying how many
 antigen-isotypes (biomarkers) will be modeled.}
@@ -93,7 +93,7 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
+An \code{sr_model} class object: a subclass of \link[tibble:tbl_df]{tibble::tbl_df} that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the following:
@@ -119,7 +119,7 @@ including the following:
 \item \code{nParameters}: The amount of parameters estimated in the model.
 \item \code{nIterations}: Number of iteration specified.
 \item \code{nBurnin}: Number of burn ins.
-\item \code{nThin}: Thinning number (niter/nmc)
+\item \code{nThin}: Thinning number (niter/nmc).
 \item \code{priors}: A \link{list} that summarizes the input priors, including:
 \itemize{
 \item \code{mu_hyp_param}
@@ -127,9 +127,11 @@ including the following:
 \item \code{omega_param}
 \item \code{wishdf}
 \item \code{prec_logy_hyp_param}
+}
+\item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
+for all observations.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
-}
 }
 }
 }

@@ -11,7 +11,7 @@ permissions: read-all
 
 jobs:
   test-coverage:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
@@ -96,17 +96,21 @@ jobs:
           testthat::test_local(reporter = testthat::JunitReporter$new(test_out))
         shell: Rscript {0}
       
-      # following https://app.codecov.io/gh/UCD-SERG/serodynamics/tests/new
+      # Upload test results to Codecov
       - name: Upload test results to Codecov
         if: ${{ !cancelled() }}
-        uses: codecov/test-results-action@HEAD
+        uses: codecov/codecov-action@v5
         with:
           # Fail if error if not on PR, or if on PR and token is given
           fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}
-          file: ./junit.xml
+          files: ./junit.xml
+          report_type: test_results
           token: ${{ secrets.CODECOV_TOKEN }}
 
-      - uses: codecov/codecov-action@v5
+      # Upload coverage to Codecov
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v5
         with:
           # Fail if error if not on PR, or if on PR and token is given
           fail_ci_if_error: ${{ github.event_name != 'pull_request' || secrets.CODECOV_TOKEN }}

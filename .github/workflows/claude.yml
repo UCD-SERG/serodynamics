@@ -1,0 +1,111 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: read
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Resolve PR number (if any)
+        id: pr
+        env:
+          ISSUE_HAS_PR: ${{ github.event.issue.pull_request != null }}
+        run: |
+          case "${{ github.event_name }}" in
+            issue_comment)
+              if [ "$ISSUE_HAS_PR" = "true" ]; then
+                echo "number=${{ github.event.issue.number }}" >> "$GITHUB_OUTPUT"
+              fi
+              ;;
+            pull_request_review_comment|pull_request_review)
+              echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Stash and clear all review requests while Claude works
+        id: stash
+        if: steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          REVIEWERS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers")
+          USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
+          TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
+          echo "users=$USERS" >> "$GITHUB_OUTPUT"
+          echo "teams=$TEAMS" >> "$GITHUB_OUTPUT"
+          echo "Stashed users: $USERS"
+          echo "Stashed teams: $TEAMS"
+          if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X DELETE \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+          fi
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # This is an optional setting that allows Claude to read CI results on PRs
+          additional_permissions: |
+            actions: read
+
+          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
+          # prompt: 'Update the pull request description to include a summary of changes.'
+
+          # Optional: Add claude_args to customize behavior and configuration
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options
+          # claude_args: '--allowed-tools Bash(gh pr *)'
+
+      - name: Restore review requests now that Claude is done
+        if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          USERS: ${{ steps.stash.outputs.users }}
+          TEAMS: ${{ steps.stash.outputs.teams }}
+        run: |
+          if [ -z "$USERS" ] && [ -z "$TEAMS" ]; then
+            echo "Nothing to restore."
+            exit 0
+          fi
+          USERS=${USERS:-[]}
+          TEAMS=${TEAMS:-[]}
+          if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+            echo "No reviewers were originally requested."
+            exit 0
+          fi
+          jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+            '{reviewers: $users, team_reviewers: $teams}' \
+            | gh api -X POST \
+                "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                --input - || true
