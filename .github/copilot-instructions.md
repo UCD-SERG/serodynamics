@@ -12,9 +12,226 @@
 
 ## Critical Setup Requirements
 
+### Copilot Setup Workflow (Automatic Environment Configuration)
+
+The repository includes a **`.github/workflows/copilot-setup-steps.yml`** workflow that automatically configures the GitHub Copilot coding agent's environment with all required dependencies. This workflow runs automatically when Copilot starts working on a task, ensuring a consistent and properly configured development environment.
+
+#### What the Workflow Does
+
+The copilot-setup-steps.yml workflow:
+
+1. **Installs system dependencies**: All required Ubuntu packages for R package development (libcurl, libssl, libxml2, graphics libraries, etc.)
+2. **Installs JAGS 4.3.1**: The required Bayesian MCMC system library
+3. **Sets up R (>= 4.1.0)**: Installs the R release version that meets the package's minimum requirement
+4. **Installs R package dependencies**: All Imports, Suggests, and development dependencies from DESCRIPTION
+5. **Verifies installation**: Runs comprehensive checks to ensure JAGS and R are properly configured
+
+#### When It Runs
+
+The workflow runs in the following scenarios:
+
+- **Automatically for Copilot**: When the GitHub Copilot coding agent starts working on a task, it uses this workflow to prepare the environment
+- **On workflow changes**: When `.github/workflows/copilot-setup-steps.yml` is modified (via push or pull request)
+- **Manual testing**: Can be triggered manually from the repository's "Actions" tab using workflow_dispatch
+
+#### Integration with CI Workflows
+
+The copilot-setup-steps.yml workflow complements but does not replace the CI workflows:
+
+- **Purpose**: Configures the Copilot agent's environment for development work, not for CI testing
+- **Scope**: Runs on ubuntu-latest only, while CI workflows test on multiple platforms (Ubuntu, macOS, Windows) and R versions (release, devel, oldrel-1)
+- **Alignment**: Uses the same JAGS installation and R setup approach as the R-CMD-check.yaml workflow, ensuring consistency
+- **Timeout**: Limited to 55 minutes (Copilot maximum is 59 minutes)
+
+#### Verification Steps
+
+The workflow includes detailed verification logging:
+
+- **JAGS verification**: Checks system JAGS command availability, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
+- **R version check**: Ensures R >= 4.1.0 requirement is met
+- **Package verification**: Lists key installed packages (devtools, rjags, runjags, rcmdcheck, lintr, spelling, testthat)
+
+#### Customization
+
+If you need to modify the Copilot environment setup:
+
+1. Edit `.github/workflows/copilot-setup-steps.yml`
+2. Test changes by pushing to a branch or using workflow_dispatch
+3. Ensure the job name remains `copilot-setup-steps` (required by Copilot)
+4. Keep timeout under 59 minutes
+5. Update this documentation to reflect any significant changes
+
+### Quick Start with Docker (RECOMMENDED)
+
+**The easiest way to get started is to use the provided dev container configuration**, which automatically sets up R, JAGS, and all dependencies in a persistent environment.
+
+**Benefits:**
+- **Cached setup**: Container persists between Copilot sessions - no need to reinstall everything
+- **Zero manual setup**: Everything is pre-configured and ready to use
+- **Consistent environment**: Same R version, JAGS, and system libraries every time
+
+**How to use:**
+1. **GitHub Copilot Workspace**: Automatically detects and uses the devcontainer
+2. **VS Code**: Install "Dev Containers" extension, then "Reopen in Container"
+3. **GitHub Codespaces**: Automatically uses the devcontainer configuration
+
+See `.devcontainer/README.md` for detailed documentation.
+
+### Alternative: Quick Start with Docker
+
+**If you prefer manual Docker setup**, you can use the rocker/verse Docker image which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed.
+
+To use Docker:
+
+```bash
+# Pull the rocker/verse image (includes R >= 4.1.0, tidyverse, devtools, and more)
+docker pull rocker/verse:latest
+
+# Run container with repository mounted
+docker run -d \
+  -v /home/runner/work/serodynamics/serodynamics:/workspace \
+  -w /workspace \
+  --name serodynamics-dev \
+  rocker/verse:latest
+
+# Execute commands in the container
+docker exec serodynamics-dev R -e "devtools::install_dev_deps()"
+docker exec serodynamics-dev R -e "devtools::check()"
+
+# Or start an interactive R session
+docker exec -it serodynamics-dev R
+
+# Clean up when done
+docker stop serodynamics-dev
+docker rm serodynamics-dev
+```
+
+**Note**: You will still need to install JAGS inside the Docker container (see JAGS Installation section below).
+
+### Manual Installation (if not using devcontainer or Docker)
+
+If the devcontainer or Docker is not available or you prefer a native installation, follow the manual installation instructions below.
+
+### R Installation and Development Dependencies (REQUIRED)
+
+**ALWAYS install R and all development dependencies when starting work on a pull request.** This ensures you avoid issues caused by missing dependencies or environment misconfiguration during the development process.
+
+#### Installing R (>= 4.1.0)
+
+The package requires R version 4.1.0 or higher. Install R for your platform:
+
+- **Ubuntu/Linux**: 
+  ```bash
+  # Add CRAN repository for latest R version
+  sudo apt-get update
+  sudo apt-get install -y software-properties-common dirmngr
+  wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/maruti.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+  sudo add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+  sudo apt-get update
+  sudo apt-get install -y r-base r-base-dev
+  
+  # Verify installation
+  R --version
+  ```
+
+- **macOS**: 
+  ```bash
+  # Install using Homebrew (recommended)
+  brew install r
+  
+  # Or download from CRAN: https://cran.r-project.org/bin/macosx/
+  # Verify installation
+  R --version
+  ```
+
+- **Windows**: 
+  Download and install from https://cran.r-project.org/bin/windows/base/
+  
+  Verify installation by opening R console and checking version:
+  ```r
+  R.version.string
+  ```
+
+#### Installing Development Dependencies
+
+After installing R, install all required development dependencies:
+
+```r
+# Install devtools (required for package development)
+install.packages("devtools", repos = "https://cloud.r-project.org")
+
+# Install all package dependencies (Imports, Suggests, and development needs)
+# This reads DESCRIPTION file and installs everything needed
+devtools::install_dev_deps(dependencies = TRUE)
+```
+
+**Alternative approach** using pak (faster parallel installation):
+```r
+install.packages("pak", repos = "https://cloud.r-project.org")
+pak::local_install_dev_deps(dependencies = TRUE)
+```
+
+#### Verify Development Environment
+
+After installation, verify your development environment is properly configured:
+
+```r
+# Load devtools
+library(devtools)
+
+# Check package dependencies
+devtools::dev_sitrep()
+
+# Load the package in development mode
+devtools::load_all()
+
+# Run a quick check
+devtools::check_man()
+```
+
+**Note**: If you encounter issues with dependencies, particularly with system libraries, install the following system dependencies first:
+
+- **Ubuntu/Linux**:
+  ```bash
+  sudo apt-get install -y \
+    libcurl4-openssl-dev \
+    libssl-dev \
+    libxml2-dev \
+    libfontconfig1-dev \
+    libharfbuzz-dev \
+    libfribidi-dev \
+    libfreetype6-dev \
+    libpng-dev \
+    libtiff5-dev \
+    libjpeg-dev
+  ```
+
+- **macOS**: Most system dependencies are handled by Homebrew, but you may need:
+  ```bash
+  brew install pkg-config cairo
+  ```
+
+- **Windows**: Install Rtools from https://cran.r-project.org/bin/windows/Rtools/ (choose version matching your R version)
+
 ### JAGS Installation (REQUIRED)
 
 **ALWAYS install JAGS before attempting to build, test, or run this package.** The package will fail without it.
+
+#### Installing JAGS in Docker (if using rocker/verse)
+
+```bash
+# Install JAGS inside the Docker container
+docker exec serodynamics-dev apt-get update
+docker exec serodynamics-dev apt-get install -y jags
+
+# Install the R interface
+docker exec serodynamics-dev R -e 'install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")'
+
+# Verify installation
+docker exec serodynamics-dev R -e 'runjags::testjags()'
+```
+
+#### Installing JAGS on your local system
 
 - **Ubuntu/Linux**: `sudo apt-get update && sudo apt-get install -y jags`
 - **macOS**: Download from https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
@@ -145,6 +362,8 @@ The following workflows run on every PR. **All must pass** for merge:
 
 9. **pkgdown.yaml**: Builds pkgdown website on PR (preview), tags, and main branch pushes. Requires Quarto setup. (~5-7 min)
 
+10. **copilot-setup-steps.yml**: Configures the GitHub Copilot coding agent's environment automatically. Runs when Copilot starts work, when the workflow file changes, or via manual dispatch. Not a required check for PR merges. See "Copilot Setup Workflow" section for details. (~5-10 min)
+
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs:
@@ -209,7 +428,10 @@ Team members can trigger actions by commenting on PRs:
 
 ### Tests Failing on Specific OS
 **Symptom**: Some tests fail on Windows or Linux but pass on macOS.
-**Solution**: Many tests use `skip_on_os(c("windows", "linux"))` because MCMC results can vary by platform. This is expected. Only add OS-skips if results genuinely differ across platforms.
+**Solution**: Try to make output platform independent. 
+As a fallback, use the `variant` option in `testthat::expect_snapshot()`,
+`testthat::expect_snapshot_value()`, and `testthat::expect_snapshot_file()`
+to make snapshots platform-specific.
 
 ### Documentation Out of Sync
 **Symptom**: R-check-docs.yml workflow fails.
@@ -234,16 +456,101 @@ Team members can trigger actions by commenting on PRs:
 **Symptom**: Tests timeout during CI.
 **Solution**: MCMC sampling can be slow. Tests use small iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to speed up. If adding new tests, follow this pattern.
 
+## Testing Requirements Before Code Changes
+
+**ALWAYS establish value-based unit tests BEFORE modifying any functions.** This ensures that changes preserve existing behavior and new behavior is correctly validated.
+
+### Testing Strategy
+
+Choose the appropriate testing approach based on the context:
+
+#### When to Use Snapshot Tests
+Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or `expect_snapshot_data()`) when:
+- Testing complex data structures (data.frames, lists, model outputs)
+- Validating MCMC outputs or statistical results
+- Output format stability is important
+- The exact values are less important than structural consistency
+
+**Examples from this repository:**
+```r
+# For data frames with numeric precision control
+dataset |> expect_snapshot_data(name = "sees-data")
+
+# For R objects with serialization
+prepped_data |> expect_snapshot_value(style = "serialize")
+
+# For simple output or error messages
+results <- post_summ(data) |> expect_no_error()
+testthat::expect_snapshot(results)
+```
+
+#### When to Use Explicit Value Tests
+Use explicit value tests (`expect_equal()`, `expect_identical()`, etc.) when:
+- Testing simple scalar outputs
+- Validating specific numeric thresholds or boundaries
+- Testing Boolean returns or categorical outputs
+- Exact values are critical for correctness
+
+**Examples:**
+```r
+# Testing exact numeric values
+expect_equal(calculate_mean(c(1, 2, 3)), 2)
+
+# Testing with tolerance for floating point
+expect_equal(calculate_ratio(3, 7), 0.4285714, tolerance = 1e-6)
+
+# Testing logical conditions
+expect_true(is_valid_input(data))
+expect_false(has_missing_values(complete_data))
+```
+
+#### Testing Best Practices
+- **Seed randomness**: Use `withr::local_seed()` or `withr::with_seed()` for reproducible tests involving random number generation
+- **Use small test cases**: Particularly for MCMC tests, use minimal iteration counts (nchain=2, nadapt=100, nburn=100, nmc=10, niter=10) to keep tests fast
+- **Platform-specific snapshots**: Use the `variant` parameter in snapshot functions when output differs by OS
+- **Test fixtures**: Store complex test data in `tests/testthat/fixtures/` for reuse
+- **Custom snapshot helpers**: Use `expect_snapshot_data()` for data frames with automatic CSV snapshot and numeric precision control
+
+### Test-Driven Workflow
+1. **Before modifying a function**: Write or verify existing tests capture the current behavior
+2. **Add new tests**: Create tests for the new functionality you're adding
+3. **Make changes**: Modify the function implementation
+4. **Run tests**: Validate all tests pass, updating snapshots only when changes are intentional
+5. **Review snapshots**: When snapshots change, review the diff to ensure changes are expected
+
 ## Code Style Guidelines
 
 - **Follow tidyverse style guide**: https://style.tidyverse.org
 - **Use native pipe**: `|>` not `%>%`
+- **Avoid redundant logical comparisons**: Use logical values directly (e.g., `if (is_ready)` not `if (is_ready == TRUE)`)
 - **Naming**: snake_case, acronyms may be uppercase (e.g., `prep_IDs_data`)
 - **Messaging**: Use `cli::cli_*()` functions for all user-facing messages
 - **No `library()` in package code**: Use `::` or DESCRIPTION Imports
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
+- **Prefer data-first pipelines**: Design and call functions so the primary data object flows through `|>` naturally
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base R functions where available (e.g., `sessioninfo::session_info()` instead of `sessionInfo()`, `tibble::tibble()` instead of `data.frame()`, `readr::read_csv()` instead of `read.csv()`)
+- **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
+
+## Documentation and Evidence Standards
+
+- **Do not assume behavior**: Run the relevant command(s) and verify outputs before claiming something works.
+- **Use markdown syntax in `.qmd` prose**: Wrap code in backticks, use markdown links, and avoid raw HTML links.
+- **Use semantic line breaks and list spacing in `.qmd`**: Break long prose across lines and include a blank line before bullet/numbered lists.
+- **Use Quarto cross-references**: Reference sections/figures/tables with labels (for example `@sec-...`, `@fig-...`, `@tbl-...`) instead of plain text references.
+- **Support factual claims**: Back factual statements with citations or direct verification evidence, and verify external links/resources before describing them.
+
+## Code Formatting Guidelines
+
+When adding or editing text in source code (for example comments, documentation strings, or error messages) or in Quarto document text chunks:
+
+- Add a newline at the end of every phrase or logical unit of text
+- Put each phrase on its own line in source files
+- Treat a phrase as a complete thought, clause, or sentence
+- Prefer this structure to improve readability and make diffs clearer
 
 ## Package Development Commands Summary
 
@@ -263,12 +570,21 @@ rmarkdown::render("README.Rmd") # Update README
 
 These instructions have been validated against the actual repository structure, workflows, and configuration files. When making changes:
 
-1. **ALWAYS** ensure JAGS is installed before any build/test operations
-2. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
-3. **ALWAYS** edit README.Rmd (not README.md) for README changes
-4. **ALWAYS** increment version in DESCRIPTION for PRs
-5. **ALWAYS** update NEWS.md for user-facing changes
-6. **ALWAYS** run tests before committing (`devtools::test()`)
-7. **ALWAYS** check linting on changed files
+1. **ALWAYS** install R (>= 4.1.0) and all development dependencies when starting work on a PR
+2. **ALWAYS** ensure JAGS is installed before any build/test operations
+3. **ALWAYS** establish value-based unit tests (snapshot or explicit value tests) BEFORE modifying functions
+4. **ALWAYS** write tidy, clean, and well-organized code
+5. **ALWAYS** run `devtools::document()` after modifying roxygen2 comments
+6. **ALWAYS** edit README.Rmd (not README.md) for README changes
+7. **ALWAYS** increment dev version number to be one ahead of main branch before requesting PR review
+8. **ALWAYS** update NEWS.md for user-facing changes
+9. **ALWAYS** run tests before committing (`devtools::test()`)
+10. **ALWAYS** check and fix lintr issues in changed files in PRs before committing
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
+13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+14. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
+15. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
+16. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.

@@ -25,3 +25,6 @@ vignettes/*.tex
 docs/
 
 /.quarto/
+
+**/*.quarto_ipynb
+README.html

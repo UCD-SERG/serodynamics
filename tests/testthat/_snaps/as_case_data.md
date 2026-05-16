@@ -12,4 +12,3 @@
         class = c("case_data", "spec_tbl_df", "tbl_df", "tbl", "data.frame"
         ), id_var = "id", biomarker_var = "antigen_iso", timeindays = "dayssincefeveronset", 
         value_var = "result")
-
