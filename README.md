@@ -17,8 +17,15 @@ longitudinal antibody responses to infection.
 
 ## Installation
 
-You can install the development version of `{serodynamics}` from
-[GitHub](https://github.com/) with:
+Install the released version from
+[CRAN](https://cran.r-project.org/package=serodynamics) with:
+
+``` r
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("pak")

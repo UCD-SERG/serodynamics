@@ -1,26 +1,12 @@
 # serodynamics 0.1.0
 
-## Initial CRAN release
-* Hardened the Claude code-review workflow against races and silent failures:
-  serialized concurrent runs per PR, made reviewer restore fail loudly instead
-  of silently dropping reviewers, and cleaned up all stale Claude top-level
-  comments per run (#216).
-* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
-* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
-* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
-  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
-* Added dev container configuration for persistent, cached development environment
-  that includes R, JAGS, and all dependencies preinstalled, making Copilot
-  Workspace sessions much faster.
-* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
-* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
-
 This is the first CRAN release of `serodynamics`, a package for Bayesian
 hierarchical modeling of antibody kinetics from longitudinal serological
 data. It serves as the upstream companion to the `serocalculator` package.
 
 ## New features
 
+* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
 * Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
@@ -61,10 +47,21 @@ stratification (#66)
 
 ## Bug fixes
 
-None yet
+* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 
 ## Developer-facing changes
 
+* Hardened the Claude code-review workflow against races and silent failures:
+  serialized concurrent runs per PR, made reviewer restore fail loudly instead
+  of silently dropping reviewers, and cleaned up all stale Claude top-level
+  comments per run (#216).
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
+* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
+  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies preinstalled, making Copilot
+  Workspace sessions much faster.
+* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
 * Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
 * vectorized `ab()` function (#116)
 * Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
