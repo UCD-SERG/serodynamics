@@ -3,11 +3,16 @@ Title: Modeling Longitudinal Antibody Responses to Infection
 Version: 0.1.0
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
-           comment = "Author of the method and original code."),
-    person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre")),
-    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "aut"),
-    person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
-    person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
+           comment = c("Author of the method and original code.",
+           ORCID = "0000-0003-1904-6044")),
+    person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7139-1086")),
+    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0009-0004-9723-2007")),
+    person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0000-0003-1886-2699")),
+    person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0000-0002-7195-830X"))
   )
 Description: Implements Bayesian hierarchical models for estimating
     antibody kinetic parameters from longitudinal serological data. Fits
