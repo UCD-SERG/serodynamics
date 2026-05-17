@@ -2,16 +2,19 @@
 
 ## Authors
 
-- **Peter Teunis**. Author, copyright holder.  
+- **Peter Teunis**. Author, copyright holder.
+  [](https://orcid.org/0000-0003-1904-6044)  
   Author of the method and original code.
 
 - **Samuel Schildhauer**. Author, maintainer.
+  [](https://orcid.org/0000-0001-7139-1086)
 
-- **Kwan Ho Lee**. Author.
+- **Kwan Ho Lee**. Author. [](https://orcid.org/0009-0004-9723-2007)
 
-- **Kristen Aiemjoy**. Author.
+- **Kristen Aiemjoy**. Author. [](https://orcid.org/0000-0003-1886-2699)
 
 - **Douglas Ezra Morrison**. Author.
+  [](https://orcid.org/0000-0002-7195-830X)
 
 ## Citation
 

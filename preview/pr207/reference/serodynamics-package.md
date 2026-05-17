@@ -24,16 +24,22 @@ Useful links:
 ## Author
 
 **Maintainer**: Samuel Schildhauer <sschildhauer@ucdavis.edu>
+([ORCID](https://orcid.org/0000-0001-7139-1086))
 
 Authors:
 
 - Samuel Schildhauer <sschildhauer@ucdavis.edu>
+  ([ORCID](https://orcid.org/0000-0001-7139-1086))
 
-- Peter Teunis <p.teunis@emory.edu> (Author of the method and original
-  code.) \[copyright holder\]
+- Peter Teunis <p.teunis@emory.edu>
+  ([ORCID](https://orcid.org/0000-0003-1904-6044)) (Author of the method
+  and original code.) \[copyright holder\]
 
 - Kwan Ho Lee <ksjlee@ucdavis.edu>
+  ([ORCID](https://orcid.org/0009-0004-9723-2007))
 
 - Kristen Aiemjoy <kaiemjoy@ucdavis.edu>
+  ([ORCID](https://orcid.org/0000-0003-1886-2699))
 
 - Douglas Ezra Morrison <demorrison@ucdavis.edu>
+  ([ORCID](https://orcid.org/0000-0002-7195-830X))
