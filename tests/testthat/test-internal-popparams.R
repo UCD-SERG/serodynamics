@@ -1,15 +1,16 @@
 test_that("param_recode correctly recodes parameter indices", {
   # Test valid parameter indices
-  expect_equal(serodynamics:::param_recode("1"), "y0")
-  expect_equal(serodynamics:::param_recode("2"), "y1")
-  expect_equal(serodynamics:::param_recode("3"), "t1")
-  expect_equal(serodynamics:::param_recode("4"), "alpha")
-  expect_equal(serodynamics:::param_recode("5"), "shape")
+  expect_equal(serodynamics:::param_recode("1"), "log(y0)")
+  expect_equal(serodynamics:::param_recode("2"), "log(y1 - y0)")
+  expect_equal(serodynamics:::param_recode("3"), "log(t1)")
+  expect_equal(serodynamics:::param_recode("4"), "log(alpha)")
+  expect_equal(serodynamics:::param_recode("5"), "log(shape - 1)")
   
   # Test vector of valid indices
   expect_equal(
     serodynamics:::param_recode(c("1", "2", "3", "4", "5")),
-    c("y0", "y1", "t1", "alpha", "shape")
+    c("log(y0)", "log(y1 - y0)", "log(t1)", 
+      "log(alpha)", "log(shape - 1)")
   )
 })
 
@@ -52,7 +53,8 @@ test_that("unpack_jags correctly unpacks mu.par parameters", {
   expect_true("mu.par" %in% result$Subject)
   
   # Check Param is correctly decoded
-  expect_true(all(mu_rows$Param %in% c("y0", "y1", "t1", "alpha", "shape")))
+  expect_true(all(mu_rows$Param %in% c("log(y0)", "log(y1 - y0)", "log(t1)", 
+                                       "log(alpha)", "log(shape - 1)")))
 })
 
 test_that("unpack_jags correctly unpacks prec.par parameters", {
