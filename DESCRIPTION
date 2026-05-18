@@ -65,13 +65,12 @@ Suggests:
     quarto
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: 
-    withr, 
-    vdiffr, 
-    here, 
-    readr, 
-    magrittr, 
+Config/needs/test:
+    withr,
+    vdiffr,
+    here,
     readr,
+    magrittr,
     rlist
 Config/needs/check: commonmark, xml2
 Depends: 
