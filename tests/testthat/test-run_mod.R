@@ -123,10 +123,13 @@ test_that(
 )
 
 test_that(
-  desc = "results are consistent with unstratified SEES data",
+  desc = "results are consistent with unstratified SEES data with population
+  parameters",
   code = {
     announce_snapshot_file("nostrat-curve-params.csv")
     announce_snapshot_file("nostrat-fitted_residuals.csv")
+    announce_snapshot_file("popparam-nostrat-summary-stats.csv")
+    
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -138,7 +141,8 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = NA # Variable to be stratified
+      strat = NA, # Variable to be stratified
+      with_pop_params = TRUE
     ) |>
       suppressWarnings()
     
@@ -157,6 +161,19 @@ test_that(
       expect_snapshot_data(
         "nostrat-fitted_residuals",
         variant = darwin_variant()
+      )
+    
+    # Testing for population parameters
+    attributes(results)$population_params |>
+      dplyr::group_by(Parameter) |>
+      dplyr::summarise(
+        mean = mean(value),
+        sd = sd(value),
+        .groups = "drop"
+      ) |>
+      dplyr::arrange(Parameter) |>
+      expect_snapshot_data("popparam-nostrat-summary-stats", 
+                           variant = darwin_variant()    
       )
   }
 )
