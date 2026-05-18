@@ -136,7 +136,7 @@ Columns include
 is represented:
 \itemize{
 \item \code{mu.par} = The population means of the host-specific model
-parameters (on logarithmic scales).
+parameters (on logarithmic scales). Note: y1 and shape are transformed.
 \item \code{prec.par} = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
 The two parameters listed (separated by commas) represent the pairwise

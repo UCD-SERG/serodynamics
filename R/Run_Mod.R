@@ -61,7 +61,7 @@
 #'     - `Population_Parameter` identifies which modeled population parameter
 #'     is represented:
 #'       - `mu.par` = The population means of the host-specific model
-#'       parameters (on logarithmic scales).
+#'       parameters (on logarithmic scales). Note: y1 and shape are transformed.
 #'       - `prec.par` = The population precision matrix of the
 #'       hyperparameters (with diagonal elements equal to inverse variances). 
 #'       The two parameters listed (separated by commas) represent the pairwise 
