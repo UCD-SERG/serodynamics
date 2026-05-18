@@ -9,7 +9,7 @@ data. It serves as the upstream companion to the `serocalculator` package.
 * Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
 * Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
-* Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
+* Added `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
