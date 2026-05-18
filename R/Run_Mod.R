@@ -159,7 +159,7 @@ run_mod <- function(data,
     # Assigning the raw jags output to a list.
     # This object will include a raw output for the jags.post for each
     # stratification and will only be included if specified. 
-    jags_post_final[[i]] <- jags_post
+    jags_post_final[[as.character(i)]] <- jags_post
 
     # Unpacking and cleaning MCMC output.
     jags_packed <- ggmcmc::ggs(jags_post[["mcmc"]])
