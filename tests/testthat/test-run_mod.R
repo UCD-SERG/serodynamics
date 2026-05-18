@@ -174,7 +174,7 @@ test_that(
       dplyr::arrange(Parameter) |>
       expect_snapshot_data(
         "popparam-nostrat-summary-stats",
-        variant = "darwin"
+        variant = darwin_variant()
       )
   }
 )
