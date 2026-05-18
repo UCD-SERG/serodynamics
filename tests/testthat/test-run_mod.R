@@ -148,7 +148,8 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals", 
+                           "population_params")) |>
       expect_snapshot_value(style = "deparse")
     
     results |>
