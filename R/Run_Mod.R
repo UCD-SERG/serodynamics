@@ -199,8 +199,8 @@ run_mod <- function(data,
       #   intentionally keep the original Subject value from unpack_jags,
       #   which holds the parameter name and serves as the identifier.
       dplyr::mutate(Subject_mcmc = dplyr::if_else(is.na(.data$Subject_mcmc), 
-                                          .data$Subject, 
-                                          .data$Subject_mcmc)) |>
+                                                  .data$Subject, 
+                                                  .data$Subject_mcmc)) |>
       # At this point, jags_unpacked contains:
       # * Parameter: original JAGS parameter names (e.g., "y0[1,2]")
       # * Param: cleaned parameter names used elsewhere in the package.
