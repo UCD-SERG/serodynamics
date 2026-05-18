@@ -56,8 +56,8 @@
 #'   - `population_params`: Optionally included modeled population parameters,
 #'   returned as a [data.frame] and excluded by default.
 #'   Columns include
-#'   `Iteration`, `Chain`, `Parameter`, `Population_Parameter`, `Iso_type`,
-#'   `Stratification`, and `value`.
+#'   `Iteration`, `Chain`, `Parameter`, `Iso_type`, `Stratification`, 
+#'   `Population_Parameter`, and `value`.
 #'     - `Population_Parameter` identifies which modeled population parameter
 #'     is represented:
 #'       - `mu.par` = The population means of the host-specific model
@@ -65,7 +65,7 @@
 #'       - `prec.par` = The population precision matrix of the
 #'       hyperparameters (with diagonal elements equal to inverse variances). 
 #'       The two parameters listed (separated by commas) represent the pairwise 
-#'       precision relationship between specified parameters
+#'       precision relationship between specified parameters.
 #'       - `prec.logy` = A vector of population precisions (inverse
 #'       variances), one per antigen/isotype combination.
 #'   - `priors`: A [list] that summarizes the input priors, including:

@@ -129,8 +129,8 @@ including the following:
 \item \code{population_params}: Optionally included modeled population parameters,
 returned as a \link{data.frame} and excluded by default.
 Columns include
-\code{Iteration}, \code{Chain}, \code{Parameter}, \code{Population_Parameter}, \code{Iso_type},
-\code{Stratification}, and \code{value}.
+\code{Iteration}, \code{Chain}, \code{Parameter}, \code{Iso_type}, \code{Stratification},
+\code{Population_Parameter}, and \code{value}.
 \itemize{
 \item \code{Population_Parameter} identifies which modeled population parameter
 is represented:
@@ -140,7 +140,7 @@ parameters (on logarithmic scales).
 \item \code{prec.par} = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
 The two parameters listed (separated by commas) represent the pairwise
-precision relationship between specified parameters
+precision relationship between specified parameters.
 \item \code{prec.logy} = A vector of population precisions (inverse
 variances), one per antigen/isotype combination.
 }
