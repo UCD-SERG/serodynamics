@@ -96,7 +96,7 @@ run_mod <- function(data,
   if (is.na(strat)) {
     strat_list <- "None"
   } else {
-    strat_list <- unique(data[[strat]])
+    strat_list <- as.character(unique(data[[strat]]))
   }
 
   ## Creating a shell to output results
