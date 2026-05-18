@@ -9,11 +9,12 @@
 #'   usually `ggmcmc::ggs(jags_post[["mcmc"]])` where `jags_post` comes from
 #'   [run_mod]. Must contain at least `Iteration`, `Chain`, `Parameter`,
 #'   and `value` columns.
-#' @returns A [tibble::tbl_df] that
-#' contains MCMC samples from the joint posterior distribution of the model
-#' with unpacked individual-level parameters (e.g., `y0`, `y1`, `t1`,
-#' `alpha`, `shape`) and population-level parameters (e.g., `mu.par`,
-#' `prec.par`, `prec.logy`), along with isotypes and subjects.
+#' @returns A [tibble::tbl_df] containing MCMC samples from the joint
+#' posterior distribution of the model with unpacked individual-level
+#' parameters (e.g., `y0`, `y1`, `t1`, `alpha`, `shape`) and
+#' population-level parameters (e.g., `mu.par`, `prec.par`, `prec.logy`),
+#' along with subject-related fields such as `Subject` and `Subnum`.
+#' Isotype names are not added by `unpack_jags()` itself.
 #' @keywords internal
 unpack_jags <- function(data) {
   
