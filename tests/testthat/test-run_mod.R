@@ -172,8 +172,9 @@ test_that(
         .groups = "drop"
       ) |>
       dplyr::arrange(Parameter) |>
-      expect_snapshot_data("popparam-nostrat-summary-stats", 
-                           variant = darwin_variant()    
+      expect_snapshot_data(
+        "popparam-nostrat-summary-stats",
+        variant = "darwin"
       )
   }
 )
