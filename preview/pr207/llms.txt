@@ -6,8 +6,7 @@ infection.
 
 ## Installation
 
-Install the released version from
-[CRAN](https://cran.r-project.org/package=serodynamics) with:
+Once accepted on CRAN, install the released version with:
 
 ``` r
 
