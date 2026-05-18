@@ -2,6 +2,18 @@
 
 ## serodynamics (development version)
 
+- Stopped deleting prior Claude review comments at the start of each
+  `Claude Code Review` run, so reviews posted by `@claude review`
+  invocations are preserved across subsequent pushes instead of being
+  wiped when the review step fails its bot-actor gate
+  ([\#217](https://github.com/UCD-SERG/serodynamics/issues/217)).
+
+- Hardened the Claude code-review workflow against races and silent
+  failures: serialized concurrent runs per PR, made reviewer restore
+  fail loudly instead of silently dropping reviewers, and cleaned up all
+  stale Claude top-level comments per run
+  ([\#216](https://github.com/UCD-SERG/serodynamics/issues/216)).
+
 - Expanded `.github/copilot-instructions.md` with additional guidance on
   evidence-based claims, Quarto markdown/cross-reference conventions, R
   style practices, and phrase-level line-break formatting for source
