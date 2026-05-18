@@ -198,7 +198,7 @@ run_mod <- function(data,
       #   there is no matching ID, so Subject_mcmc is NA. In that case we
       #   intentionally keep the original Subject value from unpack_jags,
       #   which holds the parameter name and serves as the identifier.
-      dplyr::mutate(Subject_mcmc = ifelse(is.na(.data$Subject_mcmc), 
+      dplyr::mutate(Subject_mcmc = dplyr::if_else(is.na(.data$Subject_mcmc), 
                                           .data$Subject, 
                                           .data$Subject_mcmc)) |>
       # At this point, jags_unpacked contains:
