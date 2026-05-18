@@ -92,7 +92,7 @@ sees_data <- serodynamics::nepal_sees
 p1 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  ids                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = FALSE,
@@ -105,7 +105,7 @@ print(p1)
 p2 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  ids                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = TRUE,
@@ -118,7 +118,7 @@ print(p2)
 p3 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  ids                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = FALSE,
@@ -132,7 +132,7 @@ print(p3)
 p4 <- plot_predicted_curve(
   model           = sees_model,
   dataset         = sees_data,
-  ids              = c("sees_npl_128", "sees_npl_131"),
+  ids             = c("sees_npl_128", "sees_npl_131"),
   antigen_iso     = "HlyE_IgA",
   show_all_curves = FALSE,
   facet_by_id     = TRUE
