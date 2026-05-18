@@ -51,6 +51,11 @@ stratification (#66)
 
 ## Developer-facing changes
 
+* Re-assign reviewers to a PR's human assignees (filtered via
+  `type == "User"`) when Claude pushes commits during a `@claude` or
+  `Claude Code Review` run; if Claude makes no commits, the original
+  reviewer set is restored as before. Detected by comparing the PR's
+  head SHA before and after the Claude step (#210).
 * Stopped deleting prior Claude review comments at the start of each
   `Claude Code Review` run, so reviews posted by `@claude review` invocations
   are preserved across subsequent pushes instead of being wiped when the
@@ -59,6 +64,11 @@ stratification (#66)
   serialized concurrent runs per PR, made reviewer restore fail loudly instead
   of silently dropping reviewers, and cleaned up all stale Claude top-level
   comments per run (#216).
+* Consolidated OS-specific snapshot variants: removed redundant Linux and
+  Windows snapshot directories (which were identical), keeping only base
+  snapshots and darwin-specific variants for macOS platform differences (#73).
+* Updated Copilot instructions to encourage code decomposition and avoid
+  copy-pasting substantial code chunks.
 * Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Added R 4.5+ snapshot variants to handle the changed attribute ordering in
   `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).

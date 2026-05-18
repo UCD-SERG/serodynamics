@@ -1,5 +1,6 @@
 AVX
 CMD
+CodeFactor
 Codecov
 Eijkeren
 HlyE
@@ -11,12 +12,15 @@ JAGs
 Lifecycle
 MSVC
 ORCID
+PR's
 Postprocess
 Rhat
+SHA
 TSI
 Vectorization
 Wasserstein
 al
+assignees
 behaviour
 biomarker
 biomarkers
@@ -56,6 +60,7 @@ seroconversion
 seroepidemiologic
 serological
 seroresponse
+seroresponses
 strat
 stratifications
 tbl
