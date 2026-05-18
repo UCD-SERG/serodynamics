@@ -7,7 +7,7 @@
 
 - **Samuel Schildhauer**. Author, maintainer.
 
-- **Kwan Ho Lee**. Contributor.
+- **Kwan Ho Lee**. Author.
 
 - **Kristen Aiemjoy**. Author.
 
@@ -18,14 +18,14 @@
 Source:
 [`DESCRIPTION`](https://github.com/UCD-SERG/serodynamics/blob/mon_popparams/DESCRIPTION)
 
-Teunis P, Schildhauer S, Aiemjoy K, Morrison D (2026). *serodynamics:
-What the Package Does (One Line, Title Case)*. R package version
-0.0.0.9051, <https://github.com/UCD-SERG/serodynamics>.
+Teunis P, Schildhauer S, Lee K, Aiemjoy K, Morrison D (2026).
+*serodynamics: What the Package Does (One Line, Title Case)*. R package
+version 0.0.0.9053, <https://github.com/UCD-SERG/serodynamics>.
 
     @Manual{,
       title = {serodynamics: What the Package Does (One Line, Title Case)},
-      author = {Peter Teunis and Samuel Schildhauer and Kristen Aiemjoy and Douglas Ezra Morrison},
+      author = {Peter Teunis and Samuel Schildhauer and Kwan Ho Lee and Kristen Aiemjoy and Douglas Ezra Morrison},
       year = {2026},
-      note = {R package version 0.0.0.9051},
+      note = {R package version 0.0.0.9053},
       url = {https://github.com/UCD-SERG/serodynamics},
     }

@@ -29,7 +29,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9051</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9053</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -227,14 +227,14 @@ including the following:</p><ul><li><p><code>Iteration</code> = Number of sampli
 <li><p><code>population_params</code>: Optionally included modeled population parameters,
 returned as a <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> and excluded by default.
 Columns include
-<code>Iteration</code>, <code>Chain</code>, <code>Parameter</code>, <code>Population_Parameter</code>, <code>Iso_type</code>,
-<code>Stratification</code>, and <code>value</code>.</p><ul><li><p><code>Population_Parameter</code> identifies which modeled population parameter
+<code>Iteration</code>, <code>Chain</code>, <code>Parameter</code>, <code>Iso_type</code>, <code>Stratification</code>,
+<code>Population_Parameter</code>, and <code>value</code>.</p><ul><li><p><code>Population_Parameter</code> identifies which modeled population parameter
 is represented:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model
-parameters (on logarithmic scales).</p></li>
+parameters (on logarithmic scales). Note: y1 and shape are transformed.</p></li>
 <li><p><code>prec.par</code> = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
 The two parameters listed (separated by commas) represent the pairwise
-precision relationship between specified parameters</p></li>
+precision relationship between specified parameters.</p></li>
 <li><p><code>prec.logy</code> = A vector of population precisions (inverse
 variances), one per antigen/isotype combination.</p></li>
 </ul></li>
@@ -293,7 +293,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon May 18 17:57:13 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon May 18 21:58:36 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -328,7 +328,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon May 18 17:58:16 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon May 18 21:59:40 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -366,7 +366,7 @@ for all observations.</p></li>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Peter Teunis, Samuel Schildhauer, Kristen Aiemjoy, Douglas Ezra Morrison.</p>
+  <p>Developed by Peter Teunis, Samuel Schildhauer, Kwan Ho Lee, Kristen Aiemjoy, Douglas Ezra Morrison.</p>
 </div>
 
 <div class="pkgdown-footer-right">

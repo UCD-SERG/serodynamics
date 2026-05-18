@@ -13,7 +13,7 @@ and population-level hyperparameters/precision terms."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9051</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9053</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,11 +76,12 @@ and <code>value</code> columns.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> that
-contains MCMC samples from the joint posterior distribution of the model
-with unpacked individual-level parameters (e.g., <code>y0</code>, <code>y1</code>, <code>t1</code>,
-<code>alpha</code>, <code>shape</code>) and population-level parameters (e.g., <code>mu.par</code>,
-<code>prec.par</code>, <code>prec.logy</code>), along with isotypes and subjects.</p>
+    <p>A <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> containing MCMC samples from the joint
+posterior distribution of the model with unpacked individual-level
+parameters (e.g., <code>y0</code>, <code>y1</code>, <code>t1</code>, <code>alpha</code>, <code>shape</code>) and
+population-level parameters (e.g., <code>mu.par</code>, <code>prec.par</code>, <code>prec.logy</code>),
+along with subject-related fields such as <code>Subject</code> and <code>Subnum</code>.
+Isotype names are not added by <code>unpack_jags()</code> itself.</p>
     </div>
     <div class="section level2">
     <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
@@ -92,7 +93,7 @@ with unpacked individual-level parameters (e.g., <code>y0</code>, <code>y1</code
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by Peter Teunis, Samuel Schildhauer, Kristen Aiemjoy, Douglas Ezra Morrison.</p>
+  <p>Developed by Peter Teunis, Samuel Schildhauer, Kwan Ho Lee, Kristen Aiemjoy, Douglas Ezra Morrison.</p>
 </div>
 
 <div class="pkgdown-footer-right">

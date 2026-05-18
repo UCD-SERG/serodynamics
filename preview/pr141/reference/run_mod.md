@@ -94,7 +94,7 @@ run_mod(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -220,19 +220,20 @@ the following:
     parameters, returned as a
     [data.frame](https://rdrr.io/r/base/data.frame.html) and excluded by
     default. Columns include `Iteration`, `Chain`, `Parameter`,
-    `Population_Parameter`, `Iso_type`, `Stratification`, and `value`.
+    `Iso_type`, `Stratification`, `Population_Parameter`, and `value`.
 
     - `Population_Parameter` identifies which modeled population
       parameter is represented:
 
       - `mu.par` = The population means of the host-specific model
-        parameters (on logarithmic scales).
+        parameters (on logarithmic scales). Note: y1 and shape are
+        transformed.
 
       - `prec.par` = The population precision matrix of the
         hyperparameters (with diagonal elements equal to inverse
         variances). The two parameters listed (separated by commas)
         represent the pairwise precision relationship between specified
-        parameters
+        parameters.
 
       - `prec.logy` = A vector of population precisions (inverse
         variances), one per antigen/isotype combination.
@@ -299,7 +300,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon May 18 17:57:13 2026
+#> Welcome to JAGS 4.3.2 on Mon May 18 21:58:36 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -334,7 +335,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon May 18 17:58:16 2026
+#> Welcome to JAGS 4.3.2 on Mon May 18 21:59:40 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
