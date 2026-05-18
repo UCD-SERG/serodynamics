@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9052</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9053</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -46,7 +46,8 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="serodynamics-development-version">serodynamics (development version)<a class="anchor" aria-label="anchor" href="#serodynamics-development-version"></a></h2>
-<ul><li><p>Stopped deleting prior Claude review comments at the start of each <code>Claude Code Review</code> run, so reviews posted by <code>@claude review</code> invocations are preserved across subsequent pushes instead of being wiped when the review step fails its bot-actor gate (<a href="https://github.com/UCD-SERG/serodynamics/issues/217" class="external-link">#217</a>).</p></li>
+<ul><li><p>Re-assign reviewers to a PR’s human assignees (filtered via <code>type == "User"</code>) when Claude pushes commits during a <code>@claude</code> or <code>Claude Code Review</code> run; if Claude makes no commits, the original reviewer set is restored as before. Detected by comparing the PR’s head SHA before and after the Claude step (<a href="https://github.com/UCD-SERG/serodynamics/issues/210" class="external-link">#210</a>).</p></li>
+<li><p>Stopped deleting prior Claude review comments at the start of each <code>Claude Code Review</code> run, so reviews posted by <code>@claude review</code> invocations are preserved across subsequent pushes instead of being wiped when the review step fails its bot-actor gate (<a href="https://github.com/UCD-SERG/serodynamics/issues/217" class="external-link">#217</a>).</p></li>
 <li><p>Hardened the Claude code-review workflow against races and silent failures: serialized concurrent runs per PR, made reviewer restore fail loudly instead of silently dropping reviewers, and cleaned up all stale Claude top-level comments per run (<a href="https://github.com/UCD-SERG/serodynamics/issues/216" class="external-link">#216</a>).</p></li>
 <li><p>Expanded <code>.github/copilot-instructions.md</code> with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.</p></li>
 <li><p>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code><a href="../reference/post_summ.html">post_summ()</a></code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</p></li>
