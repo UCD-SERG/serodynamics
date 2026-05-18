@@ -6,6 +6,10 @@
 #' @returns A [vector] with recoded values.
 #' @keywords internal
 param_recode <- function(x) {
-  map <- c("1" = "y0", "2" = "y1", "3" = "t1", "4" = "alpha", "5" = "shape")
+  map <- c("1" = "log(y0)", 
+           "2" = "log(y1 - y0)",, 
+           "3" = "log(t1)", 
+           "4" = "log(alpha)", 
+           "5" = "log(shape - 1)")
   unname(map[as.character(x)])
 }
