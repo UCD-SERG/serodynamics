@@ -126,7 +126,8 @@ and a 95% credible interval band as default.
 ## Examples
 
 ``` r
-sees_model <- serodynamics::nepal_sees_jags_output
+sees_model <- serodynamics::nepal_sees_jags_output |>
+  dplyr::filter(Iteration <= 50)  # use 50 of 500 iterations for faster examples
 sees_data <- serodynamics::nepal_sees
 
 # Plot (linear axes) with all individual curves + median ribbon
@@ -138,7 +139,7 @@ p1 <- plot_predicted_curve(
   show_quantiles     = TRUE,
   log_y              = FALSE,
   log_x              = FALSE,
-  show_all_curves    = FALSE
+  show_all_curves    = TRUE
 )
 print(p1)
 
@@ -152,7 +153,7 @@ p2 <- plot_predicted_curve(
   show_quantiles     = TRUE,
   log_y              = TRUE,
   log_x              = FALSE,
-  show_all_curves    = FALSE
+  show_all_curves    = TRUE
 )
 print(p2)
 
@@ -166,7 +167,7 @@ p3 <- plot_predicted_curve(
   show_quantiles     = TRUE,
   log_y              = FALSE,
   log_x              = FALSE,
-  show_all_curves    = FALSE,
+  show_all_curves    = TRUE,
   xlim               = c(0, 600)
 )
 print(p3)
@@ -178,7 +179,7 @@ p4 <- plot_predicted_curve(
   dataset         = sees_data,
   ids             = c("sees_npl_128", "sees_npl_131"),
   antigen_iso     = "HlyE_IgA",
-  show_all_curves = FALSE,
+  show_all_curves = TRUE,
   facet_by_id     = TRUE
 )
 print(p4)
