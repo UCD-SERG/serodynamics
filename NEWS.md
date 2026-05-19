@@ -8,6 +8,9 @@
   - Grant `issues: write` and allow `gh issue` invocations so Claude
     can file follow-up issues for work deferred out of the current PR
     instead of burying it in a comment.
+* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
+  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
+  arriving with the 0.1.0 release (#207 advisory).
 * Re-assign reviewers to a PR's human assignees (filtered via
   `type == "User"`) when Claude pushes commits during a `@claude` or
   `Claude Code Review` run; if Claude makes no commits, the original
