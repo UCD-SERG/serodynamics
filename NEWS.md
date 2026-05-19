@@ -51,6 +51,20 @@ stratification (#66)
 
 ## Developer-facing changes
 
+* Expanded what the `Claude Code` (`@claude`) workflow can do:
+  - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
+    mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
+    `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow `Rscript`,
+    `R`, and `R CMD` invocations, so requests that need package-
+    maintenance commands (`devtools::document()`,
+    `spelling::spell_check_package()`, `R CMD check`, vignette rebuilds)
+    succeed instead of being patched by hand.
+  - Grant `issues: write` and allow `gh issue` invocations so Claude
+    can file follow-up issues for work deferred out of the current PR
+    instead of burying it in a comment.
+* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
+  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
+  arriving with the 0.1.0 release (#207 advisory).
 * Re-assign reviewers to a PR's human assignees (filtered via
   `type == "User"`) when Claude pushes commits during a `@claude` or
   `Claude Code Review` run; if Claude makes no commits, the original
