@@ -17,9 +17,10 @@ format:
     toc: true
     number-sections: false
 editor: source
+bibliography: references.bib
 ---
 
-## Abstract
+# Abstract
 
 **Motivation:** Estimating seroincidence, or the rate at which new infections occur in a population, from cross-sectional serological data requires well-characterized models of post-infection antibody kinetics. Fitting these models using longitudinal data from confirmed cases requires statistical implementations for each pathogen, limiting reproducibility and accessibility.
 
@@ -47,7 +48,7 @@ The `serocalculator` R package implements the downstream step: estimating seroin
 
 # Implementation
 
-`serodynamics` can be installed from GitHub using the `pak` package manager. The package requires JAGS (Just Another Gibbs Sampler) to be installed on the user's system for Bayesian MCMC computation. Nineteen exported functions guide users from data import and simulation to model fitting, diagnostics, and visualization. All functions in `serodynamics` version 0.0.0.9054 are described on the package website. The general workflow is: (1) import or simulate data, (2) inspect and visualize data, (3) prepare MCMC inputs, (4) fit the model, (5) assess convergence, and (6) postprocess and export results. Example input datasets and formatting guidance are provided in Supplement [TO DO]\~.
+`serodynamics` can be installed from GitHub using the `pak` package manager. The package requires JAGS (Just Another Gibbs Sampler) to be installed on the user's system for Bayesian MCMC computation. Nineteen exported functions guide users from data import and simulation to model fitting, diagnostics, and visualization. All functions in the current version of `serodynamics` are described on the package website. The general workflow is: (1) import or simulate data, (2) inspect and visualize data, (3) prepare MCMC inputs, (4) fit the model, (5) assess convergence, and (6) postprocess and export results. Example input datasets and formatting guidance are provided in Supplement [TODO].
 
 ## Import Data
 
@@ -75,11 +76,11 @@ Two preparatory functions transform data and prior specifications into the input
 
 `prep_data()` converts a `case_data` object into the structured list format required by JAGS, constructing three-dimensional arrays for antibody levels (log-transformed) and sample collection times indexed by subject, visit, and antigen–isotype combination. Antibody values of zero are replaced with 0.01 prior to log-transformation. The function additionally appends a dummy individual (`newperson`) with missing antibody values at standard time points (days 5, 30, and 90), enabling posterior predictive sampling for a hypothetical new individual from the population distribution—the mechanism that generates the population-level kinetic parameter draws used by `serocalculator`.
 
-`prep_priors()` generates weakly informative prior distributions for population-level parameters. Five prior components are specified: hyperprior means for the log-transformed population-level parameters (`mu_hyp_param`; defaults: $y_0 = 1.0$, $y_1 = 7.0$, $t_1 = 1.0$, $\rho = -4.0$, $\alpha = -1.0$); precision hyperpriors (`prec_hyp_param`); Wishart scale matrices for between-individual variability (`omega_param`); Wishart degrees of freedom (`wishdf_param`; default: 20); and measurement precision hyperpriors (`prec_logy_hyp_param`). All prior components are customizable, and the prior specifications used in model fitting are stored as an attribute of the output for reproducibility. Further mathematical details are provided in Supplement \~ [TODO].
+`prep_priors()` generates weakly informative prior distributions for population-level parameters. Five prior components are specified: hyperprior means for the log-transformed population-level parameters (`mu_hyp_param`; defaults: $y_0 = 1.0$, $y_1 = 7.0$, $t_1 = 1.0$, $\rho = -4.0$, $\alpha = -1.0$); precision hyperpriors (`prec_hyp_param`); Wishart scale matrices for between-individual variability (`omega_param`); Wishart degrees of freedom (`wishdf_param`; default: 20); and measurement precision hyperpriors (`prec_logy_hyp_param`). All prior components are customizable, and the prior specifications used in model fitting are stored as an attribute of the output for reproducibility. Further mathematical details are provided in Supplement [TODO].
 
 ## Model Seroresponse
 
-The core modelling function, `run_mod()`, fits the two-phase Bayesian hierarchical model using MCMC sampling via JAGS, interfaced through the `runjags` package. The model captures five key parameters per individual $i$ and antigen–isotype combination $j$: baseline antibody level ($y_0$), peak antibody concentration ($y_1$), time to peak ($t_1$), decay rate ($\alpha$), and decay shape ($\rho$). During the rising phase ($t \le t_1$), antibody concentration grows exponentially at rate $\beta = \log(y_1/y_0) / t_1$. During the decay phase ($t > t_1$), concentrations decline according to a power-law function governed by $\alpha$ and $\rho$, which captures the continuous distribution of plasma-cell lifespans [@teunis2016]. The full mathematical specification is given in Supplement [TO DO]\~.
+The core modelling function, `run_mod()`, fits the two-phase Bayesian hierarchical model using MCMC sampling via JAGS, interfaced through the `runjags` package. The model captures five key parameters per individual $i$ and antigen–isotype combination $j$: baseline antibody level ($y_0$), peak antibody concentration ($y_1$), time to peak ($t_1$), decay rate ($\alpha$), and decay shape ($\rho$). During the rising phase ($t \le t_1$), antibody concentration grows exponentially at rate $\beta = \log(y_1/y_0) / t_1$. During the decay phase ($t > t_1$), concentrations decline according to a power-law function governed by $\alpha$ and $\rho$, which captures the continuous distribution of plasma-cell lifespans [@teunis2016]. The full mathematical specification is given in Supplement [TODO].
 
 Individual-level kinetic parameters are modelled hierarchically: for each individual $i$ and biomarker $j$, the vector of log-transformed parameters $\boldsymbol{\theta}_{ij} = (\log y_0,\ \log(y_1 - y_0),\ \log t_1,\ \log \alpha,\ \log(\rho - 1))^\top$ follows $\boldsymbol{\theta}_{ij} \sim \mathcal{N}(\boldsymbol{\mu}_j, \boldsymbol{\Sigma}_j)$, where $\boldsymbol{\mu}_j$ is the population-level mean vector and $\boldsymbol{\Sigma}_j$ is a biomarker-specific covariance matrix. A multivariate normal hyperprior is placed on $\boldsymbol{\mu}_j$, a Wishart prior on the precision matrix $\boldsymbol{\Sigma}_j^{-1}$, and a gamma prior on measurement precision. This partial pooling approach stabilises inference for individuals with sparse measurements while preserving meaningful inter-individual variability. Separate models are fitted for each antigen–isotype combination.
 
@@ -87,7 +88,7 @@ Users specify the number of MCMC chains (`nchain`, 1–4), adaptation iterations
 
 ## Model Diagnostics
 
-`serodynamics` provides four built-in diagnostic visualization functions to assess MCMC convergence: `plot_jags_trace()` for visual inspection of chain mixing across all monitored parameters; `plot_jags_dens()` for posterior density plots to assess distributional shape and multimodality; `plot_jags_Rhat()` for the potential scale reduction factor ($\hat{R}$), with values below 1.05 indicating adequate convergence [@vehtari2021]; and `plot_jags_effect()` for effective sample size plots to evaluate sampling efficiency. Diagnostic functions return stratified outputs if a stratification variable in `run_mod()`.
+`serodynamics` provides four built-in diagnostic visualization functions to assess MCMC convergence: `plot_jags_trace()` for visual inspection of chain mixing across all monitored parameters; `plot_jags_dens()` for posterior density plots to assess distributional shape and multimodality; `plot_jags_Rhat()` for the potential scale reduction factor ($\hat{R}$), with values below 1.05 indicating adequate convergence [@vehtari2021]; and `plot_jags_effect()` for effective sample size plots to evaluate sampling efficiency. Diagnostic functions return stratified outputs if a stratification variable is specified in `run_mod()`.
 
 ## Postprocess and Export Results
 
@@ -101,7 +102,7 @@ For downstream seroincidence estimation, `postprocess_jags_output()` extracts po
 
 We demonstrate the use of `serodynamics` with a reproducible example using the built-in Nepal SEES typhoid dataset [@aiemjoy2022; @garrett2022]. Additional details on these data are available in Supplement \~. This example is also available as an article on the `serodynamics` package website.
 
-First, we load the package and the built-in dataset, then create a visualization of raw longitudinal antibody responses using the `autoplot()` method (Figure 1).
+Figure 1 is a four-panel composite (a–d) illustrating the complete analytical workflow. First, we load the package and the built-in dataset, then create a visualization of raw longitudinal antibody responses using the `autoplot()` method (Figure 1a,b).
 
 ```{r}
 #| eval: false
@@ -172,40 +173,6 @@ None declared.
 # Data availability
 
 Source code for the `serodynamics` package is available on GitHub: <https://github.com/UCD-SERG/serodynamics>. Package documentation and tutorials are available at <https://UCD-SERG.github.io/serodynamics/>.
-
-# References
-
-Aiemjoy, K., Katuwal, N., Vaidya, K., Shrestha, S., Thapa, M., Teunis, P.F., et al. (2024). Estimating the seroincidence of scrub typhus using antibody dynamics after infection. *American Journal of Tropical Medicine and Hygiene*, 111, 267–276. <https://doi.org/10.4269/ajtmh.23-0475>
-
-Aiemjoy, K., Seidman, J.C., Saha, S., Munira, S.J., Sajib, M.S., Al Sium, S.M., et al. (2022). Estimating typhoid incidence from community-based serosurveys: A multicohort study. *The Lancet Microbe*, 3, e578–e587. <https://doi.org/10.1016/S2666-5247(22)00114-8>
-
-Garrett, D.O., Longley, A.T., Aiemjoy, K., Yousafzai, M.T., Hemlock, C., Yu, A.T., et al. (2022). Incidence of typhoid and paratyphoid fever in Bangladesh, Nepal, and Pakistan: Results of the Surveillance for Enteric Fever in Asia Project. *The Lancet Global Health*, 10, e978–e988. <https://doi.org/10.1016/S2214-109X(22)00119-X>
-
-de Graaf, W.F., Kretzschmar, M.E., Teunis, P.F., Diekmann, O. (2014). A two-phase within-host model for immune response and its application to serological profiles of pertussis. *Epidemics*, 9, 1–7. <https://doi.org/10.1016/j.epidem.2014.08.002>
-
-Hay, J.A., Minter, A., Ainslie, K.E., Lessler, J., Yang, B., Cummings, D.A., et al. (2020). An open source tool to infer epidemiological and immunological dynamics from serological data: serosolver. *PLOS Computational Biology*, 16, e1007840. <https://doi.org/10.1371/journal.pcbi.1007840>
-
-Hay, J.A., Routledge, I., Takahashi, S. (2024). Serodynamics: A primer and synthetic review of methods for epidemiological inference using serological data. *Epidemics*, 49, 100806. <https://doi.org/10.1016/j.epidem.2024.100806>
-
-Hodgson, D., Hay, J., Jarju, S., Jobe, D., Wenlock, R., Silva, T.I. de, et al. (2025). Serojump: A Bayesian tool for inferring infection timing and antibody kinetics from longitudinal serological data.
-
-Hozé, N., Pons-Salort, M., Metcalf, C.J.E., White, M., Salje, H., Cauchemez, S. (2025). RSero: A user-friendly R package to reconstruct pathogen circulation history from seroprevalence studies. *PLOS Computational Biology*, 21, e1012777. <https://doi.org/10.1371/journal.pcbi.1012777>
-
-Lai, K.W., Orwa, C., Seidman, J.C., Garrett, D.O., Saha, S.K., Tamrakar, D., Qamar, F.N., Charles, R.C., Andrews, J.R., Teunis, P., Aiemjoy, K., Morrison, D.E. (2025). Serocalculator, an R package for estimating seroincidence from cross-sectional serological data. *medRxiv*. <https://doi.org/10.1101/2025.06.04.25328941>
-
-Menezes, A., Takahashi, S., Routledge, I., Metcalf, C.J.E., Graham, A.L., Hay, J.A. (2023). Serosim: An R package for simulating serological data arising from vaccination, epidemiological and antibody kinetics processes. *PLOS Computational Biology*, 19, e1011384. <https://doi.org/10.1371/journal.pcbi.1011384>
-
-Simonsen, J., Mølbak, K., Falkenhorst, G., Krogfelt, K.A., Linneberg, A., Teunis, P.F. (2009). Estimation of incidences of infectious diseases based on antibody measurements. *Statistics in Medicine*, 28, 1882–1895. <https://doi.org/10.1002/sim.3592>
-
-Teunis, P.F., van Eijkeren, J.C. (2020). Estimation of seroconversion rates for infectious diseases: Effects of age and noise. *Statistics in Medicine*, 39, 2799–2814. <https://doi.org/10.1002/sim.8578>
-
-Teunis, P.F., van Eijkeren, J.C., Ang, C.W., van Duynhoven, Y.T., Simonsen, J.B., Strid, M.A., et al. (2012). Biomarker dynamics: Estimating infection rates from serological data. *Statistics in Medicine*, 31, 2240–2248. <https://doi.org/10.1002/sim.5322>
-
-Teunis, P.F., van Eijkeren, J.C., de Graaf, W.F., Bonačić Marinović, A., Kretzschmar, M.E. (2016). Linking the seroresponse to infection to within-host heterogeneity in antibody production. *Epidemics*, 16, 33–39. <https://doi.org/10.1016/j.epidem.2016.04.001>
-
-Teunis, P.F., Wang, Y., Aiemjoy, K., Kretzschmar, M., Aerts, M. (2023). Estimating seroconversion rates accounting for repeated infections by approximate Bayesian computation. *Statistics in Medicine*, 42, 5160–5188. <https://doi.org/10.1002/sim.9906>
-
-Vehtari, A., Gelman, A., Simpson, D., Carpenter, B., Bürkner, P.-C. (2021). Rank-normalization, folding, and localization: An improved R-hat for assessing convergence of MCMC (with discussion). *Bayesian Analysis*, 16, 667–718. <https://doi.org/10.1214/20-BA1221>
 
 # Figure captions
 
