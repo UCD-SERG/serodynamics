@@ -7,10 +7,7 @@
 
 [![Codecov test
 coverage](https://codecov.io/gh/UCD-SERG/serodynamics/graph/badge.svg)](https://app.codecov.io/gh/UCD-SERG/serodynamics)
-[![CodeFactor](https://www.codefactor.io/repository/github/ucd-serg/serodynamics/badge)](https://www.codefactor.io/repository/github/ucd-serg/serodynamics)
-[![R-CMD-check](https://github.com/UCD-SERG/dcm/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/UCD-SERG/dcm/actions/workflows/R-CMD-check.yaml)
-[![CRAN
-status](https://www.r-pkg.org/badges/version/serodynamics)](https://CRAN.R-project.org/package=serodynamics)
+[![R-CMD-check](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml)
 [![Lifecycle:
 experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
@@ -20,8 +17,14 @@ longitudinal antibody responses to infection.
 
 ## Installation
 
-You can install the development version of `{serodynamics}` from
-[GitHub](https://github.com/) with:
+Once accepted on CRAN, install the released version with:
+
+``` r
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("pak")

@@ -2,6 +2,7 @@ AVX
 CMD
 CodeFactor
 Codecov
+Eijkeren
 HlyE
 IgA
 IgG
@@ -10,6 +11,7 @@ JAGS's
 JAGs
 Lifecycle
 MSVC
+ORCID
 PR's
 Postprocess
 Rhat
@@ -17,6 +19,7 @@ SHA
 TSI
 Vectorization
 Wasserstein
+al
 allowlist
 assignees
 behaviour
@@ -26,7 +29,10 @@ colour
 darwin
 dev
 dobson
+doi
 dotplots
+epidem
+et
 geoms
 ggmcmc
 ggproto
@@ -52,7 +58,10 @@ pkgdown
 prec
 preinstalling
 rhat
+serocalculator
 seroconversion
+seroepidemiologic
+serological
 seroresponse
 seroresponses
 strat

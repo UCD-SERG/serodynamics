@@ -1,54 +1,15 @@
-# serodynamics (development version)
+# serodynamics 0.1.0
 
-* Expanded what the `Claude Code` (`@claude`) workflow can do:
-  - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
-    mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
-    `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow `Rscript`,
-    `R`, and `R CMD` invocations, so requests that need package-
-    maintenance commands (`devtools::document()`,
-    `spelling::spell_check_package()`, `R CMD check`, vignette rebuilds)
-    succeed instead of being patched by hand.
-  - Grant `issues: write` and allow `gh issue` invocations so Claude
-    can file follow-up issues for work deferred out of the current PR
-    instead of burying it in a comment.
-* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
-  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
-  arriving with the 0.1.0 release (#207 advisory).
-* Re-assign reviewers to a PR's human assignees (filtered via
-  `type == "User"`) when Claude pushes commits during a `@claude` or
-  `Claude Code Review` run; if Claude makes no commits, the original
-  reviewer set is restored as before. Detected by comparing the PR's
-  head SHA before and after the Claude step (#210).
-* Stopped deleting prior Claude review comments at the start of each
-  `Claude Code Review` run, so reviews posted by `@claude review` invocations
-  are preserved across subsequent pushes instead of being wiped when the
-  review step fails its bot-actor gate (#217).
-* Hardened the Claude code-review workflow against races and silent failures:
-  serialized concurrent runs per PR, made reviewer restore fail loudly instead
-  of silently dropping reviewers, and cleaned up all stale Claude top-level
-  comments per run (#216).
-* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
-* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
-* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
-  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
-* Added dev container configuration for persistent, cached development environment
-  that includes R, JAGS, and all dependencies preinstalled, making Copilot
-  Workspace sessions much faster.
-* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
-* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
-
-* Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
-  snapshot directories (which were identical), keeping only base snapshots and 
-  darwin-specific variants for macOS platform differences (#73).
-
-* Initial CRAN submission.
-* Updated Copilot instructions to encourage code decomposition and avoid copy-pasting substantial code chunks.
+This is the first CRAN release of `serodynamics`, a package for Bayesian
+hierarchical modeling of antibody kinetics from longitudinal serological
+data. It serves as the upstream companion to the `serocalculator` package.
 
 ## New features
 
+* Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
 * Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
-* Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
+* Added `plot_predicted_curve()` with support for faceting by multiple IDs (#68)
 * Replacing old data object with new run_mod output (#102)
 * Adding class assignment to run_mod output (#76)
 * Making prep_priors modifiable (#78)
@@ -86,10 +47,49 @@ stratification (#66)
 
 ## Bug fixes
 
-None yet
+* Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 
 ## Developer-facing changes
 
+* Expanded what the `Claude Code` (`@claude`) workflow can do:
+  - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
+    mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
+    `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow `Rscript`,
+    `R`, and `R CMD` invocations, so requests that need package-
+    maintenance commands (`devtools::document()`,
+    `spelling::spell_check_package()`, `R CMD check`, vignette rebuilds)
+    succeed instead of being patched by hand.
+  - Grant `issues: write` and allow `gh issue` invocations so Claude
+    can file follow-up issues for work deferred out of the current PR
+    instead of burying it in a comment.
+* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
+  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
+  arriving with the 0.1.0 release (#207 advisory).
+* Re-assign reviewers to a PR's human assignees (filtered via
+  `type == "User"`) when Claude pushes commits during a `@claude` or
+  `Claude Code Review` run; if Claude makes no commits, the original
+  reviewer set is restored as before. Detected by comparing the PR's
+  head SHA before and after the Claude step (#210).
+* Stopped deleting prior Claude review comments at the start of each
+  `Claude Code Review` run, so reviews posted by `@claude review` invocations
+  are preserved across subsequent pushes instead of being wiped when the
+  review step fails its bot-actor gate (#217).
+* Hardened the Claude code-review workflow against races and silent failures:
+  serialized concurrent runs per PR, made reviewer restore fail loudly instead
+  of silently dropping reviewers, and cleaned up all stale Claude top-level
+  comments per run (#216).
+* Consolidated OS-specific snapshot variants: removed redundant Linux and
+  Windows snapshot directories (which were identical), keeping only base
+  snapshots and darwin-specific variants for macOS platform differences (#73).
+* Updated Copilot instructions to encourage code decomposition and avoid
+  copy-pasting substantial code chunks.
+* Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
+* Added R 4.5+ snapshot variants to handle the changed attribute ordering in
+  `as_case_data()`, ensuring test suite compatibility with R 4.5 and later (#109).
+* Added dev container configuration for persistent, cached development environment
+  that includes R, JAGS, and all dependencies preinstalled, making Copilot
+  Workspace sessions much faster.
+* Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
 * Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (#135)
 * vectorized `ab()` function (#116)
 * Added `lintr::undesirable_function_linter()` to `.lintr.R` (#81)
