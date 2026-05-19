@@ -233,9 +233,9 @@ run_mod <- function(data,
       # containing cleaned parameter names.
       # Drop the temporary Subject (now only used as a fallback for population
       # parameters) and rename Subject_mcmc back to Subject for downstream use.
-      dplyr::select(!c("Subnum", "Subject", "Parameter")) |>
-      dplyr::rename(c("Subject" = "Subject_mcmc",
-                      "Parameter" = "Param"))
+      dplyr::select(-c("Subnum", "Subject", "Parameter")) |>
+      dplyr::rename(Subject = Subject_mcmc,
+                    Parameter = Param)
     
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
