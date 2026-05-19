@@ -1,5 +1,32 @@
 # serodynamics (development version)
 
+* Expanded what the `Claude Code` (`@claude`) workflow can do:
+  - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
+    mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
+    `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow `Rscript`,
+    `R`, and `R CMD` invocations, so requests that need package-
+    maintenance commands (`devtools::document()`,
+    `spelling::spell_check_package()`, `R CMD check`, vignette rebuilds)
+    succeed instead of being patched by hand.
+  - Grant `issues: write` and allow `gh issue` invocations so Claude
+    can file follow-up issues for work deferred out of the current PR
+    instead of burying it in a comment.
+* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
+  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
+  arriving with the 0.1.0 release (#207 advisory).
+* Re-assign reviewers to a PR's human assignees (filtered via
+  `type == "User"`) when Claude pushes commits during a `@claude` or
+  `Claude Code Review` run; if Claude makes no commits, the original
+  reviewer set is restored as before. Detected by comparing the PR's
+  head SHA before and after the Claude step (#210).
+* Stopped deleting prior Claude review comments at the start of each
+  `Claude Code Review` run, so reviews posted by `@claude review` invocations
+  are preserved across subsequent pushes instead of being wiped when the
+  review step fails its bot-actor gate (#217).
+* Hardened the Claude code-review workflow against races and silent failures:
+  serialized concurrent runs per PR, made reviewer restore fail loudly instead
+  of silently dropping reviewers, and cleaned up all stale Claude top-level
+  comments per run (#216).
 * Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 * Added R 4.5+ snapshot variants to handle the changed attribute ordering in
