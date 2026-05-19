@@ -20,12 +20,12 @@ Source:
 
 Teunis P, Schildhauer S, Lee K, Aiemjoy K, Morrison D (2026).
 *serodynamics: What the Package Does (One Line, Title Case)*. R package
-version 0.0.0.9053, <https://github.com/UCD-SERG/serodynamics>.
+version 0.0.0.9054, <https://github.com/UCD-SERG/serodynamics>.
 
     @Manual{,
       title = {serodynamics: What the Package Does (One Line, Title Case)},
       author = {Peter Teunis and Samuel Schildhauer and Kwan Ho Lee and Kristen Aiemjoy and Douglas Ezra Morrison},
       year = {2026},
-      note = {R package version 0.0.0.9053},
+      note = {R package version 0.0.0.9054},
       url = {https://github.com/UCD-SERG/serodynamics},
     }
