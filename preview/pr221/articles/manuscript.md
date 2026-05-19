@@ -120,12 +120,12 @@ rate estimates.
 
 `serodynamics` can be installed from GitHub using the `pak` package
 manager. The package requires JAGS (Just Another Gibbs Sampler) to be
-installed on the user’s system for Bayesian MCMC computation. Nineteen
-exported functions guide users from data import and simulation to model
-fitting, diagnostics, and visualization. All functions in the current
-version of `serodynamics` are described on the package website. The
-general workflow is: (1) import or simulate data, (2) inspect and
-visualize data, (3) prepare MCMC inputs, (4) fit the model, (5) assess
+installed on the user’s system for Bayesian MCMC computation. Exported
+functions guide users from data import and simulation to model fitting,
+diagnostics, and visualization. All functions in the current version of
+`serodynamics` are described on the package website. The general
+workflow is: (1) import or simulate data, (2) inspect and visualize
+data, (3) prepare MCMC inputs, (4) fit the model, (5) assess
 convergence, and (6) postprocess and export results. Example input
 datasets and formatting guidance are provided in Supplement \[TODO\].
 
@@ -299,9 +299,11 @@ is an `sr_model` object: a subclass of
 containing MCMC samples from the joint posterior distribution, with
 columns for iteration, chain, parameter, antigen–isotype, stratification
 level, subject identifier, and parameter value. Fitted values and
-residuals are computed automatically using
-[`calc_fit_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/calc_fit_mod.md)
-and stored as attributes of the output object, alongside the prior
+residuals are computed automatically when
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
+completes, via
+[`calc_fit_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/calc_fit_mod.md),
+and stored as attributes of the output object alongside the prior
 specification used in model fitting.
 
 The
@@ -435,9 +437,9 @@ age-stratified seroprevalence using serocatalytic models ([Hozé et al.
 2025](#ref-hoze2025)). `serojump` infers infection timing from
 longitudinal serological data ([Hodgson et al. 2025](#ref-hodgson2025)).
 Collectively, these packages expand access to seroepidemiologic tools.
-Notably, `serodynamics` is the only package to implement the mechanistic
-two-phase within-host model using a hierarchical population structure
-that produces output directly compatible with downstream seroincidence
+Among these tools, `serodynamics` is distinctive in implementing the
+mechanistic two-phase within-host model using a hierarchical population
+structure, with output directly compatible with downstream seroincidence
 estimation tools.
 
 Future enhancements will address current methodological limitations and
