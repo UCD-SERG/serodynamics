@@ -31,14 +31,30 @@ jobs:
           fetch-depth: 1
 
       # R toolchain so Claude can run common package-maintenance commands
-      # (e.g. devtools::document(), styler::style_pkg(), pkgdown builds).
+      # (e.g. devtools::document(), styler::style_pkg(), pkgdown builds,
+      # spelling::spell_check_package(), lintr, R CMD check).
       # Adds ~1–3 min when the dependency cache is warm; the first run after
       # a lockfile change is slower. JAGS is required because `runjags` is in
       # Imports and load-all/document needs the package to be loadable.
-      - name: Install JAGS (Ubuntu)
+      # System libs mirror copilot-setup-steps.yml so packages that source-
+      # build (textshaping, ragg, curl, xml2, ...) don't fail unpredictably.
+      - name: Install system dependencies (Ubuntu)
         run: |
           sudo apt-get update
-          sudo apt-get install -y jags
+          sudo apt-get install -y \
+            jags \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev
+
+      - uses: r-lib/actions/setup-pandoc@v2
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -50,6 +66,10 @@ jobs:
             any::devtools
             any::roxygen2
             any::rjags
+            any::rmarkdown
+            any::lintr
+            any::spelling
+            any::rcmdcheck
           needs: check
 
       - name: Resolve PR number (if any)
