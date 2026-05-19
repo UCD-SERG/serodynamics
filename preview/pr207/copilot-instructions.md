@@ -560,8 +560,8 @@ to make snapshots platform-specific.
 ### Documentation Out of Sync
 
 **Symptom**: R-check-docs.yml workflow fails. **Solution**: Run
-`devtools::document()` locally and commit the updated `man/` and
-`NAMESPACE` files.
+[`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+locally and commit the updated `man/` and `NAMESPACE` files.
 
 ### Version Not Incremented
 
@@ -603,7 +603,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -661,7 +661,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -772,20 +772,26 @@ structure, workflows, and configuration files. When making changes:
 3.  **ALWAYS** establish value-based unit tests (snapshot or explicit
     value tests) BEFORE modifying functions
 4.  **ALWAYS** write tidy, clean, and well-organized code
-5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
-    comments
+5.  **ALWAYS** run
+    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+    after modifying roxygen2 comments
 6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
 7.  **ALWAYS** increment dev version number to be one ahead of main
     branch before requesting PR review
 8.  **ALWAYS** update NEWS.md for user-facing changes
-9.  **ALWAYS** run tests before committing (`devtools::test()`)
+9.  **ALWAYS** run tests before committing
+    ([`devtools::test()`](https://devtools.r-lib.org/reference/test.html))
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
-11. **ALWAYS** run `devtools::document()` before requesting PR review
-12. **ALWAYS** make sure `devtools::check()` passes before requesting PR
-    review
-13. **ALWAYS** make sure `devtools::spell_check()` passes before
-    requesting PR review
+11. **ALWAYS** run
+    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+    before requesting PR review
+12. **ALWAYS** make sure
+    [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+    passes before requesting PR review
+13. **ALWAYS** make sure
+    [`devtools::spell_check()`](https://devtools.r-lib.org/reference/spell_check.html)
+    passes before requesting PR review
 14. **ALWAYS** run
     [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
     before requesting PR review to ensure the pkgdown site builds
