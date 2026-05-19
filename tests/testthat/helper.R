@@ -32,5 +32,6 @@ r45_variant <- function() {
 # release produce a test failure rather than a silent mismatch.
 r46_variant <- function() {
   v <- getRversion()
-  if (v >= "4.7") paste0("r", as.integer(v$major), as.integer(v$minor)) else NULL
+  if (v >= "4.7") paste0("r", as.integer(v$major), as.integer(v$minor)) 
+  else NULL
 }
