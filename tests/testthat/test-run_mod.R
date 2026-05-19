@@ -181,7 +181,41 @@ test_that(
 )
 
 test_that(
-  desc = "results are consistent with unstratified SEES data with modified 
+  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_mod",
+  code = {
+    withr::local_seed(1)
+    dataset <- serodynamics::nepal_sees
+
+    results <- suppressWarnings(
+      run_mod(
+        data = dataset,
+        file_mod = serodynamics_example("model.jags"),
+        nchain = 2,
+        nadapt = 10,
+        nburn = 10,
+        nmc = 100,
+        niter = 100,
+        strat = NA,
+        with_pop_params = TRUE,
+        preclogy_per_iso = TRUE
+      )
+    )
+
+    pop_params <- attr(results, "population_params")
+    expect_s3_class(pop_params, "data.frame")
+
+    preclogy_rows <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
+    expect_gt(nrow(preclogy_rows), 0)
+
+    # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
+    # not the constant "prec.logy"
+    expect_false(all(preclogy_rows$Parameter == "prec.logy"))
+    expect_true(all(preclogy_rows$Parameter %in% unique(pop_params$Iso_type)))
+  }
+)
+
+test_that(
+  desc = "results are consistent with unstratified SEES data with modified
   priors and post",
   code = {
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
