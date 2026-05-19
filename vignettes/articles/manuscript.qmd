@@ -6,7 +6,7 @@ author:
   - name: "Peter F.M. Teunis"
   - name: "Kristen Aiemjoy"
   - name: "Douglas Ezra Morrison"
-date: "2026-05-19"
+date: today
 format:
   html:
     toc: true
@@ -100,7 +100,7 @@ For downstream seroincidence estimation, `postprocess_jags_output()` extracts po
 
 # Use
 
-We demonstrate the use of `serodynamics` with a reproducible example using the built-in Nepal SEES typhoid dataset [@aiemjoy2022; @garrett2022]. Additional details on these data are available in Supplement \~. This example is also available as an article on the `serodynamics` package website.
+We demonstrate the use of `serodynamics` with a reproducible example using the built-in Nepal SEES typhoid dataset [@aiemjoy2022; @garrett2022]. Additional details on these data are available in Supplement [TODO]. This example is also available as an article on the `serodynamics` package website.
 
 Figure 1 is a four-panel composite (a–d) illustrating the complete analytical workflow. First, we load the package and the built-in dataset, then create a visualization of raw longitudinal antibody responses using the `autoplot()` method (Figure 1a,b).
 
