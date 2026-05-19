@@ -8,7 +8,8 @@
     mirrored from `copilot-setup-steps.yml`, plus `devtools`,
     `roxygen2`, `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow
     `Rscript`, `R`, and `R CMD` invocations, so requests that need
-    package- maintenance commands (`devtools::document()`,
+    package- maintenance commands
+    ([`devtools::document()`](https://devtools.r-lib.org/reference/document.html),
     [`spelling::spell_check_package()`](https://docs.ropensci.org/spelling//reference/spell_check_package.html),
     `R CMD check`, vignette rebuilds) succeed instead of being patched
     by hand.
@@ -77,6 +78,9 @@
 - Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions
   workflow to automate environment setup for GitHub Copilot coding
   agent, preinstalling R, JAGS, and all dependencies.
+
+- Added reference to UCD-SeRG Lab Manual in copilot-instructions for
+  lab-wide best practices guidance.
 
 - Consolidated OS-specific snapshot variants: removed redundant Linux
   and Windows snapshot directories (which were identical), keeping only
@@ -185,7 +189,9 @@ None yet
   ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
 - vectorized `ab()` function
   ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
-- Added `lintr::undesirable_function_linter()` to `.lintr.R`
+- Added
+  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
+  to `.lintr.R`
   ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
 - Reformatted `.lintr` as R file (following
   <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)

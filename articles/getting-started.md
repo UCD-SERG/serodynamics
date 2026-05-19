@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 19 00:26:42 2026
+#> Welcome to JAGS 4.3.2 on Tue May 19 05:37:25 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 19 00:26:54 2026
+#> Welcome to JAGS 4.3.2 on Tue May 19 05:37:37 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 19 00:26:55 2026
+#> Welcome to JAGS 4.3.2 on Tue May 19 05:37:39 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -556,7 +556,7 @@ sessioninfo::session_info()
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.0)
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
-#>  serocalculator   1.4.0.9010 2026-05-15 [1] Github (ucd-serg/serocalculator@e85252c)
+#>  serocalculator   1.4.0.9011 2026-05-19 [1] Github (ucd-serg/serocalculator@5fbb7eb)
 #>  serodynamics   * 0.0.0.9054 2026-05-19 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)

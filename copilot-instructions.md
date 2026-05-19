@@ -16,6 +16,19 @@ peak, shape parameter, and decay rate.
   ggmcmc, dplyr, ggplot2
 - **Lifecycle**: Experimental (under active development)
 
+## Lab-Wide Guidance
+
+**Follow the guidance in the [UCD-SeRG Lab
+Manual](https://ucd-serg.github.io/lab-manual/)**, which provides
+comprehensive best practices for: - Culture and conduct -
+Communication - Reproducibility - Code repositories and version
+control - Coding practices and style - Working with big data - Quarto
+and documentation - GitHub workflows - Reproducible environments - Code
+and data publication - AI tools usage - And more
+
+If the web version is inaccessible, refer to the [source files on
+GitHub](https://github.com/UCD-SERG/lab-manual) for easier reading.
+
 ## Critical Setup Requirements
 
 ### Copilot Setup Workflow (Automatic Environment Configuration)
@@ -560,8 +573,8 @@ to make snapshots platform-specific.
 ### Documentation Out of Sync
 
 **Symptom**: R-check-docs.yml workflow fails. **Solution**: Run
-`devtools::document()` locally and commit the updated `man/` and
-`NAMESPACE` files.
+[`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+locally and commit the updated `man/` and `NAMESPACE` files.
 
 ### Version Not Incremented
 
@@ -772,20 +785,26 @@ structure, workflows, and configuration files. When making changes:
 3.  **ALWAYS** establish value-based unit tests (snapshot or explicit
     value tests) BEFORE modifying functions
 4.  **ALWAYS** write tidy, clean, and well-organized code
-5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
-    comments
+5.  **ALWAYS** run
+    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+    after modifying roxygen2 comments
 6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
 7.  **ALWAYS** increment dev version number to be one ahead of main
     branch before requesting PR review
 8.  **ALWAYS** update NEWS.md for user-facing changes
-9.  **ALWAYS** run tests before committing (`devtools::test()`)
+9.  **ALWAYS** run tests before committing
+    ([`devtools::test()`](https://devtools.r-lib.org/reference/test.html))
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
-11. **ALWAYS** run `devtools::document()` before requesting PR review
-12. **ALWAYS** make sure `devtools::check()` passes before requesting PR
-    review
-13. **ALWAYS** make sure `devtools::spell_check()` passes before
-    requesting PR review
+11. **ALWAYS** run
+    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
+    before requesting PR review
+12. **ALWAYS** make sure
+    [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
+    passes before requesting PR review
+13. **ALWAYS** make sure
+    [`devtools::spell_check()`](https://devtools.r-lib.org/reference/spell_check.html)
+    passes before requesting PR review
 14. **ALWAYS** run
     [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
     before requesting PR review to ensure the pkgdown site builds
