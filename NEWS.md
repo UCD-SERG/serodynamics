@@ -1,5 +1,10 @@
 # serodynamics (development version)
 
+* Re-assign reviewers to a PR's human assignees (filtered via
+  `type == "User"`) when Claude pushes commits during a `@claude` or
+  `Claude Code Review` run; if Claude makes no commits, the original
+  reviewer set is restored as before. Detected by comparing the PR's
+  head SHA before and after the Claude step (#210).
 * Stopped deleting prior Claude review comments at the start of each
   `Claude Code Review` run, so reviews posted by `@claude review` invocations
   are preserved across subsequent pushes instead of being wiped when the
