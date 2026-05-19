@@ -17,6 +17,7 @@ SHA
 TSI
 Vectorization
 Wasserstein
+allowlist
 assignees
 behaviour
 biomarker
@@ -56,6 +57,7 @@ strat
 stratifications
 tbl
 testthat
+toolchain
 unstratified
 vh
 wishdf

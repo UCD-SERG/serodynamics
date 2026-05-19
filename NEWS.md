@@ -1,5 +1,13 @@
 # serodynamics (development version)
 
+* Expanded what the `Claude Code` (`@claude`) workflow can do:
+  - Install the R toolchain (R, JAGS, package dependencies, `devtools`,
+    `roxygen2`) and allow `Rscript`, `R`, and `R CMD` invocations, so
+    requests that need package-maintenance commands (e.g.
+    `devtools::document()`) succeed instead of being patched by hand.
+  - Grant `issues: write` and allow `gh issue` invocations so Claude
+    can file follow-up issues for work deferred out of the current PR
+    instead of burying it in a comment.
 * Re-assign reviewers to a PR's human assignees (filtered via
   `type == "User"`) when Claude pushes commits during a `@claude` or
   `Claude Code Review` run; if Claude makes no commits, the original
