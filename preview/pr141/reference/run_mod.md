@@ -32,6 +32,7 @@ run_mod(
   strat = NA,
   with_post = FALSE,
   with_pop_params = FALSE,
+  preclogy_per_iso = FALSE,
   ...
 )
 ```
@@ -91,10 +92,21 @@ run_mod(
   entitled `population_params`. Excluded by default. Note: These objects
   can be large.
 
+- preclogy_per_iso:
+
+  A [logical](https://rdrr.io/r/base/logical.html) value. When `TRUE`
+  and `with_pop_params` is also `TRUE`, the `Parameter` column for
+  `prec.logy` rows in `population_params` will contain the
+  antigen/isotype label (e.g., `"HlyE_IgA"`) rather than the constant
+  `"prec.logy"`. This allows grouping by `Parameter` to obtain
+  per-isotype precision estimates directly. Default is `FALSE` (all
+  `prec.logy` rows share `Parameter = "prec.logy"`; the `Iso_type`
+  column distinguishes isotypes).
+
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -300,7 +312,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 19 04:06:13 2026
+#> Welcome to JAGS 4.3.2 on Tue May 19 18:17:11 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -326,7 +338,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -335,7 +346,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue May 19 04:07:20 2026
+#> Welcome to JAGS 4.3.2 on Tue May 19 18:18:15 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
