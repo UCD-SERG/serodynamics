@@ -15,6 +15,7 @@ run_mod(
   strat = NA,
   with_post = FALSE,
   with_pop_params = FALSE,
+  preclogy_per_iso = FALSE,
   ...
 )
 }
@@ -47,6 +48,14 @@ Note: These objects can be large.}
 level parameters should be included as an attribute entitled
 \code{population_params}. Excluded by default.
 Note: These objects can be large.}
+
+\item{preclogy_per_iso}{A \link{logical} value. When \code{TRUE} and \code{with_pop_params}
+is also \code{TRUE}, the \code{Parameter} column for \code{prec.logy} rows in
+\code{population_params} will contain the antigen/isotype label (e.g.,
+\code{"HlyE_IgA"}) rather than the constant \code{"prec.logy"}. This allows grouping
+by \code{Parameter} to obtain per-isotype precision estimates directly. Default
+is \code{FALSE} (all \code{prec.logy} rows share \code{Parameter = "prec.logy"}; the
+\code{Iso_type} column distinguishes isotypes).}
 
 \item{...}{
   Arguments passed on to \code{\link{prep_priors}}

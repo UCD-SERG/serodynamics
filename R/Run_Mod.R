@@ -26,10 +26,17 @@
 #' returned `sr_model` tibble
 #' (see `Value` section below for details).
 #' Note: These objects can be large.
-#' @param with_pop_params A [logical] value specifying whether population 
-#' level parameters should be included as an attribute entitled 
+#' @param with_pop_params A [logical] value specifying whether population
+#' level parameters should be included as an attribute entitled
 #' `population_params`. Excluded by default.
 #' Note: These objects can be large.
+#' @param preclogy_per_iso A [logical] value. When `TRUE` and `with_pop_params`
+#' is also `TRUE`, the `Parameter` column for `prec.logy` rows in
+#' `population_params` will contain the antigen/isotype label (e.g.,
+#' `"HlyE_IgA"`) rather than the constant `"prec.logy"`. This allows grouping
+#' by `Parameter` to obtain per-isotype precision estimates directly. Default
+#' is `FALSE` (all `prec.logy` rows share `Parameter = "prec.logy"`; the
+#' `Iso_type` column distinguishes isotypes).
 #' @returns An `sr_model` class object: a subclass of [tibble::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
 #' parameters, conditional on the provided input `data`, 
@@ -91,6 +98,7 @@ run_mod <- function(data,
                     strat = NA,
                     with_post = FALSE,
                     with_pop_params = FALSE,
+                    preclogy_per_iso = FALSE,
                     ...) {
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
@@ -180,10 +188,25 @@ run_mod <- function(data,
     # Unpacking the mcmc object
     jags_unpacked <- unpack_jags(jags_packed)
     
-    # Merging isodat in to ensure we are classifying antigen_iso. 
-    jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat, 
+    # Merging isodat in to ensure we are classifying antigen_iso.
+    jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat,
                                       by = "Subnum")
-    
+
+    # Optionally relabel prec.logy Parameter by isotype so that grouping by
+    # Parameter in population_params distinguishes per-isotype precision.
+    if (with_pop_params && preclogy_per_iso) {
+      jags_unpacked <- jags_unpacked |>
+        dplyr::mutate(
+          Param = dplyr::if_else(
+            .data$.is_population_parameter &
+              .data$Subject == "prec.logy" &
+              !is.na(.data$Iso_type),
+            .data$Iso_type,
+            .data$Param
+          )
+        )
+    }
+
     # Adding in ID name
     ids <- tibble::tibble(
       Subject_mcmc = as.character(attr(longdata, "ids")),

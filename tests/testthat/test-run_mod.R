@@ -103,7 +103,7 @@ test_that(
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse")
+      expect_snapshot_value(style = "deparse", variant = r46_variant())
     
     results |>
       expect_snapshot_data(
@@ -148,9 +148,9 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals", 
+      rlist::list.remove(c("row.names", "fitted_residuals",
                            "population_params")) |>
-      expect_snapshot_value(style = "deparse")
+      expect_snapshot_value(style = "deparse", variant = r46_variant())
     
     results |>
       expect_snapshot_data(

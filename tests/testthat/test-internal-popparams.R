@@ -181,6 +181,50 @@ test_that("ex_popparams excludes population parameters", {
   expect_false(".is_population_parameter" %in% names(result))
 })
 
+test_that("preclogy_per_iso relabels prec.logy Parameter by Iso_type", {
+  withr::local_seed(42)
+  # Simulate the data shape that exists in Run_Mod.R after the iso_dat join
+  # but before the rename of Param → Parameter.
+  mock_unpacked <- tibble::tibble(
+    Iteration = rep(1:3, 4),
+    Chain = 1L,
+    Param = c(
+      rep("prec.logy", 3), rep("prec.logy", 3),
+      rep("y0", 3),        rep("y0", 3)
+    ),
+    Subject = c(
+      rep("prec.logy", 3), rep("prec.logy", 3),
+      rep("1", 3),         rep("2", 3)
+    ),
+    Iso_type = c(
+      rep("HlyE_IgA", 3), rep("HlyE_IgG", 3),
+      rep("HlyE_IgA", 3), rep("HlyE_IgA", 3)
+    ),
+    value = rnorm(12),
+    .is_population_parameter = c(rep(TRUE, 6), rep(FALSE, 6))
+  )
+
+  # Apply the preclogy_per_iso transformation (mirrors Run_Mod.R logic)
+  result <- mock_unpacked |>
+    dplyr::mutate(
+      Param = dplyr::if_else(
+        .data$.is_population_parameter &
+          .data$Subject == "prec.logy" &
+          !is.na(.data$Iso_type),
+        .data$Iso_type,
+        .data$Param
+      )
+    )
+
+  preclogy_rows <- result[result$.is_population_parameter, ]
+  # Each prec.logy row should now carry its isotype as the Param label
+  expect_setequal(unique(preclogy_rows$Param), c("HlyE_IgA", "HlyE_IgG"))
+
+  # Individual-level rows are unchanged
+  ind_rows <- result[!result$.is_population_parameter, ]
+  expect_true(all(ind_rows$Param == "y0"))
+})
+
 test_that("prep_popparams and ex_popparams are complementary", {
   withr::local_seed(42)
   test_data <- tibble::tibble(
