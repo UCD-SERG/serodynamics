@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 07:24:10 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 08:27:59 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 07:24:22 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 08:28:12 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 07:24:24 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 08:28:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
