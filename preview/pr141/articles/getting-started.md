@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/run_mod.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 04:19:58 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 06:14:32 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 04:20:10 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 06:14:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 20 04:20:12 2026
+#> Welcome to JAGS 4.3.2 on Wed May 20 06:14:47 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -489,11 +489,11 @@ fitted_stratified <- run_mod(
 ## Next Steps
 
 - See the [function
-  reference](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/index.md)
+  reference](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr141/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
