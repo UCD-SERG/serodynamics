@@ -104,7 +104,11 @@ run_mod <- function(data,
   if (is.na(strat)) {
     strat_list <- "None"
   } else {
-    strat_list <- unique(data[[strat]])
+    strat_list <- if (is.factor(data[[strat]])) {
+      as.character(unique(data[[strat]]))   # factor → character labels
+    } else {
+      unique(data[[strat]])                 # preserve character/numeric type
+    }
   }
 
   ## Creating a shell to output results
