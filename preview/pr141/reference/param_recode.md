@@ -1,7 +1,7 @@
 # Parameter recode
 
-`param_recode` recodes character numbers as their corresponding
-parameter.
+`param_recode()` recodes JAGS curve-parameter indices (1-5) as their
+log-scale parameter labels (e.g., `"log(y0)"`, `"log(alpha)"`).
 
 ## Usage
 
@@ -14,11 +14,12 @@ param_recode(x)
 - x:
 
   A [vector](https://rdrr.io/r/base/vector.html) of character numbers
-  that represent parameters.
+  ("1"-"5") that represent parameters.
 
 ## Value
 
-A [vector](https://rdrr.io/r/base/vector.html) with recoded values.
+A [vector](https://rdrr.io/r/base/vector.html) of log-scale parameter
+labels.
 
 ## Author
 
