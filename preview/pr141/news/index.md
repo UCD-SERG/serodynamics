@@ -78,6 +78,9 @@
   workflow to automate environment setup for GitHub Copilot coding
   agent, preinstalling R, JAGS, and all dependencies.
 
+- Added reference to UCD-SeRG Lab Manual in copilot-instructions for
+  lab-wide best practices guidance.
+
 - Consolidated OS-specific snapshot variants: removed redundant Linux
   and Windows snapshot directories (which were identical), keeping only
   base snapshots and darwin-specific variants for macOS platform
