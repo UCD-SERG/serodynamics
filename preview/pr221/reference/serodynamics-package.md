@@ -1,4 +1,4 @@
-# serodynamics: What the Package Does (One Line, Title Case)
+# serodynamics: Modeling Antibody Dynamics for Seroepidemiologic Analysis
 
 Modeling longitudinal immune seroresponses to pathogens.
 
