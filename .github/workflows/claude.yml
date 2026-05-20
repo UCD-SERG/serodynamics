@@ -117,11 +117,7 @@ jobs:
 
       - name: Run Claude Code
         id: claude
-        # TEMP: swapped @v1 → @beta to surface the real underlying error
-        # being masked by the AJV obfuscation in @v1 (see upstream
-        # anthropics/claude-code-action#892 comment by ovceev 2026-03-10).
-        # Revert to @v1 once we have a clear error from the next trigger.
-        uses: anthropics/claude-code-action@beta
+        uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
@@ -137,7 +133,13 @@ jobs:
           #     styler::style_pkg(), R CMD ...) — toolchain is installed above;
           #   * file follow-up issues for work deferred out of the current PR
           #     (gh issue create / comment / edit / view / list).
-          claude_args: '--allowed-tools "Bash(Rscript:*)" "Bash(R:*)" "Bash(R CMD:*)" "Bash(gh issue:*)"'
+          # Pin the model explicitly: the action's default points at
+          # claude-sonnet-4-20250514, which is retired and returns 404 from
+          # the API. The 404 in turn manifests as the obfuscated AJV crash
+          # in sdk.mjs documented in upstream issue #892. Once that issue
+          # is resolved (or the action's default is bumped), --model here
+          # can be dropped.
+          claude_args: '--model claude-opus-4-7 --allowed-tools "Bash(Rscript:*)" "Bash(R:*)" "Bash(R CMD:*)" "Bash(gh issue:*)"'
 
           # Surface the spawned `claude` CLI's stderr in the Actions log so
           # SDK init crashes (e.g. run 26144000481) show a real error
