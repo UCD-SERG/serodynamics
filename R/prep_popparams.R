@@ -11,6 +11,6 @@
 prep_popparams <- function(x) {
   x |>
     dplyr::filter(.data$.is_population_parameter) |>
-    dplyr::rename(Population_Parameter = Subject) |>
-    dplyr::select(-.is_population_parameter)
+    dplyr::rename("Population_Parameter" = "Subject") |>
+    dplyr::select(-c(".is_population_parameter"))
 }
