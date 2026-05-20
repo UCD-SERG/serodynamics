@@ -142,7 +142,7 @@ Longitudinal serologic case data describe how antibodies rise and fall
 after confirmed infection in individual patients. Users import their
 data in standard tabular format (CSV or RDS) as a long form data set and
 apply
-[`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/as_case_data.md),
+[`as_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/as_case_data.md),
 which converts the dataset into a validated `case_data` object (a
 subclass of
 [`tibble::tbl_df`](https://tibble.tidyverse.org/reference/tbl_df-class.html)
@@ -151,7 +151,7 @@ present and in the correct format. The required variables are: a unique
 participant identifier (`id`), time since infection onset measured in
 days (`timeindays`), quantitative antibody response values (`result`),
 and an antigen–isotype biomarker label (`antigen_iso`). The
-[`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/as_case_data.md)
+[`as_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/as_case_data.md)
 function detects the required variables or allows users to specify them
 via function arguments. Case data objects can include additional
 variables for stratification, such as age group, infecting serotype, or
@@ -160,7 +160,7 @@ study site.
 #### Simulated Case Data
 
 The
-[`sim_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/sim_case_data.md)
+[`sim_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/sim_case_data.md)
 function generates synthetic longitudinal antibody data from a specified
 set of kinetic curve parameters. This function supports study design
 evaluation, method validation, and pedagogical use. Users define the
@@ -185,7 +185,7 @@ Nepal ([Aiemjoy et al. 2022](#ref-aiemjoy2022); [Garrett et al.
 (`nepal_sees_jags_output`) is also included for rapid demonstration of
 diagnostic and visualisation functions. Additional example files can be
 accessed using the
-[`serodynamics_example()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/serodynamics_example.md)
+[`serodynamics_example()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/serodynamics_example.md)
 function.
 
 ### Inspect and Visualize Data
@@ -203,7 +203,7 @@ before model fitting.
 Two preparatory functions transform data and prior specifications into
 the inputs required for Bayesian MCMC estimation.
 
-[`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_data.md)
+[`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_data.md)
 converts a `case_data` object into the structured list format required
 by JAGS, constructing three-dimensional arrays for antibody levels
 (log-transformed) and sample collection times indexed by subject, visit,
@@ -215,7 +215,7 @@ sampling for a hypothetical new individual from the population
 distribution—the mechanism that generates the population-level kinetic
 parameter draws used by `serocalculator`.
 
-[`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_priors.md)
+[`prep_priors()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_priors.md)
 generates weakly informative prior distributions for population-level
 parameters. Five prior components are specified: hyperprior means for
 the log-transformed population-level parameters (`mu_hyp_param`;
@@ -231,7 +231,7 @@ Further mathematical details are provided in Supplement \[TODO\].
 ### Model Seroresponse
 
 The core modelling function,
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md),
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md),
 fits the two-phase Bayesian hierarchical model using MCMC sampling via
 JAGS, interfaced through the `runjags` package. The model captures five
 key parameters per individual $`i`$ and antigen–isotype combination
@@ -275,50 +275,50 @@ n.d.](#ref-lee_inprep)).
 
 `serodynamics` provides four built-in diagnostic visualization functions
 to assess MCMC convergence:
-[`plot_jags_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_trace.md)
+[`plot_jags_trace()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_trace.md)
 for visual inspection of chain mixing across all monitored parameters;
-[`plot_jags_dens()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_dens.md)
+[`plot_jags_dens()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_dens.md)
 for posterior density plots to assess distributional shape and
 multimodality;
-[`plot_jags_Rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_Rhat.md)
+[`plot_jags_Rhat()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_Rhat.md)
 for the potential scale reduction factor ($`\hat{R}`$), with values
 below 1.05 indicating adequate convergence ([Vehtari et al.
 2021](#ref-vehtari2021)); and
-[`plot_jags_effect()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_effect.md)
+[`plot_jags_effect()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_effect.md)
 for effective sample size plots to evaluate sampling efficiency.
 Diagnostic functions return stratified outputs if a stratification
 variable is specified in
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md).
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md).
 
 ### Postprocess and Export Results
 
 The output from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
 is an `sr_model` object: a subclass of
 [`tibble::tbl_df`](https://tibble.tidyverse.org/reference/tbl_df-class.html)
 containing MCMC samples from the joint posterior distribution, with
 columns for iteration, chain, parameter, antigen–isotype, stratification
 level, subject identifier, and parameter value. Fitted values and
 residuals are computed automatically when
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
 completes, via
-[`calc_fit_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/calc_fit_mod.md),
+[`calc_fit_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/calc_fit_mod.md),
 and stored as attributes of the output object alongside the prior
 specification used in model fitting.
 
 The
-[`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
+[`post_summ()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
 function produces a summary table of posterior estimates including mean,
 median, standard deviation, and credible intervals for all
 population-level parameters. The
-[`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_predicted_curve.md)
+[`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_predicted_curve.md)
 function generates individual-level predicted antibody trajectories with
 median curves and 95% credible interval ribbons overlaid on observed
 data points, supporting visualisation of multiple individuals and
 antigen–isotype combinations with optional faceting.
 
 For downstream seroincidence estimation,
-[`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
+[`postprocess_jags_output()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
 extracts posterior predictive draws for the `newperson` dummy
 individual—representing a hypothetical new individual from the
 population—and reformats them into a `curve_params` object with columns
@@ -354,7 +354,7 @@ autoplot(nepal_sees)
 
 We then fit the two-phase hierarchical model by specifying MCMC settings
 and calling
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md).
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md).
 In this example, we fit models for HlyE IgA and IgG responses with four
 parallel chains:
 
@@ -374,9 +374,9 @@ hardware. For initial exploration, users can reduce these values for
 shorter runs. The package also includes a pre-fitted model output
 (`nepal_sees_jags_output`), allowing users to explore diagnostic and
 visualization functions such as
-[`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
+[`post_summ()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
 and
-[`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_predicted_curve.md)
+[`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_predicted_curve.md)
 without running the full model.
 
 After fitting, we assess convergence diagnostics and summarize posterior
@@ -402,12 +402,12 @@ plot_predicted_curve(
 ```
 
 Model outputs from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
+[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.md)
 can be summarised and visualised using the corresponding
-[`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
+[`post_summ()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.md)
 and diagnostic plotting methods, respectively. The estimated
 population-level seroresponse parameters can then be exported using
-[`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
+[`postprocess_jags_output()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
 for direct use as `sr_params` input to `serocalculator`, enabling
 seroincidence estimation from cross-sectional serosurvey data ([Lai et
 al. 2025](#ref-lai2025)).
@@ -489,7 +489,7 @@ participant (median and 95% credible interval) with observed data points
 overlaid.
 
 **Figure 2:** \[Future edit: Pipeline demonstration showing
-[`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
+[`postprocess_jags_output()`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.md)
 producing `curve_params` object → input to
 [`serocalculator::est_seroincidence()`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/est_seroincidence.html)
 for downstream seroincidence estimation. To be added once the end-to-end
