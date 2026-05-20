@@ -6,9 +6,8 @@
 #' @param x A [data.frame] with a `.is_population_parameter` variable.
 #' @returns A filtered [data.frame] excluding population parameters.
 #' @keywords internal
-ex_popparams <- function(x) { 
-  x <- x |>
+ex_popparams <- function(x) {
+  x |>
     dplyr::filter(!.data$.is_population_parameter) |>
-    dplyr::select(-dplyr::all_of(".is_population_parameter"))
-  return(x)
-} 
+    dplyr::select(-.is_population_parameter)
+}

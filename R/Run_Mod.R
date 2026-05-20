@@ -138,10 +138,7 @@ run_mod <- function(data,
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
-    nadapt <- nadapt # nr of iterations for adaptation
     nburnin <- nburn # nr of iterations to use for burn-in
-    nmc <- nmc # nr of samples in posterior chains
-    niter <- niter # nr of iterations for posterior sample
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
     tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
@@ -234,8 +231,8 @@ run_mod <- function(data,
       # Drop the temporary Subject (now only used as a fallback for population
       # parameters) and rename Subject_mcmc back to Subject for downstream use.
       dplyr::select(-c("Subnum", "Subject", "Parameter")) |>
-      dplyr::rename(Subject = dplyr::all_of("Subject_mcmc"),
-                    Parameter = dplyr::all_of("Param"))
+      dplyr::rename(Subject = Subject_mcmc,
+                    Parameter = Param)
     
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
@@ -288,7 +285,6 @@ run_mod <- function(data,
     structure(priors = attributes(priorspec)$used_priors)
   
   # Calculating fitted and residuals
-  # Renaming columns using attributes from as_case_data
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
                           original_data = dl_sub)
   jags_out <- jags_out |>

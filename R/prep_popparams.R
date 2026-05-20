@@ -8,10 +8,9 @@
 #' @returns A filtered [data.frame] with the `Subject` variable renamed to
 #' `Population_Parameter`.
 #' @keywords internal
-prep_popparams <- function(x) { 
-  x <- x |>
+prep_popparams <- function(x) {
+  x |>
     dplyr::filter(.data$.is_population_parameter) |>
-    dplyr::rename(Population_Parameter = dplyr::all_of("Subject")) |>
-    dplyr::select(-dplyr::all_of(".is_population_parameter"))
-  return(x)
-} 
+    dplyr::rename(Population_Parameter = Subject) |>
+    dplyr::select(-.is_population_parameter)
+}

@@ -108,5 +108,5 @@ unpack_jags <- function(data) {
     dplyr::mutate(jags_preclogy,      .is_population_parameter = TRUE)
   )
 
-  return(jags_unpack_bind)
+  jags_unpack_bind
 }
