@@ -117,7 +117,11 @@ jobs:
 
       - name: Run Claude Code
         id: claude
-        uses: anthropics/claude-code-action@v1
+        # TEMP: swapped @v1 → @beta to surface the real underlying error
+        # being masked by the AJV obfuscation in @v1 (see upstream
+        # anthropics/claude-code-action#892 comment by ovceev 2026-03-10).
+        # Revert to @v1 once we have a clear error from the next trigger.
+        uses: anthropics/claude-code-action@beta
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
 
