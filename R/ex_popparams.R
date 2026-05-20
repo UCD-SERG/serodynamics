@@ -9,6 +9,6 @@
 ex_popparams <- function(x) { 
   x <- x |>
     dplyr::filter(!.data$.is_population_parameter) |>
-    dplyr::select(-.is_population_parameter)
+    dplyr::select(-dplyr::all_of(".is_population_parameter"))
   return(x)
 } 
