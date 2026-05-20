@@ -135,6 +135,11 @@ jobs:
           #     (gh issue create / comment / edit / view / list).
           claude_args: '--allowed-tools "Bash(Rscript:*)" "Bash(R:*)" "Bash(R CMD:*)" "Bash(gh issue:*)"'
 
+          # Surface the spawned `claude` CLI's stderr in the Actions log so
+          # SDK init crashes (e.g. run 26144000481) show a real error
+          # instead of a minified-JS stack frame from sdk.mjs.
+          show_full_output: true
+
       - name: Re-assign reviewers after Claude finishes
         if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
         env:
