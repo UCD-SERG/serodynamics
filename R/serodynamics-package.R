@@ -16,6 +16,7 @@
 #' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 vars
 #' @importFrom rlang .data
+#' @importFrom rlang .env
 #' @importFrom runjags run.jags
 #' @importFrom serocalculator get_biomarker_names
 #' @importFrom serocalculator get_values

@@ -70,7 +70,6 @@ sim_case_data <- function(
         "iter"
       )
     ) |>
-    rowwise() |>
     mutate(
       value = ab(
         t = .data$obs_time,
@@ -80,8 +79,7 @@ sim_case_data <- function(
         alpha = .data$alpha,
         shape = .data$r
       )
-    ) |>
-    ungroup()
+    )
 
   to_return <-
     biomarker_level_data |>

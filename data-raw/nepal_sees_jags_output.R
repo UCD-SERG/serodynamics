@@ -9,12 +9,13 @@ nepal_sees_jags_output <- run_mod(
   nmc = 500,
   niter = 1000, # Number of iterations
   strat = "bldculres", # Stratification
-  with_post = FALSE,
-  include_subs = TRUE
+  with_post = FALSE
 )
 
-# Filtering to keep only 2 subjects + newperson
-nepal_sees_jags_output$curve_params <- nepal_sees_jags_output$curve_params |>
-  filter(Subject %in% c("newperson", "sees_npl_1", "sees_npl_2"))
+# Filtering to keep only 2 subjects + newperson + all subjects with visit_num 5
+subjects_v5 <- unique(dataset$id[dataset$visit_num == 5])
+keep_subjects <- unique(c("newperson", "sees_npl_1", "sees_npl_2", subjects_v5))
+nepal_sees_jags_output <- nepal_sees_jags_output |>
+  filter(Subject %in% keep_subjects)
 
 usethis::use_data(nepal_sees_jags_output, overwrite = TRUE)

@@ -32,16 +32,16 @@
 #' @example inst/examples/examples-plot_jags_tracedx.R
 
 plot_jags_trace <- function(data,
-                            iso = unique(data$curve_params$Iso_type),
-                            param = unique(data$curve_params$Parameter_sub),
-                            strat = unique(data$curve_params$Stratification)) {
-  visualize_jags <- data[["curve_params"]]
+                            iso = unique(data$Iso_type),
+                            param = unique(data$Parameter),
+                            strat = unique(data$Stratification)) {
+
   attributes_jags <- data[["attributes"]]
 
   trace_strat_list <- list()
   for (i in strat) {
 
-    visualize_jags_sub <- visualize_jags |>
+    visualize_jags_sub <- data |>
       dplyr::filter(.data$Stratification == i) |>
       dplyr::filter(.data$Subject == "newperson")
 
@@ -55,12 +55,12 @@ plot_jags_trace <- function(data,
       # Will not loop through parameters, as we may want each to show on the
       # same plot by default.
       visualize_jags_plot <- visualize_jags_plot |>
-        dplyr::filter(.data$Parameter_sub %in% param)
+        dplyr::filter(.data$Parameter %in% param)
 
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
-                                         .data$Parameter_sub, ", strat = ",
+                                         .data$Parameter, ", strat = ",
                                          i))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),

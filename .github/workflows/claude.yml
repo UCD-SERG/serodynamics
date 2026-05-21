@@ -1,0 +1,190 @@
+name: Claude Code
+
+on:
+  issue_comment:
+    types: [created]
+  pull_request_review_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned]
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  claude:
+    if: |
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'pull_request_review' && contains(github.event.review.body, '@claude')) ||
+      (github.event_name == 'issues' && (contains(github.event.issue.body, '@claude') || contains(github.event.issue.title, '@claude')))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write # so Claude can open follow-up issues for deferred work
+      id-token: write
+      actions: read # Required for Claude to read CI results on PRs
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # R toolchain so Claude can run common package-maintenance commands
+      # (e.g. devtools::document(), styler::style_pkg(), pkgdown builds,
+      # spelling::spell_check_package(), lintr, R CMD check).
+      # Adds ~1–3 min when the dependency cache is warm; the first run after
+      # a lockfile change is slower. JAGS is required because `runjags` is in
+      # Imports and load-all/document needs the package to be loadable.
+      # System libs mirror copilot-setup-steps.yml so packages that source-
+      # build (textshaping, ragg, curl, xml2, ...) don't fail unpredictably.
+      - name: Install system dependencies (Ubuntu)
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            jags \
+            libcurl4-openssl-dev \
+            libssl-dev \
+            libxml2-dev \
+            libfontconfig1-dev \
+            libharfbuzz-dev \
+            libfribidi-dev \
+            libfreetype6-dev \
+            libpng-dev \
+            libtiff5-dev \
+            libjpeg-dev
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          use-public-rspm: true
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          extra-packages: |
+            any::devtools
+            any::roxygen2
+            any::rjags
+            any::rmarkdown
+            any::lintr
+            any::spelling
+            any::rcmdcheck
+          needs: check
+
+      - name: Resolve PR number (if any)
+        id: pr
+        env:
+          ISSUE_HAS_PR: ${{ github.event.issue.pull_request != null }}
+        run: |
+          case "${{ github.event_name }}" in
+            issue_comment)
+              if [ "$ISSUE_HAS_PR" = "true" ]; then
+                echo "number=${{ github.event.issue.number }}" >> "$GITHUB_OUTPUT"
+              fi
+              ;;
+            pull_request_review_comment|pull_request_review)
+              echo "number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+              ;;
+          esac
+
+      - name: Stash and clear reviewers; record starting head SHA
+        id: stash
+        if: steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+        run: |
+          PR_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER")
+          HEAD_SHA=$(echo "$PR_JSON" | jq -r '.head.sha')
+          echo "head_before=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "Starting PR head: $HEAD_SHA"
+
+          REVIEWERS_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers")
+          USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
+          TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
+          echo "users=$USERS" >> "$GITHUB_OUTPUT"
+          echo "teams=$TEAMS" >> "$GITHUB_OUTPUT"
+          echo "Stashed users: $USERS"
+          echo "Stashed teams: $TEAMS"
+          if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X DELETE \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+          fi
+
+      - name: Run Claude Code
+        id: claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+          # This is an optional setting that allows Claude to read CI results on PRs
+          additional_permissions: |
+            actions: read
+
+          # Optional: Give a custom prompt to Claude. If this is not specified, Claude will perform the instructions specified in the comment that tagged it.
+          # prompt: 'Update the pull request description to include a summary of changes.'
+
+          # Extend the Bash allowlist so Claude can:
+          #   * run package-maintenance R commands (devtools::document(),
+          #     styler::style_pkg(), R CMD ...) — toolchain is installed above;
+          #   * file follow-up issues for work deferred out of the current PR
+          #     (gh issue create / comment / edit / view / list).
+          # Pin the model explicitly: the action's default points at
+          # claude-sonnet-4-20250514, which is retired and returns 404 from
+          # the API. The 404 in turn manifests as the obfuscated AJV crash
+          # in sdk.mjs documented in upstream issue #892. Once that issue
+          # is resolved (or the action's default is bumped), --model here
+          # can be dropped.
+          claude_args: '--model claude-opus-4-7 --allowed-tools "Bash(Rscript:*)" "Bash(R:*)" "Bash(R CMD:*)" "Bash(gh issue:*)"'
+
+          # Surface the spawned `claude` CLI's stderr in the Actions log so
+          # SDK init crashes (e.g. run 26144000481) show a real error
+          # instead of a minified-JS stack frame from sdk.mjs.
+          show_full_output: true
+
+      - name: Re-assign reviewers after Claude finishes
+        if: always() && steps.stash.outcome == 'success' && steps.pr.outputs.number != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ steps.pr.outputs.number }}
+          HEAD_BEFORE: ${{ steps.stash.outputs.head_before }}
+          USERS_BEFORE: ${{ steps.stash.outputs.users }}
+          TEAMS_BEFORE: ${{ steps.stash.outputs.teams }}
+        run: |
+          PR_JSON=$(gh api "repos/${{ github.repository }}/pulls/$PR_NUMBER")
+          HEAD_AFTER=$(echo "$PR_JSON" | jq -r '.head.sha')
+          echo "Head before Claude: $HEAD_BEFORE"
+          echo "Head after Claude:  $HEAD_AFTER"
+
+          if [ "$HEAD_AFTER" = "$HEAD_BEFORE" ]; then
+            # No new commits — restore the original reviewer set.
+            USERS=${USERS_BEFORE:-[]}
+            TEAMS=${TEAMS_BEFORE:-[]}
+            if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+              echo "Claude made no commits and no reviewers were originally requested."
+              exit 0
+            fi
+            echo "Claude made no commits; restoring original reviewers."
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X POST \
+                  "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+            exit 0
+          fi
+
+          # Claude added commits — request review only from human assignees.
+          ASSIGNEES=$(echo "$PR_JSON" | jq -c '[.assignees[] | select(.type == "User") | .login]')
+          echo "Human assignees: $ASSIGNEES"
+          if [ "$ASSIGNEES" = "[]" ]; then
+            echo "Claude added commits but PR has no human assignees; leaving reviewers cleared."
+            exit 0
+          fi
+          jq -n --argjson users "$ASSIGNEES" '{reviewers: $users}' \
+            | gh api -X POST \
+                "repos/${{ github.repository }}/pulls/$PR_NUMBER/requested_reviewers" \
+                --input - || true
