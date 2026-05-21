@@ -1,0 +1,985 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+\PassOptionsToPackage{dvipsnames,svgnames,x11names}{xcolor}
+%
+\documentclass[
+]{article}
+
+\usepackage{amsmath,amssymb}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+\usepackage{lmodern}
+\ifPDFTeX\else  
+    % xetex/luatex font selection
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\setcounter{secnumdepth}{5}
+% Make \paragraph and \subparagraph free-standing
+\makeatletter
+\ifx\paragraph\undefined\else
+  \let\oldparagraph\paragraph
+  \renewcommand{\paragraph}{
+    \@ifstar
+      \xxxParagraphStar
+      \xxxParagraphNoStar
+  }
+  \newcommand{\xxxParagraphStar}[1]{\oldparagraph*{#1}\mbox{}}
+  \newcommand{\xxxParagraphNoStar}[1]{\oldparagraph{#1}\mbox{}}
+\fi
+\ifx\subparagraph\undefined\else
+  \let\oldsubparagraph\subparagraph
+  \renewcommand{\subparagraph}{
+    \@ifstar
+      \xxxSubParagraphStar
+      \xxxSubParagraphNoStar
+  }
+  \newcommand{\xxxSubParagraphStar}[1]{\oldsubparagraph*{#1}\mbox{}}
+  \newcommand{\xxxSubParagraphNoStar}[1]{\oldsubparagraph{#1}\mbox{}}
+\fi
+\makeatother
+
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{241,243,245}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.40,0.45,0.13}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\BuiltInTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\ExtensionTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.28,0.35,0.67}{#1}}
+\newcommand{\ImportTok}[1]{\textcolor[rgb]{0.00,0.46,0.62}{#1}}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.68,0.00,0.00}{#1}}
+\newcommand{\RegionMarkerTok}[1]{\textcolor[rgb]{0.00,0.23,0.31}{#1}}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.07,0.07,0.07}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.13,0.47,0.30}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.37,0.37,0.37}{\textit{#1}}}
+
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}\usepackage{longtable,booktabs,array}
+\usepackage{calc} % for calculating minipage widths
+% Correct order of tables after \paragraph or \subparagraph
+\usepackage{etoolbox}
+\makeatletter
+\patchcmd\longtable{\par}{\if@noskipsec\mbox{}\fi\par}{}{}
+\makeatother
+% Allow footnotes in longtable head/foot
+\IfFileExists{footnotehyper.sty}{\usepackage{footnotehyper}}{\usepackage{footnote}}
+\makesavenoteenv{longtable}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+% definitions for citeproc citations
+\NewDocumentCommand\citeproctext{}{}
+\NewDocumentCommand\citeproc{mm}{%
+  \begingroup\def\citeproctext{#2}\cite{#1}\endgroup}
+\makeatletter
+ % allow citations to break across lines
+ \let\@cite@ofmt\@firstofone
+ % avoid brackets around text for \cite:
+ \def\@biblabel#1{}
+ \def\@cite#1#2{{#1\if@tempswa , #2\fi}}
+\makeatother
+\newlength{\cslhangindent}
+\setlength{\cslhangindent}{1.5em}
+\newlength{\csllabelwidth}
+\setlength{\csllabelwidth}{3em}
+\newenvironment{CSLReferences}[2] % #1 hanging-indent, #2 entry-spacing
+ {\begin{list}{}{%
+  \setlength{\itemindent}{0pt}
+  \setlength{\leftmargin}{0pt}
+  \setlength{\parsep}{0pt}
+  % turn on hanging indent if param 1 is 1
+  \ifodd #1
+   \setlength{\leftmargin}{\cslhangindent}
+   \setlength{\itemindent}{-1\cslhangindent}
+  \fi
+  % set entry spacing
+  \setlength{\itemsep}{#2\baselineskip}}}
+ {\end{list}}
+\usepackage{calc}
+\newcommand{\CSLBlock}[1]{\hfill\break\parbox[t]{\linewidth}{\strut\ignorespaces#1\strut}}
+\newcommand{\CSLLeftMargin}[1]{\parbox[t]{\csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLRightInline}[1]{\parbox[t]{\linewidth - \csllabelwidth}{\strut#1\strut}}
+\newcommand{\CSLIndent}[1]{\hspace{\cslhangindent}#1}
+
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\AtBeginDocument{%
+\ifdefined\contentsname
+  \renewcommand*\contentsname{Table of contents}
+\else
+  \newcommand\contentsname{Table of contents}
+\fi
+\ifdefined\listfigurename
+  \renewcommand*\listfigurename{List of Figures}
+\else
+  \newcommand\listfigurename{List of Figures}
+\fi
+\ifdefined\listtablename
+  \renewcommand*\listtablename{List of Tables}
+\else
+  \newcommand\listtablename{List of Tables}
+\fi
+\ifdefined\figurename
+  \renewcommand*\figurename{Figure}
+\else
+  \newcommand\figurename{Figure}
+\fi
+\ifdefined\tablename
+  \renewcommand*\tablename{Table}
+\else
+  \newcommand\tablename{Table}
+\fi
+}
+\@ifpackageloaded{float}{}{\usepackage{float}}
+\floatstyle{ruled}
+\@ifundefined{c@chapter}{\newfloat{codelisting}{h}{lop}}{\newfloat{codelisting}{h}{lop}[chapter]}
+\floatname{codelisting}{Listing}
+\newcommand*\listoflistings{\listof{codelisting}{List of Listings}}
+\makeatother
+\makeatletter
+\makeatother
+\makeatletter
+\@ifpackageloaded{caption}{}{\usepackage{caption}}
+\@ifpackageloaded{subcaption}{}{\usepackage{subcaption}}
+\makeatother
+
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+\usepackage{bookmark}
+
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\urlstyle{same} % disable monospaced font for URLs
+\hypersetup{
+  pdftitle={Hierarchical Bayesian Modeling of Antibody Kinetics: Extensions and Refinements},
+  pdfauthor={Kwan Ho Lee},
+  colorlinks=true,
+  linkcolor={blue},
+  filecolor={Maroon},
+  citecolor={Blue},
+  urlcolor={Blue},
+  pdfcreator={LaTeX via pandoc}}
+
+
+\title{Hierarchical Bayesian Modeling of Antibody Kinetics: Extensions
+and Refinements}
+\author{Kwan Ho Lee}
+\date{2025-09-03}
+
+\begin{document}
+\maketitle
+
+
+\section{Overview}\label{overview}
+
+\begin{itemize}
+\tightlist
+\item
+  Incorporates feedback from Dr.~Morrison, Dr.~Aiemjoy, and lab
+  discussion
+\item
+  Focus exclusively on (Teunis and Eijkeren 2016) two-phase within-host
+  model
+\item
+  Clarifies full hierarchical Bayesian modeling structure
+\item
+  Explicitly distinguishes between priors, hyperpriors, transformations
+\item
+  Reorders: \textbf{Start from observation model → build upward}
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Big Picture: What Are We
+Modeling?}\label{big-picture-what-are-we-modeling}
+
+We are modeling \textbf{how antibody levels change over time} in
+response to infection, using multiple individuals and multiple
+biomarkers (antigen-isotype combinations, (j = 1, 2, \(\dots\), 10)).
+
+Goals:
+
+\begin{itemize}
+\tightlist
+\item
+  Understand the \textbf{average pattern} for each biomarker
+\item
+  Allow for \textbf{individual-level variation}
+\item
+  \textbf{Share information} across individuals to improve inference
+\end{itemize}
+
+This motivates using a \textbf{hierarchical Bayesian model}.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 1: Observation Model (Data
+Level)}\label{step-1-observation-model-data-level}
+
+Observed (log-transformed) antibody levels:
+
+\begin{equation}\phantomsection\label{eq-1}{
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+}\end{equation}
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(y_{\text{obs},ij}\): Observed antibody level for subject \(i\) and
+  biomarker \(j\)
+\item
+  \(\mu_{\log y,ij}\) is the \textbf{expected log antibody level},
+  computed from the two-phase model using subject-level parameters
+  \(\theta_{ij}\).
+\item
+  \(\theta_{ij}\): Subject-level latent parameters (e.g.,
+  \(y_0, \alpha, \rho\)) used to define the predicted antibody curve
+\item
+  \(\tau_j\): Measurement precision (inverse of variance) specific to
+  biomarker \(j\)
+\end{itemize}
+
+The expression above corresponds to line 54 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=54,]
+\NormalTok{     logy[subj,obs,cur\_antigen\_iso] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dnorm}\NormalTok{(mu.logy[subj,obs,cur\_antigen\_iso], prec.logy[cur\_antigen\_iso])}
+\end{Highlighting}
+\end{Shaded}
+
+Measurement precision prior:
+
+\begin{equation}\phantomsection\label{eq-2}{
+\tau_j \sim \text{Gamma}(a_j, b_j)
+}\end{equation}
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\tau_j\): Precision (inverse of variance) of the measurement noise
+  for biomarker \(j\)
+\item
+  \((a_j, b_j)\): Shape and rate hyperparameters of the Gamma prior for
+  precision, which control its expected value and variability
+\end{itemize}
+
+The expression above corresponds to line 75 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=75,]
+\NormalTok{  prec.logy[cur\_antigen\_iso] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dgamma}\NormalTok{(prec.logy.hyp[cur\_antigen\_iso,}\DecValTok{1}\NormalTok{], prec.logy.hyp[cur\_antigen\_iso,}\DecValTok{2}\NormalTok{])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Parameter Summary}\label{parameter-summary}
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Parameter summary for antibody kinetics
+model.}\label{tbl-param-summary}\tabularnewline
+\toprule\noalign{}
+Symbol & Description \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Symbol & Description \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(\mu_y\) & Antibody production rate (growth phase) \\
+\(\mu_b\) & Pathogen replication rate \\
+\(\gamma\) & Clearance rate (by antibodies) \\
+\(\alpha\) & Antibody decay rate \\
+\(\rho\) & Shape of antibody decay (power-law) \\
+\(t_1\) & Time of peak response \\
+\(y_1\) & Peak antibody concentration \\
+\end{longtable}
+
+\textbf{Note:} Only the first 6 are typically estimated. \(y_1\) is
+derived from the ODE solution at \(t_1\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 2: Within-Host ODE System (Teunis and Eijkeren
+2016)}\label{step-2-within-host-ode-system-teunis2016}
+
+\begin{equation}\phantomsection\label{eq-3}{
+\frac{dy}{dt} = 
+\begin{cases}
+\mu_y y(t), & t \leq t_1 \\
+- \alpha y(t)^\rho, & t > t_1
+\end{cases}
+\quad \text{and} \quad
+\frac{db}{dt} = \mu_b b(t) - \gamma y(t)
+}\end{equation}
+
+\begin{itemize}
+\tightlist
+\item
+  Initial conditions: \(y(0) = y_0\), \(b(0) = b_0\)
+\item
+  Transition at \(t_1\): when \(b(t_1) = 0\)
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 3: Closed-Form
+Solutions}\label{step-3-closed-form-solutions}
+
+\textbf{Antibody concentration:}
+
+\begin{itemize}
+\tightlist
+\item
+  For \(t \leq t_1\): \begin{equation}\phantomsection\label{eq-4}{
+  y(t) = y_0 e^{\mu_y t}
+  }\end{equation}
+\item
+  For \(t \> t_1\): \begin{equation}\phantomsection\label{eq-5}{
+  y(t) = y_1 \left(1 + (\rho-1)\alpha y_1^{\rho-1}(t-t_1)\right)^{-\frac{1}{\rho-1}}
+  }\end{equation}
+\end{itemize}
+
+The expression above corresponds to lines 18-50 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=18,]
+\NormalTok{     mu.logy[subj, obs, cur\_antigen\_iso] }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(}
+        
+        \CommentTok{\# \textasciigrave{}step(x)\textasciigrave{} returns 1 if x \textgreater{}= 0;}
+        \CommentTok{\# here we are determining which phase of infection we are in; }
+        \CommentTok{\# active or recovery;}
+        \CommentTok{\# \textasciigrave{}smpl.t\textasciigrave{} is the time when the blood sample was collected, }
+        \CommentTok{\# relative to estimated start of infection;}
+        \CommentTok{\# so we are determining whether the current observation is after \textasciigrave{}t1\textasciigrave{} }
+        \CommentTok{\# the time when the active infection ended.}
+        \FunctionTok{step}\NormalTok{(t1[subj,cur\_antigen\_iso] }\SpecialCharTok{{-}}\NormalTok{ smpl.t[subj,obs]), }
+        
+        \DocumentationTok{\#\# active infection period:}
+        \CommentTok{\# this is equation 15, case t \textless{}= t\_1, but on a logarithmic scale}
+        \FunctionTok{log}\NormalTok{(y0[subj,cur\_antigen\_iso]) }\SpecialCharTok{+}\NormalTok{ (beta[subj,cur\_antigen\_iso] }\SpecialCharTok{*}\NormalTok{ smpl.t[subj,obs]),}
+        
+        \DocumentationTok{\#\# recovery period:}
+        \CommentTok{\# this is equation 15, case t \textgreater{} t\_1}
+        \DecValTok{1} \SpecialCharTok{/}\NormalTok{ (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ shape[subj,cur\_antigen\_iso]) }\SpecialCharTok{*}
+           \FunctionTok{log}\NormalTok{(}
+              \CommentTok{\# this is \textasciigrave{}log\{y\_1\^{}(1{-}r)\}\textasciigrave{}; }
+              \CommentTok{\# the exponent cancels out with the factor outside the log}
+\NormalTok{              y1[subj, cur\_antigen\_iso]}\SpecialCharTok{\^{}}\NormalTok{(}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ shape[subj, cur\_antigen\_iso]) }\SpecialCharTok{{-}} 
+                 
+               \CommentTok{\# this is (1{-}r); not sure why switched from paper  }
+\NormalTok{              (}\DecValTok{1} \SpecialCharTok{{-}}\NormalTok{ shape[subj,cur\_antigen\_iso]) }\SpecialCharTok{*}
+                
+                  \CommentTok{\# (there\textquotesingle{}s no missing y1\^{}(r{-}1) term here; the math checks out)}
+                 
+                 \CommentTok{\# alpha is \textasciigrave{}nu\textasciigrave{} in Teunis 2016; the "decay rate" parameter}
+\NormalTok{                alpha[subj,cur\_antigen\_iso] }\SpecialCharTok{*}
+                 
+                 \CommentTok{\# this is \textasciigrave{}t {-} t\_1\textasciigrave{}}
+\NormalTok{                 (smpl.t[subj,obs] }\SpecialCharTok{{-}}\NormalTok{ t1[subj,cur\_antigen\_iso])))}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Pathogen load:}
+
+\begin{itemize}
+\tightlist
+\item
+  For \(t \leq t_1\): \begin{equation}\phantomsection\label{eq-6}{
+  b(t) = b_0 e^{\mu_b t} - \frac{\gamma y_0}{\mu_y - \mu_b} \left( e^{\mu_y t} - e^{\mu_b t} \right)
+  }\end{equation}
+\item
+  For \(t \> t_1\): \[
+  b(t) = 0
+  \]
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 4: Derived Quantities}\label{step-4-derived-quantities}
+
+\begin{itemize}
+\item
+  \textbf{Clearance Time} \(t_1\):
+
+  \begin{equation}\phantomsection\label{eq-7}{
+  t_1 = \frac{1}{\mu_y - \mu_b} \log\left(1 + \frac{(\mu_y - \mu_b) b_0}{\gamma y_0}\right)
+  }\end{equation}
+\end{itemize}
+
+The expression above is indirectly represented by lines 8-12 of
+\texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=8,]
+\NormalTok{     beta[subj, cur\_antigen\_iso] }\OtherTok{\textless{}{-}} 
+       \FunctionTok{log}\NormalTok{(}
+\NormalTok{         y1[subj,cur\_antigen\_iso] }\SpecialCharTok{/}\NormalTok{ y0[subj,cur\_antigen\_iso]}
+\NormalTok{         ) }\SpecialCharTok{/} 
+\NormalTok{       t1[subj,cur\_antigen\_iso]}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{itemize}
+\item
+  \textbf{Peak Antibody Level} \(y_1\):
+
+  \begin{equation}\phantomsection\label{eq-8}{
+  y_1 = y_0 e^{\mu_y t_1}
+  }\end{equation}
+\end{itemize}
+
+The expression above corresponds to line 59 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=59,]
+\NormalTok{   y1[subj,cur\_antigen\_iso]    }\OtherTok{\textless{}{-}}\NormalTok{ y0[subj,cur\_antigen\_iso] }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{2}\NormalTok{]) }\CommentTok{\# par[,,2] must be log(y1{-}y0)}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Important}: \(t_1\) and \(y_1\) are \textbf{derived}, not fit
+parameters.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Full Parameter Model (7
+Parameters)}\label{full-parameter-model-7-parameters}
+
+\textbf{Subject-level parameters} for each subject\(i\) and biomarker
+\(j\):
+
+\begin{equation}\phantomsection\label{eq-9}{
+\theta_{ij} \sim \mathcal{N}(\mu_j,\, \Sigma_j), \quad \theta_{ij} =
+\begin{bmatrix}
+y_{0,ij} \\
+b_{0,ij} \\
+\mu_{b,ij} \\
+\mu_{y,ij} \\
+\gamma_{ij} \\
+\alpha_{ij} \\
+\rho_{ij}
+\end{bmatrix}
+}\end{equation}
+
+\begin{itemize}
+\tightlist
+\item
+  These 7 parameters represent the \textbf{full biological model}
+  (antibody + pathogen dynamics)
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{From Full 7 Parameters to 5 Latent
+Parameters}\label{from-full-7-parameters-to-5-latent-parameters}
+
+\begin{itemize}
+\tightlist
+\item
+  Although the model estimates 7 parameters, for modeling antibody
+  kinetics \(y(t)\), we focus on \textbf{5-parameter subset}:
+\end{itemize}
+
+\[y_0,\ \ t_1 (\text{derived}),\ \  y_1 (\text{derived}),\ \  \alpha,\ \  \rho\]
+
+\begin{itemize}
+\tightlist
+\item
+  These 5 parameters are \textbf{log-transformed} into the latent
+  parameters \(\theta\_{ij}\) used for modeling.
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Core Parameters Used for Curve
+Drawing}\label{core-parameters-used-for-curve-drawing}
+
+Although the full model estimates \textbf{7 parameters}, only \textbf{5
+key parameters} required to draw antibody curves:
+
+\begin{itemize}
+\tightlist
+\item
+  \(y_0\): initial antibody level
+\item
+  \(t_1\): time of peak antibody response (derived)
+\item
+  \(y_1\): peak antibody level (derived)
+\item
+  \(\alpha\): decay rate
+\item
+  \(\rho\): shape of decay
+\end{itemize}
+
+Note: \(t_1\) and \(y_1\) are \textbf{derived from the full model} -
+These 5 are sufficient for prediction and plotting
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 5: Subject-Level Parameters (Latent
+Version)}\label{step-5-subject-level-parameters-latent-version}
+
+Each subject \(i\) and biomarker \(j\) has latent parameters:
+
+\begin{equation}\phantomsection\label{eq-10}{
+\theta_{ij} =
+\begin{bmatrix}
+\log(y_{0,ij}) \\
+\log(y_{1,ij} - y_{0,ij}) \\
+\log(t_{1,ij}) \\
+\log(\alpha_{ij}) \\
+\log(\rho_{ij} - 1)
+\end{bmatrix}
+}\end{equation}
+
+Distribution:
+
+\[
+\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)
+\]
+
+The expression above reflects the prior distribution specified on line
+66 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=66,]
+\NormalTok{   par[subj, cur\_antigen\_iso, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_params] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dmnorm}\NormalTok{(mu.par[cur\_antigen\_iso,], prec.par[cur\_antigen\_iso,,])}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 6: Parameter Transformations (log scale
+priors)}\label{step-6-parameter-transformations-log-scale-priors}
+
+JAGS implements latent parameters (par) as:
+
+\begin{longtable}[]{@{}ll@{}}
+\caption{Log-Scale Transformations of Antibody Model Parameters in
+JAGS.}\label{tbl-transformation}\tabularnewline
+\toprule\noalign{}
+Model Parameter & Transformation in JAGS \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+Model Parameter & Transformation in JAGS \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(y_0\) & \(\exp(\text{par}_1)\) \\
+\(y_1\) & \(y_0 + \exp(\text{par}_2)\) \\
+\(t_1\) & \(\exp(\text{par}_3)\) \\
+\(\alpha\) & \(\exp(\text{par}_4)\) \\
+\(\rho\) & \(\exp(\text{par}_5) + 1\) \\
+\end{longtable}
+
+The table above corresponds to lines 58-62 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=58,]
+\NormalTok{   y0[subj,cur\_antigen\_iso]    }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{1}\NormalTok{])}
+\NormalTok{   y1[subj,cur\_antigen\_iso]    }\OtherTok{\textless{}{-}}\NormalTok{ y0[subj,cur\_antigen\_iso] }\SpecialCharTok{+} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{2}\NormalTok{]) }\CommentTok{\# par[,,2] must be log(y1{-}y0)}
+\NormalTok{   t1[subj,cur\_antigen\_iso]    }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{3}\NormalTok{])}
+\NormalTok{   alpha[subj,cur\_antigen\_iso] }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{4}\NormalTok{]) }\CommentTok{\# \textasciigrave{}nu\textasciigrave{} in the paper}
+\NormalTok{   shape[subj,cur\_antigen\_iso] }\OtherTok{\textless{}{-}} \FunctionTok{exp}\NormalTok{(par[subj,cur\_antigen\_iso,}\DecValTok{5}\NormalTok{]) }\SpecialCharTok{+} \DecValTok{1} \CommentTok{\# \textasciigrave{}r\textasciigrave{} in the paper}
+\end{Highlighting}
+\end{Shaded}
+
+All priors are thus applied on \textbf{log scale} (or log-minus-one for
+\(\rho\)).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 7: Population-Level Parameters
+(Priors)}\label{step-7-population-level-parameters-priors}
+
+The biomarker-specific mean vector \(\mu_j\) has a \textbf{hyperprior} :
+
+\begin{equation}\phantomsection\label{eq-11}{
+\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})
+}\end{equation}
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\mu_{\text{hyp},j}\) : \textbf{prior mean} for the population-level
+  parameters\\
+\item
+  \(\Omega_{\text{hyp},j}\) : \textbf{prior covariance} encoding
+  uncertainty about \(\mu_j\) (e.g., \(100 \cdot I_7\) for weakly
+  informative prior)
+\end{itemize}
+
+The expression above corresponds to line 73 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=73,]
+\NormalTok{  mu.par[cur\_antigen\_iso, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_params] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dmnorm}\NormalTok{(mu.hyp[cur\_antigen\_iso,], prec.hyp[cur\_antigen\_iso,,])}
+\end{Highlighting}
+\end{Shaded}
+
+\textbf{Clarification:}
+
+\begin{itemize}
+\item
+  \(\mu_{\text{hyp},j}\) defines the \textbf{center of a distribution,
+  not} a single point guess.
+\item
+  In Bayesian modeling, \textbf{priors and hyperpriors are
+  distributions} over unknown quantities, capturing full uncertainty.
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Step 8: Prior on Covariance
+Matrices}\label{step-8-prior-on-covariance-matrices}
+
+We also don't know how much individual parameters vary. So we assign a
+\textbf{Wishart prior} to the \textbf{inverse} covariance matrix:
+
+\begin{equation}\phantomsection\label{eq-12}{
+\Sigma_j^{-1} \sim \mathcal{W}(\Omega_j, \nu_j)
+}\end{equation}
+
+\begin{itemize}
+\tightlist
+\item
+  \(\Omega_j\) : prior scale matrix (small variance across parameters,
+  often \(0.1 \cdot I_7\))
+\item
+  \(\nu_j\) : degrees of freedom
+\end{itemize}
+
+The expression above corresponds to line 74 of \texttt{model.jags}:
+
+\begin{Shaded}
+\begin{Highlighting}[numbers=left,,firstnumber=74,]
+\NormalTok{  prec.par[cur\_antigen\_iso, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_params, }\DecValTok{1}\SpecialCharTok{:}\NormalTok{n\_params] }\SpecialCharTok{\textasciitilde{}} \FunctionTok{dwish}\NormalTok{(omega[cur\_antigen\_iso,,], wishdf[cur\_antigen\_iso])}
+\end{Highlighting}
+\end{Shaded}
+
+Higher \(\nu_j\) \(\rightarrow\) more informative prior (stronger
+prior).
+
+Lower \(\nu_j\) \(\rightarrow\) more weakly informative (broader prior
+or weaker prior).
+
+This tells the model how much we expect individuals to vary from the
+average for biomarker \(j\).
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Putting It All Together}\label{putting-it-all-together}
+
+The model is built hierarchically across five conceptual levels:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Observed data:} noisy log antibody concentrations from serum
+  samples
+\item
+  \textbf{Latent individual parameters:} hidden antibody dynamics
+  \(\theta_{ij}\) for each subject-biomarker pair
+\item
+  \textbf{Population-level means:} average antibody parameters for each
+  biomarker
+\item
+  \textbf{Hyperpriors on means:} our belief about the likely range of
+  biomarker-specific population means
+\item
+  \textbf{Priors on variability:} our belief about how much individual
+  parameters vary around the population mean
+\end{enumerate}
+
+This structure allows us to account for uncertainty at every level,
+while borrowing strength across subjects and biomarkers.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary of the Hierarchy}\label{summary-of-the-hierarchy}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \textbf{Top Level}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For each biomarker \(j\), the true mean antibody trajectory
+    parameters \(\mu_j\) come from a prior:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\mu_j \sim \mathcal{N}(\mu_{\text{hyp},j}, \Omega_{\text{hyp},j})\)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Middle Level}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    For each person \(i\), their parameters:
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\theta_{ij} \sim \mathcal{N}(\mu_j, \Sigma_j)\)
+    \end{itemize}
+  \end{itemize}
+\item
+  \textbf{Bottom Level}:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    Their actual observed antibody levels are noisy measurements of
+    predictions from \(\theta_{ij}\):
+
+    \begin{itemize}
+    \tightlist
+    \item
+      \(\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})\)
+    \end{itemize}
+  \end{itemize}
+\end{enumerate}
+
+Where:
+
+\begin{itemize}
+\tightlist
+\item
+  \(\mu_{\log y,ij}\) is the \textbf{expected log antibody level},
+  computed from the two-phase model using subject-level parameters
+  \(\theta_{ij}\).
+\item
+  Predictions use \(\theta_{ij}\) to compute \(\mu_{\log y,ij}\), which
+  is then compared to the observed log antibody data.
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Clarification: How Bottom Level Depends on Middle
+Level}\label{clarification-how-bottom-level-depends-on-middle-level}
+
+We know the following facts:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \(\theta_{ij}\) are the \textbf{subject-level latent parameters} (like
+  \(y_0, b_0, \mu\_b, \mu\_y, \gamma, \alpha, \rho\)).
+\item
+  From \(\theta_{ij}\), we calculate the expected \textbf{log antibody
+  level} \(\mu_{\log y,ij}\) using the ODE-based two-phase model.
+\item
+  The \textbf{observed log-antibody} \(\log(y_{\text{obs},ij})\) is
+  modeled as a \textbf{noisy version} of \(\mu_{\log y,ij}\).
+\item
+  \(\tau_j\) is the precision (measurement noise precision for biomarker
+  \(j\)).
+\end{enumerate}
+
+Thus, at the \textbf{Bottom Level}, we model:
+
+\[
+\log(y_{\text{obs},ij}) \sim \mathcal{N}(\mu_{\log y,ij}, \tau_j^{-1})
+\]
+
+Here:
+
+\begin{itemize}
+\tightlist
+\item
+  The \textbf{mean} is \(\mu_{\log y,ij}\) --- derived from the
+  \textbf{ODE solution} using \(\theta_{ij}\).
+\item
+  The \textbf{variance} is \(\tau_j^{-1}\) --- shared across individuals
+  for a given biomarker.
+\end{itemize}
+
+Summary:
+
+\begin{itemize}
+\tightlist
+\item
+  Observations depend indirectly on latent parameters \(\theta_{ij}\)
+  via the predicted log antibody levels \(\mu_{\log y,ij}\).
+\end{itemize}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Summary Mapping of Notation}\label{summary-mapping-of-notation}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2500}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.4444}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3056}}@{}}
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Symbol
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+Meaning
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+JAGS Variable
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+\(i\) & Subject index & \texttt{subj} \\
+\(j\) & Antigen-isotype (biomarker) index &
+\texttt{cur\_antigen\_iso} \\
+\(y_{\text{obs},ij}\) & Observed antibody concentration at a timepoint &
+\texttt{logy{[}subj,\ obs,\ cur\_antigen\_iso{]}} \\
+\(\mu_{\log y,ij}\) & Expected log antibody level based on ODE model
+using \(\theta_{ij}\) &
+\texttt{mu.logy{[}subj,\ obs,\ cur\_antigen\_iso{]}} \\
+\(\theta_{ij}\) & Subject-level latent parameters for modeling \(y(t)\)
+& \texttt{par{[}subj,\ cur\_antigen\_iso,\ 1:n\_params{]}} \\
+\(\mu_j\) & Mean vector of latent parameters across subjects for
+biomarker \(j\) & \texttt{mu.par{[}cur\_antigen\_iso,\ {]}} \\
+\(\Sigma_j\) & Covariance matrix of latent parameters for biomarker
+\(j\) & \texttt{inverse\ of\ prec.par{[}cur\_antigen\_iso,\ ,\ {]}} \\
+\(\tau_j\) & Precision (inverse variance) of measurement error for
+biomarker \(j\) & \texttt{prec.logy{[}cur\_antigen\_iso{]}} \\
+\((a_j, b_j)\) & Gamma prior hyperparameters for \(\tau_j\) &
+\texttt{prec.logy.hyp{[}cur\_antigen\_iso,\ 1/2{]}} \\
+\(\mu_{\text{hyp},j}\) & Prior mean for \(\mu_j\) &
+\texttt{mu.hyp{[}cur\_antigen\_iso,\ {]}} \\
+\(\Omega_{\text{hyp},j}\) & Prior precision for \(\mu_j\) &
+\texttt{prec.hyp{[}cur\_antigen\_iso,\ ,\ {]}} \\
+\((\Omega_j, \nu_j)\) & Wishart scale and degrees of freedom for
+\(\Sigma_j^{-1}\) &
+\texttt{omega{[}cur\_antigen\_iso,\ ,\ {]},\ wishdf{[}...{]}} \\
+\end{longtable}
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\section{Model Comparison (Teunis and Eijkeren 2016) vs.~Our
+Presentation}\label{model-comparison-teunis2016-vs.-our-presentation}
+
+\begin{longtable}[]{@{}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.2917}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3194}}
+  >{\raggedright\arraybackslash}p{(\columnwidth - 4\tabcolsep) * \real{0.3889}}@{}}
+\caption{Comparison of Teunis (2016) model and this presentation's model
+assumptions.}\label{tbl-model-comparison}\tabularnewline
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Component
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+(Teunis and Eijkeren 2016)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+This Presentation
+\end{minipage} \\
+\midrule\noalign{}
+\endfirsthead
+\toprule\noalign{}
+\begin{minipage}[b]{\linewidth}\raggedright
+Component
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+(Teunis and Eijkeren 2016)
+\end{minipage} & \begin{minipage}[b]{\linewidth}\raggedright
+This Presentation
+\end{minipage} \\
+\midrule\noalign{}
+\endhead
+\bottomrule\noalign{}
+\endlastfoot
+Pathogen ODE & \(\mu_0 b(t) - c y(t)\) & \(\mu_b b(t) - \gamma y(t)\) \\
+Antibody growth ODE & \(\mu y(t)\) & \(\mu_y y(t)\) \\
+Antibody decay ODE & \(-\alpha y(t)^r\) & \(-\alpha y(t)^\rho\) \\
+Growth mechanism & Pathogen-driven & Self-driven \\
+\end{longtable}
+
+\phantomsection\label{refs}
+\begin{CSLReferences}{1}{0}
+\bibitem[\citeproctext]{ref-teunis2016}
+Teunis, Peter F. M., and J. C. H. van Eijkeren. 2016. {``Linking the
+Seroresponse to Infection to Within-Host Heterogeneity in Antibody
+Production.''} \emph{Epidemics} 16: 33--39.
+\url{https://doi.org/10.1016/j.epidem.2016.04.001}.
+
+\end{CSLReferences}
+
+
+
+
+\end{document}
