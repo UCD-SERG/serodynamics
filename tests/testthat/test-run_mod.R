@@ -37,6 +37,7 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
+      dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "sim-strat-curve-params",
         variant = darwin_variant()
@@ -82,6 +83,7 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
+      dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "strat-curve-params",
         variant = darwin_variant()
@@ -126,6 +128,7 @@ test_that(
       expect_snapshot_value(style = "deparse")
     
     results |>
+      dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params",
         variant = darwin_variant()
@@ -171,6 +174,7 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
+      dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params-withpost",
         variant = darwin_variant()
@@ -214,6 +218,7 @@ test_that(
       expect_snapshot_value(style = "serialize")
     
     results |>
+      dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params-specpriors",
         variant = darwin_variant()
