@@ -43,7 +43,7 @@ should be included as an element of the \link{list} object returned by \code{run
 Note: These objects can be large.}
 
 \item{...}{
-  Arguments passed on to \code{\link[=prep_priors]{prep_priors}}
+  Arguments passed on to \code{\link{prep_priors}}
   \describe{
     \item{\code{max_antigens}}{An \link{integer} specifying how many
 antigen-isotypes (biomarkers) will be modeled.}
@@ -93,7 +93,7 @@ If specified, must be 2 values long:
   }}
 }
 \value{
-An \code{sr_model} class object: a subclass of \link[dplyr:tbl_df]{dplyr::tbl_df} that
+An \code{sr_model} class object: a subclass of \link[tibble:tbl_df]{tibble::tbl_df} that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the following:

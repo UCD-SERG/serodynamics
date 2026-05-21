@@ -14,7 +14,7 @@
 \item{log_x}{whether to log-transform the x-axis}
 
 \item{...}{
-  Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_path]{ggplot2::geom_line}}
+  Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_line]{ggplot2::geom_line}}
   \describe{
     \item{\code{mapping}}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
 \code{inherit.aes = TRUE} (the default), it is combined with the default mapping
@@ -36,7 +36,7 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
     \item{\code{stat}}{The statistical transformation to use on the data for this layer.
 When using a \verb{geom_*()} function to construct a layer, the \code{stat}
-argument can be used the override the default coupling between geoms and
+argument can be used to override the default coupling between geoms and
 stats. The \code{stat} argument accepts the following:
 \itemize{
 \item A \code{Stat} ggproto subclass, for example \code{StatCount}.
@@ -64,15 +64,26 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
     \item{\code{inherit.aes}}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+    \item{\code{arrow}}{Arrow specification, as created by \code{\link[grid:arrow]{grid::arrow()}}.}
+    \item{\code{arrow.fill}}{fill colour to use for the arrow head (if closed). \code{NULL}
+means use \code{colour} aesthetic.}
+    \item{\code{lineend}}{Line end style (round, butt, square).}
+    \item{\code{linejoin}}{Line join style (round, mitre, bevel).}
+    \item{\code{linemitre}}{Line mitre limit (number greater than 1).}
     \item{\code{orientation}}{The orientation of the layer. The default (\code{NA})
 automatically determines the orientation from the aesthetic mapping. In the
 rare event that this fails it can be given explicitly by setting \code{orientation}
 to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
+    \item{\code{direction}}{direction of stairs: 'vh' for vertical then horizontal,
+'hv' for horizontal then vertical, or 'mid' for step half-way between
+adjacent x-values.}
   }}
 }
 \value{

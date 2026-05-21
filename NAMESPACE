@@ -3,6 +3,7 @@
 S3method(autoplot,case_data)
 export(as_case_data)
 export(autoplot)
+export(expect_snapshot_data)
 export(get_biomarker_levels)
 export(get_biomarker_names_var)
 export(initsfunction)

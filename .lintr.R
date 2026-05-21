@@ -73,6 +73,9 @@ exclusions <- list(
   vignettes = list(
     undesirable_function_linter = Inf
   ),
+  "inst/examples" = list(
+    undesirable_function_linter = Inf
+  ),
   "inst/analyses" = list(
     undesirable_function_linter = Inf
   ),
