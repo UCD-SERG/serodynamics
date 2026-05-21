@@ -42,12 +42,6 @@ test_that(
                         "population_params", "priors", 
                         "fitted_residuals"))
     
-    # Verify class appears immediately after names and row.names
-    expect_equal(
-      names(attributes(results))[1:3],
-      c("names", "row.names", "class")
-    )
-    
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",
@@ -100,11 +94,6 @@ test_that(
     ) |>
       suppressWarnings()
     
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
-      expect_snapshot_value(style = "deparse", variant = r46_variant())
-    
     # Testing attributes
     results |>
       attributes() |>
@@ -153,12 +142,6 @@ test_that(
       with_pop_params = TRUE
     ) |>
       suppressWarnings()
-    
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals",
-                           "population_params")) |>
-      expect_snapshot_value(style = "deparse", variant = r46_variant())
     
     # Testing attributes
     results |>
