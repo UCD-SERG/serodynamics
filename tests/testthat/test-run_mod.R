@@ -105,6 +105,14 @@ test_that(
       rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "deparse", variant = r46_variant())
     
+    # Testing attributes
+    results |>
+      attributes() |>
+      names() |>
+      expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
+                        "nIterations", "nBurnin", "nThin", "priors", 
+                        "fitted_residuals"))
+    
     results |>
       expect_snapshot_data(
         "strat-curve-params",
@@ -151,6 +159,14 @@ test_that(
       rlist::list.remove(c("row.names", "fitted_residuals",
                            "population_params")) |>
       expect_snapshot_value(style = "deparse", variant = r46_variant())
+    
+    # Testing attributes
+    results |>
+      attributes() |>
+      names() |>
+      expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
+                        "nIterations", "nBurnin", "nThin", "population_params", 
+                        "priors", "fitted_residuals"))
     
     results |>
       expect_snapshot_data(
@@ -204,13 +220,13 @@ test_that(
     pop_params <- attr(results, "population_params")
     expect_s3_class(pop_params, "data.frame")
 
-    preclogy_rows <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
-    expect_gt(nrow(preclogy_rows), 0)
+    preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
+    expect_gt(nrow(preclogy_row), 0)
 
     # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
     # not the constant "prec.logy"
-    expect_false(all(preclogy_rows$Parameter == "prec.logy"))
-    expect_true(all(preclogy_rows$Parameter %in% unique(pop_params$Iso_type)))
+    expect_false(all(preclogy_row$Parameter == "prec.logy"))
+    expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
   }
 )
 
