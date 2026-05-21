@@ -33,6 +33,10 @@ test_that(
         variant = darwin_variant()
       )
     
+    # Testing exact order of attributes
+    expect_equal(names(attributes(results))[1:3], 
+                 c("names", "row.names", "class"))
+    
     # Testing attributes
     results |>
       attributes() |>
