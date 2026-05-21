@@ -179,3 +179,5 @@ Source code for the `serodynamics` package is available on GitHub: <https://gith
 **Figure 1:** Code and visualisation of the `serodynamics` analytical workflow using the Nepal SEES typhoid dataset. (a) Code for importing data and visualising raw longitudinal antibody responses. (b) Plot of raw longitudinal IgG and IgA responses to HlyE antigen from confirmed *Salmonella* Typhi cases. (c) Convergence diagnostics showing $\hat{R}$ values for population-level kinetic parameters across four MCMC chains. (d) Predicted antibody trajectory for an individual participant (median and 95% credible interval) with observed data points overlaid.
 
 **Figure 2:** [Future edit: Pipeline demonstration showing `postprocess_jags_output()` producing `curve_params` object → input to `serocalculator::est_seroincidence()` for downstream seroincidence estimation. To be added once the end-to-end workflow code is finalised.]
+
+# References
