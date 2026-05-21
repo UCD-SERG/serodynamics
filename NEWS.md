@@ -1,5 +1,7 @@
 # serodynamics (development version)
 
+* Added `plot_residuals()` to visualize residuals over time, faceted by
+  antigen-isotype.
 * Expanded what the `Claude Code` (`@claude`) workflow can do:
   - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
     mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
