@@ -27,12 +27,14 @@ Typhi
 UCD
 Vectorization
 Wasserstein
+acknowledgements
 al
 assignees
 behaviour
 biomarker
 biomarkers
 boldsymbol
+callout
 colour
 darwin
 de
@@ -42,11 +44,11 @@ dobson
 dotplots
 epidemiologic
 et
-finalised
 geoms
 ggmcmc
 ggproto
 glibc
+hemolysin
 hv
 hyp
 hyperprior
@@ -76,6 +78,7 @@ pre
 prec
 preinstalling
 reformats
+reproducibly
 rhat
 serocatalytic
 seroconversion
@@ -102,6 +105,6 @@ toolchain
 unstratified
 vh
 visualisation
+visualise
 visualised
-visualising
 wishdf
