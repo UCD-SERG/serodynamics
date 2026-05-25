@@ -4,10 +4,10 @@ pkgdown_sha: a6abe43ed48e58b1de42eba5e5541a5b6c46b46f
 articles:
   dobson: dobson.html
   articles/getting-started: getting-started.html
-  articles/manuscript: manuscript.html
+  articles/manuscript_v2: manuscript_v2.html
   articles/os-snapshot-analysis: os-snapshot-analysis.html
   articles/test-snippets: test-snippets.html
-last_built: 2026-05-21T04:53Z
+last_built: 2026-05-25T18:14Z
 urls:
   reference: https:/ucd-serg.github.io/serodynamics/preview/pr221/reference
   article: https:/ucd-serg.github.io/serodynamics/preview/pr221/articles

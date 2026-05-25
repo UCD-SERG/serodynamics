@@ -165,7 +165,8 @@
   [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
   method for `case_data` objects
   ([\#28](https://github.com/UCD-SERG/serodynamics/issues/28))
-- Added examples for `sim_pop_data()`,
+- Added examples for
+  [`sim_pop_data()`](https://ucd-serg.github.io/serocalculator/latest-tag/reference/sim_pop_data.html),
   [`autoplot.case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/autoplot.case_data.md)
   ([\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
 - Added attributes as a return to the run_mod function

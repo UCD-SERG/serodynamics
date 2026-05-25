@@ -9,7 +9,7 @@
 
 - [Software Application Profile: serodynamics, an R package for modeling
   longitudinal antibody kinetics from confirmed infection
-  data](https:/ucd-serg.github.io/serodynamics/preview/pr221/articles/manuscript.md):
+  data](https:/ucd-serg.github.io/serodynamics/preview/pr221/articles/manuscript_v2.md):
 
 ### Developer Notes
 
