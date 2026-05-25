@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+* Replaced the vendored `expect_snapshot_data()`/`save_csv()` helpers (copied
+  from `ssdtools`) with the CRAN release of `snapr`, re-exporting
+  `snapr::expect_snapshot_data()` so existing snapshot tests are unchanged
+  (#232).
 * Expanded what the `Claude Code` (`@claude`) workflow can do:
   - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
     mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,

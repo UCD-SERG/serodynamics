@@ -26,10 +26,10 @@ Imports:
     runjags,
     scales,
     serocalculator (>= 1.3.0.9037),
+    snapr,
     stats,
     tibble,
     tidyr,
-    tidyselect,
     utils
 Suggests: 
     Hmisc,

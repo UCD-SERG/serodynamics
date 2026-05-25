@@ -4,6 +4,7 @@
 \name{reexports}
 \alias{reexports}
 \alias{autoplot}
+\alias{expect_snapshot_data}
 \alias{get_biomarker_levels}
 \alias{get_biomarker_names_var}
 \title{Objects exported from other packages}
@@ -16,5 +17,7 @@ below to see their documentation.
   \item{ggplot2}{\code{\link[ggplot2:autoplot]{autoplot()}}}
 
   \item{serocalculator}{\code{\link[serocalculator:get_biomarker_levels]{get_biomarker_levels()}}, \code{\link[serocalculator:get_biomarker_names_var]{get_biomarker_names_var()}}}
+
+  \item{snapr}{\code{\link[snapr:expect_snapshot_data]{expect_snapshot_data()}}}
 }}
 

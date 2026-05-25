@@ -1,4 +1,8 @@
 #' @export
+#' @importFrom snapr expect_snapshot_data
+snapr::expect_snapshot_data
+
+#' @export
 #' @importFrom serocalculator get_biomarker_levels
 serocalculator::get_biomarker_levels
 
