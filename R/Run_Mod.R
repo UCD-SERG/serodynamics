@@ -213,31 +213,8 @@ run_mod <- function(data,
       Subject_mcmc = as.character(attr(longdata, "ids")),
       Subject = as.character(seq_along(attr(longdata, "ids")))
     )
-    jags_final <- dplyr::left_join(jags_unpacked, ids, 
-                                   by = "Subject") |>
-      # Subject handling:
-      # * For individual-level parameters, the left join above finds a row in
-      #   attr(longdata, "ids"), so Subject_mcmc contains the subject ID.
-      # * For population-level parameters (e.g., mu.par, prec.par, prec.logy),
-      #   there is no matching ID, so Subject_mcmc is NA. In that case we
-      #   intentionally keep the original Subject value from unpack_jags,
-      #   which holds the parameter name and serves as the identifier.
-      dplyr::mutate(Subject_mcmc = dplyr::if_else(is.na(.data$Subject_mcmc), 
-                                                  .data$Subject, 
-                                                  .data$Subject_mcmc)) |>
-      # At this point, jags_unpacked contains:
-      # * Parameter: original JAGS parameter names (e.g., "y0[1,2]")
-      # * Param: cleaned parameter names used elsewhere in the package.
-      # We drop the original JAGS-style Parameter column and keep the
-      # cleaned names, then rename Param back to Parameter so that all
-      # downstream code consistently uses a single "Parameter" column
-      # containing cleaned parameter names.
-      # Drop the temporary Subject (now only used as a fallback for population
-      # parameters) and rename Subject_mcmc back to Subject for downstream use.
-      dplyr::select(-c("Subnum", "Subject", "Parameter")) |>
-      dplyr::rename("Subject" = "Subject_mcmc",
-                    "Parameter" = "Param")
-    
+    jags_final <- reconcile_subject_ids(jags_unpacked, ids)
+
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
     jags_final$Stratification <- i
