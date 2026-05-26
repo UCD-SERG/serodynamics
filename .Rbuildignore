@@ -29,3 +29,5 @@
 ^_quarto\.yml$
 ^\.quarto$
 ^\.devcontainer$
+^\.positai$
+^\.claude$
