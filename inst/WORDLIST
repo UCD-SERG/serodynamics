@@ -62,6 +62,7 @@ tbl
 testthat
 tibble
 toolchain
+unindexed
 unstratified
 vh
 wishdf

@@ -204,17 +204,8 @@ test_that("preclogy_per_iso relabels prec.logy Parameter by Iso_type", {
     .is_population_parameter = c(rep(TRUE, 6), rep(FALSE, 6))
   )
 
-  # Apply the preclogy_per_iso transformation (mirrors Run_Mod.R logic)
-  result <- mock_unpacked |>
-    dplyr::mutate(
-      Param = dplyr::if_else(
-        .data$.is_population_parameter &
-          .data$Subject == "prec.logy" &
-          !is.na(.data$Iso_type),
-        .data$Iso_type,
-        .data$Param
-      )
-    )
+  # Apply the preclogy_per_iso transformation via the extracted helper
+  result <- serodynamics:::relabel_preclogy_iso(mock_unpacked)
 
   preclogy_rows <- result[result$.is_population_parameter, ]
   # Each prec.logy row should now carry its isotype as the Param label
@@ -238,12 +229,54 @@ test_that("prep_popparams and ex_popparams are complementary", {
   
   pop_params <- serodynamics:::prep_popparams(test_data)
   individual_params <- serodynamics:::ex_popparams(test_data)
-  
+
   # Together they should account for all rows
   expect_equal(nrow(pop_params) + nrow(individual_params), nrow(test_data))
-  
+
   # No overlap in subjects
   # Note: pop_params has Population_Parameter column, not Subject
-  expect_false(any(individual_params$Subject %in% 
+  expect_false(any(individual_params$Subject %in%
                      c("mu.par", "prec.par", "prec.logy")))
+})
+
+test_that("prep_strat_list returns 'None' when strat is NA", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", "b", "a"))
+  expect_equal(serodynamics:::prep_strat_list(data, NA), "None")
+})
+
+test_that("prep_strat_list returns character labels for factor columns", {
+  # Factor columns must iterate over labels, not the underlying integer codes
+  data <- tibble::tibble(x = 1:4, grp = factor(c("b", "a", "b", "a")))
+  result <- serodynamics:::prep_strat_list(data, "grp")
+  expect_type(result, "character")
+  expect_setequal(result, c("a", "b"))
+})
+
+test_that("prep_strat_list aborts when the strat column is missing", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", "b", "a"))
+  expect_error(
+    serodynamics:::prep_strat_list(data, "not_a_column"),
+    "was not found"
+  )
+})
+
+test_that("prep_strat_list aborts when no non-missing strata remain", {
+  data <- tibble::tibble(
+    x = 1:3,
+    grp = c(NA_character_, NA_character_, NA_character_)
+  )
+  expect_error(
+    suppressWarnings(serodynamics:::prep_strat_list(data, "grp")),
+    "no non-missing values"
+  )
+})
+
+test_that("prep_strat_list warns about and drops missing stratum values", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", NA, "b"))
+  expect_warning(
+    result <- serodynamics:::prep_strat_list(data, "grp"),
+    "missing"
+  )
+  expect_setequal(result, c("a", "b"))
+  expect_false(anyNA(result))
 })

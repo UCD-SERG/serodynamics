@@ -100,27 +100,8 @@ run_mod <- function(data,
                     with_pop_params = FALSE,
                     preclogy_per_iso = FALSE,
                     ...) {
-  ## Conditionally creating a stratification list to loop through
-  if (is.na(strat)) {
-    strat_list <- "None"
-  } else {
-    strat_list <- if (is.factor(data[[strat]])) {
-      as.character(unique(data[[strat]]))   # factor → character labels
-    } else {
-      unique(data[[strat]])                 # preserve character/numeric type
-    }
-    # Discard NA from vector, warning the user that those rows are skipped
-    if (anyNA(strat_list)) {
-      cli::cli_warn(c(
-        "!" = "The stratification variable {.field {strat}} contains \\
-               {.val {NA}} value{?s}.",
-        "i" = "Rows with a missing stratification value are dropped and \\
-               not modeled."
-      ))
-    }
-    strat_list <- strat_list |>
-      purrr::discard(is.na)
-  }
+  ## Build and validate the stratification list to loop through.
+  strat_list <- prep_strat_list(data, strat)
 
   ## Creating a shell to output results
   jags_out <- tibble::tibble(
@@ -207,16 +188,7 @@ run_mod <- function(data,
     # Optionally relabel prec.logy Parameter by isotype so that grouping by
     # Parameter in population_params distinguishes per-isotype precision.
     if (with_pop_params && preclogy_per_iso) {
-      jags_unpacked <- jags_unpacked |>
-        dplyr::mutate(
-          Param = dplyr::if_else(
-            .data$.is_population_parameter &
-              .data$Subject == "prec.logy" &
-              !is.na(.data$Iso_type),
-            .data$Iso_type,
-            .data$Param
-          )
-        )
+      jags_unpacked <- relabel_preclogy_iso(jags_unpacked)
     }
 
     # Adding in ID name
@@ -249,24 +221,7 @@ run_mod <- function(data,
   # Making output a tibble and restructuring.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
-  current_atts <- attributes(jags_out)
-  # Explicitly build the attribute list in the correct order to ensure that
-  # `class` appears immediately after `names` and `row.names`.
-  # The dplyr operations above can carry ggmcmc attributes (nChains, etc.)
-  # from jags_packed into jags_out, placing `class` at the end. We use
-  # mod_atts (named selection from jags_packed) as the authoritative source
-  # for the ggmcmc-style metadata attributes.
-  new_atts <- list(
-    names = current_atts$names,
-    row.names = current_atts$row.names,
-    class = union("sr_model", current_atts$class),
-    nChains = mod_atts$nChains,
-    nParameters = mod_atts$nParameters,
-    nIterations = mod_atts$nIterations,
-    nBurnin = mod_atts$nBurnin,
-    nThin = mod_atts$nThin
-  )
-  attributes(jags_out) <- new_atts
+  jags_out <- rebuild_sr_model_attributes(jags_out, mod_atts)
   
   # Adding population parameters optionally and priors in as attributes
   if (with_pop_params) {
