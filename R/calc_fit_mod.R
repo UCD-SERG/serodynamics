@@ -44,9 +44,15 @@ calc_fit_mod <- function(modeled_dat,
                        values_from = .data$med_value)
 
   # Matching input data with modeled data
-  matched_dat <- merge(modeled_dat, original_data, 
-                       by = c("Subject", "Iso_type", "Stratification"),
-                       all.y = TRUE)
+  if (is.na(strat)) {
+    matched_dat <- merge(modeled_dat, original_data, 
+                         by = c("Subject", "Iso_type"),
+                         all.y = TRUE)
+  } else {
+    matched_dat <- merge(modeled_dat, original_data, 
+                         by = c("Subject", "Iso_type", "Stratification"),
+                         all.y = TRUE)
+  }
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
