@@ -11,6 +11,7 @@
 #' values:
 #'   - Subject = ID number specifying an individual
 #'   - Iso_type = The modeled antigen_isotype
+#'   - Stratification = The variable used to stratify the model
 #'   - t = Time since infection 
 #'   - fitted = The fitted value calculated using model output parameters for a
 #'   given `t`
@@ -42,6 +43,7 @@ calc_fit_mod <- function(modeled_dat,
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$fitted, .data$residual)
+    select(.data$Subject, .data$Iso_type, .data$Stratification, 
+           .data$t, .data$fitted, .data$residual)
   fitted_dat
 }

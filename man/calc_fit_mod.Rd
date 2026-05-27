@@ -18,6 +18,7 @@ values:
 \itemize{
 \item Subject = ID number specifying an individual
 \item Iso_type = The modeled antigen_isotype
+\item Stratification = The variable used to stratify the model
 \item t = Time since infection
 \item fitted = The fitted value calculated using model output parameters for a
 given \code{t}
