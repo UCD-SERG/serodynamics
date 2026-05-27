@@ -5,6 +5,12 @@
   into a minimal reproducible example and iterating fixes on it before
   porting them back. The `.claude` directory is excluded from the package
   build via `.Rbuildignore`.
+* Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
+  the UCD-SeRG Lab Manual takes precedence over the tidyverse style
+  guide where they conflict, and functions should end with an explicit
+  `return()` call per the lab manual / Google R Style Guide. This
+  closes a gap where `@claude` reviews were flagging explicit returns
+  as non-conforming.
 * Expanded what the `Claude Code` (`@claude`) workflow can do:
   - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
     mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
