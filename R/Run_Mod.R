@@ -109,7 +109,15 @@ run_mod <- function(data,
     } else {
       unique(data[[strat]])                 # preserve character/numeric type
     }
-    # Discard NA from vector
+    # Discard NA from vector, warning the user that those rows are skipped
+    if (anyNA(strat_list)) {
+      cli::cli_warn(c(
+        "!" = "The stratification variable {.field {strat}} contains \\
+               {.val {NA}} value{?s}.",
+        "i" = "Rows with a missing stratification value are dropped and \\
+               not modeled."
+      ))
+    }
     strat_list <- strat_list |>
       purrr::discard(is.na)
   }
