@@ -93,7 +93,7 @@ stratification (#66)
 
 ## Bug fixes
 
-None yet
+* Fixing calc_fit_mod to include all stratifications in fitted_residuals attributes (#240)
 
 ## Developer-facing changes
 
