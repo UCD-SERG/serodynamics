@@ -19,10 +19,20 @@
 #'   observed and fitted values for a given `t`
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat, 
-                         original_data) {
-  original_data <- original_data |> 
-    use_att_names() |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+                         original_data,
+                         strat) {
+  
+  if (is.na(strat)) {
+    original_data <- original_data |> 
+      use_att_names() |>
+      select(.data$Subject, .data$Iso_type, .data$t, .data$result)
+  } else {
+    original_data <- original_data |> 
+      use_att_names() |>
+      select(.data$Subject, .data$Iso_type, .data$t, .data$result, 
+             .data[[strat]]) |>
+      rename("Stratification" = strat)
+  }
   
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
@@ -35,7 +45,7 @@ calc_fit_mod <- function(modeled_dat,
 
   # Matching input data with modeled data
   matched_dat <- merge(modeled_dat, original_data, 
-                       by = c("Subject", "Iso_type"),
+                       by = c("Subject", "Iso_type", "Stratification"),
                        all.y = TRUE)
 
   # Calculating fitted and residual

@@ -197,7 +197,8 @@ run_mod <- function(data,
   # Calculating fitted and residuals
   # Renaming columns using attributes from as_case_data
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
-                          original_data = data)
+                          original_data = data,
+                          strat = strat)
   jags_out <- jags_out |>
     structure(fitted_residuals = fit_res)
 
