@@ -109,6 +109,9 @@ run_mod <- function(data,
     } else {
       unique(data[[strat]])                 # preserve character/numeric type
     }
+    # Discard NA from vector
+    strat_list <- strat_list |>
+      purrr::discard(is.na)
   }
 
   ## Creating a shell to output results
