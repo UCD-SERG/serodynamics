@@ -1,5 +1,10 @@
 # serodynamics (development version)
 
+* Added a project-level `Claude Code` skill, `reprexes`
+  (`.claude/skills/reprexes`), capturing a workflow for isolating a problem
+  into a minimal reproducible example and iterating fixes on it before
+  porting them back. The `.claude` directory is excluded from the package
+  build via `.Rbuildignore`.
 * Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
   the UCD-SeRG Lab Manual takes precedence over the tidyverse style
   guide where they conflict, and functions should end with an explicit
