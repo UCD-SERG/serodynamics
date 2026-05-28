@@ -18,7 +18,7 @@ rebuild_sr_model_attributes(x, mod_atts)
 }
 \description{
 \code{rebuild_sr_model_attributes()} reconstructs the attribute list of the
-combined \code{\link[=run_mod]{run_mod()}} output in a fixed order, ensuring \code{class} appears
+combined \code{\link[=run_serodynamics]{run_serodynamics()}} output in a fixed order, ensuring \code{class} appears
 immediately after \code{names} and \code{row.names}.
 The \code{dplyr} operations used to assemble the output can carry \code{ggmcmc}
 attributes (\code{nChains}, etc.) into the result and push \code{class} to the end,

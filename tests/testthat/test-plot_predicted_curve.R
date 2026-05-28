@@ -1,5 +1,5 @@
 test_that(
-  desc = "plot_predicted_curve() works with run_mod output and 
+  desc = "plot_predicted_curve() works with run_serodynamics output and
   on-the-fly dataset",
   code = {
     skip_if(getRversion() < "4.4.1")

@@ -1,12 +1,11 @@
 
-#' @title Plot Effective Sample Size Diagnostics
+#' @title Trace Plot Diagnostics
 #' @author Sam Schildhauer
 #' @description
-#'  plot_jags_effect() takes a [list] output from [serodynamics::run_mod()]
-#'  to create summary diagnostics for each chain run in the mcmc estimation.
+#'  plot_trace() takes a [list] output from [serodynamics::run_serodynamics()]
+#'  to create trace plots for each chain run in the mcmc estimation.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
-#'  and stratifications, unless otherwise specified. At least 2 chains are 
-#'  required to run function. 
+#'  and stratifications, unless otherwise specified.
 #'  Antigen/antibody combinations and stratifications will vary by analysis.
 #'  The antibody dynamic curve includes the following parameters:
 #'  - y0 = baseline antibody concentration
@@ -14,35 +13,32 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param data A [list] outputted from run_mod().
+#' @param data A [list] outputted from [run_serodynamics()].
 #' @param iso Specify [character] string to produce plots of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
 #' @param param Specify [character] string to produce plots of only a
 #' specific parameter, entered with quotes. Options include:
+#' - `alpha` = posterior estimate of decay rate
+#' - `r` = posterior estimate of shape parameter
+#' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
-#' - `t1` = posterior estimate of time to peak
-#' - `r` = posterior estimate of shape parameter
-#' - `alpha` = posterior estimate of decay rate
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @return A [list] of [ggplot2::ggplot] objects showing the 
-#' proportion of effective samples taken/total samples taken for all parameter
-#' iso combinations. The estimate with the highest proportion of effective
-#' samples taken will be listed first.
+#' @return A [list] of [ggplot2::ggplot] objects producing trace
+#' plots for all the specified input.
 #' @export
-#' @example inst/examples/examples-plot_jags_effectivedx.R
+#' @example inst/examples/examples-plot_trace.R
 
+plot_trace <- function(data,
+                       iso = unique(data$Iso_type),
+                       param = unique(data$Parameter),
+                       strat = unique(data$Stratification)) {
 
-plot_jags_effect <- function(data,
-                             iso = unique(data$Iso_type),
-                             param = unique(data$Parameter),
-                             strat = unique(data$Stratification)) {
-  
   attributes_jags <- data[["attributes"]]
 
-  eff_strat_list <- list()
+  trace_strat_list <- list()
   for (i in strat) {
 
     visualize_jags_sub <- data |>
@@ -50,7 +46,7 @@ plot_jags_effect <- function(data,
       dplyr::filter(.data$Subject == "newperson")
 
     # Creating open list to store ggplots
-    eff_out <- list()
+    trace_out <- list()
     # Looping through the isos
     for (j in iso) {
       visualize_jags_plot <- visualize_jags_sub |>
@@ -63,26 +59,25 @@ plot_jags_effect <- function(data,
 
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter)
+        dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
+                                         .data$Parameter, ", strat = ",
+                                         i))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
-
       # Creating density plot
-      eff <- ggmcmc::ggs_effective(visualize_jags_plot) +
-        ggplot2::theme_bw()  +
-        ggplot2::labs(title = "Effective sample size",
-                      subtitle = plot_title_fun(i, j),
-                      x = "Proportion of effective samples") +
-        ggplot2::scale_y_discrete(limits = c("alpha", "shape", "t1", "y1", 
-                                             "y0"))
-      eff_out[[j]] <- eff
+      traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
+        ggplot2::theme_bw() +
+        ggplot2::labs(x = "iterations", y = "parameter value") +
+        ggplot2::theme(legend.position = "bottom") +
+        ggplot2::scale_y_log10(labels = scales::label_comma())
+      trace_out[[j]] <- traceplot
     }
-    eff_strat_list[[i]] <- eff_out
+    trace_strat_list[[i]] <- trace_out
   }
   #Printing only one plot if only one exists.
-  if (sum(lengths(eff_strat_list)) == 1) {
-    eff_strat_list <- eff_strat_list[[1]][[iso]]
+  if (sum(lengths(trace_strat_list) == 1)) {
+    trace_strat_list <- trace_strat_list[[1]][[iso]]
   } 
-  eff_strat_list
+  trace_strat_list
 }

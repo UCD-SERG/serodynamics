@@ -2,7 +2,7 @@
 #' @author Sam Schildhauer
 #' @description
 #'  `rebuild_sr_model_attributes()` reconstructs the attribute list of the
-#'  combined [run_mod()] output in a fixed order, ensuring `class` appears
+#'  combined [run_serodynamics()] output in a fixed order, ensuring `class` appears
 #'  immediately after `names` and `row.names`.
 #'  The `dplyr` operations used to assemble the output can carry `ggmcmc`
 #'  attributes (`nChains`, etc.) into the result and push `class` to the end,

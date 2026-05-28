@@ -16,7 +16,7 @@ to run the model without stratification.}
 A vector of stratum labels to loop over.
 }
 \description{
-\code{prep_strat_list()} builds the vector of stratum labels that \code{\link[=run_mod]{run_mod()}}
+\code{prep_strat_list()} builds the vector of stratum labels that \code{\link[=run_serodynamics]{run_serodynamics()}}
 iterates over.
 When \code{strat} is \code{NA}, a single pseudo-stratum (\code{"None"}) is returned so the
 model runs once on the full data set.

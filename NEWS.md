@@ -1,5 +1,15 @@
 # serodynamics (development version)
 
+* Renamed user-facing functions for clarity (#241):
+  - `run_mod()` → `run_serodynamics()`
+  - `post_summ()` → `summarize_posterior()`
+  - `plot_jags_trace()` → `plot_trace()`
+  - `plot_jags_dens()` → `plot_density()`
+  - `plot_jags_Rhat()` → `plot_rhat()`
+  - `plot_jags_effect()` → `plot_ess()`
+  Documentation, examples, tests, and snapshot directories were updated
+  to use the new names throughout the package. **Breaking change:** old
+  function names are no longer available.
 * Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
   the UCD-SeRG Lab Manual takes precedence over the tidyverse style
   guide where they conflict, and functions should end with an explicit

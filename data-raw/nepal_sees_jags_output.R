@@ -1,6 +1,6 @@
 dataset <- serodynamics::nepal_sees 
 
-nepal_sees_jags_output <- run_mod(
+nepal_sees_jags_output <- run_serodynamics(
   data = dataset, # The data set input
   file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
   nchain = 2, # Number of mcmc chains to run

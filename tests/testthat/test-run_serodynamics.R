@@ -14,7 +14,7 @@ test_that(
       sim_case_data(n = 100, antigen_isos = "HlyE_IgA") |>
       mutate(strat = "stratum 1")
     dataset <- dplyr::bind_rows(strat1, strat2)
-    results <- run_mod(
+    results <- run_serodynamics(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
@@ -86,7 +86,7 @@ test_that(
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
-    results <- run_mod(
+    results <- run_serodynamics(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
@@ -134,7 +134,7 @@ test_that(
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
-    results <- run_mod(
+    results <- run_serodynamics(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
@@ -184,13 +184,13 @@ test_that(
 )
 
 test_that(
-  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_mod",
+  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_serodynamics",
   code = {
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees
 
     results <- suppressWarnings(
-      run_mod(
+      run_serodynamics(
         data = dataset,
         file_mod = serodynamics_example("model.jags"),
         nchain = 2,
@@ -225,7 +225,7 @@ test_that(
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
-    results <- run_mod(
+    results <- run_serodynamics(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run

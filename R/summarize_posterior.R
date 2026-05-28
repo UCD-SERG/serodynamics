@@ -2,9 +2,9 @@
 #' @title Summary Table of Jags Posterior Estimates
 #' @author Sam Schildhauer
 #' @description
-#'  `post_summ()` takes an `sr_model` tibble returned by [run_mod]
-#'  to summary table for parameter, antigen/antibody, and stratification
-#'  combination.
+#'  `summarize_posterior()` takes an `sr_model` tibble returned by
+#'  [run_serodynamics] to summary table for parameter, antigen/antibody, and
+#'  stratification combination.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
 #'  and stratifications, unless otherwise specified.
 #'  Antigen/antibody combinations and stratifications will vary by analysis.
@@ -14,7 +14,7 @@
 #'  - t1 = time to peak
 #'  - shape = shape parameter
 #'  - alpha = decay rate
-#' @param data An `sr_model` tibble returned by [run_mod].
+#' @param data An `sr_model` tibble returned by [run_serodynamics].
 #' @param iso Specify [character] string to produce tables of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
@@ -31,12 +31,12 @@
 #' median, and quantiles (2.5%, 25.0%, 50.0%, 75.0%, 97.5%).
 #' @export
 #' @examples
-#' post_summ(data = serodynamics::nepal_sees_jags_output)
+#' summarize_posterior(data = serodynamics::nepal_sees_jags_output)
 
-post_summ <- function(data,
-                      iso = unique(data$Iso_type),
-                      param = unique(data$Parameter),
-                      strat = unique(data$Stratification)) {
+summarize_posterior <- function(data,
+                                iso = unique(data$Iso_type),
+                                param = unique(data$Parameter),
+                                strat = unique(data$Stratification)) {
 
   summarize_jags <- data |>
     dplyr::filter(.data$Iso_type %in% iso) |>

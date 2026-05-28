@@ -87,7 +87,7 @@
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
 #' @export
-#' @example inst/examples/run_mod-examples.R
+#' @example inst/examples/run_serodynamics-examples.R
 run_serodynamics <- function(data,
                     file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
