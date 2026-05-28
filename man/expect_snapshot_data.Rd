@@ -44,7 +44,7 @@ copied from \url{https://github.com/bcgov/ssdtools}
 with permission (\url{https://github.com/bcgov/ssdtools/issues/379})
 }
 \examples{
-\dontrun{
+donttest{
 expect_snapshot_data(iris, name = "iris")
 }
 }
