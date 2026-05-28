@@ -20,7 +20,7 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat, 
                          original_data,
-                         strat) {
+                         strat = NA) {
   
   if (is.na(strat)) {
     original_data <- original_data |> 

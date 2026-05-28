@@ -4,7 +4,7 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data, strat)
+calc_fit_mod(modeled_dat, original_data, strat = NA)
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
