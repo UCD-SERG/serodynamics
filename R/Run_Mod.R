@@ -40,6 +40,7 @@
 #'     - `alpha` = Posterior estimate of decay rate
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
+#'     - The default value for no stratification is `None`.
 #'   - `Subject` = ID of subject being evaluated
 #'   - `value` = Estimated value of the parameter
 #' - The following [attributes] are included in the output:
@@ -56,7 +57,8 @@
 #'     - `wishdf`
 #'     - `prec_logy_hyp_param`
 #'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
-#'   for all observations.
+#'   for all observations. If no stratification is specified, the value of 
+#'   stratification will be `None`.
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors

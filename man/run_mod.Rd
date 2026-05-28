@@ -110,6 +110,9 @@ including the following:
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model
+\itemize{
+\item The default value for no stratification is \code{None}.
+}
 \item \code{Subject} = ID of subject being evaluated
 \item \code{value} = Estimated value of the parameter
 \item The following \link{attributes} are included in the output:
@@ -129,7 +132,8 @@ including the following:
 \item \code{prec_logy_hyp_param}
 }
 \item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
-for all observations.
+for all observations. If no stratification is specified, the value of
+stratification will be \code{None}.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
 }
