@@ -15,7 +15,9 @@ PR's
 Postprocess
 Rhat
 SHA
+SeRG
 TSI
+UCD
 Vectorization
 Wasserstein
 assignees
@@ -61,6 +63,7 @@ stratifications
 tbl
 testthat
 tibble
+tidyverse
 toolchain
 unindexed
 unstratified
