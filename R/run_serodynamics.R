@@ -1,7 +1,7 @@
 #' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  `run_mod()` takes a data frame and adjustable MCMC inputs to
+#'  `run_serodynamics()` takes a data frame and adjustable MCMC inputs to
 #'  [runjags::run.jags()] as an MCMC
 #'  Bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()] models seroresponse dynamics to an
@@ -88,7 +88,7 @@
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_mod-examples.R
-run_mod <- function(data,
+run_serodynamics <- function(data,
                     file_mod = serodynamics_example("model.jags"),
                     nchain = 4,
                     nadapt = 0,
