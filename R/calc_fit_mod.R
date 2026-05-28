@@ -45,7 +45,7 @@ calc_fit_mod <- function(modeled_dat,
 
   # Matching input data with modeled data
   if (is.na(strat)) {
-    matched_dat <- merge(modeled_dat, original_data, 
+    matched_dat <- merge(modeled_dat, original_data,
                          by = c("Subject", "Iso_type"),
                          all.y = TRUE)
   } else {
