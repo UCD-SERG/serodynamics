@@ -1,5 +1,5 @@
 Package: serodynamics
-Title: What the Package Does (One Line, Title Case)
+Title: Modeling Antibody Dynamics for Seroepidemiologic Analysis
 Version: 0.0.0.9055
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
