@@ -24,6 +24,12 @@ calc_fit_mod(modeled_dat, original_data, strat)
   A [data.frame](https://rdrr.io/r/base/data.frame.html) of the original
   input dataset.
 
+- strat:
+
+  A [character](https://rdrr.io/r/base/character.html) string specifying
+  the stratification variable name, or
+  [NA](https://rdrr.io/r/base/NA.html) if no stratification is used.
+
 ## Value
 
 A [data.frame](https://rdrr.io/r/base/data.frame.html) attached as an
