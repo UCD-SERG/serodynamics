@@ -7,6 +7,7 @@ HlyE
 IgA
 IgG
 Iso
+Isotype
 JAGS's
 JAGs
 Lifecycle
@@ -77,6 +78,7 @@ pkgdown
 postprocess
 pre
 prec
+precisions
 preinstalling
 reformats
 reproducibly
@@ -102,11 +104,15 @@ stratifications
 summarised
 tbl
 testthat
+tibble
 tidyverse
 toolchain
+unindexed
 unstratified
 vh
 visualisation
 visualise
 visualised
 wishdf
+SeRG
+UCD
