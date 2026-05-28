@@ -91,6 +91,8 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  niter <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  with_pop_params <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  preclogy_per_iso <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -135,10 +137,27 @@ entered in quotes.</p></dd>
 
 <dt id="arg-with-post">with_post<a class="anchor" aria-label="anchor" href="#arg-with-post"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether a raw <code>jags.post</code>
-component
-should be included as an element of the <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> object returned by <code>run_mod()</code>
+object should be included as an optional <code>"jags.post"</code> attribute on the
+returned <code>sr_model</code> tibble
 (see <code>Value</code> section below for details).
 Note: These objects can be large.</p></dd>
+
+
+<dt id="arg-with-pop-params">with_pop_params<a class="anchor" aria-label="anchor" href="#arg-with-pop-params"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value specifying whether population
+level parameters should be included as an attribute entitled
+<code>population_params</code>. Excluded by default.
+Note: These objects can be large.</p></dd>
+
+
+<dt id="arg-preclogy-per-iso">preclogy_per_iso<a class="anchor" aria-label="anchor" href="#arg-preclogy-per-iso"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/logical.html" class="external-link">logical</a> value. When <code>TRUE</code> and <code>with_pop_params</code>
+is also <code>TRUE</code>, the <code>Parameter</code> column for <code>prec.logy</code> rows in
+<code>population_params</code> will contain the antigen/isotype label (e.g.,
+<code>"HlyE_IgA"</code>) rather than the constant <code>"prec.logy"</code>. This allows grouping
+by <code>Parameter</code> to obtain per-isotype precision estimates directly. Default
+is <code>FALSE</code> (all <code>prec.logy</code> rows share <code>Parameter = "prec.logy"</code>; the
+<code>Iso_type</code> column distinguishes isotypes).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -198,8 +217,8 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
     <p>An <code>sr_model</code> class object: a subclass of <a href="https://tibble.tidyverse.org/reference/tbl_df-class.html" class="external-link">tibble::tbl_df</a> that
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input <code>data</code>,
-including the following:</p><ul><li><p><code>iteration</code> = Number of sampling iterations</p></li>
-<li><p><code>chain</code> = Number of MCMC chains run; between 1 and 4</p></li>
+including the following:</p><ul><li><p><code>Iteration</code> = Number of sampling iterations</p></li>
+<li><p><code>Chain</code> = Number of MCMC chains run; between 1 and 4</p></li>
 <li><p><code>Parameter</code> = Parameter being estimated. Includes the following:</p><ul><li><p><code>y0</code> = Posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = Posterior estimate of peak antibody concentration</p></li>
 <li><p><code>t1</code> = Posterior estimate of time to peak</p></li>
@@ -211,11 +230,26 @@ including the following:</p><ul><li><p><code>iteration</code> = Number of sampli
 <li><p><code>Subject</code> = ID of subject being evaluated</p></li>
 <li><p><code>value</code> = Estimated value of the parameter</p></li>
 <li><p>The following <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> are included in the output:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
-<li><p><code>nChain</code>: Number of chains run.</p></li>
+<li><p><code>nChains</code>: Number of chains run.</p></li>
 <li><p><code>nParameters</code>: The amount of parameters estimated in the model.</p></li>
 <li><p><code>nIterations</code>: Number of iteration specified.</p></li>
 <li><p><code>nBurnin</code>: Number of burn ins.</p></li>
 <li><p><code>nThin</code>: Thinning number (niter/nmc).</p></li>
+<li><p><code>population_params</code>: Optionally included modeled population parameters,
+returned as a <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> and excluded by default.
+Columns include
+<code>Iteration</code>, <code>Chain</code>, <code>Parameter</code>, <code>Iso_type</code>, <code>Stratification</code>,
+<code>Population_Parameter</code>, and <code>value</code>.</p><ul><li><p><code>Population_Parameter</code> identifies which modeled population parameter
+is represented:</p><ul><li><p><code>mu.par</code> = The population means of the host-specific model
+parameters (on logarithmic scales). Note: y1 and shape are transformed.</p></li>
+<li><p><code>prec.par</code> = The population precision matrix of the
+hyperparameters (with diagonal elements equal to inverse variances).
+The two parameters listed (separated by commas) represent the pairwise
+precision relationship between specified parameters.</p></li>
+<li><p><code>prec.logy</code> = A vector of population precisions (inverse
+variances), one per antigen/isotype combination.</p></li>
+</ul></li>
+</ul></li>
 <li><p><code>priors</code>: A <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> that summarizes the input priors, including:</p><ul><li><p><code>mu_hyp_param</code></p></li>
 <li><p><code>prec_hyp_param</code></p></li>
 <li><p><code>omega_param</code></p></li>
@@ -270,7 +304,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed May 27 07:55:06 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 28 07:41:02 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -296,7 +330,6 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>
@@ -305,7 +338,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Wed May 27 07:55:53 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Thu May 28 07:42:06 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
