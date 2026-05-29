@@ -11,6 +11,9 @@ calc_fit_mod(modeled_dat, original_data, strat = NA)
 values.}
 
 \item{original_data}{A \link{data.frame} of the original input dataset.}
+
+\item{strat}{A \link{character} string specifying the stratification variable
+name, or \link{NA} if no stratification is used.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following

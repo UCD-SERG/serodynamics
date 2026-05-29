@@ -7,6 +7,8 @@
 #' @param modeled_dat A [data.frame] of modeled antibody kinetic parameter
 #' values.
 #' @param original_data A [data.frame] of the original input dataset.
+#' @param strat A [character] string specifying the stratification variable
+#' name, or [NA] if no stratification is used.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:
 #'   - Subject = ID number specifying an individual
