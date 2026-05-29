@@ -1,8 +1,8 @@
 #' @title Prepare and validate a stratification list
 #' @author Sam Schildhauer
 #' @description
-#'  `prep_strat_list()` builds the vector of stratum labels that [run_serodynamics()]
-#'  iterates over.
+#'  `prep_strat_list()` builds the vector of stratum labels that 
+#'  [run_serodynamics()] iterates over.
 #'  When `strat` is `NA`, a single pseudo-stratum (`"None"`) is returned so the
 #'  model runs once on the full data set.
 #'  Otherwise the unique values of `data[[strat]]` are returned, with factor

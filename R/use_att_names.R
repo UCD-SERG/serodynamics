@@ -2,8 +2,8 @@
 #' @description
 #'  `use_att_names` takes prepared longitudinal data for antibody kinetic
 #'  modeling and names columns using attribute values to allow merging
-#'  with a modeled [run_serodynamics()] output [tibble::tbl_df]. The column names include
-#'  `Subject`, `Iso_type`, `t`, and `result`. 
+#'  with a modeled [run_serodynamics()] output [tibble::tbl_df]. The column 
+#'  names include `Subject`, `Iso_type`, `t`, and `result`. 
 #' @param data A [data.frame] raw longitudinal data that has been
 #' prepared for antibody kinetic modeling using [as_case_data()].
 #' @returns The input [data.frame] with columns named after attributes.

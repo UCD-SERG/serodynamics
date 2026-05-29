@@ -89,17 +89,17 @@
 #' @export
 #' @example inst/examples/run_serodynamics-examples.R
 run_serodynamics <- function(data,
-                    file_mod = serodynamics_example("model.jags"),
-                    nchain = 4,
-                    nadapt = 0,
-                    nburn = 0,
-                    nmc = 100,
-                    niter = 100,
-                    strat = NA,
-                    with_post = FALSE,
-                    with_pop_params = FALSE,
-                    preclogy_per_iso = FALSE,
-                    ...) {
+                             file_mod = serodynamics_example("model.jags"),
+                             nchain = 4,
+                             nadapt = 0,
+                             nburn = 0,
+                             nmc = 100,
+                             niter = 100,
+                             strat = NA,
+                             with_post = FALSE,
+                             with_pop_params = FALSE,
+                             preclogy_per_iso = FALSE,
+                             ...) {
   ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 
