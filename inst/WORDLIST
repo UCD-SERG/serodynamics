@@ -6,6 +6,7 @@ HlyE
 IgA
 IgG
 Iso
+Isotype
 JAGS's
 JAGs
 Lifecycle
@@ -52,6 +53,7 @@ pandoc
 params
 pkgdown
 prec
+precisions
 preinstalling
 rhat
 seroconversion
@@ -61,8 +63,12 @@ strat
 stratifications
 tbl
 testthat
+tibble
 tidyverse
 toolchain
+unindexed
 unstratified
 vh
 wishdf
+SeRG
+UCD
