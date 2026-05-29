@@ -23,8 +23,8 @@ plot_predicted_curve(
 )
 }
 \arguments{
-\item{model}{An \code{sr_model} object (returned by \link{run_mod}) containing
-samples from the posterior distribution of the model parameters.}
+\item{model}{An \code{sr_model} object (returned by \link{run_serodynamics})
+containing samples from the posterior distribution of the model parameters.}
 
 \item{ids}{The participant IDs to plot; for example, \code{"sees_npl_128"}.}
 

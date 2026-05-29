@@ -1,9 +1,9 @@
 
-#' @title Trace Plot Diagnostics
+#' @title Density Plot Diagnostics
 #' @author Sam Schildhauer
 #' @description
-#'  plot_jags_trace() takes a [list] output from [serodynamics::run_mod()]
-#'  to create trace plots for each chain run in the mcmc estimation.
+#'  plot_density() takes a [list] output from [serodynamics::run_serodynamics()]
+#'  to create density plots for each chain run in the mcmc estimation.
 #'  Defaults will produce every combination of antigen/antibody, parameters,
 #'  and stratifications, unless otherwise specified.
 #'  Antigen/antibody combinations and stratifications will vary by analysis.
@@ -13,7 +13,7 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param data A [list] outputted from [run_mod()].
+#' @param data A [list] outputted from [run_serodynamics()].
 #' @param iso Specify [character] string to produce plots of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
@@ -26,19 +26,19 @@
 #' - `y1` = posterior estimate of peak antibody concentration
 #' @param strat Specify [character] string to produce plots of specific
 #' stratification entered in quotes.
-#' @return A [list] of [ggplot2::ggplot] objects producing trace
+#' @return A [base::list()] of [ggplot2::ggplot()] objects producing density
 #' plots for all the specified input.
 #' @export
-#' @example inst/examples/examples-plot_jags_tracedx.R
+#' @example inst/examples/examples-plot_density.R
 
-plot_jags_trace <- function(data,
-                            iso = unique(data$Iso_type),
-                            param = unique(data$Parameter),
-                            strat = unique(data$Stratification)) {
-
+plot_density <- function(data,
+                         iso = unique(data$Iso_type),
+                         param = unique(data$Parameter),
+                         strat = unique(data$Stratification)) {
+  
   attributes_jags <- data[["attributes"]]
 
-  trace_strat_list <- list()
+  dens_strat_list <- list()
   for (i in strat) {
 
     visualize_jags_sub <- data |>
@@ -46,7 +46,7 @@ plot_jags_trace <- function(data,
       dplyr::filter(.data$Subject == "newperson")
 
     # Creating open list to store ggplots
-    trace_out <- list()
+    density_out <- list()
     # Looping through the isos
     for (j in iso) {
       visualize_jags_plot <- visualize_jags_sub |>
@@ -61,23 +61,18 @@ plot_jags_trace <- function(data,
         # Changing parameter name to reflect the input
         dplyr::mutate(Parameter = paste0("iso = ", j, ", parameter = ",
                                          .data$Parameter, ", strat = ",
-                                         i))
+                                         i),
+                      value = log(.data$value))
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
       # Creating density plot
-      traceplot <- ggmcmc::ggs_traceplot(visualize_jags_plot) +
+      densplot <- ggmcmc::ggs_density(visualize_jags_plot) +
         ggplot2::theme_bw() +
-        ggplot2::labs(x = "iterations", y = "parameter value") +
-        ggplot2::theme(legend.position = "bottom") +
-        ggplot2::scale_y_log10(labels = scales::label_comma())
-      trace_out[[j]] <- traceplot
+        ggplot2::labs(x = "log(value)")
+      density_out[[j]] <- densplot
     }
-    trace_strat_list[[i]] <- trace_out
+    dens_strat_list[[i]] <- density_out
   }
-  #Printing only one plot if only one exists.
-  if (sum(lengths(trace_strat_list) == 1)) {
-    trace_strat_list <- trace_strat_list[[1]][[iso]]
-  } 
-  trace_strat_list
+  dens_strat_list
 }

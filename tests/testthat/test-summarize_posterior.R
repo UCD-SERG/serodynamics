@@ -7,7 +7,7 @@ test_that(
       suppressWarnings()
 
     # Testing for any errors:
-    results <- post_summ(data) |> expect_no_error()
+    results <- summarize_posterior(data) |> expect_no_error()
       
     # Snapshot test to ensure results are consistent:
     testthat::expect_snapshot(results)

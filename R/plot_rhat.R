@@ -2,7 +2,7 @@
 #' @title Rhat Plot Diagnostics
 #' @author Sam Schildhauer
 #' @description
-#'  plot_jags_Rhat() takes a [list] output from [serodynamics::run_mod()]
+#'  plot_rhat() takes a [list] output from [serodynamics::run_serodynamics()]
 #'  to produce dotplots of potential scale reduction factors (Rhat) for each
 #'  chain run in the mcmc estimation. Rhat values analyze the spread of chains
 #'  compared to pooled values with a goal of observing rhat < 1.10 for
@@ -16,7 +16,7 @@
 #'  - t1 = time to peak
 #'  - r = shape parameter
 #'  - alpha = decay rate
-#' @param data A [list] outputted from run_mod().
+#' @param data A [list] outputted from [run_serodynamics()].
 #' @param iso Specify [character] string to produce plots of only a
 #' specific antigen/antibody combination, entered with quotes. Default outputs
 #' all antigen/antibody combinations.
@@ -32,12 +32,12 @@
 #' @return A [list] of [ggplot2::ggplot] objects producing dotplots with rhat
 #' values for all the specified input.
 #' @export
-#' @example inst/examples/examples-plot_jags_rhatdx.R
+#' @example inst/examples/examples-plot_rhat.R
 
-plot_jags_Rhat <- function(data,  # nolint: object_name_linter
-                           iso = unique(data$Iso_type),
-                           param = unique(data$Parameter),
-                           strat = unique(data$Stratification)) {
+plot_rhat <- function(data,
+                      iso = unique(data$Iso_type),
+                      param = unique(data$Parameter),
+                      strat = unique(data$Stratification)) {
   
   attributes_jags <- data[["attributes"]]
   

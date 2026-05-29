@@ -1,7 +1,7 @@
 #' @title Run Jags Model
 #' @author Sam Schildhauer
 #' @description
-#'  `run_mod()` takes a data frame and adjustable MCMC inputs to
+#'  `run_serodynamics()` takes a data frame and adjustable MCMC inputs to
 #'  [runjags::run.jags()] as an MCMC
 #'  Bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()] models seroresponse dynamics to an
@@ -87,19 +87,19 @@
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
 #' @export
-#' @example inst/examples/run_mod-examples.R
-run_mod <- function(data,
-                    file_mod = serodynamics_example("model.jags"),
-                    nchain = 4,
-                    nadapt = 0,
-                    nburn = 0,
-                    nmc = 100,
-                    niter = 100,
-                    strat = NA,
-                    with_post = FALSE,
-                    with_pop_params = FALSE,
-                    preclogy_per_iso = FALSE,
-                    ...) {
+#' @example inst/examples/run_serodynamics-examples.R
+run_serodynamics <- function(data,
+                             file_mod = serodynamics_example("model.jags"),
+                             nchain = 4,
+                             nadapt = 0,
+                             nburn = 0,
+                             nmc = 100,
+                             niter = 100,
+                             strat = NA,
+                             with_post = FALSE,
+                             with_pop_params = FALSE,
+                             preclogy_per_iso = FALSE,
+                             ...) {
   ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 

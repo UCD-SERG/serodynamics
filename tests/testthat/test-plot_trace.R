@@ -7,7 +7,7 @@ test_that(
     data <- serodynamics::nepal_sees_jags_output |>
       suppressWarnings()
 
-    results <- plot_jags_trace(data) |>
+    results <- plot_trace(data) |>
       # Testing for any errors
       expect_no_error()
     # Test to ensure output is a list object

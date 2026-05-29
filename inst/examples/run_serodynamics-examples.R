@@ -11,7 +11,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 
   dataset <- bind_rows(strat1, strat2)
 
-  fitted_model <- run_mod(
+  fitted_model <- run_serodynamics(
     data = dataset, # The data set input
     file_mod = serodynamics_example("model.jags"),
     nchain = 4, # Number of mcmc chains to run

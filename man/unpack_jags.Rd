@@ -9,8 +9,8 @@ unpack_jags(data)
 \arguments{
 \item{data}{A \link[tibble:tbl_df]{tibble::tbl_df} in \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} / MCMC-long format,
 usually \code{ggmcmc::ggs(jags_post[["mcmc"]])} where \code{jags_post} comes from
-\link{run_mod}. Must contain at least \code{Iteration}, \code{Chain}, \code{Parameter},
-and \code{value} columns.}
+\link{run_serodynamics}. Must contain at least \code{Iteration}, \code{Chain},
+\code{Parameter}, and \code{value} columns.}
 }
 \value{
 A \link[tibble:tbl_df]{tibble::tbl_df} containing MCMC samples from the joint
@@ -22,9 +22,9 @@ Isotype names are not added by \code{unpack_jags()} itself.
 }
 \description{
 \code{unpack_jags()} takes a long-format MCMC sample (typically created by
-applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \link{run_mod} output)
-and unpacks it into separate rows for individual-level curve parameters
-and population-level hyperparameters/precision terms.
+applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \link{run_serodynamics}
+output) and unpacks it into separate rows for individual-level curve
+parameters and population-level hyperparameters/precision terms.
 }
 \author{
 Sam Schildhauer
