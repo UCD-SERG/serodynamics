@@ -190,8 +190,10 @@
 
 ### Bug fixes
 
-- Fixing calc_fit_mod to include all stratifications in fitted_residuals
-  attributes
+- [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr240/reference/run_mod.md)’s
+  `fitted_residuals` attribute now covers all observations across all
+  strata (previously only the last stratum was retained) and always
+  includes a `Stratification` column (`"None"` when unstratified).
   ([\#240](https://github.com/UCD-SERG/serodynamics/issues/240))
 
 ### Developer-facing changes

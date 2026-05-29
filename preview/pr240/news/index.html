@@ -111,7 +111,8 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
-<ul><li>Fixing calc_fit_mod to include all stratifications in fitted_residuals attributes (<a href="https://github.com/UCD-SERG/serodynamics/issues/240" class="external-link">#240</a>)</li>
+<ul><li>
+<code><a href="../reference/run_mod.html">run_mod()</a></code>’s <code>fitted_residuals</code> attribute now covers all observations across all strata (previously only the last stratum was retained) and always includes a <code>Stratification</code> column (<code>"None"</code> when unstratified). (<a href="https://github.com/UCD-SERG/serodynamics/issues/240" class="external-link">#240</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="developer-facing-changes-development-version">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-development-version"></a></h3>

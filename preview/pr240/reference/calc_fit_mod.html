@@ -86,13 +86,18 @@ name, or <a href="https://rdrr.io/r/base/NA.html" class="external-link">NA</a> i
     <p>A <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> attached as an <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> with the following
 values:</p><ul><li><p>Subject = ID number specifying an individual</p></li>
 <li><p>Iso_type = The modeled antigen_isotype</p></li>
-<li><p>Stratification = The variable used to stratify the model</p></li>
+<li><p>Stratification = The variable used to stratify the model
+(<code>"None"</code> when no stratification is used)</p></li>
 <li><p>t = Time since infection</p></li>
 <li><p>fitted = The fitted value calculated using model output parameters for a
 given <code>t</code></p></li>
 <li><p>residual = The residual value calculated as the difference between
 observed and fitted values for a given <code>t</code></p></li>
-</ul></div>
+</ul><p>Rows from <code>original_data</code> whose stratification value is <code>NA</code> are retained
+in the output with <code>NA</code> <code>fitted</code> and <code>residual</code> values, since no posterior
+estimate is available for those (Subject, Iso_type, Stratification)
+tuples.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>

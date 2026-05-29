@@ -40,7 +40,8 @@ values:
 
 - Iso_type = The modeled antigen_isotype
 
-- Stratification = The variable used to stratify the model
+- Stratification = The variable used to stratify the model (`"None"`
+  when no stratification is used)
 
 - t = Time since infection
 
@@ -49,3 +50,8 @@ values:
 
 - residual = The residual value calculated as the difference between
   observed and fitted values for a given `t`
+
+Rows from `original_data` whose stratification value is `NA` are
+retained in the output with `NA` `fitted` and `residual` values, since
+no posterior estimate is available for those (Subject, Iso_type,
+Stratification) tuples.
