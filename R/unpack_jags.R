@@ -9,11 +9,12 @@
 #'   usually `ggmcmc::ggs(jags_post[["mcmc"]])` where `jags_post` comes from
 #'   [run_mod]. Must contain at least `Iteration`, `Chain`, `Parameter`,
 #'   and `value` columns.
-#' @returns A [tibble::tbl_df] that
-#' contains MCMC samples from the joint posterior distribution of the model
-#' with unpacked individual-level parameters (e.g., `y0`, `y1`, `t1`,
-#' `alpha`, `shape`) and population-level parameters (e.g., `mu.par`,
-#' `prec.par`, `prec.logy`), along with isotypes and subjects.
+#' @returns A [tibble::tbl_df] containing MCMC samples from the joint
+#' posterior distribution of the model with unpacked individual-level
+#' parameters (e.g., `y0`, `y1`, `t1`, `alpha`, `shape`) and
+#' population-level parameters (e.g., `mu.par`, `prec.par`, `prec.logy`),
+#' along with subject-related fields such as `Subject` and `Subnum`.
+#' Isotype names are not added by `unpack_jags()` itself.
 #' @keywords internal
 unpack_jags <- function(data) {
   
@@ -25,10 +26,21 @@ unpack_jags <- function(data) {
   unpack_with_pattern <- function(data, filter_pattern, regex_pattern,
                                   subject_repl, subnum_repl, param_fun) {
     data |>
-      dplyr::filter(startsWith(.data$Parameter, paste0(filter_pattern, "["))) |>
+      dplyr::filter(
+        startsWith(.data$Parameter, paste0(filter_pattern, "[")) |
+          .data$Parameter == filter_pattern
+      ) |>
       dplyr::mutate(
-        Subject = gsub(regex_pattern, subject_repl, .data$Parameter),
-        Subnum = gsub(regex_pattern, subnum_repl, .data$Parameter),
+        Subject = dplyr::if_else(
+          .data$Parameter == filter_pattern,
+          filter_pattern,
+          gsub(regex_pattern, subject_repl, .data$Parameter)
+        ),
+        Subnum = dplyr::if_else(
+          .data$Parameter == filter_pattern,
+          "1",
+          gsub(regex_pattern, subnum_repl, .data$Parameter)
+        ),
         Param = param_fun(.data$Parameter, regex_pattern)
       )
   }
@@ -88,13 +100,13 @@ unpack_jags <- function(data) {
     ) |> 
     dplyr::filter(.data$Param %in% c("y0", "y1", "t1", "alpha", "shape"))
 
-  # Putting data frame together
+  # Putting data frame together, marking population-parameter rows explicitly
   jags_unpack_bind <- dplyr::bind_rows(
-    jags_unpack_params,
-    jags_mupar,
-    jags_precpar,
-    jags_preclogy
+    dplyr::mutate(jags_unpack_params, .is_population_parameter = FALSE),
+    dplyr::mutate(jags_mupar,         .is_population_parameter = TRUE),
+    dplyr::mutate(jags_precpar,       .is_population_parameter = TRUE),
+    dplyr::mutate(jags_preclogy,      .is_population_parameter = TRUE)
   )
 
-  return(jags_unpack_bind)
+  jags_unpack_bind
 }

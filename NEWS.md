@@ -5,11 +5,39 @@
   (or optionally the "newperson" subject).  Supports 95% credible interval
   ribbons, stratified curves with colour or faceting, and multiple
   antigen-isotypes (#74).
-* `run_mod()` now monitors the `mu.par` hyperparameter and stores its
-  posterior samples on the latent parameter scale in a
-  `population_params` attribute of the returned `sr_model` object; functions
-  such as `plot_serocurve()` apply transformations to the original parameter
-  scale when needed (#74).
+* Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
+  the UCD-SeRG Lab Manual takes precedence over the tidyverse style
+  guide where they conflict, and functions should end with an explicit
+  `return()` call per the lab manual / Google R Style Guide. This
+  closes a gap where `@claude` reviews were flagging explicit returns
+  as non-conforming.
+* Expanded what the `Claude Code` (`@claude`) workflow can do:
+  - Install the full R toolchain (R, JAGS, pandoc, the apt system libs
+    mirrored from `copilot-setup-steps.yml`, plus `devtools`, `roxygen2`,
+    `rmarkdown`, `lintr`, `spelling`, `rcmdcheck`) and allow `Rscript`,
+    `R`, and `R CMD` invocations, so requests that need package-
+    maintenance commands (`devtools::document()`,
+    `spelling::spell_check_package()`, `R CMD check`, vignette rebuilds)
+    succeed instead of being patched by hand.
+  - Grant `issues: write` and allow `gh issue` invocations so Claude
+    can file follow-up issues for work deferred out of the current PR
+    instead of burying it in a comment.
+* Standardized `runjags::findjags()` casing across `test-coverage.yaml`
+  and `copilot-setup-steps.yml` to match the `R-CMD-check.yaml` form
+  arriving with the 0.1.0 release (#207 advisory).
+* Re-assign reviewers to a PR's human assignees (filtered via
+  `type == "User"`) when Claude pushes commits during a `@claude` or
+  `Claude Code Review` run; if Claude makes no commits, the original
+  reviewer set is restored as before. Detected by comparing the PR's
+  head SHA before and after the Claude step (#210).
+* Stopped deleting prior Claude review comments at the start of each
+  `Claude Code Review` run, so reviews posted by `@claude review` invocations
+  are preserved across subsequent pushes instead of being wiped when the
+  review step fails its bot-actor gate (#217).
+* Hardened the Claude code-review workflow against races and silent failures:
+  serialized concurrent runs per PR, made reviewer restore fail loudly instead
+  of silently dropping reviewers, and cleaned up all stale Claude top-level
+  comments per run (#216).
 * Expanded `.github/copilot-instructions.md` with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.
 * Fixed `dplyr::as_tibble()` references to `tibble::as_tibble()` in `post_summ()` and `run_mod()`, since `as_tibble()` is exported from the `tibble` package, not `dplyr`.
 * Added R 4.5+ snapshot variants to handle the changed attribute ordering in
@@ -19,6 +47,7 @@
   Workspace sessions much faster.
 * Reorganized pkgdown documentation with new "Getting Started" guide demonstrating main API workflow, organized articles into "Get started" and "Developer Notes" sections (#73).
 * Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.
+* Added reference to UCD-SeRG Lab Manual in copilot-instructions for lab-wide best practices guidance.
 
 * Consolidated OS-specific snapshot variants: removed redundant Linux and Windows
   snapshot directories (which were identical), keeping only base snapshots and 
@@ -29,6 +58,7 @@
 
 ## New features
 
+* Including optional population parameters as attributes in run_mod output. (#141)
 * Made "newperson" optional in `prep_data()` (#73)
 * Including fitted and residual values as data frame in run_mod output. (#101)
 * Added  `plot_predicted_curve()` with support for faceting by multiple IDs (#68)

@@ -10,6 +10,24 @@
 - **Key Dependencies**: runjags, rjags, JAGS 4.3.1, serocalculator, ggmcmc, dplyr, ggplot2
 - **Lifecycle**: Experimental (under active development)
 
+## Lab-Wide Guidance
+
+**Follow the guidance in the [UCD-SeRG Lab Manual](https://ucd-serg.github.io/lab-manual/)**, which provides comprehensive best practices for:
+- Culture and conduct
+- Communication
+- Reproducibility
+- Code repositories and version control
+- Coding practices and style
+- Working with big data
+- Quarto and documentation
+- GitHub workflows
+- Reproducible environments
+- Code and data publication
+- AI tools usage
+- And more
+
+If the web version is inaccessible, refer to the [source files on GitHub](https://github.com/UCD-SERG/lab-manual) for easier reading.
+
 ## Critical Setup Requirements
 
 ### Copilot Setup Workflow (Automatic Environment Configuration)
@@ -520,7 +538,8 @@ expect_false(has_missing_values(complete_data))
 
 ## Code Style Guidelines
 
-- **Follow tidyverse style guide**: https://style.tidyverse.org
+- **Lab manual overrides tidyverse style**: Follow the [UCD-SeRG Lab Manual coding-style chapter](https://ucd-serg.github.io/lab-manual/coding-style.html) first; fall back to the [tidyverse style guide](https://style.tidyverse.org) only where the lab manual is silent. Where the two conflict, the lab manual wins.
+- **Use explicit `return()` statements**: Per the [lab manual](https://ucd-serg.github.io/lab-manual/coding-style/function-structure-and-documentation.html#explicit-return-statements) (which follows the [Google R Style Guide](https://google.github.io/styleguide/Rguide.html#use-explicit-returns)), always end functions with `return(value)` rather than relying on R's implicit final-expression return. This overrides the tidyverse style guide. Note: `return_linter` is currently disabled in `.lintr.R` for flexibility on older code, but new code should use explicit returns.
 - **Use native pipe**: `|>` not `%>%`
 - **Avoid redundant logical comparisons**: Use logical values directly (e.g., `if (is_ready)` not `if (is_ready == TRUE)`)
 - **Naming**: snake_case, acronyms may be uppercase (e.g., `prep_IDs_data`)

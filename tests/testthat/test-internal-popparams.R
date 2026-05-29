@@ -1,19 +1,21 @@
 test_that("param_recode correctly recodes parameter indices", {
   # Test valid parameter indices
-  expect_equal(serodynamics:::param_recode("1"), "y0")
-  expect_equal(serodynamics:::param_recode("2"), "y1")
-  expect_equal(serodynamics:::param_recode("3"), "t1")
-  expect_equal(serodynamics:::param_recode("4"), "alpha")
-  expect_equal(serodynamics:::param_recode("5"), "shape")
+  expect_equal(serodynamics:::param_recode("1"), "log(y0)")
+  expect_equal(serodynamics:::param_recode("2"), "log(y1 - y0)")
+  expect_equal(serodynamics:::param_recode("3"), "log(t1)")
+  expect_equal(serodynamics:::param_recode("4"), "log(alpha)")
+  expect_equal(serodynamics:::param_recode("5"), "log(shape - 1)")
   
   # Test vector of valid indices
   expect_equal(
     serodynamics:::param_recode(c("1", "2", "3", "4", "5")),
-    c("y0", "y1", "t1", "alpha", "shape")
+    c("log(y0)", "log(y1 - y0)", "log(t1)", 
+      "log(alpha)", "log(shape - 1)")
   )
 })
 
 test_that("unpack_jags handles factor Parameter column", {
+  withr::local_seed(42)
   # Create a simple ggs-like object with factor Parameter column
   test_data <- tibble::tibble(
     Iteration = rep(1:5, 3),
@@ -33,6 +35,7 @@ test_that("unpack_jags handles factor Parameter column", {
 })
 
 test_that("unpack_jags correctly unpacks mu.par parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -50,10 +53,12 @@ test_that("unpack_jags correctly unpacks mu.par parameters", {
   expect_true("mu.par" %in% result$Subject)
   
   # Check Param is correctly decoded
-  expect_true(all(mu_rows$Param %in% c("y0", "y1", "t1", "alpha", "shape")))
+  expect_true(all(mu_rows$Param %in% c("log(y0)", "log(y1 - y0)", "log(t1)", 
+                                       "log(alpha)", "log(shape - 1)")))
 })
 
 test_that("unpack_jags correctly unpacks prec.par parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -75,6 +80,7 @@ test_that("unpack_jags correctly unpacks prec.par parameters", {
 })
 
 test_that("unpack_jags correctly unpacks prec.logy parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -92,7 +98,24 @@ test_that("unpack_jags correctly unpacks prec.logy parameters", {
   expect_true("prec.logy" %in% result$Subject)
 })
 
+test_that("unpack_jags correctly unpacks scalar prec.logy parameters", {
+  withr::local_seed(42)
+  test_data <- tibble::tibble(
+    Iteration = 1:3,
+    Chain = rep(1, 3),
+    Parameter = rep("prec.logy", 3),
+    value = rnorm(3)
+  )
+  
+  result <- serodynamics:::unpack_jags(test_data)
+  
+  expect_true(all(result$Subject == "prec.logy"))
+  expect_true(all(result$Subnum == "1"))
+  expect_true(all(result$Param == "prec.logy"))
+})
+
 test_that("unpack_jags correctly unpacks individual-level parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:3, 2),
     Chain = rep(1, 6),
@@ -108,12 +131,14 @@ test_that("unpack_jags correctly unpacks individual-level parameters", {
 })
 
 test_that("prep_popparams filters to population parameters only", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = 1:10,
     Chain = rep(1, 10),
     Parameter = rep(c("y0", "mu.par"), each = 5),
     Subject = rep(c("1", "mu.par"), each = 5),
-    value = rnorm(10)
+    value = rnorm(10),
+    .is_population_parameter = rep(c(FALSE, TRUE), each = 5)
   )
   
   result <- serodynamics:::prep_popparams(test_data)
@@ -126,17 +151,22 @@ test_that("prep_popparams filters to population parameters only", {
   expect_true("Population_Parameter" %in% names(result))
   expect_false("Subject" %in% names(result))
   
+  # .is_population_parameter column should be removed
+  expect_false(".is_population_parameter" %in% names(result))
+  
   # Should have 5 rows (only mu.par rows)
   expect_equal(nrow(result), 5)
 })
 
 test_that("ex_popparams excludes population parameters", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = 1:10,
     Chain = rep(1, 10),
     Parameter = rep(c("y0", "mu.par"), each = 5),
     Subject = rep(c("1", "mu.par"), each = 5),
-    value = rnorm(10)
+    value = rnorm(10),
+    .is_population_parameter = rep(c(FALSE, TRUE), each = 5)
   )
   
   result <- serodynamics:::ex_popparams(test_data)
@@ -147,27 +177,106 @@ test_that("ex_popparams excludes population parameters", {
   # Should have 5 rows (only y0 rows)
   expect_equal(nrow(result), 5)
   
-  # Should keep original structure
-  expect_equal(names(result), names(test_data))
+  # .is_population_parameter column should be removed
+  expect_false(".is_population_parameter" %in% names(result))
+})
+
+test_that("preclogy_per_iso relabels prec.logy Parameter by Iso_type", {
+  withr::local_seed(42)
+  # Simulate the data shape that exists in Run_Mod.R after the iso_dat join
+  # but before the rename of Param → Parameter.
+  mock_unpacked <- tibble::tibble(
+    Iteration = rep(1:3, 4),
+    Chain = 1L,
+    Param = c(
+      rep("prec.logy", 3), rep("prec.logy", 3),
+      rep("y0", 3),        rep("y0", 3)
+    ),
+    Subject = c(
+      rep("prec.logy", 3), rep("prec.logy", 3),
+      rep("1", 3),         rep("2", 3)
+    ),
+    Iso_type = c(
+      rep("HlyE_IgA", 3), rep("HlyE_IgG", 3),
+      rep("HlyE_IgA", 3), rep("HlyE_IgA", 3)
+    ),
+    value = rnorm(12),
+    .is_population_parameter = c(rep(TRUE, 6), rep(FALSE, 6))
+  )
+
+  # Apply the preclogy_per_iso transformation via the extracted helper
+  result <- serodynamics:::relabel_preclogy_iso(mock_unpacked)
+
+  preclogy_rows <- result[result$.is_population_parameter, ]
+  # Each prec.logy row should now carry its isotype as the Param label
+  expect_setequal(unique(preclogy_rows$Param), c("HlyE_IgA", "HlyE_IgG"))
+
+  # Individual-level rows are unchanged
+  ind_rows <- result[!result$.is_population_parameter, ]
+  expect_true(all(ind_rows$Param == "y0"))
 })
 
 test_that("prep_popparams and ex_popparams are complementary", {
+  withr::local_seed(42)
   test_data <- tibble::tibble(
     Iteration = rep(1:5, 4),
     Chain = rep(1, 20),
     Parameter = rep(c("y0", "mu.par", "prec.par", "prec.logy"), each = 5),
     Subject = rep(c("1", "mu.par", "prec.par", "prec.logy"), each = 5),
-    value = rnorm(20)
+    value = rnorm(20),
+    .is_population_parameter = rep(c(FALSE, TRUE, TRUE, TRUE), each = 5)
   )
   
   pop_params <- serodynamics:::prep_popparams(test_data)
   individual_params <- serodynamics:::ex_popparams(test_data)
-  
+
   # Together they should account for all rows
   expect_equal(nrow(pop_params) + nrow(individual_params), nrow(test_data))
-  
+
   # No overlap in subjects
   # Note: pop_params has Population_Parameter column, not Subject
-  expect_false(any(individual_params$Subject %in% 
+  expect_false(any(individual_params$Subject %in%
                      c("mu.par", "prec.par", "prec.logy")))
+})
+
+test_that("prep_strat_list returns 'None' when strat is NA", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", "b", "a"))
+  expect_equal(serodynamics:::prep_strat_list(data, NA), "None")
+})
+
+test_that("prep_strat_list returns character labels for factor columns", {
+  # Factor columns must iterate over labels, not the underlying integer codes
+  data <- tibble::tibble(x = 1:4, grp = factor(c("b", "a", "b", "a")))
+  result <- serodynamics:::prep_strat_list(data, "grp")
+  expect_type(result, "character")
+  expect_setequal(result, c("a", "b"))
+})
+
+test_that("prep_strat_list aborts when the strat column is missing", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", "b", "a"))
+  expect_error(
+    serodynamics:::prep_strat_list(data, "not_a_column"),
+    "was not found"
+  )
+})
+
+test_that("prep_strat_list aborts when no non-missing strata remain", {
+  data <- tibble::tibble(
+    x = 1:3,
+    grp = c(NA_character_, NA_character_, NA_character_)
+  )
+  expect_error(
+    suppressWarnings(serodynamics:::prep_strat_list(data, "grp")),
+    "no non-missing values"
+  )
+})
+
+test_that("prep_strat_list warns about and drops missing stratum values", {
+  data <- tibble::tibble(x = 1:3, grp = c("a", NA, "b"))
+  expect_warning(
+    result <- serodynamics:::prep_strat_list(data, "grp"),
+    "missing"
+  )
+  expect_setequal(result, c("a", "b"))
+  expect_false(anyNA(result))
 })

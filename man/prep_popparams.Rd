@@ -7,7 +7,8 @@
 prep_popparams(x)
 }
 \arguments{
-\item{x}{A \link{data.frame} with a \code{Subject} variable.}
+\item{x}{A \link{data.frame} with \code{Subject} and \code{.is_population_parameter}
+variables.}
 }
 \value{
 A filtered \link{data.frame} with the \code{Subject} variable renamed to
