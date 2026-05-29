@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -169,7 +169,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 29 00:00:28 2026
+#> Welcome to JAGS 4.3.2 on Fri May 29 19:29:43 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 29 00:00:40 2026
+#> Welcome to JAGS 4.3.2 on Fri May 29 19:29:56 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 29 00:00:42 2026
+#> Welcome to JAGS 4.3.2 on Fri May 29 19:29:58 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -489,11 +489,11 @@ fitted_stratified <- run_serodynamics(
 ## Next Steps
 
 - See the [function
-  reference](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/index.md)
+  reference](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
@@ -557,7 +557,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
 #>  serocalculator   1.4.0.9013 2026-05-27 [1] Github (ucd-serg/serocalculator@0e9b518)
-#>  serodynamics   * 0.0.0.9056 2026-05-28 [1] local
+#>  serodynamics   * 0.0.0.9056 2026-05-29 [1] local
 #>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)

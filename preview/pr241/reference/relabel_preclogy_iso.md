@@ -21,7 +21,7 @@ relabel_preclogy_iso(jags_unpacked)
   A
   [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   returned by
-  [`unpack_jags()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/unpack_jags.md)
+  [`unpack_jags()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/unpack_jags.md)
   after the `Iso_type` join, containing `.is_population_parameter`,
   `Subject`, `Iso_type`, and `Param` columns.
 

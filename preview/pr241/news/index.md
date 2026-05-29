@@ -6,17 +6,17 @@
   ([\#241](https://github.com/UCD-SERG/serodynamics/issues/241)):
 
   - `run_mod()` →
-    [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+    [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
   - `post_summ()` →
-    [`summarize_posterior()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/summarize_posterior.md)
+    [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/summarize_posterior.md)
   - `plot_jags_trace()` →
-    [`plot_trace()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_trace.md)
+    [`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_trace.md)
   - `plot_jags_dens()` →
-    [`plot_density()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_density.md)
+    [`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_density.md)
   - `plot_jags_Rhat()` →
-    [`plot_rhat()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_rhat.md)
+    [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_rhat.md)
   - `plot_jags_effect()` →
-    [`plot_ess()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_ess.md)
+    [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_ess.md)
     Documentation, examples, tests, and snapshot directories were
     updated to use the new names throughout the package. **Breaking
     change:** old function names are no longer available.
@@ -84,7 +84,7 @@
 
 - Added R 4.5+ snapshot variants to handle the changed attribute
   ordering in
-  [`as_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md),
+  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md),
   ensuring test suite compatibility with R 4.5 and later
   ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
 
@@ -120,12 +120,12 @@
 - Including optional population parameters as attributes in run_mod
   output. ([\#141](https://github.com/UCD-SERG/serodynamics/issues/141))
 - Made “newperson” optional in
-  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
   ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73))
 - Including fitted and residual values as data frame in run_mod output.
   ([\#101](https://github.com/UCD-SERG/serodynamics/issues/101))
 - Added
-  [`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_predicted_curve.md)
+  [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_predicted_curve.md)
   with support for faceting by multiple IDs
   ([\#68](https://github.com/UCD-SERG/serodynamics/issues/68))
 - Replacing old data object with new run_mod output
@@ -160,34 +160,34 @@
   ([\#41](https://github.com/UCD-SERG/serodynamics/issues/41))
 - Fixing SEES data and added jags_post for SEES
   ([\#63](https://github.com/UCD-SERG/serodynamics/issues/63))
-- [`as_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md)
+- [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md)
   now creates column `visit_num`
   ([\#47](https://github.com/UCD-SERG/serodynamics/issues/47),
   [\#50](https://github.com/UCD-SERG/serodynamics/issues/50))
 - Added
-  [`postprocess_jags_output()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/postprocess_jags_output.md)
+  [`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/postprocess_jags_output.md)
   to API ([\#33](https://github.com/UCD-SERG/serodynamics/issues/33))
 - Added
-  [`initsfunction()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/initsfunction.md)
+  [`initsfunction()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/initsfunction.md)
   to API ([\#37](https://github.com/UCD-SERG/serodynamics/issues/37))
 - Added participant IDs as names to `nsmpl` element of
-  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
   output ([\#34](https://github.com/UCD-SERG/serodynamics/issues/34))
 - Added
-  [`initsfunction()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/initsfunction.md)
+  [`initsfunction()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/initsfunction.md)
   to API ([\#37](https://github.com/UCD-SERG/serodynamics/issues/37))
 - Added
-  [`as_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md)
+  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/as_case_data.md)
   to API ([\#31](https://github.com/UCD-SERG/serodynamics/issues/31))
 - Added
-  [`prep_priors()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
+  [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
   to API ([\#30](https://github.com/UCD-SERG/serodynamics/issues/30))
 - Added
   [`autoplot()`](https://ggplot2.tidyverse.org/reference/autoplot.html)
   method for `case_data` objects
   ([\#28](https://github.com/UCD-SERG/serodynamics/issues/28))
 - Added examples for `sim_pop_data()`,
-  [`autoplot.case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/autoplot.case_data.md)
+  [`autoplot.case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/autoplot.case_data.md)
   ([\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
 - Added attributes as a return to the run_mod function
   ([\#24](https://github.com/UCD-SERG/serodynamics/issues/24))
@@ -220,7 +220,7 @@ None yet
   ([\#80](https://github.com/UCD-SERG/serodynamics/issues/80))
 - Added snapshot test for `run_mod()`
 - Clarified
-  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md)
   internals using [dplyr](https://dplyr.tidyverse.org)
   ([\#34](https://github.com/UCD-SERG/serodynamics/issues/34))
 - Removed “.R” suffix from jags model files to prevent them from getting
@@ -231,8 +231,8 @@ None yet
 - Overall cleaning to get checks working
   ([\#28](https://github.com/UCD-SERG/serodynamics/issues/28))
 - Added units tests for
-  [`prep_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md),
-  [`sim_case_data()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/sim_case_data.md)
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_data.md),
+  [`sim_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/sim_case_data.md)
   ([\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
 - Added various GitHub Actions
   ([\#10](https://github.com/UCD-SERG/serodynamics/issues/10),
