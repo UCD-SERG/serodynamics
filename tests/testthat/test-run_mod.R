@@ -46,7 +46,6 @@ test_that(
                         "population_params", "priors", 
                         "fitted_residuals"))
     
-
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",

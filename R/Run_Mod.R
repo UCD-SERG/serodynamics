@@ -221,7 +221,6 @@ run_mod <- function(data,
   # Making output a tibble and restructuring.
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
-
   jags_out <- rebuild_sr_model_attributes(jags_out, mod_atts)
 
   # Adding population parameters optionally and priors in as attributes
