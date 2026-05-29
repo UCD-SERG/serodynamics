@@ -22,12 +22,18 @@ values:
 \item Subject = ID number specifying an individual
 \item Iso_type = The modeled antigen_isotype
 \item Stratification = The variable used to stratify the model
+(\code{"None"} when no stratification is used)
 \item t = Time since infection
 \item fitted = The fitted value calculated using model output parameters for a
 given \code{t}
 \item residual = The residual value calculated as the difference between
 observed and fitted values for a given \code{t}
 }
+
+Rows from \code{original_data} whose stratification value is \code{NA} are retained
+in the output with \code{NA} \code{fitted} and \code{residual} values, since no posterior
+estimate is available for those (Subject, Iso_type, Stratification)
+tuples.
 }
 \description{
 \code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates
