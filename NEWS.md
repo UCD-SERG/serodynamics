@@ -94,7 +94,7 @@ stratification (#66)
 
 ## Bug fixes
 
-None yet
+* `run_mod()`'s `fitted_residuals` attribute now covers all observations across all strata (previously only the last stratum was retained) and always includes a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes
 
