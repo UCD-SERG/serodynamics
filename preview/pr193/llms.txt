@@ -67,11 +67,11 @@ pak::pak("UCD-SERG/serodynamics")
   : Trace Plot Diagnostics
 - [`plot_jags_effect()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_effect.md)
   : Plot Effective Sample Size Diagnostics
-- [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_predicted_curve.md)
-  : Generate Predicted Antibody Response Curves (Median + 95% CI)
 
 ## Visualize model results
 
+- [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_predicted_curve.md)
+  : Generate Predicted Antibody Response Curves (Median + 95% CI)
 - [`plot_serocurve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_serocurve.md)
   : Plot Estimated Serodynamic Curves at the Population Level
 

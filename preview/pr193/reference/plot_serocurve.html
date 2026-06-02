@@ -88,12 +88,16 @@ combination.</p>
 
 <dt id="arg-antigen-iso">antigen_iso<a class="anchor" aria-label="anchor" href="#arg-antigen-iso"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> vector of antigen-isotype combinations to
-plot.  Defaults to all antigen-isotypes present in <code>model</code>.</p></dd>
+plot.  Defaults to all antigen-isotypes present in the subject-level
+draws of <code>model</code> (<code>model$Iso_type</code>); in normal usage these match the
+levels available in <code>attr(model, "population_params")</code>.</p></dd>
 
 
 <dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> vector of stratification levels to include.
-Defaults to all stratification levels present in <code>model</code>.</p></dd>
+Defaults to all stratification levels present in the subject-level
+draws of <code>model</code> (<code>model$Stratification</code>); in normal usage these match
+the levels available in <code>attr(model, "population_params")</code>.</p></dd>
 
 
 <dt id="arg-param-source">param_source<a class="anchor" aria-label="anchor" href="#arg-param-source"></a></dt>

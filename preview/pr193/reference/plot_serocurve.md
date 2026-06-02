@@ -37,13 +37,17 @@ plot_serocurve(
 
   A [character](https://rdrr.io/r/base/character.html) vector of
   antigen-isotype combinations to plot. Defaults to all antigen-isotypes
-  present in `model`.
+  present in the subject-level draws of `model` (`model$Iso_type`); in
+  normal usage these match the levels available in
+  `attr(model, "population_params")`.
 
 - strat:
 
   A [character](https://rdrr.io/r/base/character.html) vector of
   stratification levels to include. Defaults to all stratification
-  levels present in `model`.
+  levels present in the subject-level draws of `model`
+  (`model$Stratification`); in normal usage these match the levels
+  available in `attr(model, "population_params")`.
 
 - param_source:
 
