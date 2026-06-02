@@ -8,9 +8,13 @@
 #'
 #' @param model An `sr_model` object returned by [run_mod()].
 #' @param antigen_iso A [character] vector of antigen-isotype combinations to
-#'   plot.  Defaults to all antigen-isotypes present in `model`.
+#'   plot.  Defaults to all antigen-isotypes present in the subject-level
+#'   draws of `model` (`model$Iso_type`); in normal usage these match the
+#'   levels available in `attr(model, "population_params")`.
 #' @param strat A [character] vector of stratification levels to include.
-#'   Defaults to all stratification levels present in `model`.
+#'   Defaults to all stratification levels present in the subject-level
+#'   draws of `model` (`model$Stratification`); in normal usage these match
+#'   the levels available in `attr(model, "population_params")`.
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
@@ -53,6 +57,8 @@ plot_serocurve <- function(
     ncol = NULL) {
 
   param_source <- match.arg(param_source, c("population", "newperson"))
+
+  antigen_iso_col <- "Iso_type"
 
   # ---- Retrieve posterior samples of curve parameters --------------------
   if (param_source == "population") {
@@ -104,16 +110,32 @@ plot_serocurve <- function(
         Iso_type = factor(.data$Iso_type),
         Stratification = factor(.data$Stratification)
       )
-    antigen_iso_col <- "Iso_type"
   } else {
     # "newperson": predictive distribution for a new individual drawn from
     # the population-level prior
-    param_samples <- model |>
+    newperson_rows <- model |>
       dplyr::filter(
         .data$Subject == "newperson",
         .data$Iso_type %in% .env$antigen_iso,
         .data$Stratification %in% .env$strat
-      ) |>
+      )
+
+    if (nrow(newperson_rows) == 0) {
+      cli::cli_abort(
+        c(
+          paste0(
+            "No {.val newperson} subject found in {.arg model} for the ",
+            "requested {.arg antigen_iso}/{.arg strat}."
+          ),
+          "i" = paste0(
+            "Ensure the model was fit with a {.val newperson} subject ",
+            "included."
+          )
+        )
+      )
+    }
+
+    param_samples <- newperson_rows |>
       dplyr::select(
         all_of(
           c("Chain", "Iteration", "Parameter", "Iso_type", "Stratification",
@@ -128,11 +150,16 @@ plot_serocurve <- function(
         Iso_type = factor(.data$Iso_type),
         Stratification = factor(.data$Stratification)
       )
-    antigen_iso_col <- "Iso_type"
   }
 
   # ---- Compute predicted curves over a grid of time points ---------------
-  tx <- seq(0, 1200, by = 5)
+  # Clamp the grid to `xlim` when supplied to avoid unnecessary computation
+  # outside the visible range.
+  if (!is.null(xlim)) {
+    tx <- seq(xlim[1], xlim[2], by = 5)
+  } else {
+    tx <- seq(0, 1200, by = 5)
+  }
 
   serocourse_all <- param_samples |>
     dplyr::reframe(
