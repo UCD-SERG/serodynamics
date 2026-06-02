@@ -225,22 +225,26 @@ plot_serocurve <- function(
     color_vals <- c("median" = "red")
     color_labels <- c("median" = "Median")
 
-    fill_vals <- c("ci" = "red")
-    fill_labels <- c("ci" = "95% credible interval")
-
     p <- p +
       ggplot2::scale_color_manual(
         name = "",
         values = color_vals,
         labels = color_labels,
         guide = ggplot2::guide_legend(override.aes = list(shape = NA))
-      ) +
-      ggplot2::scale_fill_manual(
-        name = "",
-        values = fill_vals,
-        labels = fill_labels,
-        guide = ggplot2::guide_legend(override.aes = list(color = NA))
       )
+
+    if (show_ci) {
+      fill_vals <- c("ci" = "red")
+      fill_labels <- c("ci" = "95% credible interval")
+
+      p <- p +
+        ggplot2::scale_fill_manual(
+          name = "",
+          values = fill_vals,
+          labels = fill_labels,
+          guide = ggplot2::guide_legend(override.aes = list(color = NA))
+        )
+    }
   }
 
   # ---- Faceting ----------------------------------------------------------
