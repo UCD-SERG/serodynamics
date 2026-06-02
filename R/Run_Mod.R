@@ -222,7 +222,7 @@ run_mod <- function(data,
   jags_out <- jags_out[, c("Iteration", "Chain", "Parameter", "Iso_type",
                            "Stratification", "Subject", "value")]
   jags_out <- rebuild_sr_model_attributes(jags_out, mod_atts)
-  
+
   # Adding population parameters optionally and priors in as attributes
   if (with_pop_params) {
     jags_out <- jags_out |>

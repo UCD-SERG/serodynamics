@@ -36,6 +36,9 @@ reference:
   - plot_jags_trace
   - plot_jags_effect
   - plot_predicted_curve
+- title: Visualize model results
+  contents:
+  - plot_serocurve
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output

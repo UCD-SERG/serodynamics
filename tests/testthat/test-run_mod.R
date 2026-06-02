@@ -64,7 +64,6 @@ test_that(
       expect_snapshot_data("popparam-summary-stats", 
         variant = darwin_variant()    
       )
-    
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
     expect_true(all(c("Population_Parameter", "value") %in% names(pop_params)))
@@ -117,9 +116,7 @@ test_that(
         "strat-fitted_residuals",
         variant = darwin_variant()
       )
-    
     expect_null(attr(results, "population_params"))
-    
   }
 )
 
@@ -254,6 +251,5 @@ test_that(
     expect_type(jags_post, "list")
     expect_true("None" %in% names(jags_post))
     expect_s3_class(jags_post$None$mcmc, "mcmc.list")
-    
   }
 )

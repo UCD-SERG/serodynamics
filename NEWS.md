@@ -1,5 +1,10 @@
 # serodynamics (development version)
 
+* Added `plot_serocurve()` for graphical visualization of population-level
+  serodynamic curves using posterior samples of the `mu.par` hyperparameter
+  (or optionally the "newperson" subject).  Supports 95% credible interval
+  ribbons, stratified curves with colour or faceting, and multiple
+  antigen-isotypes (#74).
 * Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
   the UCD-SeRG Lab Manual takes precedence over the tidyverse style
   guide where they conflict, and functions should end with an explicit
