@@ -6,6 +6,7 @@ HlyE
 IgA
 IgG
 Iso
+Isotype
 JAGS's
 JAGs
 Lifecycle
@@ -19,7 +20,6 @@ TSI
 UCD
 Vectorization
 Wasserstein
-allowlist
 assignees
 behaviour
 biomarker
@@ -52,6 +52,7 @@ pandoc
 params
 pkgdown
 prec
+precisions
 preinstalling
 rhat
 seroconversion
@@ -61,8 +62,12 @@ strat
 stratifications
 tbl
 testthat
+tibble
 tidyverse
 toolchain
+unindexed
 unstratified
 vh
 wishdf
+SeRG
+UCD
