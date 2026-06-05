@@ -31,6 +31,8 @@ run_mod(
   niter = 100,
   strat = NA,
   with_post = FALSE,
+  with_pop_params = FALSE,
+  preclogy_per_iso = FALSE,
   ...
 )
 ```
@@ -79,15 +81,32 @@ run_mod(
 - with_post:
 
   A [logical](https://rdrr.io/r/base/logical.html) value specifying
-  whether a raw `jags.post` component should be included as an element
-  of the [list](https://rdrr.io/r/base/list.html) object returned by
-  `run_mod()` (see `Value` section below for details). Note: These
-  objects can be large.
+  whether a raw `jags.post` object should be included as an optional
+  `"jags.post"` attribute on the returned `sr_model` tibble (see `Value`
+  section below for details). Note: These objects can be large.
+
+- with_pop_params:
+
+  A [logical](https://rdrr.io/r/base/logical.html) value specifying
+  whether population level parameters should be included as an attribute
+  entitled `population_params`. Excluded by default. Note: These objects
+  can be large.
+
+- preclogy_per_iso:
+
+  A [logical](https://rdrr.io/r/base/logical.html) value. When `TRUE`
+  and `with_pop_params` is also `TRUE`, the `Parameter` column for
+  `prec.logy` rows in `population_params` will contain the
+  antigen/isotype label (e.g., `"HlyE_IgA"`) rather than the constant
+  `"prec.logy"`. This allows grouping by `Parameter` to obtain
+  per-isotype precision estimates directly. Default is `FALSE` (all
+  `prec.logy` rows share `Parameter = "prec.logy"`; the `Iso_type`
+  column distinguishes isotypes).
 
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -170,9 +189,9 @@ that contains MCMC samples from the joint posterior distribution of the
 model parameters, conditional on the provided input `data`, including
 the following:
 
-- `iteration` = Number of sampling iterations
+- `Iteration` = Number of sampling iterations
 
-- `chain` = Number of MCMC chains run; between 1 and 4
+- `Chain` = Number of MCMC chains run; between 1 and 4
 
 - `Parameter` = Parameter being estimated. Includes the following:
 
@@ -199,7 +218,7 @@ the following:
 
   - `class`: Class of the output object.
 
-  - `nChain`: Number of chains run.
+  - `nChains`: Number of chains run.
 
   - `nParameters`: The amount of parameters estimated in the model.
 
@@ -208,6 +227,28 @@ the following:
   - `nBurnin`: Number of burn ins.
 
   - `nThin`: Thinning number (niter/nmc).
+
+  - `population_params`: Optionally included modeled population
+    parameters, returned as a
+    [data.frame](https://rdrr.io/r/base/data.frame.html) and excluded by
+    default. Columns include `Iteration`, `Chain`, `Parameter`,
+    `Iso_type`, `Stratification`, `Population_Parameter`, and `value`.
+
+    - `Population_Parameter` identifies which modeled population
+      parameter is represented:
+
+      - `mu.par` = The population means of the host-specific model
+        parameters (on logarithmic scales). Note: y1 and shape are
+        transformed.
+
+      - `prec.par` = The population precision matrix of the
+        hyperparameters (with diagonal elements equal to inverse
+        variances). The two parameters listed (separated by commas)
+        represent the pairwise precision relationship between specified
+        parameters.
+
+      - `prec.logy` = A vector of population precisions (inverse
+        variances), one per antigen/isotype combination.
 
   - `priors`: A [list](https://rdrr.io/r/base/list.html) that summarizes
     the input priors, including:
@@ -271,7 +312,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 27 08:42:31 2026
+#> Welcome to JAGS 4.3.2 on Fri Jun  5 01:04:39 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -297,6 +338,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -305,7 +347,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 27 08:43:18 2026
+#> Welcome to JAGS 4.3.2 on Fri Jun  5 01:05:41 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

@@ -16,12 +16,14 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/as_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/autoplot.case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/calc_fit_mod.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/ex_popparams.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/expect_snapshot_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/index.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/initsfunction.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/load_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/nepal_sees.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/nepal_sees_jags_output.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/param_recode.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_Rhat.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_dens.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/plot_jags_effect.html</loc></url>
@@ -31,13 +33,19 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/post_summ.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_data.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_popparams.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_priors.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/prep_strat_list.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/rebuild_sr_model_attributes.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/reconcile_subject_ids.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/reexports.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/relabel_preclogy_iso.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/run_mod.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/serodynamics-package.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/serodynamics_example.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/sim_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/sim_n_obs.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/unpack_jags.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr221/reference/use_att_names.html</loc></url>
 </urlset>
 
