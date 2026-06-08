@@ -21,11 +21,19 @@ concurrency:
 
 jobs:
   claude-review:
-    # Optional: Filter by PR author
-    # if: |
-    #   github.event.pull_request.user.login == 'external-contributor' ||
-    #   github.event.pull_request.user.login == 'new-developer' ||
-    #   github.event.pull_request.author_association == 'FIRST_TIME_CONTRIBUTOR'
+    # Skip (don't fail) when a bot triggered this run. When @claude or the
+    # Copilot agent pushes a commit to a PR branch it fires `synchronize`,
+    # which would otherwise kick off — and red-X — an automatic review of a
+    # bot-authored diff. `github.event.sender.type` is the account that
+    # triggered the event ('Bot' for app/bot pushers); the `actor` guard is
+    # belt-and-suspenders for `*[bot]` logins. A false `if:` marks the job
+    # *skipped*, not failed, which is safe here because this check is not
+    # branch-protection-required. (No `workflow_dispatch ||` bypass is
+    # needed: unlike sibling repos, this repo's claude.yml does not
+    # re-dispatch reviews.)
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      !endsWith(github.actor, '[bot]')
 
     runs-on: ubuntu-latest
     permissions:
