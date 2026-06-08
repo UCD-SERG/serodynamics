@@ -1,9 +1,9 @@
 # SEES Typhoid run_serodynamics jags output
 
 A
-[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 output using the
-[nepal_sees](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md)
+[nepal_sees](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md)
 example data set as input and stratifying by column `"bldculres"`, which
 is the diagnosis type (typhoid or paratyphoid). Keeping only IDs
 `"newperson"`, `"sees_npl_1"`, `"sees_npl_2"`.

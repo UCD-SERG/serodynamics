@@ -8,7 +8,7 @@ lookup table and resolves a single `Subject` identifier for every row.
 
 - Population-level parameters (e.g., `mu.par`, `prec.par`, `prec.logy`)
   have no matching ID, so they retain the parameter name produced by
-  [`unpack_jags()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/unpack_jags.md)
+  [`unpack_jags()`](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/unpack_jags.md)
   as their identifier. The temporary index columns are then dropped and
   the cleaned parameter names (`Param`) are promoted to `Parameter` for
   downstream use.
@@ -26,7 +26,7 @@ reconcile_subject_ids(jags_unpacked, ids)
   A
   [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html)
   returned by
-  [`unpack_jags()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/unpack_jags.md)
+  [`unpack_jags()`](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/unpack_jags.md)
   (after the `Iso_type` join), containing `Subject`, `Subnum`, `Param`,
   and `Parameter` columns.
 
