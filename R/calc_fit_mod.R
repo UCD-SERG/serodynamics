@@ -60,7 +60,7 @@ calc_fit_mod <- function(modeled_dat,
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
-    select(all_of(c("Subject", "Iso_type", "t", "fitted", "residual", 
-                    "Stratification")))
+    select(all_of(c("Subject", "Iso_type", "Stratification", 
+                    "t", "fitted", "residual")))
   fitted_dat
 }
