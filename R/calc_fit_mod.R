@@ -29,15 +29,18 @@
 calc_fit_mod <- function(modeled_dat,
                          original_data,
                          strat = NA) {
-  if (is.na(strat)) {
-    original_data <- original_data |>
+
+original_data <- original_data |>
       use_att_names() |>
-      select(.data$Subject, .data$Iso_type, .data$t, .data$result)
-  } else {
-    original_data <- original_data |>
-      use_att_names() |>
-      select(.data$Subject, .data$Iso_type, .data$t, .data$result,
-             .data[[strat]])
+      select(
+         any_of(
+           "Subject", 
+           "Iso_type", 
+           "t",
+           "result",
+           "Stratification" = strat
+         )
+      )
     # Rename strat column to "Stratification" (no-op if already named so),
     # guarding against a name collision when the input already has a
     # "Stratification" column distinct from `strat`.
