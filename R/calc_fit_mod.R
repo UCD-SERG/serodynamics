@@ -26,41 +26,49 @@
 #'   estimate is available for those (Subject, Iso_type, Stratification)
 #'   tuples.
 #' @keywords internal
-calc_fit_mod <- function(modeled_dat, 
+calc_fit_mod <- function(modeled_dat,
                          original_data,
-                         strat = strat) {
+                         strat = NA) {
+  strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
+
   original_data <- original_data |>
     use_att_names() |>
-    dplyr::rename(Stratification = dplyr::any_of(if (is.na(strat)) character() 
-                                                 else strat)) |>
-    dplyr::select(any_of(c("Subject", "Iso_type", "t", "result", 
-                           "Stratification")))
+    dplyr::select(
+      dplyr::any_of(c("Subject", "Iso_type", "t", "result", strat_col))
+    )
 
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
-    dplyr::summarize(.by = c("Parameter", "Iso_type",
-                             "Stratification", "Subject"),
-                     med_value = stats::median(.data$value)) |>
-    tidyr::pivot_wider(names_from = "Parameter",
-                       values_from = "med_value")
+    dplyr::summarize(
+      .by = dplyr::all_of(
+        c("Parameter", "Iso_type", "Stratification", "Subject")
+      ),
+      med_value = stats::median(.data$value)
+    ) |>
+    tidyr::pivot_wider(names_from = "Parameter", values_from = "med_value")
 
   # Matching input data with modeled data
-  by_vars <- c("Subject", "Iso_type")
-  if ("Stratification" %in% names(original_data)) {
-    by_vars <- c(by_vars, "Stratification")
-  }
   matched_dat <- modeled_dat |>
     dplyr::right_join(
       original_data,
-      by = by_vars
+      by = base::intersect(
+        c("Subject", "Iso_type", "Stratification"),
+        names(original_data)
+      )
     )
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
-    mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                       .data$alpha, .data$shape),
-           residual = .data$result - .data$fitted) |>
-    select(all_of(c("Subject", "Iso_type", "Stratification", 
-                    "t", "fitted", "residual")))
-  fitted_dat
+    dplyr::mutate(
+      fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
+                  .data$alpha, .data$shape),
+      residual = .data$result - .data$fitted
+    ) |>
+    dplyr::select(
+      dplyr::all_of(
+        c("Subject", "Iso_type", "Stratification", "t", "fitted", "residual")
+      )
+    )
+
+  return(fitted_dat)
 }
