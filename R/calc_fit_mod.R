@@ -27,35 +27,40 @@
 #'   tuples.
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat, 
-                         original_data) {
+                         original_data,
+                         strat = strat) {
   original_data <- original_data |>
     use_att_names() |>
-    select(all_of(c("Subject", "Iso_type", "t", "result")))
+    dplyr::rename(Stratification = any_of(if (is.na(strat)) character() 
+                                          else strat)) |>
+    dplyr::select(any_of(c("Subject", "Iso_type", "t", "result", 
+                           "Stratification")))
 
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
-    dplyr::summarize(.by = all_of(c("Parameter", "Iso_type",
-                                    "Stratification", "Subject")),
+    dplyr::summarize(.by = c("Parameter", "Iso_type",
+                             "Stratification", "Subject"),
                      med_value = stats::median(.data$value)) |>
     tidyr::pivot_wider(names_from = "Parameter",
                        values_from = "med_value")
 
   # Matching input data with modeled data
-  if (is.na(strat)) {
-    matched_dat <- merge(modeled_dat, original_data,
-                         by = c("Subject", "Iso_type"),
-                         all.y = TRUE)
-  } else {
-    matched_dat <- merge(modeled_dat, original_data,
-                         by = c("Subject", "Iso_type", "Stratification"),
-                         all.y = TRUE)
+  by_vars <- c("Subject", "Iso_type")
+  if ("Stratification" %in% names(original_data)) {
+    by_vars <- c(by_vars, "Stratification")
   }
+  matched_dat <- modeled_dat |>
+    dplyr::right_join(
+      original_data,
+      by = by_vars
+    )
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
-    select(all_of(c("Subject", "Iso_type", "t", "fitted", "residual")))
+    select(all_of(c("Subject", "Iso_type", "t", "fitted", "residual", 
+                    "Stratification")))
   fitted_dat
 }
