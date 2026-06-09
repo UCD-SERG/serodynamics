@@ -6,9 +6,15 @@
 \usage{
 run_mod(...)
 }
+\arguments{
+\item{...}{Arguments passed to \code{run_serodynamics()}.}
+}
 \description{
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 \code{run_mod()} was renamed to \code{run_serodynamics()} to create a more
 descriptive function name.
+}
+\seealso{
+run_serodynamics()
 }
 \keyword{internal}
