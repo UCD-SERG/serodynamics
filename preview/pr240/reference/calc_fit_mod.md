@@ -9,7 +9,7 @@ and observed values.
 ## Usage
 
 ``` r
-calc_fit_mod(modeled_dat, original_data, strat = strat)
+calc_fit_mod(modeled_dat, original_data, strat = NA)
 ```
 
 ## Arguments
