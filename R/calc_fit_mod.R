@@ -31,8 +31,8 @@ calc_fit_mod <- function(modeled_dat,
                          strat = strat) {
   original_data <- original_data |>
     use_att_names() |>
-    dplyr::rename(Stratification = any_of(if (is.na(strat)) character() 
-                                          else strat)) |>
+    dplyr::rename(Stratification = dplyr::any_of(if (is.na(strat)) character() 
+                                                 else strat)) |>
     dplyr::select(any_of(c("Subject", "Iso_type", "t", "result", 
                            "Stratification")))
 
