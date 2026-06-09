@@ -616,7 +616,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr240/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr240/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -674,7 +674,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr240/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr240/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -745,6 +745,38 @@ expect_false(has_missing_values(complete_data))
 - **Write tidy code**: Keep code clean, readable, and well-organized.
   Follow consistent formatting, use meaningful variable names, and
   maintain logical structure
+- **Use tidy-selection, not data-masking, in selection contexts**: In
+  `select()`, `rename()`, `summarize(.by = )` / `group_by()`,
+  `across(.cols = )`, `pivot_*(names_from = )`, and join `by =`, select
+  columns named by a variable with `all_of()` / `any_of()`
+  (e.g. `select(any_of(c("a", "b", "new_name" = var)))`), and use bare
+  names or `all_of()` in `.by`. Do **not** reach for the `.data` pronoun
+  (`.data[[var]]`, `.data$x`) there — that pronoun belongs in
+  *data-masking* verbs (`mutate()`,
+  [`filter()`](https://rdrr.io/r/stats/filter.html), `summarize()`
+  expressions). Using `.data[[var]]` in a selection context is a *soft*
+  deprecation and may not warn at runtime, so it is easy to miss — but
+  it should be rewritten.
+- **Collapse branching that only varies columns**: An `if`/`else` whose
+  only job is to change which columns are selected, renamed, or joined
+  can almost always be replaced by a single `any_of()` / `all_of()`
+  selection or a single tidyselect-keyed join. Prefer one parameterized
+  pipeline over two near-identical stratified/unstratified branches.
+- **Prefer dplyr joins over base
+  [`merge()`](https://rdrr.io/r/base/merge.html)**: Use
+  [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+  / `right_join()` with `by = join_by(...)` rather than
+  [`merge()`](https://rdrr.io/r/base/merge.html) for readability and
+  consistency.
+
+### Review focus: convoluted / non-idiomatic code
+
+When reviewing (human or AI), treat the three points above as in-scope
+findings, not optional nits. Beyond correctness, call out code that is
+functionally fine but unnecessarily convoluted or non-idiomatic, and
+show the simpler, more declarative form. The canonical authority is the
+[UCD-SeRG Lab Manual coding-style
+chapter](https://ucd-serg.github.io/lab-manual/coding-style.html).
 
 ## Documentation and Evidence Standards
 
