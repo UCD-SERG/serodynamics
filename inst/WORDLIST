@@ -29,8 +29,8 @@ darwin
 deprecations
 dev
 dobson
-ess
 dotplots
+ess
 geoms
 ggmcmc
 ggproto
@@ -42,9 +42,9 @@ hyperpriors
 iso
 isotype
 isotypes
-lifecycle
 libm
 libs
+lifecycle
 linux
 mcmc
 mitre
@@ -72,5 +72,3 @@ unindexed
 unstratified
 vh
 wishdf
-SeRG
-UCD

@@ -9,7 +9,7 @@
   - `plot_jags_effect()` → `plot_ess()`
   **Breaking change:** old
   function names are no longer available except for run_mod which was renamed
-  but will available with depracation..
+  but will available with deprecation..
 * The test suite now sets `options(lifecycle_verbosity = "error")` (via
   `tests/testthat/setup.R`), so tidyverse lifecycle deprecations -
   including soft deprecations such as using the `.data` pronoun in a
