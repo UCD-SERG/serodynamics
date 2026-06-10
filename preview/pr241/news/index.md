@@ -20,7 +20,7 @@
     [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_ess.md)
     **Breaking change:** old function names are no longer available
     except for run_mod which was renamed but will available with
-    depracation..
+    deprecation..
 
 - The test suite now sets `options(lifecycle_verbosity = "error")` (via
   `tests/testthat/setup.R`), so tidyverse lifecycle deprecations -
