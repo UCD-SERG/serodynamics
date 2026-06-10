@@ -5,6 +5,24 @@
   (or optionally the "newperson" subject).  Supports 95% credible interval
   ribbons, stratified curves with colour or faceting, and multiple
   antigen-isotypes (#74).
+* The test suite now sets `options(lifecycle_verbosity = "error")` (via
+  `tests/testthat/setup.R`), so tidyverse lifecycle deprecations -
+  including soft deprecations such as using the `.data` pronoun in a
+  tidy-selection context - fail the tests instead of passing silently.
+* Updated the internals of `calc_fit_mod()` to use tidy-selection
+  (`all_of()` and bare column-name strings) instead of the `.data`
+  pronoun in `select()`, `.by`, and `pivot_wider()` contexts, removing
+  a soft deprecation surfaced by the stricter test option above. No
+  change to behavior or output.
+* The `Claude Code Review` workflow now skips (rather than fails) when a
+  bot triggered the run, so a commit pushed by `@claude` or the Copilot
+  agent no longer produces a red review check.
+* Added `CLAUDE.md` and expanded the Code Style Guidelines in
+  `.github/copilot-instructions.md` to direct reviewers (human and AI)
+  to flag unnecessarily convoluted or non-idiomatic code - in
+  particular data-masking used in tidy-selection contexts and
+  `if`/`else` branching that only varies which columns are selected,
+  renamed, or joined.
 * Clarified Code Style Guidelines in `.github/copilot-instructions.md`:
   the UCD-SeRG Lab Manual takes precedence over the tidyverse style
   guide where they conflict, and functions should end with an explicit
