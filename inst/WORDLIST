@@ -26,6 +26,7 @@ biomarker
 biomarkers
 colour
 darwin
+deprecations
 dev
 dobson
 ess
@@ -41,6 +42,7 @@ hyperpriors
 iso
 isotype
 isotypes
+lifecycle
 libm
 libs
 linux

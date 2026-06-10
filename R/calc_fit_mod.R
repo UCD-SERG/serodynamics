@@ -19,18 +19,17 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat, 
                          original_data) {
-  original_data <- original_data |> 
+  original_data <- original_data |>
     use_att_names() |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
-  
+    select(all_of(c("Subject", "Iso_type", "t", "result")))
+
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
-    dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
-                             .data$Stratification, 
-                             .data$Subject),
+    dplyr::summarize(.by = all_of(c("Parameter", "Iso_type",
+                                    "Stratification", "Subject")),
                      med_value = stats::median(.data$value)) |>
-    tidyr::pivot_wider(names_from = .data$Parameter, 
-                       values_from = .data$med_value)
+    tidyr::pivot_wider(names_from = "Parameter",
+                       values_from = "med_value")
 
   # Matching input data with modeled data
   matched_dat <- merge(modeled_dat, original_data, 
@@ -42,6 +41,6 @@ calc_fit_mod <- function(modeled_dat,
     mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                        .data$alpha, .data$shape),
            residual = .data$result - .data$fitted) |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$fitted, .data$residual)
+    select(all_of(c("Subject", "Iso_type", "t", "fitted", "residual")))
   fitted_dat
 }

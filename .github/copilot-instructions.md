@@ -553,6 +553,13 @@ expect_false(has_missing_values(complete_data))
 - **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
 - **Tidyverse replacements**: Use tidyverse/modern replacements for base R functions where available (e.g., `sessioninfo::session_info()` instead of `sessionInfo()`, `tibble::tibble()` instead of `data.frame()`, `readr::read_csv()` instead of `read.csv()`)
 - **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
+- **Use tidy-selection, not data-masking, in selection contexts**: In `select()`, `rename()`, `summarize(.by = )` / `group_by()`, `across(.cols = )`, `pivot_*(names_from = )`, and join `by =`, select columns named by a variable with `all_of()` / `any_of()` (e.g. `select(any_of(c("a", "b", "new_name" = var)))`), and use bare names or `all_of()` in `.by`. Do **not** reach for the `.data` pronoun (`.data[[var]]`, `.data$x`) there — that pronoun belongs in *data-masking* verbs (`mutate()`, `filter()`, `summarize()` expressions). Using `.data[[var]]` in a selection context is a *soft* deprecation and may not warn at runtime, so it is easy to miss — but it should be rewritten.
+- **Collapse branching that only varies columns**: An `if`/`else` whose only job is to change which columns are selected, renamed, or joined can almost always be replaced by a single `any_of()` / `all_of()` selection or a single tidyselect-keyed join. Prefer one parameterized pipeline over two near-identical stratified/unstratified branches.
+- **Prefer dplyr joins over base `merge()`**: Use `dplyr::left_join()` / `right_join()` with `by = join_by(...)` rather than `merge()` for readability and consistency.
+
+### Review focus: convoluted / non-idiomatic code
+
+When reviewing (human or AI), treat the three points above as in-scope findings, not optional nits. Beyond correctness, call out code that is functionally fine but unnecessarily convoluted or non-idiomatic, and show the simpler, more declarative form. The canonical authority is the [UCD-SeRG Lab Manual coding-style chapter](https://ucd-serg.github.io/lab-manual/coding-style.html).
 
 ## Documentation and Evidence Standards
 
