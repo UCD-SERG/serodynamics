@@ -49,7 +49,7 @@
 <ul><li>
 <p>Renamed user-facing functions for clarity (<a href="https://github.com/UCD-SERG/serodynamics/issues/241" class="external-link">#241</a>):</p>
 <ul><li>
-<code>run_mod()</code> → <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>
+<code><a href="../reference/run_mod.html">run_mod()</a></code> → <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>
 </li>
 <li>
 <code>post_summ()</code> → <code><a href="../reference/summarize_posterior.html">summarize_posterior()</a></code>
@@ -64,8 +64,12 @@
 <code>plot_jags_Rhat()</code> → <code><a href="../reference/plot_rhat.html">plot_rhat()</a></code>
 </li>
 <li>
-<code>plot_jags_effect()</code> → <code><a href="../reference/plot_ess.html">plot_ess()</a></code> Documentation, examples, tests, and snapshot directories were updated to use the new names throughout the package. <strong>Breaking change:</strong> old function names are no longer available.</li>
+<code>plot_jags_effect()</code> → <code><a href="../reference/plot_ess.html">plot_ess()</a></code> <strong>Breaking change:</strong> old function names are no longer available except for run_mod which was renamed but will available with depracation..</li>
 </ul></li>
+<li><p>The test suite now sets <code>options(lifecycle_verbosity = "error")</code> (via <code>tests/testthat/setup.R</code>), so tidyverse lifecycle deprecations - including soft deprecations such as using the <code>.data</code> pronoun in a tidy-selection context - fail the tests instead of passing silently.</p></li>
+<li><p>Updated the internals of <code><a href="../reference/calc_fit_mod.html">calc_fit_mod()</a></code> to use tidy-selection (<code><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of()</a></code> and bare column-name strings) instead of the <code>.data</code> pronoun in <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code>.by</code>, and <code>pivot_wider()</code> contexts, removing a soft deprecation surfaced by the stricter test option above. No change to behavior or output.</p></li>
+<li><p>The <code>Claude Code Review</code> workflow now skips (rather than fails) when a bot triggered the run, so a commit pushed by <code>@claude</code> or the Copilot agent no longer produces a red review check.</p></li>
+<li><p>Added <code>CLAUDE.md</code> and expanded the Code Style Guidelines in <code>.github/copilot-instructions.md</code> to direct reviewers (human and AI) to flag unnecessarily convoluted or non-idiomatic code - in particular data-masking used in tidy-selection contexts and <code>if</code>/<code>else</code> branching that only varies which columns are selected, renamed, or joined.</p></li>
 <li><p>Clarified Code Style Guidelines in <code>.github/copilot-instructions.md</code>: the UCD-SeRG Lab Manual takes precedence over the tidyverse style guide where they conflict, and functions should end with an explicit <code><a href="https://rdrr.io/r/base/function.html" class="external-link">return()</a></code> call per the lab manual / Google R Style Guide. This closes a gap where <code>@claude</code> reviews were flagging explicit returns as non-conforming.</p></li>
 <li>
 <p>Expanded what the <code>Claude Code</code> (<code>@claude</code>) workflow can do:</p>
@@ -77,7 +81,7 @@
 <li><p>Stopped deleting prior Claude review comments at the start of each <code>Claude Code Review</code> run, so reviews posted by <code>@claude review</code> invocations are preserved across subsequent pushes instead of being wiped when the review step fails its bot-actor gate (<a href="https://github.com/UCD-SERG/serodynamics/issues/217" class="external-link">#217</a>).</p></li>
 <li><p>Hardened the Claude code-review workflow against races and silent failures: serialized concurrent runs per PR, made reviewer restore fail loudly instead of silently dropping reviewers, and cleaned up all stale Claude top-level comments per run (<a href="https://github.com/UCD-SERG/serodynamics/issues/216" class="external-link">#216</a>).</p></li>
 <li><p>Expanded <code>.github/copilot-instructions.md</code> with additional guidance on evidence-based claims, Quarto markdown/cross-reference conventions, R style practices, and phrase-level line-break formatting for source text.</p></li>
-<li><p>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code>post_summ()</code> and <code>run_mod()</code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</p></li>
+<li><p>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code>post_summ()</code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</p></li>
 <li><p>Added R 4.5+ snapshot variants to handle the changed attribute ordering in <code><a href="../reference/as_case_data.html">as_case_data()</a></code>, ensuring test suite compatibility with R 4.5 and later (<a href="https://github.com/UCD-SERG/serodynamics/issues/109" class="external-link">#109</a>).</p></li>
 <li><p>Added dev container configuration for persistent, cached development environment that includes R, JAGS, and all dependencies preinstalled, making Copilot Workspace sessions much faster.</p></li>
 <li><p>Reorganized pkgdown documentation with new “Getting Started” guide demonstrating main API workflow, organized articles into “Get started” and “Developer Notes” sections (<a href="https://github.com/UCD-SERG/serodynamics/issues/73" class="external-link">#73</a>).</p></li>
@@ -95,12 +99,12 @@
 <li>Replacing old data object with new run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/102" class="external-link">#102</a>)</li>
 <li>Adding class assignment to run_mod output (<a href="https://github.com/UCD-SERG/serodynamics/issues/76" class="external-link">#76</a>)</li>
 <li>Making prep_priors modifiable (<a href="https://github.com/UCD-SERG/serodynamics/issues/78" class="external-link">#78</a>)</li>
-<li>Changes to <code>run_mod()</code> output:
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> output:
 <ul><li>Taking out <code>include_subs</code> as an input option, default will include all individuals</li>
 <li>Making a single tbl as output</li>
 <li>All other pieces will be attributes.</li>
 </ul></li>
-<li>Changes to <code>run_mod()</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
+<li>Changes to <code><a href="../reference/run_mod.html">run_mod()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/79" class="external-link">#79</a>):
 <ul><li>
 <code>jags.post</code> now optionally included in output, as specified by argument <code>with_post</code>
 </li>
@@ -125,7 +129,7 @@
 <li>Added <code><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot()</a></code> method for <code>case_data</code> objects (<a href="https://github.com/UCD-SERG/serodynamics/issues/28" class="external-link">#28</a>)</li>
 <li>Added examples for <code>sim_pop_data()</code>, <code><a href="../reference/autoplot.case_data.html">autoplot.case_data()</a></code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/18" class="external-link">#18</a>)</li>
 <li>Added attributes as a return to the run_mod function (<a href="https://github.com/UCD-SERG/serodynamics/issues/24" class="external-link">#24</a>)</li>
-<li>exported <code>run_mod()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/22" class="external-link">#22</a>)</li>
+<li>exported <code><a href="../reference/run_mod.html">run_mod()</a></code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/22" class="external-link">#22</a>)</li>
 <li>Function that runs jags with option of stratification included. (<a href="https://github.com/UCD-SERG/serodynamics/issues/14" class="external-link">#14</a>)</li>
 <li>Changed package name to serodynamics. (<a href="https://github.com/UCD-SERG/serodynamics/issues/19" class="external-link">#19</a>, <a href="https://github.com/UCD-SERG/serodynamics/issues/20" class="external-link">#20</a>)</li>
 </ul></div>
@@ -140,7 +144,7 @@
 <li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
-<li>Added snapshot test for <code>run_mod()</code>
+<li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>
 </li>
 <li>Clarified <code><a href="../reference/prep_data.html">prep_data()</a></code> internals using <a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a> (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>
 <li>Removed “.R” suffix from jags model files to prevent them from getting linted as R files (<a href="https://github.com/UCD-SERG/serodynamics/issues/34" class="external-link">#34</a>)</li>

@@ -106,7 +106,7 @@ run_serodynamics(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
 
   `max_antigens`
 
@@ -312,7 +312,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 29 19:36:03 2026
+#> Welcome to JAGS 4.3.2 on Wed Jun 10 00:04:14 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -347,7 +347,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri May 29 19:36:57 2026
+#> Welcome to JAGS 4.3.2 on Wed Jun 10 00:05:19 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -373,7 +373,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

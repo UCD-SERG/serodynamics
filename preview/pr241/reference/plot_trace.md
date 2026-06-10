@@ -2,7 +2,7 @@
 
 plot_trace() takes a [list](https://rdrr.io/r/base/list.html) output
 from
-[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 to create trace plots for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified. Antigen/antibody
@@ -35,7 +35,7 @@ plot_trace(
 - data:
 
   A [list](https://rdrr.io/r/base/list.html) outputted from
-  [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
 
 - iso:
 
