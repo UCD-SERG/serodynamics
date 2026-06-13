@@ -1,0 +1,93 @@
+model {
+ ## =====================================================================
+ ## Model 2a  (Chapter 1 + alpha) -- factor parameterization (Path A)
+ ##
+ ## Identical two-phase kinetic likelihood as model.jags (Teunis 2016).
+ ## The ONLY change is the prior on the subject-level parameters `par`:
+ ##
+ ##   par[i,k,p] = mu.par[k,p] + w[i,k,p] + lambda[k,p] * f[i,p]
+ ##
+ ##   w[i,k,1:P] ~ dmnorm(0, prec.par[k,,])   # within-biomarker (Chapter 1)
+ ##   f[i,p]     ~ dnorm(0, 1)                 # shared factor, per parameter p
+ ##
+ ## For K = 2 biomarkers (e.g. IgG, IgA) this is EXACTLY Model 2a:
+ ##   cross-biomarker, same-parameter covariance  c_p = lambda[1,p]*lambda[2,p]
+ ##   cross-biomarker, cross-parameter covariance  = 0  (different factors).
+ ## Setting all lambda = 0 recovers Chapter 1 (strict nesting).
+ ## =====================================================================
+ for (subj in 1:nsubj) {
+  for (cur_antigen_iso in 1:n_antigen_isos) {
+
+     # growth rate during active infection (Teunis 2016, eq. 17)
+     beta[subj, cur_antigen_iso] <-
+       log(y1[subj, cur_antigen_iso] / y0[subj, cur_antigen_iso]) /
+       t1[subj, cur_antigen_iso]
+
+   for (obs in 1:nsmpl[subj]) {
+     # log antibody trajectory before Gaussian noise (Teunis 2016, eq. 15)
+     mu.logy[subj, obs, cur_antigen_iso] <- ifelse(
+        step(t1[subj, cur_antigen_iso] - smpl.t[subj, obs]),
+        ## active infection period (t <= t1):
+        log(y0[subj, cur_antigen_iso]) +
+          (beta[subj, cur_antigen_iso] * smpl.t[subj, obs]),
+        ## recovery period (t > t1):
+        1 / (1 - shape[subj, cur_antigen_iso]) *
+           log(
+              y1[subj, cur_antigen_iso]^(1 - shape[subj, cur_antigen_iso]) -
+              (1 - shape[subj, cur_antigen_iso]) *
+                alpha[subj, cur_antigen_iso] *
+                (smpl.t[subj, obs] - t1[subj, cur_antigen_iso])))
+
+     # log-linear likelihood: log(Y) ~ N(mu, sigma^2)
+     logy[subj, obs, cur_antigen_iso] ~
+       dnorm(mu.logy[subj, obs, cur_antigen_iso], prec.logy[cur_antigen_iso])
+   }
+
+   # natural-scale curve parameters (deterministic, from `par`)
+   y0[subj, cur_antigen_iso]    <- exp(par[subj, cur_antigen_iso, 1])
+   y1[subj, cur_antigen_iso]    <- y0[subj, cur_antigen_iso] +
+                                   exp(par[subj, cur_antigen_iso, 2])
+   t1[subj, cur_antigen_iso]    <- exp(par[subj, cur_antigen_iso, 3])
+   alpha[subj, cur_antigen_iso] <- exp(par[subj, cur_antigen_iso, 4])
+   shape[subj, cur_antigen_iso] <- exp(par[subj, cur_antigen_iso, 5]) + 1
+
+   # ---- Model 2a construction: mean + within-biomarker RE + shared factor ----
+   for (p in 1:n_params) {
+     par[subj, cur_antigen_iso, p] <-
+       mu.par[cur_antigen_iso, p] +
+       w[subj, cur_antigen_iso, p] +
+       lambda[cur_antigen_iso, p] * f[subj, p]
+   }
+
+   # within-biomarker random effect (Chapter 1's Wishart block, on `w`)
+   w[subj, cur_antigen_iso, 1:n_params] ~
+     dmnorm(zero_p[], prec.par[cur_antigen_iso, , ])
+  }
+
+  # shared latent factor, one per kinetic parameter (couples biomarkers)
+  for (p in 1:n_params) {
+    f[subj, p] ~ dnorm(0, 1)
+  }
+ }
+
+ ## ---- hyperpriors (Chapter 1 priors kept intact) ----
+ for (cur_antigen_iso in 1:n_antigen_isos) {
+  mu.par[cur_antigen_iso, 1:n_params] ~
+    dmnorm(mu.hyp[cur_antigen_iso, ], prec.hyp[cur_antigen_iso, , ])
+  prec.par[cur_antigen_iso, 1:n_params, 1:n_params] ~
+    dwish(omega[cur_antigen_iso, , ], wishdf[cur_antigen_iso])
+  prec.logy[cur_antigen_iso] ~
+    dgamma(prec.logy.hyp[cur_antigen_iso, 1], prec.logy.hyp[cur_antigen_iso, 2])
+ }
+
+ ## ---- factor-loading priors (the only NEW priors) ----
+ ## Sign of the first biomarker's loading is pinned (>0) for identifiability;
+ ## the cross-biomarker covariance c_p = lambda[1,p]*lambda[2,p] is invariant
+ ## to the joint sign flip, so its sign is still free via lambda[2,p].
+ for (p in 1:n_params) {
+   lambda[1, p] ~ dnorm(0, prec.lambda) T(0, )
+   for (k in 2:n_antigen_isos) {
+     lambda[k, p] ~ dnorm(0, prec.lambda)
+   }
+ }
+}
