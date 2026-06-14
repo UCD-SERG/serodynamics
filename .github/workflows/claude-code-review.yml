@@ -106,17 +106,66 @@ jobs:
           # comment up front via createInitialComment() and updates it at the
           # end — guaranteeing a PR comment regardless of plugin output.
           track_progress: 'true'
-          # Bundle the tracking comment into a single sticky per PR rather than
-          # a new comment each run. (Only consulted in tag mode.) Each new run
-          # updates the same comment in place — the latest review is always
-          # visible, and prior reviews from `@claude review` invocations (which
-          # post as separate non-sticky comments) are left untouched.
-          use_sticky_comment: 'true'
+          # Post a fresh tracking comment per run (sticky disabled) so each
+          # push surfaces as new PR activity with its own notification, instead
+          # of silently editing one comment in place. The "Collapse previous
+          # Claude review comments" step below then folds the prior review(s)
+          # up as OUTDATED so only the latest stays expanded — giving the
+          # visible history + notification of fresh comments without the
+          # clutter. (`@claude review` task comments come from claude.yml and
+          # are deliberately left untouched; see that step's discriminator.)
+          use_sticky_comment: 'false'
           # Also archive the formatted report to the Actions step summary page
           # (does not affect PR comments).
           display_report: 'true'
           # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
           # or https://code.claude.com/docs/en/cli-reference for available options
+
+      # With sticky disabled, every run leaves its own review comment behind.
+      # Collapse the older ones (GitHub "minimize as OUTDATED") so the PR shows
+      # one expanded, current review with the history folded up beneath it.
+      #
+      # Only this workflow's review comments should be touched — NOT `@claude`
+      # task comments, which share the same `claude[bot]` author. We tell them
+      # apart by the workflow run each comment links to: every tracking comment
+      # ends its header with "[View job](…/actions/runs/<run_id>)", and a
+      # comment belongs to THIS workflow iff that run's `path` is this file.
+      # That cleanly excludes claude.yml task comments and non-Claude bots, and
+      # needs no fragile body-text matching. Gated on review success so we
+      # never collapse the last good review when no fresh one was posted.
+      - name: Collapse previous Claude review comments
+        if: steps.claude-review.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          REVIEW_WF: .github/workflows/claude-code-review.yml
+        run: |
+          # Emit "<node_id>\t<run_id>" for each claude[bot] comment; the run id
+          # is blank when the body has no job link (those are skipped below).
+          gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq '.[]
+                  | select(.user.login == "claude[bot]")
+                  | "\(.node_id)\t\(((.body | capture("actions/runs/(?<r>[0-9]+)").r)?) // "")"' \
+          | while IFS=$'\t' read -r NODE_ID RUN_ID; do
+              # No job link, or this run's own fresh comment — leave expanded.
+              [ -z "$RUN_ID" ] && continue
+              [ "$RUN_ID" = "$CURRENT_RUN_ID" ] && continue
+              # Confirm the comment came from THIS workflow, not claude.yml.
+              WF_PATH=$(gh api "repos/$REPO/actions/runs/$RUN_ID" \
+                --jq '.path' 2>/dev/null || true)
+              [ "$WF_PATH" = "$REVIEW_WF" ] || continue
+              echo "Collapsing review comment $NODE_ID (run $RUN_ID)"
+              # Idempotent: re-minimizing an already-collapsed comment is a
+              # no-op, so a `|| true` keeps one stale id from failing the step.
+              gh api graphql -f query='
+                mutation($id: ID!) {
+                  minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) {
+                    minimizedComment { isMinimized }
+                  }
+                }' -f id="$NODE_ID" || true
+            done
 
       - name: Re-assign reviewers after Claude finishes
         if: always() && steps.stash.outcome == 'success'
