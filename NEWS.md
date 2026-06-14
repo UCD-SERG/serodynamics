@@ -1,7 +1,7 @@
 # serodynamics (development version)
 
 * Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
-  note in `.lintr.R` that dplyr `*_join()` calls must specify the
+  note in `.lintr.R` that `dplyr::*_join()` calls must specify the
   `relationship` argument (for example `relationship = "many-to-one"`),
   so an unexpected many-to-many match errors out instead of silently
   duplicating rows.
