@@ -2,7 +2,7 @@
 
 `rebuild_sr_model_attributes()` reconstructs the attribute list of the
 combined
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr240/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr240/reference/run_mod.md)
 output in a fixed order, ensuring `class` appears immediately after
 `names` and `row.names`. The `dplyr` operations used to assemble the
 output can carry `ggmcmc` attributes (`nChains`, etc.) into the result
