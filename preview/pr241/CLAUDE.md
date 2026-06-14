@@ -2,7 +2,7 @@
 
 This file is read by Claude Code sessions and by the `@claude` GitHub
 review agent. The canonical, detailed contributor guide lives in
-[`.github/copilot-instructions.md`](https:/ucd-serg.github.io/serodynamics/preview/pr241/copilot-instructions.md)
+[`.github/copilot-instructions.md`](https://ucd-serg.github.io/serodynamics/preview/pr241/copilot-instructions.md)
 — **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 

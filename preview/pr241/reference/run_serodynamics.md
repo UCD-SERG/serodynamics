@@ -106,7 +106,7 @@ run_serodynamics(
 - ...:
 
   Arguments passed on to
-  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
+  [`prep_priors`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/prep_priors.md)
 
   `max_antigens`
 

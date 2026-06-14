@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9056</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9057</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,7 @@
 <ul><li><p>The test suite now sets <code>options(lifecycle_verbosity = "error")</code> (via <code>tests/testthat/setup.R</code>), so tidyverse lifecycle deprecations - including soft deprecations such as using the <code>.data</code> pronoun in a tidy-selection context - fail the tests instead of passing silently.</p></li>
 <li><p>Updated the internals of <code><a href="../reference/calc_fit_mod.html">calc_fit_mod()</a></code> to use tidy-selection (<code><a href="https://tidyselect.r-lib.org/reference/all_of.html" class="external-link">all_of()</a></code> and bare column-name strings) instead of the <code>.data</code> pronoun in <code><a href="https://dplyr.tidyverse.org/reference/select.html" class="external-link">select()</a></code>, <code>.by</code>, and <code>pivot_wider()</code> contexts, removing a soft deprecation surfaced by the stricter test option above. No change to behavior or output.</p></li>
 <li><p>The <code>Claude Code Review</code> workflow now skips (rather than fails) when a bot triggered the run, so a commit pushed by <code>@claude</code> or the Copilot agent no longer produces a red review check.</p></li>
+<li><p>The <code>Claude Code Review</code> workflow now posts a fresh review comment per run and collapses the superseded ones as <code>OUTDATED</code>, so each push surfaces as new PR activity while older reviews fold up out of the way. <code>@claude</code> task comments are left untouched.</p></li>
 <li><p>Added <code>CLAUDE.md</code> and expanded the Code Style Guidelines in <code>.github/copilot-instructions.md</code> to direct reviewers (human and AI) to flag unnecessarily convoluted or non-idiomatic code - in particular data-masking used in tidy-selection contexts and <code>if</code>/<code>else</code> branching that only varies which columns are selected, renamed, or joined.</p></li>
 <li><p>Clarified Code Style Guidelines in <code>.github/copilot-instructions.md</code>: the UCD-SeRG Lab Manual takes precedence over the tidyverse style guide where they conflict, and functions should end with an explicit <code><a href="https://rdrr.io/r/base/function.html" class="external-link">return()</a></code> call per the lab manual / Google R Style Guide. This closes a gap where <code>@claude</code> reviews were flagging explicit returns as non-conforming.</p></li>
 <li>

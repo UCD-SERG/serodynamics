@@ -3,7 +3,7 @@
 `unpack_jags()` takes a long-format MCMC sample (typically created by
 applying [`ggmcmc::ggs()`](https://rdrr.io/pkg/ggmcmc/man/ggs.html) to
 the `mcmc` component of
-[run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[run_serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 output) and unpacks it into separate rows for individual-level curve
 parameters and population-level hyperparameters/precision terms.
 
@@ -22,7 +22,7 @@ unpack_jags(data)
   in [`ggmcmc::ggs()`](https://rdrr.io/pkg/ggmcmc/man/ggs.html) /
   MCMC-long format, usually `ggmcmc::ggs(jags_post[["mcmc"]])` where
   `jags_post` comes from
-  [run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
+  [run_serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
   Must contain at least `Iteration`, `Chain`, `Parameter`, and `value`
   columns.
 

@@ -1,7 +1,7 @@
 # Rhat Plot Diagnostics
 
 plot_rhat() takes a [list](https://rdrr.io/r/base/list.html) output from
-[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 to produce dotplots of potential scale reduction factors (Rhat) for each
 chain run in the mcmc estimation. Rhat values analyze the spread of
 chains compared to pooled values with a goal of observing rhat \< 1.10
@@ -37,7 +37,7 @@ plot_rhat(
 - data:
 
   A [list](https://rdrr.io/r/base/list.html) outputted from
-  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
+  [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
 
 - iso:
 

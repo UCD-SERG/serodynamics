@@ -21,6 +21,11 @@
   bot triggered the run, so a commit pushed by `@claude` or the Copilot
   agent no longer produces a red review check.
 
+- The `Claude Code Review` workflow now posts a fresh review comment per
+  run and collapses the superseded ones as `OUTDATED`, so each push
+  surfaces as new PR activity while older reviews fold up out of the
+  way. `@claude` task comments are left untouched.
+
 - Added `CLAUDE.md` and expanded the Code Style Guidelines in
   `.github/copilot-instructions.md` to direct reviewers (human and AI)
   to flag unnecessarily convoluted or non-idiomatic code - in particular

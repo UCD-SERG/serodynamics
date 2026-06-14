@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -489,11 +489,11 @@ fitted_stratified <- run_serodynamics(
 ## Next Steps
 
 - See the [function
-  reference](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/index.md)
+  reference](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
