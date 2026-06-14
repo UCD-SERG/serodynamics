@@ -54,6 +54,7 @@ linters <- lintr::linters_with_defaults(
   trailing_whitespace_linter = NULL,
   lintr::redundant_equals_linter(),
   lintr::pipe_consistency_linter(pipe = "|>"),
+  lintr::indentation_linter(hanging_indent_style = "never"),
   lintr::object_name_linter(
     regexes = c(snake_case_ACROs1 = snake_case_ACROs1)
   ),
