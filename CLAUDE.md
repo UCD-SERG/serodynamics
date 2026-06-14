@@ -47,7 +47,9 @@ form. Treat these as in-scope review findings, not optional nits:
   that omits the `relationship` argument. Stating the expected
   cardinality explicitly (e.g. `relationship = "many-to-one"`) makes the
   join's intent clear and turns an unexpected many-to-many match into an
-  error instead of a silent row explosion. See
+  error instead of a silent row explosion. Filtering joins
+  (`semi_join()` / `anti_join()`) are out of scope here — they return at
+  most one row per left-hand row and so cannot duplicate rows. See
   [PR #240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58)
   for an example.
 
