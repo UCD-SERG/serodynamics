@@ -29,7 +29,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9057</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9058</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -226,7 +226,8 @@ including the following:</p><ul><li><p><code>Iteration</code> = Number of sampli
 <li><p><code>alpha</code> = Posterior estimate of decay rate</p></li>
 </ul></li>
 <li><p><code>Iso_type</code> = Antibody/antigen type combination being evaluated</p></li>
-<li><p><code>Stratification</code> = The variable used to stratify jags model</p></li>
+<li><p><code>Stratification</code> = The variable used to stratify jags model</p><ul><li><p>The default value for no stratification is <code>"None"</code>.</p></li>
+</ul></li>
 <li><p><code>Subject</code> = ID of subject being evaluated</p></li>
 <li><p><code>value</code> = Estimated value of the parameter</p></li>
 <li><p>The following <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> are included in the output:</p><ul><li><p><code>class</code>: Class of the output object.</p></li>
@@ -257,7 +258,8 @@ variances), one per antigen/isotype combination.</p></li>
 <li><p><code>prec_logy_hyp_param</code></p></li>
 </ul></li>
 <li><p><code>fitted_residuals</code>: A <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> containing fitted and residual values
-for all observations.</p></li>
+for all observations. If no stratification is specified, the value of
+stratification will be <code>"None"</code>.</p></li>
 <li><p>An optional <code>"jags.post"</code> attribute, included when argument
 <code>with_post</code> = TRUE.</p></li>
 </ul></li>
@@ -304,7 +306,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jun 14 01:02:18 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Jun 15 07:14:54 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -339,7 +341,7 @@ for all observations.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sun Jun 14 01:03:22 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Jun 15 07:15:55 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>

@@ -209,6 +209,8 @@ the following:
 
 - `Stratification` = The variable used to stratify jags model
 
+  - The default value for no stratification is `"None"`.
+
 - `Subject` = ID of subject being evaluated
 
 - `value` = Estimated value of the parameter
@@ -265,7 +267,9 @@ the following:
 
   - `fitted_residuals`: A
     [data.frame](https://rdrr.io/r/base/data.frame.html) containing
-    fitted and residual values for all observations.
+    fitted and residual values for all observations. If no
+    stratification is specified, the value of stratification will be
+    `"None"`.
 
   - An optional `"jags.post"` attribute, included when argument
     `with_post` = TRUE.
@@ -312,7 +316,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sun Jun 14 01:02:18 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 15 07:14:54 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -347,7 +351,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sun Jun 14 01:03:22 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 15 07:15:55 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
