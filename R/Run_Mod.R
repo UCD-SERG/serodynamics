@@ -9,7 +9,7 @@
 #' @export
 run_mod <- function(...) {
   lifecycle::deprecate_warn(
-    when = "0.1.0",
+    when = "0.0.0.9057",
     what = "run_mod()",
     with = "run_serodynamics()"
   )

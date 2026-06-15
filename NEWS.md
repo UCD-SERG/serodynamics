@@ -10,6 +10,11 @@
   **Breaking change:** old
   function names are no longer available except for run_mod which was renamed
   but will available with deprecation..
+* Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
+  note in `.lintr.R` that `dplyr::*_join()` calls must specify the
+  `relationship` argument (for example `relationship = "many-to-one"`),
+  so an unexpected many-to-many match errors out instead of silently
+  duplicating rows.
 * The test suite now sets `options(lifecycle_verbosity = "error")` (via
   `tests/testthat/setup.R`), so tidyverse lifecycle deprecations -
   including soft deprecations such as using the `.data` pronoun in a
@@ -126,7 +131,7 @@ stratification (#66)
 
 ## Bug fixes
 
-None yet
+* `run_mod()`'s `fitted_residuals` attribute now covers all observations across all strata (previously only the last stratum was retained) and always includes a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes
 
