@@ -32,7 +32,7 @@ plot_predicted_curve(
 - model:
 
   An `sr_model` object (returned by
-  [run_serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md))
+  [run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md))
   containing samples from the posterior distribution of the model
   parameters.
 

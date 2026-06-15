@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9057</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9059</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -590,6 +590,8 @@
 <strong>Collapse branching that only varies columns</strong>: An <code>if</code>/<code>else</code> whose only job is to change which columns are selected, renamed, or joined can almost always be replaced by a single <code>any_of()</code> / <code>all_of()</code> selection or a single tidyselect-keyed join. Prefer one parameterized pipeline over two near-identical stratified/unstratified branches.</li>
 <li>
 <strong>Prefer dplyr joins over base <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code></strong>: Use <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::left_join()</a></code> / <code>right_join()</code> with <code>by = join_by(...)</code> rather than <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> for readability and consistency.</li>
+<li>
+<strong>Always set <code>relationship</code> on dplyr joins</strong>: Every <code>dplyr::*_join()</code> call (<code>left_join()</code>, <code>right_join()</code>, <code>inner_join()</code>, <code>full_join()</code>) must specify the <code>relationship</code> argument (e.g. <code>relationship = "many-to-one"</code>). Declaring the expected cardinality documents the join’s intent and makes an unexpected many-to-many match fail loudly instead of silently duplicating rows. Filtering joins (<code>semi_join()</code> / <code>anti_join()</code>) are out of scope — they cannot duplicate rows. See <a href="https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58" class="external-link">PR #240</a> for an example.</li>
 </ul><div class="section level3">
 <h3 id="review-focus-convoluted--non-idiomatic-code">Review focus: convoluted / non-idiomatic code<a class="anchor" aria-label="anchor" href="#review-focus-convoluted--non-idiomatic-code"></a></h3>
 <p>When reviewing (human or AI), treat the three points above as in-scope findings, not optional nits. Beyond correctness, call out code that is functionally fine but unnecessarily convoluted or non-idiomatic, and show the simpler, more declarative form. The canonical authority is the <a href="https://ucd-serg.github.io/lab-manual/coding-style.html" class="external-link">UCD-SeRG Lab Manual coding-style chapter</a>.</p>

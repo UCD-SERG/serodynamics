@@ -1,7 +1,7 @@
 # Summary Table of Jags Posterior Estimates
 
 `summarize_posterior()` takes an `sr_model` tibble returned by
-[run_serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
+[run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
 to summary table for parameter, antigen/antibody, and stratification
 combination. Defaults will produce every combination of
 antigen/antibody, parameters, and stratifications, unless otherwise
@@ -35,7 +35,7 @@ summarize_posterior(
 - data:
 
   An `sr_model` tibble returned by
-  [run_serodynamics](https://ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
+  [run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
 
 - iso:
 

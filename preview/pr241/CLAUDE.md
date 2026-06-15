@@ -2,7 +2,7 @@
 
 This file is read by Claude Code sessions and by the `@claude` GitHub
 review agent. The canonical, detailed contributor guide lives in
-[`.github/copilot-instructions.md`](https://ucd-serg.github.io/serodynamics/preview/pr241/copilot-instructions.md)
+[`.github/copilot-instructions.md`](https:/ucd-serg.github.io/serodynamics/preview/pr241/copilot-instructions.md)
 — **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 
@@ -43,6 +43,18 @@ form. Treat these as in-scope review findings, not optional nits:
   [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
   / `right_join()` with `by = join_by(...)` for clarity and consistency
   with the rest of the codebase.
+
+- **dplyr `*_join()` calls must set `relationship`.** Flag any
+  [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+  / `right_join()` / `inner_join()` / `full_join()` that omits the
+  `relationship` argument. Stating the expected cardinality explicitly
+  (e.g. `relationship = "many-to-one"`) makes the join’s intent clear
+  and turns an unexpected many-to-many match into an error instead of a
+  silent row explosion. Filtering joins (`semi_join()` / `anti_join()`)
+  are out of scope here — they return at most one row per left-hand row
+  and so cannot duplicate rows. See [PR
+  \#240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58)
+  for an example.
 
 - **Near-duplicate stratified / unstratified paths.** Prefer one
   parameterized pipeline over two near-identical branches.
