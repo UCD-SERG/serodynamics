@@ -15,6 +15,6 @@ run_mod(...)
 descriptive function name.
 }
 \seealso{
-run_serodynamics()
+\code{\link[=run_serodynamics]{run_serodynamics()}}
 }
 \keyword{internal}

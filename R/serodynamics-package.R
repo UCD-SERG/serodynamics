@@ -15,7 +15,6 @@
 #' @importFrom ggmcmc ggs
 #' @importFrom ggplot2 theme_bw
 #' @importFrom ggplot2 vars
-#' @importFrom lifecycle deprecated
 #' @importFrom rlang .data
 #' @importFrom rlang .env
 #' @importFrom runjags run.jags
