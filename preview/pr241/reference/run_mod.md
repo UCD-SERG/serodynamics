@@ -19,4 +19,4 @@ run_mod(...)
 
 ## See also
 
-run_serodynamics()
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)

@@ -18,9 +18,11 @@
     [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_rhat.md)
   - `plot_jags_effect()` →
     [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/plot_ess.md)
-    **Breaking change:** old function names are no longer available
-    except for run_mod which was renamed but will available with
-    deprecation..
+    **Breaking change:** old function names are no longer available,
+    except
+    [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_mod.md),
+    which is still exported with a deprecation warning pointing to
+    [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md).
 
 - Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
   note in `.lintr.R` that `dplyr::*_join()` calls must specify the

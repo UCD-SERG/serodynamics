@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9059</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9060</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 <code>plot_jags_Rhat()</code> → <code><a href="../reference/plot_rhat.html">plot_rhat()</a></code>
 </li>
 <li>
-<code>plot_jags_effect()</code> → <code><a href="../reference/plot_ess.html">plot_ess()</a></code> <strong>Breaking change:</strong> old function names are no longer available except for run_mod which was renamed but will available with deprecation..</li>
+<code>plot_jags_effect()</code> → <code><a href="../reference/plot_ess.html">plot_ess()</a></code> <strong>Breaking change:</strong> old function names are no longer available, except <code><a href="../reference/run_mod.html">run_mod()</a></code>, which is still exported with a deprecation warning pointing to <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>.</li>
 </ul></li>
 <li><p>Documented in <code>CLAUDE.md</code>, <code>.github/copilot-instructions.md</code>, and a note in <code>.lintr.R</code> that <code>dplyr::*_join()</code> calls must specify the <code>relationship</code> argument (for example <code>relationship = "many-to-one"</code>), so an unexpected many-to-many match errors out instead of silently duplicating rows.</p></li>
 <li><p>The test suite now sets <code>options(lifecycle_verbosity = "error")</code> (via <code>tests/testthat/setup.R</code>), so tidyverse lifecycle deprecations - including soft deprecations such as using the <code>.data</code> pronoun in a tidy-selection context - fail the tests instead of passing silently.</p></li>
