@@ -768,6 +768,16 @@ expect_false(has_missing_values(complete_data))
   / `right_join()` with `by = join_by(...)` rather than
   [`merge()`](https://rdrr.io/r/base/merge.html) for readability and
   consistency.
+- **Always set `relationship` on dplyr joins**: Every `dplyr::*_join()`
+  call (`left_join()`, `right_join()`, `inner_join()`, `full_join()`)
+  must specify the `relationship` argument
+  (e.g. `relationship = "many-to-one"`). Declaring the expected
+  cardinality documents the join’s intent and makes an unexpected
+  many-to-many match fail loudly instead of silently duplicating rows.
+  Filtering joins (`semi_join()` / `anti_join()`) are out of scope —
+  they cannot duplicate rows. See [PR
+  \#240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58)
+  for an example.
 
 ### Review focus: convoluted / non-idiomatic code
 

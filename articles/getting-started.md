@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Jun 15 07:17:00 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 15 16:05:27 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Jun 15 07:17:12 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 15 16:05:40 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Jun 15 07:17:14 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 15 16:05:42 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -556,8 +556,8 @@ sessioninfo::session_info()
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.0)
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
-#>  serocalculator   1.4.0.9015 2026-06-14 [1] Github (ucd-serg/serocalculator@12abd38)
-#>  serodynamics   * 0.0.0.9058 2026-06-15 [1] local
+#>  serocalculator   1.4.0.9016 2026-06-15 [1] Github (ucd-serg/serocalculator@28b6cec)
+#>  serodynamics   * 0.0.0.9059 2026-06-15 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)
