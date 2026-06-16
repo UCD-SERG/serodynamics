@@ -222,7 +222,9 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE
+      with_post = TRUE,
+      with_pop_params = TRUE,
+      preclogy_per_iso = TRUE
     ) |>
       suppressWarnings()
     
@@ -284,7 +286,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
