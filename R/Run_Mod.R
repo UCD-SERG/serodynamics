@@ -21,6 +21,9 @@
 #' @param niter An [integer] specifying the number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
+#' @param decay_type A [character] string specifying the type of antibody
+#'   decay function to use. Either `"power"` (default) for power function
+#'   decay (Teunis et al. 2016) or `"exponential"` for exponential decay.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' component
 #' should be included as an element of the [list] object returned by `run_mod()`
@@ -63,7 +66,8 @@
 #' @export
 #' @example inst/examples/run_mod-examples.R
 run_mod <- function(data,
-                    file_mod = serodynamics_example("model.jags"),
+                    file_mod = NULL,
+                    decay_type = c("power", "exponential"),
                     nchain = 4,
                     nadapt = 0,
                     nburn = 0,
@@ -72,6 +76,16 @@ run_mod <- function(data,
                     strat = NA,
                     with_post = FALSE,
                     ...) {
+  # Select model file based on decay type
+  # If file_mod is not specified, use decay_type to determine model file
+  decay_type <- match.arg(decay_type)
+  if (is.null(file_mod)) {
+    file_mod <- if (decay_type == "power") {
+      serodynamics_example("model.jags")
+    } else {
+      serodynamics_example("model_exp.jags")
+    }
+  }
   ## Conditionally creating a stratification list to loop through
   if (is.na(strat)) {
     strat_list <- "None"
