@@ -13,7 +13,7 @@ are calculated as the difference between fitted and observed values."></head><bo
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9059</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,7 +60,7 @@ are calculated as the difference between fitted and observed values.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calc_fit_mod</span><span class="op">(</span><span class="va">modeled_dat</span>, <span class="va">original_data</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">calc_fit_mod</span><span class="op">(</span><span class="va">modeled_dat</span>, <span class="va">original_data</span>, strat <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,18 +75,29 @@ values.</p></dd>
 <dt id="arg-original-data">original_data<a class="anchor" aria-label="anchor" href="#arg-original-data"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> of the original input dataset.</p></dd>
 
+
+<dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/character.html" class="external-link">character</a> string specifying the stratification variable
+name, or <a href="https://rdrr.io/r/base/NA.html" class="external-link">NA</a> if no stratification is used.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>A <a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a> attached as an <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> with the following
 values:</p><ul><li><p>Subject = ID number specifying an individual</p></li>
 <li><p>Iso_type = The modeled antigen_isotype</p></li>
+<li><p>Stratification = The variable used to stratify the model
+(<code>"None"</code> when no stratification is used)</p></li>
 <li><p>t = Time since infection</p></li>
 <li><p>fitted = The fitted value calculated using model output parameters for a
 given <code>t</code></p></li>
 <li><p>residual = The residual value calculated as the difference between
 observed and fitted values for a given <code>t</code></p></li>
-</ul></div>
+</ul><p>Rows from <code>original_data</code> whose stratification value is <code>NA</code> are retained
+in the output with <code>NA</code> <code>fitted</code> and <code>residual</code> values, since no posterior
+estimate is available for those (Subject, Iso_type, Stratification)
+tuples.</p>
+    </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside></div>
