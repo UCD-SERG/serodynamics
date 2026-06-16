@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: Modeling Longitudinal Antibody Responses to Infection
-Version: 0.0.0.9059
+Version: 0.1.0.9000
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = c("Author of the method and original code.",
