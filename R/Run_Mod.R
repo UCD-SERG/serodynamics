@@ -4,12 +4,12 @@
 #'  `run_mod()` was renamed to `run_serodynamics()` to create a more 
 #'  descriptive function name.
 #' @param ... Arguments passed to `run_serodynamics()`.
-#' @seealso run_serodynamics()
+#' @seealso [run_serodynamics()]
 #' @keywords internal
 #' @export
 run_mod <- function(...) {
   lifecycle::deprecate_warn(
-    when = "0.0.0.9059",
+    when = "0.0.0.9060",
     what = "run_mod()",
     with = "run_serodynamics()"
   )
