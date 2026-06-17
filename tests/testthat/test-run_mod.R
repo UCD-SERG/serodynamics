@@ -242,14 +242,6 @@ test_that(
   priors and post",
   code = {
     skip_on_cran()
-    skip_if_not(
-      Sys.getenv("RUN_HEAVY_TESTS") == "true",
-      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
-    )
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
