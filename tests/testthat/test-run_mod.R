@@ -6,6 +6,10 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if(
+      system_os() != "darwin",
+      "Snapshots are darwin-only because JAGS output is platform-dependent"
+    )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     testthat::announce_snapshot_file("popparam-summary-stats.csv")
@@ -92,6 +96,10 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if(
+      system_os() != "darwin",
+      "Snapshots are darwin-only because JAGS output is platform-dependent"
+    )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     withr::local_seed(1)
@@ -143,6 +151,10 @@ test_that(
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
+    skip_if(
+      system_os() != "darwin",
+      "Snapshots are darwin-only because JAGS output is platform-dependent"
     )
     announce_snapshot_file("nostrat-curve-params.csv")
     announce_snapshot_file("nostrat-fitted_residuals.csv")
@@ -209,6 +221,10 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if(
+      system_os() != "darwin",
+      "Snapshots are darwin-only because JAGS output is platform-dependent"
+    )
     announce_snapshot_file("nostrat-curve-params-withpost.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -231,8 +247,8 @@ test_that(
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
-    
+      expect_snapshot_value(style = "serialize", variant = darwin_variant())
+
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
@@ -262,6 +278,10 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
+    skip_if(
+      system_os() != "darwin",
+      "Snapshots are darwin-only because JAGS output is platform-dependent"
+    )
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -287,7 +307,7 @@ test_that(
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
-      expect_snapshot_value(style = "serialize")
+      expect_snapshot_value(style = "serialize", variant = darwin_variant())
     
     results |>
       dplyr::slice_head(n = 100) |>
