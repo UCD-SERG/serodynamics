@@ -62,8 +62,7 @@ plot_rhat <- function(data,
       
       visualize_jags_plot <- visualize_jags_plot |>
         # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter,
-                      value = log(.data$value))
+        dplyr::mutate(value = log(.data$value))
       # Assigning attributes, which are needed to run ggs_rhat
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
