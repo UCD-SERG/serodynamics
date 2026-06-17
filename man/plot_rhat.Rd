@@ -24,7 +24,7 @@ specific parameter, entered with quotes. Options include:
 \item \code{y0} = posterior estimate of baseline antibody concentration
 \item \code{y1} = posterior estimate of peak antibody concentration
 \item \code{t1} = posterior estimate of time to peak
-\item \code{r} = posterior estimate of shape parameter
+\item \code{shape} = posterior estimate of shape parameter
 \item \code{alpha} = posterior estimate of decay rate
 }}
 
@@ -49,7 +49,7 @@ The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item r = shape parameter
+\item shape = shape parameter
 \item alpha = decay rate
 }
 }

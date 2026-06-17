@@ -11,7 +11,7 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - r = shape parameter
+#'  - shape = shape parameter
 #'  - alpha = decay rate
 #' @param data A [list] outputted from [run_serodynamics()].
 #' @param iso Specify [character] string to produce plots of only a
@@ -20,7 +20,7 @@
 #' @param param Specify [character] string to produce plots of only a
 #' specific parameter, entered with quotes. Options include:
 #' - `alpha` = posterior estimate of decay rate
-#' - `r` = posterior estimate of shape parameter
+#' - `shape` = posterior estimate of shape parameter
 #' - `t1` = posterior estimate of time to peak
 #' - `y0` = posterior estimate of baseline antibody concentration
 #' - `y1` = posterior estimate of peak antibody concentration
