@@ -7,6 +7,7 @@ HlyE
 IgA
 IgG
 Iso
+Isotype
 JAGS's
 JAGs
 Lifecycle
@@ -16,7 +17,9 @@ PR's
 Postprocess
 Rhat
 SHA
+SeRG
 TSI
+UCD
 Vectorization
 Wasserstein
 al
@@ -25,8 +28,10 @@ assignees
 behaviour
 biomarker
 biomarkers
+calc
 colour
 darwin
+deprecations
 dev
 dobson
 doi
@@ -44,6 +49,7 @@ hyperpriors
 iso
 isotype
 isotypes
+lifecycle
 libm
 libs
 linux
@@ -56,6 +62,7 @@ pandoc
 params
 pkgdown
 prec
+precisions
 preinstalling
 rhat
 serocalculator
@@ -68,7 +75,12 @@ strat
 stratifications
 tbl
 testthat
+tibble
+tidyverse
 toolchain
+unindexed
 unstratified
 vh
 wishdf
+SeRG
+UCD

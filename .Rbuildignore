@@ -5,6 +5,7 @@
 ^project.*\.tgz$
 ^data-raw$
 ^README\.Rmd$
+^CLAUDE\.md$
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^docs$
