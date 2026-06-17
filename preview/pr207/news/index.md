@@ -178,56 +178,60 @@ package.
 
 ### Developer-facing changes
 
-snapshots and darwin-specific variants for macOS platform differences
-([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)). \* Updated
-Copilot instructions to encourage code decomposition and avoid
-copy-pasting substantial code chunks. \* Expanded
-`.github/copilot-instructions.md` with additional guidance on
-evidence-based claims, Quarto markdown/cross-reference conventions, R
-style practices, and phrase-level line-break formatting for source text.
-\* Added R 4.5+ snapshot variants to handle the changed attribute
-ordering in
-[`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/as_case_data.md),
-ensuring test suite compatibility with R 4.5 and later
-([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)). \* Added
-dev container configuration for persistent, cached development
-environment that includes R, JAGS, and all dependencies preinstalled,
-making Copilot Workspace sessions much faster. \* Added
-`.github/workflows/copilot-setup-steps.yml` GitHub Actions workflow to
-automate environment setup for GitHub Copilot coding agent,
-preinstalling R, JAGS, and all dependencies. \* Switched ggmcmc
-dependency from GitHub dev version to CRAN v1.5.1.2
-([\#135](https://github.com/UCD-SERG/serodynamics/issues/135)) \*
-vectorized `ab()` function
-([\#116](https://github.com/UCD-SERG/serodynamics/issues/116)) \* Added
-[`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
-to `.lintr.R`
-([\#81](https://github.com/UCD-SERG/serodynamics/issues/81)) \*
-Reformatted `.lintr` as R file (following
-<https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)
-([\#81](https://github.com/UCD-SERG/serodynamics/issues/81)) \* Set
-shortcut pipe to be base pipe
-([\#80](https://github.com/UCD-SERG/serodynamics/issues/80)) \* Added
-snapshot test for
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/run_mod.md)
-\* Clarified
-[`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/prep_data.md)
-internals using [dplyr](https://dplyr.tidyverse.org)
-([\#34](https://github.com/UCD-SERG/serodynamics/issues/34)) \* Removed
-“.R” suffix from jags model files to prevent them from getting linted as
-R files ([\#34](https://github.com/UCD-SERG/serodynamics/issues/34)) \*
-Added `dobson.Rmd` minimal vignette
-([\#36](https://github.com/UCD-SERG/serodynamics/issues/36)) \* Overall
-cleaning to get checks working
-([\#28](https://github.com/UCD-SERG/serodynamics/issues/28)) \* Added
-units tests for
-[`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/prep_data.md),
-[`sim_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/sim_case_data.md)
-([\#18](https://github.com/UCD-SERG/serodynamics/issues/18)) \* Added
-various GitHub Actions
-([\#10](https://github.com/UCD-SERG/serodynamics/issues/10),
-[\#15](https://github.com/UCD-SERG/serodynamics/issues/15),
-[\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
+- Added platform-aware snapshots and darwin-specific variants for macOS
+  platform differences
+  ([\#73](https://github.com/UCD-SERG/serodynamics/issues/73)).
+- Updated Copilot instructions to encourage code decomposition and avoid
+  copy-pasting substantial code chunks.
+- Expanded `.github/copilot-instructions.md` with additional guidance on
+  evidence-based claims, Quarto markdown/cross-reference conventions, R
+  style practices, and phrase-level line-break formatting for source
+  text.
+- Added R 4.5+ snapshot variants to handle the changed attribute
+  ordering in
+  [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/as_case_data.md),
+  ensuring test suite compatibility with R 4.5 and later
+  ([\#109](https://github.com/UCD-SERG/serodynamics/issues/109)).
+- Added dev container configuration for persistent, cached development
+  environment that includes R, JAGS, and all dependencies preinstalled,
+  making Copilot Workspace sessions much faster.
+- Added `.github/workflows/copilot-setup-steps.yml` GitHub Actions
+  workflow to automate environment setup for GitHub Copilot coding
+  agent, preinstalling R, JAGS, and all dependencies.
+- Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2
+  ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
+- vectorized `ab()` function
+  ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
+- Added
+  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
+  to `.lintr.R`
+  ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
+- Reformatted `.lintr` as R file (following
+  <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)
+  ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
+- Set shortcut pipe to be base pipe
+  ([\#80](https://github.com/UCD-SERG/serodynamics/issues/80))
+- Added snapshot test for
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/run_mod.md)
+- Clarified
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/prep_data.md)
+  internals using [dplyr](https://dplyr.tidyverse.org)
+  ([\#34](https://github.com/UCD-SERG/serodynamics/issues/34))
+- Removed “.R” suffix from jags model files to prevent them from getting
+  linted as R files
+  ([\#34](https://github.com/UCD-SERG/serodynamics/issues/34))
+- Added `dobson.Rmd` minimal vignette
+  ([\#36](https://github.com/UCD-SERG/serodynamics/issues/36))
+- Overall cleaning to get checks working
+  ([\#28](https://github.com/UCD-SERG/serodynamics/issues/28))
+- Added units tests for
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/prep_data.md),
+  [`sim_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr207/reference/sim_case_data.md)
+  ([\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
+- Added various GitHub Actions
+  ([\#10](https://github.com/UCD-SERG/serodynamics/issues/10),
+  [\#15](https://github.com/UCD-SERG/serodynamics/issues/15),
+  [\#18](https://github.com/UCD-SERG/serodynamics/issues/18))
 
 ## serodynamics 0.0.0
 
