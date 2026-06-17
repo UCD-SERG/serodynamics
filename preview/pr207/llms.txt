@@ -6,7 +6,7 @@ infection.
 
 ## Installation
 
-Once accepted on CRAN, install the released version with:
+Install the released version with:
 
 ``` r
 
