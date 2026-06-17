@@ -6,10 +6,6 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
-    )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     testthat::announce_snapshot_file("popparam-summary-stats.csv")
@@ -36,12 +32,14 @@ test_that(
     ) |>
       suppressWarnings()
     
+    if (system_os() == "darwin") {
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "sim-strat-curve-params",
         variant = darwin_variant()
       )
+    }
     
     # Testing exact order of attributes
     expect_equal(names(attributes(results))[1:3], 
@@ -56,12 +54,15 @@ test_that(
                         "population_params", "priors", 
                         "fitted_residuals"))
     
+    if (system_os() == "darwin") {
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "sim-strat-fitted_residuals",
         variant = darwin_variant()
       )
+    }
     
+    if (system_os() == "darwin") {
     # Testing for population parameters
     attributes(results)$population_params |>
       dplyr::group_by(Parameter) |>
@@ -74,6 +75,7 @@ test_that(
       expect_snapshot_data("popparam-summary-stats", 
                            variant = darwin_variant()    
       )
+    }
     
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
@@ -95,10 +97,6 @@ test_that(
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
     )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
@@ -125,18 +123,22 @@ test_that(
                         "nIterations", "nBurnin", "nThin", "priors", 
                         "fitted_residuals"))
     
+    if (system_os() == "darwin") {
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "strat-curve-params",
         variant = darwin_variant()
       )
+    }
     
+    if (system_os() == "darwin") {
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "strat-fitted_residuals",
         variant = darwin_variant()
       )
+    }
     
     expect_null(attr(results, "population_params"))
     
@@ -151,10 +153,6 @@ test_that(
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
     )
     announce_snapshot_file("nostrat-curve-params.csv")
     announce_snapshot_file("nostrat-fitted_residuals.csv")
@@ -184,20 +182,26 @@ test_that(
                         "nIterations", "nBurnin", "nThin", "population_params", 
                         "priors", "fitted_residuals"))
     
+    if (system_os() == "darwin") {
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params",
         variant = darwin_variant()
       )
+    }
     
+    if (system_os() == "darwin") {
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
         "nostrat-fitted_residuals",
         variant = darwin_variant()
       )
+    }
+    
     
     # Testing for population parameters
+    if (system_os() == "darwin") {
     attributes(results)$population_params |>
       dplyr::group_by(Parameter) |>
       dplyr::summarise(
@@ -210,6 +214,7 @@ test_that(
         "popparam-nostrat-summary-stats",
         variant = darwin_variant()
       )
+    }
   }
 )
 
@@ -220,10 +225,6 @@ test_that(
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
     )
     announce_snapshot_file("nostrat-curve-params-withpost.csv")
     withr::local_seed(1)
@@ -244,17 +245,21 @@ test_that(
     ) |>
       suppressWarnings()
     
+    if (system_os() == "darwin") {
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
       expect_snapshot_value(style = "serialize")
+    }
     
+    if (system_os() == "darwin") {
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params-withpost",
         variant = darwin_variant()
       )
+    }
     
     pop_params <- attr(results, "population_params")
     expect_s3_class(pop_params, "data.frame")
@@ -278,10 +283,6 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
-    skip_if(
-      system_os() != "darwin",
-      "Snapshots are darwin-only because JAGS output is platform-dependent"
-    )
     announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
@@ -304,17 +305,21 @@ test_that(
     ) |>
       suppressWarnings()
     
+    if (system_os() == "darwin") {
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
       expect_snapshot_value(style = "serialize")
+    }
     
+    if (system_os() == "darwin") {
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
         "nostrat-curve-params-specpriors",
         variant = darwin_variant()
       )
+    }
     
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))
