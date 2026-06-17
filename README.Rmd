@@ -25,7 +25,7 @@ The goal of `{serodynamics}` is to implement methods for modeling longitudinal a
 
 ## Installation
 
-Once accepted on CRAN, install the released version with:
+Install the released version with:
 
 ``` r
 install.packages("serodynamics")

@@ -17,7 +17,7 @@ longitudinal antibody responses to infection.
 
 ## Installation
 
-Once accepted on CRAN, install the released version with:
+Install the released version with:
 
 ``` r
 install.packages("serodynamics")
