@@ -15,7 +15,7 @@ dynamic curve includes the following parameters:
 
 - t1 = time to peak
 
-- r = shape parameter
+- shape = shape parameter
 
 - alpha = decay rate
 
@@ -51,7 +51,7 @@ plot_density(
 
   - `alpha` = posterior estimate of decay rate
 
-  - `r` = posterior estimate of shape parameter
+  - `shape` = posterior estimate of shape parameter
 
   - `t1` = posterior estimate of time to peak
 

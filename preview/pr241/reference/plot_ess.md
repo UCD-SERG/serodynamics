@@ -15,7 +15,7 @@ includes the following parameters:
 
 - t1 = time to peak
 
-- r = shape parameter
+- shape = shape parameter
 
 - alpha = decay rate
 
@@ -55,7 +55,7 @@ plot_ess(
 
   - `t1` = posterior estimate of time to peak
 
-  - `r` = posterior estimate of shape parameter
+  - `shape` = posterior estimate of shape parameter
 
   - `alpha` = posterior estimate of decay rate
 
