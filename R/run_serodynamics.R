@@ -183,7 +183,8 @@ run_serodynamics <- function(data,
     
     # Merging isodat in to ensure we are classifying antigen_iso.
     jags_unpacked <- dplyr::left_join(jags_unpacked, iso_dat,
-                                      by = "Subnum")
+                                      by = "Subnum",
+                                      relationship = "many-to-one")
 
     # Optionally relabel prec.logy Parameter by isotype so that grouping by
     # Parameter in population_params distinguishes per-isotype precision.
@@ -243,5 +244,5 @@ run_serodynamics <- function(data,
     jags_out <- jags_out |>
       structure(jags.post = jags_post_final)
   }
-  jags_out
+  return(jags_out)
 }

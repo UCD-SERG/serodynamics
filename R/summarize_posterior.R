@@ -55,5 +55,5 @@ summarize_posterior <- function(data,
                      `50.0%` = quantile(.data$value, 0.50), 
                      `75.0%` = quantile(.data$value, 0.75), 
                      `97.5%` = quantile(.data$value, 0.975))
-  tibble::as_tibble(summarize_jags)
+  return(tibble::as_tibble(summarize_jags))
 }
