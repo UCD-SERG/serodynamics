@@ -104,7 +104,8 @@ output (#34)
 
 ## Developer-facing changes
 
-  snapshots and darwin-specific variants for macOS platform differences (#73).
+* Added platform-aware snapshots and darwin-specific variants for macOS 
+platform differences (#73).
 * Updated Copilot instructions to encourage code decomposition and avoid
   copy-pasting substantial code chunks.
 * Expanded `.github/copilot-instructions.md` with additional guidance on 
