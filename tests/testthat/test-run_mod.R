@@ -204,7 +204,6 @@ test_that(
 test_that(
   desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_mod",
   code = {
-<<<<<<< HEAD
     skip_on_cran()
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
@@ -223,7 +222,9 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE
+      with_post = TRUE,
+      with_pop_params = TRUE,
+      preclogy_per_iso = TRUE
     ) |>
       suppressWarnings()
     
@@ -237,24 +238,6 @@ test_that(
       expect_snapshot_data(
         "nostrat-curve-params-withpost",
         variant = darwin_variant()
-=======
-    withr::local_seed(1)
-    dataset <- serodynamics::nepal_sees
-
-    results <- suppressWarnings(
-      run_mod(
-        data = dataset,
-        file_mod = serodynamics_example("model.jags"),
-        nchain = 2,
-        nadapt = 10,
-        nburn = 10,
-        nmc = 100,
-        niter = 100,
-        strat = NA,
-        with_pop_params = TRUE,
-        preclogy_per_iso = TRUE
->>>>>>> f6901a926c80adb33b34a7e417bdcdf827166a9b
-      )
     )
 
     pop_params <- attr(results, "population_params")
@@ -302,15 +285,12 @@ test_that(
       suppressWarnings()
     
     results |>
-<<<<<<< HEAD
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
       dplyr::slice_head(n = 100) |>
-=======
->>>>>>> f6901a926c80adb33b34a7e417bdcdf827166a9b
       expect_snapshot_data(
         "nostrat-curve-params-specpriors",
         variant = darwin_variant()
