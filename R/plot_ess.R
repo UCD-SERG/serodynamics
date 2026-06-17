@@ -61,9 +61,6 @@ plot_ess <- function(data,
       visualize_jags_plot <- visualize_jags_plot |>
         dplyr::filter(.data$Parameter %in% param)
 
-      visualize_jags_plot <- visualize_jags_plot |>
-        # Changing parameter name to reflect the input
-        dplyr::mutate(Parameter = .data$Parameter)
       # Assigning attributes, which are needed to run ggs_density
       attributes(visualize_jags_plot) <- c(attributes(visualize_jags_plot),
                                            attributes_jags)
