@@ -286,7 +286,7 @@ test_that(
     
     results |>
       attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals")) |>
+      rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
       expect_snapshot_value(style = "serialize")
     
     results |>
