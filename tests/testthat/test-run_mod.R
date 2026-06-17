@@ -249,7 +249,8 @@ test_that(
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize")
+      expect_snapshot_value(style = "serialize",
+                            variant = darwin_variant())
     }
     
     if (system_os() == "darwin") {
@@ -309,7 +310,8 @@ test_that(
     results |>
       attributes() |>
       rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
-      expect_snapshot_value(style = "serialize")
+      expect_snapshot_value(style = "serialize",
+                            variant = darwin_variant())
     }
     
     if (system_os() == "darwin") {
