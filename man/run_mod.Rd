@@ -188,18 +188,19 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
+data(nepal_sees_jags_output, package = "serodynamics")
+post_summ(nepal_sees_jags_output)
+
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
   set.seed(1)
-  library(dplyr)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
+    dplyr::mutate(strat = "stratum 2")
   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
+    dplyr::mutate(strat = "stratum 1")
 
-  dataset <- bind_rows(strat1, strat2)
+  dataset <- dplyr::bind_rows(strat1, strat2)
 
   fitted_model <- run_mod(
     data = dataset, # The data set input
