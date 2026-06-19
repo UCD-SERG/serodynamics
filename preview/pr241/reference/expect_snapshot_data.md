@@ -66,11 +66,3 @@ expect_snapshot_data(x, name, digits = 6, ...)
 
 [NULL](https://rdrr.io/r/base/NULL.html) (from
 [`testthat::expect_snapshot_file()`](https://testthat.r-lib.org/reference/expect_snapshot_file.html))
-
-## Examples
-
-``` r
-if (FALSE) { # \dontrun{
-expect_snapshot_data(iris, name = "iris")
-} # }
-```

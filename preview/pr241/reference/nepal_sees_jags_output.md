@@ -61,4 +61,5 @@ person-specific parameters for two arbitrarily-chosen subjects
 
 ## Source
 
-reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
+reference study:
+[doi:10.1016/S2666-5247(22)00114-8](https://doi.org/10.1016/S2666-5247%2822%2900114-8)
