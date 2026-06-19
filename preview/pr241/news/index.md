@@ -4,8 +4,8 @@
 
 ### New features
 
-- - Renamed user-facing functions for clarity
-    ([\#241](https://github.com/UCD-SERG/serodynamics/issues/241)):
+- Renamed user-facing functions for clarity
+  ([\#241](https://github.com/UCD-SERG/serodynamics/issues/241)):
   - [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_mod.md)
     →
     [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr241/reference/run_serodynamics.md)
