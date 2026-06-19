@@ -1,7 +1,7 @@
 # serodynamics (development version)
 
 ## New features
-* * Renamed user-facing functions for clarity (#241):
+* Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`
   - `plot_jags_trace()` → `plot_trace()`
