@@ -10,9 +10,51 @@ run_mod(...)
 \item{...}{Arguments passed to \code{run_serodynamics()}.}
 }
 \description{
+<<<<<<< HEAD
 \ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
 \code{run_mod()} was renamed to \code{run_serodynamics()} to create a more
 descriptive function name.
+=======
+\code{run_mod()} takes a data frame and adjustable MCMC inputs to
+\code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
+Bayesian model to estimate antibody dynamic curve parameters.
+The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
+infection. The antibody dynamic curve includes the following parameters:
+\itemize{
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item shape = shape parameter
+\item alpha = decay rate
+}
+}
+\examples{
+data(nepal_sees_jags_output, package = "serodynamics")
+post_summ(nepal_sees_jags_output)
+
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
+  set.seed(1)
+  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    dplyr::mutate(strat = "stratum 2")
+  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
+    sim_case_data(n = 100) |>
+    dplyr::mutate(strat = "stratum 1")
+
+  dataset <- dplyr::bind_rows(strat1, strat2)
+
+  fitted_model <- run_mod(
+    data = dataset, # The data set input
+    file_mod = serodynamics_example("model.jags"),
+    nchain = 4, # Number of mcmc chains to run
+    nadapt = 100, # Number of adaptations to run
+    nburn = 100, # Number of unrecorded samples before sampling begins
+    nmc = 1000,
+    niter = 2000, # Number of iterations
+    strat = "strat"
+  ) # Variable to be stratified
+}
+>>>>>>> 91c7b091e601e9ba4acb2d51ca6b59aa4630aef6
 }
 \seealso{
 \code{\link[=run_serodynamics]{run_serodynamics()}}
