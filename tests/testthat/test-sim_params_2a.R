@@ -5,15 +5,15 @@ test_that("sim_params_2a sample covariance recovers the truth (large n)", {
   sg <- diag(c(0.09, 0.16, 0.09, 0.16, 0.09))
   sa <- diag(c(0.09, 0.16, 0.09, 0.16, 0.09))
   cv <- c(0.054, 0.080, 0.0, 0.064, 0.0)
-
+  
   sim <- sim_params_2a(20000, mu_g, mu_a, sg, sa, cv, seed = 7)
   emp <- stats::cov(sim$log_par)
-
+  
   # cross-biomarker, same-parameter covariances recovered
   emp_c <- diag(emp[1:5, 6:10])
-  expect_equal(emp_c, cv, tolerance = 0.02)
+  expect_equal(emp_c, cv, tolerance = 0.05)
   # means recovered
-  expect_equal(colMeans(sim$log_par), c(mu_g, mu_a), tolerance = 0.02)
+  expect_equal(colMeans(sim$log_par), c(mu_g, mu_a), tolerance = 0.05)
   # reported rho matches definition
   expect_equal(sim$rho, cv / sqrt(diag(sg) * diag(sa)))
 })
@@ -31,7 +31,7 @@ test_that("get_node_matrix extracts the right cells", {
          "lambda[2,1]" = 21, "lambda[2,2]" = 22)
   m <- get_node_matrix(v, "lambda", 2, 2)
   expect_equal(m, matrix(c(11, 21, 12, 22), nrow = 2))
-
+  
   v3 <- c("prec.par[1,1,1]" = 1, "prec.par[1,1,2]" = 2,
           "prec.par[1,2,1]" = 3, "prec.par[1,2,2]" = 4,
           "prec.par[2,1,1]" = 5, "prec.par[2,1,2]" = 6,

@@ -64,6 +64,6 @@ the new term}; it does not by itself establish that Model 2a is \emph{better}.
 A rigorous improvement claim needs a model-selection criterion (DIC/WAIC; set
 \code{dic = TRUE} for a best-effort DIC from each \code{runjags} fit) and, ultimately,
 the downstream predictive task (e.g. time-since-infection / seroincidence
-accuracy — MAE, RMSE, CrI coverage), which is the Chapter 2 simulation study
-rather than a single function.
+accuracy — MAE, RMSE, CrI coverage), which is the Chapter 2
+simulation study rather than a single function.
 }

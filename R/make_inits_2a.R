@@ -18,7 +18,9 @@
 #' @returns A function `f(chain)` returning a list of initial values.
 #' @export
 make_inits_2a <- function(n_antigen_isos, n_params, mu_hyp) {
-  force(n_antigen_isos); force(n_params); force(mu_hyp)
+  force(n_antigen_isos)
+  force(n_params)
+  force(mu_hyp)
   function(chain) {
     base <- initsfunction(chain)
     lambda0 <- matrix(0.1, nrow = n_antigen_isos, ncol = n_params)

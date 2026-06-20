@@ -8,8 +8,8 @@
 #' `lambda = 0` reduces Model 2a to Chapter 1.
 #'
 #' The packaged typhoid simulator [sim_case_data()] also produces independent
-#' biomarkers, so fitting Model 2a to its output is an equivalent real-data-style
-#' null check.
+#' biomarkers, so fitting Model 2a to its output is an equivalent
+#' real-data-style null check.
 #'
 #' @param n [integer] number of subjects. Default `120`.
 #' @param mu_g,mu_a,sigma_g,sigma_a Model 2a truth (cross-block forced to zero).

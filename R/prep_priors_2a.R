@@ -19,8 +19,7 @@
 #' @export
 prep_priors_2a <- function(max_antigens, prec_lambda = 0.25, ...) {
   if (max_antigens < 2) {
-    stop("Model 2a needs at least 2 biomarkers; `max_antigens` was ",
-         max_antigens, ".")
+    cli::cli_abort("Model 2a needs >= 2 biomarkers; got {.val {max_antigens}}.")
   }
   prep_priors(max_antigens = max_antigens, ...) |>
     add_factor_priors(prec_lambda = prec_lambda)

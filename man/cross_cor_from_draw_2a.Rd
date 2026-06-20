@@ -19,5 +19,6 @@ A length-\code{P} \link{numeric} \link{vector} of cross-biomarker correlations.
 \description{
 Combines \code{\link[=cross_cov_from_loadings]{cross_cov_from_loadings()}} and \code{\link[=marginal_var_2a]{marginal_var_2a()}} to give the
 same-parameter cross-biomarker correlation for a single MCMC draw:
-\deqn{\rho_p = c_p / \sqrt{\mathrm{Var}(par_{1,p})\,\mathrm{Var}(par_{2,p})}.}
+\deqn{\rho_p = c_p /
+  \sqrt{\mathrm{Var}(par_{1,p})\,\mathrm{Var}(par_{2,p})}.}
 }

@@ -18,9 +18,9 @@
 #' @returns The input list with `prec.lambda` and `zero_p` added.
 #' @export
 add_factor_priors <- function(priors, prec_lambda = 0.25) {
-  if (!is.numeric(prec_lambda) || length(prec_lambda) != 1 ||
+  if (!is.numeric(prec_lambda) || length(prec_lambda) != 1L ||
       prec_lambda <= 0) {
-    stop("`prec_lambda` must be a single positive number.")
+    cli::cli_abort("{.arg prec_lambda} must be a single positive number.")
   }
   n_params <- priors[["n_params"]]
   priors[["prec.lambda"]] <- prec_lambda

@@ -23,25 +23,29 @@
 build_sigma_2a <- function(sigma_g, sigma_a, c_vec) {
   p <- nrow(sigma_g)
   if (ncol(sigma_g) != p || nrow(sigma_a) != p || ncol(sigma_a) != p) {
-    stop("`sigma_g` and `sigma_a` must both be P x P with the same P.")
+    cli::cli_abort(
+      "{.arg sigma_g} and {.arg sigma_a} must both be P x P with the same P."
+    )
   }
   if (length(c_vec) != p) {
-    stop("`c_vec` must have length P (one cross-covariance per parameter).")
+    cli::cli_abort(
+      "{.arg c_vec} must have length P (one cross-covariance per parameter)."
+    )
   }
-
+  
   cmat <- diag(c_vec, nrow = p)
   sigma <- rbind(
     cbind(sigma_g, cmat),
     cbind(t(cmat), sigma_a)
   )
-
+  
   # Positive-definiteness check (cross-covariances must be admissible)
   eig <- min(eigen(sigma, symmetric = TRUE, only.values = TRUE)$values)
   if (eig <= 0) {
-    stop(
-      "Assembled Sigma is not positive-definite (smallest eigenvalue ",
-      round(eig, 4), "); reduce the magnitude of `c_vec`."
-    )
+    cli::cli_abort(c(
+      "Assembled Sigma is not positive-definite.",
+      "i" = "Smallest eigenvalue {round(eig, 4)}; reduce {.arg c_vec}."
+    ))
   }
   sigma
 }

@@ -18,8 +18,8 @@
 #' A rigorous improvement claim needs a model-selection criterion (DIC/WAIC; set
 #' `dic = TRUE` for a best-effort DIC from each `runjags` fit) and, ultimately,
 #' the downstream predictive task (e.g. time-since-infection / seroincidence
-#' accuracy — MAE, RMSE, CrI coverage), which is the Chapter 2 simulation study
-#' rather than a single function.
+#' accuracy — MAE, RMSE, CrI coverage), which is the Chapter 2
+#' simulation study rather than a single function.
 #'
 #' @param data A two-biomarker `serocalculator` case-data [data.frame]
 #'   (e.g. `nepal_sees`).
@@ -53,29 +53,38 @@ compare_mod_2a <- function(data,
                           nburn = nburn, nmc = nmc, niter = niter, ...)
   m2 <- run_mod_2a(data, nchain = nchain, nadapt = nadapt, nburn = nburn,
                    nmc = nmc, niter = niter, prec_lambda = prec_lambda, ...)
-
+  
   s1 <- summarize_curve_params_2a(m1[["mcmc"]], with_loadings = FALSE)
   s2 <- summarize_curve_params_2a(m2[["mcmc"]], with_loadings = TRUE)
-
-  shared <- merge(s1, s2, by = c("biomarker", "param"),
-                  suffixes = c("_ch1", "_2a"))
+  
+  shared <- dplyr::left_join(
+    s1, s2,
+    by = c("biomarker", "param"),
+    suffix = c("_ch1", "_2a")
+  )
   shared[["mean_absdiff"]] <- abs(shared[["mean_med_ch1"]] -
                                     shared[["mean_med_2a"]])
   shared[["var_absdiff"]] <- abs(shared[["var_med_ch1"]] -
                                    shared[["var_med_2a"]])
-
+  
   cross <- m2[["cross"]]
   added <- cross[["param"]][cross[["cov_lo"]] > 0 | cross[["cov_hi"]] < 0]
-
+  
+  dic_ch1 <- if (dic) try(runjags::extract(m1, "dic"), silent = TRUE) else NULL
+  dic_2a <- if (dic) {
+    try(runjags::extract(m2[["runjags"]], "dic"), silent = TRUE)
+  } else {
+    NULL
+  }
+  
   out <- list(
     shared = shared,
     cross = cross,
     max_mean_absdiff = max(shared[["mean_absdiff"]]),
     max_var_absdiff = max(shared[["var_absdiff"]]),
     added = added,
-    dic_ch1 = if (dic) try(runjags::extract(m1, "dic"), silent = TRUE) else NULL,
-    dic_2a = if (dic) try(runjags::extract(m2[["runjags"]], "dic"),
-                          silent = TRUE) else NULL,
+    dic_ch1 = dic_ch1,
+    dic_2a = dic_2a,
     fits = list(chapter1 = m1, model_2a = m2)
   )
   structure(out, class = c("model_2a_comparison", "list"))

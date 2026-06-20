@@ -30,17 +30,26 @@ summarize_cross_2a <- function(mcmc,
                                probs = c(0.025, 0.5, 0.975)) {
   draws <- as.matrix(mcmc)
   dims <- jags_node_dims(colnames(draws))
+  if (is.null(dims[["lambda"]]) || is.null(dims[["prec.par"]])) {
+    cli::cli_abort(c(
+      "{.fn summarize_cross_2a} needs {.code lambda} and {.code prec.par}.",
+      "i" = "Pass the mcmc.list from {.fn run_mod_2a}, not a Chapter 1 fit."
+    ))
+  }
+  if (length(probs) != 3L) {
+    cli::cli_abort("{.arg probs} must have length 3 (lower, median, upper).")
+  }
   k <- dims[["lambda"]][1]
   p <- dims[["lambda"]][2]
   if (is.null(param_names)) {
     param_names <- c("log_y0", "log_y1_minus_y0", "log_t1",
                      "log_alpha", "log_shape_minus_1")[seq_len(p)]
   }
-
+  
   n_draw <- nrow(draws)
   cov_draws <- matrix(NA_real_, n_draw, p)
   cor_draws <- matrix(NA_real_, n_draw, p)
-
+  
   for (d in seq_len(n_draw)) {
     lambda_mat <- get_node_matrix(draws[d, ], "lambda", k, p)
     prec1 <- get_node_matrix(draws[d, ], "prec.par", p, p, slice = 1)
@@ -48,16 +57,16 @@ summarize_cross_2a <- function(mcmc,
     cov_draws[d, ] <- cross_cov_from_loadings(lambda_mat)
     cor_draws[d, ] <- cross_cor_from_draw_2a(lambda_mat, prec1, prec2)
   }
-
+  
   pair_lab <- if (!is.null(antigens) && length(antigens) >= 2) {
     paste(antigens[1], antigens[2], sep = " ~ ")
   } else {
     "biomarker1 ~ biomarker2"
   }
-
+  
   cov_q <- apply(cov_draws, 2, stats::quantile, probs = probs, na.rm = TRUE)
   cor_q <- apply(cor_draws, 2, stats::quantile, probs = probs, na.rm = TRUE)
-
+  
   data.frame(
     param = param_names,
     pair = pair_lab,

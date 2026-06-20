@@ -14,7 +14,9 @@
 #' @export
 cross_cov_from_loadings <- function(lambda_mat) {
   if (nrow(lambda_mat) < 2) {
-    stop("`lambda_mat` needs at least 2 rows (biomarkers) for Model 2a.")
+    cli::cli_abort(
+      "{.arg lambda_mat} needs at least 2 rows (biomarkers) for Model 2a."
+    )
   }
   lambda_mat[1, ] * lambda_mat[2, ]
 }

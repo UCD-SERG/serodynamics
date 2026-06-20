@@ -2,10 +2,11 @@
 #' @description
 #' Fits the **Chapter 1** model (`model.jags`) through the same lean path as
 #' [run_mod_2a()] and returns the raw `runjags` object, monitoring the nodes
-#' needed to compare against Model 2a (`mu.par`, `prec.par`, and the per-subject
-#' curve parameters). This is the **same model, data, priors, and posterior** as
-#' [run_mod()] — `run_mod()` simply adds post-processing on top; here we keep the
-#' MCMC in `mcmc.list` form so it can be compared directly with a Model 2a fit.
+#' needed to compare against Model 2a (`mu.par`, `prec.par`). This is the
+#' **same model, data, priors, and posterior** as
+#' [run_mod()] — `run_mod()` simply adds post-processing on top; here we
+#' keep the MCMC in `mcmc.list` form so it can be compared directly with a
+#' Model 2a fit.
 #'
 #' Unstratified only (matching the typhoid example workflow).
 #'
@@ -28,7 +29,7 @@ fit_chapter1_lean <- function(data,
   longdata <- prep_data(data)
   priors <- prep_priors(max_antigens = longdata[["n_antigen_isos"]], ...)
   nthin <- max(1, round(niter / nmc))
-
+  
   runjags::run.jags(
     model = file_mod,
     data = c(longdata, priors),
@@ -39,7 +40,7 @@ fit_chapter1_lean <- function(data,
     thin = nthin,
     sample = nmc,
     n.chains = nchain,
-    monitor = c("mu.par", "prec.par", "y0", "y1", "t1", "alpha", "shape"),
+    monitor = c("mu.par", "prec.par"),
     summarise = FALSE
   )
 }

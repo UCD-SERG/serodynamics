@@ -8,7 +8,7 @@ test_that("cross_cov_from_loadings is the elementwise product of rows 1,2", {
   )
 })
 
-test_that("marginal_var_2a adds squared loadings to within-biomarker variance", {
+test_that("marginal_var_2a adds squared loadings to variance", {
   prec <- diag(c(4, 5, 10))          # cov_w = diag(0.25, 0.2, 0.1)
   lam_k <- c(0.3, 0.0, 0.2)
   expect_equal(

@@ -34,7 +34,7 @@
 #'   - `cross`: a tidy [data.frame] of posterior cross-biomarker covariance
 #'     `c_p` and correlation `rho_p` per kinetic parameter;
 #'   - `antigens`: the two biomarker labels;
-#'   - `priors`: the prior list used;
+#'   - `prec_lambda`: the loading-prior precision used;
 #'   - `runjags`: the raw `runjags` object (for diagnostics such as PSRF).
 #' @example inst/examples/run_mod_2a-examples.R
 #' @export
@@ -50,17 +50,17 @@ run_mod_2a <- function(data,
                        ...) {
   jags_input <- jags_data_2a(data, prec_lambda = prec_lambda, ...)
   antigens <- attr(jags_input, "antigens")
-
+  
   inits_fun <- make_inits_2a(
     n_antigen_isos = jags_input[["n_antigen_isos"]],
     n_params = jags_input[["n_params"]],
     mu_hyp = jags_input[["mu.hyp"]]
   )
-
+  
   monitors <- unique(c("lambda", "mu.par", "prec.par", "prec.logy",
                        extra_monitors))
   nthin <- max(1, round(niter / nmc))
-
+  
   fit <- runjags::run.jags(
     model = file_mod,
     data = jags_input,
@@ -74,10 +74,10 @@ run_mod_2a <- function(data,
     monitor = monitors,
     summarise = FALSE
   )
-
+  
   mcmc <- fit[["mcmc"]]
   cross <- summarize_cross_2a(mcmc, antigens = antigens)
-
+  
   structure(
     list(
       mcmc = mcmc,

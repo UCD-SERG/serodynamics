@@ -39,6 +39,6 @@ cover zero. This is the empirical counterpart of the algebraic fact that
 \code{lambda = 0} reduces Model 2a to Chapter 1.
 
 The packaged typhoid simulator \code{\link[=sim_case_data]{sim_case_data()}} also produces independent
-biomarkers, so fitting Model 2a to its output is an equivalent real-data-style
-null check.
+biomarkers, so fitting Model 2a to its output is an equivalent
+real-data-style null check.
 }

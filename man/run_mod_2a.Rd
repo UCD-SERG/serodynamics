@@ -43,7 +43,7 @@ A list of class \code{"model_2a_fit"} with elements:
 \item \code{cross}: a tidy \link{data.frame} of posterior cross-biomarker covariance
 \code{c_p} and correlation \code{rho_p} per kinetic parameter;
 \item \code{antigens}: the two biomarker labels;
-\item \code{priors}: the prior list used;
+\item \code{prec_lambda}: the loading-prior precision used;
 \item \code{runjags}: the raw \code{runjags} object (for diagnostics such as PSRF).
 }
 }

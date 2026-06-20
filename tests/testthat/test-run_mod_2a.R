@@ -25,12 +25,12 @@ tiny_two_biomarker_data <- function(n = 15) {
 test_that("run_mod_2a runs and returns a cross-biomarker summary", {
   skip_if_no_jags()
   skip_on_cran()
-
+  
   fit <- run_mod_2a(
     tiny_two_biomarker_data(),
     nchain = 2, nadapt = 10, nburn = 10, nmc = 100, niter = 100
-  )
-
+  ) |> suppressWarnings()
+  
   expect_s3_class(fit, "model_2a_fit")
   expect_s3_class(fit$mcmc, "mcmc.list")
   expect_equal(nrow(fit$cross), 5)                    # one row per parameter
@@ -41,12 +41,12 @@ test_that("run_mod_2a runs and returns a cross-biomarker summary", {
 test_that("compare_mod_2a runs both models and returns the shared comparison", {
   skip_if_no_jags()
   skip_on_cran()
-
+  
   cmp <- compare_mod_2a(
     tiny_two_biomarker_data(),
     nchain = 2, nadapt = 10, nburn = 10, nmc = 100, niter = 100
-  )
-
+  ) |> suppressWarnings()
+  
   expect_s3_class(cmp, "model_2a_comparison")
   expect_equal(nrow(cmp$shared), 10)                  # 2 biomarkers x 5 params
   expect_true(all(c("mean_med_ch1", "mean_med_2a", "mean_absdiff",

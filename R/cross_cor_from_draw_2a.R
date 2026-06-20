@@ -2,7 +2,8 @@
 #' @description
 #' Combines [cross_cov_from_loadings()] and [marginal_var_2a()] to give the
 #' same-parameter cross-biomarker correlation for a single MCMC draw:
-#' \deqn{\rho_p = c_p / \sqrt{\mathrm{Var}(par_{1,p})\,\mathrm{Var}(par_{2,p})}.}
+#' \deqn{\rho_p = c_p /
+#'   \sqrt{\mathrm{Var}(par_{1,p})\,\mathrm{Var}(par_{2,p})}.}
 #'
 #' @param lambda_mat A `K x P` loadings [matrix] (rows = biomarkers).
 #' @param prec_par_1 A `P x P` precision [matrix] for biomarker 1.

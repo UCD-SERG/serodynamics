@@ -5,14 +5,14 @@ test_that("sim_case_data_2a returns well-formed two-biomarker case data", {
   sa <- diag(c(0.09, 0.16, 0.09, 0.16, 0.09))
   cv <- c(0.054, 0.080, 0.0, 0.064, 0.0)
   vt <- c(0, 7, 14, 28, 56, 90, 140, 200)
-
+  
   res <- sim_case_data_2a(
     n = 30, mu_g = mu_g, mu_a = mu_a,
     sigma_g = sg, sigma_a = sa, c_vec = cv,
     visit_times = vt, noise_sd = 0.15, seed = 1
   )
   d <- res$data
-
+  
   # required columns survive as_case_data (which also adds visit_num)
   expect_true(all(c("id", "antigen_iso", "value", "timeindays", "visit_num")
                   %in% names(d)))
@@ -27,7 +27,7 @@ test_that("sim_case_data_2a returns well-formed two-biomarker case data", {
   expect_true(all(d$value > 0) && all(is.finite(d$value)))
 })
 
-test_that("sim_case_data_2a truth matches the requested correlation and is reproducible", {
+test_that("sim_case_data_2a truth matches correlation, reproducible", {
   args <- list(
     n = 20, mu_g = c(0, 3, 2.3, -4, -1), mu_a = c(0.2, 3.1, 2.2, -3.8, -1.1),
     sigma_g = diag(c(0.09, 0.16, 0.09, 0.16, 0.09)),
@@ -36,7 +36,7 @@ test_that("sim_case_data_2a truth matches the requested correlation and is repro
   )
   r1 <- do.call(sim_case_data_2a, args)
   r2 <- do.call(sim_case_data_2a, args)
-
+  
   # truth$rho is c_vec / sqrt(varG * varA)
   expect_equal(
     r1$truth$rho,

@@ -31,10 +31,11 @@ A \code{runjags} object (its \verb{$mcmc} is a \link[coda:mcmc.list]{coda::mcmc.
 \description{
 Fits the \strong{Chapter 1} model (\code{model.jags}) through the same lean path as
 \code{\link[=run_mod_2a]{run_mod_2a()}} and returns the raw \code{runjags} object, monitoring the nodes
-needed to compare against Model 2a (\code{mu.par}, \code{prec.par}, and the per-subject
-curve parameters). This is the \strong{same model, data, priors, and posterior} as
-\code{\link[=run_mod]{run_mod()}} — \code{run_mod()} simply adds post-processing on top; here we keep the
-MCMC in \code{mcmc.list} form so it can be compared directly with a Model 2a fit.
+needed to compare against Model 2a (\code{mu.par}, \code{prec.par}). This is the
+\strong{same model, data, priors, and posterior} as
+\code{\link[=run_mod]{run_mod()}} — \code{run_mod()} simply adds post-processing on top; here we
+keep the MCMC in \code{mcmc.list} form so it can be compared directly with a
+Model 2a fit.
 
 Unstratified only (matching the typhoid example workflow).
 }
