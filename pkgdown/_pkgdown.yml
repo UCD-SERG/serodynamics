@@ -42,6 +42,28 @@ reference:
 - title: Summarize seroresponse model estimates
   contents:
   - post_summ
+- title: "Model 2a: cross-biomarker extension (Chapter 2)"
+  desc: >
+    Chapter 2 extension that adds a same-parameter cross-biomarker covariance
+    to the Chapter 1 model via a shared latent factor (strictly nests Chapter 1).
+  contents:
+  - run_mod_2a
+  - compare_mod_2a
+  - fit_chapter1_lean
+  - summarize_cross_2a
+  - summarize_curve_params_2a
+  - validate_recovery_2a
+  - validate_nesting_2a
+  - sim_case_data_2a
+  - sim_params_2a
+  - prep_priors_2a
+  - add_factor_priors
+  - jags_data_2a
+  - make_inits_2a
+  - build_sigma_2a
+  - cross_cov_from_loadings
+  - cross_cor_from_draw_2a
+  - marginal_var_2a
 - title: Example data sets
   contents:
   - serodynamics_example

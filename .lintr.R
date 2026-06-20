@@ -88,6 +88,23 @@ exclusions <- list(
   ),
   "tests/testthat.R" = list(
     undesirable_function_linter = Inf
-  )
+  ),
+  # Model 2a files: the intentional "2a" suffix (and prec_par_1/_2) cannot match
+  # the snake_case object-name regex (each segment must start with a letter).
+  # Exempt these files from object_name_linter only; all other linters still apply.
+  "R/build_sigma_2a.R" = list(object_name_linter = Inf),
+  "R/compare_mod_2a.R" = list(object_name_linter = Inf),
+  "R/cross_cor_from_draw_2a.R" = list(object_name_linter = Inf),
+  "R/jags_data_2a.R" = list(object_name_linter = Inf),
+  "R/make_inits_2a.R" = list(object_name_linter = Inf),
+  "R/marginal_var_2a.R" = list(object_name_linter = Inf),
+  "R/prep_priors_2a.R" = list(object_name_linter = Inf),
+  "R/run_mod_2a.R" = list(object_name_linter = Inf),
+  "R/sim_case_data_2a.R" = list(object_name_linter = Inf),
+  "R/sim_params_2a.R" = list(object_name_linter = Inf),
+  "R/summarize_cross_2a.R" = list(object_name_linter = Inf),
+  "R/summarize_curve_params_2a.R" = list(object_name_linter = Inf),
+  "R/validate_nesting_2a.R" = list(object_name_linter = Inf),
+  "R/validate_recovery_2a.R" = list(object_name_linter = Inf)
   
 )
