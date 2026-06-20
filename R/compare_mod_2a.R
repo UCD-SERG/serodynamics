@@ -60,7 +60,7 @@ compare_mod_2a <- function(data,
   shared <- dplyr::left_join(
     s1,
     s2,
-    by = dplyr::join_by(biomarker, param),
+    by = dplyr::join_by(biomarker, param),  # nolint: object_usage_linter
     suffix = c("_ch1", "_2a"),
     relationship = "one-to-one"
   )

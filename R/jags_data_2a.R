@@ -26,7 +26,8 @@ jags_data_2a <- function(data, prec_lambda = 0.25,
   if (n_bio != 2) {
     cli::cli_warn(c(
       "Model 2a is written for IgG/IgA-style biomarker pairs.",
-      "i" = "found {n_bio} biomarkers; shared factor couples all (rank-1). subset to 2 for a clean pair."
+      "i" = "found {n_bio} biomarkers; shared factor couples all (rank-1). 
+      subset to 2 for a clean pair."
     ))
   }
 
