@@ -125,6 +125,9 @@ including the following:
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model
+\itemize{
+\item The default value for no stratification is \code{"None"}.
+}
 \item \code{Subject} = ID of subject being evaluated
 \item \code{value} = Estimated value of the parameter
 \item The following \link{attributes} are included in the output:
@@ -163,7 +166,8 @@ variances), one per antigen/isotype combination.
 \item \code{prec_logy_hyp_param}
 }
 \item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
-for all observations.
+for all observations. If no stratification is specified, the value of
+stratification will be \code{"None"}.
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
 }
@@ -184,18 +188,19 @@ infection. The antibody dynamic curve includes the following parameters:
 }
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
+data(nepal_sees_jags_output, package = "serodynamics")
+post_summ(nepal_sees_jags_output)
+
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
   set.seed(1)
-  library(dplyr)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
+    dplyr::mutate(strat = "stratum 2")
   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
+    dplyr::mutate(strat = "stratum 1")
 
-  dataset <- bind_rows(strat1, strat2)
+  dataset <- dplyr::bind_rows(strat1, strat2)
 
   fitted_model <- run_mod(
     data = dataset, # The data set input
