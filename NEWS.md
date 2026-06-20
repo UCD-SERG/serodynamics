@@ -1,8 +1,17 @@
 # serodynamics (development version)
 
 ## New features
+* Added Model 2a, a JAGS extension of the Chapter 1 antibody-kinetics model
+  that introduces same-parameter cross-biomarker covariance in subject-level
+  kinetic parameters while leaving the existing within-biomarker covariance
+  blocks unchanged. The Chapter 1 model is recovered when the new
+  cross-biomarker covariances are zero. (#245)
+* Added developer-facing utilities for fitting, validating, and comparing
+  Model 2a, including `run_mod_2a()`, `compare_mod_2a()`, simulation helpers,
+  recovery/nesting checks, and summaries of cross-biomarker covariance and
+  correlation. (#245)
 * Including optional population parameters as attributes in run_mod 
-output. (#141)
+  output. (#141)
 
 ## Bug fixes
 * `run_mod()`'s `fitted_residuals` attribute now covers all observations across 
