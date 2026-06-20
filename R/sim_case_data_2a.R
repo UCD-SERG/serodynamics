@@ -34,10 +34,10 @@ sim_case_data_2a <- function(n,
   p <- length(mu_g)
   n_visit <- length(visit_times)
 
-  rows <- vector("list", n * 2)
+  rows <- vector("list", n * length(biomarkers))
   r <- 0L
   for (i in seq_len(n)) {
-    for (k in 1:2) {
+    for (k in seq_along(biomarkers)) {
       pars <- truth$log_par[i, ((k - 1) * p + 1):(k * p)]
       y0 <- exp(pars[1])
       y1 <- y0 + exp(pars[2])

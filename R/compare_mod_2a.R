@@ -58,9 +58,11 @@ compare_mod_2a <- function(data,
   s2 <- summarize_curve_params_2a(m2[["mcmc"]], with_loadings = TRUE)
   
   shared <- dplyr::left_join(
-    s1, s2,
-    by = c("biomarker", "param"),
-    suffix = c("_ch1", "_2a")
+    s1,
+    s2,
+    by = dplyr::join_by(biomarker, param),
+    suffix = c("_ch1", "_2a"),
+    relationship = "one-to-one"
   )
   shared[["mean_absdiff"]] <- abs(shared[["mean_med_ch1"]] -
                                     shared[["mean_med_2a"]])
