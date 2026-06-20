@@ -85,7 +85,7 @@ A list of class `"model_2a_fit"` with elements:
 
 - `antigens`: the two biomarker labels;
 
-- `priors`: the prior list used;
+- `prec_lambda`: the loading-prior precision used;
 
 - `runjags`: the raw `runjags` object (for diagnostics such as PSRF).
 
@@ -124,7 +124,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Jun 20 19:19:38 2026
+#> Welcome to JAGS 4.3.2 on Sat Jun 20 19:39:59 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

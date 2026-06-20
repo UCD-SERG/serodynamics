@@ -4,9 +4,8 @@ Fits the **Chapter 1** model (`model.jags`) through the same lean path
 as
 [`run_mod_2a()`](https:/ucd-serg.github.io/serodynamics/preview/pr245/reference/run_mod_2a.md)
 and returns the raw `runjags` object, monitoring the nodes needed to
-compare against Model 2a (`mu.par`, `prec.par`, and the per-subject
-curve parameters). This is the **same model, data, priors, and
-posterior** as
+compare against Model 2a (`mu.par`, `prec.par`). This is the **same
+model, data, priors, and posterior** as
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr245/reference/run_mod.md)
 —
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr245/reference/run_mod.md)
