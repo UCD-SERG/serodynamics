@@ -1,6 +1,6 @@
 # `{serodynamics}`
 
-The goal of [serodynamics](https://github.com/ucdavis/serodynamics) is
+The goal of [serodynamics](https://github.com/UCD-SERG/serodynamics) is
 to implement methods for modeling longitudinal antibody responses to
 infection.
 
@@ -15,20 +15,26 @@ allowing users to choose their preferred Bayesian modeling framework.
 
 ## Installation
 
-You can install the development version of
-[serodynamics](https://github.com/ucdavis/serodynamics) from
-[GitHub](https://github.com/) with:
+Install the released version with:
+
+``` r
+
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 
 # install.packages("pak")
-pak::pak("ucdavis/serodynamics")
+pak::pak("UCD-SERG/serodynamics")
 ```
 
 ### Stan Support (Optional)
 
 To use Stan models (via
-[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md)),
+[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md)),
 you’ll also need to install `cmdstanr`:
 
 ``` r

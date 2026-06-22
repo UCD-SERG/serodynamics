@@ -47,13 +47,13 @@ prepped_data <- prep_data(raw_data)
 priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
 nchains <- 2
 # nr of MC chains to run simultaneously
-nadapt <- 1000
+nadapt <- 100
 # nr of iterations for adaptation
 nburnin <- 100
 # nr of iterations to use for burn-in
 nmc <- 100
 # nr of samples in posterior chains
-niter <- 200
+niter <- 100
 # nr of iterations for posterior sample
 nthin <- round(niter / nmc)
 # thinning needed to produce nmc from niter
@@ -79,7 +79,7 @@ jags_post <- runjags::run.jags(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 10:26:16 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 22 18:56:41 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -93,20 +93,21 @@ jags_post <- runjags::run.jags(
 #>    Total graph size: 930
 #> . Reading parameter file inits1.txt
 #> . Initializing model
-#> . Adapting 1000
-#> -------------------------------------------------| 1000
+#> . Adapting 100
+#> -------------------------------------------------| 100
 #> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%
-#> Adaptation successful
+#> Adaptation incomplete.
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . Updating 200
-#> -------------------------------------------------| 200
+#> . . . . . . Updating 100
+#> -------------------------------------------------| 100
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
 #> . 
 #> All chains have finished
+#> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
 #> Coda files loaded successfully
 #> Finished running the simulation
@@ -118,17 +119,17 @@ curve_params <- jags_post |> postprocess_jags_output(
 
 print(curve_params)
 #> # A tibble: 400 × 8
-#>    antigen_iso  iter chain    y0     y1    t1    alpha     r
-#>    <fct>       <int> <int> <dbl>  <dbl> <dbl>    <dbl> <dbl>
-#>  1 HlyE_IgA        1     1 1.14   67.1   7.24 0.000538  1.40
-#>  2 HlyE_IgA        2     1 0.841  17.5   6.86 0.00109   1.20
-#>  3 HlyE_IgA        3     1 1.15   17.1   3.54 0.000182  1.38
-#>  4 HlyE_IgA        4     1 1.04    2.18  7.87 0.000335  1.32
-#>  5 HlyE_IgA        5     1 1.43   69.5   5.51 0.000804  1.32
-#>  6 HlyE_IgA        6     1 1.05  368.    7.51 0.00713   1.21
-#>  7 HlyE_IgA        7     1 0.791   6.90  6.60 0.000543  1.27
-#>  8 HlyE_IgA        8     1 1.03    1.62  8.93 0.00161   1.50
-#>  9 HlyE_IgA        9     1 0.720  16.4   7.66 0.00102   1.27
-#> 10 HlyE_IgA       10     1 1.02    3.20  5.57 0.00173   1.31
+#>    antigen_iso  iter chain    y0       y1    t1    alpha     r
+#>    <fct>       <int> <int> <dbl>    <dbl> <dbl>    <dbl> <dbl>
+#>  1 HlyE_IgA        1     1 2.72      9.61  3.28 0.00160   2.47
+#>  2 HlyE_IgA        2     1 0.881 19020.    3.91 0.00272   1.44
+#>  3 HlyE_IgA        3     1 1.38    805.    2.54 0.00225   2.18
+#>  4 HlyE_IgA        4     1 0.821    38.4   2.41 0.00321   1.94
+#>  5 HlyE_IgA        5     1 1.29     43.7   2.51 0.00431   2.15
+#>  6 HlyE_IgA        6     1 1.28   2881.    1.81 0.00184   2.33
+#>  7 HlyE_IgA        7     1 1.84    391.    2.52 0.00221   1.95
+#>  8 HlyE_IgA        8     1 2.49    713.    2.51 0.00121   2.15
+#>  9 HlyE_IgA        9     1 1.29     45.1   4.00 0.00709   1.90
+#> 10 HlyE_IgA       10     1 1.80      3.17  1.91 0.000896  1.83
 #> # ℹ 390 more rows
 ```

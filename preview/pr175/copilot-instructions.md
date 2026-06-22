@@ -20,6 +20,19 @@ Another Gibbs Sampler) via `runjags` - the original implementation -
 - **Optional Dependencies**: cmdstanr (for Stan support)
 - **Lifecycle**: Experimental (under active development)
 
+## Lab-Wide Guidance
+
+**Follow the guidance in the [UCD-SeRG Lab
+Manual](https://ucd-serg.github.io/lab-manual/)**, which provides
+comprehensive best practices for: - Culture and conduct -
+Communication - Reproducibility - Code repositories and version
+control - Coding practices and style - Working with big data - Quarto
+and documentation - GitHub workflows - Reproducible environments - Code
+and data publication - AI tools usage - And more
+
+If the web version is inaccessible, refer to the [source files on
+GitHub](https://github.com/UCD-SERG/lab-manual) for easier reading.
+
 ## Critical Setup Requirements
 
 ### Copilot Setup Workflow (Automatic Environment Configuration)
@@ -275,10 +288,10 @@ system libraries, install the following system dependencies first:
 ### JAGS Installation (REQUIRED for JAGS models)
 
 **Install JAGS if you plan to use
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
 with JAGS models.** JAGS is required for the original JAGS-based
 modeling functions but is not needed if you only use Stan models via
-[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).
+[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).
 
 #### Installing JAGS in Docker (if using rocker/verse)
 
@@ -323,7 +336,7 @@ runjags::testjags()
 ### Stan Installation (OPTIONAL for Stan models)
 
 **Install cmdstanr and CmdStan if you plan to use
-[`run_mod_stan()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).**
+[`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md).**
 Stan support is optional and provides a modern alternative to JAGS.
 
 ``` r
@@ -642,7 +655,7 @@ Choose the appropriate testing approach based on the context:
 #### When to Use Snapshot Tests
 
 Use snapshot tests (`expect_snapshot()`, `expect_snapshot_value()`, or
-[`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md))
+[`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md))
 when: - Testing complex data structures (data.frames, lists, model
 outputs) - Validating MCMC outputs or statistical results - Output
 format stability is important - The exact values are less important than
@@ -700,7 +713,7 @@ expect_false(has_missing_values(complete_data))
 - **Test fixtures**: Store complex test data in
   `tests/testthat/fixtures/` for reuse
 - **Custom snapshot helpers**: Use
-  [`expect_snapshot_data()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md)
+  [`expect_snapshot_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/expect_snapshot_data.md)
   for data frames with automatic CSV snapshot and numeric precision
   control
 
@@ -718,7 +731,21 @@ expect_false(has_missing_values(complete_data))
 
 ## Code Style Guidelines
 
-- **Follow tidyverse style guide**: <https://style.tidyverse.org>
+- **Lab manual overrides tidyverse style**: Follow the [UCD-SeRG Lab
+  Manual coding-style
+  chapter](https://ucd-serg.github.io/lab-manual/coding-style.html)
+  first; fall back to the [tidyverse style
+  guide](https://style.tidyverse.org) only where the lab manual is
+  silent. Where the two conflict, the lab manual wins.
+- **Use explicit [`return()`](https://rdrr.io/r/base/function.html)
+  statements**: Per the [lab
+  manual](https://ucd-serg.github.io/lab-manual/coding-style/function-structure-and-documentation.html#explicit-return-statements)
+  (which follows the [Google R Style
+  Guide](https://google.github.io/styleguide/Rguide.html#use-explicit-returns)),
+  always end functions with `return(value)` rather than relying on R’s
+  implicit final-expression return. This overrides the tidyverse style
+  guide. Note: `return_linter` is currently disabled in `.lintr.R` for
+  flexibility on older code, but new code should use explicit returns.
 - **Use native pipe**: `|>` not `%>%`
 - **Avoid redundant logical comparisons**: Use logical values directly
   (e.g., `if (is_ready)` not `if (is_ready == TRUE)`)
@@ -761,6 +788,48 @@ expect_false(has_missing_values(complete_data))
 - **Write tidy code**: Keep code clean, readable, and well-organized.
   Follow consistent formatting, use meaningful variable names, and
   maintain logical structure
+- **Use tidy-selection, not data-masking, in selection contexts**: In
+  `select()`, `rename()`, `summarize(.by = )` / `group_by()`,
+  `across(.cols = )`, `pivot_*(names_from = )`, and join `by =`, select
+  columns named by a variable with `all_of()` / `any_of()`
+  (e.g. `select(any_of(c("a", "b", "new_name" = var)))`), and use bare
+  names or `all_of()` in `.by`. Do **not** reach for the `.data` pronoun
+  (`.data[[var]]`, `.data$x`) there — that pronoun belongs in
+  *data-masking* verbs (`mutate()`,
+  [`filter()`](https://rdrr.io/r/stats/filter.html), `summarize()`
+  expressions). Using `.data[[var]]` in a selection context is a *soft*
+  deprecation and may not warn at runtime, so it is easy to miss — but
+  it should be rewritten.
+- **Collapse branching that only varies columns**: An `if`/`else` whose
+  only job is to change which columns are selected, renamed, or joined
+  can almost always be replaced by a single `any_of()` / `all_of()`
+  selection or a single tidyselect-keyed join. Prefer one parameterized
+  pipeline over two near-identical stratified/unstratified branches.
+- **Prefer dplyr joins over base
+  [`merge()`](https://rdrr.io/r/base/merge.html)**: Use
+  [`dplyr::left_join()`](https://dplyr.tidyverse.org/reference/mutate-joins.html)
+  / `right_join()` with `by = join_by(...)` rather than
+  [`merge()`](https://rdrr.io/r/base/merge.html) for readability and
+  consistency.
+- **Always set `relationship` on dplyr joins**: Every `dplyr::*_join()`
+  call (`left_join()`, `right_join()`, `inner_join()`, `full_join()`)
+  must specify the `relationship` argument
+  (e.g. `relationship = "many-to-one"`). Declaring the expected
+  cardinality documents the join’s intent and makes an unexpected
+  many-to-many match fail loudly instead of silently duplicating rows.
+  Filtering joins (`semi_join()` / `anti_join()`) are out of scope —
+  they cannot duplicate rows. See [PR
+  \#240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58)
+  for an example.
+
+### Review focus: convoluted / non-idiomatic code
+
+When reviewing (human or AI), treat the three points above as in-scope
+findings, not optional nits. Beyond correctness, call out code that is
+functionally fine but unnecessarily convoluted or non-idiomatic, and
+show the simpler, more declarative form. The canonical authority is the
+[UCD-SeRG Lab Manual coding-style
+chapter](https://ucd-serg.github.io/lab-manual/coding-style.html).
 
 ## Documentation and Evidence Standards
 

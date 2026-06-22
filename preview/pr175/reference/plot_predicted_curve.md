@@ -32,7 +32,7 @@ plot_predicted_curve(
 - model:
 
   An `sr_model` object (returned by
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md))
+  [run_mod](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md))
   containing samples from the posterior distribution of the model
   parameters.
 
@@ -126,14 +126,15 @@ and a 95% credible interval band as default.
 ## Examples
 
 ``` r
-sees_model <- serodynamics::nepal_sees_jags_output
+sees_model <- serodynamics::nepal_sees_jags_output |>
+  dplyr::filter(Iteration <= 50)  # use 50 of 500 iterations for faster examples
 sees_data <- serodynamics::nepal_sees
 
 # Plot (linear axes) with all individual curves + median ribbon
 p1 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  id                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = FALSE,
@@ -147,7 +148,7 @@ print(p1)
 p2 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  id                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = TRUE,
@@ -161,7 +162,7 @@ print(p2)
 p3 <- plot_predicted_curve(
   model              = sees_model,
   dataset            = sees_data,
-  id                 = "sees_npl_128",
+  ids                = "sees_npl_128",
   antigen_iso        = "HlyE_IgA",
   show_quantiles     = TRUE,
   log_y              = FALSE,
@@ -176,7 +177,7 @@ print(p3)
 p4 <- plot_predicted_curve(
   model           = sees_model,
   dataset         = sees_data,
-  id              = c("sees_npl_128", "sees_npl_131"),
+  ids             = c("sees_npl_128", "sees_npl_131"),
   antigen_iso     = "HlyE_IgA",
   show_all_curves = TRUE,
   facet_by_id     = TRUE

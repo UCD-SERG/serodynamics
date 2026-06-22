@@ -2,7 +2,7 @@
 
 ## Introduction
 
-The [serodynamics](https://github.com/ucdavis/serodynamics) package
+The [serodynamics](https://github.com/UCD-SERG/serodynamics) package
 provides tools for modeling longitudinal antibody responses to infection
 using Bayesian MCMC methods. This vignette demonstrates the main
 workflow for:
@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 10:28:05 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 22 18:57:09 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 10:28:17 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 22 18:57:22 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed May 13 10:28:19 2026
+#> Welcome to JAGS 4.3.2 on Mon Jun 22 18:57:23 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -489,11 +489,11 @@ fitted_stratified <- run_mod(
 ## Next Steps
 
 - See the [function
-  reference](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/index.md)
+  reference](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/index.md)
   for complete API documentation
 - Check out example datasets:
-  [`?nepal_sees`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees.md),
-  [`?nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees_jags_output.md)
+  [`?nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees.md),
+  [`?nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees_jags_output.md)
 
 ## Session Info
 
@@ -510,9 +510,9 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-05-13
+#>  date     2026-06-22
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
-#>  quarto   1.9.37 @ /usr/local/bin/quarto
+#>  quarto   1.9.38 @ /usr/local/bin/quarto
 #> 
 #> ─ Packages ───────────────────────────────────────────────────────────────────
 #>  package        * version    date (UTC) lib source
@@ -556,16 +556,16 @@ sessioninfo::session_info()
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.0)
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
-#>  serocalculator   1.4.0.9010 2026-05-13 [1] Github (ucd-serg/serocalculator@af35f86)
-#>  serodynamics   * 0.0.0.9051 2026-05-13 [1] local
-#>  sessioninfo      1.2.3      2025-02-05 [1] CRAN (R 4.6.0)
+#>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.0)
+#>  serodynamics   * 0.1.0.9001 2026-06-22 [1] local
+#>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)
 #>  tidyselect       1.2.1      2024-03-11 [1] CRAN (R 4.6.0)
 #>  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.6.0)
 #>  vctrs            0.7.3      2026-04-11 [1] CRAN (R 4.6.0)
-#>  withr            3.0.2      2024-10-28 [1] CRAN (R 4.6.0)
-#>  xfun             0.57       2026-03-20 [1] CRAN (R 4.6.0)
+#>  withr            3.0.3      2026-06-19 [1] CRAN (R 4.6.0)
+#>  xfun             0.59       2026-06-19 [1] CRAN (R 4.6.0)
 #>  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.6.0)
 #> 
 #>  [1] /home/runner/work/_temp/Library

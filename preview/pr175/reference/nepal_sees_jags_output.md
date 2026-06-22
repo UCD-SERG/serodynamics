@@ -1,9 +1,9 @@
 # SEES Typhoid run_mod jags output
 
 A
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
 output using the
-[nepal_sees](https://ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees.md)
+[nepal_sees](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees.md)
 example data set as input and stratifying by column `"bldculres"`, which
 is the diagnosis type (typhoid or paratyphoid). Keeping only IDs
 `"newperson"`, `"sees_npl_1"`, `"sees_npl_2"`.
@@ -61,4 +61,5 @@ person-specific parameters for two arbitrarily-chosen subjects
 
 ## Source
 
-reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
+reference study:
+[doi:10.1016/S2666-5247(22)00114-8](https://doi.org/10.1016/S2666-5247%2822%2900114-8)
