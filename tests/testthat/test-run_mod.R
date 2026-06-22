@@ -100,6 +100,7 @@ test_that(
     )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
+    testthat::announce_snapshot_file("popparam-nostrat-summary-stats.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -111,7 +112,10 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres" # Variable to be stratified
+      strat = "bldculres" # Variable to be stratified,
+      with_post = TRUE,
+      with_pop_params = TRUE,
+      preclogy_per_iso = TRUE
     ) |>
       suppressWarnings()
     
@@ -132,6 +136,22 @@ test_that(
       )
     }
     
+    # Testing for population parameters
+    if (system_os() == "darwin") {
+      attributes(results)$population_params |>
+        dplyr::group_by(Parameter) |>
+        dplyr::summarise(
+          mean = mean(value),
+          sd = sd(value),
+          .groups = "drop"
+        ) |>
+        dplyr::arrange(Parameter) |>
+        expect_snapshot_data(
+          "popparam-nostrat-summary-stats",
+          variant = darwin_variant()
+        )
+    }
+    
     if (system_os() == "darwin") {
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
@@ -142,69 +162,6 @@ test_that(
     
     expect_null(attr(results, "population_params"))
     
-  }
-)
-
-test_that(
-  desc = "results are consistent with unstratified SEES data with population
-  parameters",
-  code = {
-    skip_on_cran()
-    skip_if_not(
-      Sys.getenv("RUN_HEAVY_TESTS") == "true",
-      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    announce_snapshot_file("nostrat-curve-params.csv")
-    announce_snapshot_file("popparam-nostrat-summary-stats.csv")
-    
-    withr::local_seed(1)
-    dataset <- serodynamics::nepal_sees 
-    
-    results <- run_mod(
-      data = dataset, # The data set input
-      file_mod = serodynamics_example("model.jags"),
-      nchain = 2, # Number of mcmc chains to run
-      nadapt = 10, # Number of adaptations to run
-      nburn = 10, # Number of unrecorded samples before sampling begins
-      nmc = 100,
-      niter = 100, # Number of iterations
-      strat = NA, # Variable to be stratified
-      with_pop_params = TRUE
-    ) |>
-      suppressWarnings()
-    
-    # Testing attributes
-    results |>
-      attributes() |>
-      names() |>
-      expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
-                        "nIterations", "nBurnin", "nThin", "population_params", 
-                        "priors", "fitted_residuals"))
-    
-    if (system_os() == "darwin") {
-    results |>
-      dplyr::slice_head(n = 100) |>
-      expect_snapshot_data(
-        "nostrat-curve-params",
-        variant = darwin_variant()
-      )
-    }
-    
-    # Testing for population parameters
-    if (system_os() == "darwin") {
-    attributes(results)$population_params |>
-      dplyr::group_by(Parameter) |>
-      dplyr::summarise(
-        mean = mean(value),
-        sd = sd(value),
-        .groups = "drop"
-      ) |>
-      dplyr::arrange(Parameter) |>
-      expect_snapshot_data(
-        "popparam-nostrat-summary-stats",
-        variant = darwin_variant()
-      )
-    }
   }
 )
 
