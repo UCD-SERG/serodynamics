@@ -136,6 +136,26 @@ test_that(
       )
     }
     
+    if (system_os() == "darwin") {
+      results |>
+        dplyr::slice_head(n = 100) |>
+        expect_snapshot_data(
+          "nostrat-curve-params-withpost",
+          variant = darwin_variant()
+        )
+    }
+    
+    pop_params <- attr(results, "population_params")
+    expect_s3_class(pop_params, "data.frame")
+    
+    preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
+    expect_gt(nrow(preclogy_row), 0)
+    
+    # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
+    # not the constant "prec.logy"
+    expect_false(all(preclogy_row$Parameter == "prec.logy"))
+    expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
+    
     # Testing for population parameters
     if (system_os() == "darwin") {
       attributes(results)$population_params |>
@@ -162,63 +182,6 @@ test_that(
     
     expect_null(attr(results, "population_params"))
     
-  }
-)
-
-test_that(
-  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_mod",
-  code = {
-    skip_on_cran()
-    skip_if_not(
-      Sys.getenv("RUN_HEAVY_TESTS") == "true",
-      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
-    announce_snapshot_file("nostrat-curve-params-withpost.csv")
-    withr::local_seed(1)
-    dataset <- serodynamics::nepal_sees 
-    
-    results <- run_mod(
-      data = dataset, # The data set input
-      file_mod = serodynamics_example("model.jags"),
-      nchain = 2, # Number of mcmc chains to run
-      nadapt = 10, # Number of adaptations to run
-      nburn = 10, # Number of unrecorded samples before sampling begins
-      nmc = 100,
-      niter = 100, # Number of iterations
-      strat = NA, # Variable to be stratified
-      with_post = TRUE,
-      with_pop_params = TRUE,
-      preclogy_per_iso = TRUE
-    ) |>
-      suppressWarnings()
-    
-    if (system_os() == "darwin") {
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "jags.post", "fitted_residuals")) |>
-      expect_snapshot_value(style = "serialize",
-                            variant = darwin_variant())
-    }
-    
-    if (system_os() == "darwin") {
-    results |>
-      dplyr::slice_head(n = 100) |>
-      expect_snapshot_data(
-        "nostrat-curve-params-withpost",
-        variant = darwin_variant()
-      )
-    }
-    
-    pop_params <- attr(results, "population_params")
-    expect_s3_class(pop_params, "data.frame")
-    
-    preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
-    expect_gt(nrow(preclogy_row), 0)
-    
-    # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
-    # not the constant "prec.logy"
-    expect_false(all(preclogy_row$Parameter == "prec.logy"))
-    expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
   }
 )
 
