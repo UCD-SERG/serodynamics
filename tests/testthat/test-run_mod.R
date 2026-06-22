@@ -33,12 +33,12 @@ test_that(
       suppressWarnings()
     
     if (system_os() == "darwin") {
-    results |>
-      dplyr::slice_head(n = 100) |>
-      expect_snapshot_data(
-        "sim-strat-curve-params",
-        variant = darwin_variant()
-      )
+      results |>
+        dplyr::slice_head(n = 100) |>
+        expect_snapshot_data(
+          "sim-strat-curve-params",
+          variant = darwin_variant()
+        )
     }
     
     # Testing exact order of attributes
@@ -55,11 +55,11 @@ test_that(
                         "fitted_residuals"))
     
     if (system_os() == "darwin") {
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "sim-strat-fitted_residuals",
-        variant = darwin_variant()
-      )
+      attributes(results)$fitted_residuals |>
+        expect_snapshot_data(
+          "sim-strat-fitted_residuals",
+          variant = darwin_variant()
+        )
     }
     
     pop_params <- attributes(results)$population_params
@@ -113,12 +113,12 @@ test_that(
                         "priors", "fitted_residuals", "jags.post"))
     
     if (system_os() == "darwin") {
-    results |>
-      dplyr::slice_head(n = 100) |>
-      expect_snapshot_data(
-        "strat-curve-params",
-        variant = darwin_variant()
-      )
+      results |>
+        dplyr::slice_head(n = 100) |>
+        expect_snapshot_data(
+          "strat-curve-params",
+          variant = darwin_variant()
+        )
     }
     
     
@@ -150,11 +150,11 @@ test_that(
     expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
   
     if (system_os() == "darwin") {
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "strat-fitted_residuals",
-        variant = darwin_variant()
-      )
+      attributes(results)$fitted_residuals |>
+        expect_snapshot_data(
+          "strat-fitted_residuals",
+          variant = darwin_variant()
+        )
     }
     
     jags_post <- attributes(results)$jags.post
@@ -197,20 +197,20 @@ test_that(
       suppressWarnings()
     
     if (system_os() == "darwin") {
-    results |>
-      attributes() |>
-      rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
-      expect_snapshot_value(style = "serialize",
-                            variant = darwin_variant())
+      results |>
+        attributes() |>
+        rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
+        expect_snapshot_value(style = "serialize",
+                              variant = darwin_variant())
     }
     
     if (system_os() == "darwin") {
-    results |>
-      dplyr::slice_head(n = 100) |>
-      expect_snapshot_data(
-        "nostrat-curve-params-specpriors",
-        variant = darwin_variant()
-      )
+      results |>
+        dplyr::slice_head(n = 100) |>
+        expect_snapshot_data(
+          "nostrat-curve-params-specpriors",
+          variant = darwin_variant()
+        )
     }
     
     
