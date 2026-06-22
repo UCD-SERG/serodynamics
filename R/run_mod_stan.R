@@ -183,7 +183,7 @@ run_mod_stan <- function(data,
     # Convert to mcmc.list format compatible with ggmcmc
     # draws_array has dimensions [iteration, chain, variable]
     mcmc_list <- list()
-    for (ch in 1:nchain) {
+    for (ch in seq_len(nchain)) {
       mcmc_list[[ch]] <- coda::as.mcmc(draws[, ch, ])
     }
     mcmc_list <- coda::as.mcmc.list(mcmc_list)
