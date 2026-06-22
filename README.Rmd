@@ -16,18 +16,9 @@ knitr::opts_chunk$set(
 # `{serodynamics}`
 
 <!-- badges: start -->
-
-```{r badges, echo=FALSE, results='asis'}
-# Use badger package to generate badges
-cat(
-  badger::badge_codecov("ucdavis/serodynamics", branch = "main"), "\n",
-  "[![CodeFactor](https://www.codefactor.io/repository/github/ucdavis/serodynamics/badge)](https://www.codefactor.io/repository/github/ucdavis/serodynamics)\n",
-  badger::badge_github_actions("ucdavis/serodynamics", "R-CMD-check.yaml"), "\n",
-  badger::badge_cran_release("serodynamics", "orange"), "\n",
-  badger::badge_lifecycle("experimental"), "\n"
-)
-```
-
+[![Codecov test coverage](https://codecov.io/gh/UCD-SERG/serodynamics/graph/badge.svg)](https://app.codecov.io/gh/UCD-SERG/serodynamics)
+[![R-CMD-check](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The goal of `{serodynamics}` is to implement methods for modeling longitudinal antibody responses to infection.
@@ -41,11 +32,17 @@ Both interfaces use the same data preparation and analysis workflow, allowing us
 
 ## Installation
 
-You can install the development version of `{serodynamics}` from [GitHub](https://github.com/) with:
+Install the released version with:
+
+``` r
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("pak")
-pak::pak("ucdavis/serodynamics")
+pak::pak("UCD-SERG/serodynamics")
 ```
 
 ### Stan Support (Optional)

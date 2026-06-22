@@ -1,0 +1,221 @@
+name: Claude Code Review
+
+on:
+  pull_request:
+    types: [opened, synchronize, ready_for_review, reopened]
+    # Optional: Only run on specific file changes
+    # paths:
+    #   - "src/**/*.ts"
+    #   - "src/**/*.tsx"
+    #   - "src/**/*.js"
+    #   - "src/**/*.jsx"
+
+# Serialize runs per PR. The stash/restore reviewer dance below assumes
+# only one run is mutating the PR's reviewer list at a time; without
+# this, an overlapping second run reads an already-cleared list, stashes
+# [], and on restore wipes the original reviewers permanently. Cancel
+# the in-flight run on a new push so the freshest diff wins.
+concurrency:
+  group: claude-review-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  claude-review:
+    # Skip (don't fail) when a bot triggered this run. When @claude or the
+    # Copilot agent pushes a commit to a PR branch it fires `synchronize`,
+    # which would otherwise kick off — and red-X — an automatic review of a
+    # bot-authored diff. `github.event.sender.type` is the account that
+    # triggered the event ('Bot' for app/bot pushers); the `actor` guard is
+    # belt-and-suspenders for `*[bot]` logins. A false `if:` marks the job
+    # *skipped*, not failed, which is safe here because this check is not
+    # branch-protection-required. (No `workflow_dispatch ||` bypass is
+    # needed: unlike sibling repos, this repo's claude.yml does not
+    # re-dispatch reviews.)
+    if: >-
+      github.event.sender.type != 'Bot' &&
+      !endsWith(github.actor, '[bot]')
+
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+      issues: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      # The reviewer stash/restore is a serialization signal: we clear the
+      # human reviewers before Claude runs so they aren't notified mid-run,
+      # then re-add them when Claude finishes so the re-add fires a fresh
+      # GitHub notification — letting the human see Claude's review before
+      # they start their own. We also snapshot the PR head SHA so the
+      # post-Claude step can detect whether Claude pushed any commits and
+      # route the re-request accordingly (human assignees vs. original
+      # reviewer set). The restore is load-bearing for the notification
+      # signal, so it must NOT silently swallow errors (see restore step
+      # below).
+      - name: Stash and clear reviewers; record starting head SHA
+        id: stash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          HEAD_SHA=$(gh api "repos/$REPO/pulls/$PR_NUMBER" --jq '.head.sha')
+          echo "head_before=$HEAD_SHA" >> "$GITHUB_OUTPUT"
+          echo "Starting PR head: $HEAD_SHA"
+
+          REVIEWERS_JSON=$(gh api "repos/$REPO/pulls/$PR_NUMBER/requested_reviewers")
+          USERS=$(echo "$REVIEWERS_JSON" | jq -c '[.users[].login]')
+          TEAMS=$(echo "$REVIEWERS_JSON" | jq -c '[.teams[].slug]')
+          echo "users=$USERS" >> "$GITHUB_OUTPUT"
+          echo "teams=$TEAMS" >> "$GITHUB_OUTPUT"
+          echo "Stashed users: $USERS"
+          echo "Stashed teams: $TEAMS"
+          if [ "$USERS" != "[]" ] || [ "$TEAMS" != "[]" ]; then
+            # `|| true` is intentional and asymmetric with the restore step:
+            # a failed stash leaves reviewers in place, which only causes a
+            # mid-run notification (recoverable). A failed restore would
+            # silently drop them entirely (not recoverable) — see that step.
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X DELETE \
+                  "repos/$REPO/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input - || true
+          fi
+
+      - name: Run Claude Code Review
+        id: claude-review
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          plugin_marketplaces: 'https://github.com/anthropics/claude-code.git'
+          plugins: 'code-review@claude-code-plugins'
+          prompt: '/code-review:code-review ${{ github.repository }}/pull/${{ github.event.pull_request.number }}'
+          # Force tag mode (anthropics/claude-code-action src/modes/detector.ts).
+          # In the default agent mode for pull_request events, the action never
+          # posts any non-inline PR comment by itself (src/modes/agent/index.ts:
+          # "No tracking comment in agent mode", commentId: undefined). The
+          # code-review plugin will only post a top-level comment if it finds
+          # issues scoring >= 80, so silent runs are common on small/mechanical
+          # PRs. track_progress forces tag mode, which creates a tracking
+          # comment up front via createInitialComment() and updates it at the
+          # end — guaranteeing a PR comment regardless of plugin output.
+          track_progress: 'true'
+          # Post a fresh tracking comment per run (sticky disabled) so each
+          # push surfaces as new PR activity with its own notification, instead
+          # of silently editing one comment in place. The "Collapse previous
+          # Claude review comments" step below then folds the prior review(s)
+          # up as OUTDATED so only the latest stays expanded — giving the
+          # visible history + notification of fresh comments without the
+          # clutter. (`@claude review` task comments come from claude.yml and
+          # are deliberately left untouched; see that step's discriminator.)
+          use_sticky_comment: 'false'
+          # Also archive the formatted report to the Actions step summary page
+          # (does not affect PR comments).
+          display_report: 'true'
+          # See https://github.com/anthropics/claude-code-action/blob/main/docs/usage.md
+          # or https://code.claude.com/docs/en/cli-reference for available options
+
+      # With sticky disabled, every run leaves its own review comment behind.
+      # Collapse the older ones (GitHub "minimize as OUTDATED") so the PR shows
+      # one expanded, current review with the history folded up beneath it.
+      #
+      # Only this workflow's review comments should be touched — NOT `@claude`
+      # task comments, which share the same `claude[bot]` author. We tell them
+      # apart by the workflow run each comment links to: every tracking comment
+      # ends its header with "[View job](…/actions/runs/<run_id>)", and a
+      # comment belongs to THIS workflow iff that run's `path` is this file.
+      # That cleanly excludes claude.yml task comments and non-Claude bots, and
+      # needs no fragile body-text matching. Gated on review success so we
+      # never collapse the last good review when no fresh one was posted.
+      - name: Collapse previous Claude review comments
+        if: steps.claude-review.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          CURRENT_RUN_ID: ${{ github.run_id }}
+          REVIEW_WF: .github/workflows/claude-code-review.yml
+        run: |
+          # Emit "<node_id>\t<run_id>" for each claude[bot] comment; the run id
+          # is blank when the body has no job link (those are skipped below).
+          gh api --paginate "repos/$REPO/issues/$PR_NUMBER/comments" \
+            --jq '.[]
+                  | select(.user.login == "claude[bot]")
+                  | "\(.node_id)\t\(((.body | capture("actions/runs/(?<r>[0-9]+)").r)?) // "")"' \
+          | while IFS=$'\t' read -r NODE_ID RUN_ID; do
+              # No job link, or this run's own fresh comment — leave expanded.
+              [ -z "$RUN_ID" ] && continue
+              [ "$RUN_ID" = "$CURRENT_RUN_ID" ] && continue
+              # Confirm the comment came from THIS workflow, not claude.yml.
+              WF_PATH=$(gh api "repos/$REPO/actions/runs/$RUN_ID" \
+                --jq '.path' 2>/dev/null || true)
+              [ "$WF_PATH" = "$REVIEW_WF" ] || continue
+              echo "Collapsing review comment $NODE_ID (run $RUN_ID)"
+              # Idempotent: re-minimizing an already-collapsed comment is a
+              # no-op, so a `|| true` keeps one stale id from failing the step.
+              gh api graphql -f query='
+                mutation($id: ID!) {
+                  minimizeComment(input: {subjectId: $id, classifier: OUTDATED}) {
+                    minimizedComment { isMinimized }
+                  }
+                }' -f id="$NODE_ID" || true
+            done
+
+      - name: Re-assign reviewers after Claude finishes
+        if: always() && steps.stash.outcome == 'success'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          HEAD_BEFORE: ${{ steps.stash.outputs.head_before }}
+          USERS_BEFORE: ${{ steps.stash.outputs.users }}
+          TEAMS_BEFORE: ${{ steps.stash.outputs.teams }}
+        run: |
+          PR_JSON=$(gh api "repos/$REPO/pulls/$PR_NUMBER")
+          HEAD_AFTER=$(echo "$PR_JSON" | jq -r '.head.sha')
+          echo "Head before Claude: $HEAD_BEFORE"
+          echo "Head after Claude:  $HEAD_AFTER"
+
+          if [ "$HEAD_AFTER" = "$HEAD_BEFORE" ]; then
+            # No new commits — restore the original reviewer set.
+            USERS=${USERS_BEFORE:-[]}
+            TEAMS=${TEAMS_BEFORE:-[]}
+            if [ "$USERS" = "[]" ] && [ "$TEAMS" = "[]" ]; then
+              echo "Claude made no commits and no reviewers were originally requested."
+              exit 0
+            fi
+            echo "Claude made no commits; restoring original reviewers."
+            # Do NOT add `|| true` here. A failed restore means the human
+            # reviewer was silently dropped from the PR and never gets the
+            # post-Claude notification — fail loudly so it can be re-added
+            # manually instead of vanishing.
+            jq -n --argjson users "$USERS" --argjson teams "$TEAMS" \
+              '{reviewers: $users, team_reviewers: $teams}' \
+              | gh api -X POST \
+                  "repos/$REPO/pulls/$PR_NUMBER/requested_reviewers" \
+                  --input -
+            exit 0
+          fi
+
+          # Claude pushed commits: route the re-request to the PR's human
+          # assignees so they can review Claude's changes and delegate
+          # further reviews. Bot assignees (e.g. copilot-swe-agent) are
+          # filtered out.
+          ASSIGNEES=$(echo "$PR_JSON" | jq -c '[.assignees[] | select(.type == "User") | .login]')
+          echo "Human assignees: $ASSIGNEES"
+          if [ "$ASSIGNEES" = "[]" ]; then
+            echo "Claude added commits but PR has no human assignees; leaving reviewers cleared."
+            exit 0
+          fi
+          # Same no-`|| true` rule as above — failure here drops the human
+          # assignee silently, so let it surface.
+          jq -n --argjson users "$ASSIGNEES" '{reviewers: $users}' \
+            | gh api -X POST \
+                "repos/$REPO/pulls/$PR_NUMBER/requested_reviewers" \
+                --input -

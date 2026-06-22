@@ -5,13 +5,11 @@
 
 <!-- badges: start -->
 
-[![](https://codecov.io/gh/ucdavis/serodynamics/branch/main/graph/badge.svg)](https://app.codecov.io/gh/ucdavis/serodynamics)
-[![CodeFactor](https://www.codefactor.io/repository/github/ucdavis/serodynamics/badge)](https://www.codefactor.io/repository/github/ucdavis/serodynamics)
-[![R build
-status](https://github.com/ucdavis/serodynamics/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/ucdavis/serodynamics/actions)
-[![](https://www.r-pkg.org/badges/version/serodynamics?color=orange)](https://cran.r-project.org/package=serodynamics)
-[![](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-
+[![Codecov test
+coverage](https://codecov.io/gh/UCD-SERG/serodynamics/graph/badge.svg)](https://app.codecov.io/gh/UCD-SERG/serodynamics)
+[![R-CMD-check](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/UCD-SERG/serodynamics/actions/workflows/R-CMD-check.yaml)
+[![Lifecycle:
+experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
 <!-- badges: end -->
 
 The goal of `{serodynamics}` is to implement methods for modeling
@@ -28,12 +26,18 @@ allowing users to choose their preferred Bayesian modeling framework.
 
 ## Installation
 
-You can install the development version of `{serodynamics}` from
-[GitHub](https://github.com/) with:
+Install the released version with:
+
+``` r
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 # install.packages("pak")
-pak::pak("ucdavis/serodynamics")
+pak::pak("UCD-SERG/serodynamics")
 ```
 
 ### Stan Support (Optional)
