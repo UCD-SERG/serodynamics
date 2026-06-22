@@ -108,14 +108,22 @@ process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
     )
   
   # Merge antigen-iso information
-  mcmc_unpack <- dplyr::left_join(mcmc_unpack, iso_dat, by = "Subnum")
-  
+  mcmc_unpack <- dplyr::left_join(
+    mcmc_unpack, iso_dat,
+    by = "Subnum",
+    relationship = "many-to-one"
+  )
+
   # Merge subject IDs with explicit column names
   ids <- tibble::tibble(
     Subject_ID = attr(longdata, "ids"),
     Subject = as.character(seq_along(attr(longdata, "ids")))
   )
-  mcmc_unpack <- dplyr::left_join(mcmc_unpack, ids, by = "Subject")
+  mcmc_unpack <- dplyr::left_join(
+    mcmc_unpack, ids,
+    by = "Subject",
+    relationship = "many-to-one"
+  )
   
   # Clean up and rename columns
   mcmc_final <- mcmc_unpack |>

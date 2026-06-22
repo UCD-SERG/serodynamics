@@ -78,11 +78,11 @@ prep_data_stan <- function(
   logy_padded <- array(0, dim = c(nsubj, max_nsmpl, n_antigen_isos))
   
   # Fill in actual data and validate no NA values in the arrays
-  for (subj in 1:nsubj) {
+  for (subj in seq_len(nsubj)) {
     n_obs <- jags_data$nsmpl[subj]
     if (n_obs > 0) {
       # Validate smpl.t has no NA values for this subject's observations
-      subj_times <- jags_data$smpl.t[subj, 1:n_obs]
+      subj_times <- jags_data$smpl.t[subj, seq_len(n_obs)]
       if (any(is.na(subj_times))) {
         cli::cli_abort(
           c(
@@ -92,11 +92,11 @@ prep_data_stan <- function(
           )
         )
       }
-      smpl_t_padded[subj, 1:n_obs] <- subj_times
-      
+      smpl_t_padded[subj, seq_len(n_obs)] <- subj_times
+
       # Validate and copy logy values for each antigen
-      for (k in 1:n_antigen_isos) {
-        subj_logy <- jags_data$logy[subj, 1:n_obs, k]
+      for (k in seq_len(n_antigen_isos)) {
+        subj_logy <- jags_data$logy[subj, seq_len(n_obs), k]
         if (any(is.na(subj_logy))) {
           cli::cli_abort(
             c(
@@ -113,7 +113,7 @@ prep_data_stan <- function(
             )
           )
         }
-        logy_padded[subj, 1:n_obs, k] <- subj_logy
+        logy_padded[subj, seq_len(n_obs), k] <- subj_logy
       }
     }
   }
