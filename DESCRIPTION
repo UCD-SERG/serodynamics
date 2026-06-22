@@ -76,8 +76,7 @@ Config/needs/test:
     rlist
 Config/needs/check: commonmark, xml2
 Remotes: 
-    stan-dev/cmdstanr,
-    ucd-serg/serocalculator
+    stan-dev/cmdstanr
 Depends: 
     R (>= 4.1.0)
 LazyData: true

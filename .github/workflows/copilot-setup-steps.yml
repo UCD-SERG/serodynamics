@@ -81,7 +81,7 @@ jobs:
       
       # Install R dependencies with caching for faster subsequent runs
       - name: Install R dependencies
-        uses: r-lib/actions/setup-r-dependencies@HEAD
+        uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: |
             any::devtools
