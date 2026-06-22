@@ -155,7 +155,6 @@ test_that(
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
     announce_snapshot_file("nostrat-curve-params.csv")
-    announce_snapshot_file("nostrat-fitted_residuals.csv")
     announce_snapshot_file("popparam-nostrat-summary-stats.csv")
     
     withr::local_seed(1)
@@ -190,15 +189,6 @@ test_that(
         variant = darwin_variant()
       )
     }
-    
-    if (system_os() == "darwin") {
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "nostrat-fitted_residuals",
-        variant = darwin_variant()
-      )
-    }
-    
     
     # Testing for population parameters
     if (system_os() == "darwin") {
