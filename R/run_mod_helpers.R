@@ -127,7 +127,7 @@ process_mcmc_output <- function(mcmc_unpack, longdata, strat_level) {
   
   # Clean up and rename columns
   mcmc_final <- mcmc_unpack |>
-    dplyr::select(!c("Subnum", "Subject")) |>
+    dplyr::select(-c("Subnum", "Subject")) |>
     dplyr::rename("Subject" = "Subject_ID")
   
   # Add stratification label

@@ -205,7 +205,7 @@ run_mod_stan <- function(data,
     # Calculate fitted and residuals for this stratum
     # Rename Parameter_sub to Parameter before calc_fit_mod
     stan_final_for_fit <- stan_final |>
-      dplyr::select(!c("Parameter")) |>
+      dplyr::select(-c("Parameter")) |>
       dplyr::rename("Parameter" = "Parameter_sub")
     
     fit_res_stratum <- calc_fit_mod(
@@ -225,7 +225,7 @@ run_mod_stan <- function(data,
   
   # Rename Parameter_sub to Parameter for final output
   stan_out <- stan_out |>
-    dplyr::select(!c("Parameter")) |>
+    dplyr::select(-c("Parameter")) |>
     dplyr::rename("Parameter" = "Parameter_sub")
   
   # Format final output with combined fitted/residuals
