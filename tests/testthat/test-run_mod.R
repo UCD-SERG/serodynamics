@@ -62,21 +62,6 @@ test_that(
       )
     }
     
-    if (system_os() == "darwin") {
-    # Testing for population parameters
-    attributes(results)$population_params |>
-      dplyr::group_by(Parameter) |>
-      dplyr::summarise(
-        mean = mean(value),
-        sd = sd(value),
-        .groups = "drop"
-      ) |>
-      dplyr::arrange(Parameter) |>
-      expect_snapshot_data("popparam-summary-stats", 
-                           variant = darwin_variant()    
-      )
-    }
-    
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
     expect_true(all(c("Population_Parameter", "value") %in% names(pop_params)))
@@ -99,8 +84,8 @@ test_that(
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
     testthat::announce_snapshot_file("strat-curve-params.csv")
+    testthat::announce_snapshot_file("popparam-strat-summary-stats.csv")
     testthat::announce_snapshot_file("strat-fitted_residuals.csv")
-    testthat::announce_snapshot_file("popparam-nostrat-summary-stats.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -112,7 +97,7 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres" # Variable to be stratified,
+      strat = "bldculres", # Variable to be stratified,
       with_post = TRUE,
       with_pop_params = TRUE,
       preclogy_per_iso = TRUE
@@ -124,8 +109,8 @@ test_that(
       attributes() |>
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
-                        "nIterations", "nBurnin", "nThin", "priors", 
-                        "fitted_residuals"))
+                        "nIterations", "nBurnin", "nThin", "population_params", 
+                        "priors", "fitted_residuals", "jags.post"))
     
     if (system_os() == "darwin") {
     results |>
@@ -136,11 +121,19 @@ test_that(
       )
     }
     
+    
+    # Testing for population parameters
     if (system_os() == "darwin") {
-      results |>
-        dplyr::slice_head(n = 100) |>
+      attributes(results)$population_params |>
+        dplyr::group_by(Parameter) |>
+        dplyr::summarise(
+          mean = mean(value),
+          sd = sd(value),
+          .groups = "drop"
+        ) |>
+        dplyr::arrange(Parameter) |>
         expect_snapshot_data(
-          "nostrat-curve-params-withpost",
+          "popparam-strat-summary-stats",
           variant = darwin_variant()
         )
     }
@@ -155,23 +148,7 @@ test_that(
     # not the constant "prec.logy"
     expect_false(all(preclogy_row$Parameter == "prec.logy"))
     expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
-    
-    # Testing for population parameters
-    if (system_os() == "darwin") {
-      attributes(results)$population_params |>
-        dplyr::group_by(Parameter) |>
-        dplyr::summarise(
-          mean = mean(value),
-          sd = sd(value),
-          .groups = "drop"
-        ) |>
-        dplyr::arrange(Parameter) |>
-        expect_snapshot_data(
-          "popparam-nostrat-summary-stats",
-          variant = darwin_variant()
-        )
-    }
-    
+  
     if (system_os() == "darwin") {
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
@@ -180,14 +157,18 @@ test_that(
       )
     }
     
-    expect_null(attr(results, "population_params"))
+    jags_post <- attributes(results)$jags.post
+    expect_false(is.null(jags_post))
+    expect_type(jags_post, "list")
+    expect_true("typhi" %in% names(jags_post))
+    expect_s3_class(jags_post$typhi$mcmc, "mcmc.list")
     
   }
 )
 
 test_that(
   desc = "results are consistent with unstratified SEES data with modified
-  priors and post",
+  priors",
   code = {
     skip_on_cran()
     skip_if_not(
@@ -207,7 +188,6 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
-      with_post = TRUE,
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
@@ -233,11 +213,6 @@ test_that(
       )
     }
     
-    jags_post <- attributes(results)$jags.post
-    expect_false(is.null(jags_post))
-    expect_type(jags_post, "list")
-    expect_true("None" %in% names(jags_post))
-    expect_s3_class(jags_post$None$mcmc, "mcmc.list")
     
   }
 )
