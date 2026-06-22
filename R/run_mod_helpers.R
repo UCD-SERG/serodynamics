@@ -28,7 +28,8 @@ setup_stratification <- function(data, strat) {
         c(
           "Stratification variable {.var {strat}} contains NA values.",
           "i" = "Please remove or impute NA values before stratifying.",
-          "i" = "Rows with NA in stratification column: {sum(is.na(data[[strat]]))}"
+          "i" = "Rows with NA in stratification column: 
+          {sum(is.na(data[[strat]]))}"
         )
       )
     }
