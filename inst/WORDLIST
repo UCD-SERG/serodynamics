@@ -36,6 +36,7 @@ dev
 dobson
 doi
 dotplots
+ess
 epidem
 et
 geoms
@@ -49,9 +50,9 @@ hyperpriors
 iso
 isotype
 isotypes
-lifecycle
 libm
 libs
+lifecycle
 linux
 mcmc
 mitre

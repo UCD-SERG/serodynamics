@@ -1,6 +1,16 @@
 # serodynamics (development version)
 
 ## New features
+* Renamed user-facing functions for clarity (#241):
+  - `run_mod()` → `run_serodynamics()`
+  - `post_summ()` → `summarize_posterior()`
+  - `plot_jags_trace()` → `plot_trace()`
+  - `plot_jags_dens()` → `plot_density()`
+  - `plot_jags_Rhat()` → `plot_rhat()`
+  - `plot_jags_effect()` → `plot_ess()`
+  **Breaking change:** old function names are no longer available, except
+  `run_mod()`, which is still exported with a deprecation warning pointing
+  to `run_serodynamics()`.
 * Including optional population parameters as attributes in run_mod 
 output. (#141)
 

@@ -393,11 +393,11 @@ Team members can trigger actions by commenting on PRs:
 ### Key Directories
 
 - **R/**: Package source code (30 R files)
-  - `Run_Mod.R`: Main function to run JAGS Bayesian models
+  - `run_serodynamics.R`: Main function to run JAGS Bayesian models
   - `as_case_data.R`: Convert data to case_data class
   - `prep_data.r`, `prep_priors.R`: Data preparation for JAGS
   - `sim_case_data.R`: Simulate case data for testing
-  - `post_summ.R`, `postprocess_jags_output.R`: Post-processing JAGS results
+  - `summarize_posterior.R`, `postprocess_jags_output.R`: Post-processing JAGS results
   - `plot_*.R`: Diagnostic plotting functions (trace, density, Rhat, effective sample size)
   - `serodynamics-package.R`: Package documentation
   
@@ -498,7 +498,7 @@ dataset |> expect_snapshot_data(name = "sees-data")
 prepped_data |> expect_snapshot_value(style = "serialize")
 
 # For simple output or error messages
-results <- post_summ(data) |> expect_no_error()
+results <- summarize_posterior(data) |> expect_no_error()
 testthat::expect_snapshot(results)
 ```
 
