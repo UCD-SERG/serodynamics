@@ -2,6 +2,7 @@ AVX
 CMD
 CodeFactor
 Codecov
+Eijkeren
 HlyE
 IgA
 IgG
@@ -11,6 +12,7 @@ JAGS's
 JAGs
 Lifecycle
 MSVC
+ORCID
 PR's
 Postprocess
 Rhat
@@ -20,15 +22,23 @@ TSI
 UCD
 Vectorization
 Wasserstein
+al
+allowlist
 assignees
 behaviour
 biomarker
 biomarkers
+calc
 colour
 darwin
+deprecations
 dev
 dobson
+doi
 dotplots
+ess
+epidem
+et
 geoms
 ggmcmc
 ggproto
@@ -42,6 +52,7 @@ isotype
 isotypes
 libm
 libs
+lifecycle
 linux
 mcmc
 mitre
@@ -55,7 +66,11 @@ prec
 precisions
 preinstalling
 rhat
+serocalculator
 seroconversion
+seroepidemiologic
+seroepidemiological
+serological
 seroresponse
 seroresponses
 strat
@@ -69,5 +84,3 @@ unindexed
 unstratified
 vh
 wishdf
-SeRG
-UCD
