@@ -223,5 +223,4 @@ test_that(
     expect_s3_class(jags_post$None$mcmc, "mcmc.list")
     
   }
-) 
-
+)
