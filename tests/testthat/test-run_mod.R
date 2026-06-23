@@ -187,6 +187,7 @@ test_that(
       nmc = 100,
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
+      with_post = TRUE,
       mu_hyp_param = c(1, 4, 1, -3, -1),
       prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
       omega_param = c(1, 20, 1, 10, 1),
@@ -198,7 +199,7 @@ test_that(
     if (system_os() == "darwin") {
       results |>
         attributes() |>
-        rlist::list.remove(c("row.names", "fitted_residuals")) |>
+        rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
         expect_snapshot_value(style = "serialize",
                               variant = darwin_variant())
     }
@@ -213,6 +214,13 @@ test_that(
     }
     
     expect_null(attr(results, "population_params"))
+    
+    # Testing for non-stratified jags_post
+    jags_post <- attributes(results)$jags.post
+    expect_false(is.null(jags_post))
+    expect_type(jags_post, "list")
+    expect_true("None" %in% names(jags_post))
+    expect_s3_class(jags_post$None$mcmc, "mcmc.list")
     
   }
 ) 
