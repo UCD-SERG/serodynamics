@@ -36,18 +36,18 @@
 
 ## Model seroreponse
 
-- [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)
+- [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
   : Run Jags Model
 
 ## Model diagnostics
 
-- [`plot_jags_dens()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_dens.md)
+- [`plot_density()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_density.md)
   : Density Plot Diagnostics
-- [`plot_jags_Rhat()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_Rhat.md)
+- [`plot_rhat()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_rhat.md)
   : Rhat Plot Diagnostics
-- [`plot_jags_trace()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_trace.md)
+- [`plot_trace()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_trace.md)
   : Trace Plot Diagnostics
-- [`plot_jags_effect()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_effect.md)
+- [`plot_ess()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_ess.md)
   : Plot Effective Sample Size Diagnostics
 - [`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_predicted_curve.md)
   : Generate Predicted Antibody Response Curves (Median + 95% CI)
@@ -59,7 +59,7 @@
 
 ## Summarize seroresponse model estimates
 
-- [`post_summ()`](https://ucd-serg.github.io/serodynamics/dev/reference/post_summ.md)
+- [`summarize_posterior()`](https://ucd-serg.github.io/serodynamics/dev/reference/summarize_posterior.md)
   : Summary Table of Jags Posterior Estimates
 
 ## Example data sets
@@ -69,4 +69,4 @@
 - [`nepal_sees`](https://ucd-serg.github.io/serodynamics/dev/reference/nepal_sees.md)
   : SEES Typhoid data
 - [`nepal_sees_jags_output`](https://ucd-serg.github.io/serodynamics/dev/reference/nepal_sees_jags_output.md)
-  : SEES Typhoid run_mod jags output
+  : SEES Typhoid run_serodynamics jags output

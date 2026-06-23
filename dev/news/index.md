@@ -4,6 +4,26 @@
 
 ### New features
 
+- Renamed user-facing functions for clarity
+  ([\#241](https://github.com/UCD-SERG/serodynamics/issues/241)):
+  - [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)
+    →
+    [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
+  - `post_summ()` →
+    [`summarize_posterior()`](https://ucd-serg.github.io/serodynamics/dev/reference/summarize_posterior.md)
+  - `plot_jags_trace()` →
+    [`plot_trace()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_trace.md)
+  - `plot_jags_dens()` →
+    [`plot_density()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_density.md)
+  - `plot_jags_Rhat()` →
+    [`plot_rhat()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_rhat.md)
+  - `plot_jags_effect()` →
+    [`plot_ess()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_ess.md)
+    **Breaking change:** old function names are no longer available,
+    except
+    [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md),
+    which is still exported with a deprecation warning pointing to
+    [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md).
 - Including optional population parameters as attributes in run_mod
   output. ([\#141](https://github.com/UCD-SERG/serodynamics/issues/141))
 
@@ -100,23 +120,19 @@ package.
   [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)
   function that runs jags with option of stratification included.
   ([\#14](https://github.com/UCD-SERG/serodynamics/issues/14))
-- Diagnostic
-  [`plot_jags_Rhat()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_Rhat.md)
-  function to produce R-hat dotplots with stratification
+- Diagnostic `plot_jags_Rhat()` function to produce R-hat dotplots with
+  stratification
   ([\#67](https://github.com/UCD-SERG/serodynamics/issues/67))
 - Added `plot_summ()` function for summarizing estimates in a table
   ([\#74](https://github.com/UCD-SERG/serodynamics/issues/74))
-- Diagnostic
-  [`plot_jags_trace()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_trace.md)
-  function to create a trace plot with stratifications
+- Diagnostic `plot_jags_trace()` function to create a trace plot with
+  stratifications
   ([\#64](https://github.com/UCD-SERG/serodynamics/issues/64))
-- Diagnostic
-  [`plot_jags_effect()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_effect.md)
-  function to produce effective sample size plots with stratification
+- Diagnostic `plot_jags_effect()` function to produce effective sample
+  size plots with stratification
   ([\#66](https://github.com/UCD-SERG/serodynamics/issues/66))
-- Diagnostic
-  [`plot_jags_dens()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_jags_dens.md)
-  function to produce density plots with stratification
+- Diagnostic `plot_jags_dens()` function to produce density plots with
+  stratification
   ([\#27](https://github.com/UCD-SERG/serodynamics/issues/27))
 - Added
   [`plot_predicted_curve()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_predicted_curve.md)
@@ -168,9 +184,7 @@ package.
   [`dplyr::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
   references to
   [`tibble::as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)
-  in
-  [`post_summ()`](https://ucd-serg.github.io/serodynamics/dev/reference/post_summ.md)
-  and
+  in `post_summ()` and
   [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md),
   since
   [`as_tibble()`](https://tibble.tidyverse.org/reference/as_tibble.html)

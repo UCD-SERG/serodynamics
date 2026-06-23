@@ -1,7 +1,7 @@
-# SEES Typhoid run_mod jags output
+# SEES Typhoid run_serodynamics jags output
 
 A
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)
+[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
 output using the
 [nepal_sees](https://ucd-serg.github.io/serodynamics/dev/reference/nepal_sees.md)
 example data set as input and stratifying by column `"bldculres"`, which

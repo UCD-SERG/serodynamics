@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -382,7 +382,7 @@
 <ul><li>
 <p><strong>R/</strong>: Package source code (30 R files)</p>
 <ul><li>
-<code>Run_Mod.R</code>: Main function to run JAGS Bayesian models</li>
+<code>run_serodynamics.R</code>: Main function to run JAGS Bayesian models</li>
 <li>
 <code>as_case_data.R</code>: Convert data to case_data class</li>
 <li>
@@ -390,7 +390,7 @@
 <li>
 <code>sim_case_data.R</code>: Simulate case data for testing</li>
 <li>
-<code>post_summ.R</code>, <code>postprocess_jags_output.R</code>: Post-processing JAGS results</li>
+<code>summarize_posterior.R</code>, <code>postprocess_jags_output.R</code>: Post-processing JAGS results</li>
 <li>
 <code>plot_*.R</code>: Diagnostic plotting functions (trace, density, Rhat, effective sample size)</li>
 <li>
@@ -505,7 +505,7 @@
 <span><span class="va">prepped_data</span> <span class="op">|&gt;</span> <span class="fu">expect_snapshot_value</span><span class="op">(</span>style <span class="op">=</span> <span class="st">"serialize"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># For simple output or error messages</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/post_summ.html">post_summ</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">expect_no_error</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summarize_posterior.html">summarize_posterior</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">expect_no_error</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_snapshot.html" class="external-link">expect_snapshot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">

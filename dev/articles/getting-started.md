@@ -142,7 +142,7 @@ autoplot(simulated_data)
 ## Running the Bayesian Model
 
 The main function
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)
+[`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
 fits a Bayesian MCMC model to estimate antibody dynamic curve
 parameters:
 
@@ -157,7 +157,7 @@ parameters:
 # Note: This example uses reduced iterations for demonstration
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
-fitted_model <- run_mod(
+fitted_model <- run_serodynamics(
   data = simulated_data,
   file_mod = serodynamics_example("model.jags"),
   nchain = 2,      # Number of MCMC chains
@@ -169,7 +169,7 @@ fitted_model <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jun 18 18:12:51 2026
+#> Welcome to JAGS 4.3.2 on Tue Jun 23 07:45:20 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -221,7 +221,7 @@ After fitting the model, check convergence diagnostics:
 ``` r
 
 # Trace plots to assess chain mixing
-plot_jags_trace(fitted_model)
+plot_trace(fitted_model)
 #> $None
 #> $None$HlyE_IgA
 ```
@@ -252,7 +252,7 @@ plot_jags_trace(fitted_model)
 
 
 # Density plots of posterior distributions
-plot_jags_dens(fitted_model)
+plot_density(fitted_model)
 #> $None
 #> $None$HlyE_IgA
 ```
@@ -283,7 +283,7 @@ plot_jags_dens(fitted_model)
 
 
 # Rhat statistics (values near 1.0 indicate convergence)
-plot_jags_Rhat(fitted_model)
+plot_rhat(fitted_model)
 #> $None
 #> $None$HlyE_IgA
 ```
@@ -314,7 +314,7 @@ plot_jags_Rhat(fitted_model)
 
 
 # Effective sample size
-plot_jags_effect(fitted_model)
+plot_ess(fitted_model)
 #> $None
 #> $None$HlyE_IgA
 ```
@@ -363,7 +363,7 @@ Extract and summarize the posterior estimates:
 ``` r
 
 # Summarize parameter estimates
-summary_stats <- post_summ(fitted_model)
+summary_stats <- summarize_posterior(fitted_model)
 print(summary_stats)
 #> # A tibble: 25 × 11
 #>    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`
@@ -404,7 +404,7 @@ strat2 <- sim_case_data(
 stratified_data <- bind_rows(strat1, strat2)
 
 # Fit model with stratification
-fitted_stratified <- run_mod(
+fitted_stratified <- run_serodynamics(
   data = stratified_data,
   file_mod = serodynamics_example("model.jags"),
   nchain = 2,
@@ -417,7 +417,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jun 18 18:13:04 2026
+#> Welcome to JAGS 4.3.2 on Tue Jun 23 07:45:33 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +452,7 @@ fitted_stratified <- run_mod(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jun 18 18:13:06 2026
+#> Welcome to JAGS 4.3.2 on Tue Jun 23 07:45:35 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -510,7 +510,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-06-18
+#>  date     2026-06-23
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.9.38 @ /usr/local/bin/quarto
 #> 
@@ -557,15 +557,15 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.0)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.0)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.0)
-#>  serodynamics   * 0.1.0.9000 2026-06-18 [1] local
+#>  serodynamics   * 0.1.0.9001 2026-06-23 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.0)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.0)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.0)
 #>  tidyselect       1.2.1      2024-03-11 [1] CRAN (R 4.6.0)
 #>  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.6.0)
 #>  vctrs            0.7.3      2026-04-11 [1] CRAN (R 4.6.0)
-#>  withr            3.0.2      2024-10-28 [1] CRAN (R 4.6.0)
-#>  xfun             0.58       2026-06-01 [1] CRAN (R 4.6.0)
+#>  withr            3.0.3      2026-06-19 [1] CRAN (R 4.6.0)
+#>  xfun             0.59       2026-06-19 [1] CRAN (R 4.6.0)
 #>  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.6.0)
 #> 
 #>  [1] /home/runner/work/_temp/Library
