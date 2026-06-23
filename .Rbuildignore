@@ -30,6 +30,7 @@
 ^_quarto\.yml$
 ^\.quarto$
 ^\.devcontainer$
+^\.claude$
 ^cran-comments\.md$
 ^doc$
 ^Meta$
