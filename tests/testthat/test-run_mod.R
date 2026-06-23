@@ -8,7 +8,6 @@ test_that(
     )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
     testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
-    testthat::announce_snapshot_file("popparam-summary-stats.csv")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -97,7 +96,7 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres", # Variable to be stratified,
+      strat = "bldculres", # Variable to be stratified by
       with_post = TRUE,
       with_pop_params = TRUE,
       preclogy_per_iso = TRUE
@@ -199,7 +198,7 @@ test_that(
     if (system_os() == "darwin") {
       results |>
         attributes() |>
-        rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
+        rlist::list.remove(c("row.names", "fitted_residuals")) |>
         expect_snapshot_value(style = "serialize",
                               variant = darwin_variant())
     }
@@ -213,6 +212,8 @@ test_that(
         )
     }
     
+    expect_null(attr(results, "population_params"))
     
   }
-)
+) 
+
