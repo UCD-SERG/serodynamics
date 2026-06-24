@@ -393,11 +393,11 @@ Team members can trigger actions by commenting on PRs:
 ### Key Directories
 
 - **R/**: Package source code (30 R files)
-  - `Run_Mod.R`: Main function to run JAGS Bayesian models
+  - `run_serodynamics.R`: Main function to run JAGS Bayesian models
   - `as_case_data.R`: Convert data to case_data class
   - `prep_data.r`, `prep_priors.R`: Data preparation for JAGS
   - `sim_case_data.R`: Simulate case data for testing
-  - `post_summ.R`, `postprocess_jags_output.R`: Post-processing JAGS results
+  - `summarize_posterior.R`, `postprocess_jags_output.R`: Post-processing JAGS results
   - `plot_*.R`: Diagnostic plotting functions (trace, density, Rhat, effective sample size)
   - `serodynamics-package.R`: Package documentation
   
@@ -498,7 +498,7 @@ dataset |> expect_snapshot_data(name = "sees-data")
 prepped_data |> expect_snapshot_value(style = "serialize")
 
 # For simple output or error messages
-results <- post_summ(data) |> expect_no_error()
+results <- summarize_posterior(data) |> expect_no_error()
 testthat::expect_snapshot(results)
 ```
 
@@ -556,6 +556,7 @@ expect_false(has_missing_values(complete_data))
 - **Use tidy-selection, not data-masking, in selection contexts**: In `select()`, `rename()`, `summarize(.by = )` / `group_by()`, `across(.cols = )`, `pivot_*(names_from = )`, and join `by =`, select columns named by a variable with `all_of()` / `any_of()` (e.g. `select(any_of(c("a", "b", "new_name" = var)))`), and use bare names or `all_of()` in `.by`. Do **not** reach for the `.data` pronoun (`.data[[var]]`, `.data$x`) there — that pronoun belongs in *data-masking* verbs (`mutate()`, `filter()`, `summarize()` expressions). Using `.data[[var]]` in a selection context is a *soft* deprecation and may not warn at runtime, so it is easy to miss — but it should be rewritten.
 - **Collapse branching that only varies columns**: An `if`/`else` whose only job is to change which columns are selected, renamed, or joined can almost always be replaced by a single `any_of()` / `all_of()` selection or a single tidyselect-keyed join. Prefer one parameterized pipeline over two near-identical stratified/unstratified branches.
 - **Prefer dplyr joins over base `merge()`**: Use `dplyr::left_join()` / `right_join()` with `by = join_by(...)` rather than `merge()` for readability and consistency.
+- **Always set `relationship` on dplyr joins**: Every `dplyr::*_join()` call (`left_join()`, `right_join()`, `inner_join()`, `full_join()`) must specify the `relationship` argument (e.g. `relationship = "many-to-one"`). Declaring the expected cardinality documents the join's intent and makes an unexpected many-to-many match fail loudly instead of silently duplicating rows. Filtering joins (`semi_join()` / `anti_join()`) are out of scope — they cannot duplicate rows. See [PR #240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58) for an example.
 
 ### Review focus: convoluted / non-idiomatic code
 
