@@ -16,7 +16,7 @@ differences):
 
 ``` bash
 # Verified for all snapshot files:
-diff tests/testthat/_snaps/linux/run_mod/*.csv tests/testthat/_snaps/windows/run_mod/*.csv
+diff tests/testthat/_snaps/linux/run_serodynamics/*.csv tests/testthat/_snaps/windows/run_serodynamics/*.csv
 # Result: No differences found
 ```
 
@@ -93,14 +93,16 @@ library implementation differences - Compiler optimization differences
 
 The repository currently maintains:
 
-1.  **Base snapshots** (`tests/testthat/_snaps/run_mod/`) - Match
-    Linux/Windows
-2.  **darwin variants** (`tests/testthat/_snaps/darwin/run_mod/`) -
-    macOS-specific
-3.  ~~**linux variants** (`tests/testthat/_snaps/linux/run_mod/`) -
-    Identical to base~~ (Removed in consolidation)
-4.  ~~**windows variants** (`tests/testthat/_snaps/windows/run_mod/`) -
-    Identical to linux~~ (Removed in consolidation)
+1.  **Base snapshots** (`tests/testthat/_snaps/run_serodynamics/`) -
+    Match Linux/Windows
+2.  **darwin variants**
+    (`tests/testthat/_snaps/darwin/run_serodynamics/`) - macOS-specific
+3.  ~~**linux variants**
+    (`tests/testthat/_snaps/linux/run_serodynamics/`) - Identical to
+    base~~ (Removed in consolidation)
+4.  ~~**windows variants**
+    (`tests/testthat/_snaps/windows/run_serodynamics/`) - Identical to
+    linux~~ (Removed in consolidation)
 
 This was **redundant** because: - Windows snapshots duplicated Linux
 snapshots - Linux snapshots duplicated base snapshots - Only darwin

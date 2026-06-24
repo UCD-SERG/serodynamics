@@ -3,7 +3,7 @@
 Plots the estimated antibody response curve derived from posterior
 samples of population-level (`mu.par`) or the predictive distribution
 from a fitted
-[`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md)
+[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md)
 model. A median curve with an optional 95% credible interval ribbon is
 produced for each requested antigen-isotype and stratification
 combination.
@@ -31,7 +31,7 @@ plot_serocurve(
 - model:
 
   An `sr_model` object returned by
-  [`run_mod()`](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md).
+  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md).
 
 - antigen_iso:
 

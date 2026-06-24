@@ -2,7 +2,7 @@
 
 Takes multiple [vector](https://rdrr.io/r/base/vector.html) inputs to
 allow for modifiable priors. Priors can be specified as an option in
-run_mod.
+run_serodynamics.
 
 ## Usage
 

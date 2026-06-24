@@ -1,5 +1,6 @@
 <urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/404.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/CLAUDE.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/CONTRIBUTING.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/LICENSE-text.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/LICENSE.html</loc></url>
@@ -23,14 +24,13 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/nepal_sees.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/nepal_sees_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/param_recode.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_Rhat.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_dens.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_effect.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_trace.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_density.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_ess.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_predicted_curve.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_rhat.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_serocurve.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_title_fun.html</loc></url>
-<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/post_summ.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_trace.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/postprocess_jags_output.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/prep_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/prep_popparams.html</loc></url>
@@ -41,10 +41,12 @@
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/reexports.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/relabel_preclogy_iso.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_serodynamics.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/serodynamics-package.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/serodynamics_example.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/sim_case_data.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/sim_n_obs.html</loc></url>
+<url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/summarize_posterior.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/unpack_jags.html</loc></url>
 <url><loc>https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/use_att_names.html</loc></url>
 </urlset>

@@ -1,7 +1,7 @@
 # Summary Table of Jags Posterior Estimates
 
-`post_summ()` takes an `sr_model` tibble returned by
-[run_mod](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md)
+`summarize_posterior()` takes an `sr_model` tibble returned by
+[run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_serodynamics.md)
 to summary table for parameter, antigen/antibody, and stratification
 combination. Defaults will produce every combination of
 antigen/antibody, parameters, and stratifications, unless otherwise
@@ -22,7 +22,7 @@ parameters:
 ## Usage
 
 ``` r
-post_summ(
+summarize_posterior(
   data,
   iso = unique(data$Iso_type),
   param = unique(data$Parameter),
@@ -35,7 +35,7 @@ post_summ(
 - data:
 
   An `sr_model` tibble returned by
-  [run_mod](https://ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md).
+  [run_serodynamics](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_serodynamics.md).
 
 - iso:
 
@@ -78,7 +78,7 @@ Sam Schildhauer
 ## Examples
 
 ``` r
-post_summ(data = serodynamics::nepal_sees_jags_output)
+summarize_posterior(data = serodynamics::nepal_sees_jags_output)
 #> # A tibble: 20 × 11
 #>    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`
 #>    <chr>    <chr>     <chr>               <dbl>    <dbl>   <dbl>   <dbl>   <dbl>

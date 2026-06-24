@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.0.0.9056</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -382,7 +382,7 @@
 <ul><li>
 <p><strong>R/</strong>: Package source code (30 R files)</p>
 <ul><li>
-<code>Run_Mod.R</code>: Main function to run JAGS Bayesian models</li>
+<code>run_serodynamics.R</code>: Main function to run JAGS Bayesian models</li>
 <li>
 <code>as_case_data.R</code>: Convert data to case_data class</li>
 <li>
@@ -390,7 +390,7 @@
 <li>
 <code>sim_case_data.R</code>: Simulate case data for testing</li>
 <li>
-<code>post_summ.R</code>, <code>postprocess_jags_output.R</code>: Post-processing JAGS results</li>
+<code>summarize_posterior.R</code>, <code>postprocess_jags_output.R</code>: Post-processing JAGS results</li>
 <li>
 <code>plot_*.R</code>: Diagnostic plotting functions (trace, density, Rhat, effective sample size)</li>
 <li>
@@ -505,7 +505,7 @@
 <span><span class="va">prepped_data</span> <span class="op">|&gt;</span> <span class="fu">expect_snapshot_value</span><span class="op">(</span>style <span class="op">=</span> <span class="st">"serialize"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># For simple output or error messages</span></span>
-<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/post_summ.html">post_summ</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">expect_no_error</span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="va">results</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/summarize_posterior.html">summarize_posterior</a></span><span class="op">(</span><span class="va">data</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">expect_no_error</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/expect_snapshot.html" class="external-link">expect_snapshot</a></span><span class="op">(</span><span class="va">results</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level4">
@@ -584,7 +584,19 @@
 <strong>Tidyverse replacements</strong>: Use tidyverse/modern replacements for base R functions where available (e.g., <code><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">sessioninfo::session_info()</a></code> instead of <code><a href="https://rdrr.io/r/utils/sessionInfo.html" class="external-link">sessionInfo()</a></code>, <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble::tibble()</a></code> instead of <code><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame()</a></code>, <code><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">readr::read_csv()</a></code> instead of <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code>)</li>
 <li>
 <strong>Write tidy code</strong>: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure</li>
-</ul></div>
+<li>
+<strong>Use tidy-selection, not data-masking, in selection contexts</strong>: In <code>select()</code>, <code>rename()</code>, <code>summarize(.by = )</code> / <code>group_by()</code>, <code>across(.cols = )</code>, <code>pivot_*(names_from = )</code>, and join <code>by =</code>, select columns named by a variable with <code>all_of()</code> / <code>any_of()</code> (e.g. <code>select(any_of(c("a", "b", "new_name" = var)))</code>), and use bare names or <code>all_of()</code> in <code>.by</code>. Do <strong>not</strong> reach for the <code>.data</code> pronoun (<code>.data[[var]]</code>, <code>.data$x</code>) there — that pronoun belongs in <em>data-masking</em> verbs (<code>mutate()</code>, <code><a href="https://rdrr.io/r/stats/filter.html" class="external-link">filter()</a></code>, <code>summarize()</code> expressions). Using <code>.data[[var]]</code> in a selection context is a <em>soft</em> deprecation and may not warn at runtime, so it is easy to miss — but it should be rewritten.</li>
+<li>
+<strong>Collapse branching that only varies columns</strong>: An <code>if</code>/<code>else</code> whose only job is to change which columns are selected, renamed, or joined can almost always be replaced by a single <code>any_of()</code> / <code>all_of()</code> selection or a single tidyselect-keyed join. Prefer one parameterized pipeline over two near-identical stratified/unstratified branches.</li>
+<li>
+<strong>Prefer dplyr joins over base <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code></strong>: Use <code><a href="https://dplyr.tidyverse.org/reference/mutate-joins.html" class="external-link">dplyr::left_join()</a></code> / <code>right_join()</code> with <code>by = join_by(...)</code> rather than <code><a href="https://rdrr.io/r/base/merge.html" class="external-link">merge()</a></code> for readability and consistency.</li>
+<li>
+<strong>Always set <code>relationship</code> on dplyr joins</strong>: Every <code>dplyr::*_join()</code> call (<code>left_join()</code>, <code>right_join()</code>, <code>inner_join()</code>, <code>full_join()</code>) must specify the <code>relationship</code> argument (e.g. <code>relationship = "many-to-one"</code>). Declaring the expected cardinality documents the join’s intent and makes an unexpected many-to-many match fail loudly instead of silently duplicating rows. Filtering joins (<code>semi_join()</code> / <code>anti_join()</code>) are out of scope — they cannot duplicate rows. See <a href="https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58" class="external-link">PR #240</a> for an example.</li>
+</ul><div class="section level3">
+<h3 id="review-focus-convoluted--non-idiomatic-code">Review focus: convoluted / non-idiomatic code<a class="anchor" aria-label="anchor" href="#review-focus-convoluted--non-idiomatic-code"></a></h3>
+<p>When reviewing (human or AI), treat the three points above as in-scope findings, not optional nits. Beyond correctness, call out code that is functionally fine but unnecessarily convoluted or non-idiomatic, and show the simpler, more declarative form. The canonical authority is the <a href="https://ucd-serg.github.io/lab-manual/coding-style.html" class="external-link">UCD-SeRG Lab Manual coding-style chapter</a>.</p>
+</div>
+</div>
 <div class="section level2">
 <h2 id="documentation-and-evidence-standards">Documentation and Evidence Standards<a class="anchor" aria-label="anchor" href="#documentation-and-evidence-standards"></a></h2>
 <ul><li>

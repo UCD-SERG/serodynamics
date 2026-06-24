@@ -6,9 +6,15 @@ infection.
 
 ## Installation
 
-You can install the development version of
-[serodynamics](https://github.com/UCD-SERG/serodynamics) from
-[GitHub](https://github.com/) with:
+Install the released version with:
+
+``` r
+
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/)
+with:
 
 ``` r
 
@@ -54,22 +60,19 @@ pak::pak("UCD-SERG/serodynamics")
 
 ## Model seroreponse
 
-- [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_mod.md)
+- [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/run_serodynamics.md)
   : Run Jags Model
 
 ## Model diagnostics
 
-- [`plot_jags_dens()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_dens.md)
+- [`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_density.md)
   : Density Plot Diagnostics
-- [`plot_jags_Rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_Rhat.md)
+- [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_rhat.md)
   : Rhat Plot Diagnostics
-- [`plot_jags_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_trace.md)
+- [`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_trace.md)
   : Trace Plot Diagnostics
-- [`plot_jags_effect()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_jags_effect.md)
+- [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_ess.md)
   : Plot Effective Sample Size Diagnostics
-
-## Visualize model results
-
 - [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_predicted_curve.md)
   : Generate Predicted Antibody Response Curves (Median + 95% CI)
 - [`plot_serocurve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_serocurve.md)
@@ -82,7 +85,7 @@ pak::pak("UCD-SERG/serodynamics")
 
 ## Summarize seroresponse model estimates
 
-- [`post_summ()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/post_summ.md)
+- [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/summarize_posterior.md)
   : Summary Table of Jags Posterior Estimates
 
 ## Example data sets
@@ -92,7 +95,7 @@ pak::pak("UCD-SERG/serodynamics")
 - [`nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/nepal_sees.md)
   : SEES Typhoid data
 - [`nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/nepal_sees_jags_output.md)
-  : SEES Typhoid run_mod jags output
+  : SEES Typhoid run_serodynamics jags output
 
 # Articles
 
