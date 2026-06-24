@@ -1,31 +1,45 @@
 Package: serodynamics
-Title: What the Package Does (One Line, Title Case)
-Version: 0.0.0.9050
+Title: Modeling Longitudinal Antibody Responses to Infection
+Version: 0.1.0.9001
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
-           comment = "Author of the method and original code."),
-    person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre")),
-    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "ctb"),
-    person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut"),
-    person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut")
+           comment = c("Author of the method and original code.",
+           ORCID = "0000-0003-1904-6044")),
+    person("Samuel", "Schildhauer", , "sschildhauer@ucdavis.edu", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0001-7139-1086")),
+    person("Kwan Ho", "Lee", , "ksjlee@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0009-0004-9723-2007")),
+    person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0000-0003-1886-2699")),
+    person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0000-0002-7195-830X"))
   )
-Description: Modeling longitudinal immune seroresponses to pathogens.
+Description: Implements Bayesian hierarchical models for estimating
+    antibody kinetic parameters from longitudinal serological data. Fits
+    two-phase within-host models capturing antibody rise, peak, and decay
+    following pathogen infection, using 'JAGS' for posterior inference.
+    Designed as the upstream companion to the 'serocalculator' package
+    for end-to-end seroepidemiological analysis. Methods are described in
+    Teunis and colleagues (2016) <doi:10.1016/j.epidem.2016.04.001> and Teunis
+    and van Eijkeren (2020) <doi:10.1002/sim.8578>.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
+SystemRequirements: JAGS (>= 4.3.1)
 Imports: 
     cli,
     coda,
     dplyr,
     ggmcmc (>= 1.5.1.2),
     ggplot2,
+    lifecycle,
     purrr,
     rlang,
     runjags,
     scales,
-    serocalculator (>= 1.3.0.9037),
+    serocalculator (>= 1.4.1),
     stats,
     tibble,
     tidyr,
@@ -52,19 +66,17 @@ Suggests:
     quarto
 Language: en-US
 Config/testthat/edition: 3
-Config/needs/test: 
-    withr, 
-    vdiffr, 
-    here, 
-    readr, 
-    magrittr, 
+Config/needs/test:
+    withr,
+    vdiffr,
+    here,
     readr,
+    magrittr,
     rlist
 Config/needs/check: commonmark, xml2
-Remotes: 
-    ucd-serg/serocalculator
 Depends: 
     R (>= 4.1.0)
 LazyData: true
 VignetteBuilder: knitr, quarto
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 8.0.0
