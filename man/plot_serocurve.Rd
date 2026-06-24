@@ -22,10 +22,14 @@ plot_serocurve(
 \item{model}{An \code{sr_model} object returned by \code{\link[=run_mod]{run_mod()}}.}
 
 \item{antigen_iso}{A \link{character} vector of antigen-isotype combinations to
-plot.  Defaults to all antigen-isotypes present in \code{model}.}
+plot.  Defaults to all antigen-isotypes present in the subject-level
+draws of \code{model} (\code{model$Iso_type}); in normal usage these match the
+levels available in \code{attr(model, "population_params")}.}
 
 \item{strat}{A \link{character} vector of stratification levels to include.
-Defaults to all stratification levels present in \code{model}.}
+Defaults to all stratification levels present in the subject-level
+draws of \code{model} (\code{model$Stratification}); in normal usage these match
+the levels available in \code{attr(model, "population_params")}.}
 
 \item{param_source}{\link{character}; which posterior samples to use for the
 curve.  Options:
