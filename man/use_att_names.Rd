@@ -16,12 +16,7 @@ The input \link{data.frame} with columns named after attributes.
 \description{
 \code{use_att_names} takes prepared longitudinal data for antibody kinetic
 modeling and names columns using attribute values to allow merging
-<<<<<<< HEAD
-with a modeled \link{run_mod} output \link[tibble:tbl_df]{tibble::tbl_df}. The column names include
-\code{Subject}, \code{Iso_type}, \code{t}, and \code{result}.
-=======
 with a modeled \code{\link[=run_serodynamics]{run_serodynamics()}} output \link[tibble:tbl_df]{tibble::tbl_df}. The column
 names include \code{Subject}, \code{Iso_type}, \code{t}, and \code{result}.
->>>>>>> 4ee45626d1deb96248538c87668d2cca1274cdef
 }
 \keyword{internal}
