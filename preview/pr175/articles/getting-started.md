@@ -169,7 +169,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:00:37 2026
+#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:07:22 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -416,7 +416,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:00:51 2026
+#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:07:35 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -451,7 +451,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:00:53 2026
+#> Welcome to JAGS 4.3.2 on Fri Jun 26 18:07:37 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -556,7 +556,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9001 2026-06-26 [1] local
+#>  serodynamics   * 0.1.0.9002 2026-06-26 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
