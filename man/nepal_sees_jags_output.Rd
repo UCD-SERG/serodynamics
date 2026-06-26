@@ -3,7 +3,7 @@
 \docType{data}
 \name{nepal_sees_jags_output}
 \alias{nepal_sees_jags_output}
-\title{SEES Typhoid run_mod jags output}
+\title{SEES Typhoid run_serodynamics jags output}
 \format{
 An S3 object of class \code{sr_model}: A \link[tibble:tbl_df]{tibble::tbl_df} that contains
 the
@@ -34,7 +34,7 @@ reference study: \doi{10.1016/S2666-5247(22)00114-8}
 nepal_sees_jags_output
 }
 \description{
-A \code{\link[=run_mod]{run_mod()}} output
+A \code{\link[=run_serodynamics]{run_serodynamics()}} output
 using the \link{nepal_sees} example data set as input
 and stratifying by column \code{"bldculres"},
 which is the diagnosis type (typhoid or

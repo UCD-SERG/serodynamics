@@ -34,6 +34,7 @@ Imports:
     dplyr,
     ggmcmc (>= 1.5.1.2),
     ggplot2,
+    lifecycle,
     purrr,
     rlang,
     runjags,
@@ -82,3 +83,4 @@ Depends:
 LazyData: true
 VignetteBuilder: knitr, quarto
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 8.0.0

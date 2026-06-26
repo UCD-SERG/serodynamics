@@ -119,7 +119,7 @@ autoplot(simulated_data)
 
 ## Running the Bayesian Model
 
-The main function `run_mod()` fits a Bayesian MCMC model to estimate antibody dynamic curve parameters:
+The main function `run_serodynamics()` fits a Bayesian MCMC model to estimate antibody dynamic curve parameters:
 
 - `y0`: Baseline antibody concentration
 - `y1`: Peak antibody concentration  
@@ -132,7 +132,7 @@ The main function `run_mod()` fits a Bayesian MCMC model to estimate antibody dy
 # Note: This example uses reduced iterations for demonstration
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
-fitted_model <- run_mod(
+fitted_model <- run_serodynamics(
   data = simulated_data,
   file_mod = serodynamics_example("model.jags"),
   nchain = 2,      # Number of MCMC chains
@@ -152,16 +152,16 @@ After fitting the model, check convergence diagnostics:
 ```{r}
 #| label: diagnostics
 # Trace plots to assess chain mixing
-plot_jags_trace(fitted_model)
+plot_trace(fitted_model)
 
 # Density plots of posterior distributions
-plot_jags_dens(fitted_model)
+plot_density(fitted_model)
 
 # Rhat statistics (values near 1.0 indicate convergence)
-plot_jags_Rhat(fitted_model)
+plot_rhat(fitted_model)
 
 # Effective sample size
-plot_jags_effect(fitted_model)
+plot_ess(fitted_model)
 ```
 
 ## Visualizing Fitted Curves
@@ -184,7 +184,7 @@ Extract and summarize the posterior estimates:
 ```{r}
 #| label: postprocess
 # Summarize parameter estimates
-summary_stats <- post_summ(fitted_model)
+summary_stats <- summarize_posterior(fitted_model)
 print(summary_stats)
 ```
 
@@ -210,7 +210,7 @@ strat2 <- sim_case_data(
 stratified_data <- bind_rows(strat1, strat2)
 
 # Fit model with stratification
-fitted_stratified <- run_mod(
+fitted_stratified <- run_serodynamics(
   data = stratified_data,
   file_mod = serodynamics_example("model.jags"),
   nchain = 2,

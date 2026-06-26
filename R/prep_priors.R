@@ -1,7 +1,7 @@
 #' @title Prepare priors
 #' @description
 #' Takes multiple [vector] inputs to allow for modifiable priors. 
-#' Priors can be specified as an option in run_mod.
+#' Priors can be specified as an option in run_serodynamics.
 #' 
 #' @param max_antigens An [integer] specifying how many
 #' antigen-isotypes (biomarkers) will be modeled.
@@ -102,8 +102,8 @@ prep_priors <- function(max_antigens,
   ) |>
     structure(
               class = c("curve_params_priors", "list"))
-  # Creating two objects in a list, one will be used in run_mod and the other
-  # will be attached to run_mod output as an attribute. 
+  # Creating two objects in a list, one will be used in run_serodynamics and
+  # the other will be attached to run_serodynamics output as an attribute.
   prepped_priors <- prepped_priors |> 
     structure("used_priors" = list(
                                    mu_hyp_param = mu_hyp_param,
