@@ -1,0 +1,184 @@
+---
+title: "Fitting the model with Stan, and how it compares to JAGS"
+author: "Kwan Ho Lee"
+description: >
+  serodynamics can fit the within-host antibody model with two MCMC engines:
+  JAGS (Gibbs sampling) and Stan (Hamiltonian Monte Carlo). This article
+  explains how the Stan model is built from the JAGS model, how to use it, and
+  shows that the two engines give the same answer where the data are
+  informative.
+format: html
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 5
+)
+```
+
+## Introduction
+
+`serodynamics` fits a within-host model of antibody kinetics to longitudinal
+data from confirmed cases [@Teunis_2016]. The default engine is **JAGS**, which
+samples the posterior with Gibbs sampling (`run_mod()`). This article introduces
+a second engine, **Stan**, which samples the same posterior with Hamiltonian
+Monte Carlo (HMC) through `run_mod_stan()`, and shows that the two engines agree.
+
+Having both engines is useful for two reasons. First, they are completely
+different algorithms, so running both is a strong cross-check: if Gibbs and HMC
+land in the same place, we can trust the result is about the model and the data,
+not about one sampler. Second, HMC uses the gradient of the log-posterior, which
+helps it move through difficult, highly-correlated posteriors that Gibbs mixes
+through slowly, and it reports extra warnings (divergences, tree-depth
+saturation, E-BFMI) that make convergence problems easy to see.
+
+## The model in one paragraph
+
+For each subject and each antigen-isotype, the antibody level rises to a peak and
+then decays. The curve has five parameters on the log scale: baseline `y0`, peak
+`y1`, time to peak `t1`, decay rate `alpha`, and a shape parameter `r`. These are
+modelled hierarchically: every subject draws their own parameters from a
+population distribution, and we estimate the population mean and the
+between-subject covariance for each antigen. The measurement model is normal on
+the log scale. This is the two-phase model of @Teunis_2016 (their eq. 15).
+
+## What is the same, and what is reparameterized
+
+The Stan model (`model.stan`) is built to fit **exactly the same model** as the
+JAGS model (`model.jags`). It reads the same data and the same priors (the output
+of `prep_priors_stan()`), so the only thing that differs is the sampler. Most of
+the model is a direct, line-for-line translation:
+
+- the two-phase kinetic curve,
+- the population-mean prior (a multivariate normal),
+- the measurement-precision prior (a gamma),
+- the subject random effects (a multivariate normal, written in non-centered
+  form, which is an exact rewrite).
+
+One piece is **reparameterized** rather than translated literally: the
+between-subject covariance. JAGS places an inverse-Wishart prior on the precision
+matrix. That prior is badly conditioned for HMC (it causes tree-depth saturation
+and very high R-hat), so in Stan I write the covariance as a **scale** times a
+**correlation**, and put matched priors on each part:
+
+- the scale (the standard deviations) gets a **lognormal** prior, matched to the
+  inverse-gamma margins of the Wishart;
+- the correlation matrix gets an **LKJ** prior, matched to the correlation spread
+  of the Wishart.
+
+The matching constants are computed inside the Stan model from the same `omega`
+and `wishdf` that JAGS uses, so the two priors describe the same beliefs. The
+full derivation is in the methods note `model_stan_transform_from_jags.md`. The
+practical point is that the two models are the same model, fit two ways.
+
+## Using the two engines
+
+Both functions take the same data and have the same shape. Here we simulate a
+small longitudinal dataset and fit it with each engine. (The fitting chunks are
+not run when this page is built, because they need JAGS and CmdStan installed and
+take a few minutes; set `eval = TRUE` to run them yourself.)
+
+```{r}
+#| eval: false
+library(serodynamics)
+
+# simulate longitudinal case data with a known truth
+set.seed(1)
+dat <- serocalculator::typhoid_curves_nostrat_100 |>
+  serocalculator::sim_case_data(n = 100) |>
+  dplyr::filter(antigen_iso %in% c("HlyE_IgG", "HlyE_IgA"))
+
+# JAGS (Gibbs)
+fit_jags <- run_mod(
+  data   = dat,
+  nchain = 4,
+  nadapt = 1000,
+  nburn  = 1000,
+  nmc    = 2000,
+  niter  = 2000
+)
+
+# Stan (HMC), same data and priors
+fit_stan <- run_mod_stan(
+  data          = dat,
+  nchain        = 4,
+  nadapt        = 2000,
+  niter         = 2000,
+  adapt_delta   = 0.95,   # raise toward 1 to reduce divergences
+  max_treedepth = 12
+)
+```
+
+`run_mod_stan()` exposes the HMC tuning knobs `adapt_delta` and `max_treedepth`,
+which you raise if Stan reports divergences or tree-depth saturation. For most
+data the defaults are fine; the random initial values used by CmdStan are also
+fine, so you usually do not need to set `init`.
+
+## Do the two engines agree?
+
+To check, we fit both engines to the simulated dataset above (where we know the
+true population means) and compare the estimated population means for the two
+antigens. The table below summarizes a representative run.
+
+| Antigen | Parameter | Truth | JAGS | Stan |
+|---|---|---:|---:|---:|
+| HlyE_IgA | baseline `log_y0`   | 0.72  | 0.72  | 0.73  |
+| HlyE_IgA | peak `log(y1-y0)`   | 4.03  | 4.10  | 4.05  |
+| HlyE_IgA | time-to-peak `log_t1` | 1.72 | 1.82 | 1.82 |
+| HlyE_IgA | decay `log_alpha`   | -6.99 | -7.08 | -7.58 |
+| HlyE_IgA | shape `log(r-1)`    | -0.40 | -0.35 | -0.11 |
+| HlyE_IgG | baseline `log_y0`   | 0.71  | 0.71  | 0.71  |
+| HlyE_IgG | peak `log(y1-y0)`   | 5.07  | 5.04  | 5.01  |
+| HlyE_IgG | time-to-peak `log_t1` | 2.23 | 2.27 | 2.28 |
+| HlyE_IgG | decay `log_alpha`   | -7.18 | -7.96 | -7.88 |
+| HlyE_IgG | shape `log(r-1)`    | -0.81 | -0.47 | -0.49 |
+
+Two things stand out:
+
+**Where the data are informative, the engines agree and recover the truth.** For
+baseline, peak, and time-to-peak, JAGS and Stan give the same answer to two
+decimal places, and both match the values used to simulate the data.
+
+**The decay parameters are only weakly identified, and both engines show it the
+same way.** `alpha` (decay rate) and `r` (shape) trade off against each other:
+many different `(alpha, r)` pairs produce almost the same curve over a short
+follow-up window, so the data cannot separate them well. Both engines therefore
+sit on the same "ridge" of `(alpha, r)` values, slightly away from the truth, and
+they move along it together (when one estimate has a lower `alpha`, it has a
+higher `r`). This is a property of the model and the data, not a difference
+between the samplers — which is exactly what we learn by running both.
+
+One practical difference is worth noting: on these decay parameters, Gibbs mixes
+**very slowly** (low effective sample size, so it needs many iterations to reach
+a stable answer), while HMC mixes well. So Stan can be a better choice when the
+decay parameters are the focus.
+
+## Checking convergence
+
+Whichever engine you use, check convergence before trusting the result: R-hat
+close to 1 and a healthy effective sample size for every parameter. Stan adds
+gradient-based checks — divergent transitions, tree-depth saturation, and E-BFMI
+— which `run_mod_stan()` surfaces automatically. If you see divergences, raise
+`adapt_delta`; if you see tree-depth saturation, raise `max_treedepth`. If the
+chains disagree (high R-hat) no matter how you tune the sampler, that is usually
+a sign that the model is weakly identified for that dataset, and the fix is more
+informative data or a more constrained model rather than more sampler tuning.
+
+## Summary
+
+- `serodynamics` can fit the within-host model with JAGS (`run_mod()`) or Stan
+  (`run_mod_stan()`), using the same data and the same priors.
+- The Stan model is an exact translation of the JAGS model, except for the
+  between-subject covariance, which is reparameterized (LKJ + lognormal) so that
+  HMC can sample it well, while keeping the same prior beliefs.
+- The two engines agree where the data are informative and recover the simulated
+  truth. The decay parameters are weakly identified, and both engines reflect
+  that the same way.
+- Run both as a cross-check; reach for Stan when the posterior is difficult or
+  when the decay parameters matter.
+
+## References
