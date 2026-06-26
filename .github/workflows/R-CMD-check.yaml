@@ -66,19 +66,31 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: test, check
       
-      - name: "install rjags"
+      - name: "install JAGS R packages"
         run: |
+          if (Sys.info()[["sysname"]] == "Windows") {
+            install.packages("coda",
+                      repos = "https://cloud.r-project.org",
+                      type = "source",
+                      verbose = TRUE)
+            install.packages("runjags",
+                      repos = "https://cloud.r-project.org",
+                      type = "source",
+                      verbose = TRUE)
+          }
+          
           install.packages("rjags",
                     repos = "https://cloud.r-project.org",
                     type = "source",
                     verbose = TRUE)
-           library(rjags)
-           library(runjags)
-           withr::local_options(warn = 2)
-           runjags::findjags()
-           runjags::testjags()
+          
+          library(rjags)
+          library(runjags)
+          withr::local_options(warn = 2)
+          runjags::findjags()
+          runjags::testjags()
         shell: Rscript {0}
-      
+  
       - uses: r-lib/actions/check-r-package@v2
         with:
           upload-snapshots: true
