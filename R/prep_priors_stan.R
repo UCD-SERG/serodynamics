@@ -4,8 +4,14 @@
 #' Takes multiple [vector] inputs to allow for modifiable priors for Stan
 #' models. Returns Stan-compatible prior specifications (matrix inversions
 #' are handled in the Stan model itself).
-#' 
+#'
 #' @inheritParams prep_priors
+#' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
+#' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+#' representing prior covariance of uncertainty around `mu_hyp_param`.
+#' If specified, must be 5 values long.
+#' Stan defaults differ from JAGS (more weakly informative for HMC stability):
+#'    - defaults: y0 = 1.0, y1 = 1/9 (~0.11), t1 = 1.0, alpha = 1/9, shape = 1.0
 #'
 #' @returns A "curve_params_priors_stan" object 
 #' (a subclass of [list] with the inputs to `prep_priors_stan()` attached 
