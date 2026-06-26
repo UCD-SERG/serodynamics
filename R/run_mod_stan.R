@@ -34,9 +34,11 @@
 #' @param ... Additional arguments passed to `prep_priors_stan()`.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
-#' parameters, conditional on the provided input `data`, 
+#' parameters, conditional on the provided input `data`,
 #' including the same structure as `run_mod()`. When `with_post = TRUE`,
 #' the raw CmdStanR fit object(s) are stored as an attribute named `stan.fit`.
+#' Note: The `nBurnin` attribute on the returned object reflects `nadapt`
+#' (Stan warmup iterations), not a post-warmup burnin (Stan has none).
 #' @inheritDotParams prep_priors_stan
 #' @export
 #' @example inst/examples/run_mod_stan-examples.R
@@ -222,7 +224,11 @@ run_mod_stan <- function(data,
       "nChains", "nParameters", "nIterations", "nBurnin", "nThin"
     )
     mod_atts <- mod_atts[names(mod_atts) %in% needed_atts]
-    
+    # ggmcmc::ggs() sets nBurnin = 0 because Stan warmup draws are excluded
+    # before the draws object is created. Override with nadapt so downstream
+    # code and users see the correct warmup count.
+    mod_atts[["nBurnin"]] <- nadapt
+
     # Process MCMC output to add antigen-iso and subject information
     stan_final <- process_mcmc_output(stan_unpack, longdata, i)
     

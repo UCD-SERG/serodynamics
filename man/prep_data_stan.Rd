@@ -19,7 +19,24 @@ which column contains antigen-isotype names}
 \item{verbose}{whether to produce verbose messaging}
 }
 \value{
-a \code{prepped_stan_data} object (a \link{list} with Stan-formatted data)
+a \code{prepped_stan_data} object (a named \link{list}) with the following
+elements ready for passing to CmdStanR:
+\itemize{
+\item \code{nsubj}: integer, number of subjects
+\item \code{n_antigen_isos}: integer, number of antigen-isotype combinations
+\item \code{n_params}: integer, number of curve parameters (always 5: y0, y1, t1,
+alpha, shape)
+\item \code{nsmpl}: integer vector of length \code{nsubj}, number of observations per
+subject
+\item \code{max_nsmpl}: integer, maximum of \code{nsmpl} (determines array dimensions)
+\item \code{smpl_t}: numeric matrix \code{[nsubj, max_nsmpl]} of observation times.
+Positions beyond \code{nsmpl[subj]} are padded with \strong{0} (not \code{NA}).
+\item \code{logy}: numeric array \code{[nsubj, max_nsmpl, n_antigen_isos]} of log
+antibody values. Positions beyond \code{nsmpl[subj]} are padded with \strong{0}.
+Unlike the JAGS output from \code{\link[=prep_data]{prep_data()}}, which uses \code{NA} for padding,
+Stan requires numeric values; the model ignores padded entries by
+looping only up to \code{nsmpl[subj]}.
+}
 }
 \description{
 Prepare data for Stan

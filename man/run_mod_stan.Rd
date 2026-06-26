@@ -106,6 +106,8 @@ contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input \code{data},
 including the same structure as \code{run_mod()}. When \code{with_post = TRUE},
 the raw CmdStanR fit object(s) are stored as an attribute named \code{stan.fit}.
+Note: The \code{nBurnin} attribute on the returned object reflects \code{nadapt}
+(Stan warmup iterations), not a post-warmup burnin (Stan has none).
 }
 \description{
 \code{run_mod_stan()} takes a data frame and adjustable MCMC inputs to fit a

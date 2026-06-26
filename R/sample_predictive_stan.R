@@ -109,19 +109,6 @@ sample_predictive_stan <- function(
   # Initialize list to collect draws from all strata
   all_draws <- list()
   
-  # For stratified models, inform user that draws are being combined
-  # Note: Antigen consistency is validated in run_mod_stan() during fitting
-  if (length(stan_fit_list) > 1) {
-    cli::cli_inform(
-      c(
-        "i" = paste(
-          "Combining posterior draws from {length(stan_fit_list)} strata.",
-          "Antigen ordering is consistent across strata."
-        )
-      )
-    )
-  }
-  
   # Extract draws from each stratification level
   # We extract population-level parameters (mu_par, prec_logy)
   # which are consistent across strata and can be combined
