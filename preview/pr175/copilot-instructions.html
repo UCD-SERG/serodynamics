@@ -212,7 +212,7 @@
 <span></span>
 <span><span class="co"># Install all package dependencies (Imports, Suggests, and development needs)</span></span>
 <span><span class="co"># This reads DESCRIPTION file and installs everything needed</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">install_dev_deps</a></span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_dev_deps</span><span class="op">(</span>dependencies <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Alternative approach</strong> using pak (faster parallel installation):</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"pak"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span>
@@ -226,13 +226,13 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://devtools.r-lib.org/" class="external-link">devtools</a></span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Check package dependencies</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/dev_sitrep.html" class="external-link">dev_sitrep</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">dev_sitrep</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Load the package in development mode</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Run a quick check</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check_man.html" class="external-link">check_man</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check_man</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Note</strong>: If you encounter issues with dependencies, particularly with system libraries, install the following system dependencies first:</p>
 <ul><li>
 <p><strong>Ubuntu/Linux</strong>:</p>
@@ -315,7 +315,7 @@
 <h3 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a></h3>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install development dependencies</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">install_dev_deps</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_dev_deps</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Or using the package manager approach</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
@@ -325,9 +325,9 @@
 <p><strong>ALWAYS regenerate documentation after modifying roxygen2 comments in <code>.R</code> files.</strong></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate documentation from roxygen2 comments</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
-<span><span class="fu">roxygen2</span><span class="fu">::</span><span class="fu"><a href="https://roxygen2.r-lib.org/reference/roxygenize.html" class="external-link">roxygenise</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">roxygen2</span><span class="fu">::</span><span class="fu">roxygenise</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Documentation files in <code>man/</code> and <code>NAMESPACE</code> are auto-generated. Do NOT edit them directly.</p>
 </div>
 <div class="section level3">
@@ -342,16 +342,16 @@
 <p>Run R CMD check to validate the package:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Full package check (takes several minutes)</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
-<span><span class="fu">rcmdcheck</span><span class="fu">::</span><span class="fu"><a href="http://r-lib.github.io/rcmdcheck/reference/rcmdcheck.html" class="external-link">rcmdcheck</a></span><span class="op">(</span>error_on <span class="op">=</span> <span class="st">"note"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">rcmdcheck</span><span class="fu">::</span><span class="fu">rcmdcheck</span><span class="op">(</span>error_on <span class="op">=</span> <span class="st">"note"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Note</strong>: This runs multiple validation steps including examples, tests, and documentation checks. Allow 5-10 minutes for completion.</p>
 </div>
 <div class="section level3">
 <h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run all tests</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
 <span><span class="fu">testthat</span><span class="fu">::</span><span class="fu"><a href="https://testthat.r-lib.org/reference/test_package.html" class="external-link">test_local</a></span><span class="op">(</span>stop_on_warning <span class="op">=</span> <span class="cn">TRUE</span>, stop_on_error <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
 <p>Tests are located in <code>tests/testthat/</code>. The package uses testthat 3.0+ with snapshot testing for MCMC output validation. Some tests are OS-specific and skip on Windows/Linux.</p>
@@ -361,10 +361,10 @@
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Lint specific file</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint</a></span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint</span><span class="op">(</span><span class="st">"R/filename.R"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Key linting rules</strong>: - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_inform()</a></code> instead of <code><a href="https://rdrr.io/r/base/message.html" class="external-link">message()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_warn()</a></code> instead of <code><a href="https://rdrr.io/r/base/warning.html" class="external-link">warning()</a></code> - Use <code><a href="https://cli.r-lib.org/reference/cli_abort.html" class="external-link">cli::cli_abort()</a></code> instead of <code><a href="https://rdrr.io/r/base/stop.html" class="external-link">stop()</a></code> - Use <code>::</code> instead of <code><a href="https://rdrr.io/r/base/library.html" class="external-link">library()</a></code> in package code - Use native pipe <code>|&gt;</code> (configured in project.Rproj) - Follow snake_case with uppercase acronyms allowed (e.g., <code>prep_IDs</code> is valid) - Avoid <code>undesirable_function_linter</code> warnings</p>
 <p>Exclusions: <code>data-raw/</code>, <code>vignettes/</code>, <code>inst/examples/</code>, and <code>inst/analyses/</code> are exempt from some linters.</p>
 </div>
@@ -384,14 +384,14 @@
 <li><p><strong>test-coverage.yaml</strong>: Runs on macOS, generates code coverage via covr, uploads to Codecov. Creates JUnit test reports. (~5-10 min)</p></li>
 <li><p><strong>check-spelling.yaml</strong>: Spell checks using spelling package. (~1-2 min)</p></li>
 <li><p><strong>check-readme.yaml</strong>: Renders README.Rmd and verifies it matches README.md. (~2-3 min)</p></li>
-<li><p><strong>R-check-docs.yml</strong>: Runs <code><a href="https://roxygen2.r-lib.org/reference/roxygenize.html" class="external-link">roxygen2::roxygenise()</a></code> and checks if <code>man/</code>, <code>NAMESPACE</code>, or <code>DESCRIPTION</code> changed. Fails if documentation is out of sync. (~2-3 min)</p></li>
+<li><p><strong>R-check-docs.yml</strong>: Runs <code>roxygen2::roxygenise()</code> and checks if <code>man/</code>, <code>NAMESPACE</code>, or <code>DESCRIPTION</code> changed. Fails if documentation is out of sync. (~2-3 min)</p></li>
 <li><p><strong>news.yaml</strong>: Ensures NEWS.md is updated for every PR. Can be bypassed with <code>no-changelog</code> label. (~1 min)</p></li>
 <li><p><strong>version-check.yaml</strong>: Verifies DESCRIPTION version number increased vs. main branch. Run <code><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">usethis::use_version()</a></code> to increment. (~1 min)</p></li>
 <li><p><strong>pkgdown.yaml</strong>: Builds pkgdown website on PR (preview), tags, and main branch pushes. Requires Quarto setup. (~5-7 min)</p></li>
 <li><p><strong>copilot-setup-steps.yml</strong>: Configures the GitHub Copilot coding agent’s environment automatically. Runs when Copilot starts work, when the workflow file changes, or via manual dispatch. Not a required check for PR merges. See “Copilot Setup Workflow” section for details. (~5-10 min)</p></li>
 </ol><div class="section level3">
 <h3 id="pr-commands">PR Commands<a class="anchor" aria-label="anchor" href="#pr-commands"></a></h3>
-<p>Team members can trigger actions by commenting on PRs: - <code>/document</code> - Runs <code><a href="https://roxygen2.r-lib.org/reference/roxygenize.html" class="external-link">roxygen2::roxygenise()</a></code> and commits changes - <code>/style</code> - Runs <code>styler::style_pkg()</code> and commits changes</p>
+<p>Team members can trigger actions by commenting on PRs: - <code>/document</code> - Runs <code>roxygen2::roxygenise()</code> and commits changes - <code>/style</code> - Runs <code>styler::style_pkg()</code> and commits changes</p>
 </div>
 </div>
 <div class="section level2">
@@ -508,7 +508,7 @@
 </div>
 <div class="section level3">
 <h3 id="documentation-out-of-sync">Documentation Out of Sync<a class="anchor" aria-label="anchor" href="#documentation-out-of-sync"></a></h3>
-<p><strong>Symptom</strong>: R-check-docs.yml workflow fails. <strong>Solution</strong>: Run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code> locally and commit the updated <code>man/</code> and <code>NAMESPACE</code> files.</p>
+<p><strong>Symptom</strong>: R-check-docs.yml workflow fails. <strong>Solution</strong>: Run <code>devtools::document()</code> locally and commit the updated <code>man/</code> and <code>NAMESPACE</code> files.</p>
 </div>
 <div class="section level3">
 <h3 id="version-not-incremented">Version Not Incremented<a class="anchor" aria-label="anchor" href="#version-not-incremented"></a></h3>
@@ -664,12 +664,12 @@
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Complete development workflow</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="op">)</span>           <span class="co"># Load package for interactive testing</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span>           <span class="co"># Update documentation</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span>               <span class="co"># Run tests</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">load_all</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Load package for interactive testing</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">document</span><span class="op">(</span><span class="op">)</span>           <span class="co"># Update documentation</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">test</span><span class="op">(</span><span class="op">)</span>               <span class="co"># Run tests</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">use_version</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># Increment version</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
 <span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span> <span class="co"># Update README</span></span></code></pre></div>
 </div>
@@ -685,7 +685,7 @@
 <li>
 <strong>ALWAYS</strong> write tidy, clean, and well-organized code</li>
 <li>
-<strong>ALWAYS</strong> run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code> after modifying roxygen2 comments</li>
+<strong>ALWAYS</strong> run <code>devtools::document()</code> after modifying roxygen2 comments</li>
 <li>
 <strong>ALWAYS</strong> edit README.Rmd (not README.md) for README changes</li>
 <li>
@@ -693,15 +693,15 @@
 <li>
 <strong>ALWAYS</strong> update NEWS.md for user-facing changes</li>
 <li>
-<strong>ALWAYS</strong> run tests before committing (<code><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">devtools::test()</a></code>)</li>
+<strong>ALWAYS</strong> run tests before committing (<code>devtools::test()</code>)</li>
 <li>
 <strong>ALWAYS</strong> check and fix lintr issues in changed files in PRs before committing</li>
 <li>
-<strong>ALWAYS</strong> run <code><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">devtools::document()</a></code> before requesting PR review</li>
+<strong>ALWAYS</strong> run <code>devtools::document()</code> before requesting PR review</li>
 <li>
-<strong>ALWAYS</strong> run <code><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lintr::lint_package()</a></code> before requesting PR review and fix all linting issues</li>
+<strong>ALWAYS</strong> run <code>lintr::lint_package()</code> before requesting PR review and fix all linting issues</li>
 <li>
-<strong>ALWAYS</strong> run <code><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">devtools::check()</a></code> before requesting PR review and ensure it passes with 0 errors, 0 warnings, 0 notes</li>
+<strong>ALWAYS</strong> run <code>devtools::check()</code> before requesting PR review and ensure it passes with 0 errors, 0 warnings, 0 notes</li>
 <li>
 <strong>ALWAYS</strong> make sure <code><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spelling::spell_check_package()</a></code> passes before requesting PR review</li>
 <li>
@@ -713,10 +713,10 @@
 </ol><p><strong>CRITICAL PRE-REVIEW VALIDATION</strong>: Before requesting PR review, you MUST run the following validation commands locally and ensure they all pass:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1. Lint the package - must have 0 linting issues</span></span>
-<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 2. Run R CMD check - must pass with 0 errors, 0 warnings, 0 notes</span></span>
-<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 3. Check spelling - must have no spelling errors</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span>
