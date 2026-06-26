@@ -29,9 +29,9 @@ alpha, shape)
 \item \code{nsmpl}: integer vector of length \code{nsubj}, number of observations per
 subject
 \item \code{max_nsmpl}: integer, maximum of \code{nsmpl} (determines array dimensions)
-\item \code{smpl_t}: numeric matrix \code{[nsubj, max_nsmpl]} of observation times.
+\item \code{smpl_t}: numeric matrix \verb{[nsubj, max_nsmpl]} of observation times.
 Positions beyond \code{nsmpl[subj]} are padded with \strong{0} (not \code{NA}).
-\item \code{logy}: numeric array \code{[nsubj, max_nsmpl, n_antigen_isos]} of log
+\item \code{logy}: numeric array \verb{[nsubj, max_nsmpl, n_antigen_isos]} of log
 antibody values. Positions beyond \code{nsmpl[subj]} are padded with \strong{0}.
 Unlike the JAGS output from \code{\link[=prep_data]{prep_data()}}, which uses \code{NA} for padding,
 Stan requires numeric values; the model ignores padded entries by
