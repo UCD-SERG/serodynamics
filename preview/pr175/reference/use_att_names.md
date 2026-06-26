@@ -3,7 +3,7 @@
 `use_att_names` takes prepared longitudinal data for antibody kinetic
 modeling and names columns using attribute values to allow merging with
 a modeled
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md)
 output
 [tibble::tbl_df](https://tibble.tidyverse.org/reference/tbl_df-class.html).
 The column names include `Subject`, `Iso_type`, `t`, and `result`.

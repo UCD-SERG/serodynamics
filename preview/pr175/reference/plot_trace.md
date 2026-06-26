@@ -1,8 +1,8 @@
 # Trace Plot Diagnostics
 
-plot_jags_trace() takes a [list](https://rdrr.io/r/base/list.html)
-output from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+plot_trace() takes a [list](https://rdrr.io/r/base/list.html) output
+from
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md)
 to create trace plots for each chain run in the mcmc estimation.
 Defaults will produce every combination of antigen/antibody, parameters,
 and stratifications, unless otherwise specified. Antigen/antibody
@@ -15,14 +15,14 @@ dynamic curve includes the following parameters:
 
 - t1 = time to peak
 
-- r = shape parameter
+- shape = shape parameter
 
 - alpha = decay rate
 
 ## Usage
 
 ``` r
-plot_jags_trace(
+plot_trace(
   data,
   iso = unique(data$Iso_type),
   param = unique(data$Parameter),
@@ -35,7 +35,7 @@ plot_jags_trace(
 - data:
 
   A [list](https://rdrr.io/r/base/list.html) outputted from
-  [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md).
 
 - iso:
 
@@ -51,7 +51,7 @@ plot_jags_trace(
 
   - `alpha` = posterior estimate of decay rate
 
-  - `r` = posterior estimate of shape parameter
+  - `shape` = posterior estimate of shape parameter
 
   - `t1` = posterior estimate of time to peak
 
@@ -81,8 +81,8 @@ Sam Schildhauer
 data <- serodynamics::nepal_sees_jags_output
 
 # Specifying isotype, parameter, and stratification for traceplot.
-plot_jags_trace(
-                data = data,
-                iso = "HlyE_IgA",
-                strat = "typhi")
+plot_trace(
+           data = data,
+           iso = "HlyE_IgA",
+           strat = "typhi")
 ```

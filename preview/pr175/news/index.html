@@ -55,7 +55,26 @@
 <li>New Stan model files: <code>inst/extdata/model.stan</code> and <code>inst/extdata/model.dobson.stan</code>.</li>
 <li>Stan support is optional (<code>cmdstanr</code> in Suggests) and can be used alongside JAGS.</li>
 </ul></li>
-<li>Including optional population parameters as attributes in <code><a href="../reference/run_mod.html">run_mod()</a></code> output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/141" class="external-link">#141</a>)</li>
+<li>Renamed user-facing functions for clarity (<a href="https://github.com/UCD-SERG/serodynamics/issues/241" class="external-link">#241</a>):
+<ul><li>
+<code><a href="../reference/run_mod.html">run_mod()</a></code> → <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>
+</li>
+<li>
+<code>post_summ()</code> → <code><a href="../reference/summarize_posterior.html">summarize_posterior()</a></code>
+</li>
+<li>
+<code>plot_jags_trace()</code> → <code><a href="../reference/plot_trace.html">plot_trace()</a></code>
+</li>
+<li>
+<code>plot_jags_dens()</code> → <code><a href="../reference/plot_density.html">plot_density()</a></code>
+</li>
+<li>
+<code>plot_jags_Rhat()</code> → <code><a href="../reference/plot_rhat.html">plot_rhat()</a></code>
+</li>
+<li>
+<code>plot_jags_effect()</code> → <code><a href="../reference/plot_ess.html">plot_ess()</a></code> <strong>Breaking change:</strong> old function names are no longer available, except <code><a href="../reference/run_mod.html">run_mod()</a></code>, which is still exported with a deprecation warning pointing to <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>.</li>
+</ul></li>
+<li>Including optional population parameters as attributes in run_mod output. (<a href="https://github.com/UCD-SERG/serodynamics/issues/141" class="external-link">#141</a>)</li>
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-development-version">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-development-version"></a></h3>
@@ -92,11 +111,11 @@
 </li>
 </ul></li>
 <li>A new <code><a href="../reference/run_mod.html">run_mod()</a></code> function that runs jags with option of stratification included. (<a href="https://github.com/UCD-SERG/serodynamics/issues/14" class="external-link">#14</a>)</li>
-<li>Diagnostic <code><a href="../reference/plot_jags_Rhat.html">plot_jags_Rhat()</a></code> function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>)</li>
+<li>Diagnostic <code>plot_jags_Rhat()</code> function to produce R-hat dotplots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/67" class="external-link">#67</a>)</li>
 <li>Added <code>plot_summ()</code> function for summarizing estimates in a table (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>)</li>
-<li>Diagnostic <code><a href="../reference/plot_jags_trace.html">plot_jags_trace()</a></code> function to create a trace plot with stratifications (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>)</li>
-<li>Diagnostic <code><a href="../reference/plot_jags_effect.html">plot_jags_effect()</a></code> function to produce effective sample size plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/66" class="external-link">#66</a>)</li>
-<li>Diagnostic <code><a href="../reference/plot_jags_dens.html">plot_jags_dens()</a></code> function to produce density plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/27" class="external-link">#27</a>)</li>
+<li>Diagnostic <code>plot_jags_trace()</code> function to create a trace plot with stratifications (<a href="https://github.com/UCD-SERG/serodynamics/issues/64" class="external-link">#64</a>)</li>
+<li>Diagnostic <code>plot_jags_effect()</code> function to produce effective sample size plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/66" class="external-link">#66</a>)</li>
+<li>Diagnostic <code>plot_jags_dens()</code> function to produce density plots with stratification (<a href="https://github.com/UCD-SERG/serodynamics/issues/27" class="external-link">#27</a>)</li>
 <li>Added <code><a href="../reference/plot_predicted_curve.html">plot_predicted_curve()</a></code> with support for faceting by multiple IDs (<a href="https://github.com/UCD-SERG/serodynamics/issues/68" class="external-link">#68</a>)</li>
 <li>Fixing<code>nepal_sees</code> SEES data and added jags_post for SEES (<a href="https://github.com/UCD-SERG/serodynamics/issues/63" class="external-link">#63</a>)</li>
 <li>Added <code>nepal_sees</code> SEES data set data folder and documentation (<a href="https://github.com/UCD-SERG/serodynamics/issues/41" class="external-link">#41</a>)</li>
@@ -115,7 +134,7 @@
 </ul></div>
 <div class="section level3">
 <h3 id="bug-fixes-0-1-0">Bug fixes<a class="anchor" aria-label="anchor" href="#bug-fixes-0-1-0"></a></h3>
-<ul><li>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code><a href="../reference/post_summ.html">post_summ()</a></code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</li>
+<ul><li>Fixed <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">dplyr::as_tibble()</a></code> references to <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">tibble::as_tibble()</a></code> in <code>post_summ()</code> and <code><a href="../reference/run_mod.html">run_mod()</a></code>, since <code><a href="https://tibble.tidyverse.org/reference/as_tibble.html" class="external-link">as_tibble()</a></code> is exported from the <code>tibble</code> package, not <code>dplyr</code>.</li>
 </ul></div>
 <div class="section level3">
 <h3 id="developer-facing-changes-0-1-0">Developer-facing changes<a class="anchor" aria-label="anchor" href="#developer-facing-changes-0-1-0"></a></h3>
@@ -127,7 +146,7 @@
 <li>Added <code>.github/workflows/copilot-setup-steps.yml</code> GitHub Actions workflow to automate environment setup for GitHub Copilot coding agent, preinstalling R, JAGS, and all dependencies.</li>
 <li>Switched ggmcmc dependency from GitHub dev version to CRAN v1.5.1.2 (<a href="https://github.com/UCD-SERG/serodynamics/issues/135" class="external-link">#135</a>)</li>
 <li>vectorized <code>ab()</code> function (<a href="https://github.com/UCD-SERG/serodynamics/issues/116" class="external-link">#116</a>)</li>
-<li>Added <code><a href="https://lintr.r-lib.org/reference/undesirable_function_linter.html" class="external-link">lintr::undesirable_function_linter()</a></code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
+<li>Added <code>lintr::undesirable_function_linter()</code> to <code>.lintr.R</code> (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Reformatted <code>.lintr</code> as R file (following <a href="https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389" class="external-link uri">https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389</a>) (<a href="https://github.com/UCD-SERG/serodynamics/issues/81" class="external-link">#81</a>)</li>
 <li>Set shortcut pipe to be base pipe (<a href="https://github.com/UCD-SERG/serodynamics/issues/80" class="external-link">#80</a>)</li>
 <li>Added snapshot test for <code><a href="../reference/run_mod.html">run_mod()</a></code>

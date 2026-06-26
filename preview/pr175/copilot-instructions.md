@@ -487,10 +487,9 @@ The following workflows run on every PR. **All must pass** for merge:
 5.  **check-readme.yaml**: Renders README.Rmd and verifies it matches
     README.md. (~2-3 min)
 
-6.  **R-check-docs.yml**: Runs
-    [`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-    and checks if `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails
-    if documentation is out of sync. (~2-3 min)
+6.  **R-check-docs.yml**: Runs `roxygen2::roxygenise()` and checks if
+    `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails if
+    documentation is out of sync. (~2-3 min)
 
 7.  **news.yaml**: Ensures NEWS.md is updated for every PR. Can be
     bypassed with `no-changelog` label. (~1 min)
@@ -512,27 +511,27 @@ The following workflows run on every PR. **All must pass** for merge:
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs: - `/document` -
-Runs
-[`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-and commits changes - `/style` - Runs `styler::style_pkg()` and commits
-changes
+Runs `roxygen2::roxygenise()` and commits changes - `/style` - Runs
+`styler::style_pkg()` and commits changes
 
 ## Repository Structure
 
 ### Key Directories
 
-- **R/**: Package source code (30+ R files)
+- **R/**: Package source code (30 R files)
 
-  - `Run_Mod.R`: Main function to run JAGS Bayesian models
-  - `run_mod_stan.R`: Main function to run Stan Bayesian models (new)
+  - `run_serodynamics.R`: Main function to run JAGS Bayesian models
+  - `run_mod.R`: Deprecated wrapper for
+    [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md)
+  - `run_mod_stan.R`: Main function to run Stan Bayesian models
   - `as_case_data.R`: Convert data to case_data class
   - `prep_data.r`: Data preparation for JAGS
   - `prep_data_stan.R`: Data preparation for Stan (new)
   - `prep_priors.R`: Prior preparation for JAGS
   - `prep_priors_stan.R`: Prior preparation for Stan (new)
   - `sim_case_data.R`: Simulate case data for testing
-  - `post_summ.R`, `postprocess_jags_output.R`: Post-processing JAGS
-    results
+  - `summarize_posterior.R`, `postprocess_jags_output.R`:
+    Post-processing JAGS results
   - `plot_*.R`: Diagnostic plotting functions (trace, density, Rhat,
     effective sample size)
   - `serodynamics-package.R`: Package documentation
@@ -612,8 +611,8 @@ to make snapshots platform-specific.
 ### Documentation Out of Sync
 
 **Symptom**: R-check-docs.yml workflow fails. **Solution**: Run
-[`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-locally and commit the updated `man/` and `NAMESPACE` files.
+`devtools::document()` locally and commit the updated `man/` and
+`NAMESPACE` files.
 
 ### Version Not Incremented
 
@@ -672,7 +671,7 @@ dataset |> expect_snapshot_data(name = "sees-data")
 prepped_data |> expect_snapshot_value(style = "serialize")
 
 # For simple output or error messages
-results <- post_summ(data) |> expect_no_error()
+results <- summarize_posterior(data) |> expect_no_error()
 testthat::expect_snapshot(results)
 ```
 
@@ -884,27 +883,20 @@ structure, workflows, and configuration files. When making changes:
 3.  **ALWAYS** establish value-based unit tests (snapshot or explicit
     value tests) BEFORE modifying functions
 4.  **ALWAYS** write tidy, clean, and well-organized code
-5.  **ALWAYS** run
-    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-    after modifying roxygen2 comments
+5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
+    comments
 6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
 7.  **ALWAYS** increment dev version number to be one ahead of main
     branch before requesting PR review
 8.  **ALWAYS** update NEWS.md for user-facing changes
-9.  **ALWAYS** run tests before committing
-    ([`devtools::test()`](https://devtools.r-lib.org/reference/test.html))
+9.  **ALWAYS** run tests before committing (`devtools::test()`)
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
-11. **ALWAYS** run
-    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-    before requesting PR review
-12. **ALWAYS** run
-    [`lintr::lint_package()`](https://lintr.r-lib.org/reference/lint.html)
-    before requesting PR review and fix all linting issues
-13. **ALWAYS** run
-    [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
-    before requesting PR review and ensure it passes with 0 errors, 0
-    warnings, 0 notes
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** run `lintr::lint_package()` before requesting PR review
+    and fix all linting issues
+13. **ALWAYS** run `devtools::check()` before requesting PR review and
+    ensure it passes with 0 errors, 0 warnings, 0 notes
 14. **ALWAYS** make sure
     [`spelling::spell_check_package()`](https://docs.ropensci.org/spelling//reference/spell_check_package.html)
     passes before requesting PR review

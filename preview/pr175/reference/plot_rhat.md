@@ -1,8 +1,7 @@
 # Rhat Plot Diagnostics
 
-plot_jags_Rhat() takes a [list](https://rdrr.io/r/base/list.html) output
-from
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md)
+plot_rhat() takes a [list](https://rdrr.io/r/base/list.html) output from
+[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md)
 to produce dotplots of potential scale reduction factors (Rhat) for each
 chain run in the mcmc estimation. Rhat values analyze the spread of
 chains compared to pooled values with a goal of observing rhat \< 1.10
@@ -18,14 +17,14 @@ parameters:
 
 - t1 = time to peak
 
-- r = shape parameter
+- shape = shape parameter
 
 - alpha = decay rate
 
 ## Usage
 
 ``` r
-plot_jags_Rhat(
+plot_rhat(
   data,
   iso = unique(data$Iso_type),
   param = unique(data$Parameter),
@@ -37,7 +36,8 @@ plot_jags_Rhat(
 
 - data:
 
-  A [list](https://rdrr.io/r/base/list.html) outputted from run_mod().
+  A [list](https://rdrr.io/r/base/list.html) outputted from
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md).
 
 - iso:
 
@@ -57,7 +57,7 @@ plot_jags_Rhat(
 
   - `t1` = posterior estimate of time to peak
 
-  - `r` = posterior estimate of shape parameter
+  - `shape` = posterior estimate of shape parameter
 
   - `alpha` = posterior estimate of decay rate
 
@@ -82,7 +82,7 @@ Sam Schildhauer
 
 data <- serodynamics::nepal_sees_jags_output
 
-plot_jags_Rhat(data = data,
-               iso = "HlyE_IgA",
-               strat = "typhi")
+plot_rhat(data = data,
+          iso = "HlyE_IgA",
+          strat = "typhi")
 ```

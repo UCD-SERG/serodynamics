@@ -87,7 +87,7 @@
 </h3>
 <p>All snapshot files for Linux and Windows are <strong>100% identical</strong> (0 byte differences):</p>
 <div class="sourceCode" id="cb1"><pre class="sourceCode bash"><code class="sourceCode bash"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Verified for all snapshot files:</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> tests/testthat/_snaps/linux/run_mod/<span class="pp">*</span>.csv tests/testthat/_snaps/windows/run_mod/<span class="pp">*</span>.csv</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">diff</span> tests/testthat/_snaps/linux/run_serodynamics/<span class="pp">*</span>.csv tests/testthat/_snaps/windows/run_serodynamics/<span class="pp">*</span>.csv</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Result: No differences found</span></span></code></pre></div>
 <p>This suggests: - Linux and Windows use similar or identical: - Floating-point arithmetic implementations - Mathematical library implementations (libm) - Compiler optimization strategies - JAGS binary compilation settings</p>
 </section><section class="level3"><h3 id="macos-differs-from-linuxwindows">2. macOS Differs from Linux/Windows<a class="anchor" aria-label="anchor" href="#macos-differs-from-linuxwindows"></a>
@@ -150,13 +150,13 @@
 <p>The repository currently maintains:</p>
 <ol type="1">
 <li>
-<strong>Base snapshots</strong> (<code>tests/testthat/_snaps/run_mod/</code>) - Match Linux/Windows</li>
+<strong>Base snapshots</strong> (<code>tests/testthat/_snaps/run_serodynamics/</code>) - Match Linux/Windows</li>
 <li>
-<strong>darwin variants</strong> (<code>tests/testthat/_snaps/darwin/run_mod/</code>) - macOS-specific</li>
+<strong>darwin variants</strong> (<code>tests/testthat/_snaps/darwin/run_serodynamics/</code>) - macOS-specific</li>
 <li>
-<del><strong>linux variants</strong> (<code>tests/testthat/_snaps/linux/run_mod/</code>) - Identical to base</del> (Removed in consolidation)</li>
+<del><strong>linux variants</strong> (<code>tests/testthat/_snaps/linux/run_serodynamics/</code>) - Identical to base</del> (Removed in consolidation)</li>
 <li>
-<del><strong>windows variants</strong> (<code>tests/testthat/_snaps/windows/run_mod/</code>) - Identical to linux</del> (Removed in consolidation)</li>
+<del><strong>windows variants</strong> (<code>tests/testthat/_snaps/windows/run_serodynamics/</code>) - Identical to linux</del> (Removed in consolidation)</li>
 </ol>
 <p>This was <strong>redundant</strong> because: - Windows snapshots duplicated Linux snapshots - Linux snapshots duplicated base snapshots - Only darwin snapshots provide unique value</p>
 </section><section class="level2"><h2 id="implemented-solution">Implemented Solution<a class="anchor" aria-label="anchor" href="#implemented-solution"></a>
