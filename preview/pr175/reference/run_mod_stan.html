@@ -86,6 +86,9 @@ infection. The antibody dynamic curve includes the following parameters:</p><ul>
 <span>  niter <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  strat <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  with_post <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  adapt_delta <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  max_treedepth <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  init <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -127,6 +130,22 @@ entered in quotes.</p></dd>
 object(s) should be stored as an attribute (<code>stan.fit</code>) of the returned
 <code>sr_model</code> object. When <code>TRUE</code>, the posterior draws are accessible for
 functions like <code><a href="sample_predictive_stan.html">sample_predictive_stan()</a></code>. Note: These objects can be large.</p></dd>
+
+
+<dt id="arg-adapt-delta">adapt_delta<a class="anchor" aria-label="anchor" href="#arg-adapt-delta"></a></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> in (0, 1) for the sampler's target acceptance
+probability (CmdStan default 0.8). Raise (e.g. 0.95) to reduce divergent
+transitions for difficult posteriors.</p></dd>
+
+
+<dt id="arg-max-treedepth">max_treedepth<a class="anchor" aria-label="anchor" href="#arg-max-treedepth"></a></dt>
+<dd><p>A positive <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> cap on the NUTS tree depth
+(CmdStan default 10).</p></dd>
+
+
+<dt id="arg-init">init<a class="anchor" aria-label="anchor" href="#arg-init"></a></dt>
+<dd><p>Initial-value specification passed to CmdStanR (function, list,
+or numeric range). Default <code>NULL</code> uses CmdStanR's random initialization.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -187,7 +206,13 @@ If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
 contains MCMC samples from the joint posterior distribution of the model
 parameters, conditional on the provided input <code>data</code>,
 including the same structure as <code><a href="run_mod.html">run_mod()</a></code>. When <code>with_post = TRUE</code>,
-the raw CmdStanR fit object(s) are stored as an attribute named <code>stan.fit</code>.</p>
+the raw CmdStanR fit object(s) are stored as an attribute named <code>stan.fit</code>.
+Note: The <code>nBurnin</code> attribute on the returned object reflects <code>nadapt</code>
+(Stan warmup iterations), not a post-warmup burnin (Stan has none).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="author">Author<a class="anchor" aria-label="anchor" href="#author"></a></h2>
+    <p>Kwan Ho Lee</p>
     </div>
 
     <div class="section level2">

@@ -30,8 +30,31 @@ prep_data_stan(
 
 ## Value
 
-a `prepped_stan_data` object (a [list](https://rdrr.io/r/base/list.html)
-with Stan-formatted data)
+a `prepped_stan_data` object (a named
+[list](https://rdrr.io/r/base/list.html)) with the following elements
+ready for passing to CmdStanR:
+
+- `nsubj`: integer, number of subjects
+
+- `n_antigen_isos`: integer, number of antigen-isotype combinations
+
+- `n_params`: integer, number of curve parameters (always 5: y0, y1, t1,
+  alpha, shape)
+
+- `nsmpl`: integer vector of length `nsubj`, number of observations per
+  subject
+
+- `max_nsmpl`: integer, maximum of `nsmpl` (determines array dimensions)
+
+- `smpl_t`: numeric matrix `[nsubj, max_nsmpl]` of observation times.
+  Positions beyond `nsmpl[subj]` are padded with **0** (not `NA`).
+
+- `logy`: numeric array `[nsubj, max_nsmpl, n_antigen_isos]` of log
+  antibody values. Positions beyond `nsmpl[subj]` are padded with **0**.
+  Unlike the JAGS output from
+  [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_data.md),
+  which uses `NA` for padding, Stan requires numeric values; the model
+  ignores padded entries by looping only up to `nsmpl[subj]`.
 
 ## See also
 

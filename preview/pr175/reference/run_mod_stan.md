@@ -26,6 +26,9 @@ run_mod_stan(
   niter = 1000,
   strat = NA,
   with_post = FALSE,
+  adapt_delta = NULL,
+  max_treedepth = NULL,
+  init = NULL,
   ...
 )
 ```
@@ -70,6 +73,22 @@ run_mod_stan(
   the posterior draws are accessible for functions like
   [`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md).
   Note: These objects can be large.
+
+- adapt_delta:
+
+  A [numeric](https://rdrr.io/r/base/numeric.html) in (0, 1) for the
+  sampler's target acceptance probability (CmdStan default 0.8). Raise
+  (e.g. 0.95) to reduce divergent transitions for difficult posteriors.
+
+- max_treedepth:
+
+  A positive [integer](https://rdrr.io/r/base/integer.html) cap on the
+  NUTS tree depth (CmdStan default 10).
+
+- init:
+
+  Initial-value specification passed to CmdStanR (function, list, or
+  numeric range). Default `NULL` uses CmdStanR's random initialization.
 
 - ...:
 
@@ -159,7 +178,13 @@ parameters, conditional on the provided input `data`, including the same
 structure as
 [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod.md).
 When `with_post = TRUE`, the raw CmdStanR fit object(s) are stored as an
-attribute named `stan.fit`.
+attribute named `stan.fit`. Note: The `nBurnin` attribute on the
+returned object reflects `nadapt` (Stan warmup iterations), not a
+post-warmup burnin (Stan has none).
+
+## Author
+
+Kwan Ho Lee
 
 ## Examples
 

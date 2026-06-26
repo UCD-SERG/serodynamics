@@ -11,7 +11,7 @@ itself).
 prep_priors_stan(
   max_antigens,
   mu_hyp_param = c(1, 7, 1, -4, -1),
-  prec_hyp_param = c(1, 1e-05, 1, 0.001, 1),
+  prec_hyp_param = c(1, 1/9, 1, 1/9, 1),
   omega_param = c(1, 50, 1, 10, 1),
   wishdf_param = 20,
   prec_logy_hyp_param = c(4, 1)
@@ -97,6 +97,10 @@ A "curve_params_priors_stan" object (a subclass of
 `prep_priors_stan()` attached as
 [attributes](https://rdrr.io/r/base/attributes.html) entry named
 `"used_priors"`), containing Stan-formatted priors.
+
+## Author
+
+Kwan Ho Lee
 
 ## Examples
 
@@ -225,9 +229,9 @@ prep_priors_stan(max_antigens = 2)
 #> 
 #> , , 2
 #> 
-#>      [,1]  [,2] [,3] [,4] [,5]
-#> [1,]    0 1e-05    0    0    0
-#> [2,]    0 1e-05    0    0    0
+#>      [,1]      [,2] [,3] [,4] [,5]
+#> [1,]    0 0.1111111    0    0    0
+#> [2,]    0 0.1111111    0    0    0
 #> 
 #> , , 3
 #> 
@@ -237,9 +241,9 @@ prep_priors_stan(max_antigens = 2)
 #> 
 #> , , 4
 #> 
-#>      [,1] [,2] [,3]  [,4] [,5]
-#> [1,]    0    0    0 0.001    0
-#> [2,]    0    0    0 0.001    0
+#>      [,1] [,2] [,3]      [,4] [,5]
+#> [1,]    0    0    0 0.1111111    0
+#> [2,]    0    0    0 0.1111111    0
 #> 
 #> , , 5
 #> 
@@ -295,7 +299,7 @@ prep_priors_stan(max_antigens = 2)
 #> [1]  1  7  1 -4 -1
 #> 
 #> attr(,"used_priors")$prec_hyp_param
-#> [1] 1e+00 1e-05 1e+00 1e-03 1e+00
+#> [1] 1.0000000 0.1111111 1.0000000 0.1111111 1.0000000
 #> 
 #> attr(,"used_priors")$omega_param
 #> [1]  1 50  1 10  1

@@ -77,8 +77,22 @@ which column contains antigen-isotype names</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a <code>prepped_stan_data</code> object (a <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with Stan-formatted data)</p>
-    </div>
+    <p>a <code>prepped_stan_data</code> object (a named <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a>) with the following
+elements ready for passing to CmdStanR:</p><ul><li><p><code>nsubj</code>: integer, number of subjects</p></li>
+<li><p><code>n_antigen_isos</code>: integer, number of antigen-isotype combinations</p></li>
+<li><p><code>n_params</code>: integer, number of curve parameters (always 5: y0, y1, t1,
+alpha, shape)</p></li>
+<li><p><code>nsmpl</code>: integer vector of length <code>nsubj</code>, number of observations per
+subject</p></li>
+<li><p><code>max_nsmpl</code>: integer, maximum of <code>nsmpl</code> (determines array dimensions)</p></li>
+<li><p><code>smpl_t</code>: numeric matrix <code>[nsubj, max_nsmpl]</code> of observation times.
+Positions beyond <code>nsmpl[subj]</code> are padded with <strong>0</strong> (not <code>NA</code>).</p></li>
+<li><p><code>logy</code>: numeric array <code>[nsubj, max_nsmpl, n_antigen_isos]</code> of log
+antibody values. Positions beyond <code>nsmpl[subj]</code> are padded with <strong>0</strong>.
+Unlike the JAGS output from <code><a href="prep_data.html">prep_data()</a></code>, which uses <code>NA</code> for padding,
+Stan requires numeric values; the model ignores padded entries by
+looping only up to <code>nsmpl[subj]</code>.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="sample_predictive_stan.html">sample_predictive_stan()</a></code> for posterior predictive
