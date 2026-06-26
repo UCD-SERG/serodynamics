@@ -1,4 +1,5 @@
 #' @title Prepare priors for Stan
+#' @author Kwan Ho Lee
 #' @description
 #' Takes multiple [vector] inputs to allow for modifiable priors for Stan
 #' models. Returns Stan-compatible prior specifications (matrix inversions
@@ -16,7 +17,7 @@
 prep_priors_stan <- function(
     max_antigens,
     mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),  # (y0, y1, t1, alpha, shape)
-    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+    prec_hyp_param = c(1.0, 1 / 9, 1.0, 1 / 9, 1.0),  # weakly-informative (SD~3); HMC-stable
     omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
     wishdf_param = 20,
     prec_logy_hyp_param = c(4.0, 1.0)) {

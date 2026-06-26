@@ -1,4 +1,5 @@
 #' @title Run Stan Model
+#' @author Kwan Ho Lee
 #' @description
 #'  `run_mod_stan()` takes a data frame and adjustable MCMC inputs to fit a
 #'  Bayesian model using Stan (via cmdstanr) to estimate antibody dynamic 
@@ -23,6 +24,13 @@
 #' object(s) should be stored as an attribute (`stan.fit`) of the returned
 #' `sr_model` object. When `TRUE`, the posterior draws are accessible for
 #' functions like [sample_predictive_stan()]. Note: These objects can be large.
+#' @param adapt_delta A [numeric] in (0, 1) for the sampler's target acceptance
+#' probability (CmdStan default 0.8). Raise (e.g. 0.95) to reduce divergent
+#' transitions for difficult posteriors.
+#' @param max_treedepth A positive [integer] cap on the NUTS tree depth
+#' (CmdStan default 10).
+#' @param init Initial-value specification passed to CmdStanR (function, list,
+#' or numeric range). Default `NULL` uses CmdStanR's random initialization.
 #' @param ... Additional arguments passed to `prep_priors_stan()`.
 #' @returns An `sr_model` class object: a subclass of [dplyr::tbl_df] that
 #' contains MCMC samples from the joint posterior distribution of the model
@@ -39,6 +47,9 @@ run_mod_stan <- function(data,
                          niter = 1000,
                          strat = NA,
                          with_post = FALSE,
+                         adapt_delta = NULL,
+                         max_treedepth = NULL,
+                         init = NULL,
                          ...) {
   
   # Check if cmdstanr is available
@@ -165,6 +176,9 @@ run_mod_stan <- function(data,
       parallel_chains = nchain,
       iter_warmup = nadapt,
       iter_sampling = niter,
+      adapt_delta = adapt_delta,
+      max_treedepth = max_treedepth,
+      init = init,
       refresh = 0,  # Suppress iteration messages
       show_messages = FALSE
     )
@@ -180,11 +194,21 @@ run_mod_stan <- function(data,
       format = "draws_array"
     )
     
-    # Convert to mcmc.list format compatible with ggmcmc
+    # Convert to mcmc.list format compatible with ggmcmc.
+    # Build a PLAIN numeric matrix per chain (stripping posterior's draws_array
+    # attributes) and use the coda::mcmc() constructor. Passing a draws_array
+    # slice directly to coda::as.mcmc() can yield an obsolete-mcmc-object
+    # error on some coda versions.
     # draws_array has dimensions [iteration, chain, variable]
+    var_names <- dimnames(draws)[[3]]
+    n_iter <- dim(draws)[1]
+    n_var <- dim(draws)[3]
     mcmc_list <- list()
     for (ch in seq_len(nchain)) {
-      mcmc_list[[ch]] <- coda::as.mcmc(draws[, ch, ])
+      m <- matrix(as.numeric(draws[, ch, ]),
+                  nrow = n_iter, ncol = n_var,
+                  dimnames = list(NULL, var_names))
+      mcmc_list[[ch]] <- coda::mcmc(m)
     }
     mcmc_list <- coda::as.mcmc.list(mcmc_list)
     

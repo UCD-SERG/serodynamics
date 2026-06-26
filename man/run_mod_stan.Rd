@@ -12,6 +12,9 @@ run_mod_stan(
   niter = 1000,
   strat = NA,
   with_post = FALSE,
+  adapt_delta = NULL,
+  max_treedepth = NULL,
+  init = NULL,
   ...
 )
 }
@@ -36,6 +39,16 @@ entered in quotes.}
 object(s) should be stored as an attribute (\code{stan.fit}) of the returned
 \code{sr_model} object. When \code{TRUE}, the posterior draws are accessible for
 functions like \code{\link[=sample_predictive_stan]{sample_predictive_stan()}}. Note: These objects can be large.}
+
+\item{adapt_delta}{A \link{numeric} in (0, 1) for the sampler's target acceptance
+probability (CmdStan default 0.8). Raise (e.g. 0.95) to reduce divergent
+transitions for difficult posteriors.}
+
+\item{max_treedepth}{A positive \link{integer} cap on the NUTS tree depth
+(CmdStan default 10).}
+
+\item{init}{Initial-value specification passed to CmdStanR (function, list,
+or numeric range). Default \code{NULL} uses CmdStanR's random initialization.}
 
 \item{...}{
   Arguments passed on to \code{\link{prep_priors_stan}}
@@ -143,4 +156,7 @@ if (requireNamespace("cmdstanr", quietly = TRUE)) {
     )
   }
 }
+}
+\author{
+Kwan Ho Lee
 }
