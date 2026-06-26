@@ -37,9 +37,8 @@ following the guidance in
 serodynamics_example()
 #> [1] "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv"
 #> [2] "model.dobson.jags"                             
-#> [3] "model.dobson.stan"                             
-#> [4] "model.jags"                                    
-#> [5] "model.stan"                                    
+#> [3] "model.jags"                                    
+#> [4] "model.stan"                                    
 serodynamics_example(
   "SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv")
 #> /home/runner/work/_temp/Library/serodynamics/extdata/SEES_Case_Nepal_ForSeroKinetics_02-13-2025.csv
