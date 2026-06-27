@@ -19,7 +19,7 @@ plot_serocurve(
 )
 }
 \arguments{
-\item{model}{An \code{sr_model} object returned by \code{\link[=run_mod]{run_mod()}}.}
+\item{model}{An \code{sr_model} object returned by \code{\link[=run_serodynamics]{run_serodynamics()}}.}
 
 \item{antigen_iso}{A \link{character} vector of antigen-isotype combinations to
 plot.  Defaults to all antigen-isotypes present in the subject-level
@@ -36,7 +36,8 @@ curve.  Options:
 \itemize{
 \item \code{"population"} (default): uses population-level \code{mu.par} samples stored
 in \code{attr(model, "population_params")}. Requires the model to have been
-fitted with \code{run_mod(..., with_pop_params = TRUE)}.
+in \code{attr(model, "population_params")}. Requires the model to have been
+fitted with \code{run_serodynamics(..., with_pop_params = TRUE)}.
 \item \code{"newperson"}: uses the predictive distribution for a new individual
 drawn from the population-level prior.
 }}
@@ -70,7 +71,9 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 \description{
 Plots the estimated antibody response curve derived from posterior samples
 of population-level (\code{mu.par}) or the predictive distribution from a fitted
-\code{\link[=run_mod]{run_mod()}} model.  A median curve with an optional 95\% credible interval
+Plots the estimated antibody response curve derived from posterior samples
+of population-level (\code{mu.par}) or the predictive distribution from a fitted
+\code{\link[=run_serodynamics]{run_serodynamics()}} model.  A median curve with an optional 95\% credible interval
 ribbon is produced for each requested antigen-isotype and stratification
 combination.
 }
