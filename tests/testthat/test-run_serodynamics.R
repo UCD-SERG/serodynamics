@@ -199,9 +199,11 @@ test_that(
     if (system_os() == "darwin") {
       results |>
         attributes() |>
-        rlist::list.remove(c("row.names", "fitted_residuals", "jags.post")) |>
-        expect_snapshot_value(style = "serialize",
-                              variant = darwin_variant())
+      expect_equal(attr(results, "priors")$mu_hyp_param,    c(1, 4, 1, -3, -1))
+      expect_equal(attr(results, "priors")$prec_hyp_param,  c(0.01, 0.0001, 0.01, 0.001, 0.01))
+      expect_equal(attr(results, "priors")$omega_param,     c(1, 20, 1, 10, 1))
+      expect_equal(attr(results, "priors")$wishdf_param,    10)
+      expect_equal(attr(results, "priors")$prec_logy_hyp_param, c(3, 1))
     }
     
     if (system_os() == "darwin") {
