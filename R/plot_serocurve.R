@@ -8,7 +8,7 @@
 #' ribbon is produced for each requested antigen-isotype and stratification
 #' combination.
 #'
-#' @param model An `sr_model` object returned by [run_mod()].
+#' @param model An `sr_model` object returned by [run_serodynamics()].
 #' @param antigen_iso A [character] vector of antigen-isotype combinations to
 #'   plot.  Defaults to all antigen-isotypes present in the subject-level
 #'   draws of `model` (`model$Iso_type`); in normal usage these match the
