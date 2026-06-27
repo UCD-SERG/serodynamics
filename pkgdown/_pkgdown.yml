@@ -22,6 +22,7 @@ reference:
 - title: Visualize data
   contents:
   - autoplot.case_data
+  - plot_serocurve
 - title: Prepare auxiliary JAGS inputs
   contents:
   - prep_priors
@@ -36,7 +37,6 @@ reference:
   - plot_trace
   - plot_ess
   - plot_predicted_curve
-  - plot_serocurve
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
