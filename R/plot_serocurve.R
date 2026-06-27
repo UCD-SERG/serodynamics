@@ -2,11 +2,13 @@
 #' @description
 #' Plots the estimated antibody response curve derived from posterior samples
 #' of population-level (`mu.par`) or the predictive distribution from a fitted
-#' [run_mod()] model.  A median curve with an optional 95% credible interval
+#' Plots the estimated antibody response curve derived from posterior samples
+#' of population-level (`mu.par`) or the predictive distribution from a fitted
+#' [run_serodynamics()] model.  A median curve with an optional 95% credible interval
 #' ribbon is produced for each requested antigen-isotype and stratification
 #' combination.
 #'
-#' @param model An `sr_model` object returned by [run_mod()].
+#' @param model An `sr_model` object returned by [run_serodynamics()].
 #' @param antigen_iso A [character] vector of antigen-isotype combinations to
 #'   plot.  Defaults to all antigen-isotypes present in the subject-level
 #'   draws of `model` (`model$Iso_type`); in normal usage these match the
@@ -19,7 +21,8 @@
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
-#'     fitted with `run_mod(..., with_pop_params = TRUE)`.
+#'     in `attr(model, "population_params")`. Requires the model to have been
+#'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #'   - `"newperson"`: uses the predictive distribution for a new individual
 #'     drawn from the population-level prior.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
@@ -64,16 +67,15 @@ plot_serocurve <- function(
   if (param_source == "population") {
     pop_params <- attr(model, "population_params")
     if (is.null(pop_params)) {
-      cli::cli_abort(
-        c(
-          "The {.arg model} object does not have a {.field population_params}",
-          " attribute.",
-          "i" = paste0(
-            "Re-fit the model with",
-            " {.code run_mod(..., with_pop_params = TRUE)}."
-          )
+    cli::cli_abort(
+      c(
+        "The {.arg model} object does not have a {.field population_params} attribute.",
+        "i" = paste0(
+          "Re-fit the model with",
+          " {.code run_serodynamics(..., with_pop_params = TRUE)}."
         )
       )
+    )
     }
     # The population_params tibble has columns:
     # Iteration, Chain, Parameter, Iso_type, Stratification,
