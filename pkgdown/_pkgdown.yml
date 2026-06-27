@@ -61,6 +61,7 @@ articles:
   navbar: ~
   contents:
   - articles/getting-started
+  - articles/jags-to-stan 
 
 - title: Developer Notes
   contents:
