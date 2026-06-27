@@ -51,8 +51,6 @@
   : Plot Effective Sample Size Diagnostics
 - [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_predicted_curve.md)
   : Generate Predicted Antibody Response Curves (Median + 95% CI)
-- [`plot_serocurve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_serocurve.md)
-  : Plot Estimated Serodynamic Curves at the Population Level
 
 ## Postprocess JAGS output
 
@@ -63,6 +61,11 @@
 
 - [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/summarize_posterior.md)
   : Summary Table of Jags Posterior Estimates
+
+## Visualize model results
+
+- [`plot_serocurve()`](https:/ucd-serg.github.io/serodynamics/preview/pr193/reference/plot_serocurve.md)
+  : Plot Estimated Serodynamic Curves at the Population Level
 
 ## Example data sets
 
