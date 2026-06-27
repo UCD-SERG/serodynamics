@@ -26,9 +26,17 @@ reference:
   contents:
   - prep_priors
   - initsfunction
+- title: Prepare auxiliary Stan inputs
+  contents:
+  - prep_priors_stan
+  - prep_data_stan
 - title: Model seroreponse
   contents:
   - run_serodynamics
+  - run_mod_stan
+- title: Posterior predictive sampling
+  contents:
+  - sample_predictive_stan
 - title: Model diagnostics
   contents:
   - plot_density
@@ -53,6 +61,7 @@ articles:
   navbar: ~
   contents:
   - articles/getting-started
+  - articles/jags-to-stan 
 
 - title: Developer Notes
   contents:

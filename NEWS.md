@@ -1,6 +1,15 @@
 # serodynamics (development version)
 
 ## New features
+
+* Added Stan support as an alternative to JAGS for Bayesian modeling:
+  * New `run_mod_stan()` function for fitting models with Stan/cmdstanr.
+  * New `prep_data_stan()` function to prepare data in Stan format.
+  * New `prep_priors_stan()` function to prepare priors for Stan models.
+  * New Stan model files: `inst/extdata/model.stan` and
+    `inst/extdata/model.dobson.stan`.
+  * Stan support is optional (`cmdstanr` in Suggests) and can be used
+    alongside JAGS.
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`
@@ -15,11 +24,13 @@
 output. (#141)
 
 ## Bug fixes
-* `run_mod()`'s `fitted_residuals` attribute now covers all observations across 
-all strata (previously only the last stratum was retained) and always includes 
-a `Stratification` column (`"None"` when unstratified). (#240)
+
+* `run_mod()`'s `fitted_residuals` attribute now covers all observations across
+  all strata (previously only the last stratum was retained) and always includes
+  a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes
+
 * Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
   note in `.lintr.R` that `dplyr::*_join()` calls must specify the
   `relationship` argument (for example `relationship = "many-to-one"`),
