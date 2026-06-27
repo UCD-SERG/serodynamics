@@ -93,7 +93,7 @@
 #' @example inst/examples/run_serodynamics-examples.R
 run_serodynamics <- function(data,
                              file_mod = NULL,
-                             decay_type = c("power", "exponential"),
+                             decay_type = "power",
                              nchain = 4,
                              nadapt = 0,
                              nburn = 0,
@@ -105,7 +105,7 @@ run_serodynamics <- function(data,
                              preclogy_per_iso = FALSE,
                              ...) {
   # Select model file based on decay type
-  decay_type <- match.arg(decay_type)
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
   if (is.null(file_mod)) {
     file_mod <- if (decay_type == "power") {
       serodynamics_example("model.jags")
@@ -244,6 +244,10 @@ run_serodynamics <- function(data,
   }
   jags_out <- jags_out |>
     structure(priors = attributes(priorspec)$used_priors)
+  
+  # Record which decay type was used
+  jags_out <- jags_out |>
+    structure(decay_type = decay_type)
   
   # Calculating fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = jags_out,

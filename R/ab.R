@@ -1,7 +1,6 @@
 ab <- function(t, y0, y1, t1, alpha, shape,
-               decay_type = c("power", "exponential")) {
-  # Match decay_type argument
-  decay_type <- match.arg(decay_type)
+               decay_type = "power") {
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
   
   # Calculate antibody growth rate during active infection
   beta <- bt(y0, y1, t1)
