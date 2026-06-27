@@ -280,21 +280,23 @@ plot_serocurve <- function(
   if (facet_by_strat)       facet_vars <- c(facet_vars, "Stratification")
 
   if (length(facet_vars) > 0) {
-    facet_formula <- stats::as.formula(
-      paste("~", paste(facet_vars, collapse = " + "))
-    )
     if (is.null(ncol)) {
-      n_panels <- length(unique(interaction(
-        curve_summary[[facet_vars[1]]],
-        if (length(facet_vars) > 1) curve_summary[[facet_vars[2]]] else NULL
-      )))
-      ncol <- if (n_panels == 1) {
-        1
-      } else if (n_panels <= 4) {
-        2
+      if (length(facet_vars) == 1L) {
+        n_panels <- length(unique(curve_summary[[facet_vars[1L]]]))
+      } else {
+        n_panels <- length(unique(interaction(
+          curve_summary[[facet_vars[1L]]],
+          curve_summary[[facet_vars[2L]]]
+        )))
+      }
+      ncol <- if (n_panels == 1L) {
+        1L
+      } else if (n_panels <= 4L) {
+        2L
       } else {
         NULL
       }
+    }
     }
     p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
   }
