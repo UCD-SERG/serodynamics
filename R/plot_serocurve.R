@@ -2,8 +2,6 @@
 #' @description
 #' Plots the estimated antibody response curve derived from posterior samples
 #' of population-level (`mu.par`) or the predictive distribution from a fitted
-#' Plots the estimated antibody response curve derived from posterior samples
-#' of population-level (`mu.par`) or the predictive distribution from a fitted
 #' [run_serodynamics()] model.  A median curve with an optional 95% credible interval
 #' ribbon is produced for each requested antigen-isotype and stratification
 #' combination.
