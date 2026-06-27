@@ -174,7 +174,7 @@ test_that(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
-    announce_snapshot_file("nostrat-curve-params-specpriors.csv")
+    testthat::announce_snapshot_file("nostrat-curve-params-specpriors.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
