@@ -21,7 +21,8 @@
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
-#'     fitted with `run_mod(..., with_pop_params = TRUE)`.
+#'     in `attr(model, "population_params")`. Requires the model to have been
+#'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #'   - `"newperson"`: uses the predictive distribution for a new individual
 #'     drawn from the population-level prior.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
