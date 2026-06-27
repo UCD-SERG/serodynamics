@@ -95,6 +95,19 @@ run_mod_stan(
   Arguments passed on to
   [`prep_priors_stan`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_priors_stan.md)
 
+  `prec_hyp_param`
+
+  :   A [numeric](https://rdrr.io/r/base/numeric.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 5 values
+      corresponding to hyperprior diagonal entries for the precision
+      matrix (i.e. inverse variance) representing prior covariance of
+      uncertainty around `mu_hyp_param`. If specified, must be 5 values
+      long. Stan defaults differ from JAGS (more weakly informative for
+      HMC stability):
+
+      - defaults: y0 = 1.0, y1 = 1/9 (~0.11), t1 = 1.0, alpha = 1/9,
+        shape = 1.0
+
   `max_antigens`
 
   :   An [integer](https://rdrr.io/r/base/integer.html) specifying how
@@ -118,18 +131,6 @@ run_mod_stan(
       - alpha = decay rate (default = -4.0)
 
       - shape = shape parameter (default = -1.0)
-
-  `prec_hyp_param`
-
-  :   A [numeric](https://rdrr.io/r/base/numeric.html)
-      [vector](https://rdrr.io/r/base/vector.html) of 5 values
-      corresponding to hyperprior diagonal entries for the precision
-      matrix (i.e. inverse variance) representing prior covariance of
-      uncertainty around `mu_hyp_param`. If specified, must be 5 values
-      long:
-
-      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape
-        = 1.0
 
   `omega_param`
 

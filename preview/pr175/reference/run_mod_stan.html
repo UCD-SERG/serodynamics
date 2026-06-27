@@ -27,7 +27,7 @@ shape = shape parameter
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9002</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,6 +39,7 @@ shape = shape parameter
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/getting-started.html">Getting Started with serodynamics</a></li>
+    <li><a class="dropdown-item" href="../articles/jags-to-stan.html">Fitting the model with Stan, and how it compares to JAGS</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
   </ul></li>
@@ -149,7 +150,15 @@ or numeric range). Default <code>NULL</code> uses CmdStanR's random initializati
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>Arguments passed on to <code><a href="prep_priors_stan.html">prep_priors_stan</a></code></p><dl><dt><code>max_antigens</code></dt>
+<dd><p>Arguments passed on to <code><a href="prep_priors_stan.html">prep_priors_stan</a></code></p><dl><dt><code>prec_hyp_param</code></dt>
+<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
+hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
+If specified, must be 5 values long.
+Stan defaults differ from JAGS (more weakly informative for HMC stability):</p><ul><li><p>defaults: y0 = 1.0, y1 = 1/9 (~0.11), t1 = 1.0, alpha = 1/9, shape = 1.0</p></li>
+</ul></dd>
+
+    <dt><code>max_antigens</code></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> specifying how many
 antigen-isotypes (biomarkers) will be modeled.</p></dd>
 
@@ -162,13 +171,6 @@ If specified, must be 5 values long, representing the following parameters:</p><
 <li><p>t1 = time to peak (default = 1.0)</p></li>
 <li><p>alpha = decay rate (default = -4.0)</p></li>
 <li><p>shape = shape parameter (default = -1.0)</p></li>
-</ul></dd>
-
-    <dt><code>prec_hyp_param</code></dt>
-<dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
-hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
-If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape = 1.0</p></li>
 </ul></dd>
 
     <dt><code>omega_param</code></dt>

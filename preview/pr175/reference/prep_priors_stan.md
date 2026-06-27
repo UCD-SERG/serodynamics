@@ -49,9 +49,10 @@ prep_priors_stan(
   [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
   to hyperprior diagonal entries for the precision matrix (i.e. inverse
   variance) representing prior covariance of uncertainty around
-  `mu_hyp_param`. If specified, must be 5 values long:
+  `mu_hyp_param`. If specified, must be 5 values long. Stan defaults
+  differ from JAGS (more weakly informative for HMC stability):
 
-  - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, alpha = 0.001, shape =
+  - defaults: y0 = 1.0, y1 = 1/9 (~0.11), t1 = 1.0, alpha = 1/9, shape =
     1.0
 
 - omega_param:
@@ -106,12 +107,8 @@ Kwan Ho Lee
 
 ``` r
 
-prep_priors_stan(max_antigens = 2,
-                 mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-                 prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-                 omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-                 wishdf_param = 20,
-                 prec_logy_hyp_param = c(4.0, 1.0))
+# Use Stan defaults (weakly-informative priors for HMC stability)
+prep_priors_stan(max_antigens = 2)
 #> $n_params
 #> [1] 5
 #> 
@@ -129,9 +126,9 @@ prep_priors_stan(max_antigens = 2,
 #> 
 #> , , 2
 #> 
-#>      [,1]  [,2] [,3] [,4] [,5]
-#> [1,]    0 1e-05    0    0    0
-#> [2,]    0 1e-05    0    0    0
+#>      [,1]      [,2] [,3] [,4] [,5]
+#> [1,]    0 0.1111111    0    0    0
+#> [2,]    0 0.1111111    0    0    0
 #> 
 #> , , 3
 #> 
@@ -141,9 +138,9 @@ prep_priors_stan(max_antigens = 2,
 #> 
 #> , , 4
 #> 
-#>      [,1] [,2] [,3]  [,4] [,5]
-#> [1,]    0    0    0 0.001    0
-#> [2,]    0    0    0 0.001    0
+#>      [,1] [,2] [,3]      [,4] [,5]
+#> [1,]    0    0    0 0.1111111    0
+#> [2,]    0    0    0 0.1111111    0
 #> 
 #> , , 5
 #> 
@@ -199,7 +196,7 @@ prep_priors_stan(max_antigens = 2,
 #> [1]  1  7  1 -4 -1
 #> 
 #> attr(,"used_priors")$prec_hyp_param
-#> [1] 1e+00 1e-05 1e+00 1e-03 1e+00
+#> [1] 1.0000000 0.1111111 1.0000000 0.1111111 1.0000000
 #> 
 #> attr(,"used_priors")$omega_param
 #> [1]  1 50  1 10  1
@@ -211,7 +208,13 @@ prep_priors_stan(max_antigens = 2,
 #> [1] 4 1
 #> 
 
-prep_priors_stan(max_antigens = 2)
+# Override with custom priors
+prep_priors_stan(max_antigens = 2,
+                 mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                 prec_hyp_param = c(1.0, 1 / 9, 1.0, 1 / 9, 1.0),
+                 omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                 wishdf_param = 20,
+                 prec_logy_hyp_param = c(4.0, 1.0))
 #> $n_params
 #> [1] 5
 #> 
