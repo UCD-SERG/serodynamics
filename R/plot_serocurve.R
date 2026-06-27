@@ -18,7 +18,7 @@
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
-#'     in `attr(model, "population_params")`. Requires the model to have been
+#'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
 #'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #'   - `"newperson"`: uses the predictive distribution for a new individual
