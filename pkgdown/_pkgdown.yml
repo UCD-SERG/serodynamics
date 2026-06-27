@@ -22,7 +22,6 @@ reference:
 - title: Visualize data
   contents:
   - autoplot.case_data
-  - plot_serocurve
 - title: Prepare auxiliary JAGS inputs
   contents:
   - prep_priors
@@ -43,6 +42,9 @@ reference:
 - title: Summarize seroresponse model estimates
   contents:
   - summarize_posterior
+- title: Visualize model results
+  contents:
+  - plot_serocurve
 - title: Example data sets
   contents:
   - serodynamics_example
