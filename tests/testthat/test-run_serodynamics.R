@@ -145,7 +145,7 @@ test_that(
     
     # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
     # not the constant "prec.logy"
-    expect_false(all(preclogy_row$Parameter == "prec.logy"))
+    expect_false(any(preclogy_row$Parameter == "prec.logy"))
     expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
     
     if (system_os() == "darwin") {
@@ -166,7 +166,7 @@ test_that(
 )
 
 test_that(
-  desc = "results consistent with unstratified SEES data with modified priors",
+  desc = "results consistent with unstratified SEES data",
   code = {
     skip_on_cran()
     skip_if_not(
