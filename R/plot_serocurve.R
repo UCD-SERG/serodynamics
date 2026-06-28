@@ -2,9 +2,9 @@
 #' @description
 #' Plots the estimated antibody response curve derived from posterior samples
 #' of population-level (`mu.par`) or the predictive distribution from a fitted
-#' [run_serodynamics()] model.  A median curve with an optional 95% credible interval
-#' ribbon is produced for each requested antigen-isotype and stratification
-#' combination.
+#' [run_serodynamics()] model.  A median curve with an optional 95% credible 
+#' interval ribbon is produced for each requested antigen-isotype and 
+#' stratification combination.
 #'
 #' @param model An `sr_model` object returned by [run_serodynamics()].
 #' @param antigen_iso A [character] vector of antigen-isotype combinations to
@@ -65,15 +65,16 @@ plot_serocurve <- function(
   if (param_source == "population") {
     pop_params <- attr(model, "population_params")
     if (is.null(pop_params)) {
-    cli::cli_abort(
-      c(
-        "The {.arg model} object does not have a {.field population_params} attribute.",
-        "i" = paste0(
-          "Re-fit the model with",
-          " {.code run_serodynamics(..., with_pop_params = TRUE)}."
+      cli::cli_abort(
+        c(
+          "The {.arg model} object does not have a {.field population_params} 
+          attribute.",
+          "i" = paste0(
+            "Re-fit the model with",
+            " {.code run_serodynamics(..., with_pop_params = TRUE)}."
+          )
         )
       )
-    )
     }
     # The population_params tibble has columns:
     # Iteration, Chain, Parameter, Iso_type, Stratification,
@@ -297,25 +298,25 @@ plot_serocurve <- function(
         NULL
       }
     }
-    }
-    p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
   }
+  p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
+}
 
-  # ---- Log scales --------------------------------------------------------
-  if (log_y) {
-    p <- p + ggplot2::scale_y_log10()
-  }
-  if (log_x) {
-    p <- p +
-      ggplot2::scale_x_continuous(
-        trans = scales::pseudo_log_trans(sigma = 1, base = 10)
-      )
-  }
+# ---- Log scales --------------------------------------------------------
+if (log_y) {
+  p <- p + ggplot2::scale_y_log10()
+}
+if (log_x) {
+  p <- p +
+    ggplot2::scale_x_continuous(
+      trans = scales::pseudo_log_trans(sigma = 1, base = 10)
+    )
+}
 
-  # ---- Custom x-axis limits ----------------------------------------------
-  if (!is.null(xlim)) {
-    p <- p + ggplot2::coord_cartesian(xlim = xlim)
-  }
+# ---- Custom x-axis limits ----------------------------------------------
+if (!is.null(xlim)) {
+  p <- p + ggplot2::coord_cartesian(xlim = xlim)
+}
 
-  return(p)
+return(p)
 }
