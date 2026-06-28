@@ -65,10 +65,8 @@ plot_serocurve <- function(
     pop_params <- attr(model, "population_params")
     if (is.null(pop_params)) {
       cli::cli_abort(
-        c(
-          "The {.arg model} object does not have a {.field population_params} 
-          "The {.arg model} object does not have a {.field population_params} attribute.",
-          "i" = paste0(
+        c("The {.arg model} object does not have a {.field population_params} 
+          attribute.", "i" = paste0(
             "Re-fit the model with",
             " {.code run_serodynamics(..., with_pop_params = TRUE)}."
           )

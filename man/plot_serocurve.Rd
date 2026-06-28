@@ -70,9 +70,9 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 \description{
 Plots the estimated antibody response curve derived from posterior samples
 of population-level (\code{mu.par}) or the predictive distribution from a fitted
-\code{\link[=run_serodynamics]{run_serodynamics()}} model.  A median curve with an optional 95\% credible interval
-ribbon is produced for each requested antigen-isotype and stratification
-combination.
+\code{\link[=run_serodynamics]{run_serodynamics()}} model.  A median curve with an optional 95\% credible
+interval ribbon is produced for each requested antigen-isotype and
+stratification combination.
 }
 \examples{
 # nepal_sees_jags_output already includes population_params
