@@ -66,9 +66,9 @@ plot_serocurve <- function(
     if (is.null(pop_params)) {
       cli::cli_abort(
         c("The {.arg model} object does not have a {.field population_params} 
-          attribute.", "i" = paste0(
-            "Re-fit the model with",
-            " {.code run_serodynamics(..., with_pop_params = TRUE)}."
+          attribute.", 
+          "i" = paste0("Re-fit the model with 
+                       {.code run_serodynamics(..., with_pop_params = TRUE)}."
           )
         )
       )
@@ -295,25 +295,26 @@ plot_serocurve <- function(
         NULL
       }
     }
-    facet_formula <- stats::as.formula(paste("~", paste(facet_vars, collapse = " + ")))
+    facet_formula <- stats::as.formula(paste("~", paste(facet_vars, 
+                                                        collapse = " + ")))
     p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
   }
 
-# ---- Log scales --------------------------------------------------------
-if (log_y) {
-  p <- p + ggplot2::scale_y_log10()
-}
-if (log_x) {
-  p <- p +
-    ggplot2::scale_x_continuous(
-      trans = scales::pseudo_log_trans(sigma = 1, base = 10)
-    )
-}
+  # ---- Log scales --------------------------------------------------------
+  if (log_y) {
+    p <- p + ggplot2::scale_y_log10()
+  }
+  if (log_x) {
+    p <- p +
+      ggplot2::scale_x_continuous(
+        trans = scales::pseudo_log_trans(sigma = 1, base = 10)
+      )
+  }
 
-# ---- Custom x-axis limits ----------------------------------------------
-if (!is.null(xlim)) {
-  p <- p + ggplot2::coord_cartesian(xlim = xlim)
-}
+  # ---- Custom x-axis limits ----------------------------------------------
+  if (!is.null(xlim)) {
+    p <- p + ggplot2::coord_cartesian(xlim = xlim)
+  }
 
-return(p)
+  return(p)
 } 
