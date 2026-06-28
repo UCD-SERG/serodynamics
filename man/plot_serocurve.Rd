@@ -36,7 +36,6 @@ curve.  Options:
 \itemize{
 \item \code{"population"} (default): uses population-level \code{mu.par} samples stored
 in \code{attr(model, "population_params")}. Requires the model to have been
-in \code{attr(model, "population_params")}. Requires the model to have been
 fitted with \code{run_serodynamics(..., with_pop_params = TRUE)}.
 \item \code{"newperson"}: uses the predictive distribution for a new individual
 drawn from the population-level prior.
@@ -69,8 +68,6 @@ levels are shown as different colours on the same panel.}
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
-Plots the estimated antibody response curve derived from posterior samples
-of population-level (\code{mu.par}) or the predictive distribution from a fitted
 Plots the estimated antibody response curve derived from posterior samples
 of population-level (\code{mu.par}) or the predictive distribution from a fitted
 \code{\link[=run_serodynamics]{run_serodynamics()}} model.  A median curve with an optional 95\% credible interval

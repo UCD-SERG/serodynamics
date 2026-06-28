@@ -18,7 +18,6 @@
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
-#'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
 #'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #'   - `"newperson"`: uses the predictive distribution for a new individual
@@ -297,7 +296,7 @@ plot_serocurve <- function(
         NULL
       }
     }
-    }
+    facet_formula <- stats::as.formula(paste("~", paste(facet_vars, collapse = " + ")))
     p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
   }
 
