@@ -299,7 +299,7 @@ plot_serocurve <- function(
     }
     facet_formula <- stats::as.formula(paste("~", paste(facet_vars, collapse = " + ")))
     p <- p + ggplot2::facet_wrap(facet_formula, ncol = ncol)
-}
+  }
 
 # ---- Log scales --------------------------------------------------------
 if (log_y) {
