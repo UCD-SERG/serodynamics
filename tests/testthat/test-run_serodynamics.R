@@ -166,8 +166,7 @@ test_that(
 )
 
 test_that(
-  desc = "results are consistent with unstratified SEES data with modified
-  priors",
+  desc = "results consistent with unstratified SEES data with modified priors",
   code = {
     skip_on_cran()
     skip_if_not(
