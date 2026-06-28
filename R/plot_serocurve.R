@@ -68,7 +68,7 @@ plot_serocurve <- function(
         c("The {.arg model} object does not have a {.field population_params}", 
           "attribute.", 
           "i" = paste0("Re-fit the model with",
-          "{.code run_serodynamics(..., with_pop_params = TRUE)}."
+            "{.code run_serodynamics(..., with_pop_params = TRUE)}."
           )
         )
       )
