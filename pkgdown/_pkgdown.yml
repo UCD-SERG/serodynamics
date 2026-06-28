@@ -35,7 +35,6 @@ reference:
   - plot_rhat
   - plot_trace
   - plot_ess
-  - plot_predicted_curve
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
@@ -44,6 +43,7 @@ reference:
   - summarize_posterior
 - title: Visualize model results
   contents:
+  - plot_predicted_curve
   - plot_serocurve
 - title: Example data sets
   contents:
