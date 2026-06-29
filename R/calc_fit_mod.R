@@ -28,7 +28,7 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat,
                          original_data,
-                         strat = NA
+                         strat = NA,
                          decay_type = "power") {
   strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
 
