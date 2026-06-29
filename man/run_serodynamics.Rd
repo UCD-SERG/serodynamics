@@ -6,7 +6,8 @@
 \usage{
 run_serodynamics(
   data,
-  file_mod = serodynamics_example("model.jags"),
+  file_mod = NULL,
+  decay_type = "power",
   nchain = 4,
   nadapt = 0,
   nburn = 0,
@@ -23,6 +24,9 @@ run_serodynamics(
 \item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
 
 \item{file_mod}{The name of the file that contains model structure.}
+
+\item{decay_type}{A \link{character} string specifying the decay function used
+in the model (\code{"power"} or \code{"exponential"}). Default is \code{"power"}.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}
@@ -164,6 +168,7 @@ variances), one per antigen/isotype combination.
 }
 \item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
 for all observations.
+\item \code{decay_type}: The decay function used (\code{"power"} or \code{"exponential"}).
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
 }
