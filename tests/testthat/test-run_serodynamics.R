@@ -279,4 +279,3 @@ test_that("run_serodynamics selects exponential model automatically", {
   expect_equal(attr(results, "decay_type"), "exponential")
   expect_s3_class(attr(results, "fitted_residuals"), "data.frame")
 })
-
