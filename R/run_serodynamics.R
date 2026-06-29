@@ -21,9 +21,8 @@
 #' @param niter An [integer] specifying the number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
-#' @param decay_type A [character] string specifying the type of antibody
-#'   decay function to use. Either `"power"` (default) for power function
-#'   decay (Teunis et al. 2016) or `"exponential"` for exponential decay.
+#' @param decay_type A [character] string specifying the decay function used
+#'   in the model (`"power"` or `"exponential"`). Default is `"power"`.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
@@ -86,6 +85,7 @@
 #'     - `prec_logy_hyp_param`
 #'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
 #'   for all observations.
+#'   - `decay_type`: The decay function used (`"power"` or `"exponential"`).
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
@@ -252,7 +252,8 @@ run_serodynamics <- function(data,
   # Calculating fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
                           original_data = data,
-                          strat = strat)
+                          strat = strat,
+                          decay_type = decay_type)
   jags_out <- jags_out |>
     structure(fitted_residuals = fit_res)
 
