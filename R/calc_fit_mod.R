@@ -58,7 +58,8 @@ calc_fit_mod <- function(modeled_dat,
       by = base::intersect(
         c("Subject", "Iso_type", "Stratification"),
         names(original_data)
-      )
+      ),
+      relationship = "one-to-many"
     )
 
   # Calculating fitted and residual

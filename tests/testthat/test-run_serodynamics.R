@@ -44,7 +44,7 @@ test_that(
       expect_setequal(c("names", "row.names", "class", "nChains", 
                         "nParameters", "nIterations", "nBurnin", "nThin",
                         "population_params", "priors", 
-                        "fitted_residuals"))
+                        "fitted_residuals", "decay_type"))
     
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
@@ -104,7 +104,7 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
                         "nIterations", "nBurnin", "nThin", "priors", 
-                        "fitted_residuals"))
+                        "fitted_residuals", "decay_type"))
     
     results |>
       expect_snapshot_data(
@@ -153,7 +153,7 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
                         "nIterations", "nBurnin", "nThin", "population_params", 
-                        "priors", "fitted_residuals"))
+                        "priors", "fitted_residuals", "decay_type"))
     
     results |>
       expect_snapshot_data(
