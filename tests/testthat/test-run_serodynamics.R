@@ -184,7 +184,10 @@ test_that(
 )
 
 test_that(
-  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_serodynamics",
+  desc = paste(
+    "preclogy_per_iso relabels prec.logy Parameter by isotype",
+    "in run_serodynamics"
+  ),
   code = {
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees

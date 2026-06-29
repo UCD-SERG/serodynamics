@@ -113,7 +113,7 @@ run_serodynamics <- function(data,
       serodynamics_example("model_exp.jags")
     }
   }
-   ## Build and validate the stratification list to loop through.
+  ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 
   ## Creating a shell to output results
