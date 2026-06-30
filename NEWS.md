@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+## Internal
+
+* Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
+
 ## New features
 * Added `plot_serocurve()` for graphical visualization of population-level
   serodynamic curves using posterior samples of the `mu.par` hyperparameter
