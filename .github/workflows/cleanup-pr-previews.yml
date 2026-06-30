@@ -1,0 +1,28 @@
+# Housekeeping half of the PR-preview family, delegated to the reusable
+# cleanup-pr-previews workflow in d-morrison/gha. Periodically deletes gh-pages
+# preview directories for PRs that are no longer open, and (compact-history)
+# orphan-squashes gh-pages to a single commit so the deleted snapshots stop
+# bloating the repo. The calling job grants contents: write so the reusable can
+# commit the deletions / force-push the compacted branch back to gh-pages.
+name: Clean up PR Previews
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * 0' # Weekly on Sunday at midnight UTC
+
+# Only one cleanup at a time: a manual dispatch overlapping the scheduled run
+# would otherwise race on gh-pages. The reusable's --force-with-lease keeps that
+# data-safe, but serializing avoids the wasted runner and noisy retries.
+concurrency:
+  group: gh-pages-cleanup
+  cancel-in-progress: false
+
+jobs:
+  cleanup:
+    permissions:
+      contents: write
+      pull-requests: read
+    uses: d-morrison/gha/.github/workflows/cleanup-pr-previews.yml@v2
+    with:
+      compact-history: true
