@@ -1,5 +1,10 @@
 # serodynamics (development version)
 
+* Added a project-level `Claude Code` skill, `reprexes`
+  (`.claude/skills/reprexes`), capturing a workflow for isolating a problem
+  into a minimal reproducible example and iterating fixes on it before
+  porting them back. The `.claude` directory is excluded from the package
+  build via `.Rbuildignore`.
 ## Internal
 
 * Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).

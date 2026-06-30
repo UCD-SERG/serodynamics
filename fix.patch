@@ -1,0 +1,28 @@
+diff --git a/.claude/skills/reprexes/SKILL.md b/.claude/skills/reprexes/SKILL.md
+index b376fb3..968d686 100644
+--- a/.claude/skills/reprexes/SKILL.md
++++ b/.claude/skills/reprexes/SKILL.md
+@@ -96,7 +96,7 @@ but nothing more.
+   session (via `callr` since reprex 2.0) and emits code **plus actual
+   output**.
+   Copy the code and call `reprex::reprex()` (reads the clipboard by default),
+-  or point it at a file with `reprex(input = "/tmp/reprex.R")` (or a
++  or point it at a file with `reprex::reprex(input = "/tmp/reprex.R")` (or a
+   `tempfile(fileext = ".R")` path on non-Unix machines) — handy from a
+   non-interactive CLI session where there's no clipboard. Use it when the
+   output is destined for a PR comment or an upstream issue. Useful arguments:
+@@ -117,11 +117,10 @@ but nothing more.
+     on a missing object or package, your example wasn't actually
+     self-contained — fix that before sharing.
+
+-  Companion helpers handle "wild-caught" reprexes (all exported in reprex
++  Companion helpers handle "wild-caught" reprexes (both exported in reprex
+   2.x): `reprex_clean()` (strip the `#>` output markers from a rendered/pasted
+-  reprex, leaving runnable code), `reprex_rescue()` (recover code from
+-  R-console output with `>`/`+` prompts), and `reprex_invert()` (the inverse
+-  of `reprex()` — recover the input code from a rendered reprex).
++  reprex, leaving runnable code) and `reprex_rescue()` (recover code from
++  R-console output with `>`/`+` prompts).
+ - When the bug might be **version-dependent**, capture `sessionInfo()` (or set
+   `session_info = TRUE` above) in the reprex so versions are part of the
+   record. If you suspect *stale* packages are the cause,
