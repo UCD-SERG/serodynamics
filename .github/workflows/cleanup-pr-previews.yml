@@ -4,6 +4,8 @@
 # orphan-squashes gh-pages to a single commit so the deleted snapshots stop
 # bloating the repo. The calling job grants contents: write so the reusable can
 # commit the deletions / force-push the compacted branch back to gh-pages.
+#
+# Pinned to the @v2 moving major tag.
 name: Clean up PR Previews
 
 on:
