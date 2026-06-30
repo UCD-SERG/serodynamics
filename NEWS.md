@@ -1,5 +1,9 @@
 # serodynamics (development version)
 
+## Internal
+
+* Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
+
 ## New features
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
