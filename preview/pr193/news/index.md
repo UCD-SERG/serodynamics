@@ -2,6 +2,13 @@
 
 ## serodynamics (development version)
 
+### Internal
+
+- Added a scheduled `Clean up PR Previews` workflow that prunes
+  closed-PR `gh-pages` previews and compacts `gh-pages` history, so
+  deleted render snapshots stop bloating the repo (closes
+  [\#260](https://github.com/UCD-SERG/serodynamics/issues/260)).
+
 ### New features
 
 - Added

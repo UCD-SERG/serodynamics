@@ -47,6 +47,10 @@
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="serodynamics-development-version">serodynamics (development version)<a class="anchor" aria-label="anchor" href="#serodynamics-development-version"></a></h2>
 <div class="section level3">
+<h3 id="internal-development-version">Internal<a class="anchor" aria-label="anchor" href="#internal-development-version"></a></h3>
+<ul><li>Added a scheduled <code>Clean up PR Previews</code> workflow that prunes closed-PR <code>gh-pages</code> previews and compacts <code>gh-pages</code> history, so deleted render snapshots stop bloating the repo (closes <a href="https://github.com/UCD-SERG/serodynamics/issues/260" class="external-link">#260</a>).</li>
+</ul></div>
+<div class="section level3">
 <h3 id="new-features-development-version">New features<a class="anchor" aria-label="anchor" href="#new-features-development-version"></a></h3>
 <ul><li>Added <code><a href="../reference/plot_serocurve.html">plot_serocurve()</a></code> for graphical visualization of population-level serodynamic curves using posterior samples of the <code>mu.par</code> hyperparameter (or optionally the “newperson” subject). Supports 95% credible interval ribbons, stratified curves with colour or faceting, and multiple antigen-isotypes (<a href="https://github.com/UCD-SERG/serodynamics/issues/74" class="external-link">#74</a>).</li>
 <li>Renamed user-facing functions for clarity (<a href="https://github.com/UCD-SERG/serodynamics/issues/241" class="external-link">#241</a>):
