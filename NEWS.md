@@ -5,6 +5,7 @@
 * Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
 
 ## New features
+* Added an exponential decay option for antibody decay curves via `decay_type`. (#252)
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`

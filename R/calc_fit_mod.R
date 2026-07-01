@@ -9,6 +9,9 @@
 #' @param original_data A [data.frame] of the original input dataset.
 #' @param strat A [character] string specifying the stratification variable
 #' name, or [NA] if no stratification is used.
+#' @param decay_type A [character] string specifying the decay function
+#'   (`"power"` or `"exponential"`). Passed through to [ab()]. Default is
+#'   `"power"`.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:
 #'   - Subject = ID number specifying an individual
@@ -28,7 +31,8 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat,
                          original_data,
-                         strat = NA) {
+                         strat = NA,
+                         decay_type = "power") {
   strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
 
   original_data <- original_data |>
@@ -54,14 +58,16 @@ calc_fit_mod <- function(modeled_dat,
       by = base::intersect(
         c("Subject", "Iso_type", "Stratification"),
         names(original_data)
-      )
+      ),
+      relationship = "one-to-many"
     )
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
     dplyr::mutate(
       fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                  .data$alpha, .data$shape),
+                  .data$alpha, .data$shape,
+                  decay_type = decay_type),
       residual = .data$result - .data$fitted
     ) |>
     dplyr::select(

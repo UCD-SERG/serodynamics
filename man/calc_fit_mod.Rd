@@ -4,7 +4,7 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data, strat = NA)
+calc_fit_mod(modeled_dat, original_data, strat = NA, decay_type = "power")
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
@@ -14,6 +14,10 @@ values.}
 
 \item{strat}{A \link{character} string specifying the stratification variable
 name, or \link{NA} if no stratification is used.}
+
+\item{decay_type}{A \link{character} string specifying the decay function
+(\code{"power"} or \code{"exponential"}). Passed through to \code{\link[serocalculator:ab]{ab()}}. Default is
+\code{"power"}.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following

@@ -21,6 +21,11 @@
 #' @param niter An [integer] specifying the number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
+#' @param decay_type A [character] string specifying the decay function used
+#'   in the model. Options are `"power"` and `"exponential"`. Default is
+#'   `"power"`. The `"power"` option uses
+#'   `y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))`. The
+#'   `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
@@ -83,13 +88,15 @@
 #'     - `prec_logy_hyp_param`
 #'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
 #'   for all observations.
+#'   - `decay_type`: The decay function used (`"power"` or `"exponential"`).
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_serodynamics-examples.R
 run_serodynamics <- function(data,
-                             file_mod = serodynamics_example("model.jags"),
+                             file_mod = NULL,
+                             decay_type = "power",
                              nchain = 4,
                              nadapt = 0,
                              nburn = 0,
@@ -100,6 +107,15 @@ run_serodynamics <- function(data,
                              with_pop_params = FALSE,
                              preclogy_per_iso = FALSE,
                              ...) {
+  # Select model file based on decay type
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
+  if (is.null(file_mod)) {
+    file_mod <- if (decay_type == "power") {
+      serodynamics_example("model.jags")
+    } else {
+      serodynamics_example("model_exp.jags")
+    }
+  }
   ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 
@@ -232,10 +248,15 @@ run_serodynamics <- function(data,
   jags_out <- jags_out |>
     structure(priors = attributes(priorspec)$used_priors)
   
+  # Record which decay type was used
+  jags_out <- jags_out |>
+    structure(decay_type = decay_type)
+  
   # Calculating fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
                           original_data = data,
-                          strat = strat)
+                          strat = strat,
+                          decay_type = decay_type)
   jags_out <- jags_out |>
     structure(fitted_residuals = fit_res)
 

@@ -44,7 +44,7 @@ test_that(
       expect_setequal(c("names", "row.names", "class", "nChains", 
                         "nParameters", "nIterations", "nBurnin", "nThin",
                         "population_params", "priors", 
-                        "fitted_residuals"))
+                        "fitted_residuals", "decay_type"))
     
     attributes(results)$fitted_residuals |>
       expect_snapshot_data(
@@ -104,7 +104,7 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
                         "nIterations", "nBurnin", "nThin", "priors", 
-                        "fitted_residuals"))
+                        "fitted_residuals", "decay_type"))
     
     results |>
       expect_snapshot_data(
@@ -153,7 +153,7 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
                         "nIterations", "nBurnin", "nThin", "population_params", 
-                        "priors", "fitted_residuals"))
+                        "priors", "fitted_residuals", "decay_type"))
     
     results |>
       expect_snapshot_data(
@@ -184,7 +184,10 @@ test_that(
 )
 
 test_that(
-  desc = "preclogy_per_iso relabels prec.logy Parameter by isotype in run_serodynamics",
+  desc = paste(
+    "preclogy_per_iso relabels prec.logy Parameter by isotype",
+    "in run_serodynamics"
+  ),
   code = {
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees
@@ -192,7 +195,7 @@ test_that(
     results <- suppressWarnings(
       run_serodynamics(
         data = dataset,
-        file_mod = serodynamics_example("model.jags"),
+        decay_type = "exponential",
         nchain = 2,
         nadapt = 10,
         nburn = 10,
@@ -205,6 +208,7 @@ test_that(
     )
 
     pop_params <- attr(results, "population_params")
+    expect_equal(attr(results, "decay_type"), "exponential")
     expect_s3_class(pop_params, "data.frame")
 
     preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
