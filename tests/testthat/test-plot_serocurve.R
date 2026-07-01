@@ -48,7 +48,7 @@ test_that(
 )
 
 test_that(
-  desc = "plot_serocurve() works with newperson param_source",
+  desc = "plot_serocurve() works with predictive param_source",
   code = {
     skip_if(getRversion() < "4.4.1")
 
@@ -58,9 +58,9 @@ test_that(
       model        = sr_model,
       antigen_iso  = "HlyE_IgA",
       strat        = "typhi",
-      param_source = "newperson"
+      param_source = "predictive"
     )
-    vdiffr::expect_doppelganger("serocurve-newperson-single-strat", p6)
+    vdiffr::expect_doppelganger("serocurve-predictive-single-strat", p6)
   }
 )
 

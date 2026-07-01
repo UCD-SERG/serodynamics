@@ -72,6 +72,6 @@
 <text x='312.31' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='28.87px' lengthAdjust='spacingAndGlyphs'>Median</text>
 <rect x='369.29' y='548.47' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: none; stroke-linecap: butt; fill: #FF0000; fill-opacity: 0.20;' />
 <text x='391.34' y='559.43' style='font-size: 8.80px; font-family: sans;' textLength='81.69px' lengthAdjust='spacingAndGlyphs'>95% credible interval</text>
-<text x='42.58' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='192.25px' lengthAdjust='spacingAndGlyphs'>serocurve-population-single-strat</text>
+<text x='42.58' y='14.56' style='font-size: 13.20px; font-family: sans;' textLength='187.83px' lengthAdjust='spacingAndGlyphs'>serocurve-predictive-single-strat</text>
 </g>
 </svg>
