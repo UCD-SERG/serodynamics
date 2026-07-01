@@ -33,10 +33,10 @@ p4 <- plot_serocurve(
 )
 print(p4)
 
-# Using the predictive distribution for a new individual (newperson posterior)
+# Using the predictive distribution for a new individual
 p5 <- plot_serocurve(
   model        = model,
   antigen_iso  = "HlyE_IgA",
-  param_source = "newperson"
+  param_source = "predictive"
 )
 print(p5)
