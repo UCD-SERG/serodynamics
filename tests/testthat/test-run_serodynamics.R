@@ -51,13 +51,11 @@ test_that(
                         "population_params", "priors", 
                         "fitted_residuals"))
     
-    if (system_os() == "darwin") {
-      attributes(results)$fitted_residuals |>
-        expect_snapshot_data(
-          "sim-strat-fitted_residuals",
-          variant = darwin_variant()
-        )
-    }
+    attributes(results)$fitted_residuals |>
+      expect_snapshot_data(
+        "sim-strat-fitted_residuals",
+        variant = darwin_variant()
+      )
     
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
@@ -109,31 +107,26 @@ test_that(
                         "nIterations", "nBurnin", "nThin", "population_params", 
                         "priors", "fitted_residuals", "jags.post"))
     
-    if (system_os() == "darwin") {
-      results |>
-        dplyr::slice_head(n = 100) |>
-        expect_snapshot_data(
-          "strat-curve-params",
-          variant = darwin_variant()
-        )
-    }
-    
+    results |>
+      dplyr::slice_head(n = 100) |>
+      expect_snapshot_data(
+        "strat-curve-params",
+        variant = darwin_variant()
+      )
     
     # Testing for population parameters
-    if (system_os() == "darwin") {
-      attributes(results)$population_params |>
-        dplyr::group_by(Parameter) |>
-        dplyr::summarise(
-          mean = mean(value),
-          sd = sd(value),
-          .groups = "drop"
-        ) |>
-        dplyr::arrange(Parameter) |>
-        expect_snapshot_data(
-          "popparam-strat-summary-stats",
-          variant = darwin_variant()
-        )
-    }
+    attributes(results)$population_params |>
+      dplyr::group_by(Parameter) |>
+      dplyr::summarise(
+        mean = mean(value),
+        sd = sd(value),
+        .groups = "drop"
+      ) |>
+      dplyr::arrange(Parameter) |>
+      expect_snapshot_data(
+        "popparam-strat-summary-stats",
+        variant = darwin_variant()
+      )
     
     pop_params <- attr(results, "population_params")
     expect_s3_class(pop_params, "data.frame")
@@ -146,13 +139,11 @@ test_that(
     expect_false(any(preclogy_row$Parameter == "prec.logy"))
     expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
     
-    if (system_os() == "darwin") {
-      attributes(results)$fitted_residuals |>
-        expect_snapshot_data(
-          "strat-fitted_residuals",
-          variant = darwin_variant()
-        )
-    }
+    attributes(results)$fitted_residuals |>
+      expect_snapshot_data(
+        "strat-fitted_residuals",
+        variant = darwin_variant()
+      )
     
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))
@@ -200,14 +191,12 @@ test_that(
     expect_equal(attr(results, "priors")$wishdf_param, 10)
     expect_equal(attr(results, "priors")$prec_logy_hyp_param, c(3, 1))
     
-    if (system_os() == "darwin") {
-      results |>
-        dplyr::slice_head(n = 100) |>
-        expect_snapshot_data(
-          "nostrat-curve-params-specpriors",
-          variant = darwin_variant()
-        )
-    }
+    results |>
+      dplyr::slice_head(n = 100) |>
+      expect_snapshot_data(
+        "nostrat-curve-params-specpriors",
+        variant = darwin_variant()
+      )
     
     expect_null(attr(results, "population_params"))
     
