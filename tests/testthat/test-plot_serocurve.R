@@ -1,5 +1,5 @@
 test_that(
-  desc = "plot_serocurve() works with population param_source (default)",
+  desc = "plot_serocurve() works with predictive param_source (default)",
   code = {
     skip_if(getRversion() < "4.4.1")
 
@@ -11,14 +11,14 @@ test_that(
       antigen_iso = "HlyE_IgA",
       strat       = "typhi"
     )
-    vdiffr::expect_doppelganger("serocurve-population-single-strat", p1)
+    vdiffr::expect_doppelganger("serocurve-predictive-single-strat", p1)
 
     # Multiple strata coloured (default)
     p2 <- plot_serocurve(
       model       = sr_model,
       antigen_iso = "HlyE_IgA"
     )
-    vdiffr::expect_doppelganger("serocurve-population-multi-strat", p2)
+    vdiffr::expect_doppelganger("serocurve-predictive-multi-strat", p2)
 
     # Faceted by stratification
     p3 <- plot_serocurve(
@@ -26,7 +26,7 @@ test_that(
       antigen_iso    = "HlyE_IgA",
       facet_by_strat = TRUE
     )
-    vdiffr::expect_doppelganger("serocurve-population-facet-strat", p3)
+    vdiffr::expect_doppelganger("serocurve-predictive-facet-strat", p3)
 
     # Multiple antigen-isotypes, faceted
     p4 <- plot_serocurve(
@@ -34,7 +34,7 @@ test_that(
       antigen_iso          = c("HlyE_IgA", "HlyE_IgG"),
       facet_by_antigen_iso = TRUE
     )
-    vdiffr::expect_doppelganger("serocurve-population-facet-antigen-iso", p4)
+    vdiffr::expect_doppelganger("serocurve-predictive-facet-antigen-iso", p4)
 
     # Without CI
     p5 <- plot_serocurve(
@@ -43,12 +43,12 @@ test_that(
       strat       = "typhi",
       show_ci     = FALSE
     )
-    vdiffr::expect_doppelganger("serocurve-population-no-ci", p5)
+    vdiffr::expect_doppelganger("serocurve-predictive-no-ci", p5)
   }
 )
 
 test_that(
-  desc = "plot_serocurve() works with predictive param_source",
+  desc = "plot_serocurve() works with population param_source",
   code = {
     skip_if(getRversion() < "4.4.1")
 
@@ -58,9 +58,9 @@ test_that(
       model        = sr_model,
       antigen_iso  = "HlyE_IgA",
       strat        = "typhi",
-      param_source = "predictive"
+      param_source = "population"
     )
-    vdiffr::expect_doppelganger("serocurve-predictive-single-strat", p6)
+    vdiffr::expect_doppelganger("serocurve-population-single-strat", p6)
   }
 )
 
