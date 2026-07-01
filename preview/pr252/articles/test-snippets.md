@@ -3,5 +3,5 @@
 Here’s line 66 from `model.jags`:
 
 ``` numberSource
-   par[subj, cur_antigen_iso, 1:n_params] ~ dmnorm(mu.par[cur_antigen_iso,], prec.par[cur_antigen_iso,,])
+   # `n_params` is the number of model parameters; y0, y1, t1, alpha (aka nu), and r
 ```
