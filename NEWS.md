@@ -24,6 +24,8 @@ all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes
+* Cut down on `run_serodynamics()` tests to lower run time/load. 
+Went from 5 separate `run.jags` chunks down to 3. (#253)
 * Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
   note in `.lintr.R` that `dplyr::*_join()` calls must specify the
   `relationship` argument (for example `relationship = "many-to-one"`),
