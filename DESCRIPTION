@@ -46,6 +46,8 @@ Imports:
     tidyselect,
     utils
 Suggests: 
+    badger,
+    cmdstanr,
     Hmisc,
     knitr,
     readr,
@@ -74,6 +76,8 @@ Config/needs/test:
     magrittr,
     rlist
 Config/needs/check: commonmark, xml2
+Remotes: 
+    stan-dev/cmdstanr
 Depends: 
     R (>= 4.1.0)
 LazyData: true
