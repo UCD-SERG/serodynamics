@@ -17,9 +17,9 @@
 #'   the levels available in `attr(model, "population_params")`.
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
-#'   - `"predictive"`: uses the predictive distribution for a new individual
-#'     drawn from the population-level prior. Set as the default.
-#'   - `"population"` (default): uses population-level `mu.par` samples stored
+#'   - `"predictive"` (default): uses the predictive distribution for a new
+#'     individual drawn from the population-level prior.
+#'   - `"population"`: uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
 #'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
