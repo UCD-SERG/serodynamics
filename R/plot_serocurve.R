@@ -311,7 +311,7 @@ plot_serocurve <- function(
   if (log_x) {
     p <- p +
       ggplot2::scale_x_continuous(
-        trans = scales::pseudo_log_trans(sigma = 1, base = 10)
+        transform = scales::pseudo_log_trans(sigma = 1, base = 10)
       )
   }
 
