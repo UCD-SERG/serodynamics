@@ -8,7 +8,7 @@ plot_serocurve(
   model,
   antigen_iso = unique(model$Iso_type),
   strat = unique(model$Stratification),
-  param_source = "population",
+  param_source = "predictive",
   show_ci = TRUE,
   log_y = FALSE,
   log_x = FALSE,
@@ -34,11 +34,11 @@ the levels available in \code{attr(model, "population_params")}.}
 \item{param_source}{\link{character}; which posterior samples to use for the
 curve.  Options:
 \itemize{
+\item \code{"predictive"}: uses the predictive distribution for a new individual
+drawn from the population-level prior. Set as the default.
 \item \code{"population"} (default): uses population-level \code{mu.par} samples stored
 in \code{attr(model, "population_params")}. Requires the model to have been
 fitted with \code{run_serodynamics(..., with_pop_params = TRUE)}.
-\item \code{"newperson"}: uses the predictive distribution for a new individual
-drawn from the population-level prior.
 }}
 
 \item{show_ci}{\link{logical}; if \link{TRUE} (default), draws a 95\% credible
