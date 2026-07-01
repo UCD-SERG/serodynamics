@@ -52,8 +52,10 @@ run_serodynamics(
 - decay_type:
 
   A [character](https://rdrr.io/r/base/character.html) string specifying
-  the decay function used in the model (`"power"` or `"exponential"`).
-  Default is `"power"`.
+  the decay function used in the model. Options are `"power"` and
+  `"exponential"`. Default is `"power"`. The `"power"` option uses
+  `y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))`. The
+  `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
 
 - nchain:
 
@@ -322,7 +324,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Jun 29 21:57:20 2026
+#> Welcome to JAGS 4.3.2 on Wed Jul  1 20:48:39 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -348,6 +350,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -356,7 +359,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Mon Jun 29 21:58:26 2026
+#> Welcome to JAGS 4.3.2 on Wed Jul  1 20:49:44 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -382,6 +385,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
