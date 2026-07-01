@@ -31,12 +31,12 @@ test_that(
     ) |>
       suppressWarnings()
     
-      results |>
-        dplyr::slice_head(n = 100) |>
-        expect_snapshot_data(
-          "sim-strat-curve-params",
-          variant = darwin_variant()
-        )
+    results |>
+      dplyr::slice_head(n = 100) |>
+      expect_snapshot_data(
+        "sim-strat-curve-params",
+        variant = darwin_variant()
+      )
     
     # Testing exact order of attributes
     expect_equal(names(attributes(results))[1:3], 
