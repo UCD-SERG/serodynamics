@@ -17,11 +17,11 @@
 #'   the levels available in `attr(model, "population_params")`.
 #' @param param_source [character]; which posterior samples to use for the
 #'   curve.  Options:
+#'   - `"predictive"`: uses the predictive distribution for a new individual
+#'     drawn from the population-level prior. Set as the default.
 #'   - `"population"` (default): uses population-level `mu.par` samples stored
 #'     in `attr(model, "population_params")`. Requires the model to have been
 #'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
-#'   - `"newperson"`: uses the predictive distribution for a new individual
-#'     drawn from the population-level prior.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
 #'   interval ribbon around the median curve.
 #' @param log_y [logical]; if [TRUE], applies a [log10] transformation to the
@@ -47,7 +47,7 @@ plot_serocurve <- function(
     model,
     antigen_iso = unique(model$Iso_type),
     strat = unique(model$Stratification),
-    param_source = "population",
+    param_source = "predictive",
     show_ci = TRUE,
     log_y = FALSE,
     log_x = FALSE,
@@ -56,7 +56,7 @@ plot_serocurve <- function(
     facet_by_strat = FALSE,
     ncol = NULL) {
 
-  param_source <- match.arg(param_source, c("population", "newperson"))
+  param_source <- match.arg(param_source, c("population", "predictive"))
 
   antigen_iso_col <- "Iso_type"
 
