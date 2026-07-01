@@ -26,7 +26,10 @@ run_serodynamics(
 \item{file_mod}{The name of the file that contains model structure.}
 
 \item{decay_type}{A \link{character} string specifying the decay function used
-in the model (\code{"power"} or \code{"exponential"}). Default is \code{"power"}.}
+in the model. Options are \code{"power"} and \code{"exponential"}. Default is
+\code{"power"}. The \code{"power"} option uses
+\code{y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))}. The
+\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}

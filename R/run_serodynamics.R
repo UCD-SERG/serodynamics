@@ -22,7 +22,10 @@
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
 #' @param decay_type A [character] string specifying the decay function used
-#'   in the model (`"power"` or `"exponential"`). Default is `"power"`.
+#'   in the model. Options are `"power"` and `"exponential"`. Default is
+#'   `"power"`. The `"power"` option uses
+#'   `y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))`. The
+#'   `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble

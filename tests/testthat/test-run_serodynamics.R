@@ -195,7 +195,7 @@ test_that(
     results <- suppressWarnings(
       run_serodynamics(
         data = dataset,
-        file_mod = serodynamics_example("model.jags"),
+        decay_type = "exponential",
         nchain = 2,
         nadapt = 10,
         nburn = 10,
@@ -208,6 +208,7 @@ test_that(
     )
 
     pop_params <- attr(results, "population_params")
+    expect_equal(attr(results, "decay_type"), "exponential")
     expect_s3_class(pop_params, "data.frame")
 
     preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
@@ -260,22 +261,3 @@ test_that(
     
   }
 )
-
-test_that("run_serodynamics selects exponential model automatically", {
-  withr::local_seed(1)
-  results <- suppressWarnings(
-    run_serodynamics(
-      data = serodynamics::nepal_sees,
-      decay_type = "exponential",
-      nchain = 2,
-      nadapt = 10,
-      nburn = 10,
-      nmc = 10,
-      niter = 10,
-      strat = NA
-    )
-  )
-  
-  expect_equal(attr(results, "decay_type"), "exponential")
-  expect_s3_class(attr(results, "fitted_residuals"), "data.frame")
-})
