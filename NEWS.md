@@ -5,6 +5,12 @@
 * Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
 
 ## New features
+* Added `plot_serocurve()` for graphical visualization of population-level
+  serodynamic curves using posterior samples of the predictive `newperson` 
+  parameter distribution (or optionally the population level hyperparameter
+  distributions). 
+  Supports 95% credible interval ribbons, stratified curves with color or 
+  faceting, and multiple antigen-isotypes (#74).
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`
