@@ -1,6 +1,6 @@
 # Retrieves and reshapes population-level `mu.par` posterior samples for
 # `plot_serocurve(param_source = "population")`.
-get_serocurve_population_params <- function(model, antigen_iso, strat) {
+get_serocurve_pop_params <- function(model, antigen_iso, strat) {
   pop_params <- attr(model, "population_params")
   if (is.null(pop_params)) {
     cli::cli_abort(

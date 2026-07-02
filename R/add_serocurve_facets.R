@@ -2,8 +2,8 @@
 # Stratification, choosing a sensible default `ncol` when one isn't
 # supplied.
 add_serocurve_facets <- function(p, curve_summary, antigen_iso_col,
-                                  facet_by_antigen_iso, facet_by_strat,
-                                  ncol) {
+                                 facet_by_antigen_iso, facet_by_strat,
+                                 ncol) {
   facet_vars <- character(0)
   if (facet_by_antigen_iso) facet_vars <- c(facet_vars, antigen_iso_col)
   if (facet_by_strat)       facet_vars <- c(facet_vars, "Stratification")

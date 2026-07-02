@@ -2,7 +2,7 @@
 # posterior parameter samples, then summarises them to a median + 95%
 # credible interval per antigen-isotype/stratification/time combination.
 summarize_serocurve_samples <- function(param_samples, antigen_iso_col,
-                                         xlim) {
+                                        xlim) {
   # Clamp the grid to `xlim` when supplied to avoid unnecessary computation
   # outside the visible range.
   if (!is.null(xlim)) {

@@ -1,7 +1,7 @@
 # Retrieves and reshapes the "newperson" predictive-distribution posterior
 # samples for `plot_serocurve(param_source = "predictive")`: a new
 # individual drawn from the population-level prior.
-get_serocurve_predictive_params <- function(model, antigen_iso, strat) {
+get_serocurve_pred_params <- function(model, antigen_iso, strat) {
   newperson_rows <- model |>
     dplyr::filter(
       .data$Subject == "newperson",

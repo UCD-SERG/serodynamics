@@ -62,9 +62,9 @@ plot_serocurve <- function(
 
   # ---- Retrieve posterior samples of curve parameters --------------------
   param_samples <- if (param_source == "population") {
-    get_serocurve_population_params(model, antigen_iso, strat)
+    get_serocurve_pop_params(model, antigen_iso, strat)
   } else {
-    get_serocurve_predictive_params(model, antigen_iso, strat)
+    get_serocurve_pred_params(model, antigen_iso, strat)
   }
 
   # ---- Compute predicted curves and summarise to median + 95% CI ---------
