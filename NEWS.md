@@ -6,10 +6,10 @@
 
 ## New features
 * Added `plot_serocurve()` for graphical visualization of population-level
-  serodynamic curves using posterior samples of the `mu.par` hyperparameter
-  (or optionally the "newperson" subject).  Supports 95% credible interval
-  ribbons, stratified curves with colour or faceting, and multiple
-  antigen-isotypes (#74).
+  serodynamic curves using posterior samples of the predictive `newperson` 
+  parameter distribution (or optionally the population level hyperdistribution). 
+  Supports 95% credible interval ribbons, stratified curves with color or 
+  faceting, and multiple antigen-isotypes (#74).
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`
