@@ -34,9 +34,9 @@ the levels available in \code{attr(model, "population_params")}.}
 \item{param_source}{\link{character}; which posterior samples to use for the
 curve.  Options:
 \itemize{
-\item \code{"predictive"}: uses the predictive distribution for a new individual
-drawn from the population-level prior. Set as the default.
-\item \code{"population"} (default): uses population-level \code{mu.par} samples stored
+\item \code{"predictive"} (default): uses the predictive distribution for a new
+individual drawn from the population-level prior.
+\item \code{"population"}: uses population-level \code{mu.par} samples stored
 in \code{attr(model, "population_params")}. Requires the model to have been
 fitted with \code{run_serodynamics(..., with_pop_params = TRUE)}.
 }}
@@ -110,11 +110,11 @@ p4 <- plot_serocurve(
 )
 print(p4)
 
-# Using the predictive distribution for a new individual (newperson posterior)
+# Using the predictive distribution for a new individual
 p5 <- plot_serocurve(
   model        = model,
   antigen_iso  = "HlyE_IgA",
-  param_source = "newperson"
+  param_source = "predictive"
 )
 print(p5)
 }
