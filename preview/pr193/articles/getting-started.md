@@ -169,7 +169,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:48:24 2026
+#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:55:31 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +417,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:48:37 2026
+#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:55:43 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -441,7 +441,6 @@ fitted_stratified <- run_serodynamics(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
@@ -452,7 +451,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:48:39 2026
+#> Welcome to JAGS 4.3.2 on Thu Jul  2 01:55:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -476,7 +475,6 @@ fitted_stratified <- run_serodynamics(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
