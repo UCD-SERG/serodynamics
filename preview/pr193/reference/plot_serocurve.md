@@ -54,14 +54,12 @@ plot_serocurve(
   [character](https://rdrr.io/r/base/character.html); which posterior
   samples to use for the curve. Options:
 
-  - `"predictive"`: uses the predictive distribution for a new
-    individual drawn from the population-level prior. Set as the
-    default.
+  - `"predictive"` (default): uses the predictive distribution for a new
+    individual drawn from the population-level prior.
 
-  - `"population"` (default): uses population-level `mu.par` samples
-    stored in `attr(model, "population_params")`. Requires the model to
-    have been fitted with
-    `run_serodynamics(..., with_pop_params = TRUE)`.
+  - `"population"`: uses population-level `mu.par` samples stored in
+    `attr(model, "population_params")`. Requires the model to have been
+    fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 
 - show_ci:
 
@@ -157,13 +155,11 @@ p4 <- plot_serocurve(
 print(p4)
 
 
-# Using the predictive distribution for a new individual (newperson posterior)
+# Using the predictive distribution for a new individual
 p5 <- plot_serocurve(
   model        = model,
   antigen_iso  = "HlyE_IgA",
-  param_source = "newperson"
+  param_source = "predictive"
 )
-#> Error in match.arg(param_source, c("population", "predictive")): 'arg' should be one of “population”, “predictive”
 print(p5)
-#> Error: object 'p5' not found
 ```

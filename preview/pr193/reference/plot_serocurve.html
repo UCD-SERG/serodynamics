@@ -102,9 +102,9 @@ the levels available in <code>attr(model, "population_params")</code>.</p></dd>
 
 <dt id="arg-param-source">param_source<a class="anchor" aria-label="anchor" href="#arg-param-source"></a></dt>
 <dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; which posterior samples to use for the
-curve.  Options:</p><ul><li><p><code>"predictive"</code>: uses the predictive distribution for a new individual
-drawn from the population-level prior. Set as the default.</p></li>
-<li><p><code>"population"</code> (default): uses population-level <code>mu.par</code> samples stored
+curve.  Options:</p><ul><li><p><code>"predictive"</code> (default): uses the predictive distribution for a new
+individual drawn from the population-level prior.</p></li>
+<li><p><code>"population"</code>: uses population-level <code>mu.par</code> samples stored
 in <code>attr(model, "population_params")</code>. Requires the model to have been
 fitted with <code>run_serodynamics(..., with_pop_params = TRUE)</code>.</p></li>
 </ul></dd>
@@ -193,15 +193,14 @@ levels are shown as different colours on the same panel.</p></dd>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p4</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="plot_serocurve-4.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Using the predictive distribution for a new individual (newperson posterior)</span></span></span>
+<span class="r-in"><span><span class="co"># Using the predictive distribution for a new individual</span></span></span>
 <span class="r-in"><span><span class="va">p5</span> <span class="op">&lt;-</span> <span class="fu">plot_serocurve</span><span class="op">(</span></span></span>
 <span class="r-in"><span>  model        <span class="op">=</span> <span class="va">model</span>,</span></span>
 <span class="r-in"><span>  antigen_iso  <span class="op">=</span> <span class="st">"HlyE_IgA"</span>,</span></span>
-<span class="r-in"><span>  param_source <span class="op">=</span> <span class="st">"newperson"</span></span></span>
+<span class="r-in"><span>  param_source <span class="op">=</span> <span class="st">"predictive"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in match.arg(param_source, c("population", "predictive")):</span> 'arg' should be one of “population”, “predictive”</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">p5</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'p5' not found</span>
+<span class="r-plt img"><img src="plot_serocurve-5.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
