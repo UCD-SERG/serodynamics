@@ -31,7 +31,7 @@ get_serocurve_pop_params <- function(model, antigen_iso, strat) {
       # (e.g. `"log(y1 - y0)"`), not plain names, so recode to short
       # suffixes before pivoting or the resulting columns (`log_log(y0)`,
       # etc.) won't match the `log_y0`/etc. references below.
-      Parameter = dplyr::case_match(
+      Parameter = dplyr::recode_values(
         .data$Parameter,
         "log(y0)"        ~ "y0",
         "log(y1 - y0)"   ~ "y1",
