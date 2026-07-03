@@ -1,93 +1,11 @@
-# Adds the median line (and, if `show_ci`, the 95% credible interval
-# ribbon) to a `plot_serocurve()` plot, coloured/filled by Stratification
-# when `multi_strat` is TRUE and by a fixed "median"/"ci" legend entry
-# otherwise.
-add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat) {
-  
-  if (multi_strat) {
-    
-    if (show_ci) {
-      p <- p +
-        ggplot2::geom_ribbon(
-          data = curve_summary,
-          ggplot2::aes(
-            x = .data$t,
-            ymin = .data$res_low,
-            ymax = .data$res_high,
-            fill = .data$Stratification
-          ),
-          alpha = 0.2,
-          inherit.aes = FALSE
-        )
-    }
-    
-    p <- p +
-      ggplot2::geom_line(
-        data = curve_summary,
-        ggplot2::aes(
-          x = .data$t,
-          y = .data$res_med,
-          colour = .data$Stratification
-        ),
-        linewidth = 1,
-        inherit.aes = FALSE
-      ) +
-      ggplot2::labs(
-        colour = "Stratification",
-        fill = "Stratification"
-      )
-    
-    return(p)
-  }
-  
-  ## ---------- Single-stratification plot ----------
-  
-  if (show_ci) {
-    p <- p +
-      ggplot2::geom_ribbon(
-        data = curve_summary,
-        ggplot2::aes(
-          x = .data$t,
-          ymin = .data$res_low,
-          ymax = .data$res_high,
-          fill = "ci"
-        ),
-        alpha = 0.2,
-        inherit.aes = FALSE
-      )
-  }
-  
-  p <- p +
-    ggplot2::geom_line(
-      data = curve_summary,
-      ggplot2::aes(
-        x = .data$t,
-        y = .data$res_med,
-        colour = "median"
-      ),
-      linewidth = 1,
-      inherit.aes = FALSE
-    ) +
-    ggplot2::scale_colour_manual(
-      name = "",
-      values = c(median = "red"),
-      labels = c(median = "Median"),
-      guide = ggplot2::guide_legend(
-        override.aes = list(shape = NA)
-      )
-    )
-  
-  if (show_ci) {
-    p <- p +
-      ggplot2::scale_fill_manual(
-        name = "",
-        values = c(ci = "red"),
-        labels = c(ci = "95% credible interval"),
-        guide = ggplot2::guide_legend(
-          override.aes = list(colour = NA)
-        )
-      )
-  }
-  
-  p
-}
+IyBBZGRzIHRoZSBtZWRpYW4gbGluZSAoYW5kLCBpZiBgc2hvd19jaWAsIHRoZSA5NSUgY3JlZGli
+bGUgaW50ZXJ2YWwKIyByaWJib24pIHRvIGEgYHBsb3Rfc2Vyb2N1cnZlKClgIHBsb3QsIGNvbG91
+cmVkL2ZpbGxlZCBieSBTdHJhdGlmaWNhdGlvbgojIHdoZW4gYG11bHRpX3N0cmF0YCBpcyBUUlVF
+IGFuZCBieSBhIGZpeGVkICJtZWRpYW4iLyJjaSIgbGVnZW5kIGVudHJ5CiMgb3RoZXJ3aXNlLgph
+ZGRfc2Vyb2N1cnZlX2JhbmRzIDwtIGZ1bmN0aW9uKHAsIGN1cnZlX3N1bW1hcnksIHNob3dfY2ks
+IG11bHRpX3N0cmF0KSB7CiAgaWYgKHNob3dfY2kpIHsKICAgIHAgPC0gcCArCiAgICAgIGdncGxv
+dDI6Omdlb21fcmliYm9uKAogICAgICAgIGRhdGEgPSBjdXJ2ZV9zdW1tYXJ5LAogICAgICAgIGdn
+cGxvdDI6OmFlcygKICAgICAgICAgIHggPSAuZGF0YSR0LAogICAgICAgICAgeW1pbiA9IC5kYXRh
+JHJlc19sb3csCiAgICAgICAgICB5bWF4ID0gLmRhdGEkcmVzX2hpZ2gsCiAgICAgICAgICBmaWxs
+ID0gaWYgKG11bHRpX3N0cmF0KSAuZGF0YSRTdHJhdGlmaWNhdGlvbiBlbHNlICJjaSIKICAgICAg
+ICApLAogICAgICAgIGFscGhhID0gMC4yLAogICAgICAgIGluaGVyaXQuYWVzID0gRkFMU0UKICAgICAgKQogIH0KCiAgcCA8LSBwICsKICAgIGdncGxvdDI6Omdlb21fbGluZSgKICAgICAgZGF0YSA9IGN1cnZlX3N1bW1hcnksCiAgICAgIGdncGxvdDI6OmFlcygKICAgICAgICB4ID0gLmRhdGEkdCwKICAgICAgICB5ID0gLmRhdGEkcmVzX21lZCwKICAgICAgICBjb2xvdXIgPSBpZiAobXVsdGlfc3RyYXQpIC5kYXRhJFN0cmF0aWZpY2F0aW9uIGVsc2UgIm1lZGlhbiIKICAgICAgKSwKICAgICAgbGluZXdpZHRoID0gMSwKICAgICAgaW5oZXJpdC5hZXMgPSBGQUxTRQogICAgKQoKICBpZiAobXVsdGlfc3RyYXQpIHsKICAgIHAgPC0gcCArCiAgICAgIGdncGxvdDI6OmxhYnMoY29sb3VyID0gIlN0cmF0aWZpY2F0aW9uIiwgZmlsbCA9ICJTdHJhdGlmaWNhdGlvbiIpCiAgfSBlbHNlIHsKICAgIHAgPC0gcCArCiAgICAgIGdncGxvdDI6OnNjYWxlX2NvbG91cl9tYW51YWwoCiAgICAgICAgbmFtZSA9ICIiLAogICAgICAgIHZhbHVlcyA9IGMobWVkaWFuID0gInJlZCIpLAogICAgICAgIGxhYmVscyA9IGMobWVkaWFuID0gIk1lZGlhbiIpLAogICAgICAgIGd1aWRlID0gZ2dwbG90Mjo6Z3VpZGVfbGVnZW5kKG92ZXJyaWRlLmFlcyA9IGxpc3Qoc2hhcGUgPSBOQSkpCiAgICAgICkKCiAgICBpZiAoc2hvd19jaSkgewogICAgICBwIDwtIHAgKwogICAgICAgIGdncGxvdDI6OnNjYWxlX2ZpbGxfbWFudWFsKAogICAgICAgICAgbmFtZSA9ICIiLAogICAgICAgICAgdmFsdWVzID0gYyhjaSA9ICJyZWQiKSwKICAgICAgICAgIGxhYmVscyA9IGMoY2kgPSAiOTUlIGNyZWRpYmxlIGludGVydmFsIiksCiAgICAgICAgICBndWlkZSA9IGdncGxvdDI6Omd1aWRlX2xlZ2VuZChvdmVycmlkZS5hZXMgPSBsaXN0KGNvbG91ciA9IE5BKSkKICAgICAgICApCiAgICB9CiAgfQoKICBwCn0K
