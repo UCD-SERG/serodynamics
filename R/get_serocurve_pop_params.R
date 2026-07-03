@@ -26,6 +26,20 @@ get_serocurve_pop_params <- function(model, antigen_iso, strat) {
       .data$Iso_type %in% .env$antigen_iso,
       .data$Stratification %in% .env$strat
     ) |>
+    dplyr::mutate(
+      # `Parameter` holds the log-scale labels `param_recode()` assigns
+      # (e.g. `"log(y1 - y0)"`), not plain names, so recode to short
+      # suffixes before pivoting or the resulting columns (`log_log(y0)`,
+      # etc.) won't match the `log_y0`/etc. references below.
+      Parameter = dplyr::case_match(
+        .data$Parameter,
+        "log(y0)"        ~ "y0",
+        "log(y1 - y0)"   ~ "y1",
+        "log(t1)"        ~ "t1",
+        "log(alpha)"     ~ "alpha",
+        "log(shape - 1)" ~ "shape"
+      )
+    ) |>
     dplyr::select(
       all_of(
         c("Chain", "Iteration", "Parameter", "Iso_type", "Stratification",
