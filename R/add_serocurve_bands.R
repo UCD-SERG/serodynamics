@@ -2,8 +2,6 @@
 # ribbon) to a `plot_serocurve()` plot, coloured/filled by Stratification
 # when `multi_strat` is TRUE and by a fixed "median"/"ci" legend entry
 # otherwise.
-# Adds the median line (and, if `show_ci`, the 95% credible interval
-# ribbon) to a `plot_serocurve()` plot.
 add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat) {
   
   if (multi_strat) {
