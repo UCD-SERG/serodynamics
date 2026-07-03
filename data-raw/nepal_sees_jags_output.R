@@ -1,5 +1,6 @@
-dataset <- serodynamics::nepal_sees 
+dataset <- serodynamics::nepal_sees
 
+set.seed(42)
 nepal_sees_jags_output <- run_serodynamics(
   data = dataset, # The data set input
   file_mod = fs::path_package("serodynamics", "extdata/model.jags"),
@@ -9,7 +10,8 @@ nepal_sees_jags_output <- run_serodynamics(
   nmc = 500,
   niter = 1000, # Number of iterations
   strat = "bldculres", # Stratification
-  with_post = FALSE
+  with_post = FALSE,
+  with_pop_params = TRUE
 )
 
 # Filtering to keep only 2 subjects + newperson + all subjects with visit_num 5
