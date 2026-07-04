@@ -63,11 +63,13 @@ nmc
 onwards
 pandoc
 params
+passthrough
 pkgdown
 prec
 precisions
 preinstalling
 rhat
+roxygen
 serocalculator
 seroconversion
 serodynamic

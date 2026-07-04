@@ -59,6 +59,19 @@ form. Treat these as in-scope review findings, not optional nits:
 - Generally: when a more declarative tidyverse construct expresses the
   same thing with less control flow, say so and show the simpler form.
 
+- **Roxygen doc reuse and `...` passthrough.** Flag a `@param` description
+  or a prose section copy-pasted between roxygen blocks instead of using
+  [roxygen2's tag-reuse tags](https://roxygen2.r-lib.org/reference/tags-reuse.html)
+  (`@inheritParams`, `@inheritDotParams`, `@inheritSection`) — reused docs
+  stay in sync when the source function's docs change; copy-pasted docs
+  silently drift. Also flag a wrapper function that manually re-declares
+  and relays arguments it never touches itself instead of forwarding
+  [`...`](https://adv-r.hadley.nz/functions.html?q=dot-dot#fun-dot-dot-dot)
+  straight to the subfunction (documented via `@inheritDotParams`). This is
+  a global standing rule from the
+  [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) corpus
+  (`shared/coding/reuse-docs-and-args.md`).
+
 ## Deprecation strictness
 
 The test suite sets `options(lifecycle_verbosity = "error")` (see
