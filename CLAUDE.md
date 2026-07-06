@@ -6,6 +6,15 @@ review agent. The canonical, detailed contributor guide lives in
 **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 
+## ai-config submodule
+
+The `.ai-config` git submodule pins a copy of
+[`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) — the
+corpus this file's review guidelines cite throughout (`shared/` fragments,
+skills, memories). A scheduled `Bump submodule` workflow
+(`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
+when it drifts.
+
 ## Lab-wide style authority
 
 Follow the
