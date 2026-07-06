@@ -61,11 +61,13 @@ nmc
 onwards
 pandoc
 params
+passthrough
 pkgdown
 prec
 precisions
 preinstalling
 rhat
+roxygen
 serocalculator
 seroconversion
 seroepidemiologic
@@ -75,6 +77,7 @@ seroresponse
 seroresponses
 strat
 stratifications
+submodule
 tbl
 testthat
 tibble

@@ -6,6 +6,21 @@ review agent. The canonical, detailed contributor guide lives in
 **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 
+## ai-config submodule
+
+The `.ai-config` git submodule pins a copy of
+[`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) — the
+corpus one of this file's review guidelines cites (`shared/` fragments,
+skills, memories). A scheduled `Bump submodule` workflow
+(`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
+when it drifts.
+
+`.claude/settings.json` also registers ai-config's Claude Code plugin
+marketplace, so a Claude Code web/cloud session opened directly on this repo
+(where `~/.claude` starts empty) loads its skills as `ai-config:`-namespaced
+commands. This is separate from the `@claude` CI bot, which loads skills only
+from a committed `.claude/skills/` directory, not from `enabledPlugins`.
+
 ## Lab-wide style authority
 
 Follow the
@@ -58,6 +73,19 @@ form. Treat these as in-scope review findings, not optional nits:
 
 - Generally: when a more declarative tidyverse construct expresses the
   same thing with less control flow, say so and show the simpler form.
+
+- **Roxygen doc reuse and `...` passthrough.** Flag a `@param` description
+  or a prose section copy-pasted between roxygen blocks instead of using
+  [roxygen2's tag-reuse tags](https://roxygen2.r-lib.org/reference/tags-reuse.html)
+  (`@inheritParams`, `@inheritDotParams`, `@inheritSection`) — reused docs
+  stay in sync when the source function's docs change; copy-pasted docs
+  silently drift. Also flag a wrapper function that manually re-declares
+  and relays arguments it never touches itself instead of forwarding
+  [`...`](https://adv-r.hadley.nz/functions.html?q=dot-dot#fun-dot-dot-dot)
+  straight to the subfunction (documented via `@inheritDotParams`). This is
+  a global standing rule from the
+  [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) corpus
+  (`shared/coding/reuse-docs-and-args.md`).
 
 ## Deprecation strictness
 
