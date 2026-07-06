@@ -39,7 +39,8 @@ add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat) {
         name = "",
         values = c(median = "red"),
         labels = c(median = "Median"),
-        guide = ggplot2::guide_legend(override.aes = list(shape = NA))
+        guide = ggplot2::guide_legend(order = 1,
+                                      override.aes = list(shape = NA))
       )
 
     if (show_ci) {
@@ -48,7 +49,8 @@ add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat) {
           name = "",
           values = c(ci = "red"),
           labels = c(ci = "95% credible interval"),
-          guide = ggplot2::guide_legend(override.aes = list(colour = NA))
+          guide = ggplot2::guide_legend(order = 2,
+                                        override.aes = list(colour = NA))
         )
     }
   }
