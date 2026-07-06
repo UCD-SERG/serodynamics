@@ -15,6 +15,12 @@ skills, memories). A scheduled `Bump submodule` workflow
 (`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
 when it drifts.
 
+`.claude/settings.json` also registers ai-config's Claude Code plugin
+marketplace, so a Claude Code web/cloud session opened directly on this repo
+(where `~/.claude` starts empty) loads its skills as `ai-config:`-namespaced
+commands. This is separate from the `@claude` CI bot, which loads skills only
+from a committed `.claude/skills/` directory, not from `enabledPlugins`.
+
 ## Lab-wide style authority
 
 Follow the

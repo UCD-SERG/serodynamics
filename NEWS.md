@@ -2,7 +2,7 @@
 
 ## Internal
 
-* Embedded [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) as a `.ai-config` git submodule, with a scheduled `Bump submodule` workflow to keep the pin fresh (closes #264).
+* Embedded [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) as a `.ai-config` git submodule, with a scheduled `Bump submodule` workflow to keep the pin fresh, and registered its Claude Code plugin marketplace in `.claude/settings.json` so cloud/web sessions opened on this repo load its skills (closes #264).
 * Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
