@@ -10,7 +10,7 @@ file adds review-specific emphasis on top of that guide.
 
 The `.ai-config` git submodule pins a copy of
 [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) — the
-corpus this file's review guidelines cite throughout (`shared/` fragments,
+corpus one of this file's review guidelines cites (`shared/` fragments,
 skills, memories). A scheduled `Bump submodule` workflow
 (`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
 when it drifts.
