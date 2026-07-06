@@ -1,0 +1,13 @@
+{
+  "extraKnownMarketplaces": {
+    "d-morrison": {
+      "source": {
+        "source": "github",
+        "repo": "d-morrison/ai-config"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "ai-config@d-morrison": true
+  }
+}
