@@ -1,7 +1,7 @@
 # nepal_sees_jags_output already includes population_params
 model <- serodynamics::nepal_sees_jags_output
 
-# Population-level curve for a single antigen-isotype and stratum
+# Predictive curve for a single antigen-isotype and stratum
 p1 <- plot_serocurve(
   model       = model,
   antigen_iso = "HlyE_IgA",
@@ -9,14 +9,14 @@ p1 <- plot_serocurve(
 )
 print(p1)
 
-# Population-level curves for both stratifications, coloured by stratum
+# Predictive curves for both stratifications, colored by stratum
 p2 <- plot_serocurve(
   model       = model,
   antigen_iso = "HlyE_IgA"
 )
 print(p2)
 
-# Facet by stratification instead of colouring
+# Predictive curve faceting by stratification instead of coloring
 p3 <- plot_serocurve(
   model          = model,
   antigen_iso    = "HlyE_IgA",
@@ -24,19 +24,20 @@ p3 <- plot_serocurve(
 )
 print(p3)
 
-# Multiple antigen-isotypes, faceted, without CI
+# Population level curve for multiple antigen-isotypes, faceted, without CI
 p4 <- plot_serocurve(
   model                = model,
   antigen_iso          = c("HlyE_IgA", "HlyE_IgG"),
+  param_source = "population",
   facet_by_antigen_iso = TRUE,
   show_ci              = FALSE
 )
 print(p4)
 
-# Using the predictive distribution for a new individual
+# Population level distribution
 p5 <- plot_serocurve(
   model        = model,
   antigen_iso  = "HlyE_IgA",
-  param_source = "predictive"
+  param_source = "population"
 )
 print(p5)
