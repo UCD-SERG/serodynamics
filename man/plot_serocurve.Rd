@@ -44,13 +44,13 @@ fitted with \code{run_serodynamics(..., with_pop_params = TRUE)}.
 \item{show_ci}{\link{logical}; if \link{TRUE} (default), draws a 95\% credible
 interval ribbon around the median curve.}
 
-\item{log_y}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
-y-axis.  Defaults to \link{FALSE}.}
+\item{log_y}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to
+the y-axis.}
 
-\item{log_x}{\link{logical}; if \link{TRUE}, applies a pseudo-log10 transformation to
-the x-axis.  Defaults to \link{FALSE}.}
+\item{log_x}{\link{logical}; if \link{TRUE}, applies a \link{log10} transformation to the
+x-axis.}
 
-\item{xlim}{(Optional) A numeric vector of length 2 giving custom x-axis
+\item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
 limits.}
 
 \item{facet_by_antigen_iso}{\link{logical}; if \link{TRUE}, facets the plot by

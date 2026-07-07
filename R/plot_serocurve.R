@@ -24,12 +24,7 @@
 #'     fitted with `run_serodynamics(..., with_pop_params = TRUE)`.
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
 #'   interval ribbon around the median curve.
-#' @param log_y [logical]; if [TRUE], applies a [log10] transformation to the
-#'   y-axis.  Defaults to [FALSE].
-#' @param log_x [logical]; if [TRUE], applies a pseudo-log10 transformation to
-#'   the x-axis.  Defaults to [FALSE].
-#' @param xlim (Optional) A numeric vector of length 2 giving custom x-axis
-#'   limits.
+#' @inheritParams plot_predicted_curve log_y log_x xlim
 #' @param facet_by_antigen_iso [logical]; if [TRUE], facets the plot by
 #'   antigen-isotype.  Defaults to [TRUE] when multiple antigen-isotypes are
 #'   requested.
