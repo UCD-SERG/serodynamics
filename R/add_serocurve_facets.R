@@ -1,9 +1,24 @@
-# Facets a `plot_serocurve()` plot by antigen-isotype and/or
-# Stratification, choosing a sensible default `ncol` when one isn't
-# supplied.
-add_serocurve_facets <- function(p, curve_summary, antigen_iso_col,
-                                 facet_by_antigen_iso, facet_by_strat,
-                                 ncol) {
+#' @title Establishes Facets when Building Serocurve
+#' @description 
+#' Facets a `plot_serocurve()` plot by antigen-isotype and/or
+#' Stratification, choosing a sensible default `ncol` when one isn't
+#' supplied.
+#' @param facet_by_antigen_iso [logical]; if [TRUE], facets the plot by
+#'   antigen-isotype.  Defaults to [TRUE] when multiple antigen-isotypes are
+#'   requested.
+#' @param facet_by_strat [logical]; if [TRUE], facets the plot by
+#'   stratification level.  When [FALSE] (default), different stratification
+#'   levels are shown as different colours on the same panel.
+#' @param ncol [integer]; number of columns when faceting.  If [NULL]
+#'   (default), a sensible value is chosen automatically.
+#' @return A [ggplot2::ggplot] objec with facets
+#' @keywords internal
+add_serocurve_facets <- function(p, 
+                                 curve_summary, 
+                                 antigen_iso_col,
+                                 facet_by_antigen_iso = length(antigen_iso) > 1,
+                                 facet_by_strat = FALSE,
+                                 ncol = NULL) {
   facet_vars <- character(0)
   if (facet_by_antigen_iso) facet_vars <- c(facet_vars, antigen_iso_col)
   if (facet_by_strat)       facet_vars <- c(facet_vars, "Stratification")

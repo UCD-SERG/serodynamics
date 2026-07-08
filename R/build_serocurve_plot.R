@@ -1,8 +1,12 @@
-# Assembles the full `plot_serocurve()` ggplot object (bands, faceting,
-# log scales, and custom x-axis limits) from a summarised curve tibble.
+#' @title Creates Plot for Estimated Serodynamic Curves
+#' @description
+#' Assembles the full `plot_serocurve()` ggplot object (bands, faceting,
+#' log scales, and custom x-axis limits) from a summarised curve tibble.
+#' @return A [ggplot2::ggplot] object.
+#' @keywords internal
 build_serocurve_plot <- function(curve_summary, show_ci, multi_strat,
-                                 antigen_iso_col, facet_by_antigen_iso,
-                                 facet_by_strat, ncol, log_y, log_x, xlim) {
+                                 antigen_iso_col, log_y, log_x, xlim,
+                                 ...) {
   p <- ggplot2::ggplot() +
     ggplot2::theme_minimal() +
     ggplot2::labs(x = "Time since onset", y = "Assay result") +
@@ -10,8 +14,7 @@ build_serocurve_plot <- function(curve_summary, show_ci, multi_strat,
 
   p <- add_serocurve_bands(p, curve_summary, show_ci, multi_strat)
   p <- add_serocurve_facets(
-    p, curve_summary, antigen_iso_col, facet_by_antigen_iso,
-    facet_by_strat, ncol
+    p, curve_summary, antigen_iso_col, ...
   )
 
   if (log_y) {

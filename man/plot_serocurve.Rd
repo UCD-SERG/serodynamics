@@ -2,7 +2,7 @@
 % Please edit documentation in R/plot_serocurve.R
 \name{plot_serocurve}
 \alias{plot_serocurve}
-\title{Plot Estimated Serodynamic Curves at the Population Level}
+\title{Plot Estimated Serodynamic Curves at Predictive or Population Level}
 \usage{
 plot_serocurve(
   model,
@@ -13,9 +13,7 @@ plot_serocurve(
   log_y = FALSE,
   log_x = FALSE,
   xlim = NULL,
-  facet_by_antigen_iso = length(antigen_iso) > 1,
-  facet_by_strat = FALSE,
-  ncol = NULL
+  ...
 )
 }
 \arguments{
@@ -53,16 +51,18 @@ x-axis.}
 \item{xlim}{(Optional) A numeric vector of length 2 providing custom x-axis
 limits.}
 
-\item{facet_by_antigen_iso}{\link{logical}; if \link{TRUE}, facets the plot by
+\item{...}{
+  Arguments passed on to \code{\link{add_serocurve_facets}}
+  \describe{
+    \item{\code{facet_by_antigen_iso}}{\link{logical}; if \link{TRUE}, facets the plot by
 antigen-isotype.  Defaults to \link{TRUE} when multiple antigen-isotypes are
 requested.}
-
-\item{facet_by_strat}{\link{logical}; if \link{TRUE}, facets the plot by
+    \item{\code{facet_by_strat}}{\link{logical}; if \link{TRUE}, facets the plot by
 stratification level.  When \link{FALSE} (default), different stratification
 levels are shown as different colours on the same panel.}
-
-\item{ncol}{\link{integer}; number of columns when faceting.  If \link{NULL}
+    \item{\code{ncol}}{\link{integer}; number of columns when faceting.  If \link{NULL}
 (default), a sensible value is chosen automatically.}
+  }}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
