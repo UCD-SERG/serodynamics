@@ -43,6 +43,7 @@ ess
 et
 geoms
 ggmcmc
+ggplot
 ggproto
 glibc
 hv
@@ -72,6 +73,7 @@ rhat
 roxygen
 serocalculator
 seroconversion
+serocurve
 serodynamic
 seroepidemiologic
 seroepidemiological
@@ -81,6 +83,7 @@ seroresponses
 strat
 stratifications
 submodule
+summarised
 tbl
 testthat
 tibble
