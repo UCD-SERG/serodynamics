@@ -8,7 +8,7 @@
 #'   requested.
 #' @param ncol [integer]; number of columns when faceting.  If [NULL]
 #'   (default), a sensible value is chosen automatically.
-#' @return A [ggplot2::ggplot] objec with facets
+#' @return A [ggplot2::ggplot] object with facets.
 #' @keywords internal
 add_serocurve_facets <- function(p, 
                                  curve_summary, 

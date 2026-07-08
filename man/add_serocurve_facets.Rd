@@ -23,7 +23,7 @@ requested.}
 (default), a sensible value is chosen automatically.}
 }
 \value{
-A \link[ggplot2:ggplot]{ggplot2::ggplot} objec with facets
+A \link[ggplot2:ggplot]{ggplot2::ggplot} object with facets.
 }
 \description{
 Facets a \code{plot_serocurve()} plot by antigen-isotype and/or
