@@ -5,16 +5,23 @@
 #' @return A [ggplot2::ggplot] object.
 #' @keywords internal
 build_serocurve_plot <- function(curve_summary, show_ci, multi_strat,
+                                 antigen_iso,
                                  antigen_iso_col, log_y, log_x, xlim,
+                                 facet_by_strat,
                                  ...) {
   p <- ggplot2::ggplot() +
     ggplot2::theme_minimal() +
     ggplot2::labs(x = "Time since onset", y = "Assay result") +
     ggplot2::theme(legend.position = "bottom")
 
-  p <- add_serocurve_bands(p, curve_summary, show_ci, multi_strat)
+  p <- add_serocurve_bands(
+    p, curve_summary, show_ci, multi_strat, ...
+    )
   p <- add_serocurve_facets(
-    p, curve_summary, antigen_iso_col, ...
+    p, curve_summary, 
+    facet_by_strat = facet_by_strat,
+    antigen_iso = antigen_iso, 
+    antigen_iso_col, ...
   )
 
   if (log_y) {

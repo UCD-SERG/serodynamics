@@ -25,8 +25,10 @@
 #' @param show_ci [logical]; if [TRUE] (default), draws a 95% credible
 #'   interval ribbon around the median curve.
 #' @inheritParams plot_predicted_curve log_y log_x xlim
+#' @param facet_by_strat [logical]; if [TRUE], facets the plot by
+#'   stratification level.  When [FALSE] (default), different stratification
+#'   levels are shown as different colours on the same panel.
 #' @inheritDotParams add_serocurve_facets
-#'
 #' @return A [ggplot2::ggplot] object.
 #' @export
 #'
@@ -40,6 +42,7 @@ plot_serocurve <- function(
     log_y = FALSE,
     log_x = FALSE,
     xlim = NULL,
+    facet_by_strat = FALSE,
     ...) {
 
   param_source <- match.arg(param_source, c("population", "predictive"))
@@ -64,8 +67,8 @@ plot_serocurve <- function(
 
   # ---- Build the ggplot --------------------------------------------------
   build_serocurve_plot(
-    curve_summary, show_ci, multi_strat, antigen_iso_col,
-    log_y, log_x, xlim, 
+    curve_summary, show_ci, multi_strat,antigen_iso = antigen_iso, 
+    antigen_iso_col, log_y, log_x, xlim, facet_by_strat,
     ...
   )
 }
