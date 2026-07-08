@@ -8,8 +8,9 @@ add_serocurve_facets(
   p,
   curve_summary,
   antigen_iso_col,
+  antigen_iso,
+  facet_by_strat,
   facet_by_antigen_iso = length(antigen_iso) > 1,
-  facet_by_strat = FALSE,
   ncol = NULL
 )
 }
@@ -17,10 +18,6 @@ add_serocurve_facets(
 \item{facet_by_antigen_iso}{\link{logical}; if \link{TRUE}, facets the plot by
 antigen-isotype.  Defaults to \link{TRUE} when multiple antigen-isotypes are
 requested.}
-
-\item{facet_by_strat}{\link{logical}; if \link{TRUE}, facets the plot by
-stratification level.  When \link{FALSE} (default), different stratification
-levels are shown as different colours on the same panel.}
 
 \item{ncol}{\link{integer}; number of columns when faceting.  If \link{NULL}
 (default), a sensible value is chosen automatically.}

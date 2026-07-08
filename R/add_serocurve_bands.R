@@ -2,7 +2,7 @@
 # ribbon) to a `plot_serocurve()` plot, coloured/filled by Stratification
 # when `multi_strat` is TRUE and by a fixed "median"/"ci" legend entry
 # otherwise.
-add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat) {
+add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat, ...) {
   if (show_ci) {
     p <- p +
       ggplot2::geom_ribbon(
