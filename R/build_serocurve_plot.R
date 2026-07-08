@@ -16,7 +16,7 @@ build_serocurve_plot <- function(curve_summary, show_ci, multi_strat,
 
   p <- add_serocurve_bands(
     p, curve_summary, show_ci, multi_strat, ...
-    )
+  )
   p <- add_serocurve_facets(
     p, curve_summary, 
     facet_by_strat = facet_by_strat,

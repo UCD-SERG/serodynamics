@@ -67,8 +67,8 @@ plot_serocurve <- function(
 
   # ---- Build the ggplot --------------------------------------------------
   build_serocurve_plot(
-    curve_summary, show_ci, multi_strat,antigen_iso = antigen_iso, 
-    antigen_iso_col, log_y, log_x, xlim, facet_by_strat,
+    curve_summary, show_ci, multi_strat, antigen_iso = antigen_iso, 
+    antigen_iso_col, log_y, log_x, xlim, facet_by_strat, 
     ...
   )
 }
