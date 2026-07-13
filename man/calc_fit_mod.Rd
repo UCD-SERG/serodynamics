@@ -4,13 +4,16 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data)
+calc_fit_mod(modeled_dat, original_data, strat = NA)
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
 values.}
 
 \item{original_data}{A \link{data.frame} of the original input dataset.}
+
+\item{strat}{A \link{character} string specifying the stratification variable
+name, or \link{NA} if no stratification is used.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following
@@ -18,12 +21,19 @@ values:
 \itemize{
 \item Subject = ID number specifying an individual
 \item Iso_type = The modeled antigen_isotype
+\item Stratification = The variable used to stratify the model
+(\code{"None"} when no stratification is used)
 \item t = Time since infection
 \item fitted = The fitted value calculated using model output parameters for a
 given \code{t}
 \item residual = The residual value calculated as the difference between
 observed and fitted values for a given \code{t}
 }
+
+Rows from \code{original_data} whose stratification value is \code{NA} are retained
+in the output with \code{NA} \code{fitted} and \code{residual} values, since no posterior
+estimate is available for those (Subject, Iso_type, Stratification)
+tuples.
 }
 \description{
 \code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates

@@ -7,41 +7,68 @@
 #' @param modeled_dat A [data.frame] of modeled antibody kinetic parameter
 #' values.
 #' @param original_data A [data.frame] of the original input dataset.
+#' @param strat A [character] string specifying the stratification variable
+#' name, or [NA] if no stratification is used.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:
 #'   - Subject = ID number specifying an individual
 #'   - Iso_type = The modeled antigen_isotype
-#'   - t = Time since infection 
+#'   - Stratification = The variable used to stratify the model
+#'   (`"None"` when no stratification is used)
+#'   - t = Time since infection
 #'   - fitted = The fitted value calculated using model output parameters for a
 #'   given `t`
 #'   - residual = The residual value calculated as the difference between
 #'   observed and fitted values for a given `t`
+#'
+#'   Rows from `original_data` whose stratification value is `NA` are retained
+#'   in the output with `NA` `fitted` and `residual` values, since no posterior
+#'   estimate is available for those (Subject, Iso_type, Stratification)
+#'   tuples.
 #' @keywords internal
-calc_fit_mod <- function(modeled_dat, 
-                         original_data) {
-  original_data <- original_data |> 
+calc_fit_mod <- function(modeled_dat,
+                         original_data,
+                         strat = NA) {
+  strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
+
+  original_data <- original_data |>
     use_att_names() |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$result)
-  
+    dplyr::select(
+      dplyr::any_of(c("Subject", "Iso_type", "t", "result", strat_col))
+    )
+
   # Preparing modeled data
   modeled_dat <- modeled_dat |>
-    dplyr::summarize(.by = c(.data$Parameter, .data$Iso_type, 
-                             .data$Stratification, 
-                             .data$Subject),
-                     med_value = stats::median(.data$value)) |>
-    tidyr::pivot_wider(names_from = .data$Parameter, 
-                       values_from = .data$med_value)
+    dplyr::summarize(
+      .by = dplyr::all_of(
+        c("Parameter", "Iso_type", "Stratification", "Subject")
+      ),
+      med_value = stats::median(.data$value)
+    ) |>
+    tidyr::pivot_wider(names_from = "Parameter", values_from = "med_value")
 
   # Matching input data with modeled data
-  matched_dat <- merge(modeled_dat, original_data, 
-                       by = c("Subject", "Iso_type"),
-                       all.y = TRUE)
+  matched_dat <- modeled_dat |>
+    dplyr::right_join(
+      original_data,
+      by = base::intersect(
+        c("Subject", "Iso_type", "Stratification"),
+        names(original_data)
+      )
+    )
 
   # Calculating fitted and residual
   fitted_dat <- matched_dat |>
-    mutate(fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                       .data$alpha, .data$shape),
-           residual = .data$result - .data$fitted) |>
-    select(.data$Subject, .data$Iso_type, .data$t, .data$fitted, .data$residual)
-  fitted_dat
+    dplyr::mutate(
+      fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
+                  .data$alpha, .data$shape),
+      residual = .data$result - .data$fitted
+    ) |>
+    dplyr::select(
+      dplyr::all_of(
+        c("Subject", "Iso_type", "Stratification", "t", "fitted", "residual")
+      )
+    )
+
+  return(fitted_dat)
 }

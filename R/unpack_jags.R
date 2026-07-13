@@ -2,13 +2,13 @@
 #' @author Sam Schildhauer
 #' @description
 #'  `unpack_jags()` takes a long-format MCMC sample (typically created by
-#'  applying [ggmcmc::ggs()] to the `mcmc` component of [run_mod] output)
-#'  and unpacks it into separate rows for individual-level curve parameters
-#'  and population-level hyperparameters/precision terms.
+#'  applying [ggmcmc::ggs()] to the `mcmc` component of [run_serodynamics] 
+#'  output) and unpacks it into separate rows for individual-level curve 
+#'  parameters and population-level hyperparameters/precision terms.
 #' @param data A [tibble::tbl_df] in [ggmcmc::ggs()] / MCMC-long format,
 #'   usually `ggmcmc::ggs(jags_post[["mcmc"]])` where `jags_post` comes from
-#'   [run_mod]. Must contain at least `Iteration`, `Chain`, `Parameter`,
-#'   and `value` columns.
+#'   [run_serodynamics]. Must contain at least `Iteration`, `Chain`, 
+#'   `Parameter`, and `value` columns.
 #' @returns A [tibble::tbl_df] containing MCMC samples from the joint
 #' posterior distribution of the model with unpacked individual-level
 #' parameters (e.g., `y0`, `y1`, `t1`, `alpha`, `shape`) and

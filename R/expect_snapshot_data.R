@@ -10,10 +10,6 @@
 #' @returns [NULL] (from [testthat::expect_snapshot_file()])
 #' @export
 #' @keywords internal
-#' @examples
-#' \dontrun{
-#' expect_snapshot_data(iris, name = "iris")
-#' }
 expect_snapshot_data <- function(x, name, digits = 6, ...) {
   fun <- function(x) signif(x, digits = digits)
   lapply_fun <- function(x) I(lapply(x, fun))

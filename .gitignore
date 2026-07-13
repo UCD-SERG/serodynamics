@@ -27,3 +27,5 @@ docs/
 **/*.quarto_ipynb
 README.html
 .RDataTmp
+/doc/
+/Meta/

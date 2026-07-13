@@ -1,8 +1,8 @@
 #'
 #'
-#' SEES Typhoid run_mod jags output
+#' SEES Typhoid run_serodynamics jags output
 #'
-#' A [serodynamics::run_mod()] output 
+#' A [serodynamics::run_serodynamics()] output
 #' using the [nepal_sees] example data set as input
 #' and stratifying by column `"bldculres"`, 
 #' which is the diagnosis type (typhoid or
@@ -29,5 +29,5 @@
 #'  \item{attributes}{A [list] of `attributes` that summarize the jags inputs, 
 #'  priors, and optional jags_post mcmc object}
 #' }
-#' @source reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
+#' @source reference study: \doi{10.1016/S2666-5247(22)00114-8}
 "nepal_sees_jags_output"
