@@ -4,9 +4,9 @@
 \name{serodynamics-package}
 \alias{serodynamics}
 \alias{serodynamics-package}
-\title{serodynamics: What the Package Does (One Line, Title Case)}
+\title{serodynamics: Modeling Longitudinal Antibody Responses to Infection}
 \description{
-Modeling longitudinal immune seroresponses to pathogens.
+Implements Bayesian hierarchical models for estimating antibody kinetic parameters from longitudinal serological data. Fits two-phase within-host models capturing antibody rise, peak, and decay following pathogen infection, using 'JAGS' for posterior inference. Designed as the upstream companion to the 'serocalculator' package for end-to-end seroepidemiological analysis. Methods are described in Teunis and colleagues (2016) \doi{10.1016/j.epidem.2016.04.001} and Teunis and van Eijkeren (2020) \doi{10.1002/sim.8578}.
 }
 \seealso{
 Useful links:
@@ -18,15 +18,15 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: Samuel Schildhauer \email{sschildhauer@ucdavis.edu}
+\strong{Maintainer}: Samuel Schildhauer \email{sschildhauer@ucdavis.edu} (\href{https://orcid.org/0000-0001-7139-1086}{ORCID})
 
 Authors:
 \itemize{
-  \item Samuel Schildhauer \email{sschildhauer@ucdavis.edu}
-  \item Peter Teunis \email{p.teunis@emory.edu} (Author of the method and original code.) [copyright holder]
-  \item Kwan Ho Lee \email{ksjlee@ucdavis.edu}
-  \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu}
-  \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu}
+  \item Samuel Schildhauer \email{sschildhauer@ucdavis.edu} (\href{https://orcid.org/0000-0001-7139-1086}{ORCID})
+  \item Peter Teunis \email{p.teunis@emory.edu} (\href{https://orcid.org/0000-0003-1904-6044}{ORCID}) (Author of the method and original code.) [copyright holder]
+  \item Kwan Ho Lee \email{ksjlee@ucdavis.edu} (\href{https://orcid.org/0009-0004-9723-2007}{ORCID})
+  \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu} (\href{https://orcid.org/0000-0003-1886-2699}{ORCID})
+  \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
 }
 
 }

@@ -28,3 +28,5 @@ docs/
 
 **/*.quarto_ipynb
 README.html
+/doc/
+/Meta/

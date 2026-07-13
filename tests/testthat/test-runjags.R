@@ -1,5 +1,9 @@
 test_that("results are consistent", {
-  
+  skip_on_cran()
+  skip_if_not(
+    Sys.getenv("RUN_HEAVY_TESTS") == "true",
+    message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+  )
   results <- runjags:::example_runjags(sample = 100)
   results |> plot(vars = "c", plot.type = "trace")
   results[["mcmc"]] |> 
@@ -12,7 +16,11 @@ test_that("results are consistent", {
 
 
 test_that("results are consistent with our model", {
-  
+  skip_on_cran()
+  skip_if_not(
+    Sys.getenv("RUN_HEAVY_TESTS") == "true",
+    message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+  )
   set.seed(1)
   longdata <- 
     readr::read_rds(

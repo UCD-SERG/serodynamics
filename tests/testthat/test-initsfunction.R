@@ -5,7 +5,11 @@ test_that("results are consistent", {
 test_that(
   desc = "runjags results are consistent", 
   code = {
-
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     set.seed(1)
     data1 <- rbinom(n = 91, size = 1, prob = .6)
     jags_post0 <- run.jags(

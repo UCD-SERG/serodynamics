@@ -1,0 +1,26 @@
+# Periodically bump the .ai-config submodule to its upstream HEAD and open a
+# PR when it moves. Requires Settings -> Actions -> General -> "Allow GitHub
+# Actions to create and approve pull requests" (the integrated GITHUB_TOKEN
+# opens the PR).
+name: Bump submodule
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 6 * * 1' # Weekly on Monday at 06:00 UTC
+
+jobs:
+  bump:
+    permissions:
+      contents: write
+      pull-requests: write
+    uses: d-morrison/gha/.github/workflows/bump-submodule.yml@v1
+    with:
+      submodule-path: .ai-config
+      # remote-branch: main        # defaults to the submodule's configured branch
+    secrets:
+      # Needed only for private submodules; omit for public ones (ai-config is public).
+      SUBMODULES_TOKEN: ${{ secrets.SUBMODULES_TOKEN }}
+      # Set only if the bot must push to a protected branch; otherwise omit and
+      # the push falls back to GITHUB_TOKEN.
+      WORKFLOW_TOKEN: ${{ secrets.WORKFLOW_TOKEN }}
