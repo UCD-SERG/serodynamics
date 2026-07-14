@@ -192,8 +192,8 @@ infection. The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item shape = shape parameter, estimated for power decay and fixed at 1 for
-exponential decay
+\item shape = shape parameter, estimated for power decay and fixed at 1
+for exponential decay
 \item alpha = decay rate
 }
 }
