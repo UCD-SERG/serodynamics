@@ -82,7 +82,7 @@ test_that("run_serodynamics accepts exponential decay before data validation", {
 })
 
 test_that(
-  desc = "exponential decay works with SEES data and preserves output structure",
+  desc = "exponential decay preserves the SEES output structure",
   code = {
     skip_on_cran()
     skip_if_not(
