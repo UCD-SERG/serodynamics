@@ -9,7 +9,8 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - shape = shape parameter
+#'  - shape = shape parameter, estimated for power decay and fixed at 1
+#'   for exponential decay
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
 #' @param file_mod The name of the file that contains model structure.
@@ -26,6 +27,9 @@
 #'   `"power"`. The `"power"` option uses
 #'   `y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))`. The
 #'   `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
+#'   The exponential model does not estimate `shape`; its processed output
+#'   includes `shape = 1` as a fixed value to preserve the common output
+#'   structure.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
@@ -52,7 +56,8 @@
 #'     - `y0` = Posterior estimate of baseline antibody concentration
 #'     - `y1` = Posterior estimate of peak antibody concentration
 #'     - `t1` = Posterior estimate of time to peak
-#'     - `shape` = Posterior estimate of shape parameter
+#'     - `shape` = shape parameter, estimated for power decay and fixed at 1
+#'     for exponential decay
 #'     - `alpha` = Posterior estimate of decay rate
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
@@ -73,7 +78,8 @@
 #'     - `Population_Parameter` identifies which modeled population parameter
 #'     is represented:
 #'       - `mu.par` = The population means of the host-specific model
-#'       parameters (on logarithmic scales). Note: y1 and shape are transformed.
+#'       parameters (on logarithmic scales). Note: y1 and shape are transformed;
+#'       shape is not included for exponential decay.
 #'       - `prec.par` = The population precision matrix of the
 #'       hyperparameters (with diagonal elements equal to inverse variances). 
 #'       The two parameters listed (separated by commas) represent the pairwise 
@@ -147,13 +153,29 @@ run_serodynamics <- function(data,
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
                              ...)
+    if (decay_type == "exponential") {
+      parameter_index <- seq_len(4)
+      priorspec$n_params <- 4L
+      priorspec$mu.hyp <- priorspec$mu.hyp[
+        , parameter_index, drop = FALSE
+      ]
+      priorspec$prec.hyp <- priorspec$prec.hyp[
+        , parameter_index, parameter_index, drop = FALSE
+      ]
+      priorspec$omega <- priorspec$omega[
+        , parameter_index, parameter_index, drop = FALSE
+      ]
+    }
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
     nburnin <- nburn # nr of iterations to use for burn-in
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
+    tomonitor <- c(
+      "y0", "y1", "t1", "alpha",
+      if (decay_type == "power") "shape"
+    )
     # Conditional statement for including population parameters
     if (with_pop_params) {
       tomonitor <- c(tomonitor, "mu.par", "prec.par",
@@ -214,6 +236,18 @@ run_serodynamics <- function(data,
       Subject = as.character(seq_along(attr(longdata, "ids")))
     )
     jags_final <- reconcile_subject_ids(jags_unpacked, ids)
+    if (decay_type == "exponential") {
+      fixed_shape <- jags_final |>
+        dplyr::filter(
+          !.data$.is_population_parameter,
+          .data$Parameter == "alpha"
+        ) |>
+        dplyr::mutate(
+          Parameter = "shape",
+          value = 1
+        )
+      jags_final <- dplyr::bind_rows(jags_final, fixed_shape)
+    }
 
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".

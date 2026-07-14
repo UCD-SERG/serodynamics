@@ -82,7 +82,7 @@ test_that("run_serodynamics accepts exponential decay before data validation", {
 })
 
 test_that(
-  desc = "results are consistent with SEES data",
+  desc = "exponential decay results are consistent with SEES data",
   code = {
     skip_on_cran()
     skip_if_not(
@@ -97,7 +97,7 @@ test_that(
     
     results <- run_serodynamics(
       data = dataset, # The data set input
-      file_mod = serodynamics_example("model.jags"),
+      decay_type = "exponential",
       nchain = 2, # Number of mcmc chains to run
       nadapt = 10, # Number of adaptations to run
       nburn = 10, # Number of unrecorded samples before sampling begins
@@ -141,10 +141,20 @@ test_that(
       )
     
     pop_params <- attr(results, "population_params")
-    expect_equal(attr(results, "decay_type"), "power")
+    expect_equal(attr(results, "decay_type"), "exponential")
     expect_s3_class(pop_params, "data.frame")
     
-    preclogy_row <- pop_params[pop_params$Population_Parameter == "prec.logy", ]
+    shape_rows <- results |>
+      dplyr::filter(.data$Parameter == "shape")
+    expect_gt(nrow(shape_rows), 0)
+    expect_true(all(shape_rows$value == 1))
+    expect_false(any(
+      grepl("shape", pop_params$Parameter, fixed = TRUE),
+      na.rm = TRUE
+    ))
+    preclogy_row <- pop_params[
+      pop_params$Population_Parameter == "prec.logy",
+    ]
     expect_gt(nrow(preclogy_row), 0)
     
     # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
@@ -163,6 +173,12 @@ test_that(
     expect_type(jags_post, "list")
     expect_true("typhi" %in% names(jags_post))
     expect_s3_class(jags_post$typhi$mcmc, "mcmc.list")
+    raw_parameter_names <- colnames(
+      as.matrix(jags_post$typhi$mcmc)
+    )
+    expect_false(any(
+      startsWith(raw_parameter_names, "shape[")
+    ))
     
   }
 )

@@ -29,7 +29,10 @@ run_serodynamics(
 in the model. Options are \code{"power"} and \code{"exponential"}. Default is
 \code{"power"}. The \code{"power"} option uses
 \code{y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))}. The
-\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.}
+\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
+The exponential model does not estimate \code{shape}; its processed output
+includes \code{shape = 1} as a fixed value to preserve the common output
+structure.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}
@@ -127,7 +130,8 @@ including the following:
 \item \code{y0} = Posterior estimate of baseline antibody concentration
 \item \code{y1} = Posterior estimate of peak antibody concentration
 \item \code{t1} = Posterior estimate of time to peak
-\item \code{shape} = Posterior estimate of shape parameter
+\item \code{shape} = shape parameter, estimated for power decay and fixed at 1
+for exponential decay
 \item \code{alpha} = Posterior estimate of decay rate
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
@@ -152,7 +156,8 @@ Columns include
 is represented:
 \itemize{
 \item \code{mu.par} = The population means of the host-specific model
-parameters (on logarithmic scales). Note: y1 and shape are transformed.
+parameters (on logarithmic scales). Note: y1 and shape are transformed;
+shape is not included for exponential decay.
 \item \code{prec.par} = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
 The two parameters listed (separated by commas) represent the pairwise
@@ -187,7 +192,8 @@ infection. The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item shape = shape parameter
+\item shape = shape parameter, estimated for power decay and fixed at 1 for
+exponential decay
 \item alpha = decay rate
 }
 }
