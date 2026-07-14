@@ -30,9 +30,12 @@ add_serocurve_bands <- function(p, curve_summary, show_ci, multi_strat, ...) {
       inherit.aes = FALSE
     )
 
-  if (multi_strat) {
+  if (multi_strat && show_ci) {
     p <- p +
       ggplot2::labs(colour = "Stratification", fill = "Stratification")
+  } else if (multi_strat && !show_ci) {
+    p <- p +
+      ggplot2::labs(colour = "Stratification") 
   } else {
     p <- p +
       ggplot2::scale_colour_manual(
