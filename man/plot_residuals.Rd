@@ -12,7 +12,9 @@ plot_residuals(
   log_y = TRUE,
   min_value = 0.01,
   probs = c(0.025, 0.5, 0.975),
-  n_draws = NULL
+  n_draws = NULL,
+  show_interval = TRUE,
+  connect_lines = FALSE
 )
 }
 \arguments{
@@ -26,30 +28,45 @@ compute observation-level residual intervals.}
 \item{antigen_isos}{(Optional) Antigen-isotypes (\code{antigen_iso}) to include.}
 
 \item{log_y}{\link{logical}; if \code{TRUE} (default), computes residuals on the
-log10-scale as \code{log10(pred) - log10(obs)}.}
+log10-scale as \code{log10(pred) - log10(obs)}. Only applies when \code{dataset} is
+supplied.}
 
 \item{min_value}{\link{numeric}; minimum value used when \code{log_y = TRUE} to avoid
 \code{-Inf} from \code{log10(0)}.}
 
 \item{probs}{A numeric vector of length 3 giving the lower, median, and
-upper probabilities for residual intervals.}
+upper probabilities for residual intervals. Only used when \code{dataset} is
+supplied.}
 
 \item{n_draws}{(Optional) Maximum number of posterior draws to use per
 subject and antigen-isotype. Use this to speed up plotting for large
 objects.}
+
+\item{show_interval}{\link{logical}; if \code{TRUE} (default), draws an error bar
+around each residual spanning its \code{probs} interval, to visualize the
+precision of the posterior.}
+
+\item{connect_lines}{\link{logical}; if \code{TRUE}, connects each subject's
+residuals over time with a line. Default \code{FALSE}.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 }
 \description{
-Plots residuals over time and facets by antigen-isotype (\code{Iso_type}).
+Plots residuals over time and facets by antigen-isotype (\code{Iso_type}). The
+mean absolute residual for each facet is annotated in the upper-right
+corner.
 
 If \code{dataset} is supplied, residuals are computed using posterior draws from
 \code{model}, producing a median residual with a 95\% interval for each
 observation.
-If \code{dataset} is \code{NULL}, residuals are taken from \code{attr(model, "fitted_residuals")}
-(computed from median parameter estimates in \code{\link[=run_mod]{run_mod()}}) and plotted as
-point residuals.
+If \code{dataset} is \code{NULL}, residuals are taken from
+\code{attr(model, "fitted_residuals")} (computed in \code{\link[=run_serodynamics]{run_serodynamics()}} via
+\code{\link[=calc_fit_mod]{calc_fit_mod()}}), along with the 2.5\%/97.5\% posterior quantiles stored
+alongside them. These are always on the natural (non-log) scale, regardless
+of \code{log_y}. \code{fitted_residuals} attributes created before this interval was
+added lack those quantile columns; residuals from such objects are plotted
+without an interval.
 }
 \examples{
 plot_residuals(

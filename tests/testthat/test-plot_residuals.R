@@ -25,3 +25,32 @@ testthat::test_that(
     testthat::expect_true(all(time_checks$ok))
   }
 )
+
+testthat::test_that(
+  "plot_residuals() supports connect_lines, show_interval, and MAE labels",
+  {
+    args <- list(
+      model = serodynamics::nepal_sees_jags_output,
+      dataset = serodynamics::nepal_sees,
+      ids = c("sees_npl_128", "sees_npl_131"),
+      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
+      n_draws = 25
+    )
+
+    layer_classes <- function(p) {
+      vapply(p$layers, function(l) class(l$geom)[1], character(1))
+    }
+
+    plot_default <- do.call(plot_residuals, args)
+    testthat::expect_true("GeomErrorbar" %in% layer_classes(plot_default))
+    testthat::expect_true("GeomText" %in% layer_classes(plot_default))
+    testthat::expect_false("GeomLine" %in% layer_classes(plot_default))
+
+    plot_custom <- do.call(
+      plot_residuals,
+      c(args, list(connect_lines = TRUE, show_interval = FALSE))
+    )
+    testthat::expect_true("GeomLine" %in% layer_classes(plot_custom))
+    testthat::expect_false("GeomErrorbar" %in% layer_classes(plot_custom))
+  }
+)
