@@ -24,10 +24,13 @@ values:
 \item Stratification = The variable used to stratify the model
 (\code{"None"} when no stratification is used)
 \item t = Time since infection
-\item fitted = The fitted value calculated using model output parameters for a
-given \code{t}
-\item residual = The residual value calculated as the difference between
-observed and fitted values for a given \code{t}
+\item fitted = The median (across posterior draws) fitted value for a given
+\code{t}
+\item residual = The median (across posterior draws) residual, calculated as
+the difference between observed and fitted values for a given \code{t}
+\item residual_low, residual_high = The 2.5\% and 97.5\% quantiles (across
+posterior draws) of the residual, giving a precision interval around
+\code{residual}
 }
 
 Rows from \code{original_data} whose stratification value is \code{NA} are retained

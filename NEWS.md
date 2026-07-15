@@ -7,7 +7,13 @@
 
 ## New features
 * Added `plot_residuals()` to visualize residuals over time, faceted by
-  antigen-isotype.
+  antigen-isotype. `calc_fit_mod()`'s `fitted_residuals` attribute now also
+  carries 2.5%/97.5% posterior quantiles for each residual (`residual_low`,
+  `residual_high`), which `plot_residuals()` uses to draw a precision
+  interval around each point even when no `dataset` is supplied. Also adds
+  a mean-absolute-error annotation per facet, a `connect_lines` option to
+  join each subject's residuals over time, and a `show_interval` toggle for
+  the interval error bars (#230).
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`
   - `post_summ()` → `summarize_posterior()`
