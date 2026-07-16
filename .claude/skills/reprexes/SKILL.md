@@ -93,7 +93,7 @@ but nothing more.
   reprex code will be ported back.
 - The **`reprex` package** (tidyverse, <https://reprex.tidyverse.org/>)
   formats a reprex for sharing: it runs your code in a clean, separate R
-  session (via `callr` since reprex 2.0) and emits code **plus actual
+  session (via `callr`) and emits code **plus actual
   output**.
   Copy the code and call `reprex::reprex()` (reads the clipboard by default),
   or point it at a file with `reprex::reprex(input = "/tmp/reprex.R")` (or a
