@@ -7,7 +7,9 @@
   build via `.Rbuildignore`.
 ## Internal
 
+* Embedded [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) as a `.ai-config` git submodule, with a scheduled `Bump submodule` workflow to keep the pin fresh, and registered its Claude Code plugin marketplace in `.claude/settings.json` so cloud/web sessions opened on this repo load its skills (closes #264).
 * Added a scheduled `Clean up PR Previews` workflow that prunes closed-PR `gh-pages` previews and compacts `gh-pages` history, so deleted render snapshots stop bloating the repo (closes #260).
+* Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
 * Renamed user-facing functions for clarity (#241):
@@ -29,6 +31,8 @@ all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes
+* Cut down on `run_serodynamics()` tests to lower run time/load. 
+Went from 5 separate `run.jags` chunks down to 3. (#253)
 * Documented in `CLAUDE.md`, `.github/copilot-instructions.md`, and a
   note in `.lintr.R` that `dplyr::*_join()` calls must specify the
   `relationship` argument (for example `relationship = "many-to-one"`),

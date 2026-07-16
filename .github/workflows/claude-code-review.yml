@@ -6,8 +6,10 @@
 name: Claude Code Review
 
 on:
-  pull_request:
-    types: [opened, synchronize, ready_for_review, reopened]
+  # Automatic review on PR events is temporarily disabled (see #266).
+  # Re-enable by uncommenting the `pull_request:` trigger below.
+  # pull_request:
+  #   types: [opened, synchronize, ready_for_review, reopened]
   workflow_dispatch:
     inputs:
       pr_number:
