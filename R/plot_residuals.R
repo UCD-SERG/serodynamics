@@ -3,14 +3,12 @@
 #' Plots residuals over time and facets by antigen-isotype (`Iso_type`). The
 #' mean absolute residual for each facet is annotated in the upper-right
 #' corner.
-#'
 #' Residuals are taken directly from `attr(model, "fitted_residuals")`
 #' (computed in [run_serodynamics()] via [calc_fit_mod()]), which stores both
 #' natural-scale and log10-scale medians and 2.5%/97.5% posterior quantiles.
 #' `fitted_residuals` attributes created before a given set of columns was
 #' added lack them; residuals from such objects are plotted without those
 #' columns (e.g. without an interval).
-#'
 #' @param model An `sr_model` object (returned by [run_mod()]), with a
 #' `fitted_residuals` attribute (see [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
@@ -61,10 +59,7 @@ plot_residuals <- function(model,
     p <- p +
       ggplot2::geom_errorbar(
         ggplot2::aes(ymin = .data$resid_low, ymax = .data$resid_high),
-        linewidth = 0.4,
-        width = 0,
-        alpha = 0.5,
-        na.rm = TRUE
+        linewidth = 0.4, width = 0, alpha = 0.5, na.rm = TRUE
       )
   }
 
@@ -88,10 +83,7 @@ plot_residuals <- function(model,
     ggplot2::geom_text(
       data = mae_label_data(to_plot),
       mapping = ggplot2::aes(x = Inf, y = Inf, label = .data$label),
-      hjust = 1.1,
-      vjust = 1.5,
-      size = 3.2,
-      inherit.aes = FALSE
+      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE
     ) +
     ggplot2::theme_bw() +
     ggplot2::xlab("Time since seroconversion (days)") +
@@ -102,56 +94,6 @@ plot_residuals <- function(model,
   }
 
   p
-}
-
-# Residuals (and their posterior quantiles), on the requested scale, from
-# `attr(model, "fitted_residuals")`.
-residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
-  fit_res <- attr(model, "fitted_residuals")
-  if (is.null(fit_res)) {
-    cli::cli_abort(c(
-      "x" = "{.arg model} has no {.val fitted_residuals} attribute.",
-      "i" = "Use output from {.fn run_serodynamics}."
-    ))
-  }
-
-  fit_res <- tibble::as_tibble(fit_res)
-
-  cols <- if (log_y) {
-    c(
-      low = "log_residual_low", med = "log_residual",
-      high = "log_residual_high"
-    )
-  } else {
-    c(low = "residual_low", med = "residual", high = "residual_high")
-  }
-  for (col in setdiff(cols, names(fit_res))) {
-    fit_res[[col]] <- NA_real_
-  }
-
-  to_plot <- fit_res |>
-    dplyr::mutate(
-      resid_low = -.data[[cols[["high"]]]],
-      resid_med = -.data[[cols[["med"]]]],
-      resid_high = -.data[[cols[["low"]]]]
-    )
-
-  if (!is.null(ids)) {
-    to_plot <- to_plot |>
-      dplyr::filter(.data$Subject %in% .env$ids)
-  }
-
-  if (!is.null(antigen_isos)) {
-    to_plot <- to_plot |>
-      dplyr::filter(.data$Iso_type %in% .env$antigen_isos)
-  }
-
-  to_plot |>
-    dplyr::select(
-      all_of(c(
-        "Subject", "Iso_type", "t", "resid_low", "resid_med", "resid_high"
-      ))
-    )
 }
 
 # One row per `Iso_type` giving a "MAE = ..." label, for annotating each
