@@ -41,7 +41,6 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 Plots residuals over time and facets by antigen-isotype (\code{Iso_type}). The
 mean absolute residual for each facet is annotated in the upper-right
 corner.
-
 Residuals are taken directly from \code{attr(model, "fitted_residuals")}
 (computed in \code{\link[=run_serodynamics]{run_serodynamics()}} via \code{\link[=calc_fit_mod]{calc_fit_mod()}}), which stores both
 natural-scale and log10-scale medians and 2.5\%/97.5\% posterior quantiles.
@@ -55,5 +54,4 @@ plot_residuals(
   ids = c("sees_npl_128", "sees_npl_131"),
   antigen_isos = c("HlyE_IgA", "HlyE_IgG")
 )
-
 }
