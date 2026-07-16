@@ -3,10 +3,8 @@ testthat::test_that(
   {
     plot1 <- plot_residuals(
       model = serodynamics::nepal_sees_jags_output,
-      dataset = serodynamics::nepal_sees,
       ids = c("sees_npl_128", "sees_npl_131"),
-      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
-      n_draws = 25
+      antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
 
     testthat::expect_s3_class(plot1, "ggplot")
@@ -31,10 +29,8 @@ testthat::test_that(
   {
     args <- list(
       model = serodynamics::nepal_sees_jags_output,
-      dataset = serodynamics::nepal_sees,
       ids = c("sees_npl_128", "sees_npl_131"),
-      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
-      n_draws = 25
+      antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
 
     layer_classes <- function(p) {
@@ -52,5 +48,27 @@ testthat::test_that(
     )
     testthat::expect_true("GeomLine" %in% layer_classes(plot_custom))
     testthat::expect_false("GeomErrorbar" %in% layer_classes(plot_custom))
+  }
+)
+
+testthat::test_that(
+  "plot_residuals() only colors by Subject when ids is supplied",
+  {
+    plot_no_ids <- plot_residuals(model = serodynamics::nepal_sees_jags_output)
+    plot_with_ids <- plot_residuals(
+      model = serodynamics::nepal_sees_jags_output,
+      ids = c("sees_npl_128", "sees_npl_131")
+    )
+
+    has_color <- function(p) {
+      any(vapply(
+        p$layers,
+        function(l) !is.null(l$mapping$colour) || !is.null(l$mapping$color),
+        logical(1)
+      ))
+    }
+
+    testthat::expect_false(has_color(plot_no_ids))
+    testthat::expect_true(has_color(plot_with_ids))
   }
 )

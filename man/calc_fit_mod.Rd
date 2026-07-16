@@ -4,7 +4,7 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data, strat = NA)
+calc_fit_mod(modeled_dat, original_data, strat = NA, min_value = 0.01)
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
@@ -14,6 +14,10 @@ values.}
 
 \item{strat}{A \link{character} string specifying the stratification variable
 name, or \link{NA} if no stratification is used.}
+
+\item{min_value}{\link{numeric}; minimum value substituted in before taking
+\code{log10()} of \code{fitted}/observed values, to avoid \code{-Inf} from \code{log10(0)}
+when computing \code{log_residual*}.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following
@@ -31,6 +35,10 @@ the difference between observed and fitted values for a given \code{t}
 \item residual_low, residual_high = The 2.5\% and 97.5\% quantiles (across
 posterior draws) of the residual, giving a precision interval around
 \code{residual}
+\item log_residual, log_residual_low, log_residual_high = As \code{residual},
+\code{residual_low}, and \code{residual_high}, but computed on the log10 scale
+(i.e. \code{log10(observed) - log10(fitted)}, with values floored at
+\code{min_value} beforehand)
 }
 
 Rows from \code{original_data} whose stratification value is \code{NA} are retained

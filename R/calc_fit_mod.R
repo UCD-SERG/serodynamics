@@ -9,6 +9,9 @@
 #' @param original_data A [data.frame] of the original input dataset.
 #' @param strat A [character] string specifying the stratification variable
 #' name, or [NA] if no stratification is used.
+#' @param min_value [numeric]; minimum value substituted in before taking
+#' `log10()` of `fitted`/observed values, to avoid `-Inf` from `log10(0)`
+#' when computing `log_residual*`.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:
 #'   - Subject = ID number specifying an individual
@@ -23,6 +26,10 @@
 #'   - residual_low, residual_high = The 2.5% and 97.5% quantiles (across
 #'   posterior draws) of the residual, giving a precision interval around
 #'   `residual`
+#'   - log_residual, log_residual_low, log_residual_high = As `residual`,
+#'   `residual_low`, and `residual_high`, but computed on the log10 scale
+#'   (i.e. `log10(observed) - log10(fitted)`, with values floored at
+#'   `min_value` beforehand)
 #'
 #'   Rows from `original_data` whose stratification value is `NA` are retained
 #'   in the output with `NA` `fitted` and `residual` values, since no posterior
@@ -31,7 +38,8 @@
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat,
                          original_data,
-                         strat = NA) {
+                         strat = NA,
+                         min_value = 0.01) {
   strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
 
   original_data <- original_data |>
@@ -70,7 +78,9 @@ calc_fit_mod <- function(modeled_dat,
     dplyr::mutate(
       fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
                   .data$alpha, .data$shape),
-      residual = .data$result - .data$fitted
+      residual = .data$result - .data$fitted,
+      log_residual = log10(pmax(.data$result, .env$min_value)) -
+        log10(pmax(.data$fitted, .env$min_value))
     ) |>
     dplyr::summarise(
       .by = dplyr::all_of(
@@ -79,13 +89,20 @@ calc_fit_mod <- function(modeled_dat,
       fitted = stats::median(.data$fitted, na.rm = TRUE),
       residual_low = quantile_or_na(.data$residual, 0.025),
       residual_high = quantile_or_na(.data$residual, 0.975),
-      residual_med = stats::median(.data$residual, na.rm = TRUE)
+      residual_med = stats::median(.data$residual, na.rm = TRUE),
+      log_residual_low = quantile_or_na(.data$log_residual, 0.025),
+      log_residual_high = quantile_or_na(.data$log_residual, 0.975),
+      log_residual_med = stats::median(.data$log_residual, na.rm = TRUE)
     ) |>
-    dplyr::rename(residual = "residual_med") |>
+    dplyr::rename(
+      residual = "residual_med",
+      log_residual = "log_residual_med"
+    ) |>
     dplyr::select(
       dplyr::all_of(
         c("Subject", "Iso_type", "Stratification", "t",
-          "fitted", "residual", "residual_low", "residual_high")
+          "fitted", "residual", "residual_low", "residual_high",
+          "log_residual", "log_residual_low", "log_residual_high")
       )
     )
 
