@@ -18,6 +18,7 @@ Postprocess
 Rhat
 SHA
 SeRG
+Serodynamic
 TSI
 UCD
 Vectorization
@@ -30,17 +31,19 @@ biomarker
 biomarkers
 calc
 colour
+colours
 darwin
 deprecations
 dev
 dobson
 doi
 dotplots
-ess
 epidem
+ess
 et
 geoms
 ggmcmc
+ggplot
 ggproto
 glibc
 hv
@@ -70,6 +73,8 @@ rhat
 roxygen
 serocalculator
 seroconversion
+serocurve
+serodynamic
 seroepidemiologic
 seroepidemiological
 serological
@@ -78,6 +83,7 @@ seroresponses
 strat
 stratifications
 submodule
+summarised
 tbl
 testthat
 tibble
