@@ -17,7 +17,7 @@ name, or \link{NA} if no stratification is used.}
 
 \item{min_value}{\link{numeric}; minimum value substituted in before taking
 \code{log10()} of \code{fitted}/observed values, to avoid \code{-Inf} from \code{log10(0)}
-when computing \code{log_residual*}.}
+when computing \verb{log_residual*}.}
 }
 \value{
 A \link{data.frame} attached as an \link{attributes} with the following
