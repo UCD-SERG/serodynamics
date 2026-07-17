@@ -49,4 +49,4 @@ residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
         "Subject", "Iso_type", "t", "resid_low", "resid_med", "resid_high"
       ))
     )
-}
+} 
