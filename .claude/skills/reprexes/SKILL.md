@@ -60,13 +60,15 @@ but nothing more.
    `/tmp/reprex.R`, or a tiny `/tmp/reprex.qmd` for a render bug; on a
    non-Unix machine use `tempfile(fileext = ".R")` / `tempdir()` for a
    portable path). Put in it, in order:
+
    - the package loads (`library(...)`),
    - the minimal data (see tactics below),
    - the minimal code that triggers the phenomenon, with a comment marking
      where it goes wrong.
 3. **Run it in a clean session** and confirm it reproduces. For R, run with
-   `Rscript /tmp/reprex.R` (a fresh process — no stale `globalenv()` state
-   masking or faking the bug). For a Quarto page, render just that file:
+   `Rscript --vanilla /tmp/reprex.R` (a fresh process; `--vanilla` skips
+   `.Rprofile`/`.Renviron` so no stale `globalenv()` state or profile settings
+   mask or fake the bug). For a Quarto page, render just that file:
    `quarto render /tmp/reprex.qmd --to html`, not the whole site.
 4. **Minimize.** Remove pieces until the phenomenon disappears — the last
    removal that "fixes" it implicates that piece. (Or build up from nothing
@@ -100,7 +102,9 @@ but nothing more.
   `tempfile(fileext = ".R")` path on non-Unix machines) — handy from a
   non-interactive CLI session where there's no clipboard. Use it when the
   output is destined for a PR comment or an upstream issue. Useful arguments:
+
   - `venue =` — output format:
+
     - `"gh"` — GitHub-flavored Markdown (default)
     - `"so"` / `"ds"` — Stack Overflow / Discourse
     - `"slack"` — Slack message
@@ -113,14 +117,14 @@ but nothing more.
   - `std_out_err = TRUE` — capture stdout/stderr too (e.g. `system()` /
     subprocess or C-level output that doesn't come back as normal R results).
   - `wd =` — set the working directory when the code needs one.
-  - Validation bonus: because `reprex()` runs in a fresh session, if it errors
+  - Validation bonus: because `reprex::reprex()` runs in a fresh session, if it errors
     on a missing object or package, your example wasn't actually
     self-contained — fix that before sharing.
 
   Companion helpers handle "wild-caught" reprexes (both exported in reprex
-  2.x): `reprex_clean()` (strip the `#>` output markers from a rendered/pasted
-  reprex, leaving runnable code) and `reprex_rescue()` (recover code from
-  R-console output with `>`/`+` prompts).
+  2.x): `reprex::reprex_clean()` (strip the `#>` output markers from a
+  rendered/pasted reprex, leaving runnable code) and `reprex::reprex_rescue()`
+  (recover code from R-console output with `>`/`+` prompts).
 - When the bug might be **version-dependent**, capture `sessionInfo()` (or set
   `session_info = TRUE` above) in the reprex so versions are part of the
   record. If you suspect *stale* packages are the cause,
