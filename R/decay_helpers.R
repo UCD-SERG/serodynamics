@@ -22,7 +22,7 @@ select_decay_model <- function(file_mod, decay_type) {
   ]
 
   if (length(supplied_type) == 1 &&
-      supplied_type != decay_type) {
+        supplied_type != decay_type) {
     cli::cli_abort(c(
       "{.arg file_mod} is incompatible with {.arg decay_type}.",
       "i" = paste(
