@@ -13,7 +13,9 @@
 #'   for exponential decay
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
-#' @param file_mod The name of the file that contains model structure.
+#' @param file_mod The model file path. If `NULL`, a built-in model file is
+#'   selected based on `decay_type`. If supplied, its parameterization must be
+#'   compatible with `decay_type`.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of MCMC chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.

@@ -16,7 +16,7 @@ values.}
 name, or \link{NA} if no stratification is used.}
 
 \item{decay_type}{A \link{character} string specifying the decay function
-(\code{"power"} or \code{"exponential"}). Passed through to \code{\link[serocalculator:ab]{ab()}}. Default is
+(\code{"power"} or \code{"exponential"}). Passed through to \code{ab()}. Default is
 \code{"power"}.}
 }
 \value{

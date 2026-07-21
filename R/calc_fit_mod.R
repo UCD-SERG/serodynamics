@@ -10,7 +10,7 @@
 #' @param strat A [character] string specifying the stratification variable
 #' name, or [NA] if no stratification is used.
 #' @param decay_type A [character] string specifying the decay function
-#'   (`"power"` or `"exponential"`). Passed through to [ab()]. Default is
+#'   (`"power"` or `"exponential"`). Passed through to `ab()`. Default is
 #'   `"power"`.
 #' @returns A [data.frame] attached as an [attributes] with the following
 #' values:

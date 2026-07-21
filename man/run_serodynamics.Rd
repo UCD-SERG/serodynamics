@@ -23,7 +23,9 @@ run_serodynamics(
 \arguments{
 \item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
 
-\item{file_mod}{The name of the file that contains model structure.}
+\item{file_mod}{The model file path. If \code{NULL}, a built-in model file is
+selected based on \code{decay_type}. If supplied, its parameterization must be
+compatible with \code{decay_type}.}
 
 \item{decay_type}{A \link{character} string specifying the decay function used
 in the model. Options are \code{"power"} and \code{"exponential"}. Default is

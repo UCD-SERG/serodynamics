@@ -1,15 +1,38 @@
 select_decay_model <- function(file_mod, decay_type) {
-  if (!is.null(file_mod)) {
-    return(file_mod)
-  }
-
-  model_file <- switch(
-    decay_type,
-    power = "model.jags",
-    exponential = "model_exp.jags"
+  default_models <- c(
+    power = serodynamics_example("model.jags"),
+    exponential = serodynamics_example("model_exp.jags")
   )
 
-  serodynamics_example(model_file)
+  if (is.null(file_mod)) {
+    return(unname(default_models[[decay_type]]))
+  }
+
+  supplied_path <- normalizePath(
+    file_mod,
+    mustWork = FALSE
+  )
+  default_paths <- normalizePath(
+    default_models,
+    mustWork = FALSE
+  )
+
+  supplied_type <- names(default_models)[
+    default_paths == supplied_path
+  ]
+
+  if (length(supplied_type) == 1 &&
+      supplied_type != decay_type) {
+    cli::cli_abort(c(
+      "{.arg file_mod} is incompatible with {.arg decay_type}.",
+      "i" = paste(
+        "Omit {.arg file_mod} to select the model",
+        "automatically."
+      )
+    ))
+  }
+
+  file_mod
 }
 
 configure_decay_priors <- function(priorspec, decay_type) {
@@ -29,6 +52,22 @@ configure_decay_priors <- function(priorspec, decay_type) {
   priorspec$omega <- priorspec$omega[
     , parameter_index, parameter_index, drop = FALSE
   ]
+
+  used_priors <- attr(priorspec, "used_priors")
+
+  if (!is.null(used_priors)) {
+    used_priors$mu_hyp_param <- used_priors$mu_hyp_param[
+      parameter_index
+    ]
+    used_priors$prec_hyp_param <- used_priors$prec_hyp_param[
+      parameter_index
+    ]
+    used_priors$omega_param <- used_priors$omega_param[
+      parameter_index
+    ]
+
+    attr(priorspec, "used_priors") <- used_priors
+  }
 
   priorspec
 }
