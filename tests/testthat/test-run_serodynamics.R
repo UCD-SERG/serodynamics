@@ -70,20 +70,17 @@ test_that(
   }
 )
 
-test_that("run_serodynamics accepts exponential decay before data validation", {
-  expect_error(
-    run_serodynamics(
-      data = data.frame(Subject = 1),
-      decay_type = "exponential"
-    ),
-    "`dataframe` must contain 'antigen_iso' and 'visit_num' columns",
-    fixed = TRUE
-  )
-})
-
 test_that(
   desc = "exponential decay preserves the SEES output structure",
   code = {
+    expect_error(
+      run_serodynamics(
+        data = data.frame(Subject = 1),
+        decay_type = "exponential"
+      ),
+      "`dataframe` must contain 'antigen_iso' and 'visit_num' columns",
+      fixed = TRUE
+    )
     skip_on_cran()
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",

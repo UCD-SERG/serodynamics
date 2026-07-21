@@ -115,13 +115,7 @@ run_serodynamics <- function(data,
                              ...) {
   # Select model file based on decay type
   decay_type <- match.arg(decay_type, c("power", "exponential"))
-  if (is.null(file_mod)) {
-    file_mod <- if (decay_type == "power") {
-      serodynamics_example("model.jags")
-    } else {
-      serodynamics_example("model_exp.jags")
-    }
-  }
+  file_mod <- select_decay_model(file_mod, decay_type)
   ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 
@@ -153,34 +147,14 @@ run_serodynamics <- function(data,
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
                              ...)
-    if (decay_type == "exponential") {
-      parameter_index <- seq_len(4)
-      priorspec$n_params <- 4L
-      priorspec$mu.hyp <- priorspec$mu.hyp[
-        , parameter_index, drop = FALSE
-      ]
-      priorspec$prec.hyp <- priorspec$prec.hyp[
-        , parameter_index, parameter_index, drop = FALSE
-      ]
-      priorspec$omega <- priorspec$omega[
-        , parameter_index, parameter_index, drop = FALSE
-      ]
-    }
+    priorspec <- configure_decay_priors(priorspec, decay_type)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
     nburnin <- nburn # nr of iterations to use for burn-in
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c(
-      "y0", "y1", "t1", "alpha",
-      if (decay_type == "power") "shape"
-    )
-    # Conditional statement for including population parameters
-    if (with_pop_params) {
-      tomonitor <- c(tomonitor, "mu.par", "prec.par",
-                     "prec.logy")
-    }
+    tomonitor <- get_decay_monitors(decay_type, with_pop_params)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -236,18 +210,10 @@ run_serodynamics <- function(data,
       Subject = as.character(seq_along(attr(longdata, "ids")))
     )
     jags_final <- reconcile_subject_ids(jags_unpacked, ids)
-    if (decay_type == "exponential") {
-      fixed_shape <- jags_final |>
-        dplyr::filter(
-          !.data$.is_population_parameter,
-          .data$Parameter == "alpha"
-        ) |>
-        dplyr::mutate(
-          Parameter = "shape",
-          value = 1
-        )
-      jags_final <- dplyr::bind_rows(jags_final, fixed_shape)
-    }
+    jags_final <- add_fixed_exponential_shape(
+      jags_final,
+      decay_type
+    )
 
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
