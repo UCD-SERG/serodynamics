@@ -59,7 +59,7 @@ testthat::test_that(
   {
     plot_no_ids <- plot_residuals(model = dataset)
     plot_with_ids <- plot_residuals(
-      model = results,
+      model = dataset,
       ids = c("sees_npl_128", "sees_npl_131")
     )
 
