@@ -30,7 +30,7 @@ compatible with \code{decay_type}.}
 \item{decay_type}{A \link{character} string specifying the decay function used
 in the model. Options are \code{"power"} and \code{"exponential"}. Default is
 \code{"power"}. The \code{"power"} option uses
-\code{y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))}. The
+\code{y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))}. The
 \code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
 The exponential model does not estimate \code{shape}; its processed output
 includes \code{shape = 1} as a fixed value to preserve the common output

@@ -27,7 +27,7 @@
 #' @param decay_type A [character] string specifying the decay function used
 #'   in the model. Options are `"power"` and `"exponential"`. Default is
 #'   `"power"`. The `"power"` option uses
-#'   `y(t) = (y1^(1-r) - (1-r)*alpha*(t-t1))^(1/(1-r))`. The
+#'   `y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))`. The
 #'   `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
 #'   The exponential model does not estimate `shape`; its processed output
 #'   includes `shape = 1` as a fixed value to preserve the common output
