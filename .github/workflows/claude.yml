@@ -31,3 +31,27 @@ jobs:
       # setup-r defaults true and r-extra-packages' default `local::.` installs
       # the package (and its rjags/runjags deps) on top of JAGS.
       apt-packages: jags
+
+  dispatch-explicit-review:
+    if: >-
+      github.event_name == 'issue_comment' &&
+      github.event.issue.pull_request &&
+      github.event.sender.type != 'Bot' &&
+      contains(github.event.comment.body, '@claude')
+    runs-on: ubuntu-latest
+    permissions:
+      actions: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - name: Dispatch Claude Code Review for explicit review requests
+        run: |
+          comment_body=$(jq -r '.comment.body // ""' "$GITHUB_EVENT_PATH")
+          shopt -s nocasematch
+          if [[ "$comment_body" =~ @claude[[:space:][:punct:]]*(please[[:space:]]+)?review([[:space:][:punct:]]|$) ]]; then
+            gh workflow run "claude-code-review.yml" \
+              --repo "$GITHUB_REPOSITORY" \
+              -f pr_number="${{ github.event.issue.number }}"
+          else
+            echo "Comment is not an explicit @claude review request; skipping dispatch."
+          fi
