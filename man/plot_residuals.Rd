@@ -14,7 +14,7 @@ plot_residuals(
 )
 }
 \arguments{
-\item{model}{An \code{sr_model} object (returned by \code{\link[=run_mod]{run_mod()}}), with a
+\item{model}{An \code{sr_model} object (returned by \code{\link[=run_serodynamics]{run_serodynamics()}}), with a
 \code{fitted_residuals} attribute (see \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
