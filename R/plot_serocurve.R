@@ -34,16 +34,16 @@
 #'
 #' @example inst/examples/examples-plot_serocurve.R
 plot_serocurve <- function(
-    model,
-    antigen_iso = unique(model$Iso_type),
-    strat = unique(model$Stratification),
-    param_source = "predictive",
-    show_ci = TRUE,
-    log_y = FALSE,
-    log_x = FALSE,
-    xlim = NULL,
-    facet_by_strat = FALSE,
-    ...) {
+  model,
+  antigen_iso = unique(model$Iso_type),
+  strat = unique(model$Stratification),
+  param_source = "predictive",
+  show_ci = TRUE,
+  log_y = FALSE,
+  log_x = FALSE,
+  xlim = NULL,
+  facet_by_strat = FALSE,
+  ...) {
 
   param_source <- match.arg(param_source, c("population", "predictive"))
   decay_type <- get_model_decay_type(model)
