@@ -6,6 +6,16 @@
 \usage{
 residuals_from_fit_res(model, ids, antigen_isos, log_y)
 }
+\arguments{
+\item{model}{An \code{sr_model} object with a \code{fitted_residuals} attribute.}
+
+\item{ids}{(Optional) Participant IDs to include.}
+
+\item{antigen_isos}{(Optional) Antigen-isotypes (\code{antigen_iso}) to include.}
+
+\item{log_y}{\link{logical}; if \code{TRUE}, use log10-scale residuals; if \code{FALSE}, use
+natural-scale residuals.}
+}
 \value{
 A \link[tibble:tbl_df]{tibble::tbl_df} ready to plot.
 }
