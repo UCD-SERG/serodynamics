@@ -106,3 +106,13 @@ add_fixed_exponential_shape <- function(jags_final, decay_type) {
 
   dplyr::bind_rows(jags_final, fixed_shape)
 }
+
+get_model_decay_type <- function(model) {
+  decay_type <- attr(model, "decay_type")
+
+  if (is.null(decay_type)) {
+    return("power")
+  }
+
+  match.arg(decay_type, c("power", "exponential"))
+}

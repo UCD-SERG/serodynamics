@@ -2,8 +2,8 @@
 #' @description
 #' Plots the estimated antibody response curve derived from posterior samples
 #' of population-level (`mu.par`) or the predictive distribution from a fitted
-#' [run_serodynamics()] model.  A median curve with an optional 95% credible 
-#' interval ribbon is produced for each requested antigen-isotype and 
+#' [run_serodynamics()] model.  A median curve with an optional 95% credible
+#' interval ribbon is produced for each requested antigen-isotype and
 #' stratification combination.
 #'
 #' @param model An `sr_model` object returned by [run_serodynamics()].
@@ -46,19 +46,28 @@ plot_serocurve <- function(
     ...) {
 
   param_source <- match.arg(param_source, c("population", "predictive"))
+  decay_type <- get_model_decay_type(model)
 
   antigen_iso_col <- "Iso_type"
 
   # ---- Retrieve posterior samples of curve parameters --------------------
   param_samples <- if (param_source == "population") {
-    get_serocurve_pop_params(model, antigen_iso, strat)
+    get_serocurve_pop_params(
+      model,
+      antigen_iso,
+      strat,
+      decay_type
+    )
   } else {
     get_serocurve_pred_params(model, antigen_iso, strat)
   }
 
   # ---- Compute predicted curves and summarise to median + 95% CI ---------
   curve_summary <- summarize_serocurve_samples(
-    param_samples, antigen_iso_col, xlim
+    param_samples,
+    antigen_iso_col,
+    xlim,
+    decay_type
   )
 
   # ---- Determine whether to colour by stratification ---------------------
@@ -67,8 +76,8 @@ plot_serocurve <- function(
 
   # ---- Build the ggplot --------------------------------------------------
   build_serocurve_plot(
-    curve_summary, show_ci, multi_strat, antigen_iso = antigen_iso, 
-    antigen_iso_col, log_y, log_x, xlim, facet_by_strat, 
+    curve_summary, show_ci, multi_strat, antigen_iso = antigen_iso,
+    antigen_iso_col, log_y, log_x, xlim, facet_by_strat,
     ...
   )
 }

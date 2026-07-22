@@ -34,7 +34,10 @@ in the model. Options are \code{"power"} and \code{"exponential"}. Default is
 \code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
 The exponential model does not estimate \code{shape}; its processed output
 includes \code{shape = 1} as a fixed value to preserve the common output
-structure.}
+structure.
+Note: \code{prep_priors()} still validates 5-element prior vectors. For
+exponential decay, the fifth (\code{shape}) prior is required for validation
+but is ignored and omitted from the reported priors.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}

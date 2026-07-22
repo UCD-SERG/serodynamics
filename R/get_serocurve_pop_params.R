@@ -1,6 +1,7 @@
 # Retrieves and reshapes population-level `mu.par` posterior samples for
 # `plot_serocurve(param_source = "population")`.
-get_serocurve_pop_params <- function(model, antigen_iso, strat) {
+get_serocurve_pop_params <- function(model, antigen_iso, strat,
+                                     decay_type) {
   pop_params <- attr(model, "population_params")
   if (is.null(pop_params)) {
     cli::cli_abort(
@@ -52,11 +53,15 @@ get_serocurve_pop_params <- function(model, antigen_iso, strat) {
       names_prefix = "log_"
     ) |>
     dplyr::mutate(
-      y0    = exp(.data$log_y0),
-      y1    = .data$y0 + exp(.data$log_y1),
-      t1    = exp(.data$log_t1),
+      y0 = exp(.data$log_y0),
+      y1 = .data$y0 + exp(.data$log_y1),
+      t1 = exp(.data$log_t1),
       alpha = exp(.data$log_alpha),
-      shape = exp(.data$log_shape) + 1
+      shape = if (.env$decay_type == "power") {
+        exp(.data$log_shape) + 1
+      } else {
+        1
+      }
     ) |>
     dplyr::select(
       -dplyr::starts_with("log_")
