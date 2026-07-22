@@ -9,7 +9,7 @@
 #' `fitted_residuals` attributes created before a given set of columns was
 #' added lack them; residuals from such objects are plotted without those
 #' columns (e.g. without an interval).
-#' @param model An `sr_model` object (returned by [run_mod()]), with a
+#' @param model An `sr_model` object (returned by [run_serodynamics()]), with a
 #' `fitted_residuals` attribute (see [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
 #' (and, if `connect_lines = TRUE`, lines) are colored by subject; otherwise
