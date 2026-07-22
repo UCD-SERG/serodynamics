@@ -5,7 +5,7 @@ testthat::test_that(
   "plot_residuals() facets by Iso_type and orders x by time",
   {
     plot1 <- plot_residuals(
-      model = results,
+      model = dataset,
       ids = c("sees_npl_128", "sees_npl_131"),
       antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
@@ -31,7 +31,7 @@ testthat::test_that(
   "plot_residuals() supports connect_lines, show_interval, and MAE labels",
   {
     args <- list(
-      model = results,
+      model = dataset,
       ids = c("sees_npl_128", "sees_npl_131"),
       antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
@@ -57,7 +57,7 @@ testthat::test_that(
 testthat::test_that(
   "plot_residuals() only colors by Subject when ids is supplied",
   {
-    plot_no_ids <- plot_residuals(model = results)
+    plot_no_ids <- plot_residuals(model = dataset)
     plot_with_ids <- plot_residuals(
       model = results,
       ids = c("sees_npl_128", "sees_npl_131")
