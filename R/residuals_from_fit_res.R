@@ -1,7 +1,12 @@
 #' @title Extracts Residuals from Attributes
-#' @description 
-#' Takes residuals (and their posterior quantiles), on the requested scale, 
+#' @description
+#' Takes residuals (and their posterior quantiles), on the requested scale,
 #' from `attr(model, "fitted_residuals")`.
+#' @param model An `sr_model` object with a `fitted_residuals` attribute.
+#' @param ids (Optional) Participant IDs to include.
+#' @param antigen_isos (Optional) Antigen-isotypes (`antigen_iso`) to include.
+#' @param log_y [logical]; if `TRUE`, use log10-scale residuals; if `FALSE`, use
+#'   natural-scale residuals.
 #' @return A [tibble::tbl_df] ready to plot.
 #' @keywords internal
 residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
