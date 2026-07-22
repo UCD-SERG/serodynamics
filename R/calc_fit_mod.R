@@ -41,7 +41,7 @@ calc_fit_mod <- function(modeled_dat,
                          strat = NA,
                          min_value = 0.01) {
   if (!is.numeric(min_value) || length(min_value) != 1 ||
-      is.na(min_value) || !is.finite(min_value) || min_value <= 0) {
+        is.na(min_value) || !is.finite(min_value) || min_value <= 0) {
     cli::cli_abort("{.arg min_value} must be a single positive number.")
   }
 
