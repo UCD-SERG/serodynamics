@@ -28,9 +28,9 @@ residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
   
   to_plot <- fit_res |>
     dplyr::mutate(
-      resid_low = -.data[[cols[["high"]]]],
-      resid_med = -.data[[cols[["med"]]]],
-      resid_high = -.data[[cols[["low"]]]]
+      resid_low = .data[[cols[["low"]]]],
+      resid_med = .data[[cols[["med"]]]],
+      resid_high = .data[[cols[["high"]]]]
     )
   
   if (!is.null(ids)) {
