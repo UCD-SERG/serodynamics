@@ -35,7 +35,7 @@ export WARMUP="${WARMUP:-600}"
 export SAMP="${SAMP:-400}"
 export ADAPT_DELTA="${ADAPT_DELTA:-0.9}"
 export SEED="${SEED:-1}"
-export MODEL_STAN="${MODEL_STAN:-model_ch2.stan}"
+export CH2_DIR="${CH2_DIR:-.}"
 
 CELLS="${CELLS:-P1 P2 P3}"
 P1="250:11"; P2="250:12"; P3="150:12"
@@ -45,8 +45,8 @@ echo "[$(ts)] ###### PHASE 1: tuning probe ######"
 echo "[$(ts)] cells=$CELLS | chains=$NCHAIN | warmup=$WARMUP samp=$SAMP | cores=$(( $(echo $CELLS|wc -w) * NCHAIN ))"
 
 fail=0
-for f in ch2_run_one.R make_corr_curve_params.R stan_ch2_functions.R \
-         ch2_sim_functions.R ch2_truth_targets.rds "$MODEL_STAN"; do
+for f in ch2_run_one.R DESCRIPTION R/stan_ch2_functions.R \
+         R/ch2_sim_functions.R inst/extdata/model_ch2.stan; do
   [ -f "$f" ] && echo "[$(ts)]   ok  $f" || { echo "[$(ts)] MISSING: $f"; fail=1; }
 done
 [ -d "$PKG_DIR" ] || { echo "[$(ts)] MISSING: $PKG_DIR"; fail=1; }
@@ -54,7 +54,7 @@ echo "[$(ts)] memory: $(free -g | awk '/^Mem:/{print $7" GB available of "$2" GB
 
 Rscript -e '
 suppressMessages(devtools::load_all(Sys.getenv("PKG_DIR")))
-source("make_corr_curve_params.R"); source("stan_ch2_functions.R"); source("ch2_sim_functions.R")
+suppressMessages(devtools::load_all(Sys.getenv("CH2_DIR", ".")))
 ok <- c(noise_sd = "noise_sd" %in% names(formals(sim_case_data)),
         targets  = "targets"  %in% names(formals(make_corr_curve_params)),
         truth    = file.exists("ch2_truth_targets.rds"),

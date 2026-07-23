@@ -1,0 +1,2 @@
+# .Rbuildignore 끝에 한 줄 추가
+^dev$

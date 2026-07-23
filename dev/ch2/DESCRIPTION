@@ -1,0 +1,17 @@
+Package: ch2sim
+Title: Chapter 2 Cross-Biomarker Simulation Study
+Version: 0.1.0
+Authors@R:
+    person("Kwan Ho", "Lee", role = c("aut", "cre"),
+           email = "kwlee@ucdavis.edu")
+Description: Research code for the Chapter 2 correlated cross-biomarker
+    extension of the within-host antibody kinetics model. Not part of the
+    serodynamics package and not intended for release; it exists so the
+    Chapter 2 functions can be loaded with devtools::load_all() instead of
+    being sourced by path.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Depends: R (>= 4.1)
+Suggests: cmdstanr, serodynamics
+Additional_repositories: https://stan-dev.r-universe.dev
+RoxygenNote: 7.3.2

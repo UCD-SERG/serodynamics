@@ -1,0 +1,12 @@
+# .lintr.R 의 exclusions <- list( 안에 추가
+  dev = list(
+    undesirable_function_linter = Inf,
+    line_length_linter = Inf,
+    object_name_linter = Inf,
+    cyclocomp_linter = Inf,
+    commented_code_linter = Inf,
+    semicolon_linter = Inf,
+    indentation_linter = Inf,
+    brace_linter = Inf,
+    infix_spaces_linter = Inf
+  ),

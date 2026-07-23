@@ -66,7 +66,7 @@ export WARMUP="${WARMUP:-6000}"
 export SAMP="${SAMP:-3000}"
 export ADAPT_DELTA="${ADAPT_DELTA:-0.9}"
 export MAX_TD="${MAX_TD:-12}"
-export MODEL_STAN="${MODEL_STAN:-model_ch2.stan}"
+export CH2_DIR="${CH2_DIR:-.}"
 
 N_LARGE="${N_LARGE:-150}"
 N_REAL="${N_REAL:-129}"
@@ -83,8 +83,8 @@ echo "[$(ts)] sizes=$SIZES | seeds=$SEEDS | chains=$NCHAIN | max_td=$MAX_TD | rh
 echo "[$(ts)] iterations=$WARMUP warmup + $SAMP samp | total processes=$(( NSEED*NSIZE )) | cores=$CORES"
 
 fail=0
-for f in ch2_run_one.R make_corr_curve_params.R stan_ch2_functions.R \
-         ch2_sim_functions.R ch2_truth_targets.rds "$MODEL_STAN"; do
+for f in ch2_run_one.R DESCRIPTION R/stan_ch2_functions.R \
+         R/ch2_sim_functions.R inst/extdata/model_ch2.stan; do
   [ -f "$f" ] || { echo "[$(ts)] MISSING: $f"; fail=1; }
 done
 [ -d "$PKG_DIR" ] || { echo "[$(ts)] MISSING: $PKG_DIR"; fail=1; }

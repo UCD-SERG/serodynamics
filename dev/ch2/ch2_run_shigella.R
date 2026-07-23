@@ -11,13 +11,14 @@
 # covariances, and the measurement precision.
 #
 # Environment: DATA, TAG, NCHAIN, WARMUP, SAMP, ADAPT_DELTA, MAX_TD, SEED,
-#              SAVE_FIT, PKG_DIR, MODEL_STAN
+#              SAVE_FIT, PKG_DIR, CH2_DIR, MODEL_STAN
 # =====================================================================
 suppressPackageStartupMessages({ library(cmdstanr) })
 
 DATA     <- Sys.getenv("DATA", "ch2_input_ipaB_overall.rds")
 TAG      <- Sys.getenv("TAG", sub("\\.rds$", "", basename(DATA)))
 PKG_DIR  <- Sys.getenv("PKG_DIR")
+CH2_DIR  <- Sys.getenv("CH2_DIR", ".")
 NCHAIN   <- as.integer(Sys.getenv("NCHAIN", "8"))
 WARMUP   <- as.integer(Sys.getenv("WARMUP", "9000"))
 SAMP     <- as.integer(Sys.getenv("SAMP", "4000"))
@@ -41,7 +42,13 @@ FIX_C1   <- as.integer(Sys.getenv("FIX_C1", "0"))
 # possible: without the c = 0 arm there is nothing to compare the correlated fit
 # against on this dataset.
 EST_C    <- as.integer(Sys.getenv("ESTIMATE_C", "1"))
-STAN     <- Sys.getenv("MODEL_STAN", "model_ch2.stan")
+# The Stan model ships inside the ch2sim directory, so it is located through
+# system.file() rather than a path relative to the working directory.
+# MODEL_STAN overrides it.
+STAN <- Sys.getenv("MODEL_STAN", "")
+if (!nzchar(STAN)) {
+  STAN <- system.file("extdata", "model_ch2.stan", package = "ch2sim")
+}
 
 ts  <- function() format(Sys.time(), "%Y-%m-%d %H:%M:%S")
 say <- function(...) cat(sprintf("[%s][%s] ", ts(), TAG), ..., "\n", sep = "")
@@ -52,8 +59,12 @@ safe <- function(label, expr) tryCatch(expr, error = function(e) {
 say("start | data=", DATA, " chains=", NCHAIN, " warmup=", WARMUP,
     " samp=", SAMP, " adapt=", ADAPT, " max_td=", MAXTD)
 
+# serodynamics supplies make_corr_curve_params(), sim_case_data() and
+# sim_obs_times(); the Chapter 2 functions (prep_ch2_standata,
+# run_mod_stan_ch2, scenario_truth, ...) live in this directory, which is a
+# small package of its own so that both can be loaded rather than sourced.
 suppressMessages(devtools::load_all(PKG_DIR))
-source("stan_ch2_functions.R")
+suppressMessages(devtools::load_all(CH2_DIR))
 stopifnot(file.exists(DATA), file.exists(STAN))
 
 dat <- readRDS(DATA)

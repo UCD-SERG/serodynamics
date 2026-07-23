@@ -72,7 +72,9 @@ echo "[$(ts)] $N job(s) queued"
 # PKG_DIR is required by the R workers (devtools::load_all). Without it they die
 # immediately with an empty-path error, so it is exported here for all jobs.
 export PKG_DIR="${PKG_DIR:-$HOME/chapter 2 work/serodynamics}"
-export MODEL_STAN="${MODEL_STAN:-model_ch2.stan}"
+# CH2_DIR is the ch2sim directory that devtools::load_all() reads; the workers
+# run from here, so "." is right unless the scripts are copied elsewhere.
+export CH2_DIR="${CH2_DIR:-.}"
 echo "[$(ts)] PKG_DIR=$PKG_DIR"
 if [ ! -f "$PKG_DIR/DESCRIPTION" ]; then
   echo "[$(ts)] ABORT: no DESCRIPTION at PKG_DIR ($PKG_DIR)."
@@ -107,7 +109,7 @@ while [ "$idx" -lt "$N" ] || [ "$running" -gt 0 ]; do
     nm="${names[$idx]}"; sc="${scripts[$idx]}"; ev="${envs[$idx]}"
     log="$LOGDIR/${nm}.out"
     echo "[$(ts)] START ${nm}  ($sc)  [$ev]"
-    ( export CORES_PER_JOB PKG_DIR MODEL_STAN; eval "export $ev" 2>/dev/null; \
+    ( export CORES_PER_JOB PKG_DIR CH2_DIR; eval "export $ev" 2>/dev/null; \
       NCHAIN="${NCHAIN:-$CORES_PER_JOB}" Rscript "$sc" ) > "$log" 2>&1 &
     PID2NAME[$!]="$nm"; running=$((running+1)); idx=$((idx+1))
     echo "[$(ts)] QUEUE running=$running queued=$((N-idx))"

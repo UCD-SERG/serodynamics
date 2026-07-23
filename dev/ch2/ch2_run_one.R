@@ -41,6 +41,7 @@ suppressPackageStartupMessages({ library(cmdstanr) })
 
 ARM       <- Sys.getenv("ARM", "noise"); stopifnot(ARM %in% c("noise", "control"))
 PKG_DIR   <- Sys.getenv("PKG_DIR")
+CH2_DIR   <- Sys.getenv("CH2_DIR", ".")
 N_SUBJ    <- as.integer(Sys.getenv("N_SUBJ", "250"))
 MAX_N_OBS <- as.integer(Sys.getenv("MAX_N_OBS", "20"))
 NCHAIN    <- as.integer(Sys.getenv("NCHAIN", "8"))
@@ -50,7 +51,13 @@ ADAPT     <- as.numeric(Sys.getenv("ADAPT_DELTA", "0.9"))
 MAXTD     <- as.integer(Sys.getenv("MAX_TD", "12"))
 SEED      <- as.integer(Sys.getenv("SEED", "1"))
 NITERCP   <- as.integer(Sys.getenv("NITER_CP", "4000"))
-STAN      <- Sys.getenv("MODEL_STAN", "model_ch2.stan")
+# The Stan model ships inside the ch2sim directory, so it is located through
+# system.file() rather than a path relative to the working directory.
+# MODEL_STAN overrides it.
+STAN <- Sys.getenv("MODEL_STAN", "")
+if (!nzchar(STAN)) {
+  STAN <- system.file("extdata", "model_ch2.stan", package = "ch2sim")
+}
 # RHO_SCALE multiplies the fitted cross-correlation vector. 1 = realistic
 # scenario, 0 = null arm (nesting check: does the model return rho = 0 when the
 # truth is 0?). Any value in (0, 1] is admissible -- max scale is 1.076.
@@ -82,10 +89,12 @@ say("start | arm=", ARM, " rho_scale=", RHO_SCALE, " n=", N_SUBJ, " mno=", MAX_N
     " warmup=", WARMUP, " samp=", SAMP, " adapt=", ADAPT, " max_td=", MAXTD,
     " seed=", SEED)
 
+# serodynamics supplies make_corr_curve_params(), sim_case_data() and
+# sim_obs_times(); the Chapter 2 functions (prep_ch2_standata,
+# run_mod_stan_ch2, scenario_truth, ...) live in this directory, which is a
+# small package of its own so that both can be loaded rather than sourced.
 suppressMessages(devtools::load_all(PKG_DIR))
-source("make_corr_curve_params.R")
-source("stan_ch2_functions.R")
-source("ch2_sim_functions.R")
+suppressMessages(devtools::load_all(CH2_DIR))
 
 stopifnot(file.exists("ch2_truth_targets.rds"), file.exists(STAN))
 tg  <- readRDS("ch2_truth_targets.rds")

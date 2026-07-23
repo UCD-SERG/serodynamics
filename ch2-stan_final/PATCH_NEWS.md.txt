@@ -1,0 +1,19 @@
+# NEWS.md 의 `# serodynamics (development version)` 아래 `## New features` 에 추가
+
+* `sim_case_data()` gains a `noise_sd` argument, adding measurement error on the
+  log scale (multiplicative on the natural scale) with one value per antigen
+  isotype, matching the observation model the package fits. The default of `0`
+  leaves existing simulations bit-for-bit unchanged (#XXX).
+
+* `sim_case_data()` and `sim_obs_times()` gain a `spacing` argument. The new
+  `spacing = "log"` places visits on a log-spaced grid — dense early, sparse
+  late — so that a single follow-up schedule observes both the antibody peak and
+  the decay tail. `spacing = "uniform"` remains the default and is unchanged
+  (#XXX).
+
+* New `make_corr_curve_params()` simulates curve parameters for two antigen
+  isotypes with a specified cross-biomarker correlation, using a Cholesky
+  construction that keeps both within-biomarker covariances fixed and the
+  cross-biomarker block exactly diagonal. New `rho_admissible()` reports whether
+  a proposed correlation vector yields a positive-definite joint covariance
+  (#XXX).

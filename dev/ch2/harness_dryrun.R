@@ -1,6 +1,14 @@
 #!/usr/bin/env Rscript
 # =====================================================================
-# harness_dryrun.R -- exercise the REAL pipeline code without Stan/serodynamics.
+# harness_dryrun.R
+#
+# NOTE ON source(): this is the one file here that does not use
+# devtools::load_all(), and deliberately so. Its purpose is to exercise the
+# package sources on a machine where neither serodynamics nor Stan is
+# installed, so the package cannot be loaded and the files have to be read
+# directly. Every other script uses load_all().
+#
+# It exercises the real pipeline code without Stan or serodynamics installed.
 #
 # Stubs only the package leaf functions (ab, as_case_data, the biomarker
 # accessors, sim_n_obs, sim_obs_times).  Everything under test -- the whole of
@@ -39,8 +47,11 @@ get_biomarker_names     <- function(x) get_biomarker_levels(x)
 get_biomarker_names_var <- function(x) attr(x, "biomarker_var")
 
 # ---- code under test: the ACTUAL files -------------------------------------
-source("make_corr_curve_params.R")
-source("sim_case_data.R")
+# These two are read from the package sources rather than loaded, because the
+# whole point is to run where serodynamics cannot be installed.
+pkg_r <- Sys.getenv("PKG_R_DIR", "../../R")
+source(file.path(pkg_r, "make_corr_curve_params.R"))
+source(file.path(pkg_r, "sim_case_data.R"))
 
 TG <- readRDS("/mnt/user-data/outputs/ch2_truth_targets.rds")
 RHO <- as.numeric(TG$cross_corr_median)

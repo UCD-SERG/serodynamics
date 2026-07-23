@@ -1,0 +1,7 @@
+# inst/WORDLIST 에 추가 (check-spelling.yaml). 이미 있으면 중복 추가하지 말 것.
+
+Cholesky
+biomarker
+biomarkers
+isotype
+isotypes
