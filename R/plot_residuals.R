@@ -93,7 +93,7 @@ plot_residuals <- function(model,
     p <- p + ggplot2::guides(color = "none")
   }
 
-  p
+  return(p)
 }
 
 # One row per `Iso_type` giving a "MAE = ..." label, for annotating each
