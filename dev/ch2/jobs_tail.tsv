@@ -1,0 +1,17 @@
+# decay-shape 미식별이 설계 탓인가 모델 탓인가 -- 직접 검정.
+#
+# 기존 실행은 dist_n_obs 가 균등(1..20)이라, log 격자의 앞에서부터 n_obs 개를 가져가는
+# 구조상 중앙값 피험자가 30일에서 끊기고 감쇠 꼬리(100일 이후)를 보는 건 30% 뿐이었다.
+# MIN_N_OBS=15 로 하면 100% 가 꼬리를 본다. 다른 것은 전부 동일하다.
+#
+# 판정: decay-shape 의 사후 SD 가 기존 0.29~0.30 에서 뚜렷이 줄면 설계 탓이고,
+#       그대로면 모델의 약식별이다. 어느 쪽이든 논문에 쓸 수 있는 답이 된다.
+#
+# n=150, 시드 3개, 8체인 = 24코어. 재실행(64코어)과 공존한다.
+# 관측이 약 1.7배 늘어 iter 당 비용도 그만큼 오르므로 iter 를 6000 으로 줄였다
+# (사후 SD 를 재는 데는 충분하다).
+#
+# job_name       script          KEY=VAL ...
+tail_n150_s1  ch2_run_one.R  TAG=tail_n150_s1 N_SUBJ=150 SEED=1 MIN_N_OBS=15 MAX_N_OBS=20 ADAPT_DELTA=0.99 MAX_TD=12 WARMUP=4000 SAMP=2000 NCHAIN=8 SAVE_FIT=0
+tail_n150_s2  ch2_run_one.R  TAG=tail_n150_s2 N_SUBJ=150 SEED=2 MIN_N_OBS=15 MAX_N_OBS=20 ADAPT_DELTA=0.99 MAX_TD=12 WARMUP=4000 SAMP=2000 NCHAIN=8 SAVE_FIT=0
+tail_n150_s3  ch2_run_one.R  TAG=tail_n150_s3 N_SUBJ=150 SEED=3 MIN_N_OBS=15 MAX_N_OBS=20 ADAPT_DELTA=0.99 MAX_TD=12 WARMUP=4000 SAMP=2000 NCHAIN=8 SAVE_FIT=0

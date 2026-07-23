@@ -1,0 +1,12 @@
+# Chapter 2 applied to Shigella SOSAR -- ONE cell for now.
+#
+# Only ipaB/overall (n = 48) is listed. It is the largest subject set, the
+# biomarker Chapter 1 found strongest, and the only one with clear separation in
+# the cross-sectional data (endemic median 76.5x the unexposed 95th percentile).
+# The serotype-restricted antigens are held back until this one converges --
+# see 방안_ch2_shigella.md for why n = 11 to 25 is unlikely to be identifiable.
+#
+# Uses 8 of the 64 cores left idle by the simulation rerun.
+#
+# job_name        script          KEY=VAL ...
+shig_ipaB_all   ch2_run_shigella.R   TAG=shig_ipaB_all DATA=ch2_input_ipaB_overall.rds ADAPT_DELTA=0.999 MAX_TD=13 WARMUP=9000 SAMP=4000 NCHAIN=8 SAVE_FIT=1

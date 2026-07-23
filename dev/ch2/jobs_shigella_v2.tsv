@@ -1,0 +1,22 @@
+# Shigella ipaB 재실행.
+#
+# 1차 진단: 체인 4가 파손(lp -240, treedepth 99.3% 포화)됐고 cross_corr[1] 만
+# 두 모드로 갈렸다(-0.875 vs +0.906). 나머지 넷은 두 모드에서 일치하고 수렴했다.
+# 원인은 표집이 아니라 식별이다 -- 추정 정점 1.5일, 첫 채혈 전원 2일차.
+#
+# 두 팔:
+#   c1_free : 16체인 + 좁은 init. 두 모드의 상대 빈도를 세고, 체인 파손이 init
+#             문제였는지 본다.
+#   shig_c0 : estimate_c = 0, 즉 Chapter 1 등가 모델. 이것이 있어야 이 데이터에서
+#             LOO 비교(Ch2 vs Ch1)를 할 수 있다. 지금까지 c=1 만 돌려서 비교 대상이
+#             없었다.
+#
+# 16 + 8 = 24코어.
+#
+# job_name      script              KEY=VAL ...
+c1_free   ch2_run_shigella.R  TAG=c1_free DATA=ch2_input_ipaB_overall.rds ESTIMATE_C=1 NCHAIN=16 INIT=0.5 ADAPT_DELTA=0.999 MAX_TD=13 WARMUP=6000 SAMP=3000 SAVE_FIT=1
+shig_c0   ch2_run_shigella.R  TAG=shig_c0 DATA=ch2_input_ipaB_overall.rds ESTIMATE_C=0 NCHAIN=8 INIT=0.5 ADAPT_DELTA=0.99 MAX_TD=12 WARMUP=6000 SAMP=3000 SAVE_FIT=1
+#
+# c1_zero (c[1] 만 0 으로 고정)는 아직 넣지 않았다. model_ch2.stan 에 int fix_c1 을
+# 받아 c[1] = fix_c1 ? 0 : c_raw[1] 로 하는 한 줄이 필요하고, 그 수정 전에는
+# ch2_run_shigella.R 이 경고만 찍고 c[1] free 로 돌아 c1_free 와 중복된다.
