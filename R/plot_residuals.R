@@ -101,7 +101,7 @@ plot_residuals <- function(model,
 mae_label_data <- function(to_plot) {
   mae <- to_plot |>
     dplyr::summarise(
-      .by = "Iso_type",
+      .by = all_of("Iso_type"),
       mae = mean(abs(.data$resid_med), na.rm = TRUE)
     )
 
