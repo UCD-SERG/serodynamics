@@ -48,10 +48,11 @@ residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
       dplyr::filter(.data$Iso_type %in% .env$antigen_isos)
   }
   
-  to_plot |>
+  p <- to_plot |>
     dplyr::select(
       all_of(c(
         "Subject", "Iso_type", "t", "resid_low", "resid_med", "resid_high"
       ))
     )
+  return(p)
 } 
