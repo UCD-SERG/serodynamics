@@ -250,12 +250,12 @@ run_serodynamics <- function(data,
     jags_out <- jags_out |>
       structure(population_params = population_params)
   }
+  # Record priors and decay type used
   jags_out <- jags_out |>
-    structure(priors = attributes(priorspec)$used_priors)
-  
-  # Record which decay type was used
-  jags_out <- jags_out |>
-    structure(decay_type = decay_type)
+    structure(
+      priors = attributes(priorspec)$used_priors,
+      decay_type = decay_type
+    )
   
   # Calculating fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
