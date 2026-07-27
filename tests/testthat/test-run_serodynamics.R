@@ -7,7 +7,6 @@ test_that(
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
-    testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -46,17 +45,14 @@ test_that(
     results |>
       attributes() |>
       names() |>
-      expect_setequal(c("names", "row.names", "class", "nChains", 
+      expect_setequal(c("names", "row.names", "class", "nChains",
                         "nParameters", "nIterations", "nBurnin", "nThin",
-                        "population_params", "priors", 
-                        "fitted_residuals"))
-    
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "sim-strat-fitted_residuals",
-        variant = darwin_variant()
-      )
-    
+                        "population_params", "priors",
+                        "original_data", "strat"))
+
+    expect_equal(attr(results, "original_data"), dataset)
+    expect_equal(attr(results, "strat"), "strat")
+
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
     expect_true(all(c("Population_Parameter", "value") %in% names(pop_params)))
@@ -80,7 +76,6 @@ test_that(
     )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("popparam-strat-summary-stats.csv")
-    testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
@@ -104,8 +99,11 @@ test_that(
       attributes() |>
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
-                        "nIterations", "nBurnin", "nThin", "population_params", 
-                        "priors", "fitted_residuals", "jags.post"))
+                        "nIterations", "nBurnin", "nThin", "population_params",
+                        "priors", "original_data", "strat", "jags.post"))
+
+    expect_equal(attr(results, "original_data"), dataset)
+    expect_equal(attr(results, "strat"), "bldculres")
     
     results |>
       dplyr::slice_head(n = 100) |>
@@ -138,13 +136,7 @@ test_that(
     # not the constant "prec.logy"
     expect_false(any(preclogy_row$Parameter == "prec.logy"))
     expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
-    
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "strat-fitted_residuals",
-        variant = darwin_variant()
-      )
-    
+
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))
     expect_type(jags_post, "list")

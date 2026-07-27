@@ -12,8 +12,7 @@
 #' @param min_value [numeric]; minimum value substituted in before taking
 #' `log10()` of `fitted`/observed values, to avoid `-Inf` from `log10(0)`
 #' when computing `log_residual*`.
-#' @returns A [data.frame] attached as an [attributes] with the following
-#' values:
+#' @returns A [data.frame] with the following columns:
 #'   - Subject = ID number specifying an individual
 #'   - Iso_type = The modeled antigen_isotype
 #'   - Stratification = The variable used to stratify the model

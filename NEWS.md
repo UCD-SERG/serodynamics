@@ -11,16 +11,18 @@
 
 ## New features
 * Added `plot_residuals()` to visualize residuals over time, faceted by
-  antigen-isotype, plotted directly from `attr(model, "fitted_residuals")`.
-  `calc_fit_mod()`'s `fitted_residuals` attribute now carries 2.5%/97.5%
-  posterior quantiles for each residual on both the natural scale
-  (`residual_low`, `residual_high`) and the log10 scale (`log_residual`,
-  `log_residual_low`, `log_residual_high`), which `plot_residuals()` uses to
-  draw a precision interval around each point. Also adds a
-  mean-absolute-error annotation per facet, a `connect_lines` option to join
-  each subject's residuals over time, and a `show_interval` toggle for the
-  interval error bars. Points/lines are only colored by subject when `ids`
-  is supplied (#230).
+  antigen-isotype. `run_serodynamics()` stores the original input `data`
+  (and the stratification variable name) as `original_data`/`strat`
+  attributes; `plot_residuals()` computes fitted and residual values on
+  demand from those attributes via `calc_fit_mod()`, which returns
+  2.5%/97.5% posterior quantiles for each residual on both the natural
+  scale (`residual_low`, `residual_high`) and the log10 scale
+  (`log_residual`, `log_residual_low`, `log_residual_high`),
+  which `plot_residuals()` uses to draw a precision interval around each
+  point. Also adds a mean-absolute-error annotation per facet, a
+  `connect_lines` option to join each subject's residuals over time, and a
+  `show_interval` toggle for the interval error bars. Points/lines are only
+  colored by subject when `ids` is supplied (#230).
 * Added `plot_serocurve()` for graphical visualization of population-level
   serodynamic curves using posterior samples of the predictive `newperson` 
   parameter distribution (or optionally the population level hyperparameter
@@ -41,8 +43,8 @@
 output. (#141)
 
 ## Bug fixes
-* `run_mod()`'s `fitted_residuals` attribute now covers all observations across 
-all strata (previously only the last stratum was retained) and always includes 
+* `calc_fit_mod()`'s output now covers all observations across
+all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
 
 ## Developer-facing changes

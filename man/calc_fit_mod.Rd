@@ -20,8 +20,7 @@ name, or \link{NA} if no stratification is used.}
 when computing \verb{log_residual*}.}
 }
 \value{
-A \link{data.frame} attached as an \link{attributes} with the following
-values:
+A \link{data.frame} with the following columns:
 \itemize{
 \item Subject = ID number specifying an individual
 \item Iso_type = The modeled antigen_isotype

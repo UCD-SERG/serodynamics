@@ -81,8 +81,12 @@
 #'     - `omega_param`
 #'     - `wishdf`
 #'     - `prec_logy_hyp_param`
-#'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
-#'   for all observations.
+#'   - `original_data`: The original input `data`, stored so that fitted and
+#'   residual values can be computed on demand (e.g. by [plot_residuals()])
+#'   via [calc_fit_mod()].
+#'   - `strat`: The stratification variable name (or [NA] when no
+#'   stratification was used), stored alongside `original_data` for the same
+#'   purpose.
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
@@ -232,12 +236,11 @@ run_serodynamics <- function(data,
   jags_out <- jags_out |>
     structure(priors = attributes(priorspec)$used_priors)
   
-  # Calculating fitted and residuals
-  fit_res <- calc_fit_mod(modeled_dat = jags_out,
-                          original_data = data,
-                          strat = strat)
+  # Storing the original input data and stratification variable name as
+  # attributes, so downstream functions (e.g. plot_residuals()) can compute
+  # fitted and residual values on demand via calc_fit_mod().
   jags_out <- jags_out |>
-    structure(fitted_residuals = fit_res)
+    structure(original_data = data, strat = strat)
 
   # Conditionally adding jags.post
   if (with_post) {

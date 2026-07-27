@@ -3,14 +3,12 @@
 #' Plots residuals over time and facets by antigen-isotype (`Iso_type`). The
 #' mean absolute residual for each facet is annotated in the upper-right
 #' corner.
-#' Residuals are taken directly from `attr(model, "fitted_residuals")`
-#' (computed in [run_serodynamics()] via [calc_fit_mod()]), which stores both
-#' natural-scale and log10-scale medians and 2.5%/97.5% posterior quantiles.
-#' `fitted_residuals` attributes created before a given set of columns was
-#' added lack them; residuals from such objects are plotted without those
-#' columns (e.g. without an interval).
-#' @param model An `sr_model` object (returned by [run_serodynamics()]), with a
-#' `fitted_residuals` attribute (see [calc_fit_mod()]).
+#' Fitted and residual values are calculated on demand via [calc_fit_mod()],
+#' using the `original_data` and `strat` attributes stored on `model` by
+#' [run_serodynamics()], and include both natural-scale and log10-scale
+#' medians and 2.5%/97.5% posterior quantiles.
+#' @param model An `sr_model` object (returned by [run_serodynamics()]), with
+#' `original_data` and `strat` attributes (see [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
 #' (and, if `connect_lines = TRUE`, lines) are colored by subject; otherwise
 #' no color is used.
@@ -38,7 +36,26 @@ plot_residuals <- function(model,
     cli::cli_abort("{.arg model} must be an {.cls sr_model} object.")
   }
 
-  to_plot <- residuals_from_fit_res(model, ids, antigen_isos, log_y) |>
+  original_data <- attr(model, "original_data")
+  if (is.null(original_data)) {
+    cli::cli_abort(c(
+      "x" = "{.arg model} has no {.val original_data} attribute.",
+      "i" = "Use output from {.fn run_serodynamics}."
+    ))
+  }
+
+  strat <- attr(model, "strat")
+  if (is.null(strat)) {
+    strat <- NA
+  }
+
+  fit_res <- calc_fit_mod(
+    modeled_dat = model,
+    original_data = original_data,
+    strat = strat
+  )
+
+  to_plot <- residuals_from_fit_res(fit_res, ids, antigen_isos, log_y) |>
     dplyr::arrange(.data$Subject, .data$Iso_type, .data$t)
 
   ylab <- if (log_y) {

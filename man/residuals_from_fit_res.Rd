@@ -2,12 +2,13 @@
 % Please edit documentation in R/residuals_from_fit_res.R
 \name{residuals_from_fit_res}
 \alias{residuals_from_fit_res}
-\title{Extracts Residuals from Attributes}
+\title{Extracts Residuals for Plotting}
 \usage{
-residuals_from_fit_res(model, ids, antigen_isos, log_y)
+residuals_from_fit_res(fit_res, ids, antigen_isos, log_y)
 }
 \arguments{
-\item{model}{An \code{sr_model} object with a \code{fitted_residuals} attribute.}
+\item{fit_res}{A \link{data.frame} of fitted and residual values, as returned by
+\code{\link[=calc_fit_mod]{calc_fit_mod()}}.}
 
 \item{ids}{(Optional) Participant IDs to include.}
 
@@ -20,7 +21,7 @@ natural-scale residuals.}
 A \link[tibble:tbl_df]{tibble::tbl_df} ready to plot.
 }
 \description{
-Takes residuals (and their posterior quantiles), on the requested scale,
-from \code{attr(model, "fitted_residuals")}.
+Filters and reshapes fitted/residual values (and their posterior
+quantiles), on the requested scale, for plotting.
 }
 \keyword{internal}

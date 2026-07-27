@@ -1,23 +1,16 @@
-#' @title Extracts Residuals from Attributes
+#' @title Extracts Residuals for Plotting
 #' @description
-#' Takes residuals (and their posterior quantiles), on the requested scale,
-#' from `attr(model, "fitted_residuals")`.
-#' @param model An `sr_model` object with a `fitted_residuals` attribute.
+#' Filters and reshapes fitted/residual values (and their posterior
+#' quantiles), on the requested scale, for plotting.
+#' @param fit_res A [data.frame] of fitted and residual values, as returned by
+#' [calc_fit_mod()].
 #' @param ids (Optional) Participant IDs to include.
 #' @param antigen_isos (Optional) Antigen-isotypes (`antigen_iso`) to include.
 #' @param log_y [logical]; if `TRUE`, use log10-scale residuals; if `FALSE`, use
 #'   natural-scale residuals.
 #' @return A [tibble::tbl_df] ready to plot.
 #' @keywords internal
-residuals_from_fit_res <- function(model, ids, antigen_isos, log_y) {
-  fit_res <- attr(model, "fitted_residuals")
-  if (is.null(fit_res)) {
-    cli::cli_abort(c(
-      "x" = "{.arg model} has no {.val fitted_residuals} attribute.",
-      "i" = "Use output from {.fn run_serodynamics}."
-    ))
-  }
-  
+residuals_from_fit_res <- function(fit_res, ids, antigen_isos, log_y) {
   fit_res <- tibble::as_tibble(fit_res)
   
   cols <- if (log_y) {

@@ -14,8 +14,8 @@ plot_residuals(
 )
 }
 \arguments{
-\item{model}{An \code{sr_model} object (returned by \code{\link[=run_serodynamics]{run_serodynamics()}}), with a
-\code{fitted_residuals} attribute (see \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
+\item{model}{An \code{sr_model} object (returned by \code{\link[=run_serodynamics]{run_serodynamics()}}), with
+\code{original_data} and \code{strat} attributes (see \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
 (and, if \code{connect_lines = TRUE}, lines) are colored by subject; otherwise
@@ -41,12 +41,10 @@ A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
 Plots residuals over time and facets by antigen-isotype (\code{Iso_type}). The
 mean absolute residual for each facet is annotated in the upper-right
 corner.
-Residuals are taken directly from \code{attr(model, "fitted_residuals")}
-(computed in \code{\link[=run_serodynamics]{run_serodynamics()}} via \code{\link[=calc_fit_mod]{calc_fit_mod()}}), which stores both
-natural-scale and log10-scale medians and 2.5\%/97.5\% posterior quantiles.
-\code{fitted_residuals} attributes created before a given set of columns was
-added lack them; residuals from such objects are plotted without those
-columns (e.g. without an interval).
+Fitted and residual values are calculated on demand via \code{\link[=calc_fit_mod]{calc_fit_mod()}},
+using the \code{original_data} and \code{strat} attributes stored on \code{model} by
+\code{\link[=run_serodynamics]{run_serodynamics()}}, and include both natural-scale and log10-scale
+medians and 2.5\%/97.5\% posterior quantiles.
 }
 \examples{
 plot_residuals(
