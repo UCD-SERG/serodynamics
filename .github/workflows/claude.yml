@@ -34,8 +34,9 @@ jobs:
 
 # There is deliberately no local review-dispatch job here. One existed, to
 # cover `@claude, please review` -- a phrasing the reusable workflow's own
-# matcher missed (#230). d-morrison/gha#341 fixed that matcher upstream, so
-# the local job became a duplicate: a plain `@claude review` matched both and
+# matcher missed. d-morrison/gha#341 fixed that matcher upstream, so the
+# local job became a duplicate: a plain `@claude review` matched both and
 # dispatched two paid review runs, which could review different heads since
-# the local job had no `needs: claude` (#277). Dispatch now happens only in
-# the reusable workflow, which applies its own trusted-author gate.
+# the local job had no `needs: claude`. See #277 for both halves. Dispatch
+# now happens only in the reusable workflow, which applies its own
+# trusted-author gate.

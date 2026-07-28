@@ -4,7 +4,7 @@
 
 * Removed the local `dispatch-explicit-review` job from `.github/workflows/claude.yml`.
   It existed to cover `@claude, please review`, a phrasing the reusable workflow's own
-  pattern missed (#230), but that pattern has since been broadened upstream in
+  pattern missed (#277), but that pattern has since been broadened upstream in
   [`d-morrison/gha#341`](https://github.com/d-morrison/gha/pull/341).
   With both patterns live, a plain `@claude review` dispatched two paid review runs,
   which could review different heads because the local job had no `needs: claude`
