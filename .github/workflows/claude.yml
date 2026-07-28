@@ -33,10 +33,19 @@ jobs:
       apt-packages: jags
 
   dispatch-explicit-review:
+    # The `claude` job above delegates its trusted-author gate to the reusable
+    # workflow, but this job is local, so it must gate itself -- and it is the
+    # only gate on this path: claude-code-review.yml is workflow_dispatch-only
+    # and enforces nothing of its own, so without an author-association check
+    # any commenter (including author_association == NONE) could spend
+    # CLAUDE_CODE_OAUTH_TOKEN by writing "@claude review" on a PR.
+    # OWNER/MEMBER matches the gate pr-commands.yaml already applies to its
+    # /document and /style commands.
     if: >-
       github.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
-      github.event.sender.type != 'Bot'
+      github.event.sender.type != 'Bot' &&
+      contains(fromJSON('["OWNER","MEMBER"]'), github.event.comment.author_association)
     runs-on: ubuntu-latest
     permissions:
       actions: write
