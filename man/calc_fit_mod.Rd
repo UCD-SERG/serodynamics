@@ -4,7 +4,13 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data, strat = NA, min_value = 0.01)
+calc_fit_mod(
+  modeled_dat,
+  original_data,
+  strat = NA,
+  min_value = 0.01,
+  decay_type = "power"
+)
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
@@ -18,9 +24,14 @@ name, or \link{NA} if no stratification is used.}
 \item{min_value}{\link{numeric}; minimum value substituted in before taking
 \code{log10()} of \code{fitted}/observed values, to avoid \code{-Inf} from \code{log10(0)}
 when computing \verb{log_residual*}.}
+
+\item{decay_type}{A \link{character} string specifying the decay function
+(\code{"power"} or \code{"exponential"}). Passed through to \code{ab()}. Default is
+\code{"power"}.}
 }
 \value{
-A \link{data.frame} with the following columns:
+A \link{data.frame} attached as an \link{attributes} with the following
+values:
 \itemize{
 \item Subject = ID number specifying an individual
 \item Iso_type = The modeled antigen_isotype

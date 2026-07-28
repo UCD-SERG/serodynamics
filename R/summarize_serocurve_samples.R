@@ -2,7 +2,7 @@
 # posterior parameter samples, then summarises them to a median + 95%
 # credible interval per antigen-isotype/stratification/time combination.
 summarize_serocurve_samples <- function(param_samples, antigen_iso_col,
-                                        xlim) {
+                                        xlim, decay_type) {
   # Clamp the grid to `xlim` when supplied to avoid unnecessary computation
   # outside the visible range.
   if (!is.null(xlim)) {
@@ -15,7 +15,7 @@ summarize_serocurve_samples <- function(param_samples, antigen_iso_col,
     dplyr::reframe(
       t = .env$tx,
       res = ab(.data$t, .data$y0, .data$y1, .data$t1, .data$alpha,
-               .data$shape),
+               .data$shape, decay_type = .env$decay_type),
       .by = all_of(
         c("Chain", "Iteration", antigen_iso_col, "Stratification")
       )

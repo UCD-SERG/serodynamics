@@ -19,15 +19,14 @@
   scale (`residual_low`, `residual_high`) and the log10 scale
   (`log_residual`, `log_residual_low`, `log_residual_high`),
   which `plot_residuals()` uses to draw a precision interval around each
-  point. Also adds a mean-absolute-error annotation per facet, a
-  `connect_lines` option to join each subject's residuals over time, and a
-  `show_interval` toggle for the interval error bars. Points/lines are only
-  colored by subject when `ids` is supplied (#230).
+  point. (#230).
+* Added an exponential decay option for antibody decay curves via `decay_type`.
+  (#252)
 * Added `plot_serocurve()` for graphical visualization of population-level
-  serodynamic curves using posterior samples of the predictive `newperson` 
+  serodynamic curves using posterior samples of the predictive `newperson`
   parameter distribution (or optionally the population level hyperparameter
-  distributions). 
-  Supports 95% credible interval ribbons, stratified curves with color or 
+  distributions).
+  Supports 95% credible interval ribbons, stratified curves with color or
   faceting, and multiple antigen-isotypes (#74).
 * Renamed user-facing functions for clarity (#241):
   - `run_mod()` → `run_serodynamics()`

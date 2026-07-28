@@ -12,7 +12,11 @@
 #' @param min_value [numeric]; minimum value substituted in before taking
 #' `log10()` of `fitted`/observed values, to avoid `-Inf` from `log10(0)`
 #' when computing `log_residual*`.
-#' @returns A [data.frame] with the following columns:
+#' @param decay_type A [character] string specifying the decay function
+#'   (`"power"` or `"exponential"`). Passed through to `ab()`. Default is
+#'   `"power"`.
+#' @returns A [data.frame] attached as an [attributes] with the following
+#' values:
 #'   - Subject = ID number specifying an individual
 #'   - Iso_type = The modeled antigen_isotype
 #'   - Stratification = The variable used to stratify the model
@@ -38,7 +42,8 @@
 calc_fit_mod <- function(modeled_dat,
                          original_data,
                          strat = NA,
-                         min_value = 0.01) {
+                         min_value = 0.01,
+                         decay_type = "power") {
   if (!is.numeric(min_value) || length(min_value) != 1 ||
         is.na(min_value) || !is.finite(min_value) || min_value <= 0) {
     cli::cli_abort("{.arg min_value} must be a single positive number.")
@@ -73,7 +78,7 @@ calc_fit_mod <- function(modeled_dat,
         c("Subject", "Iso_type", "Stratification"),
         names(original_data)
       ),
-      relationship = "many-to-many"
+      relationship = "one-to-many"
     )
 
   # Calculating per-draw fitted and residual values, then summarizing each
@@ -122,3 +127,4 @@ quantile_or_na <- function(x, probs) {
   }
   stats::quantile(x, probs = probs, names = FALSE)
 }
+
