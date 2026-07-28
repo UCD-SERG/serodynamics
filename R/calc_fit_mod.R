@@ -127,4 +127,3 @@ quantile_or_na <- function(x, probs) {
   }
   stats::quantile(x, probs = probs, names = FALSE)
 }
-
