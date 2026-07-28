@@ -48,7 +48,7 @@ test_that(
       expect_setequal(c("names", "row.names", "class", "nChains",
                         "nParameters", "nIterations", "nBurnin", "nThin",
                         "population_params", "priors",
-                        "original_data", "strat"))
+                        "original_data", "decay_type", "strat"))
 
     expect_equal(attr(results, "original_data"), dataset)
     expect_equal(attr(results, "strat"), "strat")
@@ -100,7 +100,8 @@ test_that(
       names() |>
       expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
                         "nIterations", "nBurnin", "nThin", "population_params",
-                        "priors", "original_data", "strat", "jags.post"))
+                        "priors", "original_data", "decay_type", "strat", 
+                        "jags.post"))
 
     expect_equal(attr(results, "original_data"), dataset)
     expect_equal(attr(results, "strat"), "bldculres")
@@ -203,7 +204,7 @@ test_that(
       expect_setequal(c(
         "names", "row.names", "class", "nChains", "nParameters",
         "nIterations", "nBurnin", "nThin", "population_params",
-        "priors", "fitted_residuals", "decay_type", "jags.post"
+        "priors", "decay_type", "original_data", "strat", "jags.post"
       ))
 
     expect_s3_class(results, "data.frame")
@@ -243,10 +244,6 @@ test_that(
     expect_true(all(
       preclogy_row$Parameter %in% unique(pop_params$Iso_type)
     ))
-
-    fitted_residuals <- attr(results, "fitted_residuals")
-    expect_s3_class(fitted_residuals, "data.frame")
-    expect_gt(nrow(fitted_residuals), 0)
 
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))
