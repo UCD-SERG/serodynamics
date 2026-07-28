@@ -71,7 +71,96 @@ test_that(
 )
 
 test_that(
-  desc = "exponential decay preserves the SEES output structure",
+  desc = "results are consistent with SEES data",
+  code = {
+    skip_on_cran()
+    skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
+    testthat::announce_snapshot_file("strat-curve-params.csv")
+    testthat::announce_snapshot_file("popparam-strat-summary-stats.csv")
+    testthat::announce_snapshot_file("strat-fitted_residuals.csv")
+    withr::local_seed(1)
+    dataset <- serodynamics::nepal_sees
+
+    results <- run_serodynamics(
+      data = dataset, # The data set input
+      file_mod = serodynamics_example("model.jags"),
+      nchain = 2, # Number of mcmc chains to run
+      nadapt = 10, # Number of adaptations to run
+      nburn = 10, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
+      strat = "bldculres", # Variable to be stratified by
+      with_post = TRUE,
+      with_pop_params = TRUE,
+      preclogy_per_iso = TRUE
+    ) |>
+      suppressWarnings()
+
+    # Testing attributes
+    results |>
+      attributes() |>
+      names() |>
+      expect_setequal(c(
+        "names", "row.names", "class", "nChains", "nParameters",
+        "nIterations", "nBurnin", "nThin", "population_params",
+        "priors", "fitted_residuals", "decay_type", "jags.post"
+      ))
+
+    results |>
+      dplyr::slice_head(n = 100) |>
+      expect_snapshot_data(
+        "strat-curve-params",
+        variant = darwin_variant()
+      )
+
+    # Testing for population parameters
+    attributes(results)$population_params |>
+      dplyr::group_by(Parameter) |>
+      dplyr::summarise(
+        mean = mean(value),
+        sd = sd(value),
+        .groups = "drop"
+      ) |>
+      dplyr::arrange(Parameter) |>
+      expect_snapshot_data(
+        "popparam-strat-summary-stats",
+        variant = darwin_variant()
+      )
+
+    pop_params <- attr(results, "population_params")
+    expect_s3_class(pop_params, "data.frame")
+
+    preclogy_row <- pop_params[
+      pop_params$Population_Parameter == "prec.logy",
+    ]
+    expect_gt(nrow(preclogy_row), 0)
+
+    # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
+    # not the constant "prec.logy"
+    expect_false(any(preclogy_row$Parameter == "prec.logy"))
+    expect_true(all(
+      preclogy_row$Parameter %in% unique(pop_params$Iso_type)
+    ))
+
+    attributes(results)$fitted_residuals |>
+      expect_snapshot_data(
+        "strat-fitted_residuals",
+        variant = darwin_variant()
+      )
+
+    jags_post <- attributes(results)$jags.post
+    expect_false(is.null(jags_post))
+    expect_type(jags_post, "list")
+    expect_true("typhi" %in% names(jags_post))
+    expect_s3_class(jags_post$typhi$mcmc, "mcmc.list")
+  }
+)
+
+test_that(
+  desc = "exponential decay validates model configuration",
   code = {
     expect_error(
       run_serodynamics(
@@ -90,7 +179,12 @@ test_that(
       "incompatible",
       fixed = TRUE
     )
+  }
+)
 
+test_that(
+  desc = "exponential decay preserves the SEES output structure",
+  code = {
     skip_on_cran()
     skip_if_not(
       Sys.getenv("RUN_HEAVY_TESTS") == "true",
@@ -118,16 +212,18 @@ test_that(
     results |>
       attributes() |>
       names() |>
-      expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
-                        "nIterations", "nBurnin", "nThin", "population_params",
-                        "priors", "fitted_residuals", "decay_type",
-                        "jags.post"))
+      expect_setequal(c(
+        "names", "row.names", "class", "nChains", "nParameters",
+        "nIterations", "nBurnin", "nThin", "population_params",
+        "priors", "fitted_residuals", "decay_type", "jags.post"
+      ))
 
     expect_s3_class(results, "data.frame")
     expect_gt(nrow(results), 0)
     expect_true(all(
       c("Subject", "Parameter", "value") %in% names(results)
     ))
+
     used_priors <- attr(results, "priors")
     expect_length(used_priors$mu_hyp_param, 4)
     expect_length(used_priors$prec_hyp_param, 4)
@@ -142,10 +238,12 @@ test_that(
       dplyr::filter(.data$Parameter == "shape")
     expect_gt(nrow(shape_rows), 0)
     expect_true(all(shape_rows$value == 1))
+
     expect_false(any(
       grepl("shape", pop_params$Parameter, fixed = TRUE),
       na.rm = TRUE
     ))
+
     preclogy_row <- pop_params[
       pop_params$Population_Parameter == "prec.logy",
     ]
@@ -154,7 +252,9 @@ test_that(
     # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
     # not the constant "prec.logy"
     expect_false(any(preclogy_row$Parameter == "prec.logy"))
-    expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
+    expect_true(all(
+      preclogy_row$Parameter %in% unique(pop_params$Iso_type)
+    ))
 
     fitted_residuals <- attr(results, "fitted_residuals")
     expect_s3_class(fitted_residuals, "data.frame")
@@ -165,13 +265,13 @@ test_that(
     expect_type(jags_post, "list")
     expect_true("typhi" %in% names(jags_post))
     expect_s3_class(jags_post$typhi$mcmc, "mcmc.list")
+
     raw_parameter_names <- colnames(
       as.matrix(jags_post$typhi$mcmc)
     )
     expect_false(any(
       startsWith(raw_parameter_names, "shape[")
     ))
-
   }
 )
 
