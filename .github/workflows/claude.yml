@@ -1,4 +1,4 @@
-# Calls the reusable Claude Code workflow in d-morrison/gha. Secrets passed
+# Calls the reusable Claude Code workflow in Morrison-Lab/gha. Secrets passed
 # explicitly so the cross-repo call forwards a real token. The reusable enforces
 # the @claude mention + trusted-author gate.
 #
@@ -23,7 +23,7 @@ jobs:
       issues: write
       id-token: write
       actions: write
-    uses: d-morrison/gha/.github/workflows/claude.yml@v2
+    uses: Morrison-Lab/gha/.github/workflows/claude.yml@v2
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
@@ -34,7 +34,7 @@ jobs:
 
 # There is deliberately no local review-dispatch job here. One existed, to
 # cover `@claude, please review` -- a phrasing the reusable workflow's own
-# matcher missed. d-morrison/gha#341 fixed that matcher upstream, so the
+# matcher missed. Morrison-Lab/gha#341 fixed that matcher upstream, so the
 # local job became a duplicate: a plain `@claude review` matched both and
 # dispatched two paid review runs, which could review different heads since
 # the local job had no `needs: claude`. See #277 for both halves. Dispatch

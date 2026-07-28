@@ -1,4 +1,4 @@
-# Calls the reusable Claude review workflow in d-morrison/gha. The
+# Calls the reusable Claude review workflow in Morrison-Lab/gha. The
 # workflow_dispatch path lets claude.yml re-dispatch a review after an @claude
 # run pushes commits — keep this file named claude-code-review.yml.
 #
@@ -25,7 +25,7 @@ jobs:
       issues: write
       id-token: write
       actions: read
-    uses: d-morrison/gha/.github/workflows/claude-code-review.yml@v2
+    uses: Morrison-Lab/gha/.github/workflows/claude-code-review.yml@v2
     secrets:
       CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
     with:
