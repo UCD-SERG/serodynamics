@@ -73,12 +73,13 @@ calc_fit_mod <- function(modeled_dat,
   # Matching input data with modeled draws (many draws per observation)
   matched_dat <- draws_wide |>
     dplyr::right_join(
-      original_data,
+      original_data |> dplyr::filter(.data$Subject %in% 
+                                       unique(draws_wide$Subject)),
       by = base::intersect(
         c("Subject", "Iso_type", "Stratification"),
         names(original_data)
       ),
-      relationship = "one-to-many"
+      relationship = "many-to-many"
     )
 
   # Calculating per-draw fitted and residual values, then summarizing each
