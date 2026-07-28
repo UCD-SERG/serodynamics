@@ -60,6 +60,7 @@ plot_predicted_curve <- function(model,
                                  ylab = NULL,
                                  facet_by_id = length(ids) > 1,
                                  ncol = NULL) {
+  decay_type <- get_model_decay_type(model)
   
   # Filter to the subject(s) & antigen of interest:
   sr_model_sub <- model |>
@@ -116,7 +117,8 @@ plot_predicted_curve <- function(model,
                            .data$y1, 
                            .data$t1, 
                            .data$alpha, 
-                           .data$shape))
+                           .data$shape,
+                           decay_type = .env$decay_type))
   
   # Determine Y-axis label
   if (is.null(ylab)) {

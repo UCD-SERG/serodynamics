@@ -61,6 +61,59 @@ test_that(
       param_source = "population"
     )
     vdiffr::expect_doppelganger("serocurve-population-single-strat", p6)
+
+    # Confirm exponential population curves use a fixed shape of 1.
+    exp_model <- tibble::tibble(
+      Iso_type = "test",
+      Stratification = "None"
+    )
+    attr(exp_model, "decay_type") <- "exponential"
+    attr(exp_model, "population_params") <- tibble::tibble(
+      Iteration = rep(1L, 4),
+      Chain = rep(1L, 4),
+      Parameter = c(
+        "log(y0)",
+        "log(y1 - y0)",
+        "log(t1)",
+        "log(alpha)"
+      ),
+      Iso_type = rep("test", 4),
+      Stratification = rep("None", 4),
+      Population_Parameter = rep("mu.par", 4),
+      value = c(log(1), log(9), log(5), log(0.1))
+    )
+
+    exp_params <- get_serocurve_pop_params(
+      exp_model,
+      "test",
+      "None",
+      "exponential"
+    )
+    expect_equal(exp_params$shape, 1)
+
+    exp_plot <- plot_serocurve(
+      model = exp_model,
+      antigen_iso = "test",
+      strat = "None",
+      param_source = "population",
+      show_ci = FALSE,
+      xlim = c(10, 10)
+    )
+    exp_curve_data <- ggplot2::layer_data(exp_plot, 1)
+    expected <- ab(
+      t = 10,
+      y0 = 1,
+      y1 = 10,
+      t1 = 5,
+      alpha = 0.1,
+      shape = 1,
+      decay_type = "exponential"
+    )
+
+    expect_equal(
+      exp_curve_data$y[exp_curve_data$x == 10],
+      expected
+    )
   }
 )
 

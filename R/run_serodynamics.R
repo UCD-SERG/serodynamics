@@ -9,10 +9,13 @@
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
-#'  - shape = shape parameter
+#'  - shape = shape parameter, estimated for power decay and fixed at 1
+#'   for exponential decay
 #'  - alpha = decay rate
 #' @param data A [base::data.frame()] with the following columns.
-#' @param file_mod The name of the file that contains model structure.
+#' @param file_mod The model file path. If `NULL`, a built-in model file is
+#'   selected based on `decay_type`. If supplied, its parameterization must be
+#'   compatible with `decay_type`.
 #' @param nchain An [integer] between 1 and 4 that specifies
 #' the number of MCMC chains to be run per jags model.
 #' @param nadapt An [integer] specifying the number of adaptations per chain.
@@ -21,6 +24,17 @@
 #' @param niter An [integer] specifying the number of iterations.
 #' @param strat A [character] string specifying the stratification variable,
 #' entered in quotes.
+#' @param decay_type A [character] string specifying the decay function used
+#'   in the model. Options are `"power"` and `"exponential"`. Default is
+#'   `"power"`. The `"power"` option uses
+#'   `y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))`. The
+#'   `"exponential"` option uses `y(t) = y1 * exp(-alpha*(t-t1))`.
+#'   The exponential model does not estimate `shape`; its processed output
+#'   includes `shape = 1` as a fixed value to preserve the common output
+#'   structure.
+#'   Note: `prep_priors()` still validates 5-element prior vectors. For
+#'   exponential decay, the fifth (`shape`) prior is required for validation
+#'   but is ignored and omitted from the reported priors.
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
@@ -47,7 +61,8 @@
 #'     - `y0` = Posterior estimate of baseline antibody concentration
 #'     - `y1` = Posterior estimate of peak antibody concentration
 #'     - `t1` = Posterior estimate of time to peak
-#'     - `shape` = Posterior estimate of shape parameter
+#'     - `shape` = shape parameter, estimated for power decay and fixed at 1
+#'     for exponential decay
 #'     - `alpha` = Posterior estimate of decay rate
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
@@ -68,7 +83,8 @@
 #'     - `Population_Parameter` identifies which modeled population parameter
 #'     is represented:
 #'       - `mu.par` = The population means of the host-specific model
-#'       parameters (on logarithmic scales). Note: y1 and shape are transformed.
+#'       parameters (on logarithmic scales). Note: y1 and shape are transformed;
+#'       shape is not included for exponential decay.
 #'       - `prec.par` = The population precision matrix of the
 #'       hyperparameters (with diagonal elements equal to inverse variances). 
 #'       The two parameters listed (separated by commas) represent the pairwise 
@@ -83,13 +99,15 @@
 #'     - `prec_logy_hyp_param`
 #'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
 #'   for all observations.
+#'   - `decay_type`: The decay function used (`"power"` or `"exponential"`).
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
 #' @inheritDotParams prep_priors
 #' @export
 #' @example inst/examples/run_serodynamics-examples.R
 run_serodynamics <- function(data,
-                             file_mod = serodynamics_example("model.jags"),
+                             file_mod = NULL,
+                             decay_type = "power",
                              nchain = 4,
                              nadapt = 0,
                              nburn = 0,
@@ -100,6 +118,9 @@ run_serodynamics <- function(data,
                              with_pop_params = FALSE,
                              preclogy_per_iso = FALSE,
                              ...) {
+  # Select model file based on decay type
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
+  file_mod <- select_decay_model(file_mod, decay_type)
   ## Build and validate the stratification list to loop through.
   strat_list <- prep_strat_list(data, strat)
 
@@ -131,18 +152,14 @@ run_serodynamics <- function(data,
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
                              ...)
+    priorspec <- configure_decay_priors(priorspec, decay_type)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
     nburnin <- nburn # nr of iterations to use for burn-in
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
-    tomonitor <- c("y0", "y1", "t1", "alpha", "shape")
-    # Conditional statement for including population parameters
-    if (with_pop_params) {
-      tomonitor <- c(tomonitor, "mu.par", "prec.par",
-                     "prec.logy")
-    }
+    tomonitor <- get_decay_monitors(decay_type, with_pop_params)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
@@ -198,6 +215,10 @@ run_serodynamics <- function(data,
       Subject = as.character(seq_along(attr(longdata, "ids")))
     )
     jags_final <- reconcile_subject_ids(jags_unpacked, ids)
+    jags_final <- add_fixed_exponential_shape(
+      jags_final,
+      decay_type
+    )
 
     # Creating a label for the stratification, if there is one.
     # If not, will add in "None".
@@ -229,13 +250,18 @@ run_serodynamics <- function(data,
     jags_out <- jags_out |>
       structure(population_params = population_params)
   }
+  # Record priors and decay type used
   jags_out <- jags_out |>
-    structure(priors = attributes(priorspec)$used_priors)
+    structure(
+      priors = attributes(priorspec)$used_priors,
+      decay_type = decay_type
+    )
   
   # Calculating fitted and residuals
   fit_res <- calc_fit_mod(modeled_dat = jags_out,
                           original_data = data,
-                          strat = strat)
+                          strat = strat,
+                          decay_type = decay_type)
   jags_out <- jags_out |>
     structure(fitted_residuals = fit_res)
 

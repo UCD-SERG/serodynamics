@@ -6,7 +6,8 @@
 \usage{
 run_serodynamics(
   data,
-  file_mod = serodynamics_example("model.jags"),
+  file_mod = NULL,
+  decay_type = "power",
   nchain = 4,
   nadapt = 0,
   nburn = 0,
@@ -22,7 +23,21 @@ run_serodynamics(
 \arguments{
 \item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
 
-\item{file_mod}{The name of the file that contains model structure.}
+\item{file_mod}{The model file path. If \code{NULL}, a built-in model file is
+selected based on \code{decay_type}. If supplied, its parameterization must be
+compatible with \code{decay_type}.}
+
+\item{decay_type}{A \link{character} string specifying the decay function used
+in the model. Options are \code{"power"} and \code{"exponential"}. Default is
+\code{"power"}. The \code{"power"} option uses
+\code{y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))}. The
+\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
+The exponential model does not estimate \code{shape}; its processed output
+includes \code{shape = 1} as a fixed value to preserve the common output
+structure.
+Note: \code{prep_priors()} still validates 5-element prior vectors. For
+exponential decay, the fifth (\code{shape}) prior is required for validation
+but is ignored and omitted from the reported priors.}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}
@@ -120,7 +135,8 @@ including the following:
 \item \code{y0} = Posterior estimate of baseline antibody concentration
 \item \code{y1} = Posterior estimate of peak antibody concentration
 \item \code{t1} = Posterior estimate of time to peak
-\item \code{shape} = Posterior estimate of shape parameter
+\item \code{shape} = shape parameter, estimated for power decay and fixed at 1
+for exponential decay
 \item \code{alpha} = Posterior estimate of decay rate
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
@@ -145,7 +161,8 @@ Columns include
 is represented:
 \itemize{
 \item \code{mu.par} = The population means of the host-specific model
-parameters (on logarithmic scales). Note: y1 and shape are transformed.
+parameters (on logarithmic scales). Note: y1 and shape are transformed;
+shape is not included for exponential decay.
 \item \code{prec.par} = The population precision matrix of the
 hyperparameters (with diagonal elements equal to inverse variances).
 The two parameters listed (separated by commas) represent the pairwise
@@ -164,6 +181,7 @@ variances), one per antigen/isotype combination.
 }
 \item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
 for all observations.
+\item \code{decay_type}: The decay function used (\code{"power"} or \code{"exponential"}).
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
 }
@@ -179,7 +197,8 @@ infection. The antibody dynamic curve includes the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item shape = shape parameter
+\item shape = shape parameter, estimated for power decay and fixed at 1
+for exponential decay
 \item alpha = decay rate
 }
 }
