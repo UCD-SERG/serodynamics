@@ -1,13 +1,13 @@
 {
   "extraKnownMarketplaces": {
-    "d-morrison": {
+    "Morrison-Lab": {
       "source": {
         "source": "github",
-        "repo": "d-morrison/ai-config"
+        "repo": "Morrison-Lab/ai-config"
       }
     }
   },
   "enabledPlugins": {
-    "ai-config@d-morrison": true
+    "ai-config@Morrison-Lab": true
   }
 }

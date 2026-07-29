@@ -9,7 +9,7 @@ file adds review-specific emphasis on top of that guide.
 ## ai-config submodule
 
 The `.ai-config` git submodule pins a copy of
-[`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) — the
+[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) — the
 corpus one of this file's review guidelines cites (`shared/` fragments,
 skills, memories). A scheduled `Bump submodule` workflow
 (`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
@@ -84,7 +84,7 @@ form. Treat these as in-scope review findings, not optional nits:
   [`...`](https://adv-r.hadley.nz/functions.html?q=dot-dot#fun-dot-dot-dot)
   straight to the subfunction (documented via `@inheritDotParams`). This is
   a global standing rule from the
-  [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) corpus
+  [`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) corpus
   (`shared/coding/reuse-docs-and-args.md`).
 
 ## Deprecation strictness

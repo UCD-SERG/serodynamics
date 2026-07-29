@@ -1,6 +1,17 @@
 # serodynamics (development version)
 
 ## Internal
+
+* Pointed the `ai-config` Claude Code plugin marketplace at `Morrison-Lab`.
+  The corpus moved to a new GitHub organization and renamed the marketplace
+  declared in its own `.claude-plugin/marketplace.json`.
+  A plugin reference resolves by that declared name, so
+  `.claude/settings.json`'s `ai-config@d-morrison` matched nothing and aborted
+  plugin installation in cloud and web sessions opened on this repo.
+  The clone URL was never the problem, since git follows GitHub's transfer
+  redirect; only the name lookup failed.
+  `.gitmodules` and `CLAUDE.md`'s live links now point at the new organization
+  as well.
 * Removed the local `dispatch-explicit-review` job from `.github/workflows/claude.yml`.
   It existed to cover `@claude, please review`, a phrasing the reusable workflow's own
   pattern missed (#277), but that pattern has since been broadened upstream in
