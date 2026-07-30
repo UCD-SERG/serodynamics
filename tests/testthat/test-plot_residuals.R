@@ -75,3 +75,47 @@ testthat::test_that(
     testthat::expect_true(has_color(plot_with_ids))
   }
 )
+
+testthat::test_that(
+  "plot_residuals() uses decay_type = 'exponential' from run_serodynamics()",
+  {
+    testthat::skip_on_cran()
+    testthat::skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
+    withr::local_seed(1)
+    exp_dataset <- serodynamics::nepal_sees
+
+    model <- run_serodynamics(
+      data = exp_dataset,
+      decay_type = "exponential",
+      nchain = 2,
+      nadapt = 10,
+      nburn = 10,
+      nmc = 100,
+      niter = 100,
+      strat = "bldculres",
+      with_post = FALSE,
+      with_pop_params = TRUE
+    ) |>
+      suppressWarnings()
+
+    testthat::expect_equal(attr(model, "decay_type"), "exponential")
+
+    fit_res <- calc_fit_mod(
+      modeled_dat = model,
+      original_data = attr(model, "original_data"),
+      strat = attr(model, "strat"),
+      decay_type = attr(model, "decay_type")
+    )
+
+    # Regression check: when `decay_type` isn't forwarded to `ab()`, the
+    # exponential curve's `shape = 1` is misapplied in the power formula,
+    # which collapses `fitted` to exactly 1 for every post-peak observation.
+    testthat::expect_false(all(fit_res$fitted == 1, na.rm = TRUE))
+
+    plot_exp <- plot_residuals(model)
+    testthat::expect_s3_class(plot_exp, "ggplot")
+  }
+)

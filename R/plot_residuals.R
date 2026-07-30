@@ -4,11 +4,12 @@
 #' mean absolute residual for each facet is annotated in the upper-right
 #' corner.
 #' Fitted and residual values are calculated on demand via [calc_fit_mod()],
-#' using the `original_data` and `strat` attributes stored on `model` by
-#' [run_serodynamics()], and include both natural-scale and log10-scale
-#' medians and 2.5%/97.5% posterior quantiles.
+#' using the `original_data`, `strat`, and `decay_type` attributes stored on
+#' `model` by [run_serodynamics()], and include both natural-scale and
+#' log10-scale medians and 2.5%/97.5% posterior quantiles.
 #' @param model An `sr_model` object (returned by [run_serodynamics()]), with
-#' `original_data` and `strat` attributes (see [calc_fit_mod()]).
+#' `original_data`, `strat`, and `decay_type` attributes (see
+#' [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
 #' (and, if `connect_lines = TRUE`, lines) are colored by subject; otherwise
 #' no color is used.
@@ -49,10 +50,16 @@ plot_residuals <- function(model,
     strat <- NA
   }
 
+  decay_type <- attr(model, "decay_type")
+  if (is.null(decay_type)) {
+    decay_type <- "power"
+  }
+
   fit_res <- calc_fit_mod(
     modeled_dat = model,
     original_data = original_data,
-    strat = strat
+    strat = strat,
+    decay_type = decay_type
   )
 
   to_plot <- residuals_from_fit_res(fit_res, ids, antigen_isos, log_y) |>

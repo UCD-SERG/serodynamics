@@ -63,6 +63,11 @@ output. (#141)
 * `calc_fit_mod()`'s output now covers all observations across
 all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
+* `plot_residuals()`/`calc_fit_mod()` now forward the `decay_type` attribute
+  stored by `run_serodynamics()` through to `ab()`. Previously the argument
+  was silently dropped, so exponential-decay models were fitted with the
+  power-decay formula; since exponential decay's `shape` is fixed at `1`,
+  this made every post-peak `fitted` value collapse to exactly `1`. (#230)
 
 ## Developer-facing changes
 * Cut down on `run_serodynamics()` tests to lower run time/load. 

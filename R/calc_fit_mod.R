@@ -87,7 +87,7 @@ calc_fit_mod <- function(modeled_dat,
   fitted_dat <- matched_dat |>
     dplyr::mutate(
       fitted = ab(.data$t, .data$y0, .data$y1, .data$t1,
-                  .data$alpha, .data$shape),
+                  .data$alpha, .data$shape, decay_type = decay_type),
       residual = .data$result - .data$fitted,
       log_residual = log10(pmax(.data$result, .env$min_value)) -
         log10(pmax(.data$fitted, .env$min_value))

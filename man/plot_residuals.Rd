@@ -15,7 +15,8 @@ plot_residuals(
 }
 \arguments{
 \item{model}{An \code{sr_model} object (returned by \code{\link[=run_serodynamics]{run_serodynamics()}}), with
-\code{original_data} and \code{strat} attributes (see \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
+\code{original_data}, \code{strat}, and \code{decay_type} attributes (see
+\code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
 (and, if \code{connect_lines = TRUE}, lines) are colored by subject; otherwise
@@ -42,9 +43,9 @@ Plots residuals over time and facets by antigen-isotype (\code{Iso_type}). The
 mean absolute residual for each facet is annotated in the upper-right
 corner.
 Fitted and residual values are calculated on demand via \code{\link[=calc_fit_mod]{calc_fit_mod()}},
-using the \code{original_data} and \code{strat} attributes stored on \code{model} by
-\code{\link[=run_serodynamics]{run_serodynamics()}}, and include both natural-scale and log10-scale
-medians and 2.5\%/97.5\% posterior quantiles.
+using the \code{original_data}, \code{strat}, and \code{decay_type} attributes stored on
+\code{model} by \code{\link[=run_serodynamics]{run_serodynamics()}}, and include both natural-scale and
+log10-scale medians and 2.5\%/97.5\% posterior quantiles.
 }
 \examples{
 plot_residuals(
