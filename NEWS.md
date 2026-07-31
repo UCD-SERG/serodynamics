@@ -2,6 +2,16 @@
 
 ## Internal
 
+* Disabled the `@claude` agent bot.
+  `.github/workflows/claude.yml`'s reactive triggers are commented out and its
+  job carries `if: false`, so no comment, issue, or review event invokes the
+  agent, and neither does a manual dispatch (the reusable workflow runs
+  unattended on `workflow_dispatch` by design).
+  Reviews are the only Claude capability left, and they run on request only:
+  comment `/review` on a pull request.
+  That path is new here -- `claude-code-review.yml` gained an `issue_comment`
+  trigger and a `dispatch-on-comment` job, since the `@claude review` mention
+  it previously relied on went away with the agent.
 * Pointed the `ai-config` Claude Code plugin marketplace at `Morrison-Lab`.
   The corpus moved to a new GitHub organization and renamed the marketplace
   declared in its own `.claude-plugin/marketplace.json`.
