@@ -67,7 +67,7 @@
 #' serocalculator::typhoid_curves_nostrat_100 |>
 #'   sim_case_data(n = 100, max_n_obs = 15, spacing = "log",
 #'                 noise_sd = c(0.2890, 0.3054))
-sim_case_data <- function(
+sim_case_data_kl <- function(
     n,
     curve_params,
     antigen_isos = get_biomarker_levels(curve_params),

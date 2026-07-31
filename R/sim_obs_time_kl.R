@@ -42,7 +42,7 @@
 #' # new log-spaced scheme (dense early, sparse late):
 #' sim_obs_times(n_obs = 15, spacing = "log", max_n_obs = 15,
 #'               t_min = 3, t_max = 400)
-sim_obs_times <- function(followup_interval,
+sim_obs_times_kl <- function(followup_interval,
                           followup_variance,
                           n_obs,
                           spacing = c("uniform", "log"),
