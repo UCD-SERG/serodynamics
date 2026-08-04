@@ -63,11 +63,12 @@ n <- length(unique(nepal_sees$id))
 antigen_isos <- unique(nepal_sees$antigen_iso)
 
 # Simulating data
-simulated_data <- sim_case_data(n = n,
+simulated_data <- sim_case_data_kl(n = n,
                                curve_params = nepal_sees_prep,
                                antigen_isos = antigen_isos,
                                followup_interval = 30,
-                               followup_variance = 30)
+                               followup_variance = 30,
+                               noise_sd = 0.3)
 
 ```
 
@@ -79,11 +80,30 @@ autoplot(simulated_data)
 ### Running serodynamics on simulated data
 ```{r}
 
-n_select <- c(1, 3, 5, 10, 15)
-
+simulated_data <- simulated_data %>%
+  as_case_data(id_var = "id",
+               biomarker_var = "antigen_iso",
+               value_var = "value",
+               time_in_days = "timeindays")
+n_select <- c(1, 3, 5, 10, 15, 30)
+set.seed(15)
+sero_list <- list()
 for (i in n_select) {
-  
+  sampled_n <- sample(unique(simulated_data$id), n_select)
+  simulated_run <- simulated_data %>%
+    filter(id %in% sampled_n) %>%
+    select(id, timeindays, antigen_iso, value, visit_num)
+    sero_run <- run_serodynamics(data = simulated_run,
+                                        decay_type = "power",
+                                        nchain = 4,
+                                        nadapt = 100,
+                                        nburn = 100,
+                                        nmc = 500,
+                                        niter = 2000,
+                                        with_pop_params = TRUE)
+  sero_list[i] <- ser_run
 }
+saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
 
