@@ -10,11 +10,10 @@ output:
     #number_sections: true  ## if you want number sections at each table header
     #theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
-    code_folding: hide
 ---
   
 ### Loading packages
-```{r  setup, error = F, warning = F, }
+```{r  setup, error = F, warning = F, message = F}
 library(dplyr)
 library(tidyverse)
 library(serocalculator)
@@ -28,14 +27,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 
 ### Plotting raw data  
-```{r error = F, warning = F}
+```{r error = F, warning = F, message = F}
 
 autoplot(serodynamics::nepal_sees)
 
 ```
 
 
-```{r error = F, warning = F}
+```{r error = F, warning = F, message = F}
 
 #running data
 nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
@@ -50,19 +49,19 @@ nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
 
 
 ## Plotting the predictive distribution
-```{r error = F, warning = F, }
+```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE)
 ```
 
 ## Plotting the population distribution
-```{r error = F, warning = F, }
+```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE, param_source = "population")
 
 ```
 
 
 ## Simulating case data
-```{r error = F, warning = F, }
+```{r error = F, warning = F, message = F}
 
 
 nepal_sees_prep <- nepal_sees_output %>%
@@ -91,28 +90,27 @@ simulated_data <- sim_case_data(n = n,
 ```
 
 ### Plotting simulated data
-```{r error = F, warning = F, }
+```{r error = F, warning = F, message = F}
 autoplot(simulated_data)
 ```
 
 ### Running serodynamics on simulated data
-```{r error = F, warning = F, }
+```{r error = F, warning = F, message = F}
 
-# simulated_data <- simulated_data %>%
-#   as_case_data(id_var = "id",
-#                biomarker_var = "antigen_iso",
-#                value_var = "value",
-#                time_in_days = "timeindays")
-# n_select <- c("1", "5", "10", "15", "30", "50", "100", "150")
-# set.seed(15)
-# sero_list <- list()
+simulated_data <- simulated_data %>%
+  as_case_data(id_var = "id",
+               biomarker_var = "antigen_iso",
+               value_var = "value",
+               time_in_days = "timeindays")
+n_select <- c("1", "5", "10", "30", "50", "100", "150", "188")
+set.seed(15)
+sero_list <- list()
 # for (i in n_select) {
 #   sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
 #   simulated_run <- simulated_data %>%
 #     filter(id %in% sampled_n) %>%
 #     select(id, timeindays, antigen_iso, value, visit_num)
 #     sero_run <- run_serodynamics(data = simulated_run,
-#                                         decay_type = "power",
 #                                         nchain = 4,
 #                                         nadapt = 100,
 #                                         nburn = 100,
@@ -127,7 +125,7 @@ autoplot(simulated_data)
 ```
 
 ### Plotting the predictive distribution
-```{r error = F, warning = F, fig.height = 12}
+```{r error = F, warning = F, message = F}
 
 sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
@@ -138,10 +136,16 @@ for (i in n_select) {
   plot_dat <- rbind(sim_curve,
                     nepal_sees_output %>%
                       mutate(Stratification = "full"))
-  plot_list[[i]] <- plot_serocurve(plot_dat, log_y = T, xlim = c(0, 200))
+  plot_list[[i]] <- plot_serocurve(plot_dat, log_y = T, xlim = c(0, 200)) +
+    labs(title = paste0(i, " samples"))
 }
+
+```
+
+Simulated antibody kinetic curves by number sampled
+```{r error = F, warning = F, message = F, fig.height = 12}
 
 grid.arrange(grobs = plot_list, ncol = 2)
 
-
 ```
+
