@@ -126,5 +126,5 @@ quantile_or_na <- function(x, probs) {
   if (length(x) == 0) {
     return(NA_real_)
   }
-  stats::quantile(x, probs = probs, names = FALSE)
+  return(stats::quantile(x, probs = probs, names = FALSE))
 }
