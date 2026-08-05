@@ -181,7 +181,8 @@ variances), one per antigen/isotype combination.
 }
 \item \code{original_data}: The original input \code{data}, stored so that fitted and
 residual values can be computed on demand (e.g. by \code{\link[=plot_residuals]{plot_residuals()}})
-via \code{\link[=calc_fit_mod]{calc_fit_mod()}}.
+via \code{\link[=calc_fit_mod]{calc_fit_mod()}}. The attachment of \code{fitted_residuals} as an attribute
+was deprecated in version 0.1.0.9014.
 \item \code{strat}: The stratification variable name (or \link{NA} when no
 stratification was used), stored alongside \code{original_data} for the same
 purpose.
