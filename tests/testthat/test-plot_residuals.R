@@ -113,7 +113,7 @@ testthat::test_that(
     # Regression check: when `decay_type` isn't forwarded to `ab()`, the
     # exponential curve's `shape = 1` is misapplied in the power formula,
     # which collapses `fitted` to exactly 1 for every post-peak observation.
-    testthat::expect_false(all(fit_res$fitted == 1, na.rm = TRUE))
+    testthat::expect_false(any(fit_res$fitted == 1, na.rm = TRUE))
 
     plot_exp <- plot_residuals(model)
     testthat::expect_s3_class(plot_exp, "ggplot")
