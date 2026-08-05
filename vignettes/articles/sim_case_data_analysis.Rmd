@@ -1,12 +1,20 @@
 ---
-  title: "sim_case_data analysis"
+title: "sim_case_data analysis"
 author: "Samuel Schildhauer"
-date: "2026-07-29"
-output: html_document
+date: "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document:
+    toc: true # table of content true
+    toc_depth: 3  # upto three depths of headings (specified by #, ## and ###)
+    toc_float: true
+    #number_sections: true  ## if you want number sections at each table header
+    #theme: united  # many options for theme, this one is my favorite.
+    highlight: tango  # specifies the syntax highlighting style
+    code_folding: hide
 ---
   
-  ### Loading packages
-  ```{r error = F, warning = F, }
+### Loading packages
+```{r  setup, error = F, warning = F, }
 library(dplyr)
 library(tidyverse)
 library(serocalculator)
@@ -15,24 +23,22 @@ library(serodynamics)
 
 knitr::opts_chunk$set(echo = TRUE)
 
-nepal_sees <- serodynamics::nepal_sees
 
 ```
 
 
 ### Plotting raw data  
-```{r}
+```{r error = F, warning = F}
 
-autoplot(nepal_sees)
+autoplot(serodynamics::nepal_sees)
 
 ```
 
 
-```{r setup, include=FALSE}
+```{r error = F, warning = F}
 
 #running data
 nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
-                                      decay_type = "power",
                                       nchain = 4,
                                       nadapt = 100,
                                       nburn = 100,
@@ -74,7 +80,7 @@ n <- length(unique(nepal_sees$id))
 antigen_isos <- unique(nepal_sees$antigen_iso)
 
 # Simulating data
-simulated_data <- sim_case_data_kl(n = n,
+simulated_data <- sim_case_data(n = n,
                                    curve_params = nepal_sees_prep,
                                    antigen_isos = antigen_isos,
                                    followup_interval = 30,
@@ -92,31 +98,31 @@ autoplot(simulated_data)
 ### Running serodynamics on simulated data
 ```{r error = F, warning = F, }
 
-simulated_data <- simulated_data %>%
-  as_case_data(id_var = "id",
-               biomarker_var = "antigen_iso",
-               value_var = "value",
-               time_in_days = "timeindays")
-n_select <- c("1", "5", "10", "15", "30", "50", "100", "150")
-set.seed(15)
-sero_list <- list()
-for (i in n_select) {
-  sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
-  simulated_run <- simulated_data %>%
-    filter(id %in% sampled_n) %>%
-    select(id, timeindays, antigen_iso, value, visit_num)
-    sero_run <- run_serodynamics(data = simulated_run,
-                                        decay_type = "power",
-                                        nchain = 4,
-                                        nadapt = 100,
-                                        nburn = 100,
-                                        nmc = 500,
-                                        niter = 2000,
-                                        with_pop_params = TRUE)
-  sero_list[[i]] <- sero_run %>%
-    mutate(Stratification = i)
-}
-saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+# simulated_data <- simulated_data %>%
+#   as_case_data(id_var = "id",
+#                biomarker_var = "antigen_iso",
+#                value_var = "value",
+#                time_in_days = "timeindays")
+# n_select <- c("1", "5", "10", "15", "30", "50", "100", "150")
+# set.seed(15)
+# sero_list <- list()
+# for (i in n_select) {
+#   sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
+#   simulated_run <- simulated_data %>%
+#     filter(id %in% sampled_n) %>%
+#     select(id, timeindays, antigen_iso, value, visit_num)
+#     sero_run <- run_serodynamics(data = simulated_run,
+#                                         decay_type = "power",
+#                                         nchain = 4,
+#                                         nadapt = 100,
+#                                         nburn = 100,
+#                                         nmc = 500,
+#                                         niter = 2000,
+#                                         with_pop_params = TRUE)
+#   sero_list[[i]] <- sero_run %>%
+#     mutate(Stratification = i)
+# }
+# saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
 
