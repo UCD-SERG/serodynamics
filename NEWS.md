@@ -47,7 +47,7 @@
   scale (`residual_low`, `residual_high`) and the log10 scale
   (`log_residual`, `log_residual_low`, `log_residual_high`),
   which `plot_residuals()` uses to draw a precision interval around each
-  point. (#230).
+  point. `fitted_residuals` is no longer added as an attribute. (#230).
 * Added an exponential decay option for antibody decay curves via `decay_type`.
   (#252)
 * Added `plot_serocurve()` for graphical visualization of population-level
