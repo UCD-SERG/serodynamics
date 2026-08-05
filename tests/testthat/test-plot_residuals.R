@@ -21,8 +21,8 @@ testthat::test_that(
     )
 
     time_checks <- plot_data |>
-      dplyr::group_by(.data$Subject, .data$Iso_type) |>
-      dplyr::summarise(ok = all(diff(.data$t) >= 0), .groups = "drop")
+      dplyr::group_by(Subject, Iso_type) |>
+      dplyr::summarise(ok = all(diff(t) >= 0), .groups = "drop")
     testthat::expect_true(all(time_checks$ok))
   }
 )
