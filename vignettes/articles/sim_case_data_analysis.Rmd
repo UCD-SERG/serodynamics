@@ -19,22 +19,23 @@ library(tidyverse)
 library(serocalculator)
 library(gridExtra)
 library(serodynamics)
-
 knitr::opts_chunk$set(echo = TRUE)
-
 
 ```
 
-
+  
 ### Plotting raw data  
+Raw antibody responeses by individual  
 ```{r error = F, warning = F, message = F}
 
 autoplot(serodynamics::nepal_sees)
 
 ```
 
-
-```{r error = F, warning = F, message = F}
+### Modeling antibody kinetic parameters
+First we will use run_serodynamics to model the antibody kinetics of the 
+`nepal_sees` data set.  
+```{r results = 'hide', error = F, warning = F, message = F}
 
 #running data
 nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
@@ -46,24 +47,23 @@ nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
                                       with_pop_params = TRUE)
 
 ```
-
-
-## Plotting the predictive distribution
+  
+### Antibody kinetic curves of modeled parameters  
+Simulated antibody kinetic curves of the predictive distribution by number sampled  
 ```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE)
 ```
-
-## Plotting the population distribution
+  
+Simulated antibody kinetic curves of the population-level distribution by number sampled  
 ```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE, param_source = "population")
-
 ```
 
-
-## Simulating case data
+  
+### Simulating case data  
+Simulating case data using `as_case_data()` using the modeled antibody kinetic 
+parameters as the curve parameters.  
 ```{r error = F, warning = F, message = F}
-
-
 nepal_sees_prep <- nepal_sees_output %>%
   filter(Subject == "newperson") %>%
   spread(Parameter, value) %>%
@@ -89,13 +89,14 @@ simulated_data <- sim_case_data(n = n,
 
 ```
 
-### Plotting simulated data
+### Plotting simulated data  
+Raw longitudinal responses of simulated longitudinal data.  
 ```{r error = F, warning = F, message = F}
 autoplot(simulated_data)
 ```
-
-### Running serodynamics on simulated data
-```{r error = F, warning = F, message = F}
+  
+### Modeling antibody kinetic parameters on simulated longitudinal data
+```{r results = 'hide', error = F, warning = F, message = F}
 
 simulated_data <- simulated_data %>%
   as_case_data(id_var = "id",
@@ -105,29 +106,29 @@ simulated_data <- simulated_data %>%
 n_select <- c("1", "5", "10", "30", "50", "100", "150", "188")
 set.seed(15)
 sero_list <- list()
-# for (i in n_select) {
-#   sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
-#   simulated_run <- simulated_data %>%
-#     filter(id %in% sampled_n) %>%
-#     select(id, timeindays, antigen_iso, value, visit_num)
-#     sero_run <- run_serodynamics(data = simulated_run,
-#                                         nchain = 4,
-#                                         nadapt = 100,
-#                                         nburn = 100,
-#                                         nmc = 500,
-#                                         niter = 2000,
-#                                         with_pop_params = TRUE)
-#   sero_list[[i]] <- sero_run %>%
-#     mutate(Stratification = i)
-# }
+for (i in n_select) {
+  sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
+  simulated_run <- simulated_data %>%
+    filter(id %in% sampled_n) %>%
+    select(id, timeindays, antigen_iso, value, visit_num)
+    sero_run <- run_serodynamics(data = simulated_run,
+                                        nchain = 4,
+                                        nadapt = 100,
+                                        nburn = 100,
+                                        nmc = 500,
+                                        niter = 2000,
+                                        with_pop_params = TRUE)
+  sero_list[[i]] <- sero_run %>%
+    mutate(Stratification = i)
+}
 # saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
-
-### Plotting the predictive distribution
+  
+### Plotting the modeled serokinetic curve of simulated predictive distribution  
 ```{r error = F, warning = F, message = F}
 
-sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+# sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 # Creating plots 
 plot_list <- list()
@@ -141,11 +142,49 @@ for (i in n_select) {
 }
 
 ```
-
-Simulated antibody kinetic curves by number sampled
+  
+Simulated antibody kinetic curves of predictive distribution by number sampled  
 ```{r error = F, warning = F, message = F, fig.height = 12}
 
 grid.arrange(grobs = plot_list, ncol = 2)
 
 ```
+  
+### Plotting the modeled serokinetic curve of simulated population-level distribution  
+```{r error = F, warning = F, message = F}
+
+# sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+
+# Creating plots 
+plot_list_pop <- list()
+for (i in n_select) {
+  sim_curve <- sero_list[[i]]
+  sim_curve_pop <- attributes(sim_curve)$population_params %>%
+    filter(Population_Parameter == "mu.par")  %>%
+    mutate(Stratification = i)
+  
+  # Doing same for full model
+  nepal_full_out <- attributes(nepal_sees_output)$population_params %>%
+    filter(Population_Parameter == "mu.par") %>%
+    mutate(Stratification = "full")
+  
+  # Putting the two together
+  plot_dat <- rbind(sim_curve_pop,
+                    nepal_full_out)
+  attributes(plot_dat)$population_params <- plot_dat
+  
+  plot_list_pop[[i]] <- plot_serocurve(plot_dat, log_y = T, xlim = c(0, 200),
+                                   param_source = "population") +
+    labs(title = paste0(i, " samples"))
+}
+
+```
+  
+Simulated antibody kinetic curves of the population-level parameters by number sampled  
+```{r error = F, warning = F, message = F, fig.height = 12}
+
+grid.arrange(grobs = plot_list_pop, ncol = 2)
+
+```
+
 
