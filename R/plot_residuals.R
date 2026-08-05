@@ -129,6 +129,7 @@ mae_label_data <- function(to_plot) {
       mae = mean(abs(.data$resid_med), na.rm = TRUE)
     )
 
-  mae |>
+  mae <- mae |>
     dplyr::mutate(label = paste("MAE =", signif(.data$mae, 3)))
+  return(mae)
 }
