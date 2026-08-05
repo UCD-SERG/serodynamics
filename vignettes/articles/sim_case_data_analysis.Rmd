@@ -1,17 +1,22 @@
 ---
-title: "sim_case_data analysis"
+  title: "sim_case_data analysis"
 author: "Samuel Schildhauer"
 date: "2026-07-29"
 output: html_document
 ---
-
-### Loading packages
-```{r}
+  
+  ### Loading packages
+  ```{r error = F, warning = F, }
 library(dplyr)
 library(tidyverse)
 library(serocalculator)
+library(gridExtra)
+library(serodynamics)
 
 knitr::opts_chunk$set(echo = TRUE)
+
+nepal_sees <- serodynamics::nepal_sees
+
 ```
 
 
@@ -22,30 +27,36 @@ autoplot(nepal_sees)
 
 ```
 
-  
+
 ```{r setup, include=FALSE}
 
 #running data
 nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
-                                        decay_type = "power",
-                                        nchain = 4,
-                                        nadapt = 100,
-                                        nburn = 100,
-                                        nmc = 500,
-                                        niter = 2000,
-                                        with_pop_params = TRUE)
+                                      decay_type = "power",
+                                      nchain = 4,
+                                      nadapt = 100,
+                                      nburn = 100,
+                                      nmc = 500,
+                                      niter = 2000,
+                                      with_pop_params = TRUE)
 
 ```
-  
-  
-## Plotting the data  
-```{r}
+
+
+## Plotting the predictive distribution
+```{r error = F, warning = F, }
 plot_serocurve(nepal_sees_output, log_y = TRUE)
+```
+
+## Plotting the population distribution
+```{r error = F, warning = F, }
+plot_serocurve(nepal_sees_output, log_y = TRUE, param_source = "population")
+
 ```
 
 
 ## Simulating case data
-```{r}
+```{r error = F, warning = F, }
 
 
 nepal_sees_prep <- nepal_sees_output %>%
@@ -55,7 +66,7 @@ nepal_sees_prep <- nepal_sees_output %>%
          "antigen_iso" = "Iso_type") %>%
   group_by(antigen_iso) %>%
   mutate(iter = row_number()) 
-  # as_sr_params()
+# as_sr_params()
 
 
 # Finding number of cases from original data set
@@ -64,32 +75,33 @@ antigen_isos <- unique(nepal_sees$antigen_iso)
 
 # Simulating data
 simulated_data <- sim_case_data_kl(n = n,
-                               curve_params = nepal_sees_prep,
-                               antigen_isos = antigen_isos,
-                               followup_interval = 30,
-                               followup_variance = 30,
-                               noise_sd = 0.3)
+                                   curve_params = nepal_sees_prep,
+                                   antigen_isos = antigen_isos,
+                                   followup_interval = 30,
+                                   followup_variance = 30,
+                                   noise_sd = 0.3)
+
 
 ```
 
 ### Plotting simulated data
-```{r}
+```{r error = F, warning = F, }
 autoplot(simulated_data)
 ```
 
 ### Running serodynamics on simulated data
-```{r}
+```{r error = F, warning = F, }
 
 simulated_data <- simulated_data %>%
   as_case_data(id_var = "id",
                biomarker_var = "antigen_iso",
                value_var = "value",
                time_in_days = "timeindays")
-n_select <- c(1, 3, 5, 10, 15, 30)
+n_select <- c("1", "5", "10", "15", "30", "50", "100", "150")
 set.seed(15)
 sero_list <- list()
 for (i in n_select) {
-  sampled_n <- sample(unique(simulated_data$id), n_select)
+  sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
   simulated_run <- simulated_data %>%
     filter(id %in% sampled_n) %>%
     select(id, timeindays, antigen_iso, value, visit_num)
@@ -101,9 +113,29 @@ for (i in n_select) {
                                         nmc = 500,
                                         niter = 2000,
                                         with_pop_params = TRUE)
-  sero_list[i] <- ser_run
+  sero_list[[i]] <- sero_run %>%
+    mutate(Stratification = i)
 }
 saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
 
+### Plotting the predictive distribution
+```{r error = F, warning = F, fig.height = 12}
+
+sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+
+# Creating plots 
+plot_list <- list()
+for (i in n_select) {
+  sim_curve <- sero_list[[i]]
+  plot_dat <- rbind(sim_curve,
+                    nepal_sees_output %>%
+                      mutate(Stratification = "full"))
+  plot_list[[i]] <- plot_serocurve(plot_dat, log_y = T, xlim = c(0, 200))
+}
+
+grid.arrange(grobs = plot_list, ncol = 2)
+
+
+```
