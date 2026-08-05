@@ -99,7 +99,8 @@
 #'     - `prec_logy_hyp_param`
 #'   - `original_data`: The original input `data`, stored so that fitted and
 #'   residual values can be computed on demand (e.g. by [plot_residuals()])
-#'   via [calc_fit_mod()].
+#'   via [calc_fit_mod()]. The attachment of `fitted_residuals` as an attribute
+#'   was deprecated in version 0.1.0.9014.
 #'   - `strat`: The stratification variable name (or [NA] when no
 #'   stratification was used), stored alongside `original_data` for the same
 #'   purpose.
