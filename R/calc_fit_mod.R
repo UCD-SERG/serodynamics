@@ -96,13 +96,13 @@ calc_fit_mod <- function(modeled_dat,
       .by = dplyr::all_of(
         c(".obs_row", "Subject", "Iso_type", "Stratification", "t")
       ),
-      fitted = median_or_na(.data$fitted, na.rm = TRUE),
+      fitted = median_or_na(.data$fitted),
       residual_low = quantile_or_na(.data$residual, 0.025),
       residual_high = quantile_or_na(.data$residual, 0.975),
-      residual_med = median_or_na(.data$residual, na.rm = TRUE),
+      residual_med = median_or_na(.data$residual),
       log_residual_low = quantile_or_na(.data$log_residual, 0.025),
       log_residual_high = quantile_or_na(.data$log_residual, 0.975),
-      log_residual_med = median_or_na(.data$log_residual, na.rm = TRUE)
+      log_residual_med = median_or_na(.data$log_residual)
     ) |>
     dplyr::rename(
       residual = "residual_med",
