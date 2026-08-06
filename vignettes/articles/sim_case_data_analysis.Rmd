@@ -11,7 +11,15 @@ output:
     #theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
 ---
-  
+
+### The goal
+The goal of this vignette is to demonstrate the use of `sim_case_data()` and to
+demonstrate at what sample size antibody kinetics can be accurately replicated.
+To do so, we will model antibody kinetics from `nepal_sees` data. We will then 
+simulate longitudinal case data using `sim_case_data()`. We will then determine
+at what sample size the antibody kinetics, estimated with the entire `nepal_sees`
+data set, can be reproduced using the simulated longitudinal data. 
+
 ### Loading packages
 ```{r  setup, error = F, warning = F, message = F}
 library(dplyr)
