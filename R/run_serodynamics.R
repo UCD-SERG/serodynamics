@@ -262,9 +262,18 @@ run_serodynamics <- function(data,
       decay_type = decay_type
     )
   
-
+  # Prepping original data to be added as an attribute
+  original_data <- data %>%
+    dplyr::select(
+      dplyr::all_of(attr(data, "id_var")),
+      dplyr::all_of(attr(data, "biomarker_var")),
+      dplyr::all_of(attr(data, "timeindays")),
+      dplyr::all_of(attr(data, "value_var")),
+      dplyr::any_of(if (is.na(strat)) NULL else strat)
+    )
+  
   jags_out <- jags_out |>
-    structure(original_data = data, strat = strat)
+    structure(original_data = original_data, strat = strat)
 
   # Conditionally adding jags.post
   if (with_post) {
