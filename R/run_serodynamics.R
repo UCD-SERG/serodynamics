@@ -263,7 +263,7 @@ run_serodynamics <- function(data,
     )
   
   # Prepping original data to be added as an attribute
-  original_data <- data %>%
+  original_data <- data |>
     dplyr::select(
       dplyr::all_of(attr(data, "id_var")),
       dplyr::all_of(attr(data, "biomarker_var")),
