@@ -6,11 +6,11 @@
 \usage{
 prep_priors(
   max_antigens,
-  mu_hyp_param = c(1, 7, 1, -4, -1),
-  prec_hyp_param = c(1, 1e-05, 1, 0.001, 1),
-  omega_param = c(1, 50, 1, 10, 1),
-  wishdf_param = 20,
-  prec_logy_hyp_param = c(4, 1)
+  mu_hyp_param = NULL,
+  prec_hyp_param = NULL,
+  omega_param = NULL,
+  wishdf_param = NULL,
+  prec_logy_hyp_param = NULL
 )
 }
 \arguments{
@@ -20,37 +20,30 @@ antigen-isotypes (biomarkers) will be modeled.}
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
 parameters (y0, y1, t1, r, alpha) for each biomarker.
-If specified, must be 5 values long, representing the following parameters:
+Must be 5 values long, representing the following parameters:
 \itemize{
-\item y0 = baseline antibody concentration (default = 1.0)
-\item y1 = peak antibody concentration (default = 7.0)
-\item t1 = time to peak (default = 1.0)
-\item r = shape parameter (default = -4.0)
-\item alpha = decay rate (default = -1.0)
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item r = shape parameter
+\item alpha = decay rate
 }}
 
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters.}
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
 to vary between individuals.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters.}
 
 \item{wishdf_param}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
-If specified, must be 1 value long.
+Must be 1 value long.
 \itemize{
-\item default = 20.0
 \item The value of \code{wishdf_param} controls how informative the Wishart prior
 is. Higher values lead to tighter priors on individual variation.
 Lower values (e.g., 5–10) make the prior more weakly informative,
@@ -60,10 +53,7 @@ which can help improve convergence if the model is over-regularized.
 \item{prec_logy_hyp_param}{A \link{numeric} \link{vector} of 2 values corresponding to
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
-If specified, must be 2 values long:
-\itemize{
-\item defaults = 4.0, 1.0
-}}
+Must be 2 values long.}
 }
 \value{
 A "curve_params_priors" object

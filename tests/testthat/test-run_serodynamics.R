@@ -27,7 +27,12 @@ test_that(
       nmc = 10,
       niter = 10, # Number of iterations
       strat = "strat", # Variable to be stratified
-      with_pop_params = TRUE
+      with_pop_params = TRUE,
+      mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+      prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+      omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+      wishdf_param = 20,
+      prec_logy_hyp_param = c(4.0, 1.0)
     ) |>
       suppressWarnings()
 
@@ -95,7 +100,12 @@ test_that(
       strat = "bldculres", # Variable to be stratified by
       with_post = TRUE,
       with_pop_params = TRUE,
-      preclogy_per_iso = TRUE
+      preclogy_per_iso = TRUE,
+      mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+      prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+      omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+      wishdf_param = 20,
+      prec_logy_hyp_param = c(4.0, 1.0)
     ) |>
       suppressWarnings()
 
@@ -204,7 +214,12 @@ test_that(
       strat = "bldculres", # Variable to be stratified by
       with_post = TRUE,
       with_pop_params = TRUE,
-      preclogy_per_iso = TRUE
+      preclogy_per_iso = TRUE,
+      mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+      prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+      omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+      wishdf_param = 20,
+      prec_logy_hyp_param = c(4.0, 1.0)
     ) |>
       suppressWarnings()
 

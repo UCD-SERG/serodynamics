@@ -5,7 +5,9 @@
 #'  [runjags::run.jags()] as an MCMC
 #'  Bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()] models seroresponse dynamics to an
-#'  infection. The antibody dynamic curve includes the following parameters:
+#'  infection. Priors are required for modeling and must be specified prior to
+#'  running `run_serodynamics`. The antibody dynamic curve includes the 
+#'  following parameters:
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
