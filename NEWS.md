@@ -2,6 +2,8 @@
 
 ## Internal
 
+* Took away default priors from `run_serodynamics()`. Users must manually 
+  specify priors now in order to run function.
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the
