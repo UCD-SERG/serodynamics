@@ -50,7 +50,13 @@ test_that(
                         "population_params", "priors",
                         "original_data", "decay_type", "strat"))
 
-    expect_equal(attr(results, "original_data"), dataset)
+    expect_equal(attr(results, "original_data"), dataset |>
+                   dplyr::select(dplyr::all_of(attr(dataset, "id_var")),
+                     dplyr::all_of(attr(dataset, "biomarker_var")),
+                     dplyr::all_of(attr(dataset, "timeindays")),
+                     dplyr::all_of(attr(dataset, "value_var")),
+                     strat
+                   ))
     expect_equal(attr(results, "strat"), "strat")
 
     pop_params <- attributes(results)$population_params
@@ -103,7 +109,13 @@ test_that(
                         "priors", "original_data", "decay_type", "strat", 
                         "jags.post"))
 
-    expect_equal(attr(results, "original_data"), dataset)
+    expect_equal(attr(results, "original_data"), dataset  |>
+                   dplyr::select(dplyr::all_of(attr(dataset, "id_var")),
+                     dplyr::all_of(attr(dataset, "biomarker_var")),
+                     dplyr::all_of(attr(dataset, "timeindays")),
+                     dplyr::all_of(attr(dataset, "value_var")),
+                     bldculres
+                   ))
     expect_equal(attr(results, "strat"), "bldculres")
     
     results |>
