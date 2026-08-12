@@ -34,10 +34,6 @@
 #'   (i.e. `log10(observed) - log10(fitted)`, with values floored at
 #'   `min_value` beforehand)
 #'
-#'   Rows from `original_data` whose stratification value is `NA` are retained
-#'   in the output with `NA` `fitted` and `residual` values, since no posterior
-#'   estimate is available for those (Subject, Iso_type, Stratification)
-#'   tuples.
 #' @keywords internal
 calc_fit_mod <- function(modeled_dat,
                          original_data,
