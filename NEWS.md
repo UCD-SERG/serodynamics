@@ -2,13 +2,29 @@
 
 ## Internal
 
+* Accepted an `@claude review` mention as a review trigger, alongside
+  `/review`.
+  Disabling the agent bot left `/review` as the only phrasing that dispatched
+  a review, but the mention is what everyone kept typing, and it produced a
+  run with every job skipped and no comment posted -- indistinguishable from a
+  broken bot.
+  Three review requests from members went unanswered that way.
+  `claude-code-review.yml`'s `dispatch-on-comment` job now also accepts the
+  mention, matched with `Morrison-Lab/gha`'s own `detect-review-request`
+  action rather than a second hand-rolled pattern, so a mention that is a task
+  for the agent, a question, or the phrasing merely quoted in a code span or
+  blockquote still does not dispatch.
+  The mention is accepted only while the agent is off; `claude.yml`'s
+  re-enable instructions now say to remove it at the same time, since
+  answering one comment in both workflows dispatches two paid reviews.
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the
   agent, and neither does a manual dispatch (the reusable workflow runs
   unattended on `workflow_dispatch` by design).
   Reviews are the only Claude capability left, and they run on request only:
-  comment `/review` on a pull request.
+  comment `/review` on a pull request (an `@claude review` mention was added
+  as a second trigger afterwards -- see the entry above).
   That path is new here -- `claude-code-review.yml` gained an `issue_comment`
   trigger and a `dispatch-on-comment` job, since the `@claude review` mention
   it previously relied on went away with the agent.

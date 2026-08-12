@@ -6,8 +6,8 @@
 #
 # ---------------------------------------------------------------------------
 # DISABLED. The @claude agent is switched off in this repo for now; only
-# reviews are allowed, and only on request (comment `/review` on a PR -- see
-# claude-code-review.yml).
+# reviews are allowed, and only on request (comment `/review` on a PR, or
+# mention `@claude review` -- see claude-code-review.yml).
 #
 # Two mechanisms, because either alone is insufficient:
 #   - The reactive triggers below are commented out, so no comment, issue, or
@@ -19,7 +19,11 @@
 #     the placeholder trigger would leave the agent manually runnable.
 #
 # To re-enable: uncomment the trigger block below and delete the job's
-# `if: false`. Nothing else needs to change.
+# `if: false` -- AND, in the same change, delete the `@claude` clause in
+# claude-code-review.yml's dispatch-on-comment `if:` together with its
+# mention-matcher step. That job accepts the mention only because this
+# workflow is off; leaving both in place makes a single `@claude review`
+# comment dispatch two paid reviews, against possibly different heads (#277).
 # ---------------------------------------------------------------------------
 name: Claude Code
 
@@ -59,5 +63,6 @@ jobs:
 # dispatched two paid review runs, which could review different heads since
 # the local job had no `needs: claude`. See #277 for both halves. Dispatch
 # now happens only in the reusable workflow, which applies its own
-# trusted-author gate -- and while this workflow is disabled, only via the
-# `/review` comment path in claude-code-review.yml.
+# trusted-author gate -- and while this workflow is disabled, only via
+# claude-code-review.yml's dispatch-on-comment job, which accepts `/review`
+# and, precisely because this workflow is off, an `@claude review` mention.
