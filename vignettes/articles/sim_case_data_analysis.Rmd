@@ -115,8 +115,9 @@ n_select <- c("3", "5", "10", "30", "50", "100", "150", "188")
 set.seed(15)
 sero_list <- list()
 for (i in n_select) {
-  for (s in 1:20)
-  sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
+  # for (s in 1:20) {
+      for (s in 1:2) {
+  sampled_n <- sample(unique(simulated_data$id), size = as.numeric(i))
   simulated_run <- simulated_data %>%
     filter(id %in% sampled_n) %>%
     select(id, timeindays, antigen_iso, value, visit_num)
@@ -127,14 +128,44 @@ for (i in n_select) {
                                         nmc = 500,
                                         niter = 2000,
                                         with_pop_params = TRUE)
-  sero_list[[i]] <- sero_run %>%
-    mutate(Stratification = i, sim = s)
-}
-}
+  sero_run <- sero_run %>%
+    mutate(strat = paste0(i, "_", s))
+  sero_list[[paste0(i, "_", s)]] <- sero_run
+  }
+  }
 
 saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
+  
+### Looking at raw values of output
+Look at predictive parameters
+```{r}
+
+post_pred_sim <- bind_rows(sero_list)
+post_pred_summ <- post_pred_sim %>%
+  group_by(Parameter, strat) %>%
+  summarise(median = stats::median(value)) %>%
+  mutate(n_samp = sub("_.*", "", strat)) %>%
+  group_by(Parameter, n_samp) %>%
+  summarise(median = stats::median(median))
+
+# Need to also gather median from the original data
+
+```
+
+  
+```{r}
+post_pop_full <- list()
+# Getting population parameters
+for (i in names(sero_list)) {
+  post_pop <- attributes(sero_list[[i]])$population_param %>%
+    mutate(strat = i)
+  post_pop_full <- bind_rows(post_pop_full, post_pop)
+}
+
+```
+
   
 ### Plotting the modeled serokinetic curve of simulated predictive distribution  
 ```{r error = F, warning = F, message = F}
