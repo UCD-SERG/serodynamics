@@ -65,5 +65,5 @@ median_or_na <- function(x) {
   if (length(x) == 0) {
     return(NA_real_)
   }
-  return(stats::median(x, names = FALSE))
+  return(stats::median(x))
 }
