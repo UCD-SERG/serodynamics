@@ -2,6 +2,42 @@
 
 ## Internal
 
+* Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0 (#288).
+  The documentation check installs whatever roxygen2 is current rather than a
+  fixed version, so the 8.1.0 release started rewriting both files against the
+  8.0.0 they were generated with, and the check failed on every pull request
+  -- including ones that touch no R code at all.
+  The `NAMESPACE` change is formatting only: where several symbols come from
+  one package, 8.1.0 groups them into a single `importFrom()` call instead of
+  writing a line for each.
+  Parsing both versions gives the same 22 exports, 27 imports and one S3
+  method.
+  `DESCRIPTION` moves to `Config/roxygen2/version: 8.1.0` and drops the older
+  `RoxygenNote` field, which 8.1.0 no longer writes.
+  The version is left floating rather than fixed, so a later roxygen2 release
+  will need the same treatment.
+
+* Restored `@claude review` as a way to request a review (#285).
+  Disabling the agent bot moved review dispatch into
+  `claude-code-review.yml` behind a comment starting with `/review`, on the
+  reasoning that the mention form belonged to `claude.yml` -- which had just
+  been switched off.
+  So `@claude review` stopped doing anything at all, and did so silently:
+  both jobs skipped, nothing went red, and the person asking got no reply.
+  All three review requests made in the twelve days that followed used the
+  mention form and were ignored; `/review` was never typed once.
+  Both spellings now work.
+  The mention is matched with `Morrison-Lab/gha`'s own
+  `detect-review-request` action rather than a pattern of our own, so an
+  agent task
+  (`@claude, please fix the failing test`) is still not mistaken for a review
+  request, and a mention quoted in a code span or a quoted line does not
+  trigger one.
+* Replaced the silence with a reply when the `@claude` agent is addressed.
+  A mention that is not a review request now gets a short comment saying the
+  agent is switched off and naming the triggers that do work, since a skipped
+  workflow is indistinguishable from a broken bot -- which is why the gap
+  above went unnoticed for so long.
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the

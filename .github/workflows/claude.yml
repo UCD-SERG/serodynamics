@@ -6,8 +6,8 @@
 #
 # ---------------------------------------------------------------------------
 # DISABLED. The @claude agent is switched off in this repo for now; only
-# reviews are allowed, and only on request (comment `/review` on a PR -- see
-# claude-code-review.yml).
+# reviews are allowed, and only on request (comment `@claude review` or
+# `/review` on a PR -- see claude-code-review.yml).
 #
 # Two mechanisms, because either alone is insufficient:
 #   - The reactive triggers below are commented out, so no comment, issue, or
@@ -18,8 +18,17 @@
 #     manual dispatch already requires Actions write access). Without this,
 #     the placeholder trigger would leave the agent manually runnable.
 #
-# To re-enable: uncomment the trigger block below and delete the job's
-# `if: false`. Nothing else needs to change.
+# To re-enable: uncomment the trigger block below, delete the job's
+# `if: false`, and -- this part is NOT optional -- delete the `@claude review`
+# mention path from claude-code-review.yml's dispatch-on-comment job, leaving
+# it `/review`-only again.
+#
+# That mention path exists only because this workflow is off (#285: with the
+# agent disabled and dispatch gated on `/review` alone, every `@claude review`
+# went silently unanswered). Re-enabling the agent without removing it gives
+# `@claude review` two dispatchers -- the reusable workflow's own matcher and
+# that local job -- which is #277: two paid review runs per request, against
+# possibly different heads, since neither waits for the other.
 # ---------------------------------------------------------------------------
 name: Claude Code
 
@@ -59,5 +68,8 @@ jobs:
 # dispatched two paid review runs, which could review different heads since
 # the local job had no `needs: claude`. See #277 for both halves. Dispatch
 # now happens only in the reusable workflow, which applies its own
-# trusted-author gate -- and while this workflow is disabled, only via the
-# `/review` comment path in claude-code-review.yml.
+# trusted-author gate -- and while this workflow is disabled, only via
+# claude-code-review.yml's own comment path. Note that path now matches the
+# `@claude review` mention as well as `/review`, so the collision described
+# above is live again the moment this workflow is switched back on. See the
+# re-enable instructions in the header.
