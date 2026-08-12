@@ -2,6 +2,21 @@
 
 ## Internal
 
+* Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0 (#288).
+  The documentation check installs whatever roxygen2 is current rather than a
+  fixed version, so the 8.1.0 release started rewriting both files against the
+  8.0.0 they were generated with, and the check failed on every pull request
+  -- including ones that touch no R code at all.
+  The `NAMESPACE` change is formatting only: where several symbols come from
+  one package, 8.1.0 groups them into a single `importFrom()` call instead of
+  writing a line for each.
+  Parsing both versions gives the same 22 exports, 27 imports and one S3
+  method.
+  `DESCRIPTION` moves to `Config/roxygen2/version: 8.1.0` and drops the older
+  `RoxygenNote` field, which 8.1.0 no longer writes.
+  The version is left floating rather than fixed, so a later roxygen2 release
+  will need the same treatment.
+
 * Restored `@claude review` as a way to request a review (#285).
   Disabling the agent bot moved review dispatch into
   `claude-code-review.yml` behind a comment starting with `/review`, on the
