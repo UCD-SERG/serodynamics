@@ -50,11 +50,6 @@ posterior draws) of the residual, giving a precision interval around
 (i.e. \code{log10(observed) - log10(fitted)}, with values floored at
 \code{min_value} beforehand)
 }
-
-Rows from \code{original_data} whose stratification value is \code{NA} are retained
-in the output with \code{NA} \code{fitted} and \code{residual} values, since no posterior
-estimate is available for those (Subject, Iso_type, Stratification)
-tuples.
 }
 \description{
 \code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates

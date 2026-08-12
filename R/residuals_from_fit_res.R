@@ -4,10 +4,7 @@
 #' quantiles), on the requested scale, for plotting.
 #' @param fit_res A [data.frame] of fitted and residual values, as returned by
 #' [calc_fit_mod()].
-#' @param ids (Optional) Participant IDs to include.
-#' @param antigen_isos (Optional) Antigen-isotypes (`antigen_iso`) to include.
-#' @param log_y [logical]; if `TRUE`, use log10-scale residuals; if `FALSE`, use
-#'   natural-scale residuals.
+#' @inheritParams plot_residuals ids antigen_isos log_y
 #' @return A [tibble::tbl_df] ready to plot.
 #' @keywords internal
 residuals_from_fit_res <- function(fit_res, ids, antigen_isos, log_y) {

@@ -10,12 +10,15 @@ residuals_from_fit_res(fit_res, ids, antigen_isos, log_y)
 \item{fit_res}{A \link{data.frame} of fitted and residual values, as returned by
 \code{\link[=calc_fit_mod]{calc_fit_mod()}}.}
 
-\item{ids}{(Optional) Participant IDs to include.}
+\item{ids}{(Optional) Participant IDs to include. When supplied, points
+(and, if \code{connect_lines = TRUE}, lines) are colored by subject; otherwise
+no color is used.}
 
 \item{antigen_isos}{(Optional) Antigen-isotypes (\code{antigen_iso}) to include.}
 
-\item{log_y}{\link{logical}; if \code{TRUE}, use log10-scale residuals; if \code{FALSE}, use
-natural-scale residuals.}
+\item{log_y}{\link{logical}; if \code{TRUE} (default), plots the residual computed on
+the log10 scale (\code{log10(observed) - log10(fitted)}); if \code{FALSE}, plots the
+natural-scale residual.}
 }
 \value{
 A \link[tibble:tbl_df]{tibble::tbl_df} ready to plot.
