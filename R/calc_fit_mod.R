@@ -49,8 +49,15 @@ calc_fit_mod <- function(modeled_dat,
         is.na(min_value) || !is.finite(min_value) || min_value <= 0) {
     cli::cli_abort("{.arg min_value} must be a single positive number.")
   }
-
-  strat_col <- if (is.na(strat)) character() else c(Stratification = strat)
+  
+  # Creating a stratification in original data if not specified
+  if (is.na(strat)) {
+    original_data <- original_data |> mutate(Stratification = "None")
+    strat_col <- c("Stratification" = "Stratification")
+  } else {
+    strat_col <- c("Stratification" = strat)
+  }
+  
   
   # Preparing original data for calculating fitted and residuals
   original_data <- original_data |>
