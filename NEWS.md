@@ -2,6 +2,27 @@
 
 ## Internal
 
+* Restored `@claude review` as a way to request a review (#285).
+  Disabling the agent bot moved review dispatch into
+  `claude-code-review.yml` behind a comment starting with `/review`, on the
+  reasoning that the mention form belonged to `claude.yml` -- which had just
+  been switched off.
+  So `@claude review` stopped doing anything at all, and did so silently:
+  both jobs skipped, nothing went red, and the person asking got no reply.
+  All three review requests made in the twelve days that followed used the
+  mention form and were ignored; `/review` was never typed once.
+  Both spellings now work.
+  The mention is matched with `Morrison-Lab/gha`'s own
+  `detect-review-request` action rather than a pattern of our own, so an
+  agent task
+  (`@claude, please fix the failing test`) is still not mistaken for a review
+  request, and a mention quoted in a code span or a quoted line does not
+  trigger one.
+* Replaced the silence with a reply when the `@claude` agent is addressed.
+  A mention that is not a review request now gets a short comment saying the
+  agent is switched off and naming the triggers that do work, since a skipped
+  workflow is indistinguishable from a broken bot -- which is why the gap
+  above went unnoticed for so long.
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the
