@@ -111,10 +111,11 @@ simulated_data <- simulated_data %>%
                biomarker_var = "antigen_iso",
                value_var = "value",
                time_in_days = "timeindays")
-n_select <- c("1", "5", "10", "30", "50", "100", "150", "188")
+n_select <- c("3", "5", "10", "30", "50", "100", "150", "188")
 set.seed(15)
 sero_list <- list()
 for (i in n_select) {
+  for (s in 1:20)
   sampled_n <- sample(unique(simulated_data$id), as.numeric(i))
   simulated_run <- simulated_data %>%
     filter(id %in% sampled_n) %>%
@@ -127,9 +128,11 @@ for (i in n_select) {
                                         niter = 2000,
                                         with_pop_params = TRUE)
   sero_list[[i]] <- sero_run %>%
-    mutate(Stratification = i)
+    mutate(Stratification = i, sim = s)
 }
-# saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+}
+
+saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
 
 ```
   
