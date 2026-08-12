@@ -52,18 +52,24 @@ jobs:
   # `gh workflow run` (the reusable workflow's jobs skip a raw issue_comment
   # run), so it needs this file on the default branch first.
   #
-  # Both clauses below are cheap PRE-FILTERS only, kept broad on purpose: the
-  # authoritative match happens in the steps below, where a real matcher can
-  # see Markdown and word boundaries. Keeping the gate here loose and the
-  # decision there is what lets one matcher serve both this workflow and
-  # claude.yml.
+  # The clauses below are cheap PRE-FILTERS only: the authoritative match
+  # happens in the steps, where a real matcher can see Markdown and word
+  # boundaries. Keeping the gate loose and the decision there is what lets one
+  # matcher serve both this workflow and claude.yml.
+  #
+  # The mention pre-filter requires the word `review` as well as the mention.
+  # That cannot drop a request the matcher would have accepted -- its pattern
+  # ends in `(re-?)?review`, so every body it matches contains `review`
+  # literally -- and it keeps a runner from starting for the commonest kind of
+  # mention by far, a task for the agent that never asks for a review.
   dispatch-on-comment:
     if: >-
       github.event_name == 'issue_comment' &&
       github.event.issue.pull_request &&
       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
       (startsWith(github.event.comment.body, '/review') ||
-      contains(github.event.comment.body, '@claude'))
+      (contains(github.event.comment.body, '@claude') &&
+      contains(github.event.comment.body, 'review')))
     runs-on: ubuntu-latest
     permissions:
       actions: write        # dispatch this workflow via `gh workflow run`
