@@ -72,6 +72,7 @@ plot_serocurve(nepal_sees_output, log_y = TRUE, param_source = "population")
 Simulating case data using `as_case_data()` using the modeled antibody kinetic 
 parameters as the curve parameters.  
 ```{r error = F, warning = F, message = F}
+
 nepal_sees_prep <- nepal_sees_output %>%
   filter(Subject == "newperson") %>%
   spread(Parameter, value) %>%
@@ -129,8 +130,9 @@ for (i in n_select) {
                                         niter = 2000,
                                         with_pop_params = TRUE)
   sero_run <- sero_run %>%
-    mutate(strat = paste0(i, "_", s))
-  sero_list[[paste0(i, "_", s)]] <- sero_run
+    mutate(sim = s, 
+           n = i)
+  sero_list[[paste0("n = ", i, ", sim = ", s)]] <- sero_run
   }
   }
 
@@ -144,13 +146,49 @@ Look at predictive parameters
 
 post_pred_sim <- bind_rows(sero_list)
 post_pred_summ <- post_pred_sim %>%
-  group_by(Parameter, strat) %>%
-  summarise(median = stats::median(value)) %>%
-  mutate(n_samp = sub("_.*", "", strat)) %>%
-  group_by(Parameter, n_samp) %>%
-  summarise(median = stats::median(median))
+  filter(Subject == "newperson") %>%
+  group_by(Parameter, sim, n) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975))%>%
+  mutate(type = "Simulated posterior")
+  # mutate(n_samp = sub("_.*", "", strat)) %>%
+  # group_by(Parameter, n_samp) %>%
+  # summarise(median_pred = stats::median(median))
 
-# Need to also gather median from the original data
+# Need to also gather median from the original data model
+nepal_sees_summ <- nepal_sees_output %>%
+  filter(Subject == "newperson") %>%
+  group_by(Parameter) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975)) %>%
+  mutate(type = "Original posterior",
+         sim = "Original")
+
+nepal_sees_summ_bind <- data.frame(n = c(rep("3", 5),  rep("5", 5), rep("10", 5), 
+                                         rep("30", 5), rep("50", 5), rep("100", 5), 
+                                         rep("150", 5), rep("188", 5)), 
+                                   Parameter = rep(c("alpha", "shape", "y1", "y0",
+                                                     "t1"), 8))
+nepal_sees_summ <- left_join(nepal_sees_summ, nepal_sees_summ_bind, by = "Parameter")
+
+plot_pred_summ <- bind_rows(post_pred_summ %>%
+                              mutate(sim = as.character(sim)), 
+                            nepal_sees_summ) 
+
+plot_pred_summ$n <- factor(plot_pred_summ$n, rev(c("3", "5", "10", "30", "50", 
+                                                         "100", "150", "188")))
+plot_pred_summ$sim <- factor(plot_pred_summ$sim, )
+
+ggplot(plot_pred_summ %>% filter(Parameter == "alpha")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x") +
+   theme_bw()
+
+
 
 ```
 
