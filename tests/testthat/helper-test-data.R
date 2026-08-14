@@ -5,7 +5,6 @@ dataset <- serodynamics::nepal_sees
 
 results_unstrat_exp <- run_serodynamics(
   data = dataset, # The data set input
-  file_mod = serodynamics_example("model.jags"),
   decay_type = "exponential",
   nchain = 2, # Number of mcmc chains to run
   nadapt = 10, # Number of adaptations to run
