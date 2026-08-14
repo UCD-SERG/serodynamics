@@ -15,8 +15,9 @@ fit_subject <- function(subject, draws_wide, original_data, decay_type,
                       by = c("Subject", "Iso_type", "Stratification"), 
                       relationship = "many-to-many")
   # Calculate and summarize fitted values 
-  fit_dat <- summarise_subject_fit(matched_dat = matched_dat, decay_type = decay_type, 
-                        min_value = min_value)
+  fit_dat <- summarise_subject_fit(matched_dat = matched_dat, 
+                                   decay_type = decay_type,  
+                                   min_value = min_value)
   return(fit_dat)
 }
   
