@@ -2,7 +2,7 @@
 dataset <- serodynamics::nepal_sees_jags_output
 
 testthat::test_that(
-  "plot_residuals() facets by Iso_type and orders x by time",
+  "plot_residuals() facets by Iso_type and orders x by time with strat",
   {
     plot1 <- plot_residuals(
       model = dataset,
@@ -85,23 +85,8 @@ testthat::test_that(
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
     withr::local_seed(1)
-    exp_dataset <- serodynamics::nepal_sees
-
-    model <- run_serodynamics(
-      data = exp_dataset,
-      decay_type = "exponential",
-      nchain = 2,
-      nadapt = 10,
-      nburn = 10,
-      nmc = 100,
-      niter = 100,
-      strat = "bldculres",
-      with_post = FALSE,
-      with_pop_params = TRUE
-    ) |>
-      suppressWarnings()
-
-    testthat::expect_equal(attr(model, "decay_type"), "exponential")
+    model <- results_unstrat_exp
+    testthat::expect_equal(attr(model,"decay_type"), "exponential")
 
     fit_res <- calc_fit_mod(
       modeled_dat = model,
