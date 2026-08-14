@@ -15,13 +15,14 @@ fit_subject <- function(subject, draws_wide, original_data, decay_type,
                       by = c("Subject", "Iso_type", "Stratification"), 
                       relationship = "many-to-many")
   # Calculate and summarize fitted values 
-  summarise_subject_fit(matched_dat = matched_dat, decay_type = decay_type, 
+  fit_dat <- summarise_subject_fit(matched_dat = matched_dat, decay_type = decay_type, 
                         min_value = min_value)
+  return(fit_dat)
 }
   
 # Calculate fitted values and summarize residuals 
 summarise_subject_fit <- function(matched_dat, decay_type, min_value) { 
-  matched_dat |> 
+  fit_dat <- matched_dat |> 
     dplyr::mutate(fitted = ab(.data$t, .data$y0, .data$y1,
                               .data$t1, .data$alpha, .data$shape, 
                               decay_type = decay_type), 
@@ -45,6 +46,7 @@ summarise_subject_fit <- function(matched_dat, decay_type, min_value) {
                                   "t", "fitted", "residual", "residual_low", 
                                   "residual_high", "log_residual", 
                                   "log_residual_low", "log_residual_high")))
+  return(fit_dat)
 }
   
   

@@ -84,4 +84,6 @@ calc_fit_mod <- function(modeled_dat,
   
   # Combine summarized results 
   dplyr::bind_rows(fit_list)
+  
+  return(fit_list)
 }
