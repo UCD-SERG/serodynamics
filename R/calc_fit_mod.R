@@ -83,7 +83,6 @@ calc_fit_mod <- function(modeled_dat,
                      min_value = min_value) 
   
   # Combine summarized results 
-  dplyr::bind_rows(fit_list)
+  return(dplyr::bind_rows(fit_list))
   
-  return(fit_list)
 }

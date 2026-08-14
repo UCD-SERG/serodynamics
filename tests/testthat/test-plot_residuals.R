@@ -79,11 +79,11 @@ testthat::test_that(
 testthat::test_that(
   "plot_residuals() uses decay_type = 'exponential' from run_serodynamics()",
   {
-    testthat::skip_on_cran()
-    testthat::skip_if_not(
-      Sys.getenv("RUN_HEAVY_TESTS") == "true",
-      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    )
+    # testthat::skip_on_cran()
+    # testthat::skip_if_not(
+    #   Sys.getenv("RUN_HEAVY_TESTS") == "true",
+    #   message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    # )
     withr::local_seed(1)
     model <- results_unstrat_exp
     testthat::expect_equal(attr(model,"decay_type"), "exponential")
