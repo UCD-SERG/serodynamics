@@ -79,13 +79,29 @@ testthat::test_that(
 testthat::test_that(
   "plot_residuals() uses decay_type = 'exponential' from run_serodynamics()",
   {
-    # testthat::skip_on_cran()
-    # testthat::skip_if_not(
-    #   Sys.getenv("RUN_HEAVY_TESTS") == "true",
-    #   message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
-    # )
+    testthat::skip_on_cran()
+    testthat::skip_if_not(
+      Sys.getenv("RUN_HEAVY_TESTS") == "true",
+      message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
+    )
     withr::local_seed(1)
-    model <- results_unstrat_exp
+    model <- run_serodynamics(
+      data = serodynamics::nepal_sees, # The data set input
+      decay_type = "exponential",
+      nchain = 2, # Number of mcmc chains to run
+      nadapt = 10, # Number of adaptations to run
+      nburn = 10, # Number of unrecorded samples before sampling begins
+      nmc = 100,
+      niter = 100, # Number of iterations
+      strat = NA, # Variable to be stratified
+      with_post = TRUE,
+      mu_hyp_param = c(1, 4, 1, -3, -1),
+      prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
+      omega_param = c(1, 20, 1, 10, 1),
+      wishdf_param = 10,
+      prec_logy_hyp_param = c(3, 1)
+    ) |>
+      suppressWarnings()
     testthat::expect_equal(attr(model,"decay_type"), "exponential")
 
     fit_res <- calc_fit_mod(
