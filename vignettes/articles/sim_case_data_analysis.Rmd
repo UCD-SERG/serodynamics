@@ -177,20 +177,87 @@ plot_pred_summ <- bind_rows(post_pred_summ %>%
                               mutate(sim = as.character(sim)), 
                             nepal_sees_summ) 
 
-plot_pred_summ$n <- factor(plot_pred_summ$n, rev(c("3", "5", "10", "30", "50", 
-                                                         "100", "150", "188")))
-plot_pred_summ$sim <- factor(plot_pred_summ$sim, )
+plot_pred_summ$n <- factor(plot_pred_summ$n, c("3", "5", "10", "30", "50", 
+                                                         "100", "150", "188"))
+plot_pred_summ$sim <- factor(plot_pred_summ$sim, rev(c("Original", 
+                                                   as.character(unique(post_pred_summ$sim)))))
 
-ggplot(plot_pred_summ %>% filter(Parameter == "alpha")) +
-  geom_point(aes(x = median, y = sim, color = type)) +
-  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
-  facet_wrap(~n, scales = "free_x") +
-   theme_bw()
 
 
 
 ```
+
+
+Results for y1
+```{r}
+ggplot(plot_pred_summ %>% filter(Parameter == "y1")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x") +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation") +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+
+```
+
+Results for y0
+```{r}
+ggplot(plot_pred_summ %>% filter(Parameter == "y0")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x") +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation") +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+
+```
+
+Results for shape
+```{r}
+ggplot(plot_pred_summ %>% filter(Parameter == "shape")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x") +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation") +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+
+```
+
+Results for alpha
+```{r}
+ggplot(plot_pred_summ %>% filter(Parameter == "alpha")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x", ncol = 2) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation") +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+
+```
+
+Results for t1
+```{r}
+ggplot(plot_pred_summ %>% filter(Parameter == "t1")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, scales = "free_x", ncol = 2) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation") +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+
+```
+
+### RMSE analysis
+```{r}
+
+```
+
 
   
 ```{r}
