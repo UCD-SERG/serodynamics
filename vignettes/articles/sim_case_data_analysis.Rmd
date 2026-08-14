@@ -147,19 +147,16 @@ Look at predictive parameters
 post_pred_sim <- bind_rows(sero_list)
 post_pred_summ <- post_pred_sim %>%
   filter(Subject == "newperson") %>%
-  group_by(Parameter, sim, n) %>%
+  group_by(Parameter, sim, n, Iso_type) %>%
   summarise(median = stats::median(value),
             quant2.5 = stats::quantile(value, 0.025),
             quant97.5 = stats::quantile(value, 0.975))%>%
   mutate(type = "Simulated posterior")
-  # mutate(n_samp = sub("_.*", "", strat)) %>%
-  # group_by(Parameter, n_samp) %>%
-  # summarise(median_pred = stats::median(median))
 
 # Need to also gather median from the original data model
 nepal_sees_summ <- nepal_sees_output %>%
   filter(Subject == "newperson") %>%
-  group_by(Parameter) %>%
+  group_by(Parameter, Iso_type) %>%
   summarise(median = stats::median(value),
             quant2.5 = stats::quantile(value, 0.025),
             quant97.5 = stats::quantile(value, 0.975)) %>%
@@ -182,76 +179,142 @@ plot_pred_summ$n <- factor(plot_pred_summ$n, c("3", "5", "10", "30", "50",
 plot_pred_summ$sim <- factor(plot_pred_summ$sim, rev(c("Original", 
                                                    as.character(unique(post_pred_summ$sim)))))
 
+```
 
 
+Plotting posterior distributions HlyE_IgA
+```{r}
+
+for (i in c("y0", "y1", "t1", "alpha", "shape")) {
+print(
+  ggplot(plot_pred_summ %>% filter(Parameter == i & Iso_type == "HlyE_IgA")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+)
+}
+
+```
+
+Plotting posterior distributions HlyE_IgG
+```{r}
+
+for (i in c("y0", "y1", "t1", "alpha", "shape")) {
+
+ggplot(plot_pred_summ %>% filter(Parameter == i & Iso_type == "HlyE_IgG")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
+                      " \\by number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+  
+}
+
+```
+
+### Population parameters
+Look at predictive parameters
+```{r}
+
+# Extracting population parameters
+pop_data <- list()
+for (i in names(sero_list)) {
+  pop_atts <- attributes(sero_list[[i]])$population_params
+  n <- str_extract(i, "(?<=n = )\\d+")
+  sim <- str_extract(i, "(?<=sim = )\\d+")
+  pop_atts <- pop_atts %>%
+    mutate(n =  n,
+           sim = sim)
+  pop_data <- dplyr::bind_rows(pop_data, pop_atts)
+}
+
+post_pop_summ <- pop_data %>%
+  filter(Population_Parameter == "mu.par") %>%
+  group_by(Parameter, sim, n, Iso_type) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975))%>%
+  mutate(type = "Simulated posterior")
+
+# Need to also gather median from the original data model
+nepal_pop_summ <- attributes(nepal_sees_output)$population_params %>%
+  filter(Population_Parameter == "mu.par") %>%
+  group_by(Parameter, Iso_type) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975)) %>%
+  mutate(type = "Original posterior",
+         sim = "Original")
+
+nepal_pop_summ_bind <- data.frame(n = c(rep("3", 5),  rep("5", 5), rep("10", 5), 
+                                         rep("30", 5), rep("50", 5), rep("100", 5), 
+                                         rep("150", 5), rep("188", 5)), 
+                                   Parameter = rep(c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
+                                                     "log(t1)"), 8))
+nepal_pop_summ <- left_join(nepal_pop_summ, nepal_pop_summ_bind, by = "Parameter")
+
+plot_pop_summ <- bind_rows(post_pop_summ, nepal_pop_summ) 
+
+plot_pop_summ$n <- factor(plot_pop_summ$n, c("3", "5", "10", "30", "50", 
+                                                         "100", "150", "188"))
+plot_pop_summ$sim <- factor(plot_pop_summ$sim, rev(c("Original", 
+                                                   as.character(unique(post_pop_summ$sim)))))
 
 ```
 
 
-Results for y1
+Plotting posterior distributions of the population parameters for HlyE_IgA
 ```{r}
-ggplot(plot_pred_summ %>% filter(Parameter == "y1")) +
+
+for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
+                                                     "log(t1)")) {
+print(
+ggplot(plot_pop_summ %>% filter(Parameter == i &  Iso_type == "HlyE_IgA")) +
   geom_point(aes(x = median, y = sim, color = type)) +
   geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
+  # scale_x_log10() +
   facet_wrap(~n, scales = "free_x") +
    theme_bw() +
-  labs(x = "Posterior distribution", y = "Simulation") +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior population distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
   scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+)
+}
 
 ```
 
-Results for y0
+Plotting posterior distributions of the population parameters for HlyE_IgG
 ```{r}
-ggplot(plot_pred_summ %>% filter(Parameter == "y0")) +
+
+for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
+                                                     "log(t1)")) {
+print(
+ggplot(plot_pop_summ %>% filter(Parameter == i &  Iso_type == "HlyE_IgG")) +
   geom_point(aes(x = median, y = sim, color = type)) +
   geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
+  # scale_x_log10() +
   facet_wrap(~n, scales = "free_x") +
    theme_bw() +
-  labs(x = "Posterior distribution", y = "Simulation") +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior population distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
   scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+)
+}
 
 ```
 
-Results for shape
-```{r}
-ggplot(plot_pred_summ %>% filter(Parameter == "shape")) +
-  geom_point(aes(x = median, y = sim, color = type)) +
-  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
-  facet_wrap(~n, scales = "free_x") +
-   theme_bw() +
-  labs(x = "Posterior distribution", y = "Simulation") +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
-
-```
-
-Results for alpha
-```{r}
-ggplot(plot_pred_summ %>% filter(Parameter == "alpha")) +
-  geom_point(aes(x = median, y = sim, color = type)) +
-  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
-  facet_wrap(~n, scales = "free_x", ncol = 2) +
-   theme_bw() +
-  labs(x = "Posterior distribution", y = "Simulation") +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
-
-```
-
-Results for t1
-```{r}
-ggplot(plot_pred_summ %>% filter(Parameter == "t1")) +
-  geom_point(aes(x = median, y = sim, color = type)) +
-  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
-  scale_x_log10() +
-  facet_wrap(~n, scales = "free_x", ncol = 2) +
-   theme_bw() +
-  labs(x = "Posterior distribution", y = "Simulation") +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
-
-```
 
 ### RMSE analysis
 ```{r}
