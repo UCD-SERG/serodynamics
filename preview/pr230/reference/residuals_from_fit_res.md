@@ -2,7 +2,8 @@
 
 Filters and reshapes fitted/residual values (and their posterior
 quantiles), on the requested scale, for plotting. Ensure expected
-residual columns exist. These are normally supplied by calc_fit_mod(),
+residual columns exist. These are normally supplied by
+[`calc_fit_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr230/reference/calc_fit_mod.md),
 but fill missing columns defensively.
 
 ## Usage
