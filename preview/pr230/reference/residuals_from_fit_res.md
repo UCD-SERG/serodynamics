@@ -1,7 +1,9 @@
 # Extracts Residuals for Plotting
 
 Filters and reshapes fitted/residual values (and their posterior
-quantiles), on the requested scale, for plotting.
+quantiles), on the requested scale, for plotting. Ensure expected
+residual columns exist. These are normally supplied by calc_fit_mod(),
+but fill missing columns defensively.
 
 ## Usage
 
