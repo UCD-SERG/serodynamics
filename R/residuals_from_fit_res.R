@@ -1,7 +1,9 @@
 #' @title Extracts Residuals for Plotting
 #' @description
 #' Filters and reshapes fitted/residual values (and their posterior
-#' quantiles), on the requested scale, for plotting.
+#' quantiles), on the requested scale, for plotting. Ensure expected residual 
+#' columns exist. These are normally supplied 
+#' by calc_fit_mod(), but fill missing columns defensively.
 #' @param fit_res A [data.frame] of fitted and residual values, as returned by
 #' [calc_fit_mod()].
 #' @inheritParams plot_residuals ids antigen_isos log_y
