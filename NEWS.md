@@ -74,8 +74,18 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
-
-* Added an exponential decay option for antibody decay curves via `decay_type`. (#252)
+* Added `plot_residuals()` to visualize residuals over time, faceted by
+  antigen-isotype. `run_serodynamics()` stores the original input `data`
+  (and the stratification variable name) as `original_data`/`strat`
+  attributes; `plot_residuals()` computes fitted and residual values on
+  demand from those attributes via `calc_fit_mod()`, which returns
+  2.5%/97.5% posterior quantiles for each residual on both the natural
+  scale (`residual_low`, `residual_high`) and the log10 scale
+  (`log_residual`, `log_residual_low`, `log_residual_high`),
+  which `plot_residuals()` uses to draw a precision interval around each
+  point. `fitted_residuals` is no longer added as an attribute. (#230).
+* Added an exponential decay option for antibody decay curves via `decay_type`.
+  (#252)
 * Added `plot_serocurve()` for graphical visualization of population-level
   serodynamic curves using posterior samples of the predictive `newperson`
   parameter distribution (or optionally the population level hyperparameter
@@ -96,9 +106,14 @@
 output. (#141)
 
 ## Bug fixes
-* `run_mod()`'s `fitted_residuals` attribute now covers all observations across 
-all strata (previously only the last stratum was retained) and always includes 
+* `calc_fit_mod()`'s output now covers all observations across
+all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
+* `plot_residuals()`/`calc_fit_mod()` now forward the `decay_type` attribute
+  stored by `run_serodynamics()` through to `ab()`. Previously the argument
+  was silently dropped, so exponential-decay models were fitted with the
+  power-decay formula; since exponential decay's `shape` is fixed at `1`,
+  this made every post-peak `fitted` value collapse to exactly `1`. (#230)
 
 ## Developer-facing changes
 * Cut down on `run_serodynamics()` tests to lower run time/load. 
