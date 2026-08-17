@@ -4,7 +4,13 @@
 \alias{calc_fit_mod}
 \title{Calculates fitted and residual values for modeled outputs}
 \usage{
-calc_fit_mod(modeled_dat, original_data, strat = NA, decay_type = "power")
+calc_fit_mod(
+  modeled_dat,
+  original_data,
+  strat = NA,
+  min_value = 0.01,
+  decay_type = "power"
+)
 }
 \arguments{
 \item{modeled_dat}{A \link{data.frame} of modeled antibody kinetic parameter
@@ -14,6 +20,10 @@ values.}
 
 \item{strat}{A \link{character} string specifying the stratification variable
 name, or \link{NA} if no stratification is used.}
+
+\item{min_value}{\link{numeric}; minimum value substituted in before taking
+\code{log10()} of \code{fitted}/observed values, to avoid \code{-Inf} from \code{log10(0)}
+when computing \verb{log_residual*}.}
 
 \item{decay_type}{A \link{character} string specifying the decay function
 (\code{"power"} or \code{"exponential"}). Passed through to \code{ab()}. Default is
@@ -28,16 +38,18 @@ values:
 \item Stratification = The variable used to stratify the model
 (\code{"None"} when no stratification is used)
 \item t = Time since infection
-\item fitted = The fitted value calculated using model output parameters for a
-given \code{t}
-\item residual = The residual value calculated as the difference between
-observed and fitted values for a given \code{t}
+\item fitted = The median (across posterior draws) fitted value for a given
+\code{t}
+\item residual = The median (across posterior draws) residual, calculated as
+the difference between observed and fitted values for a given \code{t}
+\item residual_low, residual_high = The 2.5\% and 97.5\% quantiles (across
+posterior draws) of the residual, giving a precision interval around
+\code{residual}
+\item log_residual, log_residual_low, log_residual_high = As \code{residual},
+\code{residual_low}, and \code{residual_high}, but computed on the log10 scale
+(i.e. \code{log10(observed) - log10(fitted)}, with values floored at
+\code{min_value} beforehand)
 }
-
-Rows from \code{original_data} whose stratification value is \code{NA} are retained
-in the output with \code{NA} \code{fitted} and \code{residual} values, since no posterior
-estimate is available for those (Subject, Iso_type, Stratification)
-tuples.
 }
 \description{
 \code{calc_fit_mod()} takes antibody kinetic parameter estimates and calculates

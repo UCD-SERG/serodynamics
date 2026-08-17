@@ -97,8 +97,13 @@
 #'     - `omega_param`
 #'     - `wishdf`
 #'     - `prec_logy_hyp_param`
-#'   - `fitted_residuals`: A [data.frame] containing fitted and residual values
-#'   for all observations.
+#'   - `original_data`: The original input `data`, stored so that fitted and
+#'   residual values can be computed on demand (e.g. by [plot_residuals()])
+#'   via [calc_fit_mod()]. The attachment of `fitted_residuals` as an attribute
+#'   was removed in version 0.1.0.9017.
+#'   - `strat`: The stratification variable name (or [NA] when no
+#'   stratification was used), stored alongside `original_data` for the same
+#'   purpose.
 #'   - `decay_type`: The decay function used (`"power"` or `"exponential"`).
 #'   - An optional `"jags.post"` attribute, included when argument
 #'   `with_post` = TRUE.
@@ -257,13 +262,18 @@ run_serodynamics <- function(data,
       decay_type = decay_type
     )
   
-  # Calculating fitted and residuals
-  fit_res <- calc_fit_mod(modeled_dat = jags_out,
-                          original_data = data,
-                          strat = strat,
-                          decay_type = decay_type)
+  # Prepping original data to be added as an attribute
+  original_data <- data |>
+    dplyr::select(
+      dplyr::all_of(attr(data, "id_var")),
+      dplyr::all_of(attr(data, "biomarker_var")),
+      dplyr::all_of(attr(data, "timeindays")),
+      dplyr::all_of(attr(data, "value_var")),
+      dplyr::any_of(if (is.na(strat)) NULL else strat)
+    )
+  
   jags_out <- jags_out |>
-    structure(fitted_residuals = fit_res)
+    structure(original_data = original_data, strat = strat)
 
   # Conditionally adding jags.post
   if (with_post) {
