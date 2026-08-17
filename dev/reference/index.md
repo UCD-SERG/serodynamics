@@ -49,6 +49,8 @@
   : Trace Plot Diagnostics
 - [`plot_ess()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_ess.md)
   : Plot Effective Sample Size Diagnostics
+- [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md)
+  : Plot Residuals Over Time
 
 ## Postprocess JAGS output
 

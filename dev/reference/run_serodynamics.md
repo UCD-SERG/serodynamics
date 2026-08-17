@@ -283,9 +283,17 @@ the following:
 
     - `prec_logy_hyp_param`
 
-  - `fitted_residuals`: A
-    [data.frame](https://rdrr.io/r/base/data.frame.html) containing
-    fitted and residual values for all observations.
+  - `original_data`: The original input `data`, stored so that fitted
+    and residual values can be computed on demand (e.g. by
+    [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md))
+    via
+    [`calc_fit_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/calc_fit_mod.md).
+    The attachment of `fitted_residuals` as an attribute was removed in
+    version 0.1.0.9017.
+
+  - `strat`: The stratification variable name (or
+    [NA](https://rdrr.io/r/base/NA.html) when no stratification was
+    used), stored alongside `original_data` for the same purpose.
 
   - `decay_type`: The decay function used (`"power"` or
     `"exponential"`).
@@ -335,7 +343,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Aug 12 13:40:10 2026
+#> Welcome to JAGS 4.3.2 on Mon Aug 17 21:14:46 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -370,7 +378,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Aug 12 13:41:12 2026
+#> Welcome to JAGS 4.3.2 on Mon Aug 17 21:15:47 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

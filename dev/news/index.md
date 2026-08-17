@@ -102,6 +102,23 @@
 
 ### New features
 
+- Added
+  [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md)
+  to visualize residuals over time, faceted by antigen-isotype.
+  [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
+  stores the original input `data` (and the stratification variable
+  name) as `original_data`/`strat` attributes;
+  [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md)
+  computes fitted and residual values on demand from those attributes
+  via
+  [`calc_fit_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/calc_fit_mod.md),
+  which returns 2.5%/97.5% posterior quantiles for each residual on both
+  the natural scale (`residual_low`, `residual_high`) and the log10
+  scale (`log_residual`, `log_residual_low`, `log_residual_high`), which
+  [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md)
+  uses to draw a precision interval around each point.
+  `fitted_residuals` is no longer added as an attribute.
+  ([\#230](https://github.com/UCD-SERG/serodynamics/issues/230)).
 - Added an exponential decay option for antibody decay curves via
   `decay_type`.
   ([\#252](https://github.com/UCD-SERG/serodynamics/issues/252))
@@ -138,11 +155,19 @@
 
 ### Bug fixes
 
-- [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md)’s
-  `fitted_residuals` attribute now covers all observations across all
-  strata (previously only the last stratum was retained) and always
-  includes a `Stratification` column (`"None"` when unstratified).
+- [`calc_fit_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/calc_fit_mod.md)’s
+  output now covers all observations across all strata (previously only
+  the last stratum was retained) and always includes a `Stratification`
+  column (`"None"` when unstratified).
   ([\#240](https://github.com/UCD-SERG/serodynamics/issues/240))
+- [`plot_residuals()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_residuals.md)/[`calc_fit_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/calc_fit_mod.md)
+  now forward the `decay_type` attribute stored by
+  [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md)
+  through to `ab()`. Previously the argument was silently dropped, so
+  exponential-decay models were fitted with the power-decay formula;
+  since exponential decay’s `shape` is fixed at `1`, this made every
+  post-peak `fitted` value collapse to exactly `1`.
+  ([\#230](https://github.com/UCD-SERG/serodynamics/issues/230))
 
 ### Developer-facing changes
 

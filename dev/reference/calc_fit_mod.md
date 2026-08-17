@@ -9,7 +9,13 @@ and observed values.
 ## Usage
 
 ``` r
-calc_fit_mod(modeled_dat, original_data, strat = NA, decay_type = "power")
+calc_fit_mod(
+  modeled_dat,
+  original_data,
+  strat = NA,
+  min_value = 0.01,
+  decay_type = "power"
+)
 ```
 
 ## Arguments
@@ -29,6 +35,14 @@ calc_fit_mod(modeled_dat, original_data, strat = NA, decay_type = "power")
   A [character](https://rdrr.io/r/base/character.html) string specifying
   the stratification variable name, or
   [NA](https://rdrr.io/r/base/NA.html) if no stratification is used.
+
+- min_value:
+
+  [numeric](https://rdrr.io/r/base/numeric.html); minimum value
+  substituted in before taking
+  [`log10()`](https://rdrr.io/r/base/Log.html) of `fitted`/observed
+  values, to avoid `-Inf` from `log10(0)` when computing
+  `log_residual*`.
 
 - decay_type:
 
@@ -51,13 +65,17 @@ values:
 
 - t = Time since infection
 
-- fitted = The fitted value calculated using model output parameters for
-  a given `t`
+- fitted = The median (across posterior draws) fitted value for a given
+  `t`
 
-- residual = The residual value calculated as the difference between
-  observed and fitted values for a given `t`
+- residual = The median (across posterior draws) residual, calculated as
+  the difference between observed and fitted values for a given `t`
 
-Rows from `original_data` whose stratification value is `NA` are
-retained in the output with `NA` `fitted` and `residual` values, since
-no posterior estimate is available for those (Subject, Iso_type,
-Stratification) tuples.
+- residual_low, residual_high = The 2.5% and 97.5% quantiles (across
+  posterior draws) of the residual, giving a precision interval around
+  `residual`
+
+- log_residual, log_residual_low, log_residual_high = As `residual`,
+  `residual_low`, and `residual_high`, but computed on the log10 scale
+  (i.e. `log10(observed) - log10(fitted)`, with values floored at
+  `min_value` beforehand)
