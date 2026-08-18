@@ -7,7 +7,6 @@ test_that(
       message = "Skipping heavy JAGS test unless RUN_HEAVY_TESTS=true"
     )
     testthat::announce_snapshot_file("sim-strat-curve-params.csv")
-    testthat::announce_snapshot_file("sim-strat-fitted_residuals.csv")
     withr::local_seed(1)
     strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
       sim_case_data(n = 100,
@@ -54,13 +53,16 @@ test_that(
       expect_setequal(c("names", "row.names", "class", "nChains",
                         "nParameters", "nIterations", "nBurnin", "nThin",
                         "population_params", "priors",
-                        "fitted_residuals", "decay_type"))
+                        "original_data", "decay_type", "strat"))
 
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "sim-strat-fitted_residuals",
-        variant = darwin_variant()
-      )
+    expect_equal(attr(results, "original_data"), dataset |>
+                   dplyr::select(dplyr::all_of(attr(dataset, "id_var")),
+                     dplyr::all_of(attr(dataset, "biomarker_var")),
+                     dplyr::all_of(attr(dataset, "timeindays")),
+                     dplyr::all_of(attr(dataset, "value_var")),
+                     strat
+                   ))
+    expect_equal(attr(results, "strat"), "strat")
 
     pop_params <- attributes(results)$population_params
     expect_s3_class(pop_params, "data.frame")
@@ -85,7 +87,6 @@ test_that(
     )
     testthat::announce_snapshot_file("strat-curve-params.csv")
     testthat::announce_snapshot_file("popparam-strat-summary-stats.csv")
-    testthat::announce_snapshot_file("strat-fitted_residuals.csv")
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees
 
@@ -113,12 +114,20 @@ test_that(
     results |>
       attributes() |>
       names() |>
-      expect_setequal(c(
-        "names", "row.names", "class", "nChains", "nParameters",
-        "nIterations", "nBurnin", "nThin", "population_params",
-        "priors", "fitted_residuals", "decay_type", "jags.post"
-      ))
+      expect_setequal(c("names", "row.names", "class", "nChains", "nParameters",
+                        "nIterations", "nBurnin", "nThin", "population_params",
+                        "priors", "original_data", "decay_type", "strat", 
+                        "jags.post"))
 
+    expect_equal(attr(results, "original_data"), dataset  |>
+                   dplyr::select(dplyr::all_of(attr(dataset, "id_var")),
+                     dplyr::all_of(attr(dataset, "biomarker_var")),
+                     dplyr::all_of(attr(dataset, "timeindays")),
+                     dplyr::all_of(attr(dataset, "value_var")),
+                     bldculres
+                   ))
+    expect_equal(attr(results, "strat"), "bldculres")
+    
     results |>
       dplyr::slice_head(n = 100) |>
       expect_snapshot_data(
@@ -151,15 +160,7 @@ test_that(
     # With preclogy_per_iso = TRUE, Parameter should be the isotype label,
     # not the constant "prec.logy"
     expect_false(any(preclogy_row$Parameter == "prec.logy"))
-    expect_true(all(
-      preclogy_row$Parameter %in% unique(pop_params$Iso_type)
-    ))
-
-    attributes(results)$fitted_residuals |>
-      expect_snapshot_data(
-        "strat-fitted_residuals",
-        variant = darwin_variant()
-      )
+    expect_true(all(preclogy_row$Parameter %in% unique(pop_params$Iso_type)))
 
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))
@@ -230,7 +231,7 @@ test_that(
       expect_setequal(c(
         "names", "row.names", "class", "nChains", "nParameters",
         "nIterations", "nBurnin", "nThin", "population_params",
-        "priors", "fitted_residuals", "decay_type", "jags.post"
+        "priors", "decay_type", "original_data", "strat", "jags.post"
       ))
 
     expect_s3_class(results, "data.frame")
@@ -270,10 +271,6 @@ test_that(
     expect_true(all(
       preclogy_row$Parameter %in% unique(pop_params$Iso_type)
     ))
-
-    fitted_residuals <- attr(results, "fitted_residuals")
-    expect_s3_class(fitted_residuals, "data.frame")
-    expect_gt(nrow(fitted_residuals), 0)
 
     jags_post <- attributes(results)$jags.post
     expect_false(is.null(jags_post))

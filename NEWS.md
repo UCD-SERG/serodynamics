@@ -2,8 +2,47 @@
 
 ## Internal
 
+<<<<<<< HEAD
 * Took away default priors from `run_serodynamics()`. Users must manually 
   specify priors now in order to run function.
+=======
+* Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0 (#288).
+  The documentation check installs whatever roxygen2 is current rather than a
+  fixed version, so the 8.1.0 release started rewriting both files against the
+  8.0.0 they were generated with, and the check failed on every pull request
+  -- including ones that touch no R code at all.
+  The `NAMESPACE` change is formatting only: where several symbols come from
+  one package, 8.1.0 groups them into a single `importFrom()` call instead of
+  writing a line for each.
+  Parsing both versions gives the same 22 exports, 27 imports and one S3
+  method.
+  `DESCRIPTION` moves to `Config/roxygen2/version: 8.1.0` and drops the older
+  `RoxygenNote` field, which 8.1.0 no longer writes.
+  The version is left floating rather than fixed, so a later roxygen2 release
+  will need the same treatment.
+
+* Restored `@claude review` as a way to request a review (#285).
+  Disabling the agent bot moved review dispatch into
+  `claude-code-review.yml` behind a comment starting with `/review`, on the
+  reasoning that the mention form belonged to `claude.yml` -- which had just
+  been switched off.
+  So `@claude review` stopped doing anything at all, and did so silently:
+  both jobs skipped, nothing went red, and the person asking got no reply.
+  All three review requests made in the twelve days that followed used the
+  mention form and were ignored; `/review` was never typed once.
+  Both spellings now work.
+  The mention is matched with `Morrison-Lab/gha`'s own
+  `detect-review-request` action rather than a pattern of our own, so an
+  agent task
+  (`@claude, please fix the failing test`) is still not mistaken for a review
+  request, and a mention quoted in a code span or a quoted line does not
+  trigger one.
+* Replaced the silence with a reply when the `@claude` agent is addressed.
+  A mention that is not a review request now gets a short comment saying the
+  agent is switched off and naming the triggers that do work, since a skipped
+  workflow is indistinguishable from a broken bot -- which is why the gap
+  above went unnoticed for so long.
+>>>>>>> 3b4716133fef058c422a27876729a296fdf1a4d6
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the
@@ -40,8 +79,18 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
-
-* Added an exponential decay option for antibody decay curves via `decay_type`. (#252)
+* Added `plot_residuals()` to visualize residuals over time, faceted by
+  antigen-isotype. `run_serodynamics()` stores the original input `data`
+  (and the stratification variable name) as `original_data`/`strat`
+  attributes; `plot_residuals()` computes fitted and residual values on
+  demand from those attributes via `calc_fit_mod()`, which returns
+  2.5%/97.5% posterior quantiles for each residual on both the natural
+  scale (`residual_low`, `residual_high`) and the log10 scale
+  (`log_residual`, `log_residual_low`, `log_residual_high`),
+  which `plot_residuals()` uses to draw a precision interval around each
+  point. `fitted_residuals` is no longer added as an attribute. (#230).
+* Added an exponential decay option for antibody decay curves via `decay_type`.
+  (#252)
 * Added `plot_serocurve()` for graphical visualization of population-level
   serodynamic curves using posterior samples of the predictive `newperson`
   parameter distribution (or optionally the population level hyperparameter
@@ -62,9 +111,14 @@
 output. (#141)
 
 ## Bug fixes
-* `run_mod()`'s `fitted_residuals` attribute now covers all observations across 
-all strata (previously only the last stratum was retained) and always includes 
+* `calc_fit_mod()`'s output now covers all observations across
+all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
+* `plot_residuals()`/`calc_fit_mod()` now forward the `decay_type` attribute
+  stored by `run_serodynamics()` through to `ab()`. Previously the argument
+  was silently dropped, so exponential-decay models were fitted with the
+  power-decay formula; since exponential decay's `shape` is fixed at `1`,
+  this made every post-peak `fitted` value collapse to exactly `1`. (#230)
 
 ## Developer-facing changes
 * Cut down on `run_serodynamics()` tests to lower run time/load. 

@@ -35,6 +35,7 @@ reference:
   - plot_rhat
   - plot_trace
   - plot_ess
+  - plot_residuals
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output

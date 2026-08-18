@@ -169,8 +169,13 @@ variances), one per antigen/isotype combination.
 \item \code{wishdf}
 \item \code{prec_logy_hyp_param}
 }
-\item \code{fitted_residuals}: A \link{data.frame} containing fitted and residual values
-for all observations.
+\item \code{original_data}: The original input \code{data}, stored so that fitted and
+residual values can be computed on demand (e.g. by \code{\link[=plot_residuals]{plot_residuals()}})
+via \code{\link[=calc_fit_mod]{calc_fit_mod()}}. The attachment of \code{fitted_residuals} as an attribute
+was removed in version 0.1.0.9017.
+\item \code{strat}: The stratification variable name (or \link{NA} when no
+stratification was used), stored alongside \code{original_data} for the same
+purpose.
 \item \code{decay_type}: The decay function used (\code{"power"} or \code{"exponential"}).
 \item An optional \code{"jags.post"} attribute, included when argument
 \code{with_post} = TRUE.
