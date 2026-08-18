@@ -2,10 +2,8 @@
 
 ## Internal
 
-<<<<<<< HEAD
 * Took away default priors from `run_serodynamics()`. Users must manually 
   specify priors now in order to run function.
-=======
 * Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0 (#288).
   The documentation check installs whatever roxygen2 is current rather than a
   fixed version, so the 8.1.0 release started rewriting both files against the
@@ -42,7 +40,6 @@
   agent is switched off and naming the triggers that do work, since a skipped
   workflow is indistinguishable from a broken bot -- which is why the gap
   above went unnoticed for so long.
->>>>>>> 3b4716133fef058c422a27876729a296fdf1a4d6
 * Disabled the `@claude` agent bot.
   `.github/workflows/claude.yml`'s reactive triggers are commented out and its
   job carries `if: false`, so no comment, issue, or review event invokes the
