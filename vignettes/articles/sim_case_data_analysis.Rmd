@@ -27,17 +27,20 @@ library(tidyverse)
 library(serocalculator)
 library(gridExtra)
 library(serodynamics)
+library(patchwork)
 knitr::opts_chunk$set(echo = TRUE)
 
+fig_num <- 1
 ```
 
   
 ### Plotting raw data  
-Raw antibody responeses by individual  
+Figure `r fig_num`: Raw antibody responeses by individual  
 ```{r error = F, warning = F, message = F}
 
 autoplot(serodynamics::nepal_sees)
 
+fig_num <- fig_num + 1
 ```
 
 ### Modeling antibody kinetic parameters
@@ -58,14 +61,18 @@ nepal_sees_output <- run_serodynamics(data = serodynamics::nepal_sees,
 ```
   
 ### Antibody kinetic curves of modeled parameters  
-Simulated antibody kinetic curves of the predictive distribution by number sampled  
+Figure `r fig_num`: Simulated antibody kinetic curves of the predictive distribution by number sampled  
 ```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE)
+fig_num <- fig_num + 1
+
 ```
   
-Simulated antibody kinetic curves of the population-level distribution by number sampled  
+Figure `r fig_num`: Simulated antibody kinetic curves of the population-level distribution by number sampled  
 ```{r error = F, warning = F, message = F}
 plot_serocurve(nepal_sees_output, log_y = TRUE, param_source = "population")
+fig_num <- fig_num + 1
+
 ```
 
   
@@ -93,15 +100,16 @@ antigen_isos <- unique(nepal_sees$antigen_iso)
 simulated_data <- sim_case_data(n = n,
                                    curve_params = nepal_sees_prep,
                                    antigen_isos = antigen_isos,
-                                   followup_interval = 30,
-                                   followup_variance = 30,
-                                   noise_sd = 0.3)
+                                   followup_interval = 20,
+                                   followup_variance = 20,
+                                   noise_sd = 0.4,
+                                spacing = "log")
 
 
 ```
   
 ### Plotting simulated data  
-Raw longitudinal responses of simulated longitudinal data.  
+Figure `r fig_num`: Raw longitudinal responses of simulated longitudinal data.  
 ```{r error = F, warning = F, message = F}
 autoplot(simulated_data)
 ```
@@ -193,7 +201,7 @@ We will then plot the results.
 Predictive parameters:  
 Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgA  
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 for (i in c("y0", "y1", "t1", "alpha", "shape")) {
 print(
@@ -201,12 +209,13 @@ print(
   geom_point(aes(x = median, y = sim, color = type)) +
   geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
   scale_x_log10() +
-  facet_wrap(~n, ncol = 2) +
+  facet_wrap(~n, ncol = 4) +
    theme_bw() +
   labs(x = "Posterior distribution", y = "Simulation",
        title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
                       " \nby number sampled and simulation")) +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+  scale_color_manual(values = c("skyblue1", "dodgerblue4")) +
+    theme(legend.position = "top")
 )
 }
 fig_num <- fig_num +1
@@ -215,21 +224,22 @@ fig_num <- fig_num +1
   
 Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgG  
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 for (i in c("y0", "y1", "t1", "alpha", "shape")) {
-
+print(
 ggplot(plot_pred_summ %>% filter(Parameter == i & Iso_type == "HlyE_IgG")) +
   geom_point(aes(x = median, y = sim, color = type)) +
   geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
   scale_x_log10() +
-  facet_wrap(~n) +
+  facet_wrap(~n, ncol = 4) +
    theme_bw() +
   labs(x = "Posterior distribution", y = "Simulation",
        title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
                       " \\by number sampled and simulation")) +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
-  
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))+
+    theme(legend.position = "top")
+)
 }
 
 fig_num <- fig_num +1
@@ -238,7 +248,7 @@ fig_num <- fig_num +1
 
 Population Parameters:  
 Data preparation
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 # Extracting population parameters
 pop_data <- list()
@@ -288,7 +298,7 @@ plot_pop_summ$sim <- factor(plot_pop_summ$sim, rev(c("Original",
   
 Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgA  
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
                                                      "log(t1)")) {
@@ -297,12 +307,13 @@ ggplot(plot_pop_summ %>% filter(Parameter == i &  Iso_type == "HlyE_IgA")) +
   geom_point(aes(x = median, y = sim, color = type)) +
   geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
   # scale_x_log10() +
-  facet_wrap(~n, scales = "free_x") +
+  facet_wrap(~n, scales = "free_x", ncol = 4) +
    theme_bw() +
   labs(x = "Posterior distribution", y = "Simulation",
        title = paste0("Posterior population distribution for HlyE_IgA/", i, 
                       " \nby number sampled and simulation")) +
-  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+  scale_color_manual(values = c("skyblue1", "dodgerblue4")) +
+    theme(legend.position = "top")
 )
 }
 fig_num <- fig_num +1
@@ -417,7 +428,7 @@ mc_rmse_long <- comparison %>%
 
 Figure `r fig_num`: Monte Carlo RMSE of median, 2.5% and 97.5% posterior distribution 
 by number of simulated cases used for modeling and antigen isotype  
-```{r error = F, warning = F, fig.height=15}
+```{r error = F, warning = F, fig.height=12}
 
 ggplot(
   mc_rmse_long,
@@ -434,7 +445,8 @@ ggplot(
     x = "Number of subjects",
     y = "Monte Carlo RMSE",
     linetype = "Posterior summary"
-  )
+  )+
+    theme(legend.position = "top")
 
 fig_num <- fig_num +1
 
@@ -444,7 +456,7 @@ fig_num <- fig_num +1
 ### Modeled serokinetic curves  
 Figure `r fig_num`: Serokinetic curves of simulated and original predictive 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F}
+```{r error = F, warning = F, message = F, fig.height = 15}
 
 # Need to also gather median from the original data model
 nepal_pred_seroplot <- left_join(nepal_sees_output, nepal_sees_summ_bind,
@@ -456,27 +468,30 @@ plot_pred_curves <- bind_rows(post_pred_sim, nepal_pred_seroplot) %>%
                                  Stratification))
   # mutate(Stratification = paste0(Stratification, "_", n))
 
+plot_list <- list()
 for (i in unique(plot_pred_curves$n)) {
 strat_levels <- unique(na.omit(plot_pred_curves$Stratification))
 color_values <- setNames(
   ifelse(strat_levels == "Original", "blue", "gray"),
   strat_levels
 )
-plot_pred_curves <- plot_pred_curves %>%
+plot_pred_curveplot <- plot_pred_curves %>%
   filter(n == i)
-plot_serocurve(plot_pred_curves, log_y = TRUE,
+plot_list[[i]] <- plot_serocurve(plot_pred_curveplot, log_y = TRUE,
                show_ci = FALSE) +
   scale_color_manual(values = color_values,
                      breaks = c("Original", strat_levels[strat_levels != "Original"][1]),
-                     labels = c("Original", "Simulation"))
+                     labels = c("Original", "Simulation")) +
+  labs(title = paste0("n = ", i))
 }
+wrap_plots(plot_list, ncol = 2)
   
 ```
 
 
 Figure `r fig_num`: Serokinetic curves of simulated and original population level 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F}
+```{r error = F, warning = F, message = F, fig.height = 15}
 
 # Need to also gather median from the original data model
 nepal_pop_seroplot <- attributes(nepal_sees_output)$population_params 
@@ -490,6 +505,7 @@ plot_pop_curves <- bind_rows(pop_data, nepal_pop_seroplot) %>%
                                  Stratification))
   # mutate(Stratification = paste0(Stratification, "_", n))
 
+plot_list <- list()
 for (i in unique(plot_pop_curves$n)) {
 strat_levels <- unique(na.omit(plot_pop_curves$Stratification))
 color_values <- setNames(
@@ -498,12 +514,14 @@ color_values <- setNames(
 )
 attr(plot_pop_curves, "population_params") <- plot_pop_curves %>%
   filter(n == i)
-plot_serocurve(plot_pop_curves, param_source = "population", log_y = TRUE,
+plot_list[[i]] <-  plot_serocurve(plot_pop_curves, param_source = "population", log_y = TRUE,
                show_ci = FALSE) +
   scale_color_manual(values = color_values,
                      breaks = c("Original", strat_levels[strat_levels != "Original"][1]),
-                     labels = c("Original", "Simulation"))
+                     labels = c("Original", "Simulation")) +
+  labs(title = paste0("n = ", i))
 }
+wrap_plots(plot_list, ncol = 2)
   
 ```
   
