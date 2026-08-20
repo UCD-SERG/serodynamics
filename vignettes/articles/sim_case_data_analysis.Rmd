@@ -10,6 +10,7 @@ output:
     #number_sections: true  ## if you want number sections at each table header
     #theme: united  # many options for theme, this one is my favorite.
     highlight: tango  # specifies the syntax highlighting style
+    code_folding: hide
 ---
 
 ## The goal
@@ -149,7 +150,7 @@ for (i in n_select) {
   }
   }
 
-saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/sero_list.rds")
 
 ```
   
@@ -158,7 +159,7 @@ We will then prepare the data of the modeled simulation outputs and combine them
 with the original modeled outputs.  
 ```{r  error = F, warning = F, message = F, fig.height=20}
 
-sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sim_serolist.rds")
+sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/sero_list.rds")
 
 post_pred_sim <- bind_rows(sero_list)
 post_pred_summ <- post_pred_sim %>%
@@ -297,7 +298,7 @@ plot_pop_summ$sim <- factor(plot_pop_summ$sim, rev(c("Original",
 
 ```
   
-Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
+Figure `r fig_num`: Posterior distribution of population parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgA  
 ```{r  error = F, warning = F, message = F}
 
@@ -323,9 +324,9 @@ fig_num <- fig_num +1
 ```
 
   
-Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
+Figure `r fig_num`: Posterior distribution of population parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgG   
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
                                                      "log(t1)")) {
@@ -457,7 +458,7 @@ fig_num <- fig_num +1
 ### Modeled serokinetic curves  
 Figure `r fig_num`: Serokinetic curves of simulated and original predictive 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F, fig.height = 15}
+```{r error = F, warning = F, message = F}
 
 # Need to also gather median from the original data model
 nepal_pred_seroplot <- left_join(nepal_sees_output, nepal_sees_summ_bind,
@@ -552,7 +553,7 @@ wrap_plots(plot_list, ncol = 2)  +
 
 Figure `r fig_num`: Serokinetic curves of simulated and original population level 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F, fig.height = 15}
+```{r error = F, warning = F, message = F}
 
 # Need to also gather median from the original data model
 nepal_pop_seroplot <- attributes(nepal_sees_output)$population_params 
@@ -649,6 +650,97 @@ wrap_plots(plot_list, ncol = 2)  +
   
 ```
   
+
+### Rhat values by number of samples
+Rhat values by number of samples for predictive parameters
+```{r}
+
+sim_pred_rhat <- post_pred_sim %>%
+  filter(Subject == "newperson")
+# Calculate Rhat
+sim_pred_rhat <- sim_pred_rhat %>%
+  group_by(Parameter, Iso_type, Stratification, sim, n) %>%
+  group_modify(~{
+    mat <- .x %>%
+      arrange(Iteration, Chain) %>%
+      pivot_wider(
+        id_cols = Iteration,
+        names_from = Chain,
+        values_from = value
+      ) %>%
+      select(-Iteration) %>%
+      as.matrix()
+    tibble(Rhat = posterior::rhat(mat))
+  }) %>%
+  group_by(Parameter, Iso_type, n) %>%
+  summarise(median = median(Rhat),
+            lower = quantile(Rhat, 0.025),
+            upper = quantile(Rhat, 0.975))
+
+# sim_pred_rhat$n <- factor(sim_pred_rhat$n, c("3", "5", "10", "30", "50", 
+#                                                          "100", "150", "188"))
+
+ggplot(sim_pred_rhat, aes(x = as.numeric(n), y = median)) +
+  geom_line(aes(x = as.numeric(n), y = median), stat = "identity") +
+  geom_point(size = 2) +
+  geom_linerange(aes(x = as.numeric(n), y = median, ymax = upper, ymin = lower)) +
+  facet_grid(
+    Parameter ~ Iso_type,
+    scales = "free_y"
+  ) +
+  theme_bw() +
+  labs(x = "Number of samples from posterior",
+    y = "Rhat value"
+  )+
+    theme(legend.position = "top")
+
+```
+
+
+Rhat values by number of samples for population parameters
+```{r error = F, warning = F}
+
+sim_pop_rhat <- pop_data %>%
+  filter(Population_Parameter == "mu.par")
+# Calculate Rhat
+sim_pop_rhat <- sim_pop_rhat %>%
+  group_by(Parameter, Iso_type, Stratification, sim, n) %>%
+  group_modify(~{
+    mat <- .x %>%
+      arrange(Iteration, Chain) %>%
+      pivot_wider(
+        id_cols = Iteration,
+        names_from = Chain,
+        values_from = value
+      ) %>%
+      select(-Iteration) %>%
+      as.matrix()
+    tibble(Rhat = posterior::rhat(mat))
+  }) %>%
+  group_by(Parameter, Iso_type, n) %>%
+  summarise(median = median(Rhat),
+            lower = quantile(Rhat, 0.025),
+            upper = quantile(Rhat, 0.975))
+
+# sim_pred_rhat$n <- factor(sim_pred_rhat$n, c("3", "5", "10", "30", "50", 
+#                                                          "100", "150", "188"))
+
+ggplot(sim_pop_rhat, aes(x = as.numeric(n), y = median)) +
+  geom_line(aes(x = as.numeric(n), y = median), stat = "identity") +
+  geom_point(size = 2) +
+  geom_linerange(aes(x = as.numeric(n), y = median, ymax = upper, ymin = lower)) +
+  facet_grid(
+    Parameter ~ Iso_type,
+    scales = "free_y"
+  ) +
+  theme_bw() +
+  labs(x = "Number of samples from posterior",
+    y = "Rhat value"
+  )+
+    theme(legend.position = "top")
+
+```
+
 
 ## Sampling original data  
 ### Modeling antibody kinetic parameters on simulated longitudinal data  
@@ -822,7 +914,7 @@ fig_num <- fig_num +1
   
 Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
 original data by number simulated for HlyE_IgG   
-```{r  error = F, warning = F, message = F, fig.height=20}
+```{r  error = F, warning = F, message = F}
 
 for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
                                                      "log(t1)")) {
@@ -860,7 +952,7 @@ $$
 $$
 
 Data preparation:
-```{r error = F, warning = F, fig.height=15}
+```{r error = F, warning = F, fig.height=12}
 
 sim_post <- nepplot_pop_summ %>%
   filter(type == "Simulated posterior")
@@ -954,7 +1046,7 @@ fig_num <- fig_num +1
 ### Modeled serokinetic curves  
 Figure `r fig_num`: Serokinetic curves of simulated and original predictive 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F, fig.height = 15}
+```{r error = F, warning = F, message = F}
 
 # Need to also gather median from the original data model
 nepal_pred_seroplot <- left_join(nepal_sees_output, nepal_sees_summ_bind,
@@ -1048,7 +1140,7 @@ wrap_plots(plot_list, ncol = 2)  +
 
 Figure `r fig_num`: Serokinetic curves of simulated and original population level 
 posterior curves by number of simulations sampled and antigen isotype  
-```{r error = F, warning = F, message = F, fig.height = 15}
+```{r error = F, warning = F, message = F}
 
 # Need to also gather median from the original data model
 nepal_pop_seroplot <- attributes(nepal_sees_output)$population_params 
@@ -1146,3 +1238,92 @@ wrap_plots(plot_list, ncol = 2)  +
 
 ```
   
+
+### Rhat values by number of samples
+Rhat values by number of samples for predictive parameters
+```{r results = 'hide', error = F, warning = F}
+
+sim_pred_rhat <- neppost_pred_sim %>%
+  filter(Subject == "newperson")
+# Calculate Rhat
+sim_pred_rhat <- sim_pred_rhat %>%
+  group_by(Parameter, Iso_type, Stratification, sim, n) %>%
+  group_modify(~{
+    mat <- .x %>%
+      arrange(Iteration, Chain) %>%
+      pivot_wider(
+        id_cols = Iteration,
+        names_from = Chain,
+        values_from = value
+      ) %>%
+      select(-Iteration) %>%
+      as.matrix()
+    tibble(Rhat = posterior::rhat(mat))
+  }) %>%
+  group_by(Parameter, Iso_type, n) %>%
+  summarise(median = median(Rhat),
+            lower = quantile(Rhat, 0.025),
+            upper = quantile(Rhat, 0.975))
+
+# sim_pred_rhat$n <- factor(sim_pred_rhat$n, c("3", "5", "10", "30", "50", 
+#                                                          "100", "150", "188"))
+
+ggplot(sim_pred_rhat, aes(x = as.numeric(n), y = median)) +
+  geom_line(aes(x = as.numeric(n), y = median), stat = "identity") +
+  geom_point(size = 2) +
+  geom_linerange(aes(x = as.numeric(n), y = median, ymax = upper, ymin = lower)) +
+  facet_grid(
+    Parameter ~ Iso_type,
+    scales = "free_y"
+  ) +
+  theme_bw() +
+  labs(x = "Number of samples from posterior",
+    y = "Rhat value"
+  )+
+    theme(legend.position = "top")
+
+```
+
+Rhat values by number of samples for population parameters
+```{r results = 'hide', error = F, warning = F}
+
+sim_pop_rhat <- nep_pop_data %>%
+  filter(Population_Parameter == "mu.par")
+# Calculate Rhat
+sim_pop_rhat <- sim_pop_rhat %>%
+  group_by(Parameter, Iso_type, Stratification, sim, n) %>%
+  group_modify(~{
+    mat <- .x %>%
+      arrange(Iteration, Chain) %>%
+      pivot_wider(
+        id_cols = Iteration,
+        names_from = Chain,
+        values_from = value
+      ) %>%
+      select(-Iteration) %>%
+      as.matrix()
+    tibble(Rhat = posterior::rhat(mat))
+  }) %>%
+  group_by(Parameter, Iso_type, n) %>%
+  summarise(median = median(Rhat),
+            lower = quantile(Rhat, 0.025),
+            upper = quantile(Rhat, 0.975))
+
+# sim_pred_rhat$n <- factor(sim_pred_rhat$n, c("3", "5", "10", "30", "50", 
+#                                                          "100", "150", "188"))
+
+ggplot(sim_pop_rhat, aes(x = as.numeric(n), y = median)) +
+  geom_line(aes(x = as.numeric(n), y = median), stat = "identity") +
+  geom_point(size = 2) +
+  geom_linerange(aes(x = as.numeric(n), y = median, ymax = upper, ymin = lower)) +
+  facet_grid(
+    Parameter ~ Iso_type,
+    scales = "free_y"
+  ) +
+  theme_bw() +
+  labs(x = "Number of samples from posterior",
+    y = "Rhat value"
+  )+
+    theme(legend.position = "top")
+
+```
