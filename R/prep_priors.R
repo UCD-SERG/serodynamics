@@ -1,7 +1,7 @@
 #' @title Prepare priors
 #' @description
 #' Takes multiple [vector] inputs to allow for modifiable priors. 
-#' Priors can be specified as an option in run_serodynamics.
+#' Priors must be specified as an option in `run_serodynamics()`.
 #' 
 #' @param max_antigens An [integer] specifying how many
 #' antigen-isotypes (biomarkers) will be modeled.

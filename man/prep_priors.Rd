@@ -83,7 +83,7 @@ for the Wishart distribution used in the subject-level precision prior.
 }
 \description{
 Takes multiple \link{vector} inputs to allow for modifiable priors.
-Priors can be specified as an option in run_serodynamics.
+Priors must be specified as an option in \code{run_serodynamics()}.
 }
 \examples{
 
