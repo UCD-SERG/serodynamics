@@ -8,3 +8,18 @@ test_that("priors are modifiable", {
               prec_logy_hyp_param = c(4.0, 1.0)) |>
     expect_snapshot_value(style = "deparse")
 })
+
+test_that("Expect error when not supplied", {
+  prep_priors(max_antigens = 2) |>
+    expect_error()
+})
+
+test_that("Expect error when only some supplied", {
+  prep_priors(max_antigens = 2, 
+              mu_hyp_param = c(1.0,  5.0, 0.0, -2.0, -3.0),
+              omega_param = c(1.0, 50.0, 1.0, 5.0, 1.0),
+              wishdf_param = 15,
+              prec_logy_hyp_param = c(4.0, 1.0)) |>
+    expect_error()
+})
+
