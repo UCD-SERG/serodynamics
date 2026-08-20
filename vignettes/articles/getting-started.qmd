@@ -139,7 +139,12 @@ fitted_model <- run_serodynamics(
   nadapt = 100,    # Adaptation iterations
   nburn = 100,     # Burn-in iterations  
   nmc = 10,        # Samples per chain (use 1000+ for real analysis)
-  niter = 20       # Total iterations (use 2000+ for real analysis)
+  niter = 20,       # Total iterations (use 2000+ for real analysis)
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), # Prior mean for the population level parameters
+  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), # Hyperprior precision matrix
+  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), # Wishart hyperprior distributions
+  wishdf_param = 20, # Degrees of freedom for the Wishart hyperprior distribution
+  prec_logy_hyp_param = c(4.0, 1.0) # Hyperprior  precision matrix
 )
 
 head(fitted_model)
