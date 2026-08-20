@@ -12,7 +12,7 @@ output:
     highlight: tango  # specifies the syntax highlighting style
 ---
 
-### The goal
+## The goal
 The goal of this vignette is to demonstrate the use of `sim_case_data()` and to
 demonstrate at what sample size antibody kinetics can be accurately replicated.
 To do so, we will model antibody kinetics from `nepal_sees` data. We will then 
@@ -20,6 +20,7 @@ simulate longitudinal case data using `sim_case_data()`. We will then determine
 at what sample size the antibody kinetics, estimated with the entire `nepal_sees`
 data set, can be reproduced using the simulated longitudinal data. 
 
+## Preparation
 ### Loading packages
 ```{r  setup, error = F, warning = F, message = F}
 library(dplyr)
@@ -75,7 +76,7 @@ fig_num <- fig_num + 1
 
 ```
 
-  
+## Simulated case data
 ### Simulating case data  
 Simulating case data using `as_case_data()` using the modeled antibody kinetic 
 parameters as the curve parameters.  
@@ -468,23 +469,83 @@ plot_pred_curves <- bind_rows(post_pred_sim, nepal_pred_seroplot) %>%
                                  Stratification))
   # mutate(Stratification = paste0(Stratification, "_", n))
 
+
 plot_list <- list()
 for (i in unique(plot_pred_curves$n)) {
 strat_levels <- unique(na.omit(plot_pred_curves$Stratification))
 color_values <- setNames(
-  ifelse(strat_levels == "Original", "blue", "gray"),
+  ifelse(strat_levels == "Original", "red", "blue"),
   strat_levels
 )
+## Original data layer
 plot_pred_curveplot <- plot_pred_curves %>%
   filter(n == i)
-plot_list[[i]] <- plot_serocurve(plot_pred_curveplot, log_y = TRUE,
-               show_ci = FALSE) +
-  scale_color_manual(values = color_values,
-                     breaks = c("Original", strat_levels[strat_levels != "Original"][1]),
-                     labels = c("Original", "Simulation")) +
-  labs(title = paste0("n = ", i))
+p_original <- plot_serocurve(
+  plot_pred_curveplot %>% 
+    filter(Stratification == "Original"),
+  log_y = TRUE,
+  show_ci = TRUE
+) 
+  # Make Original curve prominent
+  p_original$layers <- lapply(
+    p_original$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "red"
+        layer$aes_params$alpha <- 1
+        layer$aes_params$linewidth <- 1.2
+      }
+      layer
+    }
+  )
+  
+## Simulation layer
+p_sim <- plot_serocurve(
+  plot_pred_curveplot %>% 
+    filter(Stratification != "Original"),
+  log_y = TRUE,
+  show_ci = FALSE
+)
+  p_sim$layers <- lapply(
+    p_sim$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "blue"
+        layer$aes_params$alpha <- 0.4
+        layer$aes_params$linewidth <- 0.5
+      }
+      layer
+    }
+  )
+  
+plot_list[[i]] <- p_sim +
+  p_original$layers +
+  scale_color_manual(
+    values = color_values,
+    breaks = c(
+      strat_levels[strat_levels != "Original"][1],
+      "Original"
+    ),
+    labels = c("Simulation", "Original")
+  ) +
+  guides(
+    color = guide_legend(
+      title = NULL,
+      override.aes = list(
+        alpha = 1,
+        linewidth = 1
+      )
+    ),
+    fill = "none"
+  ) +
+  labs(title = paste0("n = ", i)) 
 }
-wrap_plots(plot_list, ncol = 2)
+wrap_plots(plot_list, ncol = 2)  +
+  plot_layout(guides = "collect") &
+  theme(
+    legend.position = "bottom"
+  )
+
   
 ```
 
@@ -499,29 +560,589 @@ nepal_pop_seroplot <- left_join(nepal_pop_seroplot, nepal_pop_summ_bind,
                                 by = "Parameter")
 
 plot_pop_curves <- bind_rows(pop_data, nepal_pop_seroplot) %>%
-  filter(Population_Parameter == "mu.par") %>%
   mutate(Stratification = sim) %>%
   mutate(Stratification = ifelse(is.na(Stratification), "Original", 
-                                 Stratification))
-  # mutate(Stratification = paste0(Stratification, "_", n))
+                                 Stratification)) %>%
+  filter(is.na(n)==F)
 
 plot_list <- list()
 for (i in unique(plot_pop_curves$n)) {
 strat_levels <- unique(na.omit(plot_pop_curves$Stratification))
 color_values <- setNames(
-  ifelse(strat_levels == "Original", "blue", "gray"),
+  ifelse(strat_levels == "Original", "red", "blue"),
   strat_levels
 )
-attr(plot_pop_curves, "population_params") <- plot_pop_curves %>%
+# Setting up data first
+plot_pop_curvesplot <- plot_pop_curves %>%
   filter(n == i)
-plot_list[[i]] <-  plot_serocurve(plot_pop_curves, param_source = "population", log_y = TRUE,
-               show_ci = FALSE) +
-  scale_color_manual(values = color_values,
-                     breaks = c("Original", strat_levels[strat_levels != "Original"][1]),
-                     labels = c("Original", "Simulation")) +
-  labs(title = paste0("n = ", i))
-}
-wrap_plots(plot_list, ncol = 2)
+attr(plot_pop_curvesplot, "population_params") <- plot_pop_curvesplot
+
+## Original data layer
+p_original <- plot_serocurve(
+  plot_pop_curvesplot %>% 
+    filter(Stratification == "Original"),
+  log_y = TRUE,
+  show_ci = TRUE,
+  param_source = "population"
+) 
+  # Make Original curve prominent
+  p_original$layers <- lapply(
+    p_original$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "red"
+        layer$aes_params$alpha <- 1
+        layer$aes_params$linewidth <- 1.2
+      }
+      layer
+    }
+  )
   
+## Simulation layer
+p_sim <- plot_serocurve(
+  plot_pop_curvesplot %>% 
+    filter(Stratification != "Original"),
+  log_y = TRUE,
+  show_ci = FALSE,
+  param_source = "population"
+)
+  p_sim$layers <- lapply(
+    p_sim$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "blue"
+        layer$aes_params$alpha <- 0.4
+        layer$aes_params$linewidth <- 0.5
+      }
+      layer
+    }
+  )
+  
+plot_list[[i]] <- p_sim +
+  p_original$layers +
+  scale_color_manual(
+    values = color_values,
+    breaks = c(
+      strat_levels[strat_levels != "Original"][1],
+      "Original"
+    ),
+    labels = c("Simulation", "Original")
+  ) +
+  guides(
+    color = guide_legend(
+      title = NULL,
+      override.aes = list(
+        alpha = 1,
+        linewidth = 1
+      )
+    ),
+    fill = "none"
+  ) +
+  labs(title = paste0("n = ", i)) 
+}
+wrap_plots(plot_list, ncol = 2)  +
+  plot_layout(guides = "collect") &
+  theme(
+    legend.position = "bottom"
+  )
+
+  
+```
+  
+
+## Sampling original data  
+### Modeling antibody kinetic parameters on simulated longitudinal data  
+We then take varying random samples of the simulated data to reconstruct the 
+posterior distribution of original `nepal_sees` modeled data.  
+```{r results = 'hide', error = F, warning = F, message = F, eval = F}
+
+n_select <- c("3", "5", "10", "30", "50", "100", "150", "188")
+set.seed(15)
+nep_sero_list <- list()
+for (i in n_select) {
+  # for (s in 1:20) {
+      for (s in 1:2) {
+  sampled_n <- sample(unique(nepal_sees$id), size = as.numeric(i))
+  simulated_run <- nepal_sees %>%
+    filter(id %in% sampled_n) 
+    sero_run <- run_serodynamics(data = simulated_run,
+                                        nchain = 4,
+                                        nadapt = 100,
+                                        nburn = 100,
+                                        nmc = 500,
+                                        niter = 2000,
+                                        with_pop_params = TRUE)
+  sero_run <- sero_run %>%
+    mutate(sim = s, 
+           n = i)
+  nep_sero_list[[paste0("n = ", i, ", sim = ", s)]] <- sero_run
+  }
+  }
+
+saveRDS(sero_list, "~/projects/GitHub/serodynamics/inst/extdata/nep_serolist.rds")
+
+```
+  
+### Parameter estimates of simulations  
+We will then prepare the data of the modeled simulation outputs and combine them 
+with the original modeled outputs.  
+```{r  error = F, warning = F, message = F, fig.height=20}
+
+nep_sero_list <- readRDS("~/projects/GitHub/serodynamics/inst/extdata/nep_serolist.rds")
+
+neppost_pred_sim <- bind_rows(nep_sero_list)
+neppost_pred_summ <- neppost_pred_sim %>%
+  filter(Subject == "newperson") %>%
+  group_by(Parameter, sim, n, Iso_type) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975))%>%
+  mutate(type = "Simulated posterior")
+
+nepplot_pred_summ <- bind_rows(neppost_pred_summ %>%
+                              mutate(sim = as.character(sim)), 
+                            nepal_sees_summ) 
+
+nepplot_pred_summ$n <- factor(nepplot_pred_summ$n, c("3", "5", "10", "30", "50", 
+                                                         "100", "150", "188"))
+nepplot_pred_summ$sim <- factor(nepplot_pred_summ$sim, rev(c("Original", 
+                                                   as.character(unique(neppost_pred_summ$sim)))))
+
+fig_num <- fig_num +1
+```
+
+We will then plot the results.  
+Predictive parameters:  
+Figure `r fig_num`: Posterior distribution of predictive parameters comparing varying samples of 
+original data for HlyE_IgA  
+```{r  error = F, warning = F, message = F}
+
+for (i in c("y0", "y1", "t1", "alpha", "shape")) {
+print(
+  ggplot(nepplot_pred_summ %>% filter(Parameter == i & Iso_type == "HlyE_IgA")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, ncol = 4) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4")) +
+    theme(legend.position = "top")
+)
+}
+fig_num <- fig_num +1
+
+```
+  
+Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
+original data by number simulated for HlyE_IgG  
+```{r  error = F, warning = F, message = F}
+
+for (i in c("y0", "y1", "t1", "alpha", "shape")) {
+print(
+ggplot(plot_pred_summ %>% filter(Parameter == i & Iso_type == "HlyE_IgG")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  scale_x_log10() +
+  facet_wrap(~n, ncol = 4) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior predictive distribution for HlyE_IgA/", i, 
+                      " \\by number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))+
+    theme(legend.position = "top")
+)
+}
+
+fig_num <- fig_num +1
+
+```
+
+Population Parameters:  
+Data preparation
+```{r  error = F, warning = F, message = F}
+
+# Extracting population parameters
+nep_pop_data <- list()
+for (i in names(nep_sero_list)) {
+  pop_atts <- attributes(nep_sero_list[[i]])$population_params
+  n <- str_extract(i, "(?<=n = )\\d+")
+  sim <- str_extract(i, "(?<=sim = )\\d+")
+  pop_atts <- pop_atts %>%
+    mutate(n =  n,
+           sim = sim)
+  nep_pop_data <- dplyr::bind_rows(nep_pop_data, pop_atts)
+}
+
+neppost_pop_summ <- nep_pop_data %>%
+  filter(Population_Parameter == "mu.par") %>%
+  group_by(Parameter, sim, n, Iso_type) %>%
+  summarise(median = stats::median(value),
+            quant2.5 = stats::quantile(value, 0.025),
+            quant97.5 = stats::quantile(value, 0.975))%>%
+  mutate(type = "Simulated posterior")
+
+# Adding in nepal data
+nepplot_pop_summ <- bind_rows(neppost_pop_summ, nepal_pop_summ) 
+
+nepplot_pop_summ$n <- factor(nepplot_pop_summ$n, c("3", "5", "10", "30", "50", 
+                                                         "100", "150", "188"))
+nepplot_pop_summ$sim <- factor(nepplot_pop_summ$sim, rev(c("Original", 
+                                                   as.character(unique(neppost_pop_summ$sim)))))
+
+```
+  
+Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
+original data by number simulated for HlyE_IgA  
+```{r  error = F, warning = F, message = F}
+
+for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
+                                                     "log(t1)")) {
+print(
+ggplot(nepplot_pop_summ %>% filter(Parameter == i &  Iso_type == "HlyE_IgA")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  # scale_x_log10() +
+  facet_wrap(~n, ncol = 4) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior population distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4")) +
+    theme(legend.position = "top")
+)
+}
+fig_num <- fig_num +1
+
+
+```
+
+  
+Figure `r fig_num`: Posterior distribution of predictive parameters comparing modeled simulated to 
+original data by number simulated for HlyE_IgG   
+```{r  error = F, warning = F, message = F, fig.height=20}
+
+for (i in c("log(alpha)", "log(shape - 1)", "log(y1 - y0)", "log(y0)",
+                                                     "log(t1)")) {
+print(
+ggplot(plot_pop_summ %>% filter(Parameter == i &  Iso_type == "HlyE_IgG")) +
+  geom_point(aes(x = median, y = sim, color = type)) +
+  geom_linerange(aes(xmin = quant2.5, xmax = quant97.5, y = sim, color = type)) +
+  # scale_x_log10() +
+  facet_wrap(~n, ncol = 4) +
+   theme_bw() +
+  labs(x = "Posterior distribution", y = "Simulation",
+       title = paste0("Posterior population distribution for HlyE_IgA/", i, 
+                      " \nby number sampled and simulation")) +
+  scale_color_manual(values = c("skyblue1", "dodgerblue4"))
+)
+}
+fig_num <- fig_num +1
+
+```
+
+
+### RMSE analysis  
+We will now calculate monte carlo bias comparing the median, 2.5% and 97.5% 
+population-level posterior estimates for each parameter across samples taken. 
+The estimates follow:  
+$$
+\mathrm{RMSE}_N =
+\sqrt{
+\frac{1}{S}
+\sum_{s=1}^{S}
+\left(
+\hat{q}_{s,N} - q_{\mathrm{original}}
+\right)^2
+}
+$$
+
+Data preparation:
+```{r error = F, warning = F, fig.height=15}
+
+sim_post <- nepplot_pop_summ %>%
+  filter(type == "Simulated posterior")
+
+original_post <- nepplot_pop_summ %>%
+  filter(type == "Original posterior") %>%
+  dplyr::ungroup() %>%
+  select(Parameter, Iso_type, median, quant2.5, quant97.5, type)
+
+comparison <- sim_post %>%
+  left_join(
+    original_post %>%
+      select(
+        Parameter,
+        Iso_type,
+        original_lower = quant2.5,
+        original_median = median,
+        original_upper = quant97.5
+      ),
+    by = c("Parameter", "Iso_type")
+  )
+
+comparison <- comparison %>%
+  mutate(
+    error_lower = quant2.5 - original_lower,
+    error_median = median - original_median,
+    error_upper = quant97.5 - original_upper
+  )
+
+mc_bias <- comparison %>%
+  group_by(n, Parameter, Iso_type) %>%
+  summarise(
+    bias_lower = mean(error_lower, na.rm = TRUE),
+    bias_median = mean(error_median, na.rm = TRUE),
+    bias_upper = mean(error_upper, na.rm = TRUE),
+    .groups = "drop"
+  )
+mc_rmse <- comparison %>%
+  group_by(n, Parameter, Iso_type) %>%
+  summarise(
+    rmse_lower = sqrt(mean(error_lower^2, na.rm = TRUE)),
+    rmse_median = sqrt(mean(error_median^2, na.rm = TRUE)),
+    rmse_upper = sqrt(mean(error_upper^2, na.rm = TRUE)),
+    .groups = "drop"
+  )
+
+mc_rmse_long <- comparison %>%
+  group_by(n, Parameter, Iso_type) %>%
+  summarise(
+    lower = sqrt(mean(error_lower^2, na.rm = TRUE)),
+    median = sqrt(mean(error_median^2, na.rm = TRUE)),
+    upper = sqrt(mean(error_upper^2, na.rm = TRUE)),
+    .groups = "drop"
+  ) %>%
+  tidyr::pivot_longer(
+    cols = c(lower, median, upper),
+    names_to = "posterior_quantile",
+    values_to = "RMSE"
+  )
+
+
+```
+
+Figure `r fig_num`: Monte Carlo RMSE of median, 2.5% and 97.5% posterior distribution 
+by number of simulated cases used for modeling and antigen isotype  
+```{r error = F, warning = F, fig.height=12}
+
+ggplot(
+  mc_rmse_long,
+  aes(x = n, y = RMSE, linetype = posterior_quantile,
+      group = posterior_quantile)) +
+  geom_line() +
+  geom_point(size = 2) +
+  facet_grid(
+    Parameter ~ Iso_type,
+    scales = "free_y"
+  ) +
+  theme_bw() +
+  labs(
+    x = "Number of subjects",
+    y = "Monte Carlo RMSE",
+    linetype = "Posterior summary"
+  )+
+    theme(legend.position = "top")
+
+fig_num <- fig_num +1
+
+```
+
+
+### Modeled serokinetic curves  
+Figure `r fig_num`: Serokinetic curves of simulated and original predictive 
+posterior curves by number of simulations sampled and antigen isotype  
+```{r error = F, warning = F, message = F, fig.height = 15}
+
+# Need to also gather median from the original data model
+nepal_pred_seroplot <- left_join(nepal_sees_output, nepal_sees_summ_bind,
+                                by = "Parameter")
+
+plot_pred_curves <- bind_rows(neppost_pred_sim, nepal_pred_seroplot) %>%
+  mutate(Stratification = sim) %>%
+  mutate(Stratification = ifelse(is.na(Stratification), "Original", 
+                                 Stratification))
+  
+plot_list <- list()
+for (i in unique(plot_pred_curves$n)) {
+strat_levels <- unique(na.omit(plot_pred_curves$Stratification))
+color_values <- setNames(
+  ifelse(strat_levels == "Original", "red", "blue"),
+  strat_levels
+)
+## Original data layer
+plot_pred_curveplot <- plot_pred_curves %>%
+  filter(n == i)
+p_original <- plot_serocurve(
+  plot_pred_curveplot %>% 
+    filter(Stratification == "Original"),
+  log_y = TRUE,
+  show_ci = TRUE
+) 
+  # Make Original curve prominent
+  p_original$layers <- lapply(
+    p_original$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "red"
+        layer$aes_params$alpha <- 1
+        layer$aes_params$linewidth <- 1.2
+      }
+      layer
+    }
+  )
+  
+## Simulation layer
+p_sim <- plot_serocurve(
+  plot_pred_curveplot %>% 
+    filter(Stratification != "Original"),
+  log_y = TRUE,
+  show_ci = FALSE
+)
+  p_sim$layers <- lapply(
+    p_sim$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "blue"
+        layer$aes_params$alpha <- 0.4
+        layer$aes_params$linewidth <- 0.5
+      }
+      layer
+    }
+  )
+  
+plot_list[[i]] <- p_sim +
+  p_original$layers +
+  scale_color_manual(
+    values = color_values,
+    breaks = c(
+      strat_levels[strat_levels != "Original"][1],
+      "Original"
+    ),
+    labels = c("Simulation", "Original")
+  ) +
+  guides(
+    color = guide_legend(
+      title = NULL,
+      override.aes = list(
+        alpha = 1,
+        linewidth = 1
+      )
+    ),
+    fill = "none"
+  ) +
+  labs(title = paste0("n = ", i)) 
+}
+wrap_plots(plot_list, ncol = 2)  +
+  plot_layout(guides = "collect") &
+  theme(
+    legend.position = "bottom"
+  )
+
+
+  
+```
+
+
+Figure `r fig_num`: Serokinetic curves of simulated and original population level 
+posterior curves by number of simulations sampled and antigen isotype  
+```{r error = F, warning = F, message = F, fig.height = 15}
+
+# Need to also gather median from the original data model
+nepal_pop_seroplot <- attributes(nepal_sees_output)$population_params 
+nepal_pop_seroplot <- left_join(nepal_pop_seroplot, nepal_pop_summ_bind,
+                                by = "Parameter")
+
+plot_pop_curves <- bind_rows(nep_pop_data, nepal_pop_seroplot) %>%
+  filter(Population_Parameter == "mu.par") %>%
+  mutate(Stratification = sim) %>%
+  mutate(Stratification = ifelse(is.na(Stratification), "Original", 
+                                 Stratification)) %>%
+  filter(is.na(n)==F)
+
+plot_list <- list()
+for (i in unique(plot_pop_curves$n)) {
+strat_levels <- unique(na.omit(plot_pop_curves$Stratification))
+color_values <- setNames(
+  ifelse(strat_levels == "Original", "red", "blue"),
+  strat_levels
+)
+
+# Setting up data first
+plot_pop_curvesplot <- plot_pop_curves %>%
+  filter(n == i)
+attr(plot_pop_curvesplot, "population_params") <- plot_pop_curvesplot
+
+## Original data layer
+p_original <- plot_serocurve(
+  plot_pop_curvesplot %>% 
+    filter(Stratification == "Original"),
+  log_y = TRUE,
+  show_ci = TRUE,
+  param_source = "population"
+) 
+  # Make Original curve prominent
+  p_original$layers <- lapply(
+    p_original$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "red"
+        layer$aes_params$alpha <- 1
+        layer$aes_params$linewidth <- 1.2
+      }
+      layer
+    }
+  )
+  
+## Simulation layer
+p_sim <- plot_serocurve(
+  plot_pop_curvesplot %>% 
+    filter(Stratification != "Original"),
+  log_y = TRUE,
+  show_ci = FALSE,
+  param_source = "population"
+)
+  p_sim$layers <- lapply(
+    p_sim$layers,
+    function(layer) {
+      if (inherits(layer$geom, "GeomLine")) {
+        layer$aes_params$color <- "blue"
+        layer$aes_params$alpha <- 0.4
+        layer$aes_params$linewidth <- 0.5
+      }
+      layer
+    }
+  )
+  
+plot_list[[i]] <- p_sim +
+  p_original$layers +
+  scale_color_manual(
+    values = color_values,
+    breaks = c(
+      strat_levels[strat_levels != "Original"][1],
+      "Original"
+    ),
+    labels = c("Simulation", "Original")
+  ) +
+  guides(
+    color = guide_legend(
+      title = NULL,
+      override.aes = list(
+        alpha = 1,
+        linewidth = 1
+      )
+    ),
+    fill = "none"
+  ) +
+  labs(title = paste0("n = ", i)) 
+}
+wrap_plots(plot_list, ncol = 2)  +
+  plot_layout(guides = "collect") &
+  theme(
+    legend.position = "bottom"
+  )
+
 ```
   
