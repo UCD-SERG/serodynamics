@@ -73,7 +73,7 @@ prep_priors <- function(max_antigens,
     cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
   }
   # prec_hyp_param
-  if (length(mu_hyp_param) != 5) {
+  if (length(prec_hyp_param) != 5) {
     cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
   }
   # omega_hyp_param
