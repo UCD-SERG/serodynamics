@@ -22,4 +22,3 @@ test_that("Expect error when only some supplied", {
               prec_logy_hyp_param = c(4.0, 1.0)) |>
     expect_error()
 })
-
