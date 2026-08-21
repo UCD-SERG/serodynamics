@@ -33,7 +33,12 @@ raw_data <-
     antigen_isos = c("HlyE_IgA", "HlyE_IgG")
   )
 prepped_data <- prep_data(raw_data)
-priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
+priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos,
+                      mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                      prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                      omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                      wishdf_param = 20,
+                      prec_logy_hyp_param = c(4.0, 1.0))
 nchains <- 2
 # nr of MC chains to run simultaneously
 nadapt <- 100

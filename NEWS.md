@@ -16,7 +16,6 @@
   `RoxygenNote` field, which 8.1.0 no longer writes.
   The version is left floating rather than fixed, so a later roxygen2 release
   will need the same treatment.
-
 * Restored `@claude review` as a way to request a review (#285).
   Disabling the agent bot moved review dispatch into
   `claude-code-review.yml` behind a comment starting with `/review`, on the
@@ -74,6 +73,9 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+* Default priors are no longer supplied for`run_serodynamics()`.  
+  **Breaking change:** Users must manually specify priors to run function or an
+  error will occur.
 * Added `plot_residuals()` to visualize residuals over time, faceted by
   antigen-isotype. `run_serodynamics()` stores the original input `data`
   (and the stratification variable name) as `original_data`/`strat`
