@@ -138,9 +138,9 @@ No priors are specified by default, meaning users must customize their inputs to
 - and the gamma hyperprior on measurement precision (`prec_logy_hyp_param`).  
 Users with strong external information can tighten `prec_hyp_param`; users seeking more diffuse priors or facing convergence difficulties can lower `prec_hyp_param` and/or reduce  `wishdf_param` (e.g. 5-10), which weakens the prior on between-individual variation. 
 
-**Bayesian specification**
-Users specify the number of MCMC chains (nchain, 1–4), adaptation iterations (nadapt), burn-in iterations (nburn), retained samples per chain (nmc), and total iterations (niter), with thinning computed as niter/nmc. Chains are executed in parallel for computational efficiency. It is recommended that 4 chains are run concurrently for inference. Additional computing power may be necessary when running large models with many iterations. For further information please visit: https://cran.ma.imperial.ac.uk/web/packages/runjags/vignettes/UserGuide.pdf
-
+**Bayesian specification**  
+Users specify the number of MCMC chains (nchain, 1–4), adaptation iterations (nadapt), burn-in iterations (nburn), retained samples per chain (nmc), and total iterations (niter), with thinning computed as niter/nmc. Chains are executed in parallel for computational efficiency. It is recommended that 4 chains are run concurrently for inference. Additional computing power may be necessary when running large models with many iterations. For further information please visit: https://cran.ma.imperial.ac.uk/web/packages/runjags/vignettes/UserGuide.pdf  
+  
 ```{r}
 #| label: run-model
 # Note: This example uses reduced iterations for demonstration
