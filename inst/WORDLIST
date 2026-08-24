@@ -51,9 +51,13 @@ lifecycle
 linux
 mcmc
 mitre
+nadapt
+nburn
+nchain
 newperson
 nmc
 onwards
+param
 params
 passthrough
 pkgdown
@@ -68,6 +72,8 @@ serodynamic
 seroepidemiological
 serological
 seroresponse
+serotype
+strat
 stratifications
 submodule
 summarised
