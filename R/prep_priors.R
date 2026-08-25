@@ -38,6 +38,7 @@
 #' hyperprior diagonal entries on the log-scale for the precision matrix
 #' (i.e. inverse variance) representing prior beliefs of individual variation.
 #' Must be 2 values long.
+#' @inheritParams run_serodynamics decay_type
 #'
 #' @returns A "curve_params_priors" object 
 #' (a subclass of [list] with the inputs to `prep_priors()` attached 
@@ -70,7 +71,7 @@ prep_priors <- function(max_antigens,
                         omega_param = NULL,
                         wishdf_param = NULL,
                         prec_logy_hyp_param = NULL,
-                        ...) {
+                        decay_type = "power") {
 
   # Ensuring the length of specified priors is correct.
   # mu_hyp_param
