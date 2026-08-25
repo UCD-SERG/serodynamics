@@ -11,7 +11,7 @@ prep_priors(
   omega_param = NULL,
   wishdf_param = NULL,
   prec_logy_hyp_param = NULL,
-  ...
+  decay_type = "power"
 )
 }
 \arguments{
@@ -58,6 +58,18 @@ which can help improve convergence if the model is over-regularized.
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
 Must be 2 values long.}
+
+\item{decay_type}{A \link{character} string specifying the decay function used
+in the model. Options are \code{"power"} and \code{"exponential"}. Default is
+\code{"power"}. The \code{"power"} option uses
+\code{y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))}. The
+\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
+The exponential model does not estimate \code{shape}; its processed output
+includes \code{shape = 1} as a fixed value to preserve the common output
+structure.
+Note: \code{prep_priors()} still validates 5-element prior vectors. For
+exponential decay, the fifth (\code{shape}) prior is required for validation
+but is ignored and omitted from the reported priors.}
 }
 \value{
 A "curve_params_priors" object
