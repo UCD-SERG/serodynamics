@@ -10,7 +10,8 @@ prep_priors(
   prec_hyp_param = NULL,
   omega_param = NULL,
   wishdf_param = NULL,
-  prec_logy_hyp_param = NULL
+  prec_logy_hyp_param = NULL,
+  ...
 )
 }
 \arguments{
@@ -19,25 +20,28 @@ antigen-isotypes (biomarkers) will be modeled.}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker.
+parameters (y0, y1, t1, r, alpha) for each biomarker. When \code{ decay_type == "exponential"} only 5 parameters (y0, y1, t1, alpha) are used.
 Must be 5 values long, representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
-\item r = shape parameter
+\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
+parameter needs to be specified).
 \item alpha = decay rate
 }}
 
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
-Must be 5 values long corresponding to the 5 estimated parameters.}
+Must be 5 values long corresponding to the 5 estimated parameters (4 values
+when \code{decay_type == "exponential"}).}
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
-to vary between individuals.
+to vary between individuals (4 values
+when \code{decay_type == "exponential"})..
 Must be 5 values long corresponding to the 5 estimated parameters.}
 
 \item{wishdf_param}{An \link{integer} \link{vector} of 1 value specifying the degrees
