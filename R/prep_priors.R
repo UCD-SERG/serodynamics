@@ -109,7 +109,7 @@ prep_priors <- function(max_antigens,
 
 
   # Model parameters
-  n_params <- ifelse(decay_type == "power", 5, 4) 
+  n_params <- if (decay_type == "power") 5L else 4L
   # Assuming 5 model parameters [ y0, y1, t1, alpha, shape], 4 if exponential
  
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
