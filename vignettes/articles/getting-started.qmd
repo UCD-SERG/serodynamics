@@ -140,6 +140,7 @@ fitted_model <- run_serodynamics(
   nburn = 100,     # Burn-in iterations  
   nmc = 10,        # Samples per chain (use 1000+ for real analysis)
   niter = 20,       # Total iterations (use 2000+ for real analysis)
+  # Priors were selected based on prior information regarding typhoid fever. Users should always specify priors according to their own data set.
   mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), # Prior mean for the population level parameters
   prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), # Hyperprior precision matrix
   omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), # Wishart hyperprior distributions
