@@ -73,6 +73,9 @@ prep_priors <- function(max_antigens,
                         prec_logy_hyp_param = NULL,
                         decay_type = "power") {
 
+  # Select model file based on decay type
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
+  
   # Ensuring the length of specified priors is correct.
   # mu_hyp_param
   if (length(mu_hyp_param) != 5 && decay_type == "power") {
