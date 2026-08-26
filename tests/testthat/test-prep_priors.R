@@ -25,13 +25,26 @@ test_that("Expect error when priors are not supplied", {
     expect_error()
 })
 
-test_that("Expect error for mu.hyp.param under exponential", {
+test_that("Expect error for mu_hyp_param under exponential", {
   prep_priors(max_antigens = 2, 
               mu_hyp_param = c(1.0),
+              decay_type = "exponential") |>
+    expect_error()
+})
+
+test_that("Expect error for prec_hyp_param under exponential", {
+  prep_priors(max_antigens = 2, 
+              mu_hyp_param = 1:4,
               prec_hyp_param = c(0.01),
+              decay_type = "exponential") |>
+    expect_error()
+})
+
+test_that("Expect error for omega_param under exponential", {
+  prep_priors(max_antigens = 2, 
+              mu_hyp_param = 1:4, 
+              prec_hyp_param = rep(0.01, 5),
               omega_param = c(1.0),
-              wishdf_param = 15,
-              prec_logy_hyp_param = c(4.0, 1.0),
               decay_type = "exponential") |>
     expect_error()
 })
