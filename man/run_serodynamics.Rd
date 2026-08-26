@@ -79,8 +79,8 @@ is \code{FALSE} (all \code{prec.logy} rows share \code{Parameter = "prec.logy"};
 antigen-isotypes (biomarkers) will be modeled.}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker. When \code{ decay_type == "exponential"} only 5 parameters (y0, y1, t1, alpha) are used.
-Must be 5 values long, representing the following parameters:
+parameters (y0, y1, t1, r, alpha) for each biomarker. Must be 5 values long,
+representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
@@ -88,17 +88,18 @@ Must be 5 values long, representing the following parameters:
 \item r = shape parameter (If running \code{decay_type == "exponential"} no shape
 parameter needs to be specified).
 \item alpha = decay rate
+When \code{decay_type = "exponential"} only 5 parameters (y0, y1, t1, alpha) are
+used.
 }}
     \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
 Must be 5 values long corresponding to the 5 estimated parameters (4 values
-when \code{decay_type == "exponential"}).}
+when \code{decay_type = "exponential"}).}
     \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
-to vary between individuals (4 values
-when \code{decay_type == "exponential"})..
+to vary between individuals (4 values when \code{decay_type = "exponential"}).
 Must be 5 values long corresponding to the 5 estimated parameters.}
     \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.

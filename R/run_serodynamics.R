@@ -34,9 +34,9 @@
 #'   The exponential model does not estimate `shape`; its processed output
 #'   includes `shape = 1` as a fixed value to preserve the common output
 #'   structure.
-#'   Note: `prep_priors()` still validates 5-element prior vectors. For
-#'   exponential decay, the fifth (`shape`) prior is required for validation
-#'   but is ignored and omitted from the reported priors.
+#'   Note: `prep_priors()` validates 5-element prior vector for power 
+#'   decay and 4-element prior vectors for exponential decay (the fifth 
+#'   (`shape`) prior is excluded in exponential decay). 
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
