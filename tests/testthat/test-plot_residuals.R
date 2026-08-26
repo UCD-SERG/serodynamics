@@ -95,9 +95,9 @@ testthat::test_that(
       niter = 100, # Number of iterations
       strat = NA, # Variable to be stratified
       with_post = TRUE,
-      mu_hyp_param = c(1, 4, 1, -3, -1),
-      prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001, 0.01),
-      omega_param = c(1, 20, 1, 10, 1),
+      mu_hyp_param = c(1, 4, 1, -3),
+      prec_hyp_param = c(0.01, 0.0001, 0.01, 0.001),
+      omega_param = c(1, 20, 1, 10),
       wishdf_param = 10,
       prec_logy_hyp_param = c(3, 1)
     ) |>
