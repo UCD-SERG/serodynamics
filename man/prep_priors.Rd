@@ -68,9 +68,9 @@ in the model. Options are \code{"power"} and \code{"exponential"}. Default is
 The exponential model does not estimate \code{shape}; its processed output
 includes \code{shape = 1} as a fixed value to preserve the common output
 structure.
-Note: \code{prep_priors()} still validates 5-element prior vectors. For
-exponential decay, the fifth (\code{shape}) prior is required for validation
-but is ignored and omitted from the reported priors.}
+Note: \code{prep_priors()} validates 5-element prior vector for power
+decay and 4-element prior vectors for exponential decay (the fifth
+(\code{shape}) prior is excluded in exponential decay).}
 }
 \value{
 A "curve_params_priors" object
