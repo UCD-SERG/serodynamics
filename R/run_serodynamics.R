@@ -158,6 +158,7 @@ run_serodynamics <- function(data,
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
+                             decay_type = decay_type,
                              ...)
     priorspec <- configure_decay_priors(priorspec, decay_type)
 
