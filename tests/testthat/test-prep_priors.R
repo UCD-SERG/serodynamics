@@ -22,14 +22,14 @@ test_that("Preparing priors for exponential", {
 
 test_that("Expect error when priors are not supplied", {
   prep_priors(max_antigens = 2) |>
-    expect_error()
+    expect_error("Need to specify 5 priors for `mu_hyp_param`")
 })
 
 test_that("Expect error for mu_hyp_param under exponential", {
   prep_priors(max_antigens = 2, 
               mu_hyp_param = c(1.0),
               decay_type = "exponential") |>
-    expect_error()
+    expect_error("Need to specify 4 priors for `mu_hyp_param`")
 })
 
 test_that("Expect error for prec_hyp_param under exponential", {
@@ -37,14 +37,14 @@ test_that("Expect error for prec_hyp_param under exponential", {
               mu_hyp_param = 1:4,
               prec_hyp_param = c(0.01),
               decay_type = "exponential") |>
-    expect_error()
+    expect_error("Need to specify 4 priors for `prec_hyp_param`")
 })
 
 test_that("Expect error for omega_param under exponential", {
   prep_priors(max_antigens = 2, 
               mu_hyp_param = 1:4, 
-              prec_hyp_param = rep(0.01, 5),
+              prec_hyp_param = rep(0.01, 4),
               omega_param = c(1.0),
               decay_type = "exponential") |>
-    expect_error()
+    expect_error("Need to specify 4 priors for `omega_param`")
 })
