@@ -102,7 +102,7 @@ testthat::test_that(
       prec_logy_hyp_param = c(3, 1)
     ) |>
       suppressWarnings()
-    testthat::expect_equal(attr(model,"decay_type"), "exponential")
+    testthat::expect_equal(attr(model, "decay_type"), "exponential")
 
     fit_res <- calc_fit_mod(
       modeled_dat = model,
