@@ -84,15 +84,15 @@ prep_priors <- function(max_antigens,
   # prec_hyp_param
   if (length(prec_hyp_param) != 5 && decay_type == "power") {
     cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}") 
-  } else if (length(mu_hyp_param) != 4 && decay_type == "exponential") {
-    cli::cli_abort("Need to specify 4 priors for {.arg mu_hyp_param}
+  } else if (length(prec_hyp_param) != 4 && decay_type == "exponential") {
+    cli::cli_abort("Need to specify 4 priors for {.arg prec_hyp_param}
                    when decay_type == exponential")
   }
   # omega_hyp_param
   if (length(omega_param) != 5 && decay_type == "power") {
     cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
-  } else if (length(mu_hyp_param) != 4 && decay_type == "exponential") {
-    cli::cli_abort("Need to specify 4 priors for {.arg mu_hyp_param}
+  } else if (length(omega_param) != 4 && decay_type == "exponential") {
+    cli::cli_abort("Need to specify 4 priors for {.arg omega_param}
                    when decay_type == exponential")
   }
   # wishdf_param
