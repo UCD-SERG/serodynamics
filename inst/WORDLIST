@@ -21,6 +21,7 @@ TSI
 UCD
 Vectorization
 Wasserstein
+absoluate
 behaviour
 biomarker
 biomarkers
@@ -51,9 +52,6 @@ lifecycle
 linux
 mcmc
 mitre
-nadapt
-nburn
-nchain
 newperson
 nmc
 onwards
