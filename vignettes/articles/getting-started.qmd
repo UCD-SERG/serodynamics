@@ -189,15 +189,30 @@ plot_ess(fitted_model)
 
 ## Visualizing Fitted Curves
 
-Plot the predicted antibody curves with credible intervals:
+Plot the predicted stratified antibody curves with credible intervals:
 
 ```{r}
+
+plot_serocurve(fitted_model,
+               log_y = TRUE)
+
+```
+
+
+Plot the predicted antibody curve for an individual with their original observed 
+data for HlyE IgA.
+
+```{r}
+
 #| label: plot-curves
 plot_predicted_curve(
   fitted_model,
   ids = serocalculator::ids(nepal_sees)[1],
-  antigen_iso = nepal_sees$antigen_iso[1]
+  antigen_iso = nepal_sees$antigen_iso[1],
+  dataset = nepal_sees, # Original data set to overlaw raw data
+  log_y = TRUE # Plotting Y-axis on the log scale
 )
+
 ```
 
 ## Post-Processing Results
