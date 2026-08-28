@@ -157,6 +157,7 @@ fitted_model <- run_serodynamics(
   nburn = 100,     # Burn-in iterations  
   nmc = 100,        # Samples per chain (use 1000+ for real analysis)
   niter = 200,       # Total iterations (use 2000+ for real analysis)
+  strat = "bldculres",
   mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
   prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
   omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
@@ -194,8 +195,8 @@ Plot the predicted antibody curves with credible intervals:
 #| label: plot-curves
 plot_predicted_curve(
   fitted_model,
-  ids = serocalculator::ids(simulated_data)[1],
-  antigen_iso = simulated_data$antigen_iso[1]
+  ids = serocalculator::ids(nepal_sees)[1],
+  antigen_iso = nepal_sees$antigen_iso[1]
 )
 ```
 
@@ -209,6 +210,21 @@ Extract and summarize the posterior estimates:
 summary_stats <- summarize_posterior(fitted_model)
 print(summary_stats)
 ```
+
+## Checking model fit
+
+Plot the residuals over time including mean absoluate error (MAE):
+
+
+```{r}
+
+#| label: check residuals
+# Summarize parameter estimates
+residuals_stats <- plot_residuals(fitted_model)
+print(residuals_stats)
+
+```
+
 
 ## Working with Stratified Data
 
