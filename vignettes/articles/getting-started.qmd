@@ -150,7 +150,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 # For actual analysis, use larger values (e.g., nmc=1000, niter=2000)
 
 fitted_model <- run_serodynamics(
-  data = simulated_data,
+  data = nepal_sees,
   file_mod = serodynamics_example("model.jags"),
   nchain = 4,      # Number of MCMC chains
   nadapt = 100,    # Adaptation iterations
