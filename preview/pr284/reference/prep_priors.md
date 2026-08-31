@@ -42,7 +42,7 @@ prep_priors(
   - r = shape parameter (If running `decay_type == "exponential"` no
     shape parameter needs to be specified).
 
-  - alpha = decay rate When `decay_type = "exponential"` only 5
+  - alpha = decay rate When `decay_type = "exponential"` only 4
     parameters (y0, y1, t1, alpha) are used.
 
 - prec_hyp_param:
