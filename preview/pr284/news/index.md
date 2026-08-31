@@ -4,6 +4,18 @@
 
 ### Internal
 
+- Granted `pull-requests: write` permission to the review dispatch job
+  in `claude-code-review.yml`
+  ([\#307](https://github.com/UCD-SERG/serodynamics/issues/307)),
+  allowing acknowledgment comments to post on pull requests without
+  GraphQL permission errors.
+
+- Hardened JAGS download and installer execution across CI workflows
+  (`R-CMD-check.yaml` and `test-coverage.yaml`), using `curl.exe` with
+  retry flags, `start /wait` for synchronous Windows installer
+  execution, and platform- tailored `rjags` installation
+  (`type = "source"` on macOS/Linux, binary on Windows).
+
 - Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0
   ([\#288](https://github.com/UCD-SERG/serodynamics/issues/288)). The
   documentation check installs whatever roxygen2 is current rather than
@@ -18,6 +30,7 @@
   field, which 8.1.0 no longer writes. The version is left floating
   rather than fixed, so a later roxygen2 release will need the same
   treatment.
+
 - Restored `@claude review` as a way to request a review
   ([\#285](https://github.com/UCD-SERG/serodynamics/issues/285)).
   Disabling the agent bot moved review dispatch into
@@ -33,11 +46,13 @@
   (`@claude, please fix the failing test`) is still not mistaken for a
   review request, and a mention quoted in a code span or a quoted line
   does not trigger one.
+
 - Replaced the silence with a reply when the `@claude` agent is
   addressed. A mention that is not a review request now gets a short
   comment saying the agent is switched off and naming the triggers that
   do work, since a skipped workflow is indistinguishable from a broken
   bot – which is why the gap above went unnoticed for so long.
+
 - Disabled the `@claude` agent bot. `.github/workflows/claude.yml`’s
   reactive triggers are commented out and its job carries `if: false`,
   so no comment, issue, or review event invokes the agent, and neither
@@ -48,6 +63,7 @@
   `issue_comment` trigger and a `dispatch-on-comment` job, since the
   `@claude review` mention it previously relied on went away with the
   agent.
+
 - Pointed the `ai-config` Claude Code plugin marketplace at
   `Morrison-Lab`. The corpus moved to a new GitHub organization and
   renamed the marketplace declared in its own
@@ -58,6 +74,7 @@
   since git follows GitHub’s transfer redirect; only the name lookup
   failed. `.gitmodules` and `CLAUDE.md`’s live links now point at the
   new organization as well.
+
 - Removed the local `dispatch-explicit-review` job from
   `.github/workflows/claude.yml`. It existed to cover
   `@claude, please review`, a phrasing the reusable workflow’s own
@@ -70,11 +87,13 @@
   had no `needs: claude` (closes
   [\#277](https://github.com/UCD-SERG/serodynamics/issues/277), closes
   [\#276](https://github.com/UCD-SERG/serodynamics/issues/276)).
+
 - Added a project-level `Claude Code` skill, `reprexes`
   (`.claude/skills/reprexes`), capturing a workflow for isolating a
   problem into a minimal reproducible example and iterating fixes on it
   before porting them back
   ([\#239](https://github.com/UCD-SERG/serodynamics/issues/239)).
+
 - Embedded
   [`d-morrison/ai-config`](https://github.com/d-morrison/ai-config) as a
   `.ai-config` git submodule, with a scheduled `Bump submodule` workflow
@@ -82,10 +101,12 @@
   marketplace in `.claude/settings.json` so cloud/web sessions opened on
   this repo load its skills (closes
   [\#264](https://github.com/UCD-SERG/serodynamics/issues/264)).
+
 - Added a scheduled `Clean up PR Previews` workflow that prunes
   closed-PR `gh-pages` previews and compacts `gh-pages` history, so
   deleted render snapshots stop bloating the repo (closes
   [\#260](https://github.com/UCD-SERG/serodynamics/issues/260)).
+
 - Added a `CLAUDE.md` review-guideline item flagging roxygen doc
   copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection`
   instead) and manual argument relaying (use `...` passthrough instead)
