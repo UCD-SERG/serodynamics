@@ -48,3 +48,14 @@ test_that("Expect error for omega_param under exponential", {
               decay_type = "exponential") |>
     expect_error("Need to specify 4 priors for `omega_param`")
 })
+
+test_that("Expect error for misspelling of decay type", {
+  prep_priors(max_antigens = 2, 
+              mu_hyp_param = c(1.0,  5.0, 0.0, -2.0),
+              prec_hyp_param = c(0.01, 0.01, 0.01, 0.01),
+              omega_param = c(1.0, 50.0, 1.0, 5.0),
+              wishdf_param = 15,
+              prec_logy_hyp_param = c(4.0, 1.0),
+              decay_type = "Power") |>
+    expect_error("Must specify `decay_type`")
+})
