@@ -22,6 +22,10 @@
 #' visualize the precision of the posterior.
 #' @param connect_lines [logical]; if `TRUE`, connects each subject's
 #' residuals over time with a line. Default `FALSE`.
+#' @param facet_by_strat [character]; facets residual plot and 
+#' calculates MAE by specified stratification variable. Default `NULL`.
+#' @param color_by_strat [character]; colors residual plot and 
+#' calculates MAE by specified stratification variable. Default `NULL`.
 #'
 #' @return A [ggplot2::ggplot] object.
 #' @export
@@ -32,7 +36,9 @@ plot_residuals <- function(model,
                            antigen_isos = NULL,
                            log_y = TRUE,
                            show_interval = TRUE,
-                           connect_lines = FALSE) {
+                           connect_lines = FALSE,
+                           facet_by_strat = NULL,
+                           color_by_strat = NULL) {
   if (!inherits(model, "sr_model")) {
     cli::cli_abort("{.arg model} must be an {.cls sr_model} object.")
   }
@@ -72,11 +78,46 @@ plot_residuals <- function(model,
   }
 
   colored <- !is.null(ids)
+  color_strat <- !is.null(color_by_strat)
+  facet_strat <- !is.null(facet_by_strat)
+  
+  # ------------------------------------------------------------
+  # Setting up stratification
+  # ------------------------------------------------------------
+  
+  if (color_strat || facet_strat) {
+    strat_cols <- c(
+      if (color_strat) color_by_strat,
+      if (facet_strat) facet_by_strat)
 
+    id_var <- attr(original_data, "id_var")
+    
+    to_plot <- to_plot |>
+      dplyr::left_join(original_data |>
+          dplyr::select(dplyr::all_of(unique(c(id_var, strat_cols)))) |>
+          dplyr::rename(Subject = dplyr::all_of(id_var)), by = "Subject")
+  }
+  
+  # ------------------------------------------------------------
+  # Determine color variable
+  # ------------------------------------------------------------
+  if (colored) {
+    color_var <- "Subject"
+    legend_position <- "right"
+    legend_title <- "Subject"
+  } else if (color_strat) {
+    color_var <- color_by_strat
+    legend_position <- "top"
+    legend_title <- color_by_strat
+  } else {
+    color_var <- NULL
+    legend_position <- "none"
+    legend_title <- NULL
+  }
+  
   p <- to_plot |>
-    ggplot2::ggplot(
-      ggplot2::aes(x = .data$t, y = .data$resid_med, group = .data$Subject)
-    ) +
+    ggplot2::ggplot(ggplot2::aes(x = .data$t, y = .data$resid_med, 
+                                 group = .data$Subject)) +
     ggplot2::geom_hline(yintercept = 0, linewidth = 0.5, linetype = "dashed")
 
   if (show_interval) {
@@ -86,46 +127,86 @@ plot_residuals <- function(model,
         linewidth = 0.4, width = 0, alpha = 0.5, na.rm = TRUE
       )
   }
-
+  # ------------------------------------------------------------
+  # Points
+  # ------------------------------------------------------------
   if (colored) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
-                                 alpha = 0.6)
+    p <- p +
+      ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
+                          alpha = 0.6) +
+      ggplot2::labs(color = "Subject") +
+      ggplot2::theme(legend.position = "right")
+    
+  } else if (color_strat) {
+    p <- p +
+      ggplot2::geom_point(ggplot2::aes(color = !!rlang::sym(color_by_strat)),
+                          alpha = 0.6) +
+      ggplot2::labs(color = color_by_strat) +
+      ggplot2::theme(legend.position = "top")
   } else {
     p <- p + ggplot2::geom_point(alpha = 0.6)
   }
-
+  
+  if (!is.null(color_by_strat) & is.null(colored)) {
+    p <- p + ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
+                                 alpha = 0.6) +
+      ggplot2::theme(legend.position = "top")
+  }
+  # ------------------------------------------------------------
+  # Connecting lines
+  # ------------------------------------------------------------
   if (connect_lines) {
-    p <- if (colored) {
-      p + ggplot2::geom_line(ggplot2::aes(color = .data$Subject), alpha = 0.5)
+    if (!is.null(color_var)) {
+      p <- p +
+        ggplot2::geom_line(ggplot2::aes(color = !!rlang::sym(color_var)),
+          alpha = 0.5)
     } else {
       p + ggplot2::geom_line(alpha = 0.5)
     }
   }
-
+  
+  # ------------------------------------------------------------
+  # Faceting
+  # ------------------------------------------------------------
+  if (facet_strat) {
+    facet_formula <- stats::as.formula(paste("~ Iso_type +", facet_by_strat))
+  } else {
+    facet_formula <- ~Iso_type
+  }
   p <- p +
-    ggplot2::facet_wrap(ggplot2::vars(.data$Iso_type)) +
+    ggplot2::facet_wrap(facet_formula) 
+  
+  # ------------------------------------------------------------
+  # MAE labels
+  # ------------------------------------------------------------
+    p <- p +
     ggplot2::geom_text(
-      data = mae_label_data(to_plot),
+      data = mae_label_data(to_plot, facet_by_strat),
       mapping = ggplot2::aes(x = Inf, y = Inf, label = .data$label),
-      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE
-    ) +
+      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE) 
+    
+  # ------------------------------------------------------------
+  # Theme
+  # ------------------------------------------------------------
+    p <- p +
     ggplot2::theme_bw() +
     ggplot2::xlab("Time since seroconversion (days)") +
-    ggplot2::ylab(ylab)
-
-  if (colored) {
-    p <- p + ggplot2::guides(color = "none")
-  }
-
+    ggplot2::ylab(ylab) +
+    ggplot2::theme(legend.position = legend_position)
+  
   return(p)
 }
 
 # One row per `Iso_type` giving a "MAE = ..." label, for annotating each
 # facet with its mean absolute residual.
-mae_label_data <- function(to_plot) {
+mae_label_data <- function(to_plot, facet_by_strat = NULL) {
+  group_vars <- c(
+    "Iso_type",
+    if (!is.null(facet_by_strat)) facet_by_strat
+  )
   mae <- to_plot |>
     dplyr::summarise(
-      .by = all_of("Iso_type"),
+      .by = dplyr::all_of(group_vars),
       mae = mean(abs(.data$resid_med), na.rm = TRUE)
     )
 
