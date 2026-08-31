@@ -68,9 +68,16 @@ jobs:
       
       - name: "install rjags"
         run: |
-          if (!requireNamespace("rjags", quietly = TRUE)) {
+          if (identical(.Platform$OS.type, "windows")) {
+            if (!requireNamespace("rjags", quietly = TRUE)) {
+              install.packages("rjags",
+                               repos = "https://cloud.r-project.org",
+                               verbose = TRUE)
+            }
+          } else {
             install.packages("rjags",
                              repos = "https://cloud.r-project.org",
+                             type = "source",
                              verbose = TRUE)
           }
           withr::local_options(warn = 2)
