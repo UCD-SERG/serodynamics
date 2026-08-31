@@ -73,6 +73,11 @@ prep_priors <- function(max_antigens,
                         prec_logy_hyp_param = NULL,
                         decay_type = "power") {
   
+  if (!(decay_type %in% c("power", "exponential"))) {
+    cli::cli_abort("Must specify {.arg decay_type} = {.val exponential} or 
+                   {.val power}")
+  }
+  
   # Ensuring the length of specified priors is correct.
   # mu_hyp_param
   if (length(mu_hyp_param) != 5 && decay_type == "power") {
@@ -80,7 +85,7 @@ prep_priors <- function(max_antigens,
   } else if (length(mu_hyp_param) != 4 && decay_type == "exponential") {
     cli::cli_abort("Need to specify 4 priors for {.arg mu_hyp_param}
                    when {.arg decay_type} = {.val exponential}")
-  }
+  } 
   # prec_hyp_param
   if (length(prec_hyp_param) != 5 && decay_type == "power") {
     cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}") 
