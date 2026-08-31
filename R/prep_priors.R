@@ -15,7 +15,7 @@
 #'    - r = shape parameter (If running `decay_type == "exponential"` no shape
 #'    parameter needs to be specified).
 #'    - alpha = decay rate 
-#' When `decay_type = "exponential"` only 5 parameters (y0, y1, t1, alpha) are 
+#' When `decay_type = "exponential"` only 4 parameters (y0, y1, t1, alpha) are 
 #' used.
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)

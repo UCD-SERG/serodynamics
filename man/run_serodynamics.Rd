@@ -88,7 +88,7 @@ representing the following parameters:
 \item r = shape parameter (If running \code{decay_type == "exponential"} no shape
 parameter needs to be specified).
 \item alpha = decay rate
-When \code{decay_type = "exponential"} only 5 parameters (y0, y1, t1, alpha) are
+When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
 used.
 }}
     \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
