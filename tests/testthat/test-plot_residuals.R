@@ -102,7 +102,7 @@ testthat::test_that(
       prec_logy_hyp_param = c(3, 1)
     ) |>
       suppressWarnings()
-    testthat::expect_equal(attr(model,"decay_type"), "exponential")
+    testthat::expect_equal(attr(model, "decay_type"), "exponential")
 
     fit_res <- calc_fit_mod(
       modeled_dat = model,
@@ -125,15 +125,15 @@ testthat::test_that(
 testthat::test_that(
   "plot_residuals() facet_by_strat and color_by_strat tests",
   { # Testing for color
-    plot1 <- plot_residuals(
-      model = dataset, antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
-      color_by_strat = "bldculres")
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            color_by_strat = "bldculres")
     
     point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
     
     testthat::expect_length(point_layers, 1)
-    testthat::expect_identical(rlang::as_label(point_layers[[1]]$mapping$colour), 
-                     "bldculres")
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
   }
 )
 
@@ -143,13 +143,14 @@ testthat::test_that(
   {
     # Testing for color
     plot1 <- plot_residuals(
-      model = dataset, antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
-      color_by_strat = "bldculres")
+                            model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            color_by_strat = "bldculres")
     
     point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
     
     testthat::expect_length(point_layers, 1)
-    testthat::expect_identical(rlang::as_label(point_layers[[1]]$mapping$colour), 
-                               "bldculres")
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
   }
 )
