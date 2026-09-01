@@ -33,8 +33,7 @@ testthat::test_that(
     args <- list(
       model = dataset,
       ids = c("sees_npl_128", "sees_npl_131"),
-      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
-      connect_lines = TRUE
+      antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
 
     layer_classes <- function(p) {
@@ -130,11 +129,9 @@ testthat::test_that(
                                                               "HlyE_IgG"),
                             facet_by_strat = "bldculres")
     
-    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
-    
-    testthat::expect_length(point_layers, 1)
-    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
-    testthat::expect_identical(color_var, "bldculres")
+    facet_var <- names(plot1$facet$params$facets)
+    testthat::expect_length(facet_var, 2)
+    testthat::expect_identical(facet_var[2], "bldculres")
   }
 )
 
