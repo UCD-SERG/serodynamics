@@ -11,12 +11,16 @@ file adds review-specific emphasis on top of that guide.
 `.claude/settings.json` registers the
 [`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) Claude
 Code plugin marketplace — the corpus one of this file's review guidelines
-cites (`shared/` fragments, skills, memories) — so a Claude Code web/cloud
-session opened directly on this repo (where `~/.claude` starts empty) loads
-its skills as `ai-config:`-namespaced commands. This is separate from the
-`@claude` CI bot, which loads skills only from a committed `.claude/skills/`
-directory, not from `enabledPlugins`. The corpus is no longer vendored as a
-git submodule; the plugin fetches it at session start.
+cites (`shared/` fragments, skills, memories) — and enables its plugin, whose
+skills load as `ai-config:`-namespaced commands. Claude Code installs an
+enabled plugin from its marketplace whenever it is not yet cached: every
+session start on web/cloud, where `~/.claude` starts empty; once on a local
+checkout, which may need `claude plugin install ai-config@Morrison-Lab` and
+refreshes only via auto-update or `/plugin marketplace update`. The
+`@claude` CI reviewer never reads `enabledPlugins`; it gets the same plugin
+through `Morrison-Lab/gha`'s `claude-code-review.yml` `use-ai-config` input
+(on by default), plus any committed `.claude/skills/`. The corpus is no
+longer checked in as a git submodule.
 
 ## Lab-wide style authority
 
