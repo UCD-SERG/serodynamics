@@ -84,8 +84,8 @@
 
 ## New features
  * Default priors are no longer supplied for `run_serodynamics()`. `prep_priors`
- now takes 4 values for priors for `mu_hyp_param`, `prec_hyp_param`, and 
- `omega_param`.
+ now takes 4 values for `mu_hyp_param`, `prec_hyp_param` and `omega_param`
+ when `decay_type = "exponential"`, and 5 when it is `"power"`.
    **Breaking change:** Users must manually specify priors to run the function 
    or an error will occur. Users must specify 4 priors for `exponential` and 
    5 priors for `power` decay.
