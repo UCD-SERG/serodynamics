@@ -85,7 +85,7 @@
 
 ## New features
 * Added `runjags` and `prep_priors()` specification guidelines to 
-  `getting_started`vignette.
+  `getting-started` vignette.
 * Added `plot_residuals()` to visualize residuals over time, faceted by
   antigen-isotype. `run_serodynamics()` stores the original input `data`
   (and the stratification variable name) as `original_data`/`strat`
