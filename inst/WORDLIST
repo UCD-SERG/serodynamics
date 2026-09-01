@@ -55,6 +55,7 @@ mitre
 newperson
 nmc
 onwards
+param
 params
 passthrough
 pkgdown
@@ -69,6 +70,8 @@ serodynamic
 seroepidemiological
 serological
 seroresponse
+serotype
+strat
 stratifications
 submodule
 summarised
