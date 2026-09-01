@@ -158,10 +158,10 @@ by age group, serotype, geography, or other covariates, used when
 kinetic parameters may vary across populations.
 
 **Priors**  
-No priors are specified by default, meaning users must customize their
-inputs to correspond to their observed data and expected trajectories.
-Because priors are placed on log-transformed parameters, the prior means
-in `mu_hyp_param` are also on the log scale. Prior specification is done
+Specify priors explicitly, chosen to correspond to your observed data
+and expected trajectories, rather than relying on defaults. Because
+priors are placed on log-transformed parameters, the prior means in
+`mu_hyp_param` are also on the log scale. Prior specification is done
 through the function
 [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/prep_priors.md),
 which is built into
@@ -216,7 +216,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:26 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:36 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -253,7 +253,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:31 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:42 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -527,7 +527,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:44 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:58 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -562,7 +562,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:45 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:16:00 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
