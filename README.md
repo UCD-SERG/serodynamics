@@ -23,8 +23,8 @@ Install the released version with:
 install.packages("serodynamics")
 ```
 
-Or install the development version from [GitHub](https://github.com/)
-with:
+Or install the development version from
+[GitHub](https://github.com/UCD-SERG/serodynamics) with:
 
 ``` r
 # install.packages("pak")

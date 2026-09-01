@@ -1,5 +1,13 @@
 # serodynamics (development version)
 
+## Documentation
+
+* Added CRAN installation instructions to the "Getting Started" article, which
+  previously showed only the development-version install from GitHub (#301).
+
+* Fixed the development-version link in `README.Rmd`/`README.md`, which pointed
+  at the GitHub homepage rather than the package repository (#301).
+
 ## Internal
 
 * Granted `pull-requests: write` permission to the review dispatch job in

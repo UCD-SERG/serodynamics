@@ -30,7 +30,13 @@ First, ensure you have JAGS installed on your system (required for Bayesian MCMC
 - **macOS**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 - **Windows**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the package:
+Then install the released version of the package from CRAN:
+
+```r
+install.packages("serodynamics")
+```
+
+Or install the development version from [GitHub](https://github.com/UCD-SERG/serodynamics):
 
 ```r
 # install.packages("pak")
