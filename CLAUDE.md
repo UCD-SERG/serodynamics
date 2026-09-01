@@ -6,20 +6,17 @@ review agent. The canonical, detailed contributor guide lives in
 **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 
-## ai-config submodule
+## ai-config plugin
 
-The `.ai-config` git submodule pins a copy of
-[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) — the
-corpus one of this file's review guidelines cites (`shared/` fragments,
-skills, memories). A scheduled `Bump submodule` workflow
-(`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a PR
-when it drifts.
-
-`.claude/settings.json` also registers ai-config's Claude Code plugin
-marketplace, so a Claude Code web/cloud session opened directly on this repo
-(where `~/.claude` starts empty) loads its skills as `ai-config:`-namespaced
-commands. This is separate from the `@claude` CI bot, which loads skills only
-from a committed `.claude/skills/` directory, not from `enabledPlugins`.
+`.claude/settings.json` registers the
+[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) Claude
+Code plugin marketplace — the corpus one of this file's review guidelines
+cites (`shared/` fragments, skills, memories) — so a Claude Code web/cloud
+session opened directly on this repo (where `~/.claude` starts empty) loads
+its skills as `ai-config:`-namespaced commands. This is separate from the
+`@claude` CI bot, which loads skills only from a committed `.claude/skills/`
+directory, not from `enabledPlugins`. The corpus is no longer vendored as a
+git submodule; the plugin fetches it at session start.
 
 ## Lab-wide style authority
 
