@@ -12,20 +12,23 @@ file adds review-specific emphasis on top of that guide.
 [`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) Claude
 Code plugin marketplace — the corpus one of this file's review guidelines
 cites (`shared/` fragments, skills, memories) — and enables its plugin, whose
-skills load as `ai-config:`-namespaced commands. On web/cloud, where
-`~/.claude` starts empty, Claude Code installs the plugin from that
-marketplace at every session start. On a local checkout it does not: the
-marketplace registers once you accept the workspace trust dialog, but a
-GitHub-sourced plugin enabled only by a repo's `.claude/settings.json` is
-never installed automatically (Claude Code v2.1.195+), so run
-`claude plugin install ai-config@Morrison-Lab` once, and refresh it with
-`claude plugin update ai-config@Morrison-Lab` (auto-update is off by default
-for third-party marketplaces). The `@claude` CI reviewer cannot get the
-plugin from `.claude/settings.json` (a headless run in an untrusted checkout
-ignores the repo's `extraKnownMarketplaces`); it gets the same plugin through
+skills load as `ai-config:`-namespaced commands.
+
+On web/cloud, where `~/.claude` starts empty, Claude Code installs the plugin
+from that marketplace at every session start.
+
+On a local checkout it does not: the marketplace registers once you accept
+the workspace trust dialog, but a GitHub-sourced plugin enabled only by a
+repo's `.claude/settings.json` is never installed automatically (Claude Code
+v2.1.195+), so run `claude plugin install ai-config@Morrison-Lab` once, and
+refresh it with `claude plugin update ai-config@Morrison-Lab` (auto-update is
+off by default for third-party marketplaces).
+
+The `@claude` CI reviewer cannot get the plugin from `.claude/settings.json`
+(a headless run in an untrusted checkout ignores the repo's
+`extraKnownMarketplaces`); it gets the same plugin through
 `Morrison-Lab/gha`'s `claude-code-review.yml` `use-ai-config` input (on by
-default), plus any committed `.claude/skills/`. The corpus is no longer
-checked in as a git submodule.
+default), plus any committed `.claude/skills/`.
 
 ## Lab-wide style authority
 
