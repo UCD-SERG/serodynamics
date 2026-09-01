@@ -45,11 +45,19 @@ A released version is also available on
 install.packages("serodynamics")
 ```
 
-The released version exposes an older set of function names. It provides
-`run_mod()`, `plot_jags_trace()`, `plot_jags_dens()` and `plot_jags_Rhat()`
-where this article calls `run_serodynamics()`, `plot_trace()`, `plot_density()`
-and `plot_rhat()`, and it has no equivalent of `plot_ess()`. The code below
-therefore requires the development version.
+The released version exposes an older set of function names. Each function
+this article uses is present there under a different name:
+
+| This article | Released version |
+|---|---|
+| `run_serodynamics()` | `run_mod()` |
+| `plot_trace()` | `plot_jags_trace()` |
+| `plot_density()` | `plot_jags_dens()` |
+| `plot_rhat()` | `plot_jags_Rhat()` |
+| `plot_ess()` | `plot_jags_effect()` |
+| `summarize_posterior()` | `post_summ()` |
+
+The code below therefore requires the development version.
 
 ## Load Required Libraries
 
