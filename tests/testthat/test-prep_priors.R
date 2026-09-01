@@ -41,7 +41,7 @@ test_that("Omit prec_hyp_param under power decay", {
 test_that("Omit omega_param under power decay", {
   prep_priors(max_antigens = 2, 
               mu_hyp_param = c(1.0,  5.0, 0.0, -2.0, -1.0),
-              prec_hyp_param = c(0.01, 0.01, 0.01, 0.01),
+              prec_hyp_param = c(0.01, 0.01, 0.01, 0.01, 0.01),
               wishdf_param = 15,
               prec_logy_hyp_param = c(4.0, 1.0)) |>
     expect_error("Need to specify 5 priors for `omega_param`")
