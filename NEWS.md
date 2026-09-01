@@ -2,6 +2,8 @@
 
 ## Internal
 
+* Bumped the `.ai-config` submodule pin to the current upstream `main`.
+
 * Granted `pull-requests: write` permission to the review dispatch job in
   `claude-code-review.yml` (#307), allowing acknowledgment comments to post on
   pull requests without GraphQL permission errors.
