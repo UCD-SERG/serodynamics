@@ -83,9 +83,12 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
- * Default priors are no longer supplied for `run_serodynamics()`.
+ * Default priors are no longer supplied for `run_serodynamics()`. `prep_priors`
+ now takes 4 values for priors for `mu_hyp_param`, `prec_hyp_param`, and 
+ `omega_param`.
    **Breaking change:** Users must manually specify priors to run the function 
-   or an error will occur.
+   or an error will occur. Users must specify 4 priors for `exponential` and 
+   5 priors for `power` decay.
 * Added `plot_residuals()` to visualize residuals over time, faceted by
   antigen-isotype. `run_serodynamics()` stores the original input `data`
   (and the stratification variable name) as `original_data`/`strat`
