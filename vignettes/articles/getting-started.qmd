@@ -232,9 +232,9 @@ Plot the residuals over time including mean absolute error (MAE):
 
 ```{r}
 #| label: check-residuals
-# Summarize parameter estimates
-residuals_stats <- plot_residuals(fitted_model)
-print(residuals_stats)
+# Plot residuals over time, annotated with mean absolute error
+residuals_plot <- plot_residuals(fitted_model)
+print(residuals_plot)
 
 ```
 
