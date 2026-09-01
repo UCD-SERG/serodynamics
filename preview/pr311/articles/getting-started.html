@@ -107,7 +107,40 @@
 <p>A released version is also available on <a href="https://cran.r-project.org/package=serodynamics" class="external-link">CRAN</a>:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"serodynamics"</span><span class="op">)</span></span></code></pre></div>
-<p>The released version exposes an older set of function names. It provides <code><a href="../reference/run_mod.html">run_mod()</a></code>, <code>plot_jags_trace()</code>, <code>plot_jags_dens()</code> and <code>plot_jags_Rhat()</code> where this article calls <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>, <code><a href="../reference/plot_trace.html">plot_trace()</a></code>, <code><a href="../reference/plot_density.html">plot_density()</a></code> and <code><a href="../reference/plot_rhat.html">plot_rhat()</a></code>, and it has no equivalent of <code><a href="../reference/plot_ess.html">plot_ess()</a></code>. The code below therefore requires the development version.</p>
+<p>The released version exposes an older set of function names. Each function this article uses is present there under a different name:</p>
+<table class="table caption-top">
+<thead><tr class="header">
+<th>This article</th>
+<th>Released version</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code></td>
+<td><code><a href="../reference/run_mod.html">run_mod()</a></code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_trace.html">plot_trace()</a></code></td>
+<td><code>plot_jags_trace()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_density.html">plot_density()</a></code></td>
+<td><code>plot_jags_dens()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_rhat.html">plot_rhat()</a></code></td>
+<td><code>plot_jags_Rhat()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_ess.html">plot_ess()</a></code></td>
+<td><code>plot_jags_effect()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/summarize_posterior.html">summarize_posterior()</a></code></td>
+<td><code>post_summ()</code></td>
+</tr>
+</tbody>
+</table>
+<p>The code below therefore requires the development version.</p>
 </section><section class="level2"><h2 id="load-required-libraries">Load Required Libraries<a class="anchor" aria-label="anchor" href="#load-required-libraries"></a>
 </h2>
 <div class="cell">
@@ -247,7 +280,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:31 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:40 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -546,7 +579,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:43 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:52 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -581,7 +614,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:45 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:54 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>

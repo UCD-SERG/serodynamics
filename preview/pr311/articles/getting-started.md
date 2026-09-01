@@ -40,17 +40,18 @@ A released version is also available on
 install.packages("serodynamics")
 ```
 
-The released version exposes an older set of function names. It provides
-[`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/run_mod.md),
-`plot_jags_trace()`, `plot_jags_dens()` and `plot_jags_Rhat()` where
-this article calls
-[`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/run_serodynamics.md),
-[`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_trace.md),
-[`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_density.md)
-and
-[`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_rhat.md),
-and it has no equivalent of
-[`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_ess.md).
+The released version exposes an older set of function names. Each
+function this article uses is present there under a different name:
+
+| This article | Released version |
+|----|----|
+| [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/run_serodynamics.md) | [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/run_mod.md) |
+| [`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_trace.md) | `plot_jags_trace()` |
+| [`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_density.md) | `plot_jags_dens()` |
+| [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_rhat.md) | `plot_jags_Rhat()` |
+| [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_ess.md) | `plot_jags_effect()` |
+| [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/summarize_posterior.md) | `post_summ()` |
+
 The code below therefore requires the development version.
 
 ## Load Required Libraries
@@ -191,7 +192,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:31 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:40 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -439,7 +440,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:43 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -474,7 +475,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:51:45 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:54 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
