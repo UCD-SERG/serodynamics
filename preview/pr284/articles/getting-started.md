@@ -176,7 +176,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 03:17:14 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 18:46:12 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -429,7 +429,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 03:17:26 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 18:46:21 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -464,7 +464,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 03:17:28 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 18:46:23 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -563,7 +563,7 @@ sessioninfo::session_info()
 #>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.6.1)
 #>  Rcpp             1.1.2      2026-07-05 [1] CRAN (R 4.6.1)
 #>  rlang            1.3.0      2026-07-05 [1] CRAN (R 4.6.1)
-#>  rmarkdown        2.31       2026-03-26 [1] CRAN (R 4.6.1)
+#>  rmarkdown        2.32       2026-09-01 [1] CRAN (R 4.6.1)
 #>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.6.1)
 #>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.1)
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
