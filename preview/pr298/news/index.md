@@ -116,7 +116,7 @@
 
 - Added `runjags` and
   [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/prep_priors.md)
-  specification guidelines to `getting_started`vignette.
+  specification guidelines to `getting-started` vignette.
 - Added
   [`plot_residuals()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/plot_residuals.md)
   to visualize residuals over time, faceted by antigen-isotype.
