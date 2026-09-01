@@ -120,3 +120,36 @@ testthat::test_that(
     testthat::expect_s3_class(plot_exp, "ggplot")
   }
 )
+
+
+testthat::test_that(
+  "plot_residuals() facet_by_strat and color_by_strat tests",
+  { # Testing for color
+    plot1 <- plot_residuals(
+      model = dataset, antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
+      color_by_strat = "bldculres")
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    testthat::expect_identical(rlang::as_label(point_layers[[1]]$mapping$colour), 
+                     "bldculres")
+  }
+)
+
+
+testthat::test_that(
+  "plot_residuals() color_by_strat tests",
+  {
+    # Testing for color
+    plot1 <- plot_residuals(
+      model = dataset, antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
+      color_by_strat = "bldculres")
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    testthat::expect_identical(rlang::as_label(point_layers[[1]]$mapping$colour), 
+                               "bldculres")
+  }
+)

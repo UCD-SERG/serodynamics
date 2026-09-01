@@ -95,7 +95,8 @@ plot_residuals <- function(model,
     to_plot <- to_plot |>
       dplyr::left_join(original_data |>
           dplyr::select(dplyr::all_of(unique(c(id_var, strat_cols)))) |>
-          dplyr::rename(Subject = dplyr::all_of(id_var)), by = "Subject")
+          dplyr::rename(Subject = dplyr::all_of(id_var)) |>
+            distinct(), by = "Subject")
   }
   
   # ------------------------------------------------------------
