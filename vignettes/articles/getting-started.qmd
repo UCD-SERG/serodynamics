@@ -30,18 +30,26 @@ First, ensure you have JAGS installed on your system (required for Bayesian MCMC
 - **macOS**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 - **Windows**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the released version of the package from CRAN:
-
-```r
-install.packages("serodynamics")
-```
-
-Or install the development version from [GitHub](https://github.com/UCD-SERG/serodynamics):
+Then install the package. This article documents the **development version**,
+so install that:
 
 ```r
 # install.packages("pak")
 pak::pak("UCD-SERG/serodynamics")
 ```
+
+A released version is also available on
+[CRAN](https://cran.r-project.org/package=serodynamics):
+
+```r
+install.packages("serodynamics")
+```
+
+The released version exposes an older set of function names. It provides
+`run_mod()`, `plot_jags_trace()`, `plot_jags_dens()` and `plot_jags_Rhat()`
+where this article calls `run_serodynamics()`, `plot_trace()`, `plot_density()`
+and `plot_rhat()`, and it has no equivalent of `plot_ess()`. The code below
+therefore requires the development version.
 
 ## Load Required Libraries
 
