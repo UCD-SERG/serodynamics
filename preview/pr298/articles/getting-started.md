@@ -216,7 +216,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:08 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:26 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -253,7 +253,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:13 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:31 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -485,9 +485,9 @@ Plot the residuals over time including mean absolute error (MAE):
 
 ``` r
 
-# Summarize parameter estimates
-residuals_stats <- plot_residuals(fitted_model)
-print(residuals_stats)
+# Plot residuals over time, annotated with mean absolute error
+residuals_plot <- plot_residuals(fitted_model)
+print(residuals_plot)
 ```
 
 ![](getting-started_files/figure-html/check-residuals-1.png)
@@ -527,7 +527,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:30 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:44 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -562,7 +562,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:31 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

@@ -272,7 +272,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:08 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:26 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -309,7 +309,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:13 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:31 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -581,9 +581,9 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <p>Plot the residuals over time including mean absolute error (MAE):</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Summarize parameter estimates</span></span>
-<span><span class="va">residuals_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_residuals.html">plot_residuals</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">residuals_stats</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># Plot residuals over time, annotated with mean absolute error</span></span>
+<span><span class="va">residuals_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_residuals.html">plot_residuals</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">residuals_plot</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/check-residuals-1.png" width="672"></p>
@@ -625,7 +625,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:30 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:44 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -660,7 +660,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:03:31 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep  1 20:11:45 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
