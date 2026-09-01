@@ -82,6 +82,7 @@ jobs:
     permissions:
       actions: write        # dispatch this workflow via `gh workflow run`
       issues: write         # acknowledge the /review comment
+      pull-requests: write  # comment on pull requests via GraphQL/REST
     steps:
       - name: Parse this workflow's ref
         id: this-wf

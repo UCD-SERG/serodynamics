@@ -20,8 +20,8 @@ jobs:
       - name: Install JAGS (Windows)
         if: runner.os == 'Windows'
         run: |
-          curl.exe -o wjags.exe -L0 -k --url https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
-          wjags.exe /S
+          curl.exe -fSL --retry 3 --retry-connrefused -o wjags.exe -k https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
+          start /wait "" wjags.exe /S
           del wjags.exe
         shell: cmd
       
@@ -29,7 +29,7 @@ jobs:
       - name: Install JAGS (macOS)
         if: runner.os == 'macOS'
         run: |
-          sudo curl --location https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
+          sudo curl -fSL --retry 3 --retry-connrefused https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
           sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
       
       - name: Install JAGS (Ubuntu)
@@ -51,15 +51,23 @@ jobs:
       
       - name: "install rjags"
         run: |
-          install.packages("rjags",
-                    repos = "https://cloud.r-project.org",
-                    type = "source",
-                    verbose = TRUE)
-           withr::local_options(warn = 2)
-           library(rjags)
-           library(runjags)
-           runjags::findjags()
-           runjags::testjags()
+          if (identical(.Platform$OS.type, "windows")) {
+            if (!requireNamespace("rjags", quietly = TRUE)) {
+              install.packages("rjags",
+                               repos = "https://cloud.r-project.org",
+                               verbose = TRUE)
+            }
+          } else {
+            install.packages("rjags",
+                             repos = "https://cloud.r-project.org",
+                             type = "source",
+                             verbose = TRUE)
+          }
+          withr::local_options(warn = 2)
+          library(rjags)
+          library(runjags)
+          runjags::findjags()
+          runjags::testjags()
         shell: Rscript {0}
       
 
