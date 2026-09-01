@@ -2,6 +2,12 @@
 
 ## Internal
 
+* Updated `.github/copilot-instructions.md` so the local `rjags` install
+  instructions branch by platform, matching what `R-CMD-check.yaml` and
+  `test-coverage.yaml` do since #308: source builds on macOS/Linux, the
+  binary on Windows. The file previously showed `type = "source"` for
+  every platform (#309).
+
 * Granted `pull-requests: write` permission to the review dispatch job in
   `claude-code-review.yml` (#307), allowing acknowledgment comments to post on
   pull requests without GraphQL permission errors.
