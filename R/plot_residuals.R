@@ -86,17 +86,17 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   
   if (color_strat || facet_strat) {
-    strat_cols <- c(
-      if (color_strat) color_by_strat,
-      if (facet_strat) facet_by_strat)
+    strat_cols <- c(if (color_strat) color_by_strat,
+                    if (facet_strat) facet_by_strat)
 
     id_var <- attr(original_data, "id_var")
     
     to_plot <- to_plot |>
       dplyr::left_join(original_data |>
-          dplyr::select(dplyr::all_of(unique(c(id_var, strat_cols)))) |>
-          dplyr::rename(Subject = dplyr::all_of(id_var)) |>
-            distinct(), by = "Subject")
+                         dplyr::select(dplyr::all_of(unique(c(id_var, 
+                                                              strat_cols)))) |>
+                         dplyr::rename(Subject = dplyr::all_of(id_var)) |>
+                         distinct(), by = "Subject")
   }
   
   # ------------------------------------------------------------
@@ -105,15 +105,12 @@ plot_residuals <- function(model,
   if (colored) {
     color_var <- "Subject"
     legend_position <- "right"
-    legend_title <- "Subject"
   } else if (color_strat) {
     color_var <- color_by_strat
     legend_position <- "top"
-    legend_title <- color_by_strat
   } else {
     color_var <- NULL
     legend_position <- "none"
-    legend_title <- NULL
   }
   
   p <- to_plot |>
@@ -148,7 +145,7 @@ plot_residuals <- function(model,
     p <- p + ggplot2::geom_point(alpha = 0.6)
   }
   
-  if (!is.null(color_by_strat) & is.null(colored)) {
+  if (!is.null(color_by_strat) && is.null(colored)) {
     p <- p + ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
                                  alpha = 0.6) +
       ggplot2::theme(legend.position = "top")
@@ -160,7 +157,7 @@ plot_residuals <- function(model,
     if (!is.null(color_var)) {
       p <- p +
         ggplot2::geom_line(ggplot2::aes(color = !!rlang::sym(color_var)),
-          alpha = 0.5)
+                           alpha = 0.5)
     } else {
       p + ggplot2::geom_line(alpha = 0.5)
     }
@@ -180,16 +177,18 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # MAE labels
   # ------------------------------------------------------------
-    p <- p +
+  p <- p +
     ggplot2::geom_text(
-      data = mae_label_data(to_plot, facet_by_strat),
-      mapping = ggplot2::aes(x = Inf, y = Inf, label = .data$label),
-      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE) 
+                       data = mae_label_data(to_plot, facet_by_strat),
+                       mapping = ggplot2::aes(x = Inf, y = Inf, 
+                                              label = .data$label),
+                       hjust = 1.1, vjust = 1.5, size = 3.2, 
+                       inherit.aes = FALSE) 
     
   # ------------------------------------------------------------
   # Theme
   # ------------------------------------------------------------
-    p <- p +
+  p <- p +
     ggplot2::theme_bw() +
     ggplot2::xlab("Time since seroconversion (days)") +
     ggplot2::ylab(ylab) +
