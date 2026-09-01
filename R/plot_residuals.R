@@ -107,21 +107,18 @@ plot_residuals <- function(model,
   if (colored) {
     color_var <- "Subject"
     legend_position <- "right"
-    legend_title <- "Subject"
   } else if (color_strat) {
     color_var <- color_by_strat
     legend_position <- "top"
-    legend_title <- color_by_strat
   } else {
     color_var <- NULL
     legend_position <- "none"
-    legend_title <- NULL
   }
   
   p <- to_plot |>
     ggplot2::ggplot(ggplot2::aes(x = .data$t, y = .data$resid_med, 
                                  group = interaction(.data$Subject, 
-                                                      .data$Iso_type))) +
+                                                     .data$Iso_type))) +
     ggplot2::geom_hline(yintercept = 0, linewidth = 0.5, linetype = "dashed")
 
   if (show_interval) {
@@ -168,11 +165,6 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # Faceting
   # ------------------------------------------------------------
-  # if (facet_strat) {
-  #   facet_formula <- stats::as.formula(paste("~ Iso_type +", facet_by_strat))
-  # } else {
-  #   facet_formula <- ~Iso_type
-  # }
   facet_vars <- if (facet_strat) {
     ggplot2::vars(.data$Iso_type, .data[[facet_by_strat]])
   } else {
