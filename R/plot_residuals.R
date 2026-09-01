@@ -107,17 +107,21 @@ plot_residuals <- function(model,
   if (colored) {
     color_var <- "Subject"
     legend_position <- "right"
+    legend_title <- "Subject"
   } else if (color_strat) {
     color_var <- color_by_strat
     legend_position <- "top"
+    legend_title <- color_by_strat
   } else {
     color_var <- NULL
     legend_position <- "none"
+    legend_title <- NULL
   }
   
   p <- to_plot |>
     ggplot2::ggplot(ggplot2::aes(x = .data$t, y = .data$resid_med, 
-                                 group = .data$Subject)) +
+                                 group = interaction(.data$Subject, 
+                                                      .data$Iso_type))) +
     ggplot2::geom_hline(yintercept = 0, linewidth = 0.5, linetype = "dashed")
 
   if (show_interval) {
