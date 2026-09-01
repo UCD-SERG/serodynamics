@@ -160,7 +160,6 @@ run_serodynamics <- function(data,
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
                              decay_type = decay_type,
                              ...)
-    priorspec <- configure_decay_priors(priorspec, decay_type)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously
