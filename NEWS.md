@@ -2,6 +2,16 @@
 
 ## Internal
 
+* Granted `pull-requests: write` permission to the review dispatch job in
+  `claude-code-review.yml` (#307), allowing acknowledgment comments to post on
+  pull requests without GraphQL permission errors.
+
+* Hardened JAGS download and installer execution across CI workflows
+  (`R-CMD-check.yaml` and `test-coverage.yaml`), using `curl.exe` with retry
+  flags, `start /wait` for synchronous Windows installer execution, and platform-
+  tailored `rjags` installation (`type = "source"` on macOS/Linux, binary on
+  Windows).
+
 * Regenerated `NAMESPACE` and `DESCRIPTION` under roxygen2 8.1.0 (#288).
   The documentation check installs whatever roxygen2 is current rather than a
   fixed version, so the 8.1.0 release started rewriting both files against the
