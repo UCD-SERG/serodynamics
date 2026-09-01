@@ -97,7 +97,8 @@ plot_residuals <- function(model,
       dplyr::distinct()
     
     to_plot <- to_plot |>
-      dplyr::left_join(strat_data, by = "Subject")
+      dplyr::left_join(strat_data, by = "Subject", 
+                       relationship = "many-to-one")
   }
   
   # ------------------------------------------------------------
@@ -146,11 +147,6 @@ plot_residuals <- function(model,
     p <- p + ggplot2::geom_point(alpha = 0.6)
   }
   
-  if (!is.null(color_by_strat) && is.null(colored)) {
-    p <- p + ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
-                                 alpha = 0.6) +
-      ggplot2::theme(legend.position = "top")
-  }
   # ------------------------------------------------------------
   # Connecting lines
   # ------------------------------------------------------------
@@ -160,20 +156,26 @@ plot_residuals <- function(model,
         ggplot2::geom_line(ggplot2::aes(color = !!rlang::sym(color_var)),
                            alpha = 0.5)
     } else {
-      p + ggplot2::geom_line(alpha = 0.5)
+      p <- p + 
+        ggplot2::geom_line(alpha = 0.5)
     }
   }
   
   # ------------------------------------------------------------
   # Faceting
   # ------------------------------------------------------------
-  if (facet_strat) {
-    facet_formula <- stats::as.formula(paste("~ Iso_type +", facet_by_strat))
+  # if (facet_strat) {
+  #   facet_formula <- stats::as.formula(paste("~ Iso_type +", facet_by_strat))
+  # } else {
+  #   facet_formula <- ~Iso_type
+  # }
+  facet_vars <- if (facet_strat) {
+    ggplot2::vars(.data$Iso_type, .data[[facet_by_strat]])
   } else {
-    facet_formula <- ~Iso_type
+    ggplot2::vars(.data$Iso_type)
   }
   p <- p +
-    ggplot2::facet_wrap(facet_formula) 
+    ggplot2::facet_wrap(facet_vars) 
   
   # ------------------------------------------------------------
   # MAE labels
