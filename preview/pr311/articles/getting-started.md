@@ -40,8 +40,9 @@ A released version is also available on
 install.packages("serodynamics")
 ```
 
-The released version exposes an older set of function names. Each
-function this article uses is present there under a different name:
+The released version uses an older set of function names, listed below
+for reference. Renaming calls is not enough to run this article on the
+released version, so install the development version as shown above.
 
 | This article | Released version |
 |----|----|
@@ -51,8 +52,6 @@ function this article uses is present there under a different name:
 | [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_rhat.md) | `plot_jags_Rhat()` |
 | [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/plot_ess.md) | `plot_jags_effect()` |
 | [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr311/reference/summarize_posterior.md) | `post_summ()` |
-
-The code below therefore requires the development version.
 
 ## Load Required Libraries
 
@@ -192,7 +191,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:40 2026
+#> Welcome to JAGS 4.3.2 on Wed Sep  2 01:03:06 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -440,7 +439,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:52 2026
+#> Welcome to JAGS 4.3.2 on Wed Sep  2 01:03:19 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -475,7 +474,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 19:56:54 2026
+#> Welcome to JAGS 4.3.2 on Wed Sep  2 01:03:21 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -533,7 +532,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-01
+#>  date     2026-09-02
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -580,7 +579,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9019 2026-09-01 [1] local
+#>  serodynamics   * 0.1.0.9019 2026-09-02 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
