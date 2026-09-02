@@ -2,6 +2,17 @@
 
 ## Internal
 
+* Updated `.github/copilot-instructions.md` so the local `rjags` install
+  instructions branch by platform, matching what `R-CMD-check.yaml` and
+  `test-coverage.yaml` do since #308: source builds on macOS/Linux, the
+  binary on Windows. The file previously showed `type = "source"` for
+  every platform (#309).
+
+* Removed the `.ai-config` git submodule, its `.gitmodules` entry, and the
+  scheduled `Bump submodule` workflow (#316). The `ai-config` Claude Code
+  plugin registered in `.claude/settings.json` supplies the same corpus
+  without a second copy to keep pinned.
+
 * Granted `pull-requests: write` permission to the review dispatch job in
   `claude-code-review.yml` (#307), allowing acknowledgment comments to post on
   pull requests without GraphQL permission errors.
