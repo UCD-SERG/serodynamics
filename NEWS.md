@@ -95,6 +95,7 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+* Added ability to facet or color by stratification in `plot_residuals()`.
 * Added `plot_residuals()` to visualize residuals over time, faceted by
   antigen-isotype. `run_serodynamics()` stores the original input `data`
   (and the stratification variable name) as `original_data`/`strat`

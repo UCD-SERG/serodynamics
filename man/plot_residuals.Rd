@@ -10,7 +10,9 @@ plot_residuals(
   antigen_isos = NULL,
   log_y = TRUE,
   show_interval = TRUE,
-  connect_lines = FALSE
+  connect_lines = FALSE,
+  facet_by_strat = NULL,
+  color_by_strat = NULL
 )
 }
 \arguments{
@@ -34,6 +36,12 @@ visualize the precision of the posterior.}
 
 \item{connect_lines}{\link{logical}; if \code{TRUE}, connects each subject's
 residuals over time with a line. Default \code{FALSE}.}
+
+\item{facet_by_strat}{\link{character}; facets residual plot and
+calculates MAE by specified stratification variable. Default \code{NULL}.}
+
+\item{color_by_strat}{\link{character}; colors residual plot and
+calculates MAE by specified stratification variable. Default \code{NULL}.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
