@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9019</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9020</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -278,11 +278,20 @@
 <li>
 <strong>Windows</strong>: Download from <a href="https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe" class="external-link uri">https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe</a>
 </li>
-</ul><p>After installing JAGS, install the R interface:</p>
+</ul><p>After installing JAGS, install the R interface. Which form to use depends on the platform, matching what <code>.github/workflows/R-CMD-check.yaml</code> and <code>.github/workflows/test-coverage.yaml</code> do (see #308):</p>
+<ul><li>
+<p><strong>macOS/Linux</strong>: build from source, so that <code>rjags</code> links against the JAGS library you just installed.</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rjags"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span>, type <span class="op">=</span> <span class="st">"source"</span><span class="op">)</span></span></code></pre></div>
-<p>Verify installation with:</p>
+</li>
+<li>
+<p><strong>Windows</strong>: install the binary, which is the default. Building from source on Windows requires a matching Rtools toolchain and is not what CI does.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"rjags"</span>, repos <span class="op">=</span> <span class="st">"https://cloud.r-project.org"</span><span class="op">)</span></span></code></pre></div>
+</li>
+</ul><p>The Docker snippet above uses <code>type = "source"</code> unconditionally because that container is Linux.</p>
+<p>Verify installation with:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://mcmc-jags.sourceforge.io" class="external-link">rjags</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
 <span><span class="fu">runjags</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/runjags/man/findjags.html" class="external-link">findJAGS</a></span><span class="op">(</span><span class="op">)</span></span>
@@ -294,7 +303,7 @@
 <h2 id="build-and-development-workflow">Build and Development Workflow<a class="anchor" aria-label="anchor" href="#build-and-development-workflow"></a></h2>
 <div class="section level3">
 <h3 id="initial-setup">Initial Setup<a class="anchor" aria-label="anchor" href="#initial-setup"></a></h3>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Install development dependencies</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/install_deps.html" class="external-link">install_dev_deps</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -304,7 +313,7 @@
 <div class="section level3">
 <h3 id="documentation-generation">Documentation Generation<a class="anchor" aria-label="anchor" href="#documentation-generation"></a></h3>
 <p><strong>ALWAYS regenerate documentation after modifying roxygen2 comments in <code>.R</code> files.</strong></p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Generate documentation from roxygen2 comments</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -315,13 +324,13 @@
 <h3 id="readme-updates">README Updates<a class="anchor" aria-label="anchor" href="#readme-updates"></a></h3>
 <p>README.md is generated from README.Rmd. <strong>ALWAYS edit README.Rmd, never README.md directly.</strong></p>
 <p>To regenerate:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="package-checking">Package Checking<a class="anchor" aria-label="anchor" href="#package-checking"></a></h3>
 <p>Run R CMD check to validate the package:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Full package check (takes several minutes)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/check.html" class="external-link">check</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -330,7 +339,7 @@
 </div>
 <div class="section level3">
 <h3 id="testing">Testing<a class="anchor" aria-label="anchor" href="#testing"></a></h3>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Run all tests</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/test.html" class="external-link">test</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
@@ -340,7 +349,7 @@
 <div class="section level3">
 <h3 id="linting">Linting<a class="anchor" aria-label="anchor" href="#linting"></a></h3>
 <p>The package uses a custom lintr configuration (<code>.lintr.R</code>) with strict requirements:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Lint the entire package</span></span>
 <span><span class="fu">lintr</span><span class="fu">::</span><span class="fu"><a href="https://lintr.r-lib.org/reference/lint.html" class="external-link">lint_package</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
@@ -351,7 +360,7 @@
 </div>
 <div class="section level3">
 <h3 id="spelling-check">Spelling Check<a class="anchor" aria-label="anchor" href="#spelling-check"></a></h3>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check spelling</span></span>
 <span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Custom words are in <code>inst/WORDLIST</code>.</p>
@@ -497,7 +506,7 @@
 <h4 id="when-to-use-snapshot-tests">When to Use Snapshot Tests<a class="anchor" aria-label="anchor" href="#when-to-use-snapshot-tests"></a></h4>
 <p>Use snapshot tests (<code>expect_snapshot()</code>, <code>expect_snapshot_value()</code>, or <code><a href="reference/expect_snapshot_data.html">expect_snapshot_data()</a></code>) when: - Testing complex data structures (data.frames, lists, model outputs) - Validating MCMC outputs or statistical results - Output format stability is important - The exact values are less important than structural consistency</p>
 <p><strong>Examples from this repository:</strong></p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># For data frames with numeric precision control</span></span>
 <span><span class="va">dataset</span> <span class="op">|&gt;</span> <span class="fu"><a href="reference/expect_snapshot_data.html">expect_snapshot_data</a></span><span class="op">(</span>name <span class="op">=</span> <span class="st">"sees-data"</span><span class="op">)</span></span>
 <span></span>
@@ -512,7 +521,7 @@
 <h4 id="when-to-use-explicit-value-tests">When to Use Explicit Value Tests<a class="anchor" aria-label="anchor" href="#when-to-use-explicit-value-tests"></a></h4>
 <p>Use explicit value tests (<code>expect_equal()</code>, <code>expect_identical()</code>, etc.) when: - Testing simple scalar outputs - Validating specific numeric thresholds or boundaries - Testing Boolean returns or categorical outputs - Exact values are critical for correctness</p>
 <p><strong>Examples:</strong></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Testing exact numeric values</span></span>
 <span><span class="fu">expect_equal</span><span class="op">(</span><span class="fu">calculate_mean</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span><span class="op">)</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span></span>
@@ -620,7 +629,7 @@
 </ul></div>
 <div class="section level2">
 <h2 id="package-development-commands-summary">Package Development Commands Summary<a class="anchor" aria-label="anchor" href="#package-development-commands-summary"></a></h2>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Complete development workflow</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/load_all.html" class="external-link">load_all</a></span><span class="op">(</span><span class="op">)</span>           <span class="co"># Load package for interactive testing</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu"><a href="https://devtools.r-lib.org/reference/document.html" class="external-link">document</a></span><span class="op">(</span><span class="op">)</span>           <span class="co"># Update documentation</span></span>
