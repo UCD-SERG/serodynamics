@@ -45,8 +45,9 @@ A released version is also available on
 install.packages("serodynamics")
 ```
 
-The released version exposes an older set of function names. Each function
-this article uses is present there under a different name:
+The released version uses an older set of function names, listed below for
+reference. Renaming calls is not enough to run this article on the released
+version, so install the development version as shown above.
 
 | This article | Released version |
 |---|---|
@@ -56,8 +57,6 @@ this article uses is present there under a different name:
 | `plot_rhat()` | `plot_jags_Rhat()` |
 | `plot_ess()` | `plot_jags_effect()` |
 | `summarize_posterior()` | `post_summ()` |
-
-The code below therefore requires the development version.
 
 ## Load Required Libraries
 
