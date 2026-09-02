@@ -4,6 +4,12 @@
 
 ### Internal
 
+- Removed the `.ai-config` git submodule, its `.gitmodules` entry, and
+  the scheduled `Bump submodule` workflow
+  ([\#316](https://github.com/UCD-SERG/serodynamics/issues/316)). The
+  `ai-config` Claude Code plugin registered in `.claude/settings.json`
+  supplies the same corpus without a second copy to keep pinned.
+
 - Granted `pull-requests: write` permission to the review dispatch job
   in `claude-code-review.yml`
   ([\#307](https://github.com/UCD-SERG/serodynamics/issues/307)),
