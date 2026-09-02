@@ -5,7 +5,9 @@
 #'  [runjags::run.jags()] as an MCMC
 #'  Bayesian model to estimate antibody dynamic curve parameters.
 #'  The [rjags::jags.model()] models seroresponse dynamics to an
-#'  infection. The antibody dynamic curve includes the following parameters:
+#'  infection. Priors are required for modeling and must be specified prior to
+#'  running `run_serodynamics`. The antibody dynamic curve includes the 
+#'  following parameters:
 #'  - y0 = baseline antibody concentration
 #'  - y1 = peak antibody concentration
 #'  - t1 = time to peak
@@ -32,9 +34,9 @@
 #'   The exponential model does not estimate `shape`; its processed output
 #'   includes `shape = 1` as a fixed value to preserve the common output
 #'   structure.
-#'   Note: `prep_priors()` still validates 5-element prior vectors. For
-#'   exponential decay, the fifth (`shape`) prior is required for validation
-#'   but is ignored and omitted from the reported priors.
+#'   Note: `prep_priors()` validates 5-element prior vector for power 
+#'   decay and 4-element prior vectors for exponential decay (the fifth 
+#'   (`shape`) prior is excluded in exponential decay). 
 #' @param with_post A [logical] value specifying whether a raw `jags.post`
 #' object should be included as an optional `"jags.post"` attribute on the
 #' returned `sr_model` tibble
@@ -156,8 +158,8 @@ run_serodynamics <- function(data,
     # prepare data for modeline
     longdata <- prep_data(dl_sub)
     priorspec <- prep_priors(max_antigens = longdata$n_antigen_isos,
+                             decay_type = decay_type,
                              ...)
-    priorspec <- configure_decay_priors(priorspec, decay_type)
 
     # inputs for jags model
     nchains <- nchain # nr of MC chains to run simultaneously

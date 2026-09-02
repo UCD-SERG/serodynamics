@@ -1,34 +1,35 @@
 #' @title Prepare priors
 #' @description
 #' Takes multiple [vector] inputs to allow for modifiable priors. 
-#' Priors can be specified as an option in run_serodynamics.
+#' Priors must be specified as an option in `run_serodynamics()`.
 #' 
 #' @param max_antigens An [integer] specifying how many
 #' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
 #' mean for the population level parameters
-#' parameters (y0, y1, t1, r, alpha) for each biomarker.
-#' If specified, must be 5 values long, representing the following parameters:
-#'    - y0 = baseline antibody concentration (default = 1.0)
-#'    - y1 = peak antibody concentration (default = 7.0)
-#'    - t1 = time to peak (default = 1.0)
-#'    - r = shape parameter (default = -4.0)
-#'    - alpha = decay rate (default = -1.0)
+#' parameters (y0, y1, t1, r, alpha) for each biomarker. Must be 5 values long, 
+#' representing the following parameters:
+#'    - y0 = baseline antibody concentration
+#'    - y1 = peak antibody concentration
+#'    - t1 = time to peak
+#'    - r = shape parameter (If running `decay_type == "exponential"` no shape
+#'    parameter needs to be specified).
+#'    - alpha = decay rate 
+#' When `decay_type = "exponential"` only 4 parameters (y0, y1, t1, alpha) are 
+#' used.
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 #' representing prior covariance of uncertainty around `mu_hyp_param`.
-#' If specified, must be 5 values long:
-#'    - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
+#' Must be 5 values long corresponding to the 5 estimated parameters (4 values 
+#' when `decay_type = "exponential"`).
 #' @param omega_param A [numeric] [vector] of 5 values corresponding to the
 #' diagonal entries representing the Wishart hyperprior
 #' distributions of `prec_hyp_param`, describing how much we expect parameters
-#' to vary between individuals.
-#' If specified, must be 5 values long:
-#'    - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+#' to vary between individuals (4 values when `decay_type = "exponential"`).
+#' Must be 5 values long corresponding to the 5 estimated parameters.
 #' @param wishdf_param An [integer] [vector] of 1 value specifying the degrees
 #' of freedom for the Wishart hyperprior distribution of `prec_hyp_param`.
-#' If specified, must be 1 value long.
-#'    - default = 20.0
+#' Must be 1 value long.
 #'    - The value of `wishdf_param` controls how informative the Wishart prior
 #'      is. Higher values lead to tighter priors on individual variation.
 #'      Lower values (e.g., 5–10) make the prior more weakly informative,
@@ -36,8 +37,8 @@
 #' @param prec_logy_hyp_param A [numeric] [vector] of 2 values corresponding to
 #' hyperprior diagonal entries on the log-scale for the precision matrix
 #' (i.e. inverse variance) representing prior beliefs of individual variation.
-#' If specified, must be 2 values long:
-#'    - defaults = 4.0, 1.0
+#' Must be 2 values long.
+#' @inheritParams run_serodynamics decay_type
 #'
 #' @returns A "curve_params_priors" object 
 #' (a subclass of [list] with the inputs to `prep_priors()` attached 
@@ -65,24 +66,39 @@
 #' @example inst/examples/examples-prep_priors.R
 
 prep_priors <- function(max_antigens,
-                        mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-                        prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-                        omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-                        wishdf_param = 20,
-                        prec_logy_hyp_param = c(4.0, 1.0)) {
-
+                        mu_hyp_param = NULL,
+                        prec_hyp_param = NULL,
+                        omega_param = NULL,
+                        wishdf_param = NULL,
+                        prec_logy_hyp_param = NULL,
+                        decay_type = "power") {
+  
+  if (!(decay_type %in% c("power", "exponential"))) {
+    cli::cli_abort("Must specify {.arg decay_type} = {.val exponential} or 
+                   {.val power}")
+  }
+  
   # Ensuring the length of specified priors is correct.
   # mu_hyp_param
-  if (length(mu_hyp_param) != 5) {
+  if (length(mu_hyp_param) != 5 && decay_type == "power") {
     cli::cli_abort("Need to specify 5 priors for {.arg mu_hyp_param}")
-  }
+  } else if (length(mu_hyp_param) != 4 && decay_type == "exponential") {
+    cli::cli_abort("Need to specify 4 priors for {.arg mu_hyp_param}
+                   when {.arg decay_type} = {.val exponential}")
+  } 
   # prec_hyp_param
-  if (length(mu_hyp_param) != 5) {
-    cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}")
+  if (length(prec_hyp_param) != 5 && decay_type == "power") {
+    cli::cli_abort("Need to specify 5 priors for {.arg prec_hyp_param}") 
+  } else if (length(prec_hyp_param) != 4 && decay_type == "exponential") {
+    cli::cli_abort("Need to specify 4 priors for {.arg prec_hyp_param}
+                   when {.arg decay_type} = {.val exponential}")
   }
   # omega_hyp_param
-  if (length(omega_param) != 5) {
+  if (length(omega_param) != 5 && decay_type == "power") {
     cli::cli_abort("Need to specify 5 priors for {.arg omega_param}")
+  } else if (length(omega_param) != 4 && decay_type == "exponential") {
+    cli::cli_abort("Need to specify 4 priors for {.arg omega_param}
+                   when {.arg decay_type} = {.val exponential}")
   }
   # wishdf_param
   if (length(wishdf_param) != 1) {
@@ -95,7 +111,9 @@ prep_priors <- function(max_antigens,
 
 
   # Model parameters
-  n_params <- 5 # Assuming 5 model parameters [ y0, y1, t1, alpha, shape]
+  n_params <- if (decay_type == "power") 5L else 4L
+  # Assuming 5 model parameters [ y0, y1, t1, alpha, shape], 4 if exponential
+ 
   mu_hyp <- array(NA, dim = c(max_antigens, n_params))
   prec_hyp <- array(NA, dim = c(max_antigens, n_params, n_params))
   omega <- array(NA, dim = c(max_antigens, n_params, n_params))

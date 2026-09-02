@@ -35,43 +35,6 @@ select_decay_model <- function(file_mod, decay_type) {
   file_mod
 }
 
-configure_decay_priors <- function(priorspec, decay_type) {
-  if (decay_type == "power") {
-    return(priorspec)
-  }
-
-  parameter_index <- seq_len(4)
-
-  priorspec$n_params <- 4L
-  priorspec$mu.hyp <- priorspec$mu.hyp[
-    , parameter_index, drop = FALSE
-  ]
-  priorspec$prec.hyp <- priorspec$prec.hyp[
-    , parameter_index, parameter_index, drop = FALSE
-  ]
-  priorspec$omega <- priorspec$omega[
-    , parameter_index, parameter_index, drop = FALSE
-  ]
-
-  used_priors <- attr(priorspec, "used_priors")
-
-  if (!is.null(used_priors)) {
-    used_priors$mu_hyp_param <- used_priors$mu_hyp_param[
-      parameter_index
-    ]
-    used_priors$prec_hyp_param <- used_priors$prec_hyp_param[
-      parameter_index
-    ]
-    used_priors$omega_param <- used_priors$omega_param[
-      parameter_index
-    ]
-
-    attr(priorspec, "used_priors") <- used_priors
-  }
-
-  priorspec
-}
-
 get_decay_monitors <- function(decay_type, with_pop_params) {
   parameters <- switch(
     decay_type,
