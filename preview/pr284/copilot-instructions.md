@@ -309,12 +309,30 @@ docker exec serodynamics-dev R -e 'runjags::testjags()'
 - **Windows**: Download from
   <https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe>
 
-After installing JAGS, install the R interface:
+After installing JAGS, install the R interface. Which form to use
+depends on the platform, matching what
+`.github/workflows/R-CMD-check.yaml` and
+`.github/workflows/test-coverage.yaml` do (see \#308):
 
-``` r
+- **macOS/Linux**: build from source, so that `rjags` links against the
+  JAGS library you just installed.
 
-install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
-```
+  ``` r
+
+  install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
+  ```
+
+- **Windows**: install the binary, which is the default. Building from
+  source on Windows requires a matching Rtools toolchain and is not what
+  CI does.
+
+  ``` r
+
+  install.packages("rjags", repos = "https://cloud.r-project.org")
+  ```
+
+The Docker snippet above uses `type = "source"` unconditionally because
+that container is Linux.
 
 Verify installation with:
 
