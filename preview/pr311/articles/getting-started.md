@@ -23,8 +23,8 @@ Bayesian MCMC):
 - **Windows**: Download from [JAGS
   website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the package. This article documents the **development
-version**, so install that:
+Then install the package. The examples below require the development
+version, so install that:
 
 ``` r
 
@@ -42,7 +42,7 @@ install.packages("serodynamics")
 
 The released version uses an older set of function names, listed below
 for reference. Renaming calls is not enough to run this article on the
-released version, so install the development version as shown above.
+released version.
 
 | This article | Released version |
 |----|----|
@@ -191,7 +191,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 21:23:31 2026
+#> Welcome to JAGS 4.3.2 on Sat Sep  5 05:25:30 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -439,7 +439,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 21:23:41 2026
+#> Welcome to JAGS 4.3.2 on Sat Sep  5 05:25:43 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -474,7 +474,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 21:23:43 2026
+#> Welcome to JAGS 4.3.2 on Sat Sep  5 05:25:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -532,7 +532,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-02
+#>  date     2026-09-05
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -579,7 +579,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9021 2026-09-02 [1] local
+#>  serodynamics   * 0.1.0.9021 2026-09-05 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
