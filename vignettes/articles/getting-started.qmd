@@ -30,7 +30,7 @@ First, ensure you have JAGS installed on your system (required for Bayesian MCMC
 - **macOS**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 - **Windows**: Download from [JAGS website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the package. This article documents the **development version**,
+Then install the package. The examples below require the development version,
 so install that:
 
 ```r
@@ -47,7 +47,7 @@ install.packages("serodynamics")
 
 The released version uses an older set of function names, listed below for
 reference. Renaming calls is not enough to run this article on the released
-version, so install the development version as shown above.
+version.
 
 | This article | Released version |
 |---|---|
