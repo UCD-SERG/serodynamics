@@ -41,7 +41,7 @@ test_that("chain inits keep the power-decay recovery term positive", {
   }
 })
 
-test_that("runjags initializes with explicit par starts", {
+test_that("parallel runjags initializes with explicit par starts", {
   skip_on_cran()
   skip_if_not_installed("rjags")
   skip_if_not_installed("runjags")
@@ -73,7 +73,7 @@ test_that("runjags initializes with explicit par starts", {
       model = serodynamics_example("model.jags"),
       data = c(longdata, priors),
       inits = chain_inits,
-      method = "rjags",
+      method = "parallel",
       adapt = 0,
       burnin = 0,
       thin = 1,
