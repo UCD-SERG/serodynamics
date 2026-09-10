@@ -1,4 +1,88 @@
 test_that(
+  desc = "small power-decay runs initialize successfully",
+  code = {
+    skip_on_cran()
+    skip_if_not_installed("rjags")
+    skip_if_not_installed("runjags")
+
+    withr::local_seed(123)
+    simulated_data <- sim_case_data(
+      n = 3,
+      curve_params = serocalculator::typhoid_curves_nostrat_100,
+      max_n_obs = 3,
+      followup_interval = 14
+    )
+
+    results <- suppressWarnings(
+      run_serodynamics(
+        data = simulated_data,
+        file_mod = serodynamics_example("model.jags"),
+        nchain = 1,
+        nadapt = 0,
+        nburn = 0,
+        nmc = 1,
+        niter = 1
+      )
+    )
+
+    expect_s3_class(results, "data.frame")
+    expect_gt(nrow(results), 0)
+    expect_setequal(
+      unique(results$Parameter),
+      c("alpha", "shape", "t1", "y0", "y1")
+    )
+  }
+)
+
+test_that(
+  desc = "small exponential-decay runs initialize successfully",
+  code = {
+    skip_on_cran()
+    skip_if_not_installed("rjags")
+    skip_if_not_installed("runjags")
+
+    withr::local_seed(123)
+    simulated_data <- sim_case_data(
+      n = 3,
+      curve_params = serocalculator::typhoid_curves_nostrat_100,
+      max_n_obs = 3,
+      followup_interval = 14
+    )
+
+    results <- suppressWarnings(
+      run_serodynamics(
+        data = simulated_data,
+        decay_type = "exponential",
+        with_post = TRUE,
+        nchain = 1,
+        nadapt = 0,
+        nburn = 0,
+        nmc = 1,
+        niter = 1
+      )
+    )
+
+    expect_s3_class(results, "data.frame")
+    expect_gt(nrow(results), 0)
+    expect_equal(attr(results, "decay_type"), "exponential")
+    expect_setequal(
+      unique(results$Parameter),
+      c("alpha", "shape", "t1", "y0", "y1")
+    )
+    jags_post <- attr(results, "jags.post")
+    expect_false(is.null(jags_post))
+    raw_parameter_names <- colnames(as.matrix(jags_post[[1]][["mcmc"]]))
+    expect_false(any(startsWith(raw_parameter_names, "shape[")))
+    shape_rows <- dplyr::filter(results, Parameter == "shape")
+    expect_equal(
+      shape_rows$value,
+      rep(1, nrow(shape_rows)),
+      tolerance = sqrt(.Machine$double.eps)
+    )
+  }
+)
+
+test_that(
   desc = "results are consistent with simulated data",
   code = {
     skip_on_cran()

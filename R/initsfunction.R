@@ -15,3 +15,59 @@ initsfunction <- function(chain) {
   )[chain]
   return(list(".RNG.seed" = rng_seed, ".RNG.name" = rng_name))
 }
+
+#' Build stable JAGS chain initial values
+#'
+#' @param longdata A `prepped_jags_data` [list] as returned by [prep_data()].
+#'   It must include `nsubj` and `n_antigen_isos`.
+#' @param chain An [integer] chain index between 1 and 4.
+#' @param n_params An [integer] giving the number of subject-level parameters
+#'   in the selected JAGS model. Supported values are 4 (exponential decay) and
+#'   5 (power decay).
+#'
+#'   The returned `par` array follows the JAGS model layout:
+#'   `par[, , 1] = log(y0)`,
+#'   `par[, , 2] = log(y1 - y0)`,
+#'   `par[, , 3] = log(t1)`,
+#'   `par[, , 4] = log(alpha)`,
+#'   and, for the power-decay model only,
+#'   `par[, , 5] = log(shape - 1)`.
+#'   Slices 4 and 5 are initialized to fixed log-scale values so that the
+#'   piecewise recovery expression stays numerically valid during JAGS'
+#'   initial-value checks across platforms.
+#'
+#' @returns A [list] suitable for the `inits` argument of
+#'   [runjags::run.jags()], containing `.RNG.seed`, `.RNG.name`, and a `par`
+#'   array with dimensions `nsubj x n_antigen_isos x n_params`.
+#' @keywords internal
+build_chain_inits <- function(longdata, chain, n_params) {
+  if (!(n_params %in% c(4L, 5L))) {
+    cli::cli_abort(c(
+      "{.arg n_params} must match a supported serodynamics model layout.",
+      "i" = "Use 4 for the exponential-decay model or 5 for the power-decay model.",
+      "x" = "Received {.val {n_params}}."
+    ))
+  }
+
+  init_values <- initsfunction(chain)
+  par_init <- array(
+    0,
+    dim = c(
+      longdata$nsubj,
+      longdata$n_antigen_isos,
+      n_params
+    )
+  )
+
+  # Keep deterministic starts in a numerically stable region.
+  # JAGS may evaluate both branches of the piecewise mean expression when
+  # checking initial values, so start with a very small decay rate and, for
+  # the power-decay model, a modest shape value above 1.
+  par_init[, , 4] <- -10
+
+  if (n_params == 5L) {
+    par_init[, , 5] <- -2
+  }
+
+  return(c(init_values, list(par = par_init)))
+}

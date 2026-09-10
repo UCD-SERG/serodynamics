@@ -163,13 +163,14 @@ run_serodynamics <- function(data,
     nchains <- nchain # nr of MC chains to run simultaneously
     nburnin <- nburn # nr of iterations to use for burn-in
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
-
     tomonitor <- get_decay_monitors(decay_type, with_pop_params)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
       data = c(longdata, priorspec),
-      inits = initsfunction,
+      inits = function(chain) {
+        build_chain_inits(longdata, chain, priorspec$n_params)
+      },
       method = "parallel",
       adapt = nadapt,
       burnin = nburnin,
