@@ -27,22 +27,18 @@ test_that("chain inits keep the power-decay recovery term positive", {
   alpha <- exp(init_values$par[, , 4])
   shape <- exp(init_values$par[, , 5]) + 1
 
-  recovery_args <- numeric()
-
   for (subj in seq_len(longdata$nsubj)) {
     observed_times <- longdata$smpl.t[subj, ]
     observed_times <- observed_times[is.finite(observed_times)]
 
     for (obs_time in observed_times) {
-      recovery_args <- c(
-        recovery_args,
+      expect_true(all(
         y1[subj, ]^(1 - shape[subj, ]) -
           (1 - shape[subj, ]) * alpha[subj, ] * (obs_time - t1[subj, ])
-      )
+          > 0
+      ))
     }
   }
-
-  expect_true(all(recovery_args > 0))
 })
 
 test_that("runjags initializes with explicit par starts", {
