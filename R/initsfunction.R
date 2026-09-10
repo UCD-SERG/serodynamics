@@ -30,7 +30,12 @@ initsfunction <- function(chain) {
 #'   array with dimensions `nsubj x n_antigen_isos x n_params`.
 #' @noRd
 build_chain_inits <- function(longdata, chain, n_params) {
-  stopifnot(n_params %in% c(4L, 5L))
+  if (!(n_params %in% c(4L, 5L))) {
+    cli::cli_abort(c(
+      "{.arg n_params} must be 4 or 5.",
+      "x" = "Received {.val {n_params}}."
+    ))
+  }
 
   init_values <- initsfunction(chain)
   par_init <- array(
