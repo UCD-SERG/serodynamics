@@ -68,22 +68,26 @@ test_that("runjags initializes with explicit par starts", {
   expect_equal(init_values$par[, , 4], array(-10, dim(init_values$par)[1:2]))
   expect_equal(init_values$par[, , 5], array(-10, dim(init_values$par)[1:2]))
 
-  expect_no_error(
-    runjags::run.jags(
-      model = serodynamics_example("model.jags"),
-      data = c(longdata, priors),
-      inits = chain_inits,
-      method = "rjags",
-      adapt = 0,
-      burnin = 0,
-      thin = 1,
-      sample = 1,
-      n.chains = 1,
-      monitor = "y0",
-      summarise = FALSE
-    ) |>
-      suppressWarnings()
-  )
+  jags_post <- runjags::run.jags(
+    model = serodynamics_example("model.jags"),
+    data = c(longdata, priors),
+    inits = chain_inits,
+    method = "rjags",
+    adapt = 0,
+    burnin = 0,
+    thin = 1,
+    sample = 1,
+    n.chains = 1,
+    monitor = "par",
+    summarise = FALSE
+  ) |>
+    suppressWarnings()
+
+  sampled_par <- jags_post$mcmc |>
+    as.matrix()
+
+  expect_equal(unname(sampled_par[1, "par[1,1,4]"]), -10)
+  expect_equal(unname(sampled_par[1, "par[1,1,5]"]), -10)
 })
 
 test_that(
