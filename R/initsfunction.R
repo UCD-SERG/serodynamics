@@ -43,7 +43,8 @@ initsfunction <- function(chain) {
 build_chain_inits <- function(longdata, chain, n_params) {
   if (!(n_params %in% c(4L, 5L))) {
     cli::cli_abort(c(
-      "{.arg n_params} must be 4 or 5.",
+      "{.arg n_params} must match a supported serodynamics model layout.",
+      "i" = "Use 4 for the exponential-decay model or 5 for the power-decay model.",
       "x" = "Received {.val {n_params}}."
     ))
   }
