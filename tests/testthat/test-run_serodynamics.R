@@ -78,9 +78,12 @@ test_that(
       envir = end_state
     )
     expect_equal(dim(end_state$par), c(longdata$nsubj, longdata$n_antigen_isos, 4))
-    expect_true(all(
-      dplyr::filter(results, .data$Parameter == "shape")$value == 1
-    ))
+    shape_rows <- dplyr::filter(results, .data$Parameter == "shape")
+    expect_equal(
+      shape_rows$value,
+      rep(1, nrow(shape_rows)),
+      tolerance = sqrt(.Machine$double.eps)
+    )
   }
 )
 
