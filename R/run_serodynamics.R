@@ -165,11 +165,14 @@ run_serodynamics <- function(data,
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
 
     tomonitor <- get_decay_monitors(decay_type, with_pop_params)
+    chain_inits <- function(chain) {
+      return(build_chain_inits(longdata, chain, priorspec$n_params))
+    }
 
     jags_post <- runjags::run.jags(
       model = file_mod,
       data = c(longdata, priorspec),
-      inits = initsfunction,
+      inits = chain_inits,
       method = "parallel",
       adapt = nadapt,
       burnin = nburnin,
