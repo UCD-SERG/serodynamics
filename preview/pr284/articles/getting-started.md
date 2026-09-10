@@ -179,7 +179,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:10:41 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:14:31 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -432,7 +432,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:10:53 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:14:44 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -467,7 +467,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:10:55 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:14:46 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -591,7 +591,6 @@ sessioninfo::session_info()
 #> ──────────────────────────────────────────────────────────────────────────────
 ```
 
-[^1]: Aiemjoy K, Seidman JC, Saha S, et al.  Estimating typhoid
-    incidence from community-based serosurveys: a multicohort study.
-    *The Lancet Microbe*. 2022;3(8):e578–e587.
-    doi:10.1016/S2666-5247(22)00114-8.
+[^1]: Aiemjoy K. et al.  Estimating typhoid incidence from
+    community-based serosurveys: a multicohort study. *The Lancet
+    Microbe*. 2022;3(8):e578–e587. doi:10.1016/S2666-5247(22)00114-8.
