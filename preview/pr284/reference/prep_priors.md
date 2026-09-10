@@ -39,11 +39,12 @@ prep_priors(
 
   - t1 = time to peak
 
-  - r = shape parameter (If running `decay_type == "exponential"` no
-    shape parameter needs to be specified).
+  - alpha = decay rate
 
-  - alpha = decay rate When `decay_type = "exponential"` only 4
-    parameters (y0, y1, t1, alpha) are used.
+  - r = shape parameter (If running `decay_type == "exponential"` no
+    shape parameter needs to be specified). When
+    `decay_type = "exponential"` only 4 parameters (y0, y1, t1, alpha)
+    are used.
 
 - prec_hyp_param:
 
@@ -106,26 +107,29 @@ A "curve_params_priors" object (a subclass of
 [attributes](https://rdrr.io/r/base/attributes.html) entry named
 `"used_priors"`), containing the following elements:
 
-- "n_params": Corresponds to the 5 parameters being estimated.
+- "n_params": Corresponds to the 5 parameters being estimated. When
+  `decay_type = "exponential"`, 4 parameters are being estimated.
 
 - "mu.hyp": A [matrix](https://rdrr.io/r/base/matrix.html) of
   hyperpriors with dimensions `max_antigens` x 5 (# of parameters),
   representing the mean of the hyperprior distribution for the five
-  seroresponse parameters: y0, y1, t1, r, and alpha).
+  seroresponse parameters: y0, y1, t1, alpha, and r) (`max_antigens` x 4
+  when `decay_type = "exponential"`, including y0, y1, t1, and alpha).
 
 - "prec.hyp": A three-dimensional
   [numeric](https://rdrr.io/r/base/numeric.html)
   [array](https://rdrr.io/r/base/array.html) with dimensions
   `max_antigens` x 5 (# of parameters), containing the precision
   matrices of the hyperprior distributions of `mu.hyp`, for each
-  biomarker.
+  biomarker (`max_antigens` x 4 when `decay_type = "exponential"`).
 
 - "omega" : A three-dimensional
   [numeric](https://rdrr.io/r/base/numeric.html)
   [array](https://rdrr.io/r/base/array.html) with 5
   [matrix](https://rdrr.io/r/base/matrix.html),each with dimensions
   `max_antigens` x 5 (# of parameters), representing the precision
-  matrix of Wishart hyper-priors for `prec.hyp`.
+  matrix of Wishart hyper-priors for `prec.hyp` (`max_antigens` x 4 when
+  `decay_type = "exponential"`).
 
 - "wishdf": A [vector](https://rdrr.io/r/base/vector.html) of 2 values
   specifying the degrees of freedom for the Wishart distribution used in

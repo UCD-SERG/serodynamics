@@ -81,9 +81,9 @@ parameters (y0, y1, t1, r, alpha) for each biomarker. Must be 5 values long,
 representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
+<li><p>alpha = decay rate</p></li>
 <li><p>r = shape parameter (If running <code>decay_type == "exponential"</code> no shape
-parameter needs to be specified).</p></li>
-<li><p>alpha = decay rate
+parameter needs to be specified).
 When <code>decay_type = "exponential"</code> only 4 parameters (y0, y1, t1, alpha) are
 used.</p></li>
 </ul></dd>
@@ -141,18 +141,22 @@ decay and 4-element prior vectors for exponential decay (the fifth
     <p>A "curve_params_priors" object
 (a subclass of <a href="https://rdrr.io/r/base/list.html" class="external-link">list</a> with the inputs to <code>prep_priors()</code> attached
 as <a href="https://rdrr.io/r/base/attributes.html" class="external-link">attributes</a> entry named <code>"used_priors"</code>), containing the following
-elements:</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated.</p></li>
+elements:</p><ul><li><p>"n_params": Corresponds to the 5 parameters being estimated. When
+<code>decay_type = "exponential"</code>, 4 parameters are being estimated.</p></li>
 <li><p>"mu.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyperpriors with dimensions
 <code>max_antigens</code> x 5 (# of parameters), representing the mean of the
-hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r,
-and alpha).</p></li>
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1,
+alpha, and r) (<code>max_antigens</code> x 4 when <code>decay_type = "exponential"</code>,
+including y0, y1, t1, and alpha).</p></li>
 <li><p>"prec.hyp": A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a>
 with dimensions <code>max_antigens</code> x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of
-<code>mu.hyp</code>, for each biomarker.</p></li>
+<code>mu.hyp</code>, for each biomarker (<code>max_antigens</code> x 4 when
+<code>decay_type = "exponential"</code>).</p></li>
 <li><p>"omega" : A three-dimensional <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/array.html" class="external-link">array</a> with 5 <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a>,each
 with dimensions <code>max_antigens</code> x 5 (# of parameters), representing the
-precision matrix of Wishart hyper-priors for <code>prec.hyp</code>.</p></li>
+precision matrix of Wishart hyper-priors for <code>prec.hyp</code> (<code>max_antigens</code> x 4
+when <code>decay_type = "exponential"</code>).</p></li>
 <li><p>"wishdf": A <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values specifying the degrees of freedom
 for the Wishart distribution used in the subject-level precision prior.</p></li>
 <li><p>"prec.logy.hyp": A <a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a> of hyper-parameters for the precision
