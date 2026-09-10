@@ -164,7 +164,6 @@ run_serodynamics <- function(data,
     nburnin <- nburn # nr of iterations to use for burn-in
     nthin <- round(niter / nmc) # thinning needed to produce nmc from niter
     tomonitor <- get_decay_monitors(decay_type, with_pop_params)
-    tomonitor <- get_decay_monitors(decay_type, with_pop_params)
 
     jags_post <- runjags::run.jags(
       model = file_mod,
