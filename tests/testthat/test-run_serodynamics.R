@@ -64,6 +64,10 @@ test_that(
     expect_s3_class(results, "data.frame")
     expect_gt(nrow(results), 0)
     expect_equal(attr(results, "decay_type"), "exponential")
+    expect_setequal(
+      unique(results$Parameter),
+      c("alpha", "shape", "t1", "y0", "y1")
+    )
     expect_true(all(
       dplyr::filter(results, .data$Parameter == "shape")$value == 1
     ))
