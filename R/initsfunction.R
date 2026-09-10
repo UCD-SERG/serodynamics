@@ -39,7 +39,7 @@ initsfunction <- function(chain) {
 #' @returns A [list] suitable for the `inits` argument of
 #'   [runjags::run.jags()], containing `.RNG.seed`, `.RNG.name`, and a `par`
 #'   array with dimensions `nsubj x n_antigen_isos x n_params`.
-#' @noRd
+#' @keywords internal
 build_chain_inits <- function(longdata, chain, n_params) {
   if (!(n_params %in% c(4L, 5L))) {
     cli::cli_abort(c(
