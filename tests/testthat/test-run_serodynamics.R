@@ -48,7 +48,6 @@ test_that(
       max_n_obs = 3,
       followup_interval = 14
     )
-    longdata <- prep_data(simulated_data)
 
     results <- suppressWarnings(
       run_serodynamics(
@@ -72,12 +71,8 @@ test_that(
     )
     jags_post <- attr(results, "jags.post")
     expect_false(is.null(jags_post))
-    end_state <- rlang::env()
-    eval(
-      parse(text = as.character(jags_post$None$end.state)),
-      envir = end_state
-    )
-    expect_equal(dim(end_state$par), c(longdata$nsubj, longdata$n_antigen_isos, 4))
+    raw_parameter_names <- colnames(as.matrix(jags_post$None$mcmc))
+    expect_false(any(startsWith(raw_parameter_names, "shape[")))
     shape_rows <- dplyr::filter(results, .data$Parameter == "shape")
     expect_equal(
       shape_rows$value,
