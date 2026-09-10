@@ -16,6 +16,19 @@ initsfunction <- function(chain) {
   return(list(".RNG.seed" = rng_seed, ".RNG.name" = rng_name))
 }
 
+#' Build stable JAGS chain initial values
+#'
+#' @param longdata A `prepped_jags_data` [list] as returned by [prep_data()].
+#'   It must include `nsubj` and `n_antigen_isos`.
+#' @param chain An [integer] chain index between 1 and 4.
+#' @param n_params An [integer] giving the number of subject-level parameters
+#'   in the selected JAGS model. Supported values are 4 (exponential decay) and
+#'   5 (power decay).
+#'
+#' @returns A [list] suitable for the `inits` argument of
+#'   [runjags::run.jags()], containing `.RNG.seed`, `.RNG.name`, and a `par`
+#'   array with dimensions `nsubj x n_antigen_isos x n_params`.
+#' @noRd
 build_chain_inits <- function(longdata, chain, n_params) {
   stopifnot(n_params %in% c(4L, 5L))
 
