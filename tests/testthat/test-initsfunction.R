@@ -66,7 +66,7 @@ test_that("runjags initializes with explicit par starts", {
     c(longdata$nsubj, longdata$n_antigen_isos, priors$n_params)
   )
   expect_equal(init_values$par[, , 4], array(-10, dim(init_values$par)[1:2]))
-  expect_equal(init_values$par[, , 5], array(-10, dim(init_values$par)[1:2]))
+  expect_equal(init_values$par[, , 5], array(-2, dim(init_values$par)[1:2]))
 
   jags_post <- suppressWarnings(
     runjags::run.jags(
@@ -88,7 +88,7 @@ test_that("runjags initializes with explicit par starts", {
     as.matrix()
 
   expect_equal(unname(sampled_par[1, "par[1,1,4]"]), -10)
-  expect_equal(unname(sampled_par[1, "par[1,1,5]"]), -10)
+  expect_equal(unname(sampled_par[1, "par[1,1,5]"]), -2)
 })
 
 test_that(

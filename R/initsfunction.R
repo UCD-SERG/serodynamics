@@ -49,12 +49,12 @@ build_chain_inits <- function(longdata, chain, n_params) {
 
   # Keep deterministic starts in a numerically stable region.
   # JAGS may evaluate both branches of the piecewise mean expression when
-  # checking initial values, so start with a very small decay rate and a shape
-  # that is close to exponential decay.
+  # checking initial values, so start with a very small decay rate and, for
+  # the power-decay model, a modest shape value above 1.
   par_init[, , 4] <- -10
 
   if (n_params == 5L) {
-    par_init[, , 5] <- -10
+    par_init[, , 5] <- -2
   }
 
   return(c(init_values, list(par = par_init)))
