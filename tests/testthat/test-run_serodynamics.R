@@ -49,13 +49,6 @@ test_that(
       followup_interval = 14
     )
     longdata <- prep_data(simulated_data)
-    par_dim_text <- paste0(
-      ".Dim = c(",
-      longdata$nsubj,
-      "L,",
-      longdata$n_antigen_isos,
-      "L,4L)"
-    )
 
     results <- suppressWarnings(
       run_serodynamics(
@@ -79,11 +72,12 @@ test_that(
     )
     jags_post <- attr(results, "jags.post")
     expect_false(is.null(jags_post))
-    expect_true(grepl(
-      par_dim_text,
-      as.character(jags_post$None$end.state),
-      fixed = TRUE
-    ))
+    end_state <- rlang::env()
+    eval(
+      parse(text = as.character(jags_post$None$end.state)),
+      envir = end_state
+    )
+    expect_equal(dim(end_state$par), c(longdata$nsubj, longdata$n_antigen_isos, 4))
     expect_true(all(
       dplyr::filter(results, .data$Parameter == "shape")$value == 1
     ))
