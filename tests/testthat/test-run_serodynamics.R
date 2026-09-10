@@ -71,7 +71,7 @@ test_that(
     )
     jags_post <- attr(results, "jags.post")
     expect_false(is.null(jags_post))
-    raw_parameter_names <- colnames(as.matrix(jags_post$None$mcmc))
+    raw_parameter_names <- colnames(as.matrix(jags_post[[1]][["mcmc"]]))
     expect_false(any(startsWith(raw_parameter_names, "shape[")))
     shape_rows <- dplyr::filter(results, Parameter == "shape")
     expect_equal(
