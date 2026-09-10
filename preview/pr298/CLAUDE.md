@@ -6,21 +6,30 @@ review agent. The canonical, detailed contributor guide lives in
 — **follow it** for setup, build, test, documentation, and style. This
 file adds review-specific emphasis on top of that guide.
 
-## ai-config submodule
+## ai-config plugin
 
-The `.ai-config` git submodule pins a copy of
-[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config) —
-the corpus one of this file’s review guidelines cites (`shared/`
-fragments, skills, memories). A scheduled `Bump submodule` workflow
-(`.github/workflows/bump-submodule.yml`) keeps the pin fresh and opens a
-PR when it drifts.
+`.claude/settings.json` registers the
+[`Morrison-Lab/ai-config`](https://github.com/Morrison-Lab/ai-config)
+Claude Code plugin marketplace — the corpus one of this file’s review
+guidelines cites (`shared/` fragments, skills, memories) — and enables
+its plugin, whose skills load as `ai-config:`-namespaced commands.
 
-`.claude/settings.json` also registers ai-config’s Claude Code plugin
-marketplace, so a Claude Code web/cloud session opened directly on this
-repo (where `~/.claude` starts empty) loads its skills as
-`ai-config:`-namespaced commands. This is separate from the `@claude` CI
-bot, which loads skills only from a committed `.claude/skills/`
-directory, not from `enabledPlugins`.
+On web/cloud, where `~/.claude` starts empty, Claude Code installs the
+plugin from that marketplace at every session start.
+
+On a local checkout Claude Code does not install it: the marketplace
+registers once you accept the workspace trust dialog, but a
+GitHub-sourced plugin enabled only by a repo’s `.claude/settings.json`
+is never installed automatically (Claude Code v2.1.195+), so run
+`claude plugin install ai-config@Morrison-Lab` once, and refresh it with
+`claude plugin update ai-config@Morrison-Lab` (auto-update is off by
+default for third-party marketplaces).
+
+The `@claude` CI reviewer cannot get the plugin from
+`.claude/settings.json` (a headless run in an untrusted checkout ignores
+the repo’s `extraKnownMarketplaces`); it gets the same plugin through
+`Morrison-Lab/gha`’s `claude-code-review.yml` `use-ai-config` input (on
+by default), plus any committed `.claude/skills/`.
 
 ## Lab-wide style authority
 

@@ -216,7 +216,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:36 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:38:51 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -253,7 +253,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:42 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:38:55 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -527,7 +527,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:15:58 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:39:07 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -562,7 +562,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep  1 20:16:00 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 10 18:39:08 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -613,14 +613,14 @@ sessioninfo::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.6.1 (2026-06-24)
-#>  os       Ubuntu 24.04.4 LTS
+#>  os       Ubuntu 24.04.5 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
 #>  language en-US
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-01
+#>  date     2026-09-10
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -641,13 +641,13 @@ sessioninfo::session_info()
 #>  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.6.1)
 #>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.6.1)
 #>  ggplot2        * 4.0.3      2026-04-22 [1] CRAN (R 4.6.1)
-#>  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.6.1)
+#>  ggstats          0.14.0     2026-09-02 [1] CRAN (R 4.6.1)
 #>  glue             1.8.1      2026-04-17 [1] CRAN (R 4.6.1)
 #>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.6.1)
 #>  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.6.1)
 #>  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.6.1)
 #>  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.6.1)
-#>  knitr            1.51       2025-12-20 [1] CRAN (R 4.6.1)
+#>  knitr            1.52       2026-09-06 [1] CRAN (R 4.6.1)
 #>  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.6.1)
 #>  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.6.1)
 #>  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.6.1)
@@ -667,7 +667,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9019 2026-09-01 [1] local
+#>  serodynamics   * 0.1.0.9020 2026-09-10 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)

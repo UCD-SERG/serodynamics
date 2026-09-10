@@ -4,6 +4,20 @@
 
 ### Internal
 
+- Updated `.github/copilot-instructions.md` so the local `rjags` install
+  instructions branch by platform, matching what `R-CMD-check.yaml` and
+  `test-coverage.yaml` do since
+  [\#308](https://github.com/UCD-SERG/serodynamics/issues/308): source
+  builds on macOS/Linux, the binary on Windows. The file previously
+  showed `type = "source"` for every platform
+  ([\#309](https://github.com/UCD-SERG/serodynamics/issues/309)).
+
+- Removed the `.ai-config` git submodule, its `.gitmodules` entry, and
+  the scheduled `Bump submodule` workflow
+  ([\#316](https://github.com/UCD-SERG/serodynamics/issues/316)). The
+  `ai-config` Claude Code plugin registered in `.claude/settings.json`
+  supplies the same corpus without a second copy to keep pinned.
+
 - Granted `pull-requests: write` permission to the review dispatch job
   in `claude-code-review.yml`
   ([\#307](https://github.com/UCD-SERG/serodynamics/issues/307)),
@@ -370,9 +384,7 @@ package.
   ([\#135](https://github.com/UCD-SERG/serodynamics/issues/135))
 - vectorized `ab()` function
   ([\#116](https://github.com/UCD-SERG/serodynamics/issues/116))
-- Added
-  [`lintr::undesirable_function_linter()`](https://lintr.r-lib.org/reference/undesirable_function_linter.html)
-  to `.lintr.R`
+- Added `lintr::undesirable_function_linter()` to `.lintr.R`
   ([\#81](https://github.com/UCD-SERG/serodynamics/issues/81))
 - Reformatted `.lintr` as R file (following
   <https://github.com/r-lib/lintr/issues/2844#issuecomment-2776725389>)

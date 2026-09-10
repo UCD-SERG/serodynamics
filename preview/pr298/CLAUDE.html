@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9019</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9020</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,9 +48,11 @@
 
 <p>This file is read by Claude Code sessions and by the <code>@claude</code> GitHub review agent. The canonical, detailed contributor guide lives in <a href="copilot-instructions.html"><code>.github/copilot-instructions.md</code></a> — <strong>follow it</strong> for setup, build, test, documentation, and style. This file adds review-specific emphasis on top of that guide.</p>
 <div class="section level2">
-<h2 id="ai-config-submodule">ai-config submodule<a class="anchor" aria-label="anchor" href="#ai-config-submodule"></a></h2>
-<p>The <code>.ai-config</code> git submodule pins a copy of <a href="https://github.com/Morrison-Lab/ai-config" class="external-link"><code>Morrison-Lab/ai-config</code></a> — the corpus one of this file’s review guidelines cites (<code>shared/</code> fragments, skills, memories). A scheduled <code>Bump submodule</code> workflow (<code>.github/workflows/bump-submodule.yml</code>) keeps the pin fresh and opens a PR when it drifts.</p>
-<p><code>.claude/settings.json</code> also registers ai-config’s Claude Code plugin marketplace, so a Claude Code web/cloud session opened directly on this repo (where <code>~/.claude</code> starts empty) loads its skills as <code>ai-config:</code>-namespaced commands. This is separate from the <code>@claude</code> CI bot, which loads skills only from a committed <code>.claude/skills/</code> directory, not from <code>enabledPlugins</code>.</p>
+<h2 id="ai-config-plugin">ai-config plugin<a class="anchor" aria-label="anchor" href="#ai-config-plugin"></a></h2>
+<p><code>.claude/settings.json</code> registers the <a href="https://github.com/Morrison-Lab/ai-config" class="external-link"><code>Morrison-Lab/ai-config</code></a> Claude Code plugin marketplace — the corpus one of this file’s review guidelines cites (<code>shared/</code> fragments, skills, memories) — and enables its plugin, whose skills load as <code>ai-config:</code>-namespaced commands.</p>
+<p>On web/cloud, where <code>~/.claude</code> starts empty, Claude Code installs the plugin from that marketplace at every session start.</p>
+<p>On a local checkout Claude Code does not install it: the marketplace registers once you accept the workspace trust dialog, but a GitHub-sourced plugin enabled only by a repo’s <code>.claude/settings.json</code> is never installed automatically (Claude Code v2.1.195+), so run <code>claude plugin install ai-config@Morrison-Lab</code> once, and refresh it with <code>claude plugin update ai-config@Morrison-Lab</code> (auto-update is off by default for third-party marketplaces).</p>
+<p>The <code>@claude</code> CI reviewer cannot get the plugin from <code>.claude/settings.json</code> (a headless run in an untrusted checkout ignores the repo’s <code>extraKnownMarketplaces</code>); it gets the same plugin through <code>Morrison-Lab/gha</code>’s <code>claude-code-review.yml</code> <code>use-ai-config</code> input (on by default), plus any committed <code>.claude/skills/</code>.</p>
 </div>
 <div class="section level2">
 <h2 id="lab-wide-style-authority">Lab-wide style authority<a class="anchor" aria-label="anchor" href="#lab-wide-style-authority"></a></h2>

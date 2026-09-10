@@ -309,12 +309,30 @@ docker exec serodynamics-dev R -e 'runjags::testjags()'
 - **Windows**: Download from
   <https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe>
 
-After installing JAGS, install the R interface:
+After installing JAGS, install the R interface. Which form to use
+depends on the platform, matching what
+`.github/workflows/R-CMD-check.yaml` and
+`.github/workflows/test-coverage.yaml` do (see \#308):
 
-``` r
+- **macOS/Linux**: build from source, so that `rjags` links against the
+  JAGS library you just installed.
 
-install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
-```
+  ``` r
+
+  install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
+  ```
+
+- **Windows**: install the binary, which is the default. Building from
+  source on Windows requires a matching Rtools toolchain and is not what
+  CI does.
+
+  ``` r
+
+  install.packages("rjags", repos = "https://cloud.r-project.org")
+  ```
+
+The Docker snippet above uses `type = "source"` unconditionally because
+that container is Linux.
 
 Verify installation with:
 
@@ -457,10 +475,9 @@ The following workflows run on every PR. **All must pass** for merge:
 5.  **check-readme.yaml**: Renders README.Rmd and verifies it matches
     README.md. (~2-3 min)
 
-6.  **R-check-docs.yml**: Runs
-    [`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-    and checks if `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails
-    if documentation is out of sync. (~2-3 min)
+6.  **R-check-docs.yml**: Runs `roxygen2::roxygenise()` and checks if
+    `man/`, `NAMESPACE`, or `DESCRIPTION` changed. Fails if
+    documentation is out of sync. (~2-3 min)
 
 7.  **news.yaml**: Ensures NEWS.md is updated for every PR. Can be
     bypassed with `no-changelog` label. (~1 min)
@@ -482,10 +499,8 @@ The following workflows run on every PR. **All must pass** for merge:
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs: - `/document` -
-Runs
-[`roxygen2::roxygenise()`](https://roxygen2.r-lib.org/reference/roxygenize.html)
-and commits changes - `/style` - Runs `styler::style_pkg()` and commits
-changes
+Runs `roxygen2::roxygenise()` and commits changes - `/style` - Runs
+`styler::style_pkg()` and commits changes
 
 ## Repository Structure
 
@@ -573,8 +588,8 @@ to make snapshots platform-specific.
 ### Documentation Out of Sync
 
 **Symptom**: R-check-docs.yml workflow fails. **Solution**: Run
-[`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-locally and commit the updated `man/` and `NAMESPACE` files.
+`devtools::document()` locally and commit the updated `man/` and
+`NAMESPACE` files.
 
 ### Version Not Incremented
 
@@ -841,26 +856,20 @@ structure, workflows, and configuration files. When making changes:
 3.  **ALWAYS** establish value-based unit tests (snapshot or explicit
     value tests) BEFORE modifying functions
 4.  **ALWAYS** write tidy, clean, and well-organized code
-5.  **ALWAYS** run
-    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-    after modifying roxygen2 comments
+5.  **ALWAYS** run `devtools::document()` after modifying roxygen2
+    comments
 6.  **ALWAYS** edit README.Rmd (not README.md) for README changes
 7.  **ALWAYS** increment dev version number to be one ahead of main
     branch before requesting PR review
 8.  **ALWAYS** update NEWS.md for user-facing changes
-9.  **ALWAYS** run tests before committing
-    ([`devtools::test()`](https://devtools.r-lib.org/reference/test.html))
+9.  **ALWAYS** run tests before committing (`devtools::test()`)
 10. **ALWAYS** check and fix lintr issues in changed files in PRs before
     committing
-11. **ALWAYS** run
-    [`devtools::document()`](https://devtools.r-lib.org/reference/document.html)
-    before requesting PR review
-12. **ALWAYS** make sure
-    [`devtools::check()`](https://devtools.r-lib.org/reference/check.html)
-    passes before requesting PR review
-13. **ALWAYS** make sure
-    [`devtools::spell_check()`](https://devtools.r-lib.org/reference/spell_check.html)
-    passes before requesting PR review
+11. **ALWAYS** run `devtools::document()` before requesting PR review
+12. **ALWAYS** make sure `devtools::check()` passes before requesting PR
+    review
+13. **ALWAYS** make sure `devtools::spell_check()` passes before
+    requesting PR review
 14. **ALWAYS** run
     [`pkgdown::build_site()`](https://pkgdown.r-lib.org/reference/build_site.html)
     before requesting PR review to ensure the pkgdown site builds
