@@ -85,9 +85,9 @@ representing the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
+\item alpha = decay rate
 \item r = shape parameter (If running \code{decay_type == "exponential"} no shape
 parameter needs to be specified).
-\item alpha = decay rate
 When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
 used.
 }}
@@ -129,9 +129,9 @@ including the following:
 \item \code{y0} = Posterior estimate of baseline antibody concentration
 \item \code{y1} = Posterior estimate of peak antibody concentration
 \item \code{t1} = Posterior estimate of time to peak
+\item \code{alpha} = Posterior estimate of decay rate
 \item \code{shape} = shape parameter, estimated for power decay and fixed at 1
 for exponential decay
-\item \code{alpha} = Posterior estimate of decay rate
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model

@@ -63,9 +63,9 @@
 #'     - `y0` = Posterior estimate of baseline antibody concentration
 #'     - `y1` = Posterior estimate of peak antibody concentration
 #'     - `t1` = Posterior estimate of time to peak
+#'     - `alpha` = Posterior estimate of decay rate
 #'     - `shape` = shape parameter, estimated for power decay and fixed at 1
 #'     for exponential decay
-#'     - `alpha` = Posterior estimate of decay rate
 #'   - `Iso_type` = Antibody/antigen type combination being evaluated
 #'   - `Stratification` = The variable used to stratify jags model
 #'   - `Subject` = ID of subject being evaluated

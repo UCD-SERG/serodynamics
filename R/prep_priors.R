@@ -12,9 +12,9 @@
 #'    - y0 = baseline antibody concentration
 #'    - y1 = peak antibody concentration
 #'    - t1 = time to peak
+#'    - alpha = decay rate 
 #'    - r = shape parameter (If running `decay_type == "exponential"` no shape
 #'    parameter needs to be specified).
-#'    - alpha = decay rate 
 #' When `decay_type = "exponential"` only 4 parameters (y0, y1, t1, alpha) are 
 #' used.
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
@@ -44,18 +44,22 @@
 #' (a subclass of [list] with the inputs to `prep_priors()` attached 
 #' as [attributes] entry named `"used_priors"`), containing the following
 #' elements:
-#' - "n_params": Corresponds to the 5 parameters being estimated.
+#' - "n_params": Corresponds to the 5 parameters being estimated. When 
+#' `decay_type = "exponential"`, 4 parameters are being estimated.
 #' - "mu.hyp": A [matrix] of hyperpriors with dimensions
 #' `max_antigens` x 5 (# of parameters), representing the mean of the
-#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r, 
-#' and alpha).
+#' hyperprior distribution for the five seroresponse parameters: y0, y1, t1, 
+#' alpha, and r) (`max_antigens` x 4 when `decay_type = "exponential"`, 
+#' including y0, y1, t1, and alpha).
 #' - "prec.hyp": A three-dimensional [numeric] [array] 
 #' with dimensions `max_antigens` x 5 (# of parameters), 
 #' containing the precision matrices of the hyperprior distributions of
-#' `mu.hyp`, for each biomarker.
+#' `mu.hyp`, for each biomarker (`max_antigens` x 4 when 
+#' `decay_type = "exponential"`).
 #' - "omega" : A three-dimensional [numeric] [array] with 5 [matrix],each
 #' with dimensions `max_antigens` x 5 (# of parameters), representing the
-#' precision matrix of Wishart hyper-priors for `prec.hyp`.
+#' precision matrix of Wishart hyper-priors for `prec.hyp` (`max_antigens` x 4 
+#' when `decay_type = "exponential"`).
 #' - "wishdf": A [vector] of 2 values specifying the degrees of freedom
 #' for the Wishart distribution used in the subject-level precision prior.
 #' - "prec.logy.hyp": A [matrix] of hyper-parameters for the precision
@@ -121,7 +125,7 @@ prep_priors <- function(max_antigens,
   prec_logy_hyp <- array(NA, dim = c(max_antigens, 2))
 
   # Fill parameter arrays
-  # the parameters are log(c(y0,  y1,    t1,  alpha, shape-1))
+  # the parameters are log(c(y0, y1 - y0, t1, alpha, shape-1))
   for (k.test in 1:max_antigens) {
     mu_hyp[k.test, ] <- mu_hyp_param
     prec_hyp[k.test, , ] <- diag(prec_hyp_param)

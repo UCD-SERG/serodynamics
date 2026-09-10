@@ -26,9 +26,9 @@ representing the following parameters:
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
 \item t1 = time to peak
+\item alpha = decay rate
 \item r = shape parameter (If running \code{decay_type == "exponential"} no shape
 parameter needs to be specified).
-\item alpha = decay rate
 When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
 used.
 }}
@@ -78,18 +78,22 @@ A "curve_params_priors" object
 as \link{attributes} entry named \code{"used_priors"}), containing the following
 elements:
 \itemize{
-\item "n_params": Corresponds to the 5 parameters being estimated.
+\item "n_params": Corresponds to the 5 parameters being estimated. When
+\code{decay_type = "exponential"}, 4 parameters are being estimated.
 \item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
 \code{max_antigens} x 5 (# of parameters), representing the mean of the
-hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r,
-and alpha).
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1,
+alpha, and r) (\code{max_antigens} x 4 when \code{decay_type = "exponential"},
+including y0, y1, t1, and alpha).
 \item "prec.hyp": A three-dimensional \link{numeric} \link{array}
 with dimensions \code{max_antigens} x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of
-\code{mu.hyp}, for each biomarker.
+\code{mu.hyp}, for each biomarker (\code{max_antigens} x 4 when
+\code{decay_type = "exponential"}).
 \item "omega" : A three-dimensional \link{numeric} \link{array} with 5 \link{matrix},each
 with dimensions \code{max_antigens} x 5 (# of parameters), representing the
-precision matrix of Wishart hyper-priors for \code{prec.hyp}.
+precision matrix of Wishart hyper-priors for \code{prec.hyp} (\code{max_antigens} x 4
+when \code{decay_type = "exponential"}).
 \item "wishdf": A \link{vector} of 2 values specifying the degrees of freedom
 for the Wishart distribution used in the subject-level precision prior.
 \item "prec.logy.hyp": A \link{matrix} of hyper-parameters for the precision
