@@ -127,7 +127,7 @@ The main function `run_serodynamics()` fits a Bayesian MCMC model to estimate an
 - `shape`: Shape parameter
 - `alpha`: Decay rate
 
-(Below priors were selected based on ^[Aiemjoy K, Seidman JC, Saha S, et al. 
+(Below priors were selected based on ^[Aiemjoy K. et al. 
 Estimating typhoid incidence from community-based serosurveys: a multicohort 
 study. *The Lancet Microbe*. 2022;3(8):e578–e587. 
 doi:10.1016/S2666-5247(22)00114-8.])
