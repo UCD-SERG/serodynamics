@@ -48,11 +48,20 @@ test_that(
       max_n_obs = 3,
       followup_interval = 14
     )
+    longdata <- prep_data(simulated_data)
+    par_dim_text <- paste0(
+      ".Dim = c(",
+      longdata$nsubj,
+      "L,",
+      longdata$n_antigen_isos,
+      "L,4L)"
+    )
 
     results <- suppressWarnings(
       run_serodynamics(
         data = simulated_data,
         decay_type = "exponential",
+        with_post = TRUE,
         nchain = 1,
         nadapt = 0,
         nburn = 0,
@@ -68,6 +77,13 @@ test_that(
       unique(results$Parameter),
       c("alpha", "shape", "t1", "y0", "y1")
     )
+    jags_post <- attr(results, "jags.post")
+    expect_false(is.null(jags_post))
+    expect_true(grepl(
+      par_dim_text,
+      as.character(jags_post$None$end.state),
+      fixed = TRUE
+    ))
     expect_true(all(
       dplyr::filter(results, .data$Parameter == "shape")$value == 1
     ))
