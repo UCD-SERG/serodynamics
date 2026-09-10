@@ -25,6 +25,17 @@ initsfunction <- function(chain) {
 #'   in the selected JAGS model. Supported values are 4 (exponential decay) and
 #'   5 (power decay).
 #'
+#'   The returned `par` array follows the JAGS model layout:
+#'   `par[, , 1] = log(y0)`,
+#'   `par[, , 2] = log(y1 - y0)`,
+#'   `par[, , 3] = log(t1)`,
+#'   `par[, , 4] = log(alpha)`,
+#'   and, for the power-decay model only,
+#'   `par[, , 5] = log(shape - 1)`.
+#'   Slices 4 and 5 are initialized to fixed log-scale values so that the
+#'   piecewise recovery expression stays numerically valid during JAGS'
+#'   initial-value checks across platforms.
+#'
 #' @returns A [list] suitable for the `inits` argument of
 #'   [runjags::run.jags()], containing `.RNG.seed`, `.RNG.name`, and a `par`
 #'   array with dimensions `nsubj x n_antigen_isos x n_params`.
