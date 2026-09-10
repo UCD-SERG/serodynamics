@@ -1,4 +1,76 @@
 test_that(
+  desc = "small power-decay runs initialize successfully",
+  code = {
+    skip_on_cran()
+    skip_if_not_installed("rjags")
+    skip_if_not_installed("runjags")
+
+    withr::local_seed(123)
+    simulated_data <- sim_case_data(
+      n = 3,
+      curve_params = serocalculator::typhoid_curves_nostrat_100,
+      max_n_obs = 3,
+      followup_interval = 14
+    )
+
+    results <- suppressWarnings(
+      run_serodynamics(
+        data = simulated_data,
+        file_mod = serodynamics_example("model.jags"),
+        nchain = 1,
+        nadapt = 0,
+        nburn = 0,
+        nmc = 1,
+        niter = 1
+      )
+    )
+
+    expect_s3_class(results, "data.frame")
+    expect_gt(nrow(results), 0)
+    expect_setequal(
+      unique(results$Parameter),
+      c("alpha", "shape", "t1", "y0", "y1")
+    )
+  }
+)
+
+test_that(
+  desc = "small exponential-decay runs initialize successfully",
+  code = {
+    skip_on_cran()
+    skip_if_not_installed("rjags")
+    skip_if_not_installed("runjags")
+
+    withr::local_seed(123)
+    simulated_data <- sim_case_data(
+      n = 3,
+      curve_params = serocalculator::typhoid_curves_nostrat_100,
+      max_n_obs = 3,
+      followup_interval = 14
+    )
+
+    results <- suppressWarnings(
+      run_serodynamics(
+        data = simulated_data,
+        decay_type = "exponential",
+        nchain = 1,
+        nadapt = 0,
+        nburn = 0,
+        nmc = 1,
+        niter = 1
+      )
+    )
+
+    expect_s3_class(results, "data.frame")
+    expect_gt(nrow(results), 0)
+    expect_equal(attr(results, "decay_type"), "exponential")
+    expect_true(all(
+      dplyr::filter(results, .data$Parameter == "shape")$value == 1
+    ))
+  }
+)
+
+test_that(
   desc = "results are consistent with simulated data",
   code = {
     skip_on_cran()
