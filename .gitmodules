@@ -1,4 +1,0 @@
-[submodule ".ai-config"]
-	path = .ai-config
-	url = https://github.com/Morrison-Lab/ai-config.git
-	branch = main

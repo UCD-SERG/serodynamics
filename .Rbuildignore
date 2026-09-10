@@ -12,8 +12,6 @@
 ^pkgdown$
 ^\.github$
 ^\.claude$
-^\.ai-config$
-^\.gitmodules$
 ^LICENSE\.md$
 ^serodynamics\.Rcheck$
 ^serodynamics.*\.tar\.gz$
