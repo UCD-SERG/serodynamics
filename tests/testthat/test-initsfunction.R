@@ -91,6 +91,55 @@ test_that("parallel runjags initializes with explicit par starts", {
   expect_equal(unname(sampled_par[1, "par[1,1,5]"]), -2)
 })
 
+test_that("parallel exponential runjags initializes with 4-parameter starts", {
+  skip_on_cran()
+  skip_if_not_installed("rjags")
+  skip_if_not_installed("runjags")
+
+  withr::local_seed(123)
+  simulated_data <- sim_case_data(
+    n = 3,
+    curve_params = serocalculator::typhoid_curves_nostrat_100,
+    max_n_obs = 3,
+    followup_interval = 14
+  )
+  longdata <- prep_data(simulated_data)
+  priors <- prep_priors(max_antigens = longdata$n_antigen_isos) |>
+    configure_decay_priors("exponential")
+  chain_inits <- function(chain) {
+    return(build_chain_inits(longdata, chain, priors$n_params))
+  }
+  init_values <- chain_inits(1)
+
+  expect_named(init_values, c(".RNG.seed", ".RNG.name", "par"))
+  expect_equal(
+    dim(init_values$par),
+    c(longdata$nsubj, longdata$n_antigen_isos, priors$n_params)
+  )
+  expect_equal(init_values$par[, , 4], array(-10, dim(init_values$par)[1:2]))
+
+  jags_post <- suppressWarnings(
+    runjags::run.jags(
+      model = serodynamics_example("model_exp.jags"),
+      data = c(longdata, priors),
+      inits = chain_inits,
+      method = "parallel",
+      adapt = 0,
+      burnin = 0,
+      thin = 1,
+      sample = 1,
+      n.chains = 1,
+      monitor = "par",
+      summarise = FALSE
+    )
+  )
+
+  sampled_par <- jags_post$mcmc |>
+    as.matrix()
+
+  expect_equal(unname(sampled_par[1, "par[1,1,4]"]), -10)
+})
+
 test_that(
   desc = "runjags results are consistent", 
   code = {
