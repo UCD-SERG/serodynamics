@@ -35,9 +35,9 @@ in the model. Options are \code{"power"} and \code{"exponential"}. Default is
 The exponential model does not estimate \code{shape}; its processed output
 includes \code{shape = 1} as a fixed value to preserve the common output
 structure.
-Note: \code{prep_priors()} still validates 5-element prior vectors. For
-exponential decay, the fifth (\code{shape}) prior is required for validation
-but is ignored and omitted from the reported priors.}
+Note: \code{prep_priors()} validates 5-element prior vector for power
+decay and 4-element prior vectors for exponential decay (the fifth
+(\code{shape}) prior is excluded in exponential decay).}
 
 \item{nchain}{An \link{integer} between 1 and 4 that specifies
 the number of MCMC chains to be run per jags model.}
@@ -79,35 +79,33 @@ is \code{FALSE} (all \code{prec.logy} rows share \code{Parameter = "prec.logy"};
 antigen-isotypes (biomarkers) will be modeled.}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker.
-If specified, must be 5 values long, representing the following parameters:
+parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
+as default, representing the following parameters:
 \itemize{
-\item y0 = baseline antibody concentration (default = 1.0)
-\item y1 = peak antibody concentration (default = 7.0)
-\item t1 = time to peak (default = 1.0)
-\item r = shape parameter (default = -4.0)
-\item alpha = decay rate (default = -1.0)
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item alpha = decay rate
+\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
+parameter needs to be specified).
+When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
+used.
 }}
     \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters as default
+(4 values when \code{decay_type = "exponential"}).}
     \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
 to vary between individuals.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters as default
+(4 values when \code{decay_type = "exponential"}).}
     \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
-If specified, must be 1 value long.
+Must be 1 value long.
 \itemize{
-\item default = 20.0
 \item The value of \code{wishdf_param} controls how informative the Wishart prior
 is. Higher values lead to tighter priors on individual variation.
 Lower values (e.g., 5–10) make the prior more weakly informative,
@@ -116,10 +114,7 @@ which can help improve convergence if the model is over-regularized.
     \item{\code{prec_logy_hyp_param}}{A \link{numeric} \link{vector} of 2 values corresponding to
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
-If specified, must be 2 values long:
-\itemize{
-\item defaults = 4.0, 1.0
-}}
+Must be 2 values long.}
   }}
 }
 \value{
@@ -135,9 +130,9 @@ including the following:
 \item \code{y0} = Posterior estimate of baseline antibody concentration
 \item \code{y1} = Posterior estimate of peak antibody concentration
 \item \code{t1} = Posterior estimate of time to peak
+\item \code{alpha} = Posterior estimate of decay rate
 \item \code{shape} = shape parameter, estimated for power decay and fixed at 1
 for exponential decay
-\item \code{alpha} = Posterior estimate of decay rate
 }
 \item \code{Iso_type} = Antibody/antigen type combination being evaluated
 \item \code{Stratification} = The variable used to stratify jags model
@@ -197,7 +192,9 @@ purpose.
 \code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
-infection. The antibody dynamic curve includes the following parameters:
+infection. Priors are required for modeling and must be specified prior to
+running \code{run_serodynamics}. The antibody dynamic curve includes the
+following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
@@ -229,8 +226,13 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     nburn = 100, # Number of unrecorded samples before sampling begins
     nmc = 1000,
     niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
+    strat = "strat", # Variable to be stratified
+    mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4.0, 1.0)
+  ) 
 }
 }
 \author{

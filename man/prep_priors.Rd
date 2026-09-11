@@ -6,11 +6,12 @@
 \usage{
 prep_priors(
   max_antigens,
-  mu_hyp_param = c(1, 7, 1, -4, -1),
-  prec_hyp_param = c(1, 1e-05, 1, 0.001, 1),
-  omega_param = c(1, 50, 1, 10, 1),
-  wishdf_param = 20,
-  prec_logy_hyp_param = c(4, 1)
+  mu_hyp_param = NULL,
+  prec_hyp_param = NULL,
+  omega_param = NULL,
+  wishdf_param = NULL,
+  prec_logy_hyp_param = NULL,
+  decay_type = "power"
 )
 }
 \arguments{
@@ -19,38 +20,36 @@ antigen-isotypes (biomarkers) will be modeled.}
 
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker.
-If specified, must be 5 values long, representing the following parameters:
+parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
+as default, representing the following parameters:
 \itemize{
-\item y0 = baseline antibody concentration (default = 1.0)
-\item y1 = peak antibody concentration (default = 7.0)
-\item t1 = time to peak (default = 1.0)
-\item r = shape parameter (default = -4.0)
-\item alpha = decay rate (default = -1.0)
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item alpha = decay rate
+\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
+parameter needs to be specified).
+When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
+used.
 }}
 
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters as default
+(4 values when \code{decay_type = "exponential"}).}
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
 to vary between individuals.
-If specified, must be 5 values long:
-\itemize{
-\item defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
-}}
+Must be 5 values long corresponding to the 5 estimated parameters as default
+(4 values when \code{decay_type = "exponential"}).}
 
 \item{wishdf_param}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
-If specified, must be 1 value long.
+Must be 1 value long.
 \itemize{
-\item default = 20.0
 \item The value of \code{wishdf_param} controls how informative the Wishart prior
 is. Higher values lead to tighter priors on individual variation.
 Lower values (e.g., 5–10) make the prior more weakly informative,
@@ -60,10 +59,19 @@ which can help improve convergence if the model is over-regularized.
 \item{prec_logy_hyp_param}{A \link{numeric} \link{vector} of 2 values corresponding to
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
-If specified, must be 2 values long:
-\itemize{
-\item defaults = 4.0, 1.0
-}}
+Must be 2 values long.}
+
+\item{decay_type}{A \link{character} string specifying the decay function used
+in the model. Options are \code{"power"} and \code{"exponential"}. Default is
+\code{"power"}. The \code{"power"} option uses
+\code{y(t) = (y1^(1-shape) - (1-shape)*alpha*(t-t1))^(1/(1-shape))}. The
+\code{"exponential"} option uses \code{y(t) = y1 * exp(-alpha*(t-t1))}.
+The exponential model does not estimate \code{shape}; its processed output
+includes \code{shape = 1} as a fixed value to preserve the common output
+structure.
+Note: \code{prep_priors()} validates 5-element prior vector for power
+decay and 4-element prior vectors for exponential decay (the fifth
+(\code{shape}) prior is excluded in exponential decay).}
 }
 \value{
 A "curve_params_priors" object
@@ -71,18 +79,22 @@ A "curve_params_priors" object
 as \link{attributes} entry named \code{"used_priors"}), containing the following
 elements:
 \itemize{
-\item "n_params": Corresponds to the 5 parameters being estimated.
+\item "n_params": Corresponds to the 5 parameters being estimated. When
+\code{decay_type = "exponential"}, 4 parameters are being estimated.
 \item "mu.hyp": A \link{matrix} of hyperpriors with dimensions
 \code{max_antigens} x 5 (# of parameters), representing the mean of the
-hyperprior distribution for the five seroresponse parameters: y0, y1, t1, r,
-and alpha).
+hyperprior distribution for the five seroresponse parameters: y0, y1, t1,
+alpha, and r) (\code{max_antigens} x 4 when \code{decay_type = "exponential"},
+including y0, y1, t1, and alpha).
 \item "prec.hyp": A three-dimensional \link{numeric} \link{array}
 with dimensions \code{max_antigens} x 5 (# of parameters),
 containing the precision matrices of the hyperprior distributions of
-\code{mu.hyp}, for each biomarker.
+\code{mu.hyp}, for each biomarker (\code{max_antigens} x 4 when
+\code{decay_type = "exponential"}).
 \item "omega" : A three-dimensional \link{numeric} \link{array} with 5 \link{matrix},each
 with dimensions \code{max_antigens} x 5 (# of parameters), representing the
-precision matrix of Wishart hyper-priors for \code{prec.hyp}.
+precision matrix of Wishart hyper-priors for \code{prec.hyp} (\code{max_antigens} x 4
+when \code{decay_type = "exponential"}).
 \item "wishdf": A \link{vector} of 2 values specifying the degrees of freedom
 for the Wishart distribution used in the subject-level precision prior.
 \item "prec.logy.hyp": A \link{matrix} of hyper-parameters for the precision
@@ -93,7 +105,7 @@ for the Wishart distribution used in the subject-level precision prior.
 }
 \description{
 Takes multiple \link{vector} inputs to allow for modifiable priors.
-Priors can be specified as an option in run_serodynamics.
+Priors must be specified as an option in \code{run_serodynamics()}.
 }
 \examples{
 
@@ -103,6 +115,4 @@ prep_priors(max_antigens = 2,
             omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
             wishdf_param = 20,
             prec_logy_hyp_param = c(4.0, 1.0))
-
-prep_priors(max_antigens = 2)
 }
