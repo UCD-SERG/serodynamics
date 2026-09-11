@@ -23,7 +23,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9020</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">0.1.0.9021</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,14 +101,49 @@
 <strong>Windows</strong>: Download from <a href="https://sourceforge.net/projects/mcmc-jags/" class="external-link">JAGS website</a>
 </li>
 </ul>
-<p>Then install the package:</p>
+<p>Then install the package. The examples below require the development version, so install that:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"UCD-SERG/serodynamics"</span><span class="op">)</span></span></code></pre></div>
-</section><section class="level2"><h2 id="load-required-libraries">Load Required Libraries<a class="anchor" aria-label="anchor" href="#load-required-libraries"></a>
+<p>A released version is also available on <a href="https://cran.r-project.org/package=serodynamics" class="external-link">CRAN</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"serodynamics"</span><span class="op">)</span></span></code></pre></div>
+<p>The released version uses an older set of function names, listed below for reference. Renaming calls is not enough to run this article on the released version.</p>
+<table class="table caption-top">
+<thead><tr class="header">
+<th>This article</th>
+<th>Released version</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code></td>
+<td><code><a href="../reference/run_mod.html">run_mod()</a></code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_trace.html">plot_trace()</a></code></td>
+<td><code>plot_jags_trace()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_density.html">plot_density()</a></code></td>
+<td><code>plot_jags_dens()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_rhat.html">plot_rhat()</a></code></td>
+<td><code>plot_jags_Rhat()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_ess.html">plot_ess()</a></code></td>
+<td><code>plot_jags_effect()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/summarize_posterior.html">summarize_posterior()</a></code></td>
+<td><code>post_summ()</code></td>
+</tr>
+</tbody>
+</table></section><section class="level2"><h2 id="load-required-libraries">Load Required Libraries<a class="anchor" aria-label="anchor" href="#load-required-libraries"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/UCD-SERG/serodynamics" class="external-link">serodynamics</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -122,7 +157,7 @@
 </h2>
 <p>The package includes example data from the SEES Typhoid study in Nepal:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
@@ -140,7 +175,7 @@
 </h3>
 <p>Convert the data to a <code>case_data</code> object (<code>nepal_sees</code> already is a <code>case_data</code> object, but we can reconvert it just to demonstrate).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_case_data.html">as_case_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">nepal_sees</span>,</span>
 <span>  id_var <span class="op">=</span> <span class="st">"id"</span>,</span>
@@ -165,7 +200,7 @@
 </section><section class="level3"><h3 id="visualize-the-raw-data">Visualize the Raw Data<a class="anchor" aria-label="anchor" href="#visualize-the-raw-data"></a>
 </h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">case_data</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -178,7 +213,7 @@
 </h2>
 <p>You can also simulate case data using antibody curve parameters:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Use typhoid curve parameters from serocalculator</span></span>
@@ -202,7 +237,7 @@
 <span><span class="co">#&gt; # ℹ 1 more variable: value &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">simulated_data</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -228,7 +263,7 @@
 <code>alpha</code>: Decay rate</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Note: This example uses reduced iterations for demonstration</span></span>
 <span><span class="co"># For actual analysis, use larger values (e.g., nmc=1000, niter=2000)</span></span>
 <span></span>
@@ -244,7 +279,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 05:32:48 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:37 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -292,7 +327,7 @@
 </h2>
 <p>After fitting the model, check convergence diagnostics:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Trace plots to assess chain mixing</span></span>
 <span><span class="fu"><a href="../reference/plot_trace.html">plot_trace</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $None</span></span>
@@ -335,7 +370,7 @@
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Density plots of posterior distributions</span></span>
 <span><span class="fu"><a href="../reference/plot_density.html">plot_density</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
@@ -379,7 +414,7 @@
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Rhat statistics (values near 1.0 indicate convergence)</span></span>
 <span><span class="fu"><a href="../reference/plot_rhat.html">plot_rhat</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
@@ -423,7 +458,7 @@
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Effective sample size</span></span>
 <span><span class="fu"><a href="../reference/plot_ess.html">plot_ess</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
@@ -472,7 +507,7 @@
 </h2>
 <p>Plot the predicted antibody curves with credible intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_predicted_curve.html">plot_predicted_curve</a></span><span class="op">(</span></span>
 <span>  <span class="va">fitted_model</span>,</span>
 <span>  ids <span class="op">=</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/serocalculator/man/ids.html" class="external-link">ids</a></span><span class="op">(</span><span class="va">simulated_data</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
@@ -489,7 +524,7 @@
 </h2>
 <p>Extract and summarize the posterior estimates:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize parameter estimates</span></span>
 <span><span class="va">summary_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_posterior.html">summarize_posterior</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">summary_stats</span><span class="op">)</span></span>
@@ -513,7 +548,7 @@
 </h2>
 <p>You can stratify the analysis by a grouping variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create stratified data</span></span>
 <span><span class="va">strat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_case_data.html">sim_case_data</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">30</span>, </span>
@@ -543,7 +578,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 05:33:01 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:50 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -578,7 +613,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 05:33:03 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:52 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -620,19 +655,19 @@
 </ul></section><section class="level2"><h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt;  setting  value</span></span>
 <span><span class="co">#&gt;  version  R version 4.6.1 (2026-06-24)</span></span>
-<span><span class="co">#&gt;  os       Ubuntu 24.04.4 LTS</span></span>
+<span><span class="co">#&gt;  os       Ubuntu 24.04.5 LTS</span></span>
 <span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
 <span><span class="co">#&gt;  ui       X11</span></span>
 <span><span class="co">#&gt;  language en-US</span></span>
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2026-09-02</span></span>
+<span><span class="co">#&gt;  date     2026-09-11</span></span>
 <span><span class="co">#&gt;  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt;  quarto   1.10.18 @ /usr/local/bin/quarto</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -653,13 +688,13 @@
 <span><span class="co">#&gt;  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  ggplot2        * 4.0.3      2026-04-22 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.6.1)</span></span>
+<span><span class="co">#&gt;  ggstats          0.14.0     2026-09-02 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  glue             1.8.1      2026-04-17 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  knitr            1.51       2025-12-20 [1] CRAN (R 4.6.1)</span></span>
+<span><span class="co">#&gt;  knitr            1.52       2026-09-06 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.6.1)</span></span>
@@ -679,7 +714,7 @@
 <span><span class="co">#&gt;  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  serodynamics   * 0.1.0.9020 2026-09-02 [1] local</span></span>
+<span><span class="co">#&gt;  serodynamics   * 0.1.0.9021 2026-09-11 [1] local</span></span>
 <span><span class="co">#&gt;  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)</span></span>

@@ -23,13 +23,35 @@ Bayesian MCMC):
 - **Windows**: Download from [JAGS
   website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the package:
+Then install the package. The examples below require the development
+version, so install that:
 
 ``` r
 
 # install.packages("pak")
 pak::pak("UCD-SERG/serodynamics")
 ```
+
+A released version is also available on
+[CRAN](https://cran.r-project.org/package=serodynamics):
+
+``` r
+
+install.packages("serodynamics")
+```
+
+The released version uses an older set of function names, listed below
+for reference. Renaming calls is not enough to run this article on the
+released version.
+
+| This article | Released version |
+|----|----|
+| [`run_serodynamics()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_serodynamics.md) | [`run_mod()`](https://ucd-serg.github.io/serodynamics/dev/reference/run_mod.md) |
+| [`plot_trace()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_trace.md) | `plot_jags_trace()` |
+| [`plot_density()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_density.md) | `plot_jags_dens()` |
+| [`plot_rhat()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_rhat.md) | `plot_jags_Rhat()` |
+| [`plot_ess()`](https://ucd-serg.github.io/serodynamics/dev/reference/plot_ess.md) | `plot_jags_effect()` |
+| [`summarize_posterior()`](https://ucd-serg.github.io/serodynamics/dev/reference/summarize_posterior.md) | `post_summ()` |
 
 ## Load Required Libraries
 
@@ -169,7 +191,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 05:32:48 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:37 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -417,7 +439,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 05:33:01 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:50 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -452,7 +474,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep  2 05:33:03 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:55:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -503,14 +525,14 @@ sessioninfo::session_info()
 #> ─ Session info ───────────────────────────────────────────────────────────────
 #>  setting  value
 #>  version  R version 4.6.1 (2026-06-24)
-#>  os       Ubuntu 24.04.4 LTS
+#>  os       Ubuntu 24.04.5 LTS
 #>  system   x86_64, linux-gnu
 #>  ui       X11
 #>  language en-US
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-02
+#>  date     2026-09-11
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -531,13 +553,13 @@ sessioninfo::session_info()
 #>  GGally           2.4.0      2025-08-23 [1] CRAN (R 4.6.1)
 #>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.6.1)
 #>  ggplot2        * 4.0.3      2026-04-22 [1] CRAN (R 4.6.1)
-#>  ggstats          0.13.0     2026-03-06 [1] CRAN (R 4.6.1)
+#>  ggstats          0.14.0     2026-09-02 [1] CRAN (R 4.6.1)
 #>  glue             1.8.1      2026-04-17 [1] CRAN (R 4.6.1)
 #>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.6.1)
 #>  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.6.1)
 #>  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.6.1)
 #>  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.6.1)
-#>  knitr            1.51       2025-12-20 [1] CRAN (R 4.6.1)
+#>  knitr            1.52       2026-09-06 [1] CRAN (R 4.6.1)
 #>  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.6.1)
 #>  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.6.1)
 #>  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.6.1)
@@ -557,7 +579,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9020 2026-09-02 [1] local
+#>  serodynamics   * 0.1.0.9021 2026-09-11 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
