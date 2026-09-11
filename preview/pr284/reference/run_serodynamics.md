@@ -138,7 +138,7 @@ run_serodynamics(
   :   A [numeric](https://rdrr.io/r/base/numeric.html)
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
-      parameters (y0, y1, t1, r, alpha) for each biomarker. Must be 5
+      parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5
       values long, representing the following parameters:
 
       - y0 = baseline antibody concentration
@@ -343,7 +343,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:01:38 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:13:45 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -369,7 +369,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -378,7 +377,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:02:34 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:14:56 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

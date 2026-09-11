@@ -30,7 +30,7 @@ prep_priors(
   A [numeric](https://rdrr.io/r/base/numeric.html)
   [vector](https://rdrr.io/r/base/vector.html) of 5 values representing
   the prior mean for the population level parameters parameters (y0, y1,
-  t1, r, alpha) for each biomarker. Must be 5 values long, representing
+  t1, alpha, r) for each biomarker. Must be 5 values long, representing
   the following parameters:
 
   - y0 = baseline antibody concentration
