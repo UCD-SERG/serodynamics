@@ -7,8 +7,8 @@
 #' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
 #' mean for the population level parameters
-#' parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long, 
-#' representing the following parameters:
+#' parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
+#' as default, representing the following parameters:
 #'    - y0 = baseline antibody concentration
 #'    - y1 = peak antibody concentration
 #'    - t1 = time to peak
@@ -20,14 +20,14 @@
 #' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
 #' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 #' representing prior covariance of uncertainty around `mu_hyp_param`.
-#' Must be 5 values long corresponding to the 5 estimated parameters (4 values 
-#' when `decay_type = "exponential"`).
+#' Must be 5 values long corresponding to the 5 estimated parameters as default
+#' (4 values when `decay_type = "exponential"`).
 #' @param omega_param A [numeric] [vector] of 5 values corresponding to the
 #' diagonal entries representing the Wishart hyperprior
 #' distributions of `prec_hyp_param`, describing how much we expect parameters
 #' to vary between individuals.
-#' Must be 5 values long corresponding to the 5 estimated parameters (4 values 
-#' when `decay_type = "exponential"`).
+#' Must be 5 values long corresponding to the 5 estimated parameters as default
+#' (4 values when `decay_type = "exponential"`).
 #' @param wishdf_param An [integer] [vector] of 1 value specifying the degrees
 #' of freedom for the Wishart hyperprior distribution of `prec_hyp_param`.
 #' Must be 1 value long.
