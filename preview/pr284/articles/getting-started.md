@@ -23,13 +23,35 @@ Bayesian MCMC):
 - **Windows**: Download from [JAGS
   website](https://sourceforge.net/projects/mcmc-jags/)
 
-Then install the package:
+Then install the package. The examples below require the development
+version, so install that:
 
 ``` r
 
 # install.packages("pak")
 pak::pak("UCD-SERG/serodynamics")
 ```
+
+A released version is also available on
+[CRAN](https://cran.r-project.org/package=serodynamics):
+
+``` r
+
+install.packages("serodynamics")
+```
+
+The released version uses an older set of function names, listed below
+for reference. Renaming calls is not enough to run this article on the
+released version.
+
+| This article | Released version |
+|----|----|
+| [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/run_serodynamics.md) | [`run_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/run_mod.md) |
+| [`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/plot_trace.md) | `plot_jags_trace()` |
+| [`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/plot_density.md) | `plot_jags_dens()` |
+| [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/plot_rhat.md) | `plot_jags_Rhat()` |
+| [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/plot_ess.md) | `plot_jags_effect()` |
+| [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr284/reference/summarize_posterior.md) | `post_summ()` |
 
 ## Load Required Libraries
 
@@ -179,7 +201,7 @@ fitted_model <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:16:08 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 19:40:00 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -432,7 +454,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:16:23 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 19:40:13 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -467,7 +489,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:16:25 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 19:40:15 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

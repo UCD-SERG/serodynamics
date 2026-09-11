@@ -139,7 +139,7 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
       parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5
-      values long, representing the following parameters:
+      values long as default, representing the following parameters:
 
       - y0 = baseline antibody concentration
 
@@ -161,8 +161,8 @@ run_serodynamics(
       corresponding to hyperprior diagonal entries for the precision
       matrix (i.e. inverse variance) representing prior covariance of
       uncertainty around `mu_hyp_param`. Must be 5 values long
-      corresponding to the 5 estimated parameters (4 values when
-      `decay_type = "exponential"`).
+      corresponding to the 5 estimated parameters as default (4 values
+      when `decay_type = "exponential"`).
 
   `omega_param`
 
@@ -170,9 +170,9 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       corresponding to the diagonal entries representing the Wishart
       hyperprior distributions of `prec_hyp_param`, describing how much
-      we expect parameters to vary between individuals (4 values when
-      `decay_type = "exponential"`). Must be 5 values long corresponding
-      to the 5 estimated parameters.
+      we expect parameters to vary between individuals. Must be 5 values
+      long corresponding to the 5 estimated parameters as default (4
+      values when `decay_type = "exponential"`).
 
   `wishdf_param`
 
@@ -324,13 +324,13 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     nburn = 100, # Number of unrecorded samples before sampling begins
     nmc = 1000,
     niter = 2000, # Number of iterations
-    strat = "strat",
+    strat = "strat", # Variable to be stratified
     mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
     prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
     omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
     wishdf_param = 20,
     prec_logy_hyp_param = c(4.0, 1.0)
-  ) # Variable to be stratified
+  ) 
 }
 #> 
 #> Attaching package: ‘dplyr’
@@ -343,7 +343,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:13:45 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 19:37:52 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -369,6 +369,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...
@@ -377,7 +378,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Sep 11 17:14:56 2026
+#> Welcome to JAGS 4.3.2 on Fri Sep 11 19:38:57 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -403,6 +404,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

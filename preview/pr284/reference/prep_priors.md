@@ -30,8 +30,8 @@ prep_priors(
   A [numeric](https://rdrr.io/r/base/numeric.html)
   [vector](https://rdrr.io/r/base/vector.html) of 5 values representing
   the prior mean for the population level parameters parameters (y0, y1,
-  t1, alpha, r) for each biomarker. Must be 5 values long, representing
-  the following parameters:
+  t1, alpha, r) for each biomarker. Must be 5 values long as default,
+  representing the following parameters:
 
   - y0 = baseline antibody concentration
 
@@ -53,7 +53,7 @@ prep_priors(
   to hyperprior diagonal entries for the precision matrix (i.e. inverse
   variance) representing prior covariance of uncertainty around
   `mu_hyp_param`. Must be 5 values long corresponding to the 5 estimated
-  parameters (4 values when `decay_type = "exponential"`).
+  parameters as default (4 values when `decay_type = "exponential"`).
 
 - omega_param:
 
@@ -61,9 +61,9 @@ prep_priors(
   [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
   to the diagonal entries representing the Wishart hyperprior
   distributions of `prec_hyp_param`, describing how much we expect
-  parameters to vary between individuals (4 values when
-  `decay_type = "exponential"`). Must be 5 values long corresponding to
-  the 5 estimated parameters.
+  parameters to vary between individuals. Must be 5 values long
+  corresponding to the 5 estimated parameters as default (4 values when
+  `decay_type = "exponential"`).
 
 - wishdf_param:
 
