@@ -78,7 +78,8 @@ prep_priors <- function(max_antigens,
                         prec_logy_hyp_param = NULL,
                         decay_type = "power") {
   
-  if (!(decay_type %in% c("power", "exponential"))) {
+  if (length(decay_type) != 1 ||
+      !decay_type %in% c("power", "exponential")) {
     cli::cli_abort("Must specify {.arg decay_type} = {.val exponential} or 
                    {.val power}")
   }
