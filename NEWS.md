@@ -100,6 +100,11 @@
    **Breaking change:** Users must manually specify priors to run the function 
    or an error will occur. Users must specify 4 priors for `exponential` and 
    5 priors for `power` decay.
+* Documented the CRAN installation option in the "Getting Started"
+  article, which previously showed only the development-version install
+  from GitHub. The article still installs the development version by
+  default, since the released version exposes an older set of function
+  names (#301).
 * Added `plot_residuals()` to visualize residuals over time, faceted by
   antigen-isotype. `run_serodynamics()` stores the original input `data`
   (and the stratification variable name) as `original_data`/`strat`
@@ -132,6 +137,9 @@
 output. (#141)
 
 ## Bug fixes
+* Fixed the development-version link in `README.Rmd` and `README.md`. The
+  link pointed at the GitHub homepage rather than at the package repository
+  (#301).
 * `calc_fit_mod()`'s output now covers all observations across
 all strata (previously only the last stratum was retained) and always includes
 a `Stratification` column (`"None"` when unstratified). (#240)
