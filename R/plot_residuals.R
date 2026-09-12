@@ -24,8 +24,8 @@
 #' residuals over time with a line. Default `FALSE`.
 #' @param facet_by_strat [character]; facets residual plot and 
 #' calculates MAE by specified stratification variable. Default `NULL`.
-#' @param color_by_strat [character]; colors residual plot and 
-#' calculates MAE by specified stratification variable. Default `NULL`.
+#' @param color_by_strat [character]; colors residual plot by the specified
+#' stratification variable. MAE is not calculated by this variable. Default `NULL`.
 #'
 #' @return A [ggplot2::ggplot] object.
 #' @export
