@@ -279,6 +279,15 @@ test_that(
       regexp = "entries"
     )
     
+    # Testing that a label without the separator is caught
+    unsplittable <- precision_rows
+    unsplittable$Parameter[1] <- "log(y0)"
+    
+    expect_error(
+      rebuild_prec_matrix(unsplittable, par_names = power_par_names),
+      regexp = "split"
+    )
+    
     # Testing that a label naming an unknown parameter is caught
     relabelled <- precision_rows
     relabelled$Parameter[1] <- "log(y0), log(not_a_parameter)"
