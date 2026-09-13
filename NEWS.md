@@ -2,6 +2,21 @@
 
 ## Internal
 
+* Added `draw_new_individual_params()` and its helpers
+  `draw_one_new_individual()`, `rebuild_prec_matrix()`, and
+  `draw_mvn_from_precision()` (#302).
+  These draw kinetic parameters for a hypothetical new individual from the
+  fitted population distribution `MVN(mu.par, solve(prec.par))` after the
+  model is fit, rather than from a synthetic all-missing subject inside the
+  sampler.
+  Sampling uses the Cholesky factor of the precision matrix rather than
+  inverting it, which also rejects a draw whose precision matrix is not
+  positive definite.
+  The parameter order is read from the `mu.par` rows, so a decay type with a
+  different parameter set needs no special case.
+  These functions are not yet wired into `run_serodynamics()`, and
+  `prep_data()` still adds the `newperson` subject.
+
 * Updated `.github/copilot-instructions.md` so the local `rjags` install
   instructions branch by platform, matching what `R-CMD-check.yaml` and
   `test-coverage.yaml` do since #308: source builds on macOS/Linux, the
