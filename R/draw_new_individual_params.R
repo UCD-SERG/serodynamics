@@ -24,7 +24,8 @@
 #' @param population_params A [data.frame] of population parameters,
 #'   as attached to the output of [run_serodynamics()]
 #'   when `with_pop_params = TRUE`.
-#' @param n_draws Optional number of posterior draws to use.
+#' @param n_draws Optional number of posterior draws to use
+#'   from each isotype and stratification group.
 #'   The default uses every draw.
 #' @param call The calling environment, for error reporting.
 #'
@@ -59,7 +60,10 @@ draw_new_individual_params <- function(population_params,
     retained_draws <-
       population_params |>
       dplyr::distinct(dplyr::pick(dplyr::all_of(draw_vars))) |>
-      dplyr::slice_head(n = n_draws)
+      dplyr::slice_head(
+        n = n_draws,
+        by = dplyr::all_of(c("Iso_type", "Stratification"))
+      )
     
     population_params <-
       population_params |>

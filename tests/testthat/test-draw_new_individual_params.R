@@ -167,6 +167,33 @@ test_that(
 )
 
 test_that(
+  desc = "n_draws applies within each isotype and stratification group",
+  code = {
+    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
+    pop_params <- build_pop_params(
+      par_means,
+      build_example_precision(power_par_names),
+      n_iter = 3L,
+      n_chain = 1L,
+      iso_types = c("HlyE_IgA", "HlyE_IgG"),
+      strata = c("stratum 1", "stratum 2")
+    )
+    
+    withr::local_seed(1)
+    new_params <- draw_new_individual_params(pop_params, n_draws = 2L)
+    
+    draws_per_group <-
+      new_params |>
+      dplyr::distinct(Iteration, Chain, Iso_type, Stratification) |>
+      dplyr::count(Iso_type, Stratification)
+    
+    # Testing that every group keeps its own n_draws
+    expect_equal(nrow(draws_per_group), 4L)
+    expect_true(all(draws_per_group$n == 2L))
+  }
+)
+
+test_that(
   desc = "draws recover the population mean and covariance",
   code = {
     par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
