@@ -2,6 +2,11 @@
 
 ## Internal
 
+* `run_serodynamics()` now supplies explicit, numerically stable starting
+  values for subject-level JAGS parameters instead of relying on JAGS to
+  invent them. This avoids platform-specific initialization failures seen on
+  Windows with the power-decay model (#320).
+
 * Updated `.github/copilot-instructions.md` so the local `rjags` install
   instructions branch by platform, matching what `R-CMD-check.yaml` and
   `test-coverage.yaml` do since #308: source builds on macOS/Linux, the
