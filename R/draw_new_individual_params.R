@@ -1,5 +1,4 @@
 #' @title Draw kinetic parameters for a new individual
-#' @title Draw kinetic parameters for a new individual
 #'
 #' @description
 #' Draws individual-level kinetic parameters
@@ -74,7 +73,8 @@ draw_new_individual_params <- function(population_params,
     population_params |>
     dplyr::reframe(
       draw_one_new_individual(
-        dplyr::pick("Parameter", "Population_Parameter", "value")
+        dplyr::pick("Parameter", "Population_Parameter", "value"),
+        call = call
       ),
       .by = dplyr::all_of(draw_vars)
     )

@@ -12,7 +12,7 @@
 #'
 #' @param mu A numeric mean vector.
 #' @param prec A symmetric positive definite precision matrix.
-#' @param call The calling environment, for error reporting.
+#' @inheritParams draw_new_individual_params
 #'
 #' @returns A numeric vector the same length as `mu`.
 #'

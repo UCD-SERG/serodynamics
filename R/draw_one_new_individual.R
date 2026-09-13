@@ -12,13 +12,14 @@
 #' @param draw A [data.frame] of population parameters
 #'   for a single posterior draw,
 #'   with columns `Parameter`, `Population_Parameter` and `value`.
+#' @inheritParams draw_new_individual_params
 #'
 #' @returns A [tibble][tibble::tibble] with columns `Parameter` and `value`,
 #'   one row per parameter.
 #'
 #' @keywords internal
 #' @noRd
-draw_one_new_individual <- function(draw) {
+draw_one_new_individual <- function(draw, call = rlang::caller_env()) {
   mean_rows <-
     draw |>
     dplyr::filter(.data$Population_Parameter == "mu.par")
@@ -29,11 +30,16 @@ draw_one_new_individual <- function(draw) {
 
   par_names <- mean_rows$Parameter
 
-  precision <- rebuild_prec_matrix(precision_rows, par_names = par_names)
+  precision <- rebuild_prec_matrix(
+    precision_rows,
+    par_names = par_names,
+    call = call
+  )
 
   sampled_values <- draw_mvn_from_precision(
     mu = mean_rows$value,
-    prec = precision
+    prec = precision,
+    call = call
   )
 
   new_individual <- tibble::tibble(

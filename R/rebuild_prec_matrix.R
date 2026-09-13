@@ -12,7 +12,7 @@
 #'   with columns `Parameter` and `value`.
 #' @param par_names A character vector giving the parameter order,
 #'   taken from the `mu.par` rows of the same draw.
-#' @param call The calling environment, for error reporting.
+#' @inheritParams draw_new_individual_params
 #'
 #' @returns A square numeric matrix with dimnames `par_names`.
 #'
