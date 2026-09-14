@@ -128,6 +128,9 @@
 
 ### New features
 
+- Added `runjags` and
+  [`prep_priors()`](https://ucd-serg.github.io/serodynamics/dev/reference/prep_priors.md)
+  specification guidelines to `getting-started` vignette.
 - Documented the CRAN installation option in the “Getting Started”
   article, which previously showed only the development-version install
   from GitHub. The article still installs the development version by
