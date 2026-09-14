@@ -131,6 +131,11 @@
 - Added `runjags` and
   [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/prep_priors.md)
   specification guidelines to `getting-started` vignette.
+- Documented the CRAN installation option in the “Getting Started”
+  article, which previously showed only the development-version install
+  from GitHub. The article still installs the development version by
+  default, since the released version exposes an older set of function
+  names ([\#301](https://github.com/UCD-SERG/serodynamics/issues/301)).
 - Added
   [`plot_residuals()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/plot_residuals.md)
   to visualize residuals over time, faceted by antigen-isotype.
@@ -184,6 +189,10 @@
 
 ### Bug fixes
 
+- Fixed the development-version link in `README.Rmd` and `README.md`.
+  The link pointed at the GitHub homepage rather than at the package
+  repository
+  ([\#301](https://github.com/UCD-SERG/serodynamics/issues/301)).
 - [`calc_fit_mod()`](https:/ucd-serg.github.io/serodynamics/preview/pr298/reference/calc_fit_mod.md)’s
   output now covers all observations across all strata (previously only
   the last stratum was retained) and always includes a `Stratification`
