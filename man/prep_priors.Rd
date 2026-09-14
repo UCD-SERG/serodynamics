@@ -36,14 +36,14 @@ used.
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around \code{mu_hyp_param}.
-Must be 5 values long corresponding to the 5 estimated parameters as default
+Must be 5 values long corresponding to the 5 estimated parameters
 (4 values when \code{decay_type = "exponential"}).}
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
 to vary between individuals.
-Must be 5 values long corresponding to the 5 estimated parameters as default
+Must be 5 values long corresponding to the 5 estimated parameters
 (4 values when \code{decay_type = "exponential"}).}
 
 \item{wishdf_param}{An \link{integer} \link{vector} of 1 value specifying the degrees
