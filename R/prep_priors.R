@@ -7,8 +7,8 @@
 #' antigen-isotypes (biomarkers) will be modeled.
 #' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
 #' mean for the population level parameters
-#' parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
-#' as default, representing the following parameters:
+#' parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long 
+#' specified by the user, representing the following parameters:
 #'    - y0 = baseline antibody concentration
 #'    - y1 = peak antibody concentration
 #'    - t1 = time to peak

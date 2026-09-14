@@ -80,7 +80,7 @@ antigen-isotypes (biomarkers) will be modeled.}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
 parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
-as default, representing the following parameters:
+specified by the user, representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
 \item y1 = peak antibody concentration
