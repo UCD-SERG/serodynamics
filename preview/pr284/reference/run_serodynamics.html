@@ -195,7 +195,7 @@ antigen-isotypes (biomarkers) will be modeled.</p></dd>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
 mean for the population level parameters
 parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
-as default, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
+specified by the user, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
 <li><p>alpha = decay rate</p></li>
@@ -209,7 +209,7 @@ used.</p></li>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
-Must be 5 values long corresponding to the 5 estimated parameters as default
+Must be 5 values long corresponding to the 5 estimated parameters
 (4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
     <dt><code>omega_param</code></dt>
@@ -217,7 +217,7 @@ Must be 5 values long corresponding to the 5 estimated parameters as default
 diagonal entries representing the Wishart hyperprior
 distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
 to vary between individuals.
-Must be 5 values long corresponding to the 5 estimated parameters as default
+Must be 5 values long corresponding to the 5 estimated parameters
 (4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
     <dt><code>wishdf_param</code></dt>
@@ -344,7 +344,7 @@ purpose.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Sep 12 20:51:58 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Sep 14 17:22:07 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -379,7 +379,7 @@ purpose.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Sat Sep 12 20:53:00 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Mon Sep 14 17:23:12 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>

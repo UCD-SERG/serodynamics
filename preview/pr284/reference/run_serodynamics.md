@@ -139,7 +139,8 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
       parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5
-      values long as default, representing the following parameters:
+      values long specified by the user, representing the following
+      parameters:
 
       - y0 = baseline antibody concentration
 
@@ -161,8 +162,8 @@ run_serodynamics(
       corresponding to hyperprior diagonal entries for the precision
       matrix (i.e. inverse variance) representing prior covariance of
       uncertainty around `mu_hyp_param`. Must be 5 values long
-      corresponding to the 5 estimated parameters as default (4 values
-      when `decay_type = "exponential"`).
+      corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
   `omega_param`
 
@@ -171,8 +172,8 @@ run_serodynamics(
       corresponding to the diagonal entries representing the Wishart
       hyperprior distributions of `prec_hyp_param`, describing how much
       we expect parameters to vary between individuals. Must be 5 values
-      long corresponding to the 5 estimated parameters as default (4
-      values when `decay_type = "exponential"`).
+      long corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
   `wishdf_param`
 
@@ -343,7 +344,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Sep 12 20:51:58 2026
+#> Welcome to JAGS 4.3.2 on Mon Sep 14 17:22:07 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -378,7 +379,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Sat Sep 12 20:53:00 2026
+#> Welcome to JAGS 4.3.2 on Mon Sep 14 17:23:12 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
