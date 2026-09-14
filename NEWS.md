@@ -95,6 +95,8 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+* Added `runjags` and `prep_priors()` specification guidelines to 
+  `getting-started` vignette.
 * Documented the CRAN installation option in the "Getting Started"
   article, which previously showed only the development-version install
   from GitHub. The article still installs the development version by
