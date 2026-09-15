@@ -5,5 +5,3 @@ prep_priors(max_antigens = 2,
             omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
             wishdf_param = 20,
             prec_logy_hyp_param = c(4.0, 1.0))
-
-prep_priors(max_antigens = 2)
