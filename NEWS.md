@@ -100,6 +100,8 @@
    **Breaking change:** Users must manually specify priors to run the function 
    or an error will occur. Users must specify 4 priors for `exponential` and 
    5 priors for `power` decay.
+* Added `runjags` and `prep_priors()` specification guidelines to 
+  `getting-started` vignette.
 * Documented the CRAN installation option in the "Getting Started"
   article, which previously showed only the development-version install
   from GitHub. The article still installs the development version by
