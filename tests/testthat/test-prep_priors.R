@@ -101,5 +101,5 @@ test_that("Expect error for misspelling of decay type", {
               wishdf_param = 15,
               prec_logy_hyp_param = c(4.0, 1.0),
               decay_type = "Power") |>
-    expect_error("Must specify `decay_type`")
+    expect_error("'arg' should be one of ")
 })
