@@ -77,7 +77,7 @@ antigen-isotypes (biomarkers) will be modeled.</p></dd>
 <dt id="arg-mu-hyp-param">mu_hyp_param<a class="anchor" aria-label="anchor" href="#arg-mu-hyp-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, alpha, r) for each biomarker. Must be 5 values long
+parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
 specified by the user, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
@@ -93,7 +93,7 @@ used.</p></li>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
-Must be 5 values long corresponding to the 5 estimated parameters
+Will be 5 values long corresponding to the 5 estimated parameters
 (4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
 
@@ -102,7 +102,7 @@ Must be 5 values long corresponding to the 5 estimated parameters
 diagonal entries representing the Wishart hyperprior
 distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
 to vary between individuals.
-Must be 5 values long corresponding to the 5 estimated parameters
+Will be 5 values long corresponding to the 5 estimated parameters
 (4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
 
