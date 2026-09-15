@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9021</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9022</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -100,14 +100,49 @@
 <strong>Windows</strong>: Download from <a href="https://sourceforge.net/projects/mcmc-jags/" class="external-link">JAGS website</a>
 </li>
 </ul>
-<p>Then install the package:</p>
+<p>Then install the package. The examples below require the development version, so install that:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># install.packages("pak")</span></span>
 <span><span class="fu">pak</span><span class="fu">::</span><span class="fu"><a href="https://pak.r-lib.org/reference/pak.html" class="external-link">pak</a></span><span class="op">(</span><span class="st">"UCD-SERG/serodynamics"</span><span class="op">)</span></span></code></pre></div>
-</section><section class="level2"><h2 id="load-required-libraries">Load Required Libraries<a class="anchor" aria-label="anchor" href="#load-required-libraries"></a>
+<p>A released version is also available on <a href="https://cran.r-project.org/package=serodynamics" class="external-link">CRAN</a>:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"serodynamics"</span><span class="op">)</span></span></code></pre></div>
+<p>The released version uses an older set of function names, listed below for reference. Renaming calls is not enough to run this article on the released version.</p>
+<table class="table caption-top">
+<thead><tr class="header">
+<th>This article</th>
+<th>Released version</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td><code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code></td>
+<td><code><a href="../reference/run_mod.html">run_mod()</a></code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_trace.html">plot_trace()</a></code></td>
+<td><code>plot_jags_trace()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_density.html">plot_density()</a></code></td>
+<td><code>plot_jags_dens()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/plot_rhat.html">plot_rhat()</a></code></td>
+<td><code>plot_jags_Rhat()</code></td>
+</tr>
+<tr class="odd">
+<td><code><a href="../reference/plot_ess.html">plot_ess()</a></code></td>
+<td><code>plot_jags_effect()</code></td>
+</tr>
+<tr class="even">
+<td><code><a href="../reference/summarize_posterior.html">summarize_posterior()</a></code></td>
+<td><code>post_summ()</code></td>
+</tr>
+</tbody>
+</table></section><section class="level2"><h2 id="load-required-libraries">Load Required Libraries<a class="anchor" aria-label="anchor" href="#load-required-libraries"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/UCD-SERG/serodynamics" class="external-link">serodynamics</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/ku-awdc/runjags" class="external-link">runjags</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://dplyr.tidyverse.org" class="external-link">dplyr</a></span><span class="op">)</span></span>
@@ -121,7 +156,7 @@
 </h2>
 <p>The package includes example data from the SEES Typhoid study in Nepal:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 9</span></span>
@@ -139,7 +174,7 @@
 </h3>
 <p>Convert the data to a <code>case_data</code> object (<code>nepal_sees</code> already is a <code>case_data</code> object, but we can reconvert it just to demonstrate).</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">case_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/as_case_data.html">as_case_data</a></span><span class="op">(</span></span>
 <span>  <span class="va">nepal_sees</span>,</span>
 <span>  id_var <span class="op">=</span> <span class="st">"id"</span>,</span>
@@ -164,7 +199,7 @@
 </section><section class="level3"><h3 id="visualize-the-raw-data">Visualize the Raw Data<a class="anchor" aria-label="anchor" href="#visualize-the-raw-data"></a>
 </h3>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">case_data</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -177,7 +212,7 @@
 </h2>
 <p>You can also simulate case data using antibody curve parameters:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">123</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Use typhoid curve parameters from serocalculator</span></span>
@@ -201,7 +236,7 @@
 <span><span class="co">#&gt; # ℹ 1 more variable: value &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/autoplot.html" class="external-link">autoplot</a></span><span class="op">(</span><span class="va">simulated_data</span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -226,24 +261,53 @@
 <li>
 <code>alpha</code>: Decay rate</li>
 </ul>
+<p>Stratified kinetic models can be generated by specifying a covariate via the <code>strat</code> argument, enabling separate model fits for subgroups defined by age group, serotype, geography, or other covariates, used when kinetic parameters may vary across populations.</p>
+<p><strong>Priors</strong><br>
+Specify priors explicitly, chosen to correspond to your observed data and expected trajectories, rather than relying on defaults. Because priors are placed on log-transformed parameters, the prior means in <code>mu_hyp_param</code> are also on the log scale. Prior specification is done through the function <code><a href="../reference/prep_priors.html">prep_priors()</a></code>, which is built into <code><a href="../reference/run_serodynamics.html">run_serodynamics()</a></code>. Five components are specified:</p>
+<ul>
+<li>
+<code>mu_hyp_param</code>: The hyperprior means for the log-transformed population-level parameters<br>
+</li>
+<li>
+<code>prec_hyp_param</code>: The hyperprior precisions (inverse variances) around those means<br>
+</li>
+<li>
+<code>omega_param</code>: The Wishart scale matrix controlling expected between-individual variability<br>
+</li>
+<li>
+<code>wishdf_param</code>: The Wishart degrees of freedom<br>
+</li>
+<li>
+<code>prec_logy_hyp_param</code>: The gamma hyperprior on measurement precision</li>
+</ul>
+<p>Users with strong external information can tighten <code>prec_hyp_param</code>. Users seeking more diffuse priors or facing convergence difficulties can lower <code>prec_hyp_param</code> and/or reduce <code>wishdf_param</code> (e.g. 5-10), which weakens the prior on between-individual variation.</p>
+<p><strong>Bayesian specification</strong><br>
+Users specify the number of MCMC chains (<code>nchain</code>, 1-4), adaptation iterations (<code>nadapt</code>), burn-in iterations (<code>nburn</code>), retained samples per chain (<code>nmc</code>), and total iterations (<code>niter</code>), with thinning computed as <code>niter/nmc</code>. Chains are executed in parallel for computational efficiency. It is recommended that 4 chains are run concurrently for inference. Additional computing power may be necessary when running large models with many iterations.<br>
+For further information please visit: https://cran.r-project.org/package=runjags</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Note: This example uses reduced iterations for demonstration</span></span>
 <span><span class="co"># For actual analysis, use larger values (e.g., nmc=1000, niter=2000)</span></span>
 <span></span>
 <span><span class="va">fitted_model</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/run_serodynamics.html">run_serodynamics</a></span><span class="op">(</span></span>
-<span>  data <span class="op">=</span> <span class="va">simulated_data</span>,</span>
+<span>  data <span class="op">=</span> <span class="va">nepal_sees</span>,</span>
 <span>  file_mod <span class="op">=</span> <span class="fu"><a href="../reference/serodynamics_example.html">serodynamics_example</a></span><span class="op">(</span><span class="st">"model.jags"</span><span class="op">)</span>,</span>
-<span>  nchain <span class="op">=</span> <span class="fl">2</span>,      <span class="co"># Number of MCMC chains</span></span>
+<span>  nchain <span class="op">=</span> <span class="fl">4</span>,      <span class="co"># Number of MCMC chains</span></span>
 <span>  nadapt <span class="op">=</span> <span class="fl">100</span>,    <span class="co"># Adaptation iterations</span></span>
 <span>  nburn <span class="op">=</span> <span class="fl">100</span>,     <span class="co"># Burn-in iterations  </span></span>
-<span>  nmc <span class="op">=</span> <span class="fl">10</span>,        <span class="co"># Samples per chain (use 1000+ for real analysis)</span></span>
-<span>  niter <span class="op">=</span> <span class="fl">20</span>       <span class="co"># Total iterations (use 2000+ for real analysis)</span></span>
+<span>  nmc <span class="op">=</span> <span class="fl">100</span>,        <span class="co"># Samples per chain (use 1000+ for real analysis)</span></span>
+<span>  niter <span class="op">=</span> <span class="fl">200</span>,       <span class="co"># Total iterations (use 2000+ for real analysis)</span></span>
+<span>  strat <span class="op">=</span> <span class="st">"bldculres"</span>,</span>
+<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.00001</span>, <span class="fl">1.0</span>, <span class="fl">0.001</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">50.0</span>, <span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
+<span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>,</span>
+<span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">1.0</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
-<span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
+<span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 20:29:20 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:35 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -252,9 +316,9 @@
 <span><span class="co">#&gt;    Resolving undeclared variables</span></span>
 <span><span class="co">#&gt;    Allocating nodes</span></span>
 <span><span class="co">#&gt; Graph information:</span></span>
-<span><span class="co">#&gt;    Observed stochastic nodes: 815</span></span>
-<span><span class="co">#&gt;    Unobserved stochastic nodes: 285</span></span>
-<span><span class="co">#&gt;    Total graph size: 14771</span></span>
+<span><span class="co">#&gt;    Observed stochastic nodes: 690</span></span>
+<span><span class="co">#&gt;    Unobserved stochastic nodes: 384</span></span>
+<span><span class="co">#&gt;    Total graph size: 14802</span></span>
 <span><span class="co">#&gt; . Reading parameter file inits1.txt</span></span>
 <span><span class="co">#&gt; . Initializing model</span></span>
 <span><span class="co">#&gt; . Adapting 100</span></span>
@@ -264,7 +328,46 @@
 <span><span class="co">#&gt; . Updating 100</span></span>
 <span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
 <span><span class="co">#&gt; ************************************************** 100%</span></span>
-<span><span class="co">#&gt; . . . . . . Updating 20</span></span>
+<span><span class="co">#&gt; . . . . . . Updating 200</span></span>
+<span><span class="co">#&gt; -------------------------------------------------| 200</span></span>
+<span><span class="co">#&gt; ************************************************** 100%</span></span>
+<span><span class="co">#&gt; . . . . Updating 0</span></span>
+<span><span class="co">#&gt; . Deleting model</span></span>
+<span><span class="co">#&gt; . </span></span>
+<span><span class="co">#&gt; All chains have finished</span></span>
+<span><span class="co">#&gt; Warning: The adaptation phase of one or more models was not completed in 100</span></span>
+<span><span class="co">#&gt; iterations, so the current samples may not be optimal - try increasing the</span></span>
+<span><span class="co">#&gt; number of iterations to the "adapt" argument</span></span>
+<span><span class="co">#&gt; Simulation complete.  Reading coda files...</span></span>
+<span><span class="co">#&gt; Coda files loaded successfully</span></span>
+<span><span class="co">#&gt; Finished running the simulation</span></span>
+<span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
+<span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
+<span><span class="co">#&gt; to finish before continuing):</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:39 2026</span></span>
+<span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
+<span><span class="co">#&gt; Loading module: basemod: ok</span></span>
+<span><span class="co">#&gt; Loading module: bugs: ok</span></span>
+<span><span class="co">#&gt; . . Reading data file data.txt</span></span>
+<span><span class="co">#&gt; . Compiling model graph</span></span>
+<span><span class="co">#&gt;    Resolving undeclared variables</span></span>
+<span><span class="co">#&gt;    Allocating nodes</span></span>
+<span><span class="co">#&gt; Graph information:</span></span>
+<span><span class="co">#&gt;    Observed stochastic nodes: 214</span></span>
+<span><span class="co">#&gt;    Unobserved stochastic nodes: 130</span></span>
+<span><span class="co">#&gt;    Total graph size: 4771</span></span>
+<span><span class="co">#&gt; . Reading parameter file inits1.txt</span></span>
+<span><span class="co">#&gt; . Initializing model</span></span>
+<span><span class="co">#&gt; . Adapting 100</span></span>
+<span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
+<span><span class="co">#&gt; ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span></span>
+<span><span class="co">#&gt; Adaptation incomplete.</span></span>
+<span><span class="co">#&gt; . Updating 100</span></span>
+<span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
+<span><span class="co">#&gt; ************************************************** 100%</span></span>
+<span><span class="co">#&gt; . . . . . . Updating 200</span></span>
+<span><span class="co">#&gt; -------------------------------------------------| 200</span></span>
+<span><span class="co">#&gt; ************************************************** 100%</span></span>
 <span><span class="co">#&gt; . . . . Updating 0</span></span>
 <span><span class="co">#&gt; . Deleting model</span></span>
 <span><span class="co">#&gt; . </span></span>
@@ -278,24 +381,24 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 6 × 7</span></span>
-<span><span class="co">#&gt;   Iteration Chain Parameter Iso_type Stratification Subject  value</span></span>
-<span><span class="co">#&gt;       &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;    &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1         1     1 alpha     HlyE_IgA None           1       0.0114</span></span>
-<span><span class="co">#&gt; 2         2     1 alpha     HlyE_IgA None           1       0.0114</span></span>
-<span><span class="co">#&gt; 3         3     1 alpha     HlyE_IgA None           1       0.0114</span></span>
-<span><span class="co">#&gt; 4         4     1 alpha     HlyE_IgA None           1       0.0114</span></span>
-<span><span class="co">#&gt; 5         5     1 alpha     HlyE_IgA None           1       0.0217</span></span>
-<span><span class="co">#&gt; 6         6     1 alpha     HlyE_IgA None           1       0.0217</span></span></code></pre></div>
+<span><span class="co">#&gt;   Iteration Chain Parameter Iso_type Stratification Subject      value</span></span>
+<span><span class="co">#&gt;       &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;        &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1         1     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00757</span></span>
+<span><span class="co">#&gt; 2         2     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794</span></span>
+<span><span class="co">#&gt; 3         3     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794</span></span>
+<span><span class="co">#&gt; 4         4     1 alpha     HlyE_IgA typhi          sees_npl_1 0.0103 </span></span>
+<span><span class="co">#&gt; 5         5     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925</span></span>
+<span><span class="co">#&gt; 6         6     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="model-diagnostics">Model Diagnostics<a class="anchor" aria-label="anchor" href="#model-diagnostics"></a>
 </h2>
 <p>After fitting the model, check convergence diagnostics:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Trace plots to assess chain mixing</span></span>
 <span><span class="fu"><a href="../reference/plot_trace.html">plot_trace</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $None</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
+<span><span class="co">#&gt; $typhi</span></span>
+<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-1.png" width="672"></p>
@@ -303,7 +406,7 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-2.png" width="672"></p>
@@ -311,7 +414,9 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgA</span></span></code></pre>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $paratyphi</span></span>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-3.png" width="672"></p>
@@ -319,18 +424,10 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-4.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$Vi_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-5.png" width="672"></p>
 </figure>
 </div>
 </div>
@@ -338,8 +435,16 @@
 <code class="sourceCode R"><span></span>
 <span><span class="co"># Density plots of posterior distributions</span></span>
 <span><span class="fu"><a href="../reference/plot_density.html">plot_density</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $None</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
+<span><span class="co">#&gt; $typhi</span></span>
+<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="getting-started_files/figure-html/diagnostics-5.png" width="672"></p>
+</figure>
+</div>
+</div>
+<pre><code><span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-6.png" width="672"></p>
@@ -347,7 +452,9 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $paratyphi</span></span>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-7.png" width="672"></p>
@@ -355,15 +462,19 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgA</span></span></code></pre>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-8.png" width="672"></p>
 </figure>
 </div>
 </div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgG</span></span></code></pre>
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Rhat statistics (values near 1.0 indicate convergence)</span></span>
+<span><span class="fu"><a href="../reference/plot_rhat.html">plot_rhat</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $typhi</span></span>
+<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-9.png" width="672"></p>
@@ -371,19 +482,17 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$Vi_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-10.png" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Rhat statistics (values near 1.0 indicate convergence)</span></span>
-<span><span class="fu"><a href="../reference/plot_rhat.html">plot_rhat</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $None</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $paratyphi</span></span>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-11.png" width="672"></p>
@@ -391,15 +500,19 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-12.png" width="672"></p>
 </figure>
 </div>
 </div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgA</span></span></code></pre>
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Effective sample size</span></span>
+<span><span class="fu"><a href="../reference/plot_ess.html">plot_ess</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $typhi</span></span>
+<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-13.png" width="672"></p>
@@ -407,7 +520,7 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-14.png" width="672"></p>
@@ -415,67 +528,48 @@
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$Vi_IgG</span></span></code></pre>
+<span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $paratyphi</span></span>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-15.png" width="672"></p>
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Effective sample size</span></span>
-<span><span class="fu"><a href="../reference/plot_ess.html">plot_ess</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $None</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
+<pre><code><span><span class="co">#&gt;</span></span>
+<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-16.png" width="672"></p>
 </figure>
 </div>
 </div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-17.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgA</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-18.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$LPS_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-19.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $None$Vi_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-20.png" width="672"></p>
-</figure>
-</div>
-</div>
 </div>
 </section><section class="level2"><h2 id="visualizing-fitted-curves">Visualizing Fitted Curves<a class="anchor" aria-label="anchor" href="#visualizing-fitted-curves"></a>
 </h2>
-<p>Plot the predicted antibody curves with credible intervals:</p>
+<p>Plot the predicted stratified antibody curves with credible intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu"><a href="../reference/plot_serocurve.html">plot_serocurve</a></span><span class="op">(</span><span class="va">fitted_model</span>,</span>
+<span>               log_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="getting-started_files/figure-html/unnamed-chunk-2-1.png" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Plot the predicted antibody curve for an individual with their original observed data for HlyE IgA.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_predicted_curve.html">plot_predicted_curve</a></span><span class="op">(</span></span>
 <span>  <span class="va">fitted_model</span>,</span>
-<span>  ids <span class="op">=</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/serocalculator/man/ids.html" class="external-link">ids</a></span><span class="op">(</span><span class="va">simulated_data</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
-<span>  antigen_iso <span class="op">=</span> <span class="va">simulated_data</span><span class="op">$</span><span class="va">antigen_iso</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span></span>
+<span>  ids <span class="op">=</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/serocalculator/man/ids.html" class="external-link">ids</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  antigen_iso <span class="op">=</span> <span class="va">nepal_sees</span><span class="op">$</span><span class="va">antigen_iso</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  dataset <span class="op">=</span> <span class="va">nepal_sees</span>, <span class="co"># Original data set to overlay raw data</span></span>
+<span>  log_y <span class="op">=</span> <span class="cn">TRUE</span> <span class="co"># Plotting Y-axis on the log scale</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
@@ -488,31 +582,55 @@
 </h2>
 <p>Extract and summarize the posterior estimates:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize parameter estimates</span></span>
 <span><span class="va">summary_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_posterior.html">summarize_posterior</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">summary_stats</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 25 × 11</span></span>
+<span><span class="co">#&gt; # A tibble: 20 × 11</span></span>
 <span><span class="co">#&gt;    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 HlyE_IgA alpha     None              0.0132   9.15e-3 1.08e-2 3.87e-3 6.37e-3</span></span>
-<span><span class="co">#&gt;  2 HlyE_IgA shape     None              1.47     1.01e-1 1.44e+0 1.34e+0 1.39e+0</span></span>
-<span><span class="co">#&gt;  3 HlyE_IgA t1        None              2.02     4.93e-1 2.07e+0 1.15e+0 1.67e+0</span></span>
-<span><span class="co">#&gt;  4 HlyE_IgA y0        None              2.13     3.68e-1 2.17e+0 1.46e+0 1.89e+0</span></span>
-<span><span class="co">#&gt;  5 HlyE_IgA y1        None           1105.       1.55e+3 7.14e+2 4.82e+1 4.59e+2</span></span>
-<span><span class="co">#&gt;  6 HlyE_IgG alpha     None              0.00956  8.14e-3 6.50e-3 1.77e-3 3.22e-3</span></span>
-<span><span class="co">#&gt;  7 HlyE_IgG shape     None              1.36     9.20e-2 1.38e+0 1.25e+0 1.28e+0</span></span>
-<span><span class="co">#&gt;  8 HlyE_IgG t1        None              1.94     4.89e-1 1.80e+0 1.35e+0 1.57e+0</span></span>
-<span><span class="co">#&gt;  9 HlyE_IgG y0        None              2.85     7.70e-1 2.60e+0 2.01e+0 2.49e+0</span></span>
-<span><span class="co">#&gt; 10 HlyE_IgG y1        None            833.       1.19e+3 2.95e+2 7.01e+1 2.42e+2</span></span>
-<span><span class="co">#&gt; # ℹ 15 more rows</span></span>
+<span><span class="co">#&gt;  1 HlyE_IgA alpha     paratyphi         0.00554  6.89e-3 3.51e-3 5.93e-4 1.88e-3</span></span>
+<span><span class="co">#&gt;  2 HlyE_IgA alpha     typhi             0.00611  4.98e-3 4.62e-3 1.18e-3 2.88e-3</span></span>
+<span><span class="co">#&gt;  3 HlyE_IgA shape     paratyphi         1.48     1.72e-1 1.44e+0 1.24e+0 1.36e+0</span></span>
+<span><span class="co">#&gt;  4 HlyE_IgA shape     typhi             1.55     2.18e-1 1.50e+0 1.23e+0 1.39e+0</span></span>
+<span><span class="co">#&gt;  5 HlyE_IgA t1        paratyphi         4.14     1.49e+0 3.90e+0 2.02e+0 3.01e+0</span></span>
+<span><span class="co">#&gt;  6 HlyE_IgA t1        typhi             5.67     3.02e+0 5.01e+0 1.93e+0 3.51e+0</span></span>
+<span><span class="co">#&gt;  7 HlyE_IgA y0        paratyphi         2.63     8.27e-1 2.52e+0 1.32e+0 2.07e+0</span></span>
+<span><span class="co">#&gt;  8 HlyE_IgA y0        typhi             2.61     8.61e-1 2.47e+0 1.34e+0 1.97e+0</span></span>
+<span><span class="co">#&gt;  9 HlyE_IgA y1        paratyphi      5191.       6.56e+4 3.65e+2 1.32e+1 1.14e+2</span></span>
+<span><span class="co">#&gt; 10 HlyE_IgA y1        typhi          1729.       4.72e+3 5.41e+2 2.66e+1 2.20e+2</span></span>
+<span><span class="co">#&gt; 11 HlyE_IgG alpha     paratyphi         0.00348  3.32e-3 2.49e-3 5.24e-4 1.61e-3</span></span>
+<span><span class="co">#&gt; 12 HlyE_IgG alpha     typhi             0.00283  2.12e-3 2.24e-3 4.45e-4 1.39e-3</span></span>
+<span><span class="co">#&gt; 13 HlyE_IgG shape     paratyphi         1.28     1.25e-1 1.26e+0 1.10e+0 1.19e+0</span></span>
+<span><span class="co">#&gt; 14 HlyE_IgG shape     typhi             1.37     2.56e-1 1.31e+0 1.11e+0 1.20e+0</span></span>
+<span><span class="co">#&gt; 15 HlyE_IgG t1        paratyphi         5.33     2.03e+0 5.12e+0 2.37e+0 4.01e+0</span></span>
+<span><span class="co">#&gt; 16 HlyE_IgG t1        typhi             6.50     5.30e+0 5.15e+0 1.50e+0 2.99e+0</span></span>
+<span><span class="co">#&gt; 17 HlyE_IgG y0        paratyphi         2.74     1.22e+0 2.43e+0 1.25e+0 2.00e+0</span></span>
+<span><span class="co">#&gt; 18 HlyE_IgG y0        typhi             2.49     1.28e+0 2.26e+0 7.93e-1 1.67e+0</span></span>
+<span><span class="co">#&gt; 19 HlyE_IgG y1        paratyphi      1492.       7.03e+3 3.36e+2 2.12e+1 1.28e+2</span></span>
+<span><span class="co">#&gt; 20 HlyE_IgG y1        typhi           692.       1.42e+3 3.16e+2 3.44e+1 1.32e+2</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: `50.0%` &lt;dbl&gt;, `75.0%` &lt;dbl&gt;, `97.5%` &lt;dbl&gt;</span></span></code></pre></div>
+</div>
+</section><section class="level2"><h2 id="checking-model-fit">Checking model fit<a class="anchor" aria-label="anchor" href="#checking-model-fit"></a>
+</h2>
+<p>Plot the residuals over time including mean absolute error (MAE):</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Plot residuals over time, annotated with mean absolute error</span></span>
+<span><span class="va">residuals_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_residuals.html">plot_residuals</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">residuals_plot</span><span class="op">)</span></span></code></pre></div>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="getting-started_files/figure-html/check-residuals-1.png" width="672"></p>
+</figure>
+</div>
+</div>
 </div>
 </section><section class="level2"><h2 id="working-with-stratified-data">Working with Stratified Data<a class="anchor" aria-label="anchor" href="#working-with-stratified-data"></a>
 </h2>
 <p>You can stratify the analysis by a grouping variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create stratified data</span></span>
 <span><span class="va">strat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_case_data.html">sim_case_data</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">30</span>, </span>
@@ -542,7 +660,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 20:29:32 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:52 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -577,7 +695,7 @@
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Wed Sep  2 20:29:34 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:54 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -619,19 +737,19 @@
 </ul></section><section class="level2"><h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt;  setting  value</span></span>
 <span><span class="co">#&gt;  version  R version 4.6.1 (2026-06-24)</span></span>
-<span><span class="co">#&gt;  os       Ubuntu 24.04.4 LTS</span></span>
+<span><span class="co">#&gt;  os       Ubuntu 24.04.5 LTS</span></span>
 <span><span class="co">#&gt;  system   x86_64, linux-gnu</span></span>
 <span><span class="co">#&gt;  ui       X11</span></span>
 <span><span class="co">#&gt;  language en-US</span></span>
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2026-09-02</span></span>
+<span><span class="co">#&gt;  date     2026-09-15</span></span>
 <span><span class="co">#&gt;  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt;  quarto   1.10.18 @ /usr/local/bin/quarto</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -658,7 +776,7 @@
 <span><span class="co">#&gt;  htmltools        0.5.9      2025-12-04 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  iterators        1.0.14     2022-02-05 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  jsonlite         2.0.0      2025-03-27 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  knitr            1.51       2025-12-20 [1] CRAN (R 4.6.1)</span></span>
+<span><span class="co">#&gt;  knitr            1.52       2026-09-06 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  labeling         0.4.3      2023-08-29 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  lattice          0.22-9     2026-02-09 [3] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  lifecycle        1.0.5      2026-01-08 [1] CRAN (R 4.6.1)</span></span>
@@ -678,7 +796,7 @@
 <span><span class="co">#&gt;  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  serodynamics   * 0.1.0.9021 2026-09-02 [1] local</span></span>
+<span><span class="co">#&gt;  serodynamics   * 0.1.0.9022 2026-09-15 [1] local</span></span>
 <span><span class="co">#&gt;  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)</span></span>
