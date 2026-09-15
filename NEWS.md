@@ -95,6 +95,7 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+* Added ability to facet or color by stratification in `plot_residuals()`.
 * Added `runjags` and `prep_priors()` specification guidelines to 
   `getting-started` vignette.
 * Documented the CRAN installation option in the "Getting Started"
