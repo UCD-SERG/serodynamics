@@ -58,7 +58,6 @@ multicohort
 newperson
 nmc
 onwards
-param
 params
 passthrough
 pkgdown
@@ -75,7 +74,6 @@ serological
 seroresponse
 serosurveys
 serotype
-strat
 stratifications
 submodule
 summarised
