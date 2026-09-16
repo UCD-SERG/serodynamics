@@ -23,9 +23,13 @@
 #' @param connect_lines [logical]; if `TRUE`, connects each subject's
 #' residuals over time with a line. Default `FALSE`.
 #' @param facet_by_strat [character]; facets residual plot and 
-#' calculates MAE by specified stratification variable. Default `NULL`.
+#' calculates MAE by specified stratification variable. Must include the 
+#' original data set if not stratifying by `strat` variable specified in 
+#' `run_serodynamics()`. Default `NULL`.
 #' @param color_by_strat [character]; colors residual plot by the specified
-#' stratification variable. MAE is not calculated by this variable. Default `NULL`.
+#' stratification variable. MAE is not calculated by this variable. Must 
+#' include the original data set if not stratifying by `strat` variable 
+#' specified in `run_serodynamics()`. Default `NULL`.
 #'
 #' @return A [ggplot2::ggplot] object.
 #' @export
@@ -38,22 +42,42 @@ plot_residuals <- function(model,
                            show_interval = TRUE,
                            connect_lines = FALSE,
                            facet_by_strat = NULL,
-                           color_by_strat = NULL) {
+                           color_by_strat = NULL,
+                           original_data = NULL) {
   if (!inherits(model, "sr_model")) {
     cli::cli_abort("{.arg model} must be an {.cls sr_model} object.")
   }
 
-  original_data <- attr(model, "original_data")
-  if (is.null(original_data)) {
-    cli::cli_abort(c(
-      "x" = "{.arg model} has no {.val original_data} attribute.",
-      "i" = "Use output from {.fn run_serodynamics}."
-    ))
-  }
-
+  # Finding stratification of model for fit calculation
   strat <- attr(model, "strat")
   if (is.null(strat)) {
     strat <- NA
+  }
+  
+  # Detecting what options have been specified
+  colored <- !is.null(ids)
+  color_strat <- !is.null(color_by_strat)
+  facet_strat <- !is.null(facet_by_strat)
+  
+  # Determining if original data must be included or original attribute
+  if (color_strat || facet_strat) {
+    if (color_by_strat != strat || facet_by_strat != strat) {  
+      original_data <- original_data 
+    } else if (color_by_strat != strat || facet_by_strat != strat &&
+                 is.null(original_data)) {
+      cli::cli_abort(c(
+        "x" = "Must include {.arg original_data} when stratifying by 
+        {.arg facet_by_strat} or {.arg color_by_strat}."
+      ))
+    } else {
+      original_data <- attr(model, "original_data")
+      if (is.null(original_data)) {
+        cli::cli_abort(c(
+          "x" = "{.arg model} has no {.val original_data} attribute.",
+          "i" = "Use output from {.fn run_serodynamics}."
+        ))
+      }
+    }
   }
 
   decay_type <- attr(model, "decay_type")
@@ -77,18 +101,13 @@ plot_residuals <- function(model,
     "Residual (observed - fitted)"
   }
 
-  colored <- !is.null(ids)
-  color_strat <- !is.null(color_by_strat)
-  facet_strat <- !is.null(facet_by_strat)
-  
   # ------------------------------------------------------------
   # Setting up stratification
   # ------------------------------------------------------------
-  
+
   if (color_strat || facet_strat) {
     strat_cols <- c(if (color_strat) color_by_strat,
                     if (facet_strat) facet_by_strat)
-
     id_var <- attr(original_data, "id_var")
     
     strat_data <- original_data |>
