@@ -161,9 +161,17 @@ Specify priors explicitly, chosen to correspond to your observed data and expect
   
 Users with strong external information can tighten `prec_hyp_param`. Users seeking more diffuse priors or facing convergence difficulties can lower `prec_hyp_param` and/or reduce `wishdf_param` (e.g. 5-10), which weakens the prior on between-individual variation.  
 
+(Priors used in below code were selected based on ^[Aiemjoy K. et al. 
+Estimating typhoid incidence from community-based serosurveys: a multicohort 
+study. *The Lancet Microbe*. 2022;3(8):e578–e587. 
+doi:10.1016/S2666-5247(22)00114-8.])
+**Users should always specify priors according to their own data set.**
+
 **Bayesian specification**  
 Users specify the number of MCMC chains (`nchain`, 1-4), adaptation iterations (`nadapt`), burn-in iterations (`nburn`), retained samples per chain (`nmc`), and total iterations (`niter`), with thinning computed as `niter/nmc`. Chains are executed in parallel for computational efficiency. It is recommended that 4 chains are run concurrently for inference. Additional computing power may be necessary when running large models with many iterations.  
 For further information please visit: https://cran.r-project.org/package=runjags 
+
+
   
 ```{r}
 #| label: run-model
@@ -176,14 +184,15 @@ fitted_model <- run_serodynamics(
   nchain = 4,      # Number of MCMC chains
   nadapt = 100,    # Adaptation iterations
   nburn = 100,     # Burn-in iterations  
-  nmc = 100,        # Samples per chain (use 1000+ for real analysis)
-  niter = 200,       # Total iterations (use 2000+ for real analysis)
-  strat = "bldculres",
-  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-  wishdf_param = 20,
-  prec_logy_hyp_param = c(4.0, 1.0)
+  nmc = 10,        # Samples per chain (use 1000+ for real analysis)
+  niter = 20,       # Total iterations (use 2000+ for real analysis)
+  # Priors were selected based on Aiemjoy K et al. Estimating typhoid incidence from community-based serosurveys: a multicohort study (2022). 
+  # Users should always specify priors according to their own data set.
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), # Prior mean for the population level parameters
+  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), # Hyperprior precision matrix
+  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), # Wishart hyperprior distributions
+  wishdf_param = 20, # Degrees of freedom for the Wishart hyperprior distribution
+  prec_logy_hyp_param = c(4.0, 1.0) # Hyperprior  precision matrix
 )
 
 head(fitted_model)
@@ -290,8 +299,14 @@ fitted_stratified <- run_serodynamics(
   nburn = 100,
   nmc = 10,
   niter = 20,
-  strat = "pathogen"  # Specify stratification variable
+  strat = "pathogen",  # Specify stratification variable
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), 
+  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), 
+  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), 
+  wishdf_param = 20, 
+  prec_logy_hyp_param = c(4.0, 1.0) 
 )
+
 ```
 
 ## Next Steps
