@@ -5,8 +5,9 @@
 as an MCMC Bayesian model to estimate antibody dynamic curve parameters.
 The
 [`rjags::jags.model()`](https://rdrr.io/pkg/rjags/man/jags.model.html)
-models seroresponse dynamics to an infection. The antibody dynamic curve
-includes the following parameters:
+models seroresponse dynamics to an infection. Priors are required for
+modeling and must be specified prior to running `run_serodynamics`. The
+antibody dynamic curve includes the following parameters:
 
 - y0 = baseline antibody concentration
 
@@ -63,9 +64,9 @@ run_serodynamics(
   includes `shape = 1` as a fixed value to preserve the common output
   structure. Note:
   [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/prep_priors.md)
-  still validates 5-element prior vectors. For exponential decay, the
-  fifth (`shape`) prior is required for validation but is ignored and
-  omitted from the reported priors.
+  validates 5-element prior vector for power decay and 4-element prior
+  vectors for exponential decay (the fifth (`shape`) prior is excluded
+  in exponential decay).
 
 - nchain:
 
@@ -137,19 +138,22 @@ run_serodynamics(
   :   A [numeric](https://rdrr.io/r/base/numeric.html)
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       representing the prior mean for the population level parameters
-      parameters (y0, y1, t1, r, alpha) for each biomarker. If
-      specified, must be 5 values long, representing the following
+      parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5
+      values long specified by the user, representing the following
       parameters:
 
-      - y0 = baseline antibody concentration (default = 1.0)
+      - y0 = baseline antibody concentration
 
-      - y1 = peak antibody concentration (default = 7.0)
+      - y1 = peak antibody concentration
 
-      - t1 = time to peak (default = 1.0)
+      - t1 = time to peak
 
-      - r = shape parameter (default = -4.0)
+      - alpha = decay rate
 
-      - alpha = decay rate (default = -1.0)
+      - r = shape parameter (If running `decay_type == "exponential"` no
+        shape parameter needs to be specified). When
+        `decay_type = "exponential"` only 4 parameters (y0, y1, t1,
+        alpha) are used.
 
   `prec_hyp_param`
 
@@ -157,11 +161,9 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       corresponding to hyperprior diagonal entries for the precision
       matrix (i.e. inverse variance) representing prior covariance of
-      uncertainty around `mu_hyp_param`. If specified, must be 5 values
-      long:
-
-      - defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha =
-        1.0
+      uncertainty around `mu_hyp_param`. Will be 5 values long
+      corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
   `omega_param`
 
@@ -169,19 +171,16 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 5 values
       corresponding to the diagonal entries representing the Wishart
       hyperprior distributions of `prec_hyp_param`, describing how much
-      we expect parameters to vary between individuals. If specified,
-      must be 5 values long:
-
-      - defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0
+      we expect parameters to vary between individuals. Will be 5 values
+      long corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
   `wishdf_param`
 
   :   An [integer](https://rdrr.io/r/base/integer.html)
       [vector](https://rdrr.io/r/base/vector.html) of 1 value specifying
       the degrees of freedom for the Wishart hyperprior distribution of
-      `prec_hyp_param`. If specified, must be 1 value long.
-
-      - default = 20.0
+      `prec_hyp_param`. Must be 1 value long.
 
       - The value of `wishdf_param` controls how informative the Wishart
         prior is. Higher values lead to tighter priors on individual
@@ -195,10 +194,7 @@ run_serodynamics(
       [vector](https://rdrr.io/r/base/vector.html) of 2 values
       corresponding to hyperprior diagonal entries on the log-scale for
       the precision matrix (i.e. inverse variance) representing prior
-      beliefs of individual variation. If specified, must be 2 values
-      long:
-
-      - defaults = 4.0, 1.0
+      beliefs of individual variation. Must be 2 values long.
 
 ## Value
 
@@ -220,10 +216,10 @@ the following:
 
   - `t1` = Posterior estimate of time to peak
 
+  - `alpha` = Posterior estimate of decay rate
+
   - `shape` = shape parameter, estimated for power decay and fixed at 1
     for exponential decay
-
-  - `alpha` = Posterior estimate of decay rate
 
 - `Iso_type` = Antibody/antigen type combination being evaluated
 
@@ -329,8 +325,13 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     nburn = 100, # Number of unrecorded samples before sampling begins
     nmc = 1000,
     niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
+    strat = "strat", # Variable to be stratified
+    mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4.0, 1.0)
+  ) 
 }
 #> 
 #> Attaching package: ‘dplyr’
@@ -343,7 +344,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:01:49 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:28:07 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -378,7 +379,7 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:02:42 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:29:15 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -404,7 +405,6 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
 #> ************************************************** 100%
 #> . . . . Updating 0
 #> . Deleting model
-#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument
 #> Simulation complete.  Reading coda files...

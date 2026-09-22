@@ -44,7 +44,12 @@ raw_data <-
     antigen_isos = c("HlyE_IgA", "HlyE_IgG")
   )
 prepped_data <- prep_data(raw_data)
-priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos)
+priors <- prep_priors(max_antigens = prepped_data$n_antigen_isos,
+                      mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+                      prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+                      omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+                      wishdf_param = 20,
+                      prec_logy_hyp_param = c(4.0, 1.0))
 nchains <- 2
 # nr of MC chains to run simultaneously
 nadapt <- 100
@@ -79,7 +84,7 @@ jags_post <- runjags::run.jags(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:01:42 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:27:59 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok

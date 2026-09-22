@@ -204,6 +204,9 @@ Users seeking more diffuse priors or facing convergence difficulties can
 lower `prec_hyp_param` and/or reduce `wishdf_param` (e.g. 5-10), which
 weakens the prior on between-individual variation.
 
+(Priors used in below code were selected based on [^1]) **Users should
+always specify priors according to their own data set.**
+
 **Bayesian specification**  
 Users specify the number of MCMC chains (`nchain`, 1-4), adaptation
 iterations (`nadapt`), burn-in iterations (`nburn`), retained samples
@@ -226,19 +229,20 @@ fitted_model <- run_serodynamics(
   nchain = 4,      # Number of MCMC chains
   nadapt = 100,    # Adaptation iterations
   nburn = 100,     # Burn-in iterations  
-  nmc = 100,        # Samples per chain (use 1000+ for real analysis)
-  niter = 200,       # Total iterations (use 2000+ for real analysis)
-  strat = "bldculres",
-  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-  wishdf_param = 20,
-  prec_logy_hyp_param = c(4.0, 1.0)
+  nmc = 10,        # Samples per chain (use 1000+ for real analysis)
+  niter = 20,       # Total iterations (use 2000+ for real analysis)
+  # Priors were selected based on Aiemjoy K et al. Estimating typhoid incidence from community-based serosurveys: a multicohort study (2022). 
+  # Users should always specify priors according to their own data set.
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), # Prior mean for the population level parameters
+  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), # Hyperprior precision matrix
+  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), # Wishart hyperprior distributions
+  wishdf_param = 20, # Degrees of freedom for the Wishart hyperprior distribution
+  prec_logy_hyp_param = c(4.0, 1.0) # Hyperprior  precision matrix
 )
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:35 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:23 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -247,9 +251,9 @@ fitted_model <- run_serodynamics(
 #>    Resolving undeclared variables
 #>    Allocating nodes
 #> Graph information:
-#>    Observed stochastic nodes: 690
-#>    Unobserved stochastic nodes: 384
-#>    Total graph size: 14802
+#>    Observed stochastic nodes: 904
+#>    Unobserved stochastic nodes: 500
+#>    Total graph size: 19331
 #> . Reading parameter file inits1.txt
 #> . Initializing model
 #> . Adapting 100
@@ -259,46 +263,7 @@ fitted_model <- run_serodynamics(
 #> . Updating 100
 #> -------------------------------------------------| 100
 #> ************************************************** 100%
-#> . . . . . . Updating 200
-#> -------------------------------------------------| 200
-#> ************************************************** 100%
-#> . . . . Updating 0
-#> . Deleting model
-#> . 
-#> All chains have finished
-#> Warning: The adaptation phase of one or more models was not completed in 100
-#> iterations, so the current samples may not be optimal - try increasing the
-#> number of iterations to the "adapt" argument
-#> Simulation complete.  Reading coda files...
-#> Coda files loaded successfully
-#> Finished running the simulation
-#> Calling 4 simulations using the parallel method...
-#> Following the progress of chain 1 (the program will wait for all chains
-#> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:39 2026
-#> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
-#> Loading module: basemod: ok
-#> Loading module: bugs: ok
-#> . . Reading data file data.txt
-#> . Compiling model graph
-#>    Resolving undeclared variables
-#>    Allocating nodes
-#> Graph information:
-#>    Observed stochastic nodes: 214
-#>    Unobserved stochastic nodes: 130
-#>    Total graph size: 4771
-#> . Reading parameter file inits1.txt
-#> . Initializing model
-#> . Adapting 100
-#> -------------------------------------------------| 100
-#> ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%
-#> Adaptation incomplete.
-#> . Updating 100
-#> -------------------------------------------------| 100
-#> ************************************************** 100%
-#> . . . . . . Updating 200
-#> -------------------------------------------------| 200
-#> ************************************************** 100%
+#> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
 #> . 
@@ -314,12 +279,12 @@ head(fitted_model)
 #> # A tibble: 6 × 7
 #>   Iteration Chain Parameter Iso_type Stratification Subject      value
 #>       <int> <int> <chr>     <chr>    <chr>          <chr>        <dbl>
-#> 1         1     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00757
-#> 2         2     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794
-#> 3         3     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794
-#> 4         4     1 alpha     HlyE_IgA typhi          sees_npl_1 0.0103 
-#> 5         5     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925
-#> 6         6     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925
+#> 1         1     1 alpha     HlyE_IgA None           sees_npl_1 0.00734
+#> 2         2     1 alpha     HlyE_IgA None           sees_npl_1 0.00478
+#> 3         3     1 alpha     HlyE_IgA None           sees_npl_1 0.00478
+#> 4         4     1 alpha     HlyE_IgA None           sees_npl_1 0.00478
+#> 5         5     1 alpha     HlyE_IgA None           sees_npl_1 0.00353
+#> 6         6     1 alpha     HlyE_IgA None           sees_npl_1 0.00422
 ```
 
 ## Model Diagnostics
@@ -330,112 +295,64 @@ After fitting the model, check convergence diagnostics:
 
 # Trace plots to assess chain mixing
 plot_trace(fitted_model)
-#> $typhi
-#> $typhi$HlyE_IgA
+#> $None
+#> $None$HlyE_IgA
 ```
 
 ![](getting-started_files/figure-html/diagnostics-1.png)
 
     #>
-    #> $typhi$HlyE_IgG
+    #> $None$HlyE_IgG
 
 ![](getting-started_files/figure-html/diagnostics-2.png)
-
-    #>
-    #>
-    #> $paratyphi
-    #> $paratyphi$HlyE_IgA
-
-![](getting-started_files/figure-html/diagnostics-3.png)
-
-    #>
-    #> $paratyphi$HlyE_IgG
-
-![](getting-started_files/figure-html/diagnostics-4.png)
 
 ``` r
 
 
 # Density plots of posterior distributions
 plot_density(fitted_model)
-#> $typhi
-#> $typhi$HlyE_IgA
+#> $None
+#> $None$HlyE_IgA
 ```
 
-![](getting-started_files/figure-html/diagnostics-5.png)
+![](getting-started_files/figure-html/diagnostics-3.png)
 
     #>
-    #> $typhi$HlyE_IgG
+    #> $None$HlyE_IgG
 
-![](getting-started_files/figure-html/diagnostics-6.png)
-
-    #>
-    #>
-    #> $paratyphi
-    #> $paratyphi$HlyE_IgA
-
-![](getting-started_files/figure-html/diagnostics-7.png)
-
-    #>
-    #> $paratyphi$HlyE_IgG
-
-![](getting-started_files/figure-html/diagnostics-8.png)
+![](getting-started_files/figure-html/diagnostics-4.png)
 
 ``` r
 
 
 # Rhat statistics (values near 1.0 indicate convergence)
 plot_rhat(fitted_model)
-#> $typhi
-#> $typhi$HlyE_IgA
+#> $None
+#> $None$HlyE_IgA
 ```
 
-![](getting-started_files/figure-html/diagnostics-9.png)
+![](getting-started_files/figure-html/diagnostics-5.png)
 
     #>
-    #> $typhi$HlyE_IgG
+    #> $None$HlyE_IgG
 
-![](getting-started_files/figure-html/diagnostics-10.png)
-
-    #>
-    #>
-    #> $paratyphi
-    #> $paratyphi$HlyE_IgA
-
-![](getting-started_files/figure-html/diagnostics-11.png)
-
-    #>
-    #> $paratyphi$HlyE_IgG
-
-![](getting-started_files/figure-html/diagnostics-12.png)
+![](getting-started_files/figure-html/diagnostics-6.png)
 
 ``` r
 
 
 # Effective sample size
 plot_ess(fitted_model)
-#> $typhi
-#> $typhi$HlyE_IgA
+#> $None
+#> $None$HlyE_IgA
 ```
 
-![](getting-started_files/figure-html/diagnostics-13.png)
+![](getting-started_files/figure-html/diagnostics-7.png)
 
     #>
-    #> $typhi$HlyE_IgG
+    #> $None$HlyE_IgG
 
-![](getting-started_files/figure-html/diagnostics-14.png)
-
-    #>
-    #>
-    #> $paratyphi
-    #> $paratyphi$HlyE_IgA
-
-![](getting-started_files/figure-html/diagnostics-15.png)
-
-    #>
-    #> $paratyphi$HlyE_IgG
-
-![](getting-started_files/figure-html/diagnostics-16.png)
+![](getting-started_files/figure-html/diagnostics-8.png)
 
 ## Visualizing Fitted Curves
 
@@ -475,29 +392,19 @@ Extract and summarize the posterior estimates:
 # Summarize parameter estimates
 summary_stats <- summarize_posterior(fitted_model)
 print(summary_stats)
-#> # A tibble: 20 × 11
+#> # A tibble: 10 × 11
 #>    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`
 #>    <chr>    <chr>     <chr>               <dbl>    <dbl>   <dbl>   <dbl>   <dbl>
-#>  1 HlyE_IgA alpha     paratyphi         0.00554  6.89e-3 3.51e-3 5.93e-4 1.88e-3
-#>  2 HlyE_IgA alpha     typhi             0.00611  4.98e-3 4.62e-3 1.18e-3 2.88e-3
-#>  3 HlyE_IgA shape     paratyphi         1.48     1.72e-1 1.44e+0 1.24e+0 1.36e+0
-#>  4 HlyE_IgA shape     typhi             1.55     2.18e-1 1.50e+0 1.23e+0 1.39e+0
-#>  5 HlyE_IgA t1        paratyphi         4.14     1.49e+0 3.90e+0 2.02e+0 3.01e+0
-#>  6 HlyE_IgA t1        typhi             5.67     3.02e+0 5.01e+0 1.93e+0 3.51e+0
-#>  7 HlyE_IgA y0        paratyphi         2.63     8.27e-1 2.52e+0 1.32e+0 2.07e+0
-#>  8 HlyE_IgA y0        typhi             2.61     8.61e-1 2.47e+0 1.34e+0 1.97e+0
-#>  9 HlyE_IgA y1        paratyphi      5191.       6.56e+4 3.65e+2 1.32e+1 1.14e+2
-#> 10 HlyE_IgA y1        typhi          1729.       4.72e+3 5.41e+2 2.66e+1 2.20e+2
-#> 11 HlyE_IgG alpha     paratyphi         0.00348  3.32e-3 2.49e-3 5.24e-4 1.61e-3
-#> 12 HlyE_IgG alpha     typhi             0.00283  2.12e-3 2.24e-3 4.45e-4 1.39e-3
-#> 13 HlyE_IgG shape     paratyphi         1.28     1.25e-1 1.26e+0 1.10e+0 1.19e+0
-#> 14 HlyE_IgG shape     typhi             1.37     2.56e-1 1.31e+0 1.11e+0 1.20e+0
-#> 15 HlyE_IgG t1        paratyphi         5.33     2.03e+0 5.12e+0 2.37e+0 4.01e+0
-#> 16 HlyE_IgG t1        typhi             6.50     5.30e+0 5.15e+0 1.50e+0 2.99e+0
-#> 17 HlyE_IgG y0        paratyphi         2.74     1.22e+0 2.43e+0 1.25e+0 2.00e+0
-#> 18 HlyE_IgG y0        typhi             2.49     1.28e+0 2.26e+0 7.93e-1 1.67e+0
-#> 19 HlyE_IgG y1        paratyphi      1492.       7.03e+3 3.36e+2 2.12e+1 1.28e+2
-#> 20 HlyE_IgG y1        typhi           692.       1.42e+3 3.16e+2 3.44e+1 1.32e+2
+#>  1 HlyE_IgA alpha     None              0.00811  5.00e-3 6.96e-3 1.38e-3 4.76e-3
+#>  2 HlyE_IgA shape     None              1.42     1.27e-1 1.42e+0 1.21e+0 1.34e+0
+#>  3 HlyE_IgA t1        None              4.00     2.12e+0 3.39e+0 1.91e+0 2.60e+0
+#>  4 HlyE_IgA y0        None              2.61     7.74e-1 2.52e+0 1.68e+0 2.04e+0
+#>  5 HlyE_IgA y1        None           1269.       2.16e+3 5.42e+2 6.18e+1 2.75e+2
+#>  6 HlyE_IgG alpha     None              0.00355  2.72e-3 2.62e-3 1.09e-3 1.95e-3
+#>  7 HlyE_IgG shape     None              1.30     1.43e-1 1.27e+0 1.10e+0 1.21e+0
+#>  8 HlyE_IgG t1        None              8.23     4.58e+0 7.68e+0 2.62e+0 5.08e+0
+#>  9 HlyE_IgG y0        None              2.28     9.20e-1 2.06e+0 1.15e+0 1.54e+0
+#> 10 HlyE_IgG y1        None            620.       1.30e+3 2.56e+2 4.77e+1 1.32e+2
 #> # ℹ 3 more variables: `50.0%` <dbl>, `75.0%` <dbl>, `97.5%` <dbl>
 ```
 
@@ -544,12 +451,17 @@ fitted_stratified <- run_serodynamics(
   nburn = 100,
   nmc = 10,
   niter = 20,
-  strat = "pathogen"  # Specify stratification variable
+  strat = "pathogen",  # Specify stratification variable
+  mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0), 
+  prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0), 
+  omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0), 
+  wishdf_param = 20, 
+  prec_logy_hyp_param = c(4.0, 1.0) 
 )
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:52 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:35 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -584,7 +496,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:54 2026
+#> Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:37 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -642,7 +554,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-15
+#>  date     2026-09-22
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -689,7 +601,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9022 2026-09-15 [1] local
+#>  serodynamics   * 0.1.0.9024 2026-09-22 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
@@ -697,7 +609,7 @@ sessioninfo::session_info()
 #>  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.6.1)
 #>  vctrs            0.7.3      2026-04-11 [1] CRAN (R 4.6.1)
 #>  withr            3.0.3      2026-06-19 [1] CRAN (R 4.6.1)
-#>  xfun             0.60       2026-07-09 [1] CRAN (R 4.6.1)
+#>  xfun             0.61       2026-09-16 [1] CRAN (R 4.6.1)
 #>  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.6.1)
 #> 
 #>  [1] /home/runner/work/_temp/Library
@@ -707,3 +619,7 @@ sessioninfo::session_info()
 #> 
 #> ──────────────────────────────────────────────────────────────────────────────
 ```
+
+[^1]: Aiemjoy K. et al.  Estimating typhoid incidence from
+    community-based serosurveys: a multicohort study. *The Lancet
+    Microbe*. 2022;3(8):e578–e587. doi:10.1016/S2666-5247(22)00114-8.

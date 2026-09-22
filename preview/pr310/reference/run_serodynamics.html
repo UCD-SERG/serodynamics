@@ -3,7 +3,9 @@
 runjags::run.jags() as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The rjags::jags.model() models seroresponse dynamics to an
-infection. The antibody dynamic curve includes the following parameters:
+infection. Priors are required for modeling and must be specified prior to
+running run_serodynamics. The antibody dynamic curve includes the
+following parameters:
 y0 = baseline antibody concentration
 y1 = peak antibody concentration
 t1 = time to peak
@@ -15,7 +17,9 @@ alpha = decay rate
 runjags::run.jags() as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The rjags::jags.model() models seroresponse dynamics to an
-infection. The antibody dynamic curve includes the following parameters:
+infection. Priors are required for modeling and must be specified prior to
+running run_serodynamics. The antibody dynamic curve includes the
+following parameters:
 y0 = baseline antibody concentration
 y1 = peak antibody concentration
 t1 = time to peak
@@ -31,7 +35,7 @@ alpha = decay rate
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9022</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9024</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,7 +78,9 @@ alpha = decay rate
 <code><a href="https://rdrr.io/pkg/runjags/man/run.jags.html" class="external-link">runjags::run.jags()</a></code> as an MCMC
 Bayesian model to estimate antibody dynamic curve parameters.
 The <code><a href="https://rdrr.io/pkg/rjags/man/jags.model.html" class="external-link">rjags::jags.model()</a></code> models seroresponse dynamics to an
-infection. The antibody dynamic curve includes the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
+infection. Priors are required for modeling and must be specified prior to
+running <code>run_serodynamics</code>. The antibody dynamic curve includes the
+following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
 <li><p>shape = shape parameter, estimated for power decay and fixed at 1
@@ -124,9 +130,9 @@ in the model. Options are <code>"power"</code> and <code>"exponential"</code>. D
 The exponential model does not estimate <code>shape</code>; its processed output
 includes <code>shape = 1</code> as a fixed value to preserve the common output
 structure.
-Note: <code><a href="prep_priors.html">prep_priors()</a></code> still validates 5-element prior vectors. For
-exponential decay, the fifth (<code>shape</code>) prior is required for validation
-but is ignored and omitted from the reported priors.</p></dd>
+Note: <code><a href="prep_priors.html">prep_priors()</a></code> validates 5-element prior vector for power
+decay and 4-element prior vectors for exponential decay (the fifth
+(<code>shape</code>) prior is excluded in exponential decay).</p></dd>
 
 
 <dt id="arg-nchain">nchain<a class="anchor" aria-label="anchor" href="#arg-nchain"></a></dt>
@@ -188,34 +194,36 @@ antigen-isotypes (biomarkers) will be modeled.</p></dd>
     <dt><code>mu_hyp_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
 mean for the population level parameters
-parameters (y0, y1, t1, r, alpha) for each biomarker.
-If specified, must be 5 values long, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration (default = 1.0)</p></li>
-<li><p>y1 = peak antibody concentration (default = 7.0)</p></li>
-<li><p>t1 = time to peak (default = 1.0)</p></li>
-<li><p>r = shape parameter (default = -4.0)</p></li>
-<li><p>alpha = decay rate (default = -1.0)</p></li>
+parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
+specified by the user, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
+<li><p>y1 = peak antibody concentration</p></li>
+<li><p>t1 = time to peak</p></li>
+<li><p>alpha = decay rate</p></li>
+<li><p>r = shape parameter (If running <code>decay_type == "exponential"</code> no shape
+parameter needs to be specified).
+When <code>decay_type = "exponential"</code> only 4 parameters (y0, y1, t1, alpha) are
+used.</p></li>
 </ul></dd>
 
     <dt><code>prec_hyp_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
 representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
-If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 0.00001, t1 = 1.0, r = 0.001, alpha = 1.0</p></li>
-</ul></dd>
+Will be 5 values long corresponding to the 5 estimated parameters
+(4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
     <dt><code>omega_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
 to vary between individuals.
-If specified, must be 5 values long:</p><ul><li><p>defaults: y0 = 1.0, y1 = 50.0, t1 = 1.0, r = 10.0, alpha = 1.0</p></li>
-</ul></dd>
+Will be 5 values long corresponding to the 5 estimated parameters
+(4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
     <dt><code>wishdf_param</code></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
-If specified, must be 1 value long.</p><ul><li><p>default = 20.0</p></li>
-<li><p>The value of <code>wishdf_param</code> controls how informative the Wishart prior
+Must be 1 value long.</p><ul><li><p>The value of <code>wishdf_param</code> controls how informative the Wishart prior
 is. Higher values lead to tighter priors on individual variation.
 Lower values (e.g., 5–10) make the prior more weakly informative,
 which can help improve convergence if the model is over-regularized.</p></li>
@@ -225,8 +233,7 @@ which can help improve convergence if the model is over-regularized.</p></li>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values corresponding to
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
-If specified, must be 2 values long:</p><ul><li><p>defaults = 4.0, 1.0</p></li>
-</ul></dd>
+Must be 2 values long.</p></dd>
 
 
 </dl></dd>
@@ -242,9 +249,9 @@ including the following:</p><ul><li><p><code>Iteration</code> = Number of sampli
 <li><p><code>Parameter</code> = Parameter being estimated. Includes the following:</p><ul><li><p><code>y0</code> = Posterior estimate of baseline antibody concentration</p></li>
 <li><p><code>y1</code> = Posterior estimate of peak antibody concentration</p></li>
 <li><p><code>t1</code> = Posterior estimate of time to peak</p></li>
+<li><p><code>alpha</code> = Posterior estimate of decay rate</p></li>
 <li><p><code>shape</code> = shape parameter, estimated for power decay and fixed at 1
 for exponential decay</p></li>
-<li><p><code>alpha</code> = Posterior estimate of decay rate</p></li>
 </ul></li>
 <li><p><code>Iso_type</code> = Antibody/antigen type combination being evaluated</p></li>
 <li><p><code>Stratification</code> = The variable used to stratify jags model</p></li>
@@ -318,8 +325,13 @@ purpose.</p></li>
 <span class="r-in"><span>    nburn <span class="op">=</span> <span class="fl">100</span>, <span class="co"># Number of unrecorded samples before sampling begins</span></span></span>
 <span class="r-in"><span>    nmc <span class="op">=</span> <span class="fl">1000</span>,</span></span>
 <span class="r-in"><span>    niter <span class="op">=</span> <span class="fl">2000</span>, <span class="co"># Number of iterations</span></span></span>
-<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="co"># Variable to be stratified</span></span></span>
+<span class="r-in"><span>    strat <span class="op">=</span> <span class="st">"strat"</span>, <span class="co"># Variable to be stratified</span></span></span>
+<span class="r-in"><span>    mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.00001</span>, <span class="fl">1.0</span>, <span class="fl">0.001</span>, <span class="fl">1.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">50.0</span>, <span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">1.0</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    wishdf_param <span class="op">=</span> <span class="fl">20</span>,</span></span>
+<span class="r-in"><span>    prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">1.0</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span> </span></span>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-msg co"><span class="r-pr">#&gt;</span> Attaching package: ‘dplyr’</span>
@@ -332,7 +344,7 @@ purpose.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Sep 15 05:01:49 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Sep 22 01:28:07 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -367,7 +379,7 @@ purpose.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Calling 4 simulations using the parallel method...</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Following the progress of chain 1 (the program will wait for all chains</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> to finish before continuing):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Sep 15 05:02:42 2026</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Welcome to JAGS 4.3.2 on Tue Sep 22 01:29:15 2026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: basemod: ok</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Loading module: bugs: ok</span>
@@ -393,7 +405,6 @@ purpose.</p></li>
 <span class="r-out co"><span class="r-pr">#&gt;</span> ************************************************** 100%</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . . . . Updating 0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> . Deleting model</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> . </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> All chains have finished</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>The adaptation phase of one or more models was not completed in 100 iterations, so the current samples may not be optimal - try increasing the number of iterations to the "adapt" argument</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Simulation complete.  Reading coda files...</span>

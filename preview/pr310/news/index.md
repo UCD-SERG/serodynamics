@@ -130,6 +130,20 @@
 
 - Added ability to facet or color by stratification in
   [`plot_residuals()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/plot_residuals.md).
+  Will use the original data set attribute if stratification was used in
+  original
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+  Alternatively, the original data set will need to be included in the
+  function as an option if the stratification variable was not
+  originally specified. Mean absolute error is calculated by
+  stratification if faceted.
+- Default priors are no longer supplied for
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+  `prep_priors` now takes 4 values for `mu_hyp_param`, `prec_hyp_param`
+  and `omega_param` when `decay_type = "exponential"`, and 5 when it is
+  `"power"`. **Breaking change:** Users must manually specify priors to
+  run the function or an error will occur. Users must specify 4 priors
+  for `exponential` and 5 priors for `power` decay.
 - Added `runjags` and
   [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/prep_priors.md)
   specification guidelines to `getting-started` vignette.

@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9022</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9024</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -281,6 +281,7 @@ Specify priors explicitly, chosen to correspond to your observed data and expect
 <code>prec_logy_hyp_param</code>: The gamma hyperprior on measurement precision</li>
 </ul>
 <p>Users with strong external information can tighten <code>prec_hyp_param</code>. Users seeking more diffuse priors or facing convergence difficulties can lower <code>prec_hyp_param</code> and/or reduce <code>wishdf_param</code> (e.g. 5-10), which weakens the prior on between-individual variation.</p>
+<p>(Priors used in below code were selected based on <a class="footnote-ref" role="doc-noteref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Aiemjoy K. et al.  Estimating typhoid incidence from community-based serosurveys: a multicohort study. &lt;em&gt;The Lancet Microbe&lt;/em&gt;. 2022;3(8):e578–e587. doi:10.1016/S2666-5247(22)00114-8.&lt;/p&gt;"><sup>1</sup></a>) <strong>Users should always specify priors according to their own data set.</strong></p>
 <p><strong>Bayesian specification</strong><br>
 Users specify the number of MCMC chains (<code>nchain</code>, 1-4), adaptation iterations (<code>nadapt</code>), burn-in iterations (<code>nburn</code>), retained samples per chain (<code>nmc</code>), and total iterations (<code>niter</code>), with thinning computed as <code>niter/nmc</code>. Chains are executed in parallel for computational efficiency. It is recommended that 4 chains are run concurrently for inference. Additional computing power may be necessary when running large models with many iterations.<br>
 For further information please visit: https://cran.r-project.org/package=runjags</p>
@@ -295,19 +296,20 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span>  nchain <span class="op">=</span> <span class="fl">4</span>,      <span class="co"># Number of MCMC chains</span></span>
 <span>  nadapt <span class="op">=</span> <span class="fl">100</span>,    <span class="co"># Adaptation iterations</span></span>
 <span>  nburn <span class="op">=</span> <span class="fl">100</span>,     <span class="co"># Burn-in iterations  </span></span>
-<span>  nmc <span class="op">=</span> <span class="fl">100</span>,        <span class="co"># Samples per chain (use 1000+ for real analysis)</span></span>
-<span>  niter <span class="op">=</span> <span class="fl">200</span>,       <span class="co"># Total iterations (use 2000+ for real analysis)</span></span>
-<span>  strat <span class="op">=</span> <span class="st">"bldculres"</span>,</span>
-<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>,</span>
-<span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.00001</span>, <span class="fl">1.0</span>, <span class="fl">0.001</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
-<span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">50.0</span>, <span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">1.0</span><span class="op">)</span>,</span>
-<span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">1.0</span><span class="op">)</span></span>
+<span>  nmc <span class="op">=</span> <span class="fl">10</span>,        <span class="co"># Samples per chain (use 1000+ for real analysis)</span></span>
+<span>  niter <span class="op">=</span> <span class="fl">20</span>,       <span class="co"># Total iterations (use 2000+ for real analysis)</span></span>
+<span>  <span class="co"># Priors were selected based on Aiemjoy K et al. Estimating typhoid incidence from community-based serosurveys: a multicohort study (2022). </span></span>
+<span>  <span class="co"># Users should always specify priors according to their own data set.</span></span>
+<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>, <span class="co"># Prior mean for the population level parameters</span></span>
+<span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.00001</span>, <span class="fl">1.0</span>, <span class="fl">0.001</span>, <span class="fl">1.0</span><span class="op">)</span>, <span class="co"># Hyperprior precision matrix</span></span>
+<span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">50.0</span>, <span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">1.0</span><span class="op">)</span>, <span class="co"># Wishart hyperprior distributions</span></span>
+<span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>, <span class="co"># Degrees of freedom for the Wishart hyperprior distribution</span></span>
+<span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">1.0</span><span class="op">)</span> <span class="co"># Hyperprior  precision matrix</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:35 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:23 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -316,9 +318,9 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt;    Resolving undeclared variables</span></span>
 <span><span class="co">#&gt;    Allocating nodes</span></span>
 <span><span class="co">#&gt; Graph information:</span></span>
-<span><span class="co">#&gt;    Observed stochastic nodes: 690</span></span>
-<span><span class="co">#&gt;    Unobserved stochastic nodes: 384</span></span>
-<span><span class="co">#&gt;    Total graph size: 14802</span></span>
+<span><span class="co">#&gt;    Observed stochastic nodes: 904</span></span>
+<span><span class="co">#&gt;    Unobserved stochastic nodes: 500</span></span>
+<span><span class="co">#&gt;    Total graph size: 19331</span></span>
 <span><span class="co">#&gt; . Reading parameter file inits1.txt</span></span>
 <span><span class="co">#&gt; . Initializing model</span></span>
 <span><span class="co">#&gt; . Adapting 100</span></span>
@@ -328,46 +330,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; . Updating 100</span></span>
 <span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
 <span><span class="co">#&gt; ************************************************** 100%</span></span>
-<span><span class="co">#&gt; . . . . . . Updating 200</span></span>
-<span><span class="co">#&gt; -------------------------------------------------| 200</span></span>
-<span><span class="co">#&gt; ************************************************** 100%</span></span>
-<span><span class="co">#&gt; . . . . Updating 0</span></span>
-<span><span class="co">#&gt; . Deleting model</span></span>
-<span><span class="co">#&gt; . </span></span>
-<span><span class="co">#&gt; All chains have finished</span></span>
-<span><span class="co">#&gt; Warning: The adaptation phase of one or more models was not completed in 100</span></span>
-<span><span class="co">#&gt; iterations, so the current samples may not be optimal - try increasing the</span></span>
-<span><span class="co">#&gt; number of iterations to the "adapt" argument</span></span>
-<span><span class="co">#&gt; Simulation complete.  Reading coda files...</span></span>
-<span><span class="co">#&gt; Coda files loaded successfully</span></span>
-<span><span class="co">#&gt; Finished running the simulation</span></span>
-<span><span class="co">#&gt; Calling 4 simulations using the parallel method...</span></span>
-<span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
-<span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:39 2026</span></span>
-<span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
-<span><span class="co">#&gt; Loading module: basemod: ok</span></span>
-<span><span class="co">#&gt; Loading module: bugs: ok</span></span>
-<span><span class="co">#&gt; . . Reading data file data.txt</span></span>
-<span><span class="co">#&gt; . Compiling model graph</span></span>
-<span><span class="co">#&gt;    Resolving undeclared variables</span></span>
-<span><span class="co">#&gt;    Allocating nodes</span></span>
-<span><span class="co">#&gt; Graph information:</span></span>
-<span><span class="co">#&gt;    Observed stochastic nodes: 214</span></span>
-<span><span class="co">#&gt;    Unobserved stochastic nodes: 130</span></span>
-<span><span class="co">#&gt;    Total graph size: 4771</span></span>
-<span><span class="co">#&gt; . Reading parameter file inits1.txt</span></span>
-<span><span class="co">#&gt; . Initializing model</span></span>
-<span><span class="co">#&gt; . Adapting 100</span></span>
-<span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
-<span><span class="co">#&gt; ++++++++++++++++++++++++++++++++++++++++++++++++++ 100%</span></span>
-<span><span class="co">#&gt; Adaptation incomplete.</span></span>
-<span><span class="co">#&gt; . Updating 100</span></span>
-<span><span class="co">#&gt; -------------------------------------------------| 100</span></span>
-<span><span class="co">#&gt; ************************************************** 100%</span></span>
-<span><span class="co">#&gt; . . . . . . Updating 200</span></span>
-<span><span class="co">#&gt; -------------------------------------------------| 200</span></span>
-<span><span class="co">#&gt; ************************************************** 100%</span></span>
+<span><span class="co">#&gt; . . . . . . Updating 20</span></span>
 <span><span class="co">#&gt; . . . . Updating 0</span></span>
 <span><span class="co">#&gt; . Deleting model</span></span>
 <span><span class="co">#&gt; . </span></span>
@@ -383,12 +346,12 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; # A tibble: 6 × 7</span></span>
 <span><span class="co">#&gt;   Iteration Chain Parameter Iso_type Stratification Subject      value</span></span>
 <span><span class="co">#&gt;       &lt;int&gt; &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;    &lt;chr&gt;          &lt;chr&gt;        &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1         1     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00757</span></span>
-<span><span class="co">#&gt; 2         2     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794</span></span>
-<span><span class="co">#&gt; 3         3     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00794</span></span>
-<span><span class="co">#&gt; 4         4     1 alpha     HlyE_IgA typhi          sees_npl_1 0.0103 </span></span>
-<span><span class="co">#&gt; 5         5     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925</span></span>
-<span><span class="co">#&gt; 6         6     1 alpha     HlyE_IgA typhi          sees_npl_1 0.00925</span></span></code></pre></div>
+<span><span class="co">#&gt; 1         1     1 alpha     HlyE_IgA None           sees_npl_1 0.00734</span></span>
+<span><span class="co">#&gt; 2         2     1 alpha     HlyE_IgA None           sees_npl_1 0.00478</span></span>
+<span><span class="co">#&gt; 3         3     1 alpha     HlyE_IgA None           sees_npl_1 0.00478</span></span>
+<span><span class="co">#&gt; 4         4     1 alpha     HlyE_IgA None           sees_npl_1 0.00478</span></span>
+<span><span class="co">#&gt; 5         5     1 alpha     HlyE_IgA None           sees_npl_1 0.00353</span></span>
+<span><span class="co">#&gt; 6         6     1 alpha     HlyE_IgA None           sees_npl_1 0.00422</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="model-diagnostics">Model Diagnostics<a class="anchor" aria-label="anchor" href="#model-diagnostics"></a>
 </h2>
@@ -397,8 +360,8 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Trace plots to assess chain mixing</span></span>
 <span><span class="fu"><a href="../reference/plot_trace.html">plot_trace</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $typhi</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
+<span><span class="co">#&gt; $None</span></span>
+<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-1.png" width="672"></p>
@@ -406,17 +369,19 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-2.png" width="672"></p>
 </figure>
 </div>
 </div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
+<div class="sourceCode cell-code" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Density plots of posterior distributions</span></span>
+<span><span class="fu"><a href="../reference/plot_density.html">plot_density</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $None</span></span>
+<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-3.png" width="672"></p>
@@ -424,7 +389,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-4.png" width="672"></p>
@@ -433,10 +398,10 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 <div class="sourceCode cell-code" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
-<span><span class="co"># Density plots of posterior distributions</span></span>
-<span><span class="fu"><a href="../reference/plot_density.html">plot_density</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $typhi</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
+<span><span class="co"># Rhat statistics (values near 1.0 indicate convergence)</span></span>
+<span><span class="fu"><a href="../reference/plot_rhat.html">plot_rhat</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $None</span></span>
+<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-5.png" width="672"></p>
@@ -444,17 +409,19 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-6.png" width="672"></p>
 </figure>
 </div>
 </div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
+<div class="sourceCode cell-code" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="co"># Effective sample size</span></span>
+<span><span class="fu"><a href="../reference/plot_ess.html">plot_ess</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $None</span></span>
+<span><span class="co">#&gt; $None$HlyE_IgA</span></span></code></pre></div>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-7.png" width="672"></p>
@@ -462,86 +429,10 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 </div>
 <pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
+<span><span class="co">#&gt; $None$HlyE_IgG</span></span></code></pre>
 <div class="cell-output-display">
 <div>
 <figure><p><img src="getting-started_files/figure-html/diagnostics-8.png" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Rhat statistics (values near 1.0 indicate convergence)</span></span>
-<span><span class="fu"><a href="../reference/plot_rhat.html">plot_rhat</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $typhi</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-9.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-10.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-11.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-12.png" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="co"># Effective sample size</span></span>
-<span><span class="fu"><a href="../reference/plot_ess.html">plot_ess</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
-<span><span class="co">#&gt; $typhi</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgA</span></span></code></pre></div>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-13.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $typhi$HlyE_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-14.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgA</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-15.png" width="672"></p>
-</figure>
-</div>
-</div>
-<pre><code><span><span class="co">#&gt;</span></span>
-<span><span class="co">#&gt; $paratyphi$HlyE_IgG</span></span></code></pre>
-<div class="cell-output-display">
-<div>
-<figure><p><img src="getting-started_files/figure-html/diagnostics-16.png" width="672"></p>
 </figure>
 </div>
 </div>
@@ -550,7 +441,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </h2>
 <p>Plot the predicted stratified antibody curves with credible intervals:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="fu"><a href="../reference/plot_serocurve.html">plot_serocurve</a></span><span class="op">(</span><span class="va">fitted_model</span>,</span>
 <span>               log_y <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
@@ -563,7 +454,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </div>
 <p>Plot the predicted antibody curve for an individual with their original observed data for HlyE IgA.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/plot_predicted_curve.html">plot_predicted_curve</a></span><span class="op">(</span></span>
 <span>  <span class="va">fitted_model</span>,</span>
 <span>  ids <span class="op">=</span> <span class="fu">serocalculator</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/pkg/serocalculator/man/ids.html" class="external-link">ids</a></span><span class="op">(</span><span class="va">nepal_sees</span><span class="op">)</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
@@ -582,40 +473,30 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </h2>
 <p>Extract and summarize the posterior estimates:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Summarize parameter estimates</span></span>
 <span><span class="va">summary_stats</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/summarize_posterior.html">summarize_posterior</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">summary_stats</span><span class="op">)</span></span>
-<span><span class="co">#&gt; # A tibble: 20 × 11</span></span>
+<span><span class="co">#&gt; # A tibble: 10 × 11</span></span>
 <span><span class="co">#&gt;    Iso_type Parameter Stratification       Mean       SD  Median  `2.5%` `25.0%`</span></span>
 <span><span class="co">#&gt;    &lt;chr&gt;    &lt;chr&gt;     &lt;chr&gt;               &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;   &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt;  1 HlyE_IgA alpha     paratyphi         0.00554  6.89e-3 3.51e-3 5.93e-4 1.88e-3</span></span>
-<span><span class="co">#&gt;  2 HlyE_IgA alpha     typhi             0.00611  4.98e-3 4.62e-3 1.18e-3 2.88e-3</span></span>
-<span><span class="co">#&gt;  3 HlyE_IgA shape     paratyphi         1.48     1.72e-1 1.44e+0 1.24e+0 1.36e+0</span></span>
-<span><span class="co">#&gt;  4 HlyE_IgA shape     typhi             1.55     2.18e-1 1.50e+0 1.23e+0 1.39e+0</span></span>
-<span><span class="co">#&gt;  5 HlyE_IgA t1        paratyphi         4.14     1.49e+0 3.90e+0 2.02e+0 3.01e+0</span></span>
-<span><span class="co">#&gt;  6 HlyE_IgA t1        typhi             5.67     3.02e+0 5.01e+0 1.93e+0 3.51e+0</span></span>
-<span><span class="co">#&gt;  7 HlyE_IgA y0        paratyphi         2.63     8.27e-1 2.52e+0 1.32e+0 2.07e+0</span></span>
-<span><span class="co">#&gt;  8 HlyE_IgA y0        typhi             2.61     8.61e-1 2.47e+0 1.34e+0 1.97e+0</span></span>
-<span><span class="co">#&gt;  9 HlyE_IgA y1        paratyphi      5191.       6.56e+4 3.65e+2 1.32e+1 1.14e+2</span></span>
-<span><span class="co">#&gt; 10 HlyE_IgA y1        typhi          1729.       4.72e+3 5.41e+2 2.66e+1 2.20e+2</span></span>
-<span><span class="co">#&gt; 11 HlyE_IgG alpha     paratyphi         0.00348  3.32e-3 2.49e-3 5.24e-4 1.61e-3</span></span>
-<span><span class="co">#&gt; 12 HlyE_IgG alpha     typhi             0.00283  2.12e-3 2.24e-3 4.45e-4 1.39e-3</span></span>
-<span><span class="co">#&gt; 13 HlyE_IgG shape     paratyphi         1.28     1.25e-1 1.26e+0 1.10e+0 1.19e+0</span></span>
-<span><span class="co">#&gt; 14 HlyE_IgG shape     typhi             1.37     2.56e-1 1.31e+0 1.11e+0 1.20e+0</span></span>
-<span><span class="co">#&gt; 15 HlyE_IgG t1        paratyphi         5.33     2.03e+0 5.12e+0 2.37e+0 4.01e+0</span></span>
-<span><span class="co">#&gt; 16 HlyE_IgG t1        typhi             6.50     5.30e+0 5.15e+0 1.50e+0 2.99e+0</span></span>
-<span><span class="co">#&gt; 17 HlyE_IgG y0        paratyphi         2.74     1.22e+0 2.43e+0 1.25e+0 2.00e+0</span></span>
-<span><span class="co">#&gt; 18 HlyE_IgG y0        typhi             2.49     1.28e+0 2.26e+0 7.93e-1 1.67e+0</span></span>
-<span><span class="co">#&gt; 19 HlyE_IgG y1        paratyphi      1492.       7.03e+3 3.36e+2 2.12e+1 1.28e+2</span></span>
-<span><span class="co">#&gt; 20 HlyE_IgG y1        typhi           692.       1.42e+3 3.16e+2 3.44e+1 1.32e+2</span></span>
+<span><span class="co">#&gt;  1 HlyE_IgA alpha     None              0.00811  5.00e-3 6.96e-3 1.38e-3 4.76e-3</span></span>
+<span><span class="co">#&gt;  2 HlyE_IgA shape     None              1.42     1.27e-1 1.42e+0 1.21e+0 1.34e+0</span></span>
+<span><span class="co">#&gt;  3 HlyE_IgA t1        None              4.00     2.12e+0 3.39e+0 1.91e+0 2.60e+0</span></span>
+<span><span class="co">#&gt;  4 HlyE_IgA y0        None              2.61     7.74e-1 2.52e+0 1.68e+0 2.04e+0</span></span>
+<span><span class="co">#&gt;  5 HlyE_IgA y1        None           1269.       2.16e+3 5.42e+2 6.18e+1 2.75e+2</span></span>
+<span><span class="co">#&gt;  6 HlyE_IgG alpha     None              0.00355  2.72e-3 2.62e-3 1.09e-3 1.95e-3</span></span>
+<span><span class="co">#&gt;  7 HlyE_IgG shape     None              1.30     1.43e-1 1.27e+0 1.10e+0 1.21e+0</span></span>
+<span><span class="co">#&gt;  8 HlyE_IgG t1        None              8.23     4.58e+0 7.68e+0 2.62e+0 5.08e+0</span></span>
+<span><span class="co">#&gt;  9 HlyE_IgG y0        None              2.28     9.20e-1 2.06e+0 1.15e+0 1.54e+0</span></span>
+<span><span class="co">#&gt; 10 HlyE_IgG y1        None            620.       1.30e+3 2.56e+2 4.77e+1 1.32e+2</span></span>
 <span><span class="co">#&gt; # ℹ 3 more variables: `50.0%` &lt;dbl&gt;, `75.0%` &lt;dbl&gt;, `97.5%` &lt;dbl&gt;</span></span></code></pre></div>
 </div>
 </section><section class="level2"><h2 id="checking-model-fit">Checking model fit<a class="anchor" aria-label="anchor" href="#checking-model-fit"></a>
 </h2>
 <p>Plot the residuals over time including mean absolute error (MAE):</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Plot residuals over time, annotated with mean absolute error</span></span>
 <span><span class="va">residuals_plot</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/plot_residuals.html">plot_residuals</a></span><span class="op">(</span><span class="va">fitted_model</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">residuals_plot</span><span class="op">)</span></span></code></pre></div>
@@ -630,7 +511,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </h2>
 <p>You can stratify the analysis by a grouping variable:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Create stratified data</span></span>
 <span><span class="va">strat1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sim_case_data.html">sim_case_data</a></span><span class="op">(</span></span>
 <span>  n <span class="op">=</span> <span class="fl">30</span>, </span>
@@ -655,12 +536,17 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span>  nburn <span class="op">=</span> <span class="fl">100</span>,</span>
 <span>  nmc <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  niter <span class="op">=</span> <span class="fl">20</span>,</span>
-<span>  strat <span class="op">=</span> <span class="st">"pathogen"</span>  <span class="co"># Specify stratification variable</span></span>
+<span>  strat <span class="op">=</span> <span class="st">"pathogen"</span>,  <span class="co"># Specify stratification variable</span></span>
+<span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">7.0</span>, <span class="fl">1.0</span>, <span class="op">-</span><span class="fl">4.0</span>, <span class="op">-</span><span class="fl">1.0</span><span class="op">)</span>, </span>
+<span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">0.00001</span>, <span class="fl">1.0</span>, <span class="fl">0.001</span>, <span class="fl">1.0</span><span class="op">)</span>, </span>
+<span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1.0</span>, <span class="fl">50.0</span>, <span class="fl">1.0</span>, <span class="fl">10.0</span>, <span class="fl">1.0</span><span class="op">)</span>, </span>
+<span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>, </span>
+<span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4.0</span>, <span class="fl">1.0</span><span class="op">)</span> </span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:52 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:35 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -695,7 +581,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt; Calling 2 simulations using the parallel method...</span></span>
 <span><span class="co">#&gt; Following the progress of chain 1 (the program will wait for all chains</span></span>
 <span><span class="co">#&gt; to finish before continuing):</span></span>
-<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 15 05:03:54 2026</span></span>
+<span><span class="co">#&gt; Welcome to JAGS 4.3.2 on Tue Sep 22 01:30:37 2026</span></span>
 <span><span class="co">#&gt; JAGS is free software and comes with ABSOLUTELY NO WARRANTY</span></span>
 <span><span class="co">#&gt; Loading module: basemod: ok</span></span>
 <span><span class="co">#&gt; Loading module: bugs: ok</span></span>
@@ -737,7 +623,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 </ul></section><section class="level2"><h2 id="session-info">Session Info<a class="anchor" aria-label="anchor" href="#session-info"></a>
 </h2>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode cell-code" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">sessioninfo</span><span class="fu">::</span><span class="fu"><a href="https://sessioninfo.r-lib.org/reference/session_info.html" class="external-link">session_info</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; ─ Session info ───────────────────────────────────────────────────────────────</span></span>
 <span><span class="co">#&gt;  setting  value</span></span>
@@ -749,7 +635,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt;  collate  C.UTF-8</span></span>
 <span><span class="co">#&gt;  ctype    C.UTF-8</span></span>
 <span><span class="co">#&gt;  tz       UTC</span></span>
-<span><span class="co">#&gt;  date     2026-09-15</span></span>
+<span><span class="co">#&gt;  date     2026-09-22</span></span>
 <span><span class="co">#&gt;  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)</span></span>
 <span><span class="co">#&gt;  quarto   1.10.18 @ /usr/local/bin/quarto</span></span>
 <span><span class="co">#&gt; </span></span>
@@ -796,7 +682,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt;  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  serodynamics   * 0.1.0.9022 2026-09-15 [1] local</span></span>
+<span><span class="co">#&gt;  serodynamics   * 0.1.0.9024 2026-09-22 [1] local</span></span>
 <span><span class="co">#&gt;  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)</span></span>
@@ -804,7 +690,7 @@ For further information please visit: https://cran.r-project.org/package=runjags
 <span><span class="co">#&gt;  utf8             1.2.6      2025-06-08 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  vctrs            0.7.3      2026-04-11 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  withr            3.0.3      2026-06-19 [1] CRAN (R 4.6.1)</span></span>
-<span><span class="co">#&gt;  xfun             0.60       2026-07-09 [1] CRAN (R 4.6.1)</span></span>
+<span><span class="co">#&gt;  xfun             0.61       2026-09-16 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt;  yaml             2.3.12     2025-12-10 [1] CRAN (R 4.6.1)</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt;  [1] /home/runner/work/_temp/Library</span></span>

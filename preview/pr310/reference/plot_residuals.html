@@ -19,7 +19,7 @@ log10-scale medians and 2.5%/97.5% posterior quantiles."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">serodynamics</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9022</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Unreleased version">0.1.0.9024</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -77,7 +77,8 @@ log10-scale medians and 2.5%/97.5% posterior quantiles.</p>
 <span>  show_interval <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  connect_lines <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  facet_by_strat <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  color_by_strat <span class="op">=</span> <span class="cn">NULL</span></span>
+<span>  color_by_strat <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  original_data <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -120,12 +121,16 @@ residuals over time with a line. Default <code>FALSE</code>.</p></dd>
 
 <dt id="arg-facet-by-strat">facet_by_strat<a class="anchor" aria-label="anchor" href="#arg-facet-by-strat"></a></dt>
 <dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; facets residual plot and
-calculates MAE by specified stratification variable. Default <code>NULL</code>.</p></dd>
+calculates MAE by specified stratification variable. Must include the
+original data set if not stratifying by <code>strat</code> variable specified in
+<code><a href="run_serodynamics.html">run_serodynamics()</a></code>. Default <code>NULL</code>.</p></dd>
 
 
 <dt id="arg-color-by-strat">color_by_strat<a class="anchor" aria-label="anchor" href="#arg-color-by-strat"></a></dt>
-<dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; colors residual plot and
-calculates MAE by specified stratification variable. Default <code>NULL</code>.</p></dd>
+<dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; colors residual plot by the specified
+stratification variable. MAE is not calculated by this variable. Must
+include the original data set if not stratifying by <code>strat</code> variable
+specified in <code><a href="run_serodynamics.html">run_serodynamics()</a></code>. Default <code>NULL</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -22,7 +22,8 @@ plot_residuals(
   show_interval = TRUE,
   connect_lines = FALSE,
   facet_by_strat = NULL,
-  color_by_strat = NULL
+  color_by_strat = NULL,
+  original_data = NULL
 )
 ```
 
@@ -66,14 +67,20 @@ plot_residuals(
 - facet_by_strat:
 
   [character](https://rdrr.io/r/base/character.html); facets residual
-  plot and calculates MAE by specified stratification variable. Default
-  `NULL`.
+  plot and calculates MAE by specified stratification variable. Must
+  include the original data set if not stratifying by `strat` variable
+  specified in
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+  Default `NULL`.
 
 - color_by_strat:
 
   [character](https://rdrr.io/r/base/character.html); colors residual
-  plot and calculates MAE by specified stratification variable. Default
-  `NULL`.
+  plot by the specified stratification variable. MAE is not calculated
+  by this variable. Must include the original data set if not
+  stratifying by `strat` variable specified in
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+  Default `NULL`.
 
 ## Value
 
