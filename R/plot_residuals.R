@@ -60,23 +60,21 @@ plot_residuals <- function(model,
   facet_strat <- !is.null(facet_by_strat)
   
   # Determining if original data must be included or original attribute
-  if (color_strat || facet_strat) {
-    needs_original_data <- (
-      (!is.null(color_by_strat) && color_by_strat != strat) ||
-        (!is.null(facet_by_strat) && facet_by_strat != strat)
-    )
-    if (!needs_original_data) {
-      original_data <- attr(model, "original_data")
-      } else if (needs_original_data && is.null(original_data)) {
-      original_data <- attr(model, "original_data")
-    }
-    if (needs_original_data && is.null(original_data)) {
-      cli::cli_abort(c(
-        "x" = "Must include {.arg original_data} when stratifying by ",
+  needs_original_data <- (
+    (color_strat && !is.null(color_by_strat) && color_by_strat != strat) ||
+      (facet_strat && !is.null(facet_by_strat) && facet_by_strat != strat)
+  )
+  
+  if (needs_original_data && is.null(original_data)) {
+    cli::cli_abort(c(
+      "x" = paste0(
+        "Must include {.arg original_data} when stratifying by ",
         "{.arg facet_by_strat} or {.arg color_by_strat}."
-      ))
-    }
-  }
+      )
+    ))
+  } else if (!needs_original_data) {
+    original_data <- attr(model, "original_data")
+  }  
 
   decay_type <- attr(model, "decay_type")
   if (is.null(decay_type)) {
