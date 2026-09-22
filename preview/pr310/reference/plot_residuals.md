@@ -82,6 +82,15 @@ plot_residuals(
   [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
   Default `NULL`.
 
+- original_data:
+
+  [character](https://rdrr.io/r/base/character.html); the original
+  dataset fed into
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+  Must be included if `facet_by_strat` or `facet_by_color` include a
+  variable that was not specified as `strat` in
+  [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
+
 ## Value
 
 A [ggplot2::ggplot](https://ggplot2.tidyverse.org/reference/ggplot.html)
