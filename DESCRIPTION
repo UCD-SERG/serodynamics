@@ -12,7 +12,9 @@ Authors@R: c(
     person("Kristen", "Aiemjoy", , "kaiemjoy@ucdavis.edu", role = "aut",
            comment = c(ORCID = "0000-0003-1886-2699")),
     person("Douglas Ezra", "Morrison", , "demorrison@ucdavis.edu", role = "aut",
-           comment = c(ORCID = "0000-0002-7195-830X"))
+           comment = c(ORCID = "0000-0002-7195-830X")),
+    person("Yuxuan", "Wang", , "yxewang@ucdavis.edu", role = "aut",
+           comment = c(ORCID = "0009-0004-2041-8831"))
   )
 Description: Implements Bayesian hierarchical models for estimating
     antibody kinetic parameters from longitudinal serological data. Fits
