@@ -87,7 +87,7 @@ plot_residuals(
   [data.frame](https://rdrr.io/r/base/data.frame.html); the original
   dataset fed into
   [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
-  Must be included if `facet_by_strat` or `facet_by_color` include a
+  Must be included if `facet_by_strat` or `color_by_strat` include a
   variable that was not specified as `strat` in
   [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
 
