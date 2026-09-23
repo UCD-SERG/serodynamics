@@ -25,12 +25,12 @@ Source:
 
 Teunis P, Schildhauer S, Lee K, Aiemjoy K, Morrison D, Wang Y (2026).
 *serodynamics: Modeling Longitudinal Antibody Responses to Infection*. R
-package version 0.1.0.9024, <https://github.com/UCD-SERG/serodynamics>.
+package version 0.1.0.9023, <https://github.com/UCD-SERG/serodynamics>.
 
     @Manual{,
       title = {serodynamics: Modeling Longitudinal Antibody Responses to Infection},
       author = {Peter Teunis and Samuel Schildhauer and Kwan Ho Lee and Kristen Aiemjoy and Douglas Ezra Morrison and Yuxuan Wang},
       year = {2026},
-      note = {R package version 0.1.0.9024},
+      note = {R package version 0.1.0.9023},
       url = {https://github.com/UCD-SERG/serodynamics},
     }
