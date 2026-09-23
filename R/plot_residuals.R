@@ -74,7 +74,9 @@ plot_residuals <- function(model,
         "{.arg facet_by_strat} or {.arg color_by_strat}."
       )
     ))
-  } else if (!needs_original_data) {
+  }
+  
+  if (!needs_original_data) {
     original_data <- attr(model, "original_data")
   }
 
