@@ -83,16 +83,16 @@
 #' }
 
 prior_predict <- function(
-    mu_hyp_param = NULL,
-    prec_hyp_param = NULL,
-    omega_param = NULL,
-    wishdf_param = NULL,
-    prec_logy_hyp_param = NULL,
-    n = 1000,
-    type = c("curves", "density"),
-    time = seq(0, 365, length.out = 200),
-    log_y = FALSE,
-    seed = NULL) {
+  mu_hyp_param = NULL,
+  prec_hyp_param = NULL,
+  omega_param = NULL,
+  wishdf_param = NULL,
+  prec_logy_hyp_param = NULL,
+  n = 1000,
+  type = c("curves", "density"),
+  time = seq(0, 365, length.out = 200),
+  log_y = FALSE,
+  seed = NULL) {
   
   type <- match.arg(type)
   
@@ -144,7 +144,7 @@ prior_predict <- function(
   }
   
   if (length(prec_logy_hyp_param) != 2 ||
-      any(prec_logy_hyp_param <= 0)) {
+        any(prec_logy_hyp_param <= 0)) {
     cli::cli_abort(
       "{.arg prec_logy_hyp_param} must contain two positive values."
     )
@@ -166,34 +166,28 @@ prior_predict <- function(
     omega <- diag(omega_param)
   } else if (
     is.matrix(omega_param) &&
-    all(dim(omega_param) == c(n_params, n_params))
+      all(dim(omega_param) == c(n_params, n_params))
   ) {
     omega <- omega_param
   } else {
     cli::cli_abort(
-      "{.arg omega_param} must be a length-{n_params} vector or a
-      {n_params} x {n_params} matrix.")
-    }
+                   "{.arg omega_param} must be a length-{n_params} vector or a
+                    {n_params} x {n_params} matrix.")
+  }
   
   ## Ensure omega is positive definite
-  tryCatch(
-    chol(omega),
-    error = function(e) {
-      cli::cli_abort(
-        "{.arg omega_param} must define a positive-definite matrix.")
-    })
+  tryCatch(chol(omega), error = function(e) {
+    cli::cli_abort(
+                   "{.arg omega_param} must define a positive-definite 
+                    matrix.")
+  })
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
   ## ---------------------------------------------------------
   
-  # mu.par ~ MVN(mu.hyp, prec.hyp)
   mu_cov <- diag(1 / prec_hyp_param)
   
-  # JAGS:
-  #   prec.par ~ dwish(omega, wishdf)
-  # uses omega as an inverse scale matrix. stats::rWishart() instead
-  # uses the conventional scale matrix, so solve(omega) is required.
   wishart_scale <- solve(omega)
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))
@@ -201,7 +195,7 @@ prior_predict <- function(
   
   for (i in seq_len(n)) {
     mu_i <- MASS::mvrnorm(n = 1, mu = mu_hyp_param, Sigma = mu_cov)
-    prec_i <- stats::rWishart(n = 1,df = wishdf_param, Sigma = wishart_scale
+    prec_i <- stats::rWishart(n = 1, df = wishdf_param, Sigma = wishart_scale
     )[, , 1]
     par_i <- MASS::mvrnorm(n = 1, mu = mu_i, Sigma = solve(prec_i))
     mu_draws[i, ] <- mu_i
@@ -240,10 +234,10 @@ prior_predict <- function(
     lapply(model_parameters, function(x) {
       
       qs <- stats::quantile(draws[[x]], probs = c(0.025, 0.5, 0.975),
-        na.rm = TRUE, names = FALSE)
+                            na.rm = TRUE, names = FALSE)
       
       data.frame(parameter = x, q2.5 = qs[1], median = qs[2], q97.5 = qs[3],
-        row.names = NULL)
+                 row.names = NULL)
     })
   )
   
@@ -254,12 +248,13 @@ prior_predict <- function(
   if (type == "density") {
     
     density_data <- data.frame(
-      parameter = rep(model_parameters, each = n),
-      value = unlist(draws[model_parameters], use.names = FALSE))
+                               parameter = rep(model_parameters, each = n),
+                               value = unlist(draws[model_parameters], 
+                                              use.names = FALSE))
     
     plot <- ggplot2::ggplot(
-      density_data,
-      ggplot2::aes(x = .data$value)) +
+                            density_data,
+                            ggplot2::aes(x = .data$value)) +
       ggplot2::geom_density() +
       ggplot2::facet_wrap(~parameter, scales = "free") +
       ggplot2::labs(x = NULL, y = "Density", 
@@ -300,23 +295,22 @@ prior_predict <- function(
       }
     )
     
-    curve_data <- do.call(
-      rbind,
-      curve_data
-    )
+    curve_data <- do.call(rbind, curve_data)
     
     finite <- is.finite(curve_data$antibody)
     
     if (any(!finite)) {
       cli::cli_warn(
-        "{sum(!finite)} prior-predictive values were non-finite and were omitted from the plot."
+        "{sum(!finite)} prior-predictive values were non-finite and were 
+        omitted from the plot."
       )
       
       curve_data <- curve_data[finite, , drop = FALSE]
     }
     
     plot <- ggplot2::ggplot(curve_data,
-      ggplot2::aes(x = .data$time, y = .data$antibody, group = .data$draw)) +
+                            ggplot2::aes(x = .data$time, y = .data$antibody, 
+                                         group = .data$draw)) +
       ggplot2::geom_line(alpha = 0.08) +
       ggplot2::labs(x = "Time", y = "Antibody level",
                     title = "Prior predictive antibody trajectories") +
