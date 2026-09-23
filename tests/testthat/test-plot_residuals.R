@@ -121,14 +121,14 @@ testthat::test_that(
     
     # Testing unstratified call
     plot1 <- plot_residuals(model = model, antigen_isos = c("HlyE_IgA", 
-                                                              "HlyE_IgG"),
+                                                            "HlyE_IgG"),
                             connect_lines = TRUE)
     
     point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
     
     testthat::expect_length(point_layers, 1)
     color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
-    testthat::expect_identical(color_var, 'NULL')
+    testthat::expect_identical(color_var, "NULL")
     
   }
 )
