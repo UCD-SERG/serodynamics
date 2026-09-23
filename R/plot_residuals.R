@@ -63,15 +63,15 @@ plot_residuals <- function(model,
   facet_strat <- !is.null(facet_by_strat)
   
   # Determining if original data must be included or original attribute
-original_data <- get_original_data(
-  model = model,
-  original_data = original_data,
-  strat = strat,
-  color_strat = color_strat,
-  color_by_strat = color_by_strat,
-  facet_strat = facet_strat,
-  facet_by_strat = facet_by_strat
-)
+  original_data <- get_original_data(
+    model = model,
+    original_data = original_data,
+    strat = strat,
+    color_strat = color_strat,
+    color_by_strat = color_by_strat,
+    facet_strat = facet_strat,
+    facet_by_strat = facet_by_strat
+  )
 
   decay_type <- attr(model, "decay_type")
   if (is.null(decay_type)) {
