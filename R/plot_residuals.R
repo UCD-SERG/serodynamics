@@ -143,21 +143,15 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # Points
   # ------------------------------------------------------------
-  if (colored) {
+  if (!is.null(color_var)) {
     p <- p +
-      ggplot2::geom_point(ggplot2::aes(color = .data$Subject),
-                          alpha = 0.6) +
-      ggplot2::labs(color = "Subject") +
-      ggplot2::theme(legend.position = "right")
-    
-  } else if (color_strat) {
-    p <- p +
-      ggplot2::geom_point(ggplot2::aes(color = !!rlang::sym(color_by_strat)),
-                          alpha = 0.6) +
-      ggplot2::labs(color = color_by_strat) +
-      ggplot2::theme(legend.position = "top")
+      ggplot2::geom_point(
+        ggplot2::aes(color = .data[[color_var]])
+        # preserve the rest of the existing point args here
+      )
   } else {
-    p <- p + ggplot2::geom_point(alpha = 0.6)
+    p <- p +
+      ggplot2::geom_point() # preserve the existing uncolored point args here
   }
   
   # ------------------------------------------------------------
