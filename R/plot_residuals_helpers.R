@@ -1,11 +1,11 @@
 get_original_data <- function(
-    model,
-    original_data = NULL,
-    strat = attr(model, "strat"),
-    color_strat = FALSE,
-    color_by_strat = NULL,
-    facet_strat = FALSE,
-    facet_by_strat = NULL
+  model,
+  original_data = NULL,
+  strat = attr(model, "strat"),
+  color_strat = FALSE,
+  color_by_strat = NULL,
+  facet_strat = FALSE,
+  facet_by_strat = NULL
 ) {
   if (is.null(strat)) {
     strat <- NA_character_
