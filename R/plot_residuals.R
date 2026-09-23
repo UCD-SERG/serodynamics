@@ -32,7 +32,7 @@
 #' specified in `run_serodynamics()`. Default `NULL`.
 #' @param original_data [data.frame]; the original dataset fed into 
 #' `run_serodynamics()`. Must be included if `facet_by_strat` or 
-#' `facet_by_color` include a variable that was not specified as `strat` in 
+#' `color_by_strat` include a variable that was not specified as `strat` in 
 #' `run_serodynamics()`.
 #' @return A [ggplot2::ggplot] object.
 #' @export

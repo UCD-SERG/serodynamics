@@ -50,7 +50,7 @@ specified in \code{run_serodynamics()}. Default \code{NULL}.}
 
 \item{original_data}{\link{data.frame}; the original dataset fed into
 \code{run_serodynamics()}. Must be included if \code{facet_by_strat} or
-\code{facet_by_color} include a variable that was not specified as \code{strat} in
+\code{color_by_strat} include a variable that was not specified as \code{strat} in
 \code{run_serodynamics()}.}
 }
 \value{
