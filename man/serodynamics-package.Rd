@@ -27,6 +27,7 @@ Authors:
   \item Kwan Ho Lee \email{ksjlee@ucdavis.edu} (\href{https://orcid.org/0009-0004-9723-2007}{ORCID})
   \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu} (\href{https://orcid.org/0000-0003-1886-2699}{ORCID})
   \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
+  \item Yuxuan Wang \email{yxewang@ucdavis.edu} (\href{https://orcid.org/0009-0004-2041-8831}{ORCID})
 }
 
 }
