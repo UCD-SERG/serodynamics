@@ -140,8 +140,7 @@ testthat::test_that(
   "plot_residuals() color_by_strat tests",
   {
     # Testing for color
-    plot1 <- plot_residuals(
-                            model = dataset, antigen_isos = c("HlyE_IgA", 
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
                                                               "HlyE_IgG"),
                             connect_lines = TRUE,
                             color_by_strat = "bldculres")

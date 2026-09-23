@@ -54,7 +54,7 @@ plot_residuals <- function(model,
   # Finding stratification of model for fit calculation
   strat <- attr(model, "strat")
   if (is.null(strat)) {
-    strat <- NA
+    strat <- NA_character_
   }
   
   # Detecting what options have been specified
@@ -63,10 +63,9 @@ plot_residuals <- function(model,
   facet_strat <- !is.null(facet_by_strat)
   
   # Determining if original data must be included or original attribute
-  needs_original_data <- (
-    (color_strat && !is.null(color_by_strat) && color_by_strat != strat) ||
-      (facet_strat && !is.null(facet_by_strat) && facet_by_strat != strat)
-  )
+  needs_original_data <- (color_strat && !is.null(color_by_strat) &&
+      (is.na(strat) || color_by_strat != strat)) || (facet_strat &&
+      !is.null(facet_by_strat) && (is.na(strat) || facet_by_strat != strat))
   
   if (needs_original_data && is.null(original_data)) {
     cli::cli_abort(c(
@@ -77,7 +76,7 @@ plot_residuals <- function(model,
     ))
   } else if (!needs_original_data) {
     original_data <- attr(model, "original_data")
-  }  
+  }
 
   decay_type <- attr(model, "decay_type")
   if (is.null(decay_type)) {
