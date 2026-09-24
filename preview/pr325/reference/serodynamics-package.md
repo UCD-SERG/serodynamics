@@ -38,11 +38,11 @@ Authors:
 - Kwan Ho Lee <ksjlee@ucdavis.edu>
   ([ORCID](https://orcid.org/0009-0004-9723-2007))
 
+- Yuxuan Wang <yxewang@ucdavis.edu>
+  ([ORCID](https://orcid.org/0009-0004-2041-8831))
+
 - Kristen Aiemjoy <kaiemjoy@ucdavis.edu>
   ([ORCID](https://orcid.org/0000-0003-1886-2699))
 
 - Douglas Ezra Morrison <demorrison@ucdavis.edu>
   ([ORCID](https://orcid.org/0000-0002-7195-830X))
-
-- Yuxuan Wang <yxewang@ucdavis.edu>
-  ([ORCID](https://orcid.org/0009-0004-2041-8831))
