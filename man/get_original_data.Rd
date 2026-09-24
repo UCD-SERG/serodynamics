@@ -16,10 +16,10 @@ get_original_data(
 }
 \description{
 \code{get_original_data} will be used when a \code{facet_by_strat} or \code{color_by_strat}
-to access the stratifying variable. When the stratified variable occurs in
-the original \code{run_serodynamics()} call, the \code{original_data} attached to the
-output will be used. If the stratification was not used in the
-\code{run_serodynamics()} call, then the \code{original_data} will need to be attached
-as an option.
+is called in order to access the stratifying variable. When the stratified
+variable occurs in the original \code{run_serodynamics()} call, the
+\code{original_data} attached to the output will be used. If the stratification
+was not used in the \code{run_serodynamics()} call, then the \code{original_data} will
+need to be attached as an option.
 }
 \keyword{internal}

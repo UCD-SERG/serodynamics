@@ -1,11 +1,11 @@
 #' @title Uses original data from correct source for `plot_residuals()`
 #' @description
 #' `get_original_data` will be used when a `facet_by_strat` or `color_by_strat` 
-#' to access the stratifying variable. When the stratified variable occurs in 
-#' the original `run_serodynamics()` call, the `original_data` attached to the 
-#' output will be used. If the stratification was not used in the 
-#' `run_serodynamics()` call, then the `original_data` will need to be attached
-#' as an option.
+#' is called in order to access the stratifying variable. When the stratified 
+#' variable occurs in the original `run_serodynamics()` call, the 
+#' `original_data` attached to the output will be used. If the stratification 
+#' was not used in the `run_serodynamics()` call, then the `original_data` will 
+#' need to be attached as an option.
 #' @keywords internal
 get_original_data <- function(
   model,
