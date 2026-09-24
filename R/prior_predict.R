@@ -294,7 +294,6 @@ prior_predict <- function(
         data.frame(draw = i, time = tt, antibody = exp(log_y))
       }
     )
-    
     curve_data <- do.call(rbind, curve_data)
     
     finite <- is.finite(curve_data$antibody)
@@ -304,7 +303,6 @@ prior_predict <- function(
         "{sum(!finite)} prior-predictive values were non-finite and were 
         omitted from the plot."
       )
-      
       curve_data <- curve_data[finite, , drop = FALSE]
     }
     
@@ -315,25 +313,19 @@ prior_predict <- function(
       ggplot2::labs(x = "Time", y = "Antibody level",
                     title = "Prior predictive antibody trajectories") +
       ggplot2::theme_bw()
-    
     if (log_y) {
       plot <- plot +
         ggplot2::scale_y_log10()
     }
-    
     plot_data <- curve_data
   }
   
   ## ---------------------------------------------------------
   ## Construct S3 object
   ## ---------------------------------------------------------
-  
   out <- list(plot = plot, draws = draws, plot_data = plot_data,
               type = type, priors = priors)
-  
   class(out) <- "serodynamics_prior_predict"
-  
   attr(out, "prior_summary") <- prior_summary
-  
   out
 }
