@@ -146,12 +146,11 @@ plot_residuals <- function(model,
   if (!is.null(color_var)) {
     p <- p +
       ggplot2::geom_point(
-        ggplot2::aes(color = .data[[color_var]])
-        # preserve the rest of the existing point args here
-      )
+        ggplot2::aes(color = .data[[color_var]],
+                     alpha = 0.6))
   } else {
     p <- p +
-      ggplot2::geom_point() # preserve the existing uncolored point args here
+      ggplot2::geom_point(alpha = 0.6)
   }
   
   # ------------------------------------------------------------
