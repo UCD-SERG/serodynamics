@@ -12,7 +12,7 @@ prior_predict(
   prec_logy_hyp_param = NULL,
   n = 1000,
   type = c("curves", "density"),
-  time = seq(0, 365, length.out = 200),
+  time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   seed = NULL
 )

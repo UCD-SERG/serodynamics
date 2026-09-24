@@ -90,7 +90,7 @@ prior_predict <- function(
   prec_logy_hyp_param = NULL,
   n = 1000,
   type = c("curves", "density"),
-  time = seq(0, 365, length.out = 200),
+  time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   seed = NULL) {
   
@@ -185,19 +185,30 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
   ## ---------------------------------------------------------
-  
+  # Turning precision matrix into covariance matrix
   mu_cov <- diag(1 / prec_hyp_param)
   
+  # Inverting omega precision matrix to covariance matrix
   wishart_scale <- solve(omega)
+  # Creating empty matrix to store subject level parameter draws
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))
+  # Empty matrix for population-level parameter draws
   mu_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   
+  # Repeat the hierarchical prior simulation n times
   for (i in seq_len(n)) {
+    # Drawing population level means using multivariate normal. Represents
+    # one possible set of population means. Still on log scale.
     mu_i <- MASS::mvrnorm(n = 1, mu = mu_hyp_param, Sigma = mu_cov)
+    # Samples 5x5 precision matrix. Variability among individuals and c
+    # correlation among parameters. 
     prec_i <- stats::rWishart(n = 1, df = wishdf_param, Sigma = wishart_scale
     )[, , 1]
+    # Draws an individual. Integrates population variability and between 
+    # subject variability.
     par_i <- MASS::mvrnorm(n = 1, mu = mu_i, Sigma = solve(prec_i))
+    # Saving the two draws
     mu_draws[i, ] <- mu_i
     par_draws[i, ] <- par_i
   }
@@ -205,13 +216,13 @@ prior_predict <- function(
   ## Observation precision
   prec_logy <- stats::rgamma(n, shape = prec_logy_hyp_param[1],
                              rate = prec_logy_hyp_param[2])
-  
+  # Converting precision to sd
   sigma_logy <- sqrt(1 / prec_logy)
   
   ## ---------------------------------------------------------
   ## Transform to biological parameters
   ## ---------------------------------------------------------
-  
+  # Turning everything into the natural scale
   y0 <- exp(par_draws[, 1])
   change_y <- exp(par_draws[, 2])
   y1 <- y0 + change_y
@@ -228,14 +239,12 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
-  
+  # Summarizing parameter summaries
   prior_summary <- do.call(
     rbind,
     lapply(model_parameters, function(x) {
-      
       qs <- stats::quantile(draws[[x]], probs = c(0.025, 0.5, 0.975),
                             na.rm = TRUE, names = FALSE)
-      
       data.frame(parameter = x, q2.5 = qs[1], median = qs[2], q97.5 = qs[3],
                  row.names = NULL)
     })
@@ -280,13 +289,16 @@ prior_predict <- function(
         log_y[active] <- log(y0[i]) + beta[i] * tt[active]
         
         ## Recovery phase
+        # Checking to see if there is a decay phase
         if (any(!active)) {
           
           q <- shape[i] - 1
           
+          # Calculating recovery time
           recovery_time <-
             tt[!active] - t1[i]
           
+          # Non-linear recovery equation
           log_y[!active] <- -1 / q * log(y1[i]^(-q) + q * alpha[i] * 
                                            recovery_time)
         }
@@ -295,7 +307,7 @@ prior_predict <- function(
       }
     )
     curve_data <- do.call(rbind, curve_data)
-    
+    # Checking to see if non-finite values were created
     finite <- is.finite(curve_data$antibody)
     
     if (any(!finite)) {
