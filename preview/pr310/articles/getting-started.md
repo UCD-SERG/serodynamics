@@ -242,7 +242,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep 23 18:43:49 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 24 17:21:34 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -266,6 +266,7 @@ fitted_model <- run_serodynamics(
 #> . . . . . . Updating 20
 #> . . . . Updating 0
 #> . Deleting model
+#> . 
 #> All chains have finished
 #> Warning: The adaptation phase of one or more models was not completed in 100
 #> iterations, so the current samples may not be optimal - try increasing the
@@ -460,7 +461,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep 23 18:44:01 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 24 17:21:46 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -495,7 +496,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Sep 23 18:44:03 2026
+#> Welcome to JAGS 4.3.2 on Thu Sep 24 17:21:48 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -553,7 +554,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-09-23
+#>  date     2026-09-24
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.10.18 @ /usr/local/bin/quarto
 #> 
@@ -600,7 +601,7 @@ sessioninfo::session_info()
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.1)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.1)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.1)
-#>  serodynamics   * 0.1.0.9024 2026-09-23 [1] local
+#>  serodynamics   * 0.1.0.9024 2026-09-24 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.1)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.1)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.1)
