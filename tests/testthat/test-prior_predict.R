@@ -11,10 +11,7 @@ test_that("prior_predict returns expected object", {
     seed = 123
   )
   
-  expect_s3_class(
-    pp,
-    "serodynamics_prior_predict"
-  )
+  expect_s3_class(pp, "serodynamics_prior_predict")
   
   expect_s3_class(
     pp$plot,
@@ -41,12 +38,10 @@ test_that("summary returns parameter quantiles", {
   
   s <- summary(pp)
   
-  expect_equal(
-    s$parameter,
-    c("y0", "y1", "t1", "alpha", "shape"))
+  expect_equal(s$parameter,
+               c("y0", "y1", "t1", "alpha", "shape"))
   
-  expect_true(
-    all(c("q2.5", "median", "q97.5") %in% names(s)))
+  expect_true(all(c("q2.5", "median", "q97.5") %in% names(s)))
 })
 
 test_that("density output works", {
@@ -58,11 +53,11 @@ test_that("density output works", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
     n = 500,
-    type = "curve",
-    seed = 123
-    # log_y = T
+    type = "density",
+    seed = 123,
+    log_y = TRUE
   )
-  sd <- 1/0.5^2
+  sd <- 1 / 0.5 ^ 2
   expect_identical(
     pp$type,
     "density"
