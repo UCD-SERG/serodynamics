@@ -130,6 +130,10 @@ testthat::test_that(
     color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
     testthat::expect_identical(color_var, "NULL")
     
+    plot_residuals(model = model,
+                   color_by_strat = "bldculres") |>
+      expect_error("Must include `original_data`")
+    
   }
 )
 
