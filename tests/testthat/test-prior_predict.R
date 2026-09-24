@@ -52,16 +52,17 @@ test_that("summary returns parameter quantiles", {
 test_that("density output works", {
   
   pp <- prior_predict(
-    mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
-    prec_hyp_param = rep(0.01, 5),
-    omega_param = c(1, 50, 1, 10, 1),
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
+    omega_param = c(1, 2, 1, 1, 1),
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
-    n = 50,
-    type = "density",
+    n = 500,
+    type = "curve",
     seed = 123
+    # log_y = T
   )
-  
+  sd <- 1/0.5^2
   expect_identical(
     pp$type,
     "density"
