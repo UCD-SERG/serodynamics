@@ -68,3 +68,53 @@ test_that("density output works", {
     "ggplot"
   )
 })
+
+
+test_that("Omitting inputs for errors", {
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1)
+  ) |>
+    expect_error("`mu_hyp_param` must have")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1)
+  ) |>
+    expect_error("`prec_hyp_param` must have")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
+    omega_param = c(1, 2, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1)
+  ) |>
+    expect_error("`omega_param` must be")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1.5, 0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = ,
+    prec_logy_hyp_param = c(4, 1)
+  ) |>
+    expect_error("Missing: wish")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4)
+  ) |>
+    expect_error("`prec_logy_hyp_param` must contain")
+  
+})
