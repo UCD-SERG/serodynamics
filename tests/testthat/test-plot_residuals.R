@@ -7,7 +7,7 @@ testthat::test_that(
     plot1 <- plot_residuals(
       model = dataset,
       ids = c("sees_npl_128", "sees_npl_131"),
-      antigen_isos = c("HlyE_IgA", "HlyE_IgG")
+      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
     )
 
     testthat::expect_s3_class(plot1, "ggplot")
@@ -118,5 +118,56 @@ testthat::test_that(
 
     plot_exp <- plot_residuals(model)
     testthat::expect_s3_class(plot_exp, "ggplot")
+    
+    # Testing unstratified call
+    plot1 <- plot_residuals(model = model, antigen_isos = c("HlyE_IgA", 
+                                                            "HlyE_IgG"),
+                            original_data = nepal_sees,
+                            color_by_strat = "bldculres",
+                            connect_lines = TRUE)
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
+    
+    plot_residuals(model = model,
+                   color_by_strat = "bldculres") |>
+      expect_error("Must include `original_data`")
+    
+    
+  }
+)
+
+
+testthat::test_that(
+  "plot_residuals() facet_by_strat tests",
+  { # Testing for color
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            facet_by_strat = "bldculres")
+    
+    facet_var <- names(plot1$facet$params$facets)
+    testthat::expect_length(facet_var, 2)
+    testthat::expect_identical(facet_var[2], "bldculres")
+  }
+)
+
+
+testthat::test_that(
+  "plot_residuals() color_by_strat tests",
+  {
+    # Testing for color
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            connect_lines = TRUE,
+                            color_by_strat = "bldculres")
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
   }
 )
