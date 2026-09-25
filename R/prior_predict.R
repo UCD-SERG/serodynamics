@@ -223,23 +223,34 @@ prior_predict <- function(
     curve_data <- lapply(seq_len(n),
       function(i) {
         tt <- time
-        log_y <- numeric(length(tt))
-        active <- tt <= t1[i]
         
-        ## Active infection phase
-        log_y[active] <- log(y0[i]) + beta[i] * tt[active]
+        antibody <- ab(
+          t = tt,
+          y0 = y0[i],
+          y1 = y1[i],
+          t1 = t1[i],
+          alpha = alpha[i],
+          shape = shape[i],
+          decay_type = "power"
+        )
+        # 
+        # log_y <- numeric(length(tt))
+        # active <- tt <= t1[i]
+        # 
+        # ## Active infection phase
+        # log_y[active] <- log(y0[i]) + beta[i] * tt[active]
+        # 
+        # ## Recovery phase
+        # # Checking to see if there is a decay phase
+        # if (any(!active)) {
+        #   q <- shape[i] - 1
+        #   # Calculating recovery time
+        #   recovery_time <- tt[!active] - t1[i]
+        #   # Non-linear recovery equation
+        #   log_y[!active] <- -1 / q * log(y1[i]^(-q) + q * alpha[i] * 
+        #                                    recovery_time)
         
-        ## Recovery phase
-        # Checking to see if there is a decay phase
-        if (any(!active)) {
-          q <- shape[i] - 1
-          # Calculating recovery time
-          recovery_time <- tt[!active] - t1[i]
-          # Non-linear recovery equation
-          log_y[!active] <- -1 / q * log(y1[i]^(-q) + q * alpha[i] * 
-                                           recovery_time)
-        }
-        data.frame(draw = i, time = tt, antibody = exp(log_y))
+        data.frame(draw = i, time = tt, antibody = antibody)
       }
     )
     curve_data <- do.call(rbind, curve_data)
