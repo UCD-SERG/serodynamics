@@ -208,8 +208,6 @@ prior_predict <- function(
   # Creating empty matrix to store subject level parameter draws
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))
-  # Empty matrix for population-level parameter draws
-  mu_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   
   # Repeat the hierarchical prior simulation n times
   for (i in seq_len(n)) {
@@ -223,8 +221,7 @@ prior_predict <- function(
     # Draws an individual. Integrates population variability and between 
     # subject variability.
     par_i <- MASS::mvrnorm(n = 1, mu = mu_i, Sigma = solve(prec_i))
-    # Saving the two draws
-    mu_draws[i, ] <- mu_i
+    # Saving the draws
     par_draws[i, ] <- par_i
   }
   
