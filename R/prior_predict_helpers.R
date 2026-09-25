@@ -65,7 +65,12 @@ validate_prior_predict_inputs <- function(mu_hyp_param = mu_hyp_param,
     )
   }
   
-  if (!is.numeric(n) || length(n) != 1 || n < 1) {
+  if (!is.numeric(x$n) ||
+    length(x$n) != 1 ||
+    is.na(x$n) ||
+    !is.finite(x$n) ||
+    x$n <= 0 ||
+    x$n != floor(x$n)) {
     cli::cli_abort(
       "{.arg n} must be a positive integer."
     )
