@@ -35,6 +35,7 @@ Imports:
     ggmcmc (>= 1.5.1.2),
     ggplot2,
     lifecycle,
+    MASS,
     purrr,
     rlang,
     runjags,
