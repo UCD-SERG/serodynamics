@@ -56,10 +56,7 @@ prior_predict(
 
   - alpha = decay rate
 
-  - r = shape parameter (If running `decay_type == "exponential"` no
-    shape parameter needs to be specified). When
-    `decay_type = "exponential"` only 4 parameters (y0, y1, t1, alpha)
-    are used.
+  - r = shape parameter
 
 - prec_hyp_param:
 
@@ -67,8 +64,7 @@ prior_predict(
   [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
   to hyperprior diagonal entries for the precision matrix (i.e. inverse
   variance) representing prior covariance of uncertainty around
-  `mu_hyp_param`. Will be 5 values long corresponding to the 5 estimated
-  parameters (4 values when `decay_type = "exponential"`).
+  `mu_hyp_param`.
 
 - omega_param:
 
@@ -76,9 +72,7 @@ prior_predict(
   [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
   to the diagonal entries representing the Wishart hyperprior
   distributions of `prec_hyp_param`, describing how much we expect
-  parameters to vary between individuals. Will be 5 values long
-  corresponding to the 5 estimated parameters (4 values when
-  `decay_type = "exponential"`).
+  parameters to vary between individuals.
 
 - wishdf_param:
 
@@ -115,7 +109,7 @@ prior_predict(
 
   Numeric vector giving times at which prior-predictive antibody
   trajectories should be evaluated. Defaults to 200 equally spaced
-  points between 0 and 365.
+  points between 0 and 200.
 
 - log_y:
 
@@ -140,12 +134,12 @@ in the `"prior_summary"` attribute and can be retrieved with
 ``` r
 if (FALSE) { # \dontrun{
 pp <- prior_predict(
-  mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
-  prec_hyp_param = rep(0.01, 5),
-  omega_param = c(1, 50, 1, 10, 1),
+  mu_hyp_param = c(0.5, 5, 2, -2, -3),
+  prec_hyp_param = rep(1, 5),
+  omega_param = c(1, 5, 1, 5, 1),
   wishdf_param = 20,
   prec_logy_hyp_param = c(4, 1),
-  n = 1000,
+  n = 500,
   type = "curves"
 )
 
@@ -153,9 +147,9 @@ pp
 summary(pp)
 
 prior_predict(
-  mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
-  prec_hyp_param = rep(0.01, 5),
-  omega_param = c(1, 50, 1, 10, 1),
+  mu_hyp_param = c(0.5, 5, 2, -2, -3),
+  prec_hyp_param = rep(1, 5),
+  omega_param = c(1, 5, 1, 5, 1),
   wishdf_param = 20,
   prec_logy_hyp_param = c(4, 1),
   n = 1000,

@@ -155,28 +155,21 @@ specified by the user, representing the following parameters:</p><ul><li><p>y0 =
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
 <li><p>alpha = decay rate</p></li>
-<li><p>r = shape parameter (If running <code>decay_type == "exponential"</code> no shape
-parameter needs to be specified).
-When <code>decay_type = "exponential"</code> only 4 parameters (y0, y1, t1, alpha) are
-used.</p></li>
+<li><p>r = shape parameter</p></li>
 </ul></dd>
 
 
 <dt id="arg-prec-hyp-param">prec_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-hyp-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when <code>decay_type = "exponential"</code>).</p></dd>
+representing prior covariance of uncertainty around <code>mu_hyp_param</code>.</p></dd>
 
 
 <dt id="arg-omega-param">omega_param<a class="anchor" aria-label="anchor" href="#arg-omega-param"></a></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
-to vary between individuals.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when <code>decay_type = "exponential"</code>).</p></dd>
+to vary between individuals.</p></dd>
 
 
 <dt id="arg-wishdf-param">wishdf_param<a class="anchor" aria-label="anchor" href="#arg-wishdf-param"></a></dt>
@@ -209,7 +202,7 @@ plots marginal parameter densities.</p></dd>
 <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
 <dd><p>Numeric vector giving times at which prior-predictive antibody
 trajectories should be evaluated. Defaults to 200 equally spaced points
-between 0 and 365.</p></dd>
+between 0 and 200.</p></dd>
 
 
 <dt id="arg-log-y">log_y<a class="anchor" aria-label="anchor" href="#arg-log-y"></a></dt>
@@ -235,12 +228,12 @@ are stored in the <code>"prior_summary"</code> attribute and can be retrieved wi
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
 <span class="r-in"><span><span class="va">pp</span> <span class="op">&lt;-</span> <span class="fu">prior_predict</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.54</span>, <span class="fl">2.54</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">5</span>, <span class="fl">2</span>, <span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  n <span class="op">=</span> <span class="fl">1000</span>,</span></span>
+<span class="r-in"><span>  n <span class="op">=</span> <span class="fl">500</span>,</span></span>
 <span class="r-in"><span>  type <span class="op">=</span> <span class="st">"curves"</span></span></span>
 <span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
@@ -248,9 +241,9 @@ are stored in the <code>"prior_summary"</code> attribute and can be retrieved wi
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">pp</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">prior_predict</span><span class="op">(</span></span></span>
-<span class="r-in"><span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">2.54</span>, <span class="fl">2.54</span>, <span class="fl">1</span>, <span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">0.01</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">50</span>, <span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  mu_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0.5</span>, <span class="fl">5</span>, <span class="fl">2</span>, <span class="op">-</span><span class="fl">2</span>, <span class="op">-</span><span class="fl">3</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  prec_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rep.html" class="external-link">rep</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  omega_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  wishdf_param <span class="op">=</span> <span class="fl">20</span>,</span></span>
 <span class="r-in"><span>  prec_logy_hyp_param <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  n <span class="op">=</span> <span class="fl">1000</span>,</span></span>
