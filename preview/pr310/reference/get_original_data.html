@@ -77,8 +77,53 @@ need to be attached as an option.</p>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
+    <div class="section level2">
+    <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
-  </main></div>
+
+<dl><dt id="arg-model">model<a class="anchor" aria-label="anchor" href="#arg-model"></a></dt>
+<dd><p>An <code>sr_model</code> object (returned by <code><a href="run_serodynamics.html">run_serodynamics()</a></code>), with
+<code>original_data</code>, <code>strat</code>, and <code>decay_type</code> attributes (see
+<code><a href="calc_fit_mod.html">calc_fit_mod()</a></code>).</p></dd>
+
+
+<dt id="arg-original-data">original_data<a class="anchor" aria-label="anchor" href="#arg-original-data"></a></dt>
+<dd><p><a href="https://rdrr.io/r/base/data.frame.html" class="external-link">data.frame</a>; the original dataset fed into
+<code><a href="run_serodynamics.html">run_serodynamics()</a></code>. Must be included if <code>facet_by_strat</code> or
+<code>color_by_strat</code> include a variable that was not specified as <code>strat</code> in
+<code><a href="run_serodynamics.html">run_serodynamics()</a></code>.</p></dd>
+
+
+<dt id="arg-strat">strat<a class="anchor" aria-label="anchor" href="#arg-strat"></a></dt>
+<dd><p>The stratification specified in the original
+<code><a href="run_serodynamics.html">run_serodynamics()</a></code> model.</p></dd>
+
+
+<dt id="arg-color-strat">color_strat<a class="anchor" aria-label="anchor" href="#arg-color-strat"></a></dt>
+<dd><p>The color stratification specified in <code>facet_by_strat</code>.</p></dd>
+
+
+<dt id="arg-color-by-strat">color_by_strat<a class="anchor" aria-label="anchor" href="#arg-color-by-strat"></a></dt>
+<dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; colors residual plot by the specified
+stratification variable. MAE is not calculated by this variable. Must
+include the original data set if not stratifying by <code>strat</code> variable
+specified in <code><a href="run_serodynamics.html">run_serodynamics()</a></code>. Default <code>NULL</code>.</p></dd>
+
+
+<dt id="arg-facet-strat">facet_strat<a class="anchor" aria-label="anchor" href="#arg-facet-strat"></a></dt>
+<dd><p>The facet stratification specified in <code>facet_by_strat</code>.</p></dd>
+
+
+<dt id="arg-facet-by-strat">facet_by_strat<a class="anchor" aria-label="anchor" href="#arg-facet-by-strat"></a></dt>
+<dd><p><a href="https://rdrr.io/r/base/character.html" class="external-link">character</a>; facets residual plot and
+calculates MAE by specified stratification variable. Must include the
+original data set if not stratifying by <code>strat</code> variable specified in
+<code><a href="run_serodynamics.html">run_serodynamics()</a></code>. Default <code>NULL</code>.</p></dd>
+
+</dl></div>
+
+  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+    </nav></aside></div>
 
 
     <footer><div class="pkgdown-footer-left">
