@@ -35,7 +35,22 @@
 #' r = 1 + \exp(\mathrm{par}_5).
 #' }
 #'
-#' @inheritParams prep_priors mu_hyp_param prec_hyp_param omega_param 
+#' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
+#' mean for the population level parameters
+#' parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long 
+#' specified by the user, representing the following parameters:
+#'    - y0 = baseline antibody concentration
+#'    - y1 = peak antibody concentration
+#'    - t1 = time to peak
+#'    - alpha = decay rate 
+#'    - r = shape parameter
+#' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
+#' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+#' representing prior covariance of uncertainty around `mu_hyp_param`.
+#' @param omega_param A [numeric] [vector] of 5 values corresponding to the
+#' diagonal entries representing the Wishart hyperprior
+#' distributions of `prec_hyp_param`, describing how much we expect parameters
+#' to vary between individuals.
 #' @inheritParams prep_priors wishdf_param prec_logy_hyp_param
 #' @param n Number of prior draws. Default is 1000.
 #' @param type Character string specifying the output visualization.

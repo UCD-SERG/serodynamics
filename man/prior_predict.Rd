@@ -27,24 +27,17 @@ specified by the user, representing the following parameters:
 \item y1 = peak antibody concentration
 \item t1 = time to peak
 \item alpha = decay rate
-\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
-parameter needs to be specified).
-When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
-used.
+\item r = shape parameter
 }}
 
 \item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior covariance of uncertainty around \code{mu_hyp_param}.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when \code{decay_type = "exponential"}).}
+representing prior covariance of uncertainty around \code{mu_hyp_param}.}
 
 \item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of \code{prec_hyp_param}, describing how much we expect parameters
-to vary between individuals.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when \code{decay_type = "exponential"}).}
+to vary between individuals.}
 
 \item{wishdf_param}{An \link{integer} \link{vector} of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
