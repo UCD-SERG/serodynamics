@@ -105,7 +105,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("`omega_param` must be")
+    expect_error("`omega_param` must have")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
