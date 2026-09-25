@@ -108,94 +108,21 @@ prior_predict <- function(
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   seed = NULL) {
-  
   type <- match.arg(type)
-  
   n_params <- 5L
   
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
-  
-  priors <- list(
-    mu_hyp_param = mu_hyp_param,
+  inputs <- list(mu_hyp_param = mu_hyp_param,
     prec_hyp_param = prec_hyp_param,
     omega_param = omega_param,
     wishdf_param = wishdf_param,
-    prec_logy_hyp_param = prec_logy_hyp_param
-  )
-  
-  missing_priors <- names(priors)[vapply(priors, is.null, logical(1))]
-  
-  if (length(missing_priors) > 0) {
-    cli::cli_abort(c(
-      "x" = "All prior arguments must be supplied.",
-      "i" = "Missing: {paste(missing_priors, collapse = ', ')}"
-    ))
-  }
-  
-  if (length(mu_hyp_param) != n_params) {
-    cli::cli_abort(
-      "{.arg mu_hyp_param} must have length {n_params}."
-    )
-  }
-  
-  if (length(prec_hyp_param) != n_params) {
-    cli::cli_abort(
-      "{.arg prec_hyp_param} must have length {n_params}."
-    )
-  }
-  
-  if (any(prec_hyp_param <= 0)) {
-    cli::cli_abort(
-      "All values of {.arg prec_hyp_param} must be greater than zero."
-    )
-  }
-  
-  if (length(wishdf_param) != 1 || wishdf_param < n_params) {
-    cli::cli_abort(
-      "{.arg wishdf_param} must be at least {n_params}."
-    )
-  }
-  
-  if (length(prec_logy_hyp_param) != 2 ||
-        any(prec_logy_hyp_param <= 0)) {
-    cli::cli_abort(
-      "{.arg prec_logy_hyp_param} must contain two positive values."
-    )
-  }
-  
-  if (!is.numeric(n) || length(n) != 1 || n < 1) {
-    cli::cli_abort(
-      "{.arg n} must be a positive integer."
-    )
-  }
-  n <- as.integer(n)
-  if (!is.null(seed)) {
-    set.seed(seed)
-  }
-  
-  ## omega_param may be supplied in the same compact form used by
-  ## run_serodynamics(), or as a full matrix.
-  if (is.vector(omega_param) && length(omega_param) == n_params) {
-    omega <- diag(omega_param)
-  } else if (
-    is.matrix(omega_param) &&
-      all(dim(omega_param) == c(n_params, n_params))
-  ) {
-    omega <- omega_param
-  } else {
-    cli::cli_abort(
-                   "{.arg omega_param} must be a length-{n_params} vector or a
-                    {n_params} x {n_params} matrix.")
-  }
-  
-  ## Ensure omega is positive definite
-  tryCatch(chol(omega), error = function(e) {
-    cli::cli_abort(
-                   "{.arg omega_param} must define a positive-definite 
-                    matrix.")
-  })
+    prec_logy_hyp_param = prec_logy_hyp_param,
+    n = n,
+    n_params = n_params,
+    seed = seed)
+  inputs <- validate_prior_predict_inputs(inputs)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
@@ -249,11 +176,9 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   ## Parameter summaries
   ## ---------------------------------------------------------
-  
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
   # Summarizing parameter summaries
-  prior_summary <- do.call(
-    rbind,
+  prior_summary <- do.call(rbind,
     lapply(model_parameters, function(x) {
       qs <- stats::quantile(draws[[x]], probs = c(0.025, 0.5, 0.975),
                             na.rm = TRUE, names = FALSE)
@@ -267,14 +192,12 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   
   if (type == "density") {
-    
     density_data <- data.frame(
                                parameter = rep(model_parameters, each = n),
                                value = unlist(draws[model_parameters], 
                                               use.names = FALSE))
     
-    plot <- ggplot2::ggplot(
-                            density_data,
+    plot <- ggplot2::ggplot(density_data,
                             ggplot2::aes(x = .data$value)) +
       ggplot2::geom_density() +
       ggplot2::facet_wrap(~parameter, scales = "free") +
@@ -290,8 +213,7 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   
   if (type == "curves") {
-    curve_data <- lapply(
-      seq_len(n),
+    curve_data <- lapply(seq_len(n),
       function(i) {
         tt <- time
         log_y <- numeric(length(tt))
@@ -303,18 +225,13 @@ prior_predict <- function(
         ## Recovery phase
         # Checking to see if there is a decay phase
         if (any(!active)) {
-          
           q <- shape[i] - 1
-          
           # Calculating recovery time
-          recovery_time <-
-            tt[!active] - t1[i]
-          
+          recovery_time <- tt[!active] - t1[i]
           # Non-linear recovery equation
           log_y[!active] <- -1 / q * log(y1[i]^(-q) + q * alpha[i] * 
                                            recovery_time)
         }
-        
         data.frame(draw = i, time = tt, antibody = exp(log_y))
       }
     )
@@ -323,10 +240,8 @@ prior_predict <- function(
     finite <- is.finite(curve_data$antibody)
     
     if (any(!finite)) {
-      cli::cli_warn(
-        "{sum(!finite)} prior-predictive values were non-finite and were 
-        omitted from the plot."
-      )
+      cli::cli_warn("{sum(!finite)} prior-predictive values were non-finite and 
+      were omitted from the plot.")
       curve_data <- curve_data[finite, , drop = FALSE]
     }
     
