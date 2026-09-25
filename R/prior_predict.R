@@ -108,21 +108,25 @@ prior_predict <- function(
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   seed = NULL) {
+  
+  n <- as.integer(n)
   type <- match.arg(type)
   n_params <- 5L
+  if (!is.null(seed)) {
+    set.seed(seed)
+  }
   
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
-  inputs <- list(mu_hyp_param = mu_hyp_param,
-    prec_hyp_param = prec_hyp_param,
-    omega_param = omega_param,
-    wishdf_param = wishdf_param,
-    prec_logy_hyp_param = prec_logy_hyp_param,
-    n = n,
-    n_params = n_params,
-    seed = seed)
-  inputs <- validate_prior_predict_inputs(inputs)
+  priors <- validate_prior_predict_inputs(mu_hyp_param = mu_hyp_param,
+                                prec_hyp_param = prec_hyp_param,
+                                omega_param = omega_param,
+                                wishdf_param = wishdf_param,
+                                prec_logy_hyp_param = prec_logy_hyp_param,
+                                n = n,
+                                n_params = n_params,
+                                seed = seed)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
@@ -131,7 +135,7 @@ prior_predict <- function(
   mu_cov <- diag(1 / prec_hyp_param)
   
   # Inverting omega precision matrix to covariance matrix
-  wishart_scale <- solve(omega)
+  wishart_scale <- solve(diag(omega_param))
   # Creating empty matrix to store subject level parameter draws
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))
@@ -176,9 +180,11 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   ## Parameter summaries
   ## ---------------------------------------------------------
+  
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
   # Summarizing parameter summaries
-  prior_summary <- do.call(rbind,
+  prior_summary <- do.call(
+    rbind,
     lapply(model_parameters, function(x) {
       qs <- stats::quantile(draws[[x]], probs = c(0.025, 0.5, 0.975),
                             na.rm = TRUE, names = FALSE)
@@ -192,6 +198,7 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   
   if (type == "density") {
+    
     density_data <- data.frame(
                                parameter = rep(model_parameters, each = n),
                                value = unlist(draws[model_parameters], 
