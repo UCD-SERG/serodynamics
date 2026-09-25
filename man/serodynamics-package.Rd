@@ -25,6 +25,7 @@ Authors:
   \item Samuel Schildhauer \email{sschildhauer@ucdavis.edu} (\href{https://orcid.org/0000-0001-7139-1086}{ORCID})
   \item Peter Teunis \email{p.teunis@emory.edu} (\href{https://orcid.org/0000-0003-1904-6044}{ORCID}) (Author of the method and original code.) [copyright holder]
   \item Kwan Ho Lee \email{ksjlee@ucdavis.edu} (\href{https://orcid.org/0009-0004-9723-2007}{ORCID})
+  \item Yuxuan Wang \email{yxewang@ucdavis.edu} (\href{https://orcid.org/0009-0004-2041-8831}{ORCID})
   \item Kristen Aiemjoy \email{kaiemjoy@ucdavis.edu} (\href{https://orcid.org/0000-0003-1886-2699}{ORCID})
   \item Douglas Ezra Morrison \email{demorrison@ucdavis.edu} (\href{https://orcid.org/0000-0002-7195-830X}{ORCID})
 }
