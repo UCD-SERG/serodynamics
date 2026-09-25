@@ -46,6 +46,7 @@ get_original_data <- function(
     ))
   }
   
+  # Overwriting original_data with attribute if not specified.
   if (!needs_original_data) {
     original_data <- attr(model, "original_data")
   }
