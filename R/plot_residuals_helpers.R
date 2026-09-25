@@ -6,6 +6,13 @@
 #' `original_data` attached to the output will be used. If the stratification 
 #' was not used in the `run_serodynamics()` call, then the `original_data` will 
 #' need to be attached as an option.
+#' @inheritParams plot_residuals model original_data facet_by_strat
+#' @inheritParams plot_residuals color_by_strat
+#' @param facet_strat The facet stratification specified in `facet_by_strat`.
+#' @param color_strat The color stratification specified in `facet_by_strat`.
+#' @param strat The stratification specified in the original 
+#' `run_serodynamics()` model.
+
 #' @keywords internal
 get_original_data <- function(
   model,
