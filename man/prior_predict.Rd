@@ -69,7 +69,7 @@ plots marginal parameter densities.}
 
 \item{time}{Numeric vector giving times at which prior-predictive antibody
 trajectories should be evaluated. Defaults to 200 equally spaced points
-between 0 and 365.}
+between 0 and 200.}
 
 \item{log_y}{Logical. If \code{TRUE}, prior predictive antibody curves are
 displayed on a log10 y-axis. Only applies when \code{type = "curves"}.
@@ -123,12 +123,12 @@ r = 1 + \exp(\mathrm{par}_5).
 \examples{
 \dontrun{
 pp <- prior_predict(
-  mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
-  prec_hyp_param = rep(0.01, 5),
-  omega_param = c(1, 50, 1, 10, 1),
+  mu_hyp_param = c(0.5, 5, 2, -2, -3),
+  prec_hyp_param = rep(1, 5),
+  omega_param = c(1, 5, 1, 5, 1),
   wishdf_param = 20,
   prec_logy_hyp_param = c(4, 1),
-  n = 1000,
+  n = 500,
   type = "curves"
 )
 
@@ -136,9 +136,9 @@ pp
 summary(pp)
 
 prior_predict(
-  mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
-  prec_hyp_param = rep(0.01, 5),
-  omega_param = c(1, 50, 1, 10, 1),
+  mu_hyp_param = c(0.5, 5, 2, -2, -3),
+  prec_hyp_param = rep(1, 5),
+  omega_param = c(1, 5, 1, 5, 1),
   wishdf_param = 20,
   prec_logy_hyp_param = c(4, 1),
   n = 1000,
