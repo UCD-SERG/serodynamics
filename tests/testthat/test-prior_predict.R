@@ -8,7 +8,8 @@ test_that("prior_predict returns expected object", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
     n = 50,
-    seed = 123
+    seed = 123,
+    log_y = TRUE
   )
   
   expect_s3_class(pp, "serodynamics_prior_predict")
@@ -116,5 +117,33 @@ test_that("Omitting inputs for errors", {
     prec_logy_hyp_param = c(4)
   ) |>
     expect_error("`prec_logy_hyp_param` must contain")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, -0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4)
+  ) |>
+    expect_error("All values of `prec_hyp_param`")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, -0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1)
+  ) |>
+    expect_error("All values of `prec_hyp_param`")
+  
+  prior_predict(
+    mu_hyp_param = c(0.5, 5, 2, -3, -3),
+    prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
+    omega_param = c(1, 2, 1, 1, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1),
+    n = 0.5
+  ) |>
+    expect_error("`n` must be a positive")
   
 })
