@@ -120,13 +120,14 @@ prior_predict <- function(
   ## Validate inputs
   ## ---------------------------------------------------------
   priors <- validate_prior_predict_inputs(mu_hyp_param = mu_hyp_param,
-                                prec_hyp_param = prec_hyp_param,
-                                omega_param = omega_param,
-                                wishdf_param = wishdf_param,
-                                prec_logy_hyp_param = prec_logy_hyp_param,
-                                n = n,
-                                n_params = n_params,
-                                seed = seed)
+                                          prec_hyp_param = prec_hyp_param,
+                                          omega_param = omega_param,
+                                          wishdf_param = wishdf_param,
+                                          prec_logy_hyp_param = 
+                                            prec_logy_hyp_param,
+                                          n = n,
+                                          n_params = n_params,
+                                          seed = seed)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
@@ -233,23 +234,6 @@ prior_predict <- function(
           shape = shape[i],
           decay_type = "power"
         )
-        # 
-        # log_y <- numeric(length(tt))
-        # active <- tt <= t1[i]
-        # 
-        # ## Active infection phase
-        # log_y[active] <- log(y0[i]) + beta[i] * tt[active]
-        # 
-        # ## Recovery phase
-        # # Checking to see if there is a decay phase
-        # if (any(!active)) {
-        #   q <- shape[i] - 1
-        #   # Calculating recovery time
-        #   recovery_time <- tt[!active] - t1[i]
-        #   # Non-linear recovery equation
-        #   log_y[!active] <- -1 / q * log(y1[i]^(-q) + q * alpha[i] * 
-        #                                    recovery_time)
-        
         data.frame(draw = i, time = tt, antibody = antibody)
       }
     )
