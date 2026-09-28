@@ -1,6 +1,6 @@
 Package: serodynamics
 Title: Modeling Longitudinal Antibody Responses to Infection
-Version: 0.1.0.9025
+Version: 0.1.0.9026
 Authors@R: c(
     person("Peter", "Teunis", , "p.teunis@emory.edu", role = c("aut", "cph"),
            comment = c("Author of the method and original code.",
@@ -30,7 +30,8 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
 SystemRequirements: JAGS (>= 4.3.1)
-Imports: 
+Imports:
+    LaplacesDemon,
     cli,
     coda,
     dplyr (>= 1.2.0),

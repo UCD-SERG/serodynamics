@@ -44,11 +44,13 @@ draw_one_new_individual <- function(draw, call = rlang::caller_env()) {
 
   # One draw for this posterior sample: the new individual's parameters are
   # a single realization from `MVN(mu.par, solve(prec.par))`.
-  sampled_values <- draw_mvn_from_precision(
-    mu = mean_rows$value,
-    prec = precision,
-    call = call
-  )
+  sampled_values <-
+    LaplacesDemon::rmvnp(
+      n = 1,
+      mu = mean_rows$value,
+      Omega = precision
+    ) |>
+    as.vector()
 
   new_individual <- tibble::tibble(
     Parameter = par_names,
