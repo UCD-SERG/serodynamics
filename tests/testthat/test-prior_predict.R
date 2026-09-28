@@ -8,7 +8,7 @@ test_that("prior_predict returns expected object", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
     n = 50,
-    seed = 123,
+    seed = 123
   )
   
   expect_s3_class(pp, "serodynamics_prior_predict")
