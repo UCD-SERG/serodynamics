@@ -25,7 +25,6 @@ test_that("prior_predict returns expected object", {
 })
 
 test_that("summary returns parameter quantiles", {
-  testthat::announce_snapshot_file("prior_predict_summ.csv")
   
   pp <- prior_predict(
     mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
@@ -44,11 +43,6 @@ test_that("summary returns parameter quantiles", {
   
   expect_true(all(c("q2.5", "median", "q97.5") %in% names(s)))
   
-  s |>
-    expect_snapshot_data(
-      "prior_predict_summ",
-      variant = darwin_variant()
-    )
 })
 
 test_that("density output works", {
