@@ -56,24 +56,24 @@ draw_new_individual_params <- function(population_params,
   }
   
   if (!is.null(n_draws)) {
-      if (
-        !rlang::is_scalar_integerish(n_draws) ||
+    if (
+      !rlang::is_scalar_integerish(n_draws) ||
         is.na(n_draws) ||
         n_draws < 1
-      ) {
-        cli::cli_abort(
-          "{.arg n_draws} must be a single positive integer.",
-          call = call
-        )
-      }
-      
-      retained_draws <-
-        population_params |>
-        dplyr::distinct(dplyr::pick(dplyr::all_of(draw_vars))) |>
-        dplyr::slice_head(
-          n = n_draws,
-          by = dplyr::all_of(c("Iso_type", "Stratification"))
-        )
+    ) {
+      cli::cli_abort(
+        "{.arg n_draws} must be a single positive integer.",
+        call = call
+      )
+    }
+
+    retained_draws <-
+      population_params |>
+      dplyr::distinct(dplyr::pick(dplyr::all_of(draw_vars))) |>
+      dplyr::slice_head(
+        n = n_draws,
+        by = dplyr::all_of(c("Iso_type", "Stratification"))
+      )
     
     population_params <-
       population_params |>
