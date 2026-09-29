@@ -194,6 +194,22 @@ test_that(
 )
 
 test_that(
+  desc = "an invalid n_draws is rejected",
+  code = {
+    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
+    pop_params <- build_pop_params(
+      par_means,
+      build_example_precision(power_par_names)
+    )
+    
+    expect_error(
+      draw_new_individual_params(pop_params, n_draws = -1),
+      regexp = "positive integer"
+    )
+  }
+)
+
+test_that(
   desc = "draws recover the population mean and covariance",
   code = {
     par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
