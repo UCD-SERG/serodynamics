@@ -108,6 +108,11 @@ plot_residuals <- function(model,
       dplyr::rename(Subject = dplyr::all_of(id_var)) |>
       dplyr::distinct()
     
+    if (any(duplicated(strat_data$Subject))) {
+      cli::cli_abort("{.arg strat} occurs more than once for a single 
+                     `Subject`.")
+    }
+    
     to_plot <- to_plot |>
       dplyr::left_join(strat_data, by = "Subject", 
                        relationship = "many-to-one")
