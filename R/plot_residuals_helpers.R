@@ -58,5 +58,12 @@ get_original_data <- function(
     ))
   }
   
+  if (!hasName(attributes(original_data), "id_var")) {
+    cli::cli_abort(c(
+      "x" = "{.arg original_data} has no {.arg id_var} attribute.",
+      "i" = "Use {.arg as_case_data()} to original data before input."
+    ))
+  }
+  
   original_data
 }
