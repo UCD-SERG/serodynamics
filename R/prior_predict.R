@@ -109,7 +109,6 @@ prior_predict <- function(
   log_y = FALSE,
   seed = NULL) {
   
-  n <- as.integer(n)
   type <- match.arg(type)
   n_params <- 5L
   if (!is.null(seed)) {
