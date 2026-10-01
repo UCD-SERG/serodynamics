@@ -64,6 +64,12 @@ validate_prior_predict_inputs <- function(mu_hyp_param = mu_hyp_param,
     )
   }
   
+  if (length(wishdf_param) != 1 || wishdf_param < n_params) {
+    cli::cli_abort(
+      "{.arg wishdf_param} must be a single value of at least {n_params}."
+    )
+  }
+  
   if (!is.numeric(n) || length(n) != 1 || is.na(n) || !is.finite(n) ||
         n <= 0 || n != floor(n)) {
     cli::cli_abort(
