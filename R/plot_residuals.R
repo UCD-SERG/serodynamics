@@ -109,8 +109,8 @@ plot_residuals <- function(model,
       dplyr::distinct()
     
     if (any(duplicated(strat_data$Subject))) {
-      cli::cli_abort("{.arg strat} occurs more than once for a single 
-                     `Subject`.")
+      cli::cli_abort("{.arg color_by_strat} or {.arg facet_by_strat} occurs 
+      more than once for a single `Subject`.")
     }
     
     to_plot <- to_plot |>
