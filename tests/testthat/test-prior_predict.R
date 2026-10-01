@@ -1,14 +1,14 @@
 
 test_that("prior_predict returns expected object", {
   
+  withr::local_seed(1)
   pp <- prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -2, -3),
     prec_hyp_param = rep(1, 5),
     omega_param = c(1, 5, 1, 5, 1),
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
-    n = 50,
-    seed = 123
+    n = 50
   )
   
   expect_s3_class(pp, "serodynamics_prior_predict")
@@ -25,15 +25,14 @@ test_that("prior_predict returns expected object", {
 })
 
 test_that("summary returns parameter quantiles", {
-  
+  withr::local_seed(1)
   pp <- prior_predict(
     mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
     prec_hyp_param = rep(0.01, 5),
     omega_param = c(1, 50, 1, 10, 1),
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
-    n = 50,
-    seed = 123
+    n = 50
   )
   
   s <- summary(pp)
@@ -47,6 +46,7 @@ test_that("summary returns parameter quantiles", {
 
 test_that("density output works", {
   
+  withr::local_seed(1)
   pp <- prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
     prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
@@ -55,7 +55,6 @@ test_that("density output works", {
     prec_logy_hyp_param = c(4, 1),
     n = 500,
     type = "density",
-    seed = 123,
     log_y = TRUE
   )
   sd <- 1 / 0.5 ^ 2
@@ -73,6 +72,7 @@ test_that("density output works", {
 
 test_that("Omitting inputs for errors", {
   
+  withr::local_seed(1)
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3),
     prec_hyp_param = c(0.5, 1.5, 3, 1, 0.5),
