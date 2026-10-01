@@ -1,7 +1,8 @@
-# No JAGS fit is needed here:
-# these functions take a data frame and return a data frame,
-# so `population_params` is built by hand
-# and the tests run in milliseconds without `RUN_HEAVY_TESTS`.
+# No JAGS fit is run here.
+# Tests that check structure use the `population_params` attribute
+# of the packaged `nepal_sees_jags_output`.
+# Tests that need known values or malformed input build it by hand.
+# Both run in seconds without `RUN_HEAVY_TESTS`.
 
 # Parameter labels as produced by `unpack_jags()` for power decay.
 # These are stated rather than derived from the package,
@@ -68,20 +69,30 @@ build_pop_params <- function(mu, # Named vector; names give the parameter order
   return(pop_params)
 }
 
+# Population parameters from the packaged example fit.
+# Every test using it sets `n_draws`, so only a few draws are sampled.
+nepal_pop_params <- attr(
+  serodynamics::nepal_sees_jags_output,
+  "population_params"
+)
+
+# Counted from the data rather than stated,
+# so a regenerated example fit does not break these tests.
+nepal_n_groups <- nrow(
+  dplyr::distinct(nepal_pop_params, Iso_type, Stratification)
+)
+
 test_that(
   desc = "draws have one row per parameter per posterior draw",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
-    pop_params <- build_pop_params(
-      par_means,
-      build_example_precision(power_par_names)
-    )
-    
     withr::local_seed(1)
-    new_params <- draw_new_individual_params(pop_params)
+    new_params <- draw_new_individual_params(nepal_pop_params, n_draws = 2L)
     
-    # Testing dimensions: two iterations by two chains
-    expect_equal(nrow(new_params), length(par_means) * 4L)
+    # Testing dimensions: two draws in each isotype and stratification group
+    expect_equal(
+      nrow(new_params),
+      nepal_n_groups * 2L * length(power_par_names)
+    )
     
     # Testing output columns
     expect_setequal(
@@ -121,26 +132,17 @@ test_that(
 test_that(
   desc = "each posterior draw of each group is sampled separately",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
-    pop_params <- build_pop_params(
-      par_means,
-      build_example_precision(power_par_names),
-      n_iter = 2L,
-      n_chain = 1L,
-      iso_types = c("HlyE_IgA", "HlyE_IgG"),
-      strata = c("stratum 1", "stratum 2")
-    )
-    
     withr::local_seed(1)
-    new_params <- draw_new_individual_params(pop_params)
+    new_params <- draw_new_individual_params(nepal_pop_params, n_draws = 2L)
     
     draw_keys <-
       new_params |>
       dplyr::distinct(Iteration, Chain, Iso_type, Stratification)
     
     # Testing that isotype and stratification split the draws
-    expect_equal(nrow(draw_keys), 8L)
-    expect_equal(nrow(new_params), 8L * length(par_means))
+    expect_gt(nepal_n_groups, 1L)
+    expect_equal(nrow(draw_keys), nepal_n_groups * 2L)
+    expect_equal(nrow(new_params), nrow(draw_keys) * length(power_par_names))
     
     # Testing that draws are independent rather than recycled across groups
     expect_gt(
@@ -153,34 +155,21 @@ test_that(
 test_that(
   desc = "n_draws limits how many posterior draws are used",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
-    pop_params <- build_pop_params(
-      par_means,
-      build_example_precision(power_par_names)
-    )
-    
     withr::local_seed(1)
-    new_params <- draw_new_individual_params(pop_params, n_draws = 2L)
+    new_params <- draw_new_individual_params(nepal_pop_params, n_draws = 3L)
     
-    expect_equal(nrow(new_params), 2L * length(par_means))
+    expect_equal(
+      nrow(new_params),
+      nepal_n_groups * 3L * length(power_par_names)
+    )
   }
 )
 
 test_that(
   desc = "n_draws applies within each isotype and stratification group",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
-    pop_params <- build_pop_params(
-      par_means,
-      build_example_precision(power_par_names),
-      n_iter = 3L,
-      n_chain = 1L,
-      iso_types = c("HlyE_IgA", "HlyE_IgG"),
-      strata = c("stratum 1", "stratum 2")
-    )
-    
     withr::local_seed(1)
-    new_params <- draw_new_individual_params(pop_params, n_draws = 2L)
+    new_params <- draw_new_individual_params(nepal_pop_params, n_draws = 2L)
     
     draws_per_group <-
       new_params |>
@@ -188,7 +177,7 @@ test_that(
       dplyr::count(Iso_type, Stratification)
     
     # Testing that every group keeps its own n_draws
-    expect_equal(nrow(draws_per_group), 4L)
+    expect_equal(nrow(draws_per_group), nepal_n_groups)
     expect_true(all(draws_per_group$n == 2L))
   }
 )
@@ -196,14 +185,8 @@ test_that(
 test_that(
   desc = "an invalid n_draws is rejected",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
-    pop_params <- build_pop_params(
-      par_means,
-      build_example_precision(power_par_names)
-    )
-    
     expect_error(
-      draw_new_individual_params(pop_params, n_draws = -1),
+      draw_new_individual_params(nepal_pop_params, n_draws = -1),
       regexp = "positive integer"
     )
   }
@@ -244,16 +227,12 @@ test_that(
 test_that(
   desc = "missing columns are reported",
   code = {
-    par_means <- stats::setNames(c(1, 4, 0.7, -6.5, -0.5), power_par_names)
     pop_params <-
-      build_pop_params(
-        par_means,
-        build_example_precision(power_par_names)
-      ) |>
+      nepal_pop_params |>
       dplyr::select(-"Population_Parameter")
     
     expect_error(
-      draw_new_individual_params(pop_params),
+      draw_new_individual_params(pop_params, n_draws = 1L),
       regexp = "Population_Parameter"
     )
   }
