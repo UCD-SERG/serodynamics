@@ -6,8 +6,7 @@ validate_prior_predict_inputs <- function(mu_hyp_param = mu_hyp_param,
                                           prec_logy_hyp_param = 
                                             prec_logy_hyp_param,
                                           n = n,
-                                          n_params = n_params,
-                                          seed = seed) {
+                                          n_params = n_params) {
   
   # Checking input names to make sure all are present.
   priors <- list(

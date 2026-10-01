@@ -62,7 +62,6 @@
 #' @param log_y Logical. If `TRUE`, prior predictive antibody curves are
 #'   displayed on a log10 y-axis. Only applies when `type = "curves"`.
 #'   Default is `FALSE`.
-#' @param seed Optional integer seed for reproducible prior simulation.
 #' @return An object of class `"serodynamics_prior_predict"` containing the
 #'   plot and simulated prior draws. The object prints as a ggplot.
 #'   Quantiles (2.5%, median, and 97.5%) for each biological model parameter
@@ -106,15 +105,10 @@ prior_predict <- function(
   n = 1000,
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
-  log_y = FALSE,
-  seed = NULL) {
+  log_y = FALSE) {
   
   type <- match.arg(type)
   n_params <- 5L
-  if (!is.null(seed)) {
-    set.seed(seed)
-  }
-  
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
@@ -125,8 +119,7 @@ prior_predict <- function(
                                           prec_logy_hyp_param = 
                                             prec_logy_hyp_param,
                                           n = n,
-                                          n_params = n_params,
-                                          seed = seed)
+                                          n_params = n_params)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
