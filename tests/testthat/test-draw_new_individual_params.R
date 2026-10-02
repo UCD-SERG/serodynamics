@@ -189,6 +189,11 @@ test_that(
       draw_new_individual_params(nepal_pop_params, n_draws = -1),
       regexp = "positive integer"
     )
+    
+    expect_error(
+      draw_new_individual_params(nepal_pop_params, n_draws = Inf),
+      regexp = "positive integer"
+    )
   }
 )
 
@@ -253,7 +258,7 @@ test_that(
     
     expect_error(
       draw_new_individual_params(pop_params),
-      regexp = "definite"
+      regexp = "prec.par"
     )
   }
 )

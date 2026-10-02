@@ -58,7 +58,7 @@ draw_new_individual_params <- function(population_params,
   if (!is.null(n_draws)) {
     if (
       !rlang::is_scalar_integerish(n_draws) ||
-        is.na(n_draws) ||
+        !is.finite(n_draws) ||
         n_draws < 1
     ) {
       cli::cli_abort(

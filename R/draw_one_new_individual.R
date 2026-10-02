@@ -42,6 +42,15 @@ draw_one_new_individual <- function(draw, call = rlang::caller_env()) {
     call = call
   )
 
+  # Checked here so the error names `prec.par` and points at the caller,
+  # rather than surfacing from inside `LaplacesDemon::rmvnp()`.
+  if (!LaplacesDemon::is.positive.definite(precision)) {
+    cli::cli_abort(
+      "The {.field prec.par} matrix for this draw is not positive definite.",
+      call = call
+    )
+  }
+
   # One draw for this posterior sample: the new individual's parameters are
   # a single realization from `MVN(mu.par, solve(prec.par))`.
   sampled_values <-
