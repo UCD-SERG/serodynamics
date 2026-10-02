@@ -1,12 +1,11 @@
 # Validating inputs of prior_predict
-validate_prior_predict_inputs <- function(mu_hyp_param = mu_hyp_param,
-                                          prec_hyp_param = prec_hyp_param,
-                                          omega_param = omega_param,
-                                          wishdf_param = wishdf_param,
-                                          prec_logy_hyp_param = 
-                                            prec_logy_hyp_param,
-                                          n = n,
-                                          n_params = n_params) {
+validate_prior_predict_inputs <- function(mu_hyp_param,
+                                          prec_hyp_param,
+                                          omega_param,
+                                          wishdf_param,
+                                          prec_logy_hyp_param,
+                                          n,
+                                          n_params) {
   
   # Checking input names to make sure all are present.
   priors <- list(
