@@ -323,5 +323,14 @@ test_that(
       rebuild_prec_matrix(relabelled, par_names = power_par_names),
       regexp = "mu.par"
     )
+    
+    # Testing that a repeated cell is caught even when the count is right
+    repeated <- precision_rows
+    repeated$Parameter[2] <- repeated$Parameter[1]
+    
+    expect_error(
+      rebuild_prec_matrix(repeated, par_names = power_par_names),
+      regexp = "exactly once"
+    )
   }
 )

@@ -61,6 +61,15 @@ rebuild_prec_matrix <- function(rows,
     )
   }
   
+  # The count check above cannot catch a repeated cell,
+  # which would leave another cell of the matrix unfilled.
+  if (anyDuplicated(cbind(row_index, col_index)) > 0L) {
+    cli::cli_abort(
+      "Each {.field prec.par} cell must appear exactly once.",
+      call = call
+    )
+  }
+  
   precision <- matrix(
     NA_real_,
     nrow = n_par,
