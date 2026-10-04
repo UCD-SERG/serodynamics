@@ -226,6 +226,23 @@ test_that(
     # Tolerance is roughly six standard errors at 400 draws
     expect_lt(max(abs(summaries$mean - unname(par_means))), 0.25)
     expect_lt(max(abs(summaries$sd - unname(expected_sd))), 0.25)
+    
+    # Testing that correlations between parameters are kept,
+    # which the mean and SD checks above cannot detect.
+    # Adjacent parameters correlate at about -0.26 here,
+    # so a sampler that drew them independently would fail.
+    draws_wide <-
+      new_params |>
+      tidyr::pivot_wider(
+        id_cols = c("Iteration", "Chain"),
+        names_from = "Parameter",
+        values_from = "value"
+      )
+    observed_cor <- stats::cor(as.matrix(draws_wide[power_par_names]))
+    expected_cor <- stats::cov2cor(solve(precision))
+    
+    # Tolerance is roughly three standard errors at 400 draws
+    expect_lt(max(abs(observed_cor - expected_cor)), 0.15)
   }
 )
 
