@@ -1,0 +1,86 @@
+# Package index
+
+## Simulate case data
+
+- [`sim_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sim_case_data.md)
+  : Simulate longitudinal case follow-up data from a homogeneous
+  population
+
+## Prepare data for analysis
+
+- [`serodynamics_example()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/serodynamics_example.md)
+  : Get path to an example file
+
+- [`load_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/load_data.md)
+  : load and format data
+
+- [`as_case_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/as_case_data.md)
+  :
+
+  Convert data into `case_data`
+
+- [`prep_data()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_data.md)
+  : prepare data for JAGs
+
+## Visualize data
+
+- [`autoplot(`*`<case_data>`*`)`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/autoplot.case_data.md)
+  : Plot case data
+
+## Prepare auxiliary JAGS inputs
+
+- [`prep_priors()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_priors.md)
+  : Prepare priors
+- [`initsfunction()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/initsfunction.md)
+  : JAGS chain initialization function
+
+## Prepare auxiliary Stan inputs
+
+- [`prep_priors_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_priors_stan.md)
+  : Prepare priors for Stan
+- [`prep_data_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/prep_data_stan.md)
+  : Prepare data for Stan
+
+## Model seroreponse
+
+- [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_serodynamics.md)
+  : Run Jags Model
+- [`run_mod_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/run_mod_stan.md)
+  : Run Stan Model
+
+## Posterior predictive sampling
+
+- [`sample_predictive_stan()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/sample_predictive_stan.md)
+  : Sample from posterior predictive distribution (Stan models)
+
+## Model diagnostics
+
+- [`plot_density()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/plot_density.md)
+  : Density Plot Diagnostics
+- [`plot_rhat()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/plot_rhat.md)
+  : Rhat Plot Diagnostics
+- [`plot_trace()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/plot_trace.md)
+  : Trace Plot Diagnostics
+- [`plot_ess()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/plot_ess.md)
+  : Plot Effective Sample Size Diagnostics
+- [`plot_predicted_curve()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/plot_predicted_curve.md)
+  : Generate Predicted Antibody Response Curves (Median + 95% CI)
+
+## Postprocess JAGS output
+
+- [`postprocess_jags_output()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/postprocess_jags_output.md)
+  : Postprocess JAGS output
+
+## Summarize seroresponse model estimates
+
+- [`summarize_posterior()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/summarize_posterior.md)
+  : Summary Table of Jags Posterior Estimates
+
+## Example data sets
+
+- [`serodynamics_example()`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/serodynamics_example.md)
+  : Get path to an example file
+- [`nepal_sees`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees.md)
+  : SEES Typhoid data
+- [`nepal_sees_jags_output`](https:/ucd-serg.github.io/serodynamics/preview/pr175/reference/nepal_sees_jags_output.md)
+  : SEES Typhoid run_serodynamics jags output
