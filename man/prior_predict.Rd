@@ -18,8 +18,8 @@ prior_predict(
 }
 \arguments{
 \item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
-mean for the population level parameters
-parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
+mean on the log scale for the population level parameters
+(y0, y1, t1, alpha, r) for each  biomarker. Will be 5 values long
 specified by the user, representing the following parameters:
 \itemize{
 \item y0 = baseline antibody concentration
@@ -75,11 +75,24 @@ are stored in the \code{"prior_summary"} attribute and can be retrieved with
 \code{summary()}.
 }
 \description{
-Creates a prior predictive plot. The prior predictive plot can represent
-either the population or predictive level parameters. Output figures consist
-of either a density plot of the parameters or the varying plotted
-trajectories.
-Prior draws are generated through the hierarchical model:
+Creates prior predictive plots for a specified prior distribution before
+fitting the model to observed data.
+The function generates draws from the hierarchical prior distribution and
+propagates these draws through the model to obtain distributions of the
+predictive-level parameters. The resulting plots can be used to assess
+whether the specified priors imply biologically or scientifically plausible
+parameter values and model trajectories.
+
+Prior draws are generated hierarchically. At the highest level,
+hyperparameters define the distribution of the latent model parameters on
+the log scale. Specifically, \code{mu_hyp_param} describes the prior distribution
+governing the location \code{log(mean)} of each latent parameter, while
+\code{prec_hyp_param} describes the prior distribution governing its precision.
+Draws from these distributions determine the corresponding parameter-level
+distribution, from which the latent parameter vector \eqn{\mathrm{par}} is
+sampled.
+
+The hierarchy can be summarized as:
 
 \deqn{
 \mu_{\mathrm{par}} \rightarrow
@@ -109,6 +122,18 @@ t_1 = \exp(\mathrm{par}_3)
 \deqn{
 r = 1 + \exp(\mathrm{par}_5).
 }
+
+The exponential transformations ensure that \eqn{y_0}, \eqn{t_1}, and
+\eqn{\alpha} are positive. Defining \eqn{y_1} relative to \eqn{y_0}
+ensures that \eqn{y_1 > y_0}, while the transformation of \eqn{r}
+ensures that \eqn{r > 1}.
+
+Depending on the requested output, \code{prior_predict()} displays either the
+distributions of these prior predictive parameter draws as density plots
+or the model trajectories implied by the draws. Density plots show the
+range of transformed parameter values supported by the prior specification.
+Trajectory plots show how uncertainty in the prior distributions
+affect the model's predicted seroresponse.
 }
 \examples{
 \dontrun{
