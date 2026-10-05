@@ -1,10 +1,23 @@
 # Create Prior Predictive Plot
 
-Creates a prior predictive plot. The prior predictive plot can represent
-either the population or predictive level parameters. Output figures
-consist of either a density plot of the parameters or the varying
-plotted trajectories. Prior draws are generated through the hierarchical
-model:
+Creates prior predictive plots for a specified prior distribution before
+fitting the model to observed data. The function generates draws from
+the hierarchical prior distribution and propagates these draws through
+the model to obtain distributions of the predictive-level parameters.
+The resulting plots can be used to assess whether the specified priors
+imply biologically or scientifically plausible parameter values and
+model trajectories.
+
+Prior draws are generated hierarchically. At the highest level,
+hyperparameters define the distribution of the latent model parameters
+on the log scale. Specifically, `mu_hyp_param` describes the prior
+distribution governing the location `log(mean)` of each latent
+parameter, while `prec_hyp_param` describes the prior distribution
+governing its precision. Draws from these distributions determine the
+corresponding parameter-level distribution, from which the latent
+parameter vector \\\mathrm{par}\\ is sampled.
+
+The hierarchy can be summarized as:
 
 \$\$ \mu\_{\mathrm{par}} \rightarrow \mathrm{prec}\_{\mathrm{par}}
 \rightarrow \mathrm{par} \rightarrow (y_0, y_1, t_1, \alpha, r) \$\$
@@ -20,6 +33,18 @@ where the transformed parameters are
 \$\$ \alpha = \exp(\mathrm{par}\_4) \$\$
 
 \$\$ r = 1 + \exp(\mathrm{par}\_5). \$\$
+
+The exponential transformations ensure that \\y_0\\, \\t_1\\, and
+\\\alpha\\ are positive. Defining \\y_1\\ relative to \\y_0\\ ensures
+that \\y_1 \> y_0\\, while the transformation of \\r\\ ensures that \\r
+\> 1\\.
+
+Depending on the requested output, `prior_predict()` displays either the
+distributions of these prior predictive parameter draws as density plots
+or the model trajectories implied by the draws. Density plots show the
+range of transformed parameter values supported by the prior
+specification. Trajectory plots show how uncertainty in the prior
+distributions affect the model's predicted seroresponse.
 
 ## Usage
 
@@ -43,9 +68,9 @@ prior_predict(
 
   A [numeric](https://rdrr.io/r/base/numeric.html)
   [vector](https://rdrr.io/r/base/vector.html) of 5 values representing
-  the prior mean for the population level parameters parameters (y0, y1,
-  t1, alpha, r) for each biomarker. Will be 5 values long specified by
-  the user, representing the following parameters:
+  the prior mean on the log scale for the population level parameters
+  (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
+  specified by the user, representing the following parameters:
 
   - y0 = baseline antibody concentration
 
