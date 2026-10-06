@@ -58,7 +58,8 @@ prior_predict(
   n = 1000,
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
-  log_y = FALSE
+  log_y = FALSE,
+  log_x = FALSE
 )
 ```
 
@@ -140,6 +141,11 @@ prior_predict(
   Logical. If `TRUE`, prior predictive antibody curves are displayed on
   a log10 y-axis. Only applies when `type = "curves"`. Default is
   `FALSE`.
+
+- log_x:
+
+  Logical. If `TRUE`, parameter densities are displayed on a log10
+  x-axis. Only applies when `type = "density"`. Default is `FALSE`.
 
 ## Value
 

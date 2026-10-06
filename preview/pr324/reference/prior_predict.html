@@ -201,7 +201,8 @@ affect the model's predicted seroresponse.</p>
 <span>  n <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"curves"</span>, <span class="st">"density"</span><span class="op">)</span>,</span>
 <span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, length.out <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>,</span>
-<span>  log_y <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  log_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  log_x <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -270,6 +271,12 @@ between 0 and 200.</p></dd>
 <dt id="arg-log-y">log_y<a class="anchor" aria-label="anchor" href="#arg-log-y"></a></dt>
 <dd><p>Logical. If <code>TRUE</code>, prior predictive antibody curves are
 displayed on a log10 y-axis. Only applies when <code>type = "curves"</code>.
+Default is <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-log-x">log_x<a class="anchor" aria-label="anchor" href="#arg-log-x"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, parameter densities are
+displayed on a log10 x-axis. Only applies when <code>type = "density"</code>.
 Default is <code>FALSE</code>.</p></dd>
 
 </dl></div>
