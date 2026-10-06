@@ -87,6 +87,9 @@
 #' @param log_y Logical. If `TRUE`, prior predictive antibody curves are
 #'   displayed on a log10 y-axis. Only applies when `type = "curves"`.
 #'   Default is `FALSE`.
+#' @param log_x Logical. If `TRUE`, parameter densities are
+#'   displayed on a log10 x-axis. Only applies when `type = "density"`.
+#'   Default is `FALSE`.
 #' @return An object of class `"serodynamics_prior_predict"` containing the
 #'   plot and simulated prior draws. The object prints as a ggplot.
 #'   Quantiles (2.5%, median, and 97.5%) for each biological model parameter
@@ -130,7 +133,8 @@ prior_predict <- function(
   n = 1000,
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
-  log_y = FALSE) {
+  log_y = FALSE,
+  log_x = FALSE) {
   
   type <- match.arg(type)
   n_params <- 5L
@@ -229,6 +233,11 @@ prior_predict <- function(
       ggplot2::labs(x = NULL, y = "Density", 
                     title = "Prior parameter distributions") +
       ggplot2::theme_bw()
+    
+    if (log_x) {
+      plot <- plot +
+        ggplot2::scale_x_log10()
+    }
     
     plot_data <- density_data
   }

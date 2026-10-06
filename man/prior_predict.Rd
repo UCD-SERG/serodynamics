@@ -13,7 +13,8 @@ prior_predict(
   n = 1000,
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
-  log_y = FALSE
+  log_y = FALSE,
+  log_x = FALSE
 )
 }
 \arguments{
@@ -65,6 +66,10 @@ between 0 and 200.}
 
 \item{log_y}{Logical. If \code{TRUE}, prior predictive antibody curves are
 displayed on a log10 y-axis. Only applies when \code{type = "curves"}.
+Default is \code{FALSE}.}
+
+\item{log_x}{Logical. If \code{TRUE}, parameter densities are
+displayed on a log10 x-axis. Only applies when \code{type = "density"}.
 Default is \code{FALSE}.}
 }
 \value{
