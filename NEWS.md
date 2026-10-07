@@ -98,6 +98,12 @@
  preparation for `run_serodynamics()`. This function can output prior predictive
  plots either as a density plot or as displaying the dynamics curves. A 
  `summary()` can be called to provide an overview of each parameter.
+ * Added ability to facet or color by stratification in `plot_residuals()`. 
+ Will use the original data set attribute if stratification was used in 
+ original `run_serodynamics()`. Alternatively, the original data set will need
+ to be included in the function as an option if the stratification variable 
+ was not originally specified. Mean absolute error is calculated by 
+ stratification if faceted. 
  * Default priors are no longer supplied for `run_serodynamics()`. `prep_priors`
  now takes 4 values for `mu_hyp_param`, `prec_hyp_param` and `omega_param`
  when `decay_type = "exponential"`, and 5 when it is `"power"`.
