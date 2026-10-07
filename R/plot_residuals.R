@@ -123,7 +123,7 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   if (colored) {
     color_var <- "Subject"
-    legend_position <- "right"
+    legend_position <- "none"
   } else if (color_strat) {
     color_var <- color_by_strat
     legend_position <- "top"
