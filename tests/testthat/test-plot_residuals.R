@@ -7,7 +7,7 @@ testthat::test_that(
     plot1 <- plot_residuals(
       model = dataset,
       ids = c("sees_npl_128", "sees_npl_131"),
-      antigen_isos = c("HlyE_IgA", "HlyE_IgG"),
+     antigen_isos = c("HlyE_IgA", "HlyE_IgG")
     )
 
     testthat::expect_s3_class(plot1, "ggplot")
