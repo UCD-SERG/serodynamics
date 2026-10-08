@@ -16,3 +16,18 @@ test_that(
     vdiffr::expect_doppelganger("tracedx_typhoid_plot", results$typhi$HlyE_IgA)
   }
 )
+
+test_that(
+  desc = "one iso across several strata returns a plot per stratum",
+  code = {
+    data <- serodynamics::nepal_sees_jags_output
+    strata <- unique(data$Stratification)
+
+    results <- plot_trace(data, iso = "HlyE_IgA") |>
+      suppressWarnings()
+
+    expect_length(strata, 2)
+    expect_named(results, strata)
+    expect_s3_class(results[[strata[2]]]$HlyE_IgA, "ggplot")
+  }
+)
