@@ -1,5 +1,11 @@
 # serodynamics (development version)
 
+## Bug fixes
+
+* `plot_trace()` now returns one plot per stratum when a single
+  antigen-isotype is plotted across several strata. Previously it returned
+  only the first stratum's plot (#249).
+
 ## Internal
 
 * Updated `.github/copilot-instructions.md` so the local `rjags` install
