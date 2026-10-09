@@ -30,7 +30,7 @@ Roxygen: list(markdown = TRUE)
 URL: https://github.com/UCD-SERG/serodynamics, https://ucd-serg.github.io/serodynamics/
 BugReports: https://github.com/UCD-SERG/serodynamics/issues
 SystemRequirements: JAGS (>= 4.3.1)
-Imports:
+Imports: 
     cli,
     coda,
     dplyr (>= 1.2.0),
