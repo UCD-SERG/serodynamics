@@ -28,6 +28,8 @@ test_that(
 
     expect_length(strata, 2)
     expect_named(results, strata)
-    expect_s3_class(results[[strata[2]]]$HlyE_IgA, "ggplot")
+    second_stratum <- strata[2]
+    second_plots <- results[[second_stratum]]
+    expect_s3_class(second_plots$HlyE_IgA, "ggplot")
   }
 )
