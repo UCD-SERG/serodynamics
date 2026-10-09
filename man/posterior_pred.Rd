@@ -17,13 +17,13 @@ posterior_pred(data = NA, raw_dat = NA, by_antigen = FALSE, n_sim = 4, ...)
 \item each row is single OD measurement per ...
 }}
 
+\item{by_antigen}{The antigen/isotype combinations to create posterior
+predictive plots for.}
+
 \item{n_sim}{The number of simulations to run.}
 
 \item{n_sample}{The number of simulated samples for posterior predictive
 checks.}
-
-\item{antigen_isos}{The antigen/isotype combinations to create posterior
-predictive plots for.}
 }
 \value{
 A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects of posterior predictive checks.
@@ -32,18 +32,19 @@ A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects of posterior pre
 \code{posterior_pred()} conducts posterior predictive checks.
 }
 \examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
+data(nepal_sees_jags_output, package = "serodynamics")
+post_summ(nepal_sees_jags_output)
+
+if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
   set.seed(1)
-  library(dplyr)
   strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
+    dplyr::mutate(strat = "stratum 2")
   strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
     sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
+    dplyr::mutate(strat = "stratum 1")
 
-  dataset <- bind_rows(strat1, strat2)
+  dataset <- dplyr::bind_rows(strat1, strat2)
 
   fitted_model <- run_mod(
     data = dataset, # The data set input
@@ -53,8 +54,13 @@ if (!is.element(runjags::findjags(), c("", NULL))) {
     nburn = 100, # Number of unrecorded samples before sampling begins
     nmc = 1000,
     niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
+    strat = "strat", # Variable to be stratified
+    mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
+    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
+    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4.0, 1.0)
+  ) 
 }
 }
 \author{
