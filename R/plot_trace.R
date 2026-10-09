@@ -76,7 +76,9 @@ plot_trace <- function(data,
     trace_strat_list[[i]] <- trace_out
   }
   #Printing only one plot if only one exists.
-  if (sum(lengths(trace_strat_list)) == 1) {
+  n_plots <- trace_strat_list |> lengths() |> sum()
+  single_plot <- n_plots == 1
+  if (single_plot) {
     trace_strat_list <- trace_strat_list[[1]][[iso]]
   } 
   trace_strat_list
