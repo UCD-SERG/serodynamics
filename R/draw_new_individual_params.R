@@ -70,7 +70,7 @@ draw_new_individual_params <- function(population_params,
     retained_draws <-
       population_params |>
       dplyr::distinct(dplyr::pick(dplyr::all_of(draw_vars))) |>
-      dplyr::slice_head(
+      dplyr::slice_sample(
         n = n_draws,
         by = dplyr::all_of(c("Iso_type", "Stratification"))
       )

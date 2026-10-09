@@ -162,6 +162,11 @@ test_that(
       nrow(new_params),
       nepal_n_groups * 3L * length(power_par_names)
     )
+
+    # Testing that draws are sampled rather than taken from the start,
+    # which would keep only the first iterations of chain 1
+    kept_chains <- dplyr::n_distinct(new_params$Chain)
+    expect_gt(kept_chains, 1L)
   }
 )
 

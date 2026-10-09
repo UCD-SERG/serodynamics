@@ -44,7 +44,10 @@ draw_one_new_individual <- function(draw, call = rlang::caller_env()) {
 
   # Checked here so the error names `prec.par` and points at the caller,
   # rather than surfacing from inside `LaplacesDemon::rmvnp()`.
-  if (!LaplacesDemon::is.positive.definite(precision)) {
+  if (
+    !isSymmetric(precision) ||
+      !LaplacesDemon::is.positive.definite(precision)
+  ) {
     cli::cli_abort(
       "The {.field prec.par} matrix for this draw is not positive definite.",
       call = call
