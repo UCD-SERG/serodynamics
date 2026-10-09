@@ -7,12 +7,12 @@
 #' and shows all individual 
 #' sampled curves.
 #'
-#' @param model An `sr_model` object (returned by [run_mod()]) containing 
-#'   samples from the posterior distribution of the model parameters.
+#' @param model An `sr_model` object (returned by [run_serodynamics]) 
+#' containing samples from the posterior distribution of the model parameters.
 #' @param ids The participant IDs to plot; for example, `"sees_npl_128"`.
 #' @param antigen_iso  The antigen isotype to plot; for example, "HlyE_IgA" or 
 #' "HlyE_IgG".
-#' @param dataset (Optional) A [dplyr::tbl_df] with observed antibody response 
+#' @param dataset (Optional) A [tibble::tbl_df] with observed antibody response
 #' data. 
 #' Must contain:
 #'   - `timeindays`
@@ -60,6 +60,7 @@ plot_predicted_curve <- function(model,
                                  ylab = NULL,
                                  facet_by_id = length(ids) > 1,
                                  ncol = NULL) {
+  decay_type <- get_model_decay_type(model)
   
   # Filter to the subject(s) & antigen of interest:
   sr_model_sub <- model |>
@@ -116,7 +117,8 @@ plot_predicted_curve <- function(model,
                            .data$y1, 
                            .data$t1, 
                            .data$alpha, 
-                           .data$shape))
+                           .data$shape,
+                           decay_type = .env$decay_type))
   
   # Determine Y-axis label
   if (is.null(ylab)) {

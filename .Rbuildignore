@@ -5,11 +5,13 @@
 ^project.*\.tgz$
 ^data-raw$
 ^README\.Rmd$
+^CLAUDE\.md$
 ^codecov\.yml$
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
 ^\.github$
+^\.claude$
 ^LICENSE\.md$
 ^serodynamics\.Rcheck$
 ^serodynamics.*\.tar\.gz$
@@ -28,3 +30,9 @@
 
 ^_quarto\.yml$
 ^\.quarto$
+^\.devcontainer$
+^cran-comments\.md$
+^doc$
+^Meta$
+^CRAN-SUBMISSION$
+^revdep$

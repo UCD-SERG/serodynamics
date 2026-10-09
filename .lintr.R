@@ -49,6 +49,13 @@ snake_case_ACROs1 <- rex::rex(
   end
 )
 
+# Note: dplyr `*_join()` calls must specify the `relationship` argument
+# (e.g. `relationship = "many-to-one"`) so that an unexpected
+# many-to-many match errors out instead of silently duplicating rows.
+# lintr has no built-in linter for "missing argument", so this rule is
+# enforced via code review rather than automatically here; see the
+# contributor guidance in CLAUDE.md and .github/copilot-instructions.md.
+
 linters <- lintr::linters_with_defaults(
   return_linter = NULL,
   trailing_whitespace_linter = NULL,

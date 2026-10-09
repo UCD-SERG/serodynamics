@@ -28,26 +28,38 @@ reference:
   - initsfunction
 - title: Model seroreponse
   contents:
-  - run_mod
+  - run_serodynamics
 - title: Model diagnostics
   contents:
-  - plot_jags_dens
-  - plot_jags_Rhat
-  - plot_jags_trace
-  - plot_jags_effect
-  - plot_predicted_curve
+  - plot_density
+  - plot_rhat
+  - plot_trace
+  - plot_ess
+  - plot_residuals
 - title: Postprocess JAGS output
   contents:
   - postprocess_jags_output
 - title: Summarize seroresponse model estimates
   contents:
-  - post_summ
+  - summarize_posterior
+- title: Visualize model results
+  contents:
+  - plot_predicted_curve
+  - plot_serocurve
 - title: Example data sets
   contents:
   - serodynamics_example
   - nepal_sees
   - nepal_sees_jags_output
 
+articles:
+- title: Get started
+  navbar: ~
+  contents:
+  - articles/getting-started
 
-  
-
+- title: Developer Notes
+  contents:
+  - articles/os-snapshot-analysis
+  - articles/test-snippets
+  - dobson

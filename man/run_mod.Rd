@@ -4,20 +4,10 @@
 \alias{run_mod}
 \title{Run Jags Model}
 \usage{
-run_mod(
-  data,
-  file_mod = serodynamics_example("model.jags"),
-  nchain = 4,
-  nadapt = 0,
-  nburn = 0,
-  nmc = 100,
-  niter = 100,
-  strat = NA,
-  with_post = FALSE,
-  ...
-)
+run_mod(...)
 }
 \arguments{
+<<<<<<< HEAD
 \item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.}
 
 \item{file_mod}{The name of the file that contains model structure.}
@@ -151,47 +141,16 @@ for all observations.
 \code{with_post} = TRUE.
 }
 }
+=======
+\item{...}{Arguments passed to \code{run_serodynamics()}.}
+>>>>>>> c051209356caba77c29fe26d130d7d4504c6649a
 }
 \description{
-\code{run_mod()} takes a data frame and adjustable MCMC inputs to
-\code{\link[runjags:run.jags]{runjags::run.jags()}} as an MCMC
-Bayesian model to estimate antibody dynamic curve parameters.
-The \code{\link[rjags:jags.model]{rjags::jags.model()}} models seroresponse dynamics to an
-infection. The antibody dynamic curve includes the following parameters:
-\itemize{
-\item y0 = baseline antibody concentration
-\item y1 = peak antibody concentration
-\item t1 = time to peak
-\item shape = shape parameter
-\item alpha = decay rate
+\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}}
+\code{run_mod()} was renamed to \code{run_serodynamics()} to create a more
+descriptive function name.
 }
+\seealso{
+\code{\link[=run_serodynamics]{run_serodynamics()}}
 }
-\examples{
-if (!is.element(runjags::findjags(), c("", NULL))) {
-  library(runjags)
-  set.seed(1)
-  library(dplyr)
-  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 2")
-  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    mutate(strat = "stratum 1")
-
-  dataset <- bind_rows(strat1, strat2)
-
-  fitted_model <- run_mod(
-    data = dataset, # The data set input
-    file_mod = serodynamics_example("model.jags"),
-    nchain = 4, # Number of mcmc chains to run
-    nadapt = 100, # Number of adaptations to run
-    nburn = 100, # Number of unrecorded samples before sampling begins
-    nmc = 1000,
-    niter = 2000, # Number of iterations
-    strat = "strat"
-  ) # Variable to be stratified
-}
-}
-\author{
-Sam Schildhauer
-}
+\keyword{internal}

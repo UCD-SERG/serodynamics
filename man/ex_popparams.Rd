@@ -7,7 +7,7 @@
 ex_popparams(x)
 }
 \arguments{
-\item{x}{A \link{data.frame} with a \code{Subject} variable.}
+\item{x}{A \link{data.frame} with a \code{.is_population_parameter} variable.}
 }
 \value{
 A filtered \link{data.frame} excluding population parameters.

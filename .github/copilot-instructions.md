@@ -10,11 +10,94 @@
 - **Key Dependencies**: runjags, rjags, JAGS 4.3.1, serocalculator, ggmcmc, dplyr, ggplot2
 - **Lifecycle**: Experimental (under active development)
 
+## Lab-Wide Guidance
+
+**Follow the guidance in the [UCD-SeRG Lab Manual](https://ucd-serg.github.io/lab-manual/)**, which provides comprehensive best practices for:
+- Culture and conduct
+- Communication
+- Reproducibility
+- Code repositories and version control
+- Coding practices and style
+- Working with big data
+- Quarto and documentation
+- GitHub workflows
+- Reproducible environments
+- Code and data publication
+- AI tools usage
+- And more
+
+If the web version is inaccessible, refer to the [source files on GitHub](https://github.com/UCD-SERG/lab-manual) for easier reading.
+
 ## Critical Setup Requirements
+
+### Copilot Setup Workflow (Automatic Environment Configuration)
+
+The repository includes a **`.github/workflows/copilot-setup-steps.yml`** workflow that automatically configures the GitHub Copilot coding agent's environment with all required dependencies. This workflow runs automatically when Copilot starts working on a task, ensuring a consistent and properly configured development environment.
+
+#### What the Workflow Does
+
+The copilot-setup-steps.yml workflow:
+
+1. **Installs system dependencies**: All required Ubuntu packages for R package development (libcurl, libssl, libxml2, graphics libraries, etc.)
+2. **Installs JAGS 4.3.1**: The required Bayesian MCMC system library
+3. **Sets up R (>= 4.1.0)**: Installs the R release version that meets the package's minimum requirement
+4. **Installs R package dependencies**: All Imports, Suggests, and development dependencies from DESCRIPTION
+5. **Verifies installation**: Runs comprehensive checks to ensure JAGS and R are properly configured
+
+#### When It Runs
+
+The workflow runs in the following scenarios:
+
+- **Automatically for Copilot**: When the GitHub Copilot coding agent starts working on a task, it uses this workflow to prepare the environment
+- **On workflow changes**: When `.github/workflows/copilot-setup-steps.yml` is modified (via push or pull request)
+- **Manual testing**: Can be triggered manually from the repository's "Actions" tab using workflow_dispatch
+
+#### Integration with CI Workflows
+
+The copilot-setup-steps.yml workflow complements but does not replace the CI workflows:
+
+- **Purpose**: Configures the Copilot agent's environment for development work, not for CI testing
+- **Scope**: Runs on ubuntu-latest only, while CI workflows test on multiple platforms (Ubuntu, macOS, Windows) and R versions (release, devel, oldrel-1)
+- **Alignment**: Uses the same JAGS installation and R setup approach as the R-CMD-check.yaml workflow, ensuring consistency
+- **Timeout**: Limited to 55 minutes (Copilot maximum is 59 minutes)
+
+#### Verification Steps
+
+The workflow includes detailed verification logging:
+
+- **JAGS verification**: Checks system JAGS command availability, R interface package versions (rjags, runjags), and runs `runjags::testjags()`
+- **R version check**: Ensures R >= 4.1.0 requirement is met
+- **Package verification**: Lists key installed packages (devtools, rjags, runjags, rcmdcheck, lintr, spelling, testthat)
+
+#### Customization
+
+If you need to modify the Copilot environment setup:
+
+1. Edit `.github/workflows/copilot-setup-steps.yml`
+2. Test changes by pushing to a branch or using workflow_dispatch
+3. Ensure the job name remains `copilot-setup-steps` (required by Copilot)
+4. Keep timeout under 59 minutes
+5. Update this documentation to reflect any significant changes
 
 ### Quick Start with Docker (RECOMMENDED)
 
-**For faster setup, consider using the rocker/verse Docker image** which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed. This can significantly speed up Copilot sessions by avoiding lengthy installation steps.
+**The easiest way to get started is to use the provided dev container configuration**, which automatically sets up R, JAGS, and all dependencies in a persistent environment.
+
+**Benefits:**
+- **Cached setup**: Container persists between Copilot sessions - no need to reinstall everything
+- **Zero manual setup**: Everything is pre-configured and ready to use
+- **Consistent environment**: Same R version, JAGS, and system libraries every time
+
+**How to use:**
+1. **GitHub Copilot Workspace**: Automatically detects and uses the devcontainer
+2. **VS Code**: Install "Dev Containers" extension, then "Reopen in Container"
+3. **GitHub Codespaces**: Automatically uses the devcontainer configuration
+
+See `.devcontainer/README.md` for detailed documentation.
+
+### Alternative: Quick Start with Docker
+
+**If you prefer manual Docker setup**, you can use the rocker/verse Docker image which includes R, RStudio, tidyverse, TeX, and many common R packages pre-installed.
 
 To use Docker:
 
@@ -43,7 +126,9 @@ docker rm serodynamics-dev
 
 **Note**: You will still need to install JAGS inside the Docker container (see JAGS Installation section below).
 
-If Docker is not available or you prefer a native installation, follow the manual installation instructions below.
+### Manual Installation (if not using devcontainer or Docker)
+
+If the devcontainer or Docker is not available or you prefer a native installation, follow the manual installation instructions below.
 
 ### R Installation and Development Dependencies (REQUIRED)
 
@@ -170,10 +255,26 @@ docker exec serodynamics-dev R -e 'runjags::testjags()'
 - **macOS**: Download from https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg
 - **Windows**: Download from https://sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
 
-After installing JAGS, install the R interface:
-```r
-install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
-```
+After installing JAGS, install the R interface. Which form to use depends on
+the platform, matching what `.github/workflows/R-CMD-check.yaml` and
+`.github/workflows/test-coverage.yaml` do (see #308):
+
+- **macOS/Linux**: build from source, so that `rjags` links against the JAGS
+  library you just installed.
+
+  ```r
+  install.packages("rjags", repos = "https://cloud.r-project.org", type = "source")
+  ```
+
+- **Windows**: install the binary, which is the default. Building from source
+  on Windows requires a matching Rtools toolchain and is not what CI does.
+
+  ```r
+  install.packages("rjags", repos = "https://cloud.r-project.org")
+  ```
+
+The Docker snippet above uses `type = "source"` unconditionally because that
+container is Linux.
 
 Verify installation with:
 ```r
@@ -295,6 +396,8 @@ The following workflows run on every PR. **All must pass** for merge:
 
 9. **pkgdown.yaml**: Builds pkgdown website on PR (preview), tags, and main branch pushes. Requires Quarto setup. (~5-7 min)
 
+10. **copilot-setup-steps.yml**: Configures the GitHub Copilot coding agent's environment automatically. Runs when Copilot starts work, when the workflow file changes, or via manual dispatch. Not a required check for PR merges. See "Copilot Setup Workflow" section for details. (~5-10 min)
+
 ### PR Commands
 
 Team members can trigger actions by commenting on PRs:
@@ -306,11 +409,11 @@ Team members can trigger actions by commenting on PRs:
 ### Key Directories
 
 - **R/**: Package source code (30 R files)
-  - `Run_Mod.R`: Main function to run JAGS Bayesian models
+  - `run_serodynamics.R`: Main function to run JAGS Bayesian models
   - `as_case_data.R`: Convert data to case_data class
   - `prep_data.r`, `prep_priors.R`: Data preparation for JAGS
   - `sim_case_data.R`: Simulate case data for testing
-  - `post_summ.R`, `postprocess_jags_output.R`: Post-processing JAGS results
+  - `summarize_posterior.R`, `postprocess_jags_output.R`: Post-processing JAGS results
   - `plot_*.R`: Diagnostic plotting functions (trace, density, Rhat, effective sample size)
   - `serodynamics-package.R`: Package documentation
   
@@ -411,7 +514,7 @@ dataset |> expect_snapshot_data(name = "sees-data")
 prepped_data |> expect_snapshot_value(style = "serialize")
 
 # For simple output or error messages
-results <- post_summ(data) |> expect_no_error()
+results <- summarize_posterior(data) |> expect_no_error()
 testthat::expect_snapshot(results)
 ```
 
@@ -451,16 +554,46 @@ expect_false(has_missing_values(complete_data))
 
 ## Code Style Guidelines
 
-- **Follow tidyverse style guide**: https://style.tidyverse.org
+- **Lab manual overrides tidyverse style**: Follow the [UCD-SeRG Lab Manual coding-style chapter](https://ucd-serg.github.io/lab-manual/coding-style.html) first; fall back to the [tidyverse style guide](https://style.tidyverse.org) only where the lab manual is silent. Where the two conflict, the lab manual wins.
+- **Use explicit `return()` statements**: Per the [lab manual](https://ucd-serg.github.io/lab-manual/coding-style/function-structure-and-documentation.html#explicit-return-statements) (which follows the [Google R Style Guide](https://google.github.io/styleguide/Rguide.html#use-explicit-returns)), always end functions with `return(value)` rather than relying on R's implicit final-expression return. This overrides the tidyverse style guide. Note: `return_linter` is currently disabled in `.lintr.R` for flexibility on older code, but new code should use explicit returns.
 - **Use native pipe**: `|>` not `%>%`
+- **Avoid redundant logical comparisons**: Use logical values directly (e.g., `if (is_ready)` not `if (is_ready == TRUE)`)
 - **Naming**: snake_case, acronyms may be uppercase (e.g., `prep_IDs_data`)
 - **Messaging**: Use `cli::cli_*()` functions for all user-facing messages
 - **No `library()` in package code**: Use `::` or DESCRIPTION Imports
 - **Document all exports**: Use roxygen2 (@title, @description, @param, @returns, @examples)
 - **Test snapshot changes**: Use `testthat::announce_snapshot_file()` for CSV snapshots
 - **Seed tests**: Use `withr::local_seed()` for reproducible tests
+- **Prefer data-first pipelines**: Design and call functions so the primary data object flows through `|>` naturally
+- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths.
+- **Quarto vignettes**: Use Quarto-style chunk options with `#|` prefix (e.g., `#| label: my-chunk`, `#| eval: false`) instead of R Markdown comma-separated options (e.g., `{r my-chunk, eval=FALSE}`)
+- **Tidyverse replacements**: Use tidyverse/modern replacements for base R functions where available (e.g., `sessioninfo::session_info()` instead of `sessionInfo()`, `tibble::tibble()` instead of `data.frame()`, `readr::read_csv()` instead of `read.csv()`)
 - **Write tidy code**: Keep code clean, readable, and well-organized. Follow consistent formatting, use meaningful variable names, and maintain logical structure
-- **Avoid code duplication**: Don't copy-paste substantial code chunks. Instead, decompose reusable logic into well-named helper functions. This improves maintainability, testability, and reduces the risk of inconsistent behavior across similar code paths
+- **Use tidy-selection, not data-masking, in selection contexts**: In `select()`, `rename()`, `summarize(.by = )` / `group_by()`, `across(.cols = )`, `pivot_*(names_from = )`, and join `by =`, select columns named by a variable with `all_of()` / `any_of()` (e.g. `select(any_of(c("a", "b", "new_name" = var)))`), and use bare names or `all_of()` in `.by`. Do **not** reach for the `.data` pronoun (`.data[[var]]`, `.data$x`) there — that pronoun belongs in *data-masking* verbs (`mutate()`, `filter()`, `summarize()` expressions). Using `.data[[var]]` in a selection context is a *soft* deprecation and may not warn at runtime, so it is easy to miss — but it should be rewritten.
+- **Collapse branching that only varies columns**: An `if`/`else` whose only job is to change which columns are selected, renamed, or joined can almost always be replaced by a single `any_of()` / `all_of()` selection or a single tidyselect-keyed join. Prefer one parameterized pipeline over two near-identical stratified/unstratified branches.
+- **Prefer dplyr joins over base `merge()`**: Use `dplyr::left_join()` / `right_join()` with `by = join_by(...)` rather than `merge()` for readability and consistency.
+- **Always set `relationship` on dplyr joins**: Every `dplyr::*_join()` call (`left_join()`, `right_join()`, `inner_join()`, `full_join()`) must specify the `relationship` argument (e.g. `relationship = "many-to-one"`). Declaring the expected cardinality documents the join's intent and makes an unexpected many-to-many match fail loudly instead of silently duplicating rows. Filtering joins (`semi_join()` / `anti_join()`) are out of scope — they cannot duplicate rows. See [PR #240](https://github.com/UCD-SERG/serodynamics/pull/240/changes#diff-58597f8513171a9da41d8e6c89e4230df8879139a10dd2422aa659aa496dd29eR52-R58) for an example.
+
+### Review focus: convoluted / non-idiomatic code
+
+When reviewing (human or AI), treat the three points above as in-scope findings, not optional nits. Beyond correctness, call out code that is functionally fine but unnecessarily convoluted or non-idiomatic, and show the simpler, more declarative form. The canonical authority is the [UCD-SeRG Lab Manual coding-style chapter](https://ucd-serg.github.io/lab-manual/coding-style.html).
+
+## Documentation and Evidence Standards
+
+- **Do not assume behavior**: Run the relevant command(s) and verify outputs before claiming something works.
+- **Use markdown syntax in `.qmd` prose**: Wrap code in backticks, use markdown links, and avoid raw HTML links.
+- **Use semantic line breaks and list spacing in `.qmd`**: Break long prose across lines and include a blank line before bullet/numbered lists.
+- **Use Quarto cross-references**: Reference sections/figures/tables with labels (for example `@sec-...`, `@fig-...`, `@tbl-...`) instead of plain text references.
+- **Support factual claims**: Back factual statements with citations or direct verification evidence, and verify external links/resources before describing them.
+
+## Code Formatting Guidelines
+
+When adding or editing text in source code (for example comments, documentation strings, or error messages) or in Quarto document text chunks:
+
+- Add a newline at the end of every phrase or logical unit of text
+- Put each phrase on its own line in source files
+- Treat a phrase as a complete thought, clause, or sentence
+- Prefer this structure to improve readability and make diffs clearer
 
 ## Package Development Commands Summary
 
@@ -493,5 +626,8 @@ These instructions have been validated against the actual repository structure, 
 11. **ALWAYS** run `devtools::document()` before requesting PR review
 12. **ALWAYS** make sure `devtools::check()` passes before requesting PR review
 13. **ALWAYS** make sure `devtools::spell_check()` passes before requesting PR review
+14. **ALWAYS** run `pkgdown::build_site()` before requesting PR review to ensure the pkgdown site builds successfully
+15. **ALWAYS** verify Quarto documents render successfully locally - don't rely on CI workflows. For vignettes and articles, test rendering with `quarto render path/to/file.qmd` or by building the full site with `pkgdown::build_site()`
+16. When `pkgdown::build_site()` has errors related to Quarto, use `quarto::quarto_render(input = "path/to/file.qmd", quiet = FALSE)` to debug and see detailed error messages
 
 Only search for additional information if these instructions are incomplete or incorrect for your specific task.

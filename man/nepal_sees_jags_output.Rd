@@ -3,9 +3,10 @@
 \docType{data}
 \name{nepal_sees_jags_output}
 \alias{nepal_sees_jags_output}
-\title{SEES Typhoid run_mod jags output}
+\title{SEES Typhoid run_serodynamics jags output}
 \format{
-An S3 object of class \code{sr_model}: A \link[dplyr:tbl_df]{dplyr::tbl_df} that contains the
+An S3 object of class \code{sr_model}: A \link[tibble:tbl_df]{tibble::tbl_df} that contains
+the
 posterior predictive distribution of the person-specific parameters for a
 "new person" with no observed data (\code{Subject = "newperson"}) and posterior
 distributions of the person-specific parameters for two arbitrarily-chosen
@@ -23,17 +24,21 @@ Contains 40,000 \code{rows}, 7 \code{columns}, and model \code{attributes}.
 \code{sees_npl_2}}
 \item{value}{Estimated value of the parameter}
 \item{attributes}{A \link{list} of \code{attributes} that summarize the jags inputs,
-priors, and optional jags_post mcmc object}
+priors, optional jags_post mcmc object, and population-level parameters.
+Includes a \code{population_params} attribute with posterior samples of the
+population-level parameters (\code{mu.par}, \code{prec.par}, \code{prec.logy}), indexed
+by \code{Iteration}, \code{Chain}, \code{Parameter}, \code{Iso_type}, \code{Stratification}, and
+\code{Population_Parameter}.}
 }
 }
 \source{
-reference study: \url{https://doi.org/10.1016/S2666-5247(22)00114-8}
+reference study: \doi{10.1016/S2666-5247(22)00114-8}
 }
 \usage{
 nepal_sees_jags_output
 }
 \description{
-A \code{\link[=run_mod]{run_mod()}} output
+A \code{\link[=run_serodynamics]{run_serodynamics()}} output
 using the \link{nepal_sees} example data set as input
 and stratifying by column \code{"bldculres"},
 which is the diagnosis type (typhoid or

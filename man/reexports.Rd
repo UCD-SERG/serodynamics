@@ -13,8 +13,8 @@ These objects are imported from other packages. Follow the links
 below to see their documentation.
 
 \describe{
-  \item{ggplot2}{\code{\link[ggplot2]{autoplot}}}
+  \item{ggplot2}{\code{\link[ggplot2:autoplot]{autoplot()}}}
 
-  \item{serocalculator}{\code{\link[serocalculator]{get_biomarker_levels}}, \code{\link[serocalculator]{get_biomarker_names_var}}}
+  \item{serocalculator}{\code{\link[serocalculator:get_biomarker_levels]{get_biomarker_levels()}}, \code{\link[serocalculator:get_biomarker_names_var]{get_biomarker_names_var()}}}
 }}
 

@@ -20,5 +20,5 @@
 #'  since symptom onset}
 #'  \item{result}{Continuous variable describing ELISA result}
 #' }
-#' @source reference study: <https://doi.org/10.1016/S2666-5247(22)00114-8>
+#' @source reference study: \doi{10.1016/S2666-5247(22)00114-8}
 "nepal_sees"

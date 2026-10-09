@@ -7,13 +7,15 @@
 param_recode(x)
 }
 \arguments{
-\item{x}{A \link{vector} of character numbers that represent parameters.}
+\item{x}{A \link{vector} of character numbers ("1"-"5") that represent
+parameters.}
 }
 \value{
-A \link{vector} with recoded values.
+A \link{vector} of log-scale parameter labels.
 }
 \description{
-\code{param_recode} recodes character numbers as their corresponding parameter.
+\code{param_recode()} recodes JAGS curve-parameter indices (1-5) as their
+log-scale parameter labels (e.g., \code{"log(y0)"}, \code{"log(alpha)"}).
 }
 \author{
 Sam Schildhauer

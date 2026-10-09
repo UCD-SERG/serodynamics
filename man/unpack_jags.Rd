@@ -7,16 +7,24 @@
 unpack_jags(data)
 }
 \arguments{
-\item{data}{A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} output object from run_mod with mcmc syntax.}
+\item{data}{A \link[tibble:tbl_df]{tibble::tbl_df} in \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} / MCMC-long format,
+usually \code{ggmcmc::ggs(jags_post[["mcmc"]])} where \code{jags_post} comes from
+\link{run_serodynamics}. Must contain at least \code{Iteration}, \code{Chain},
+\code{Parameter}, and \code{value} columns.}
 }
 \value{
-A \code{\link[dplyr:tbl_df]{dplyr::tbl_df()}} that
-contains MCMC samples from the joint posterior distribution of the model
-with unpacked parameters, isotypes, and subjects.
+A \link[tibble:tbl_df]{tibble::tbl_df} containing MCMC samples from the joint
+posterior distribution of the model with unpacked individual-level
+parameters (e.g., \code{y0}, \code{y1}, \code{t1}, \code{alpha}, \code{shape}) and
+population-level parameters (e.g., \code{mu.par}, \code{prec.par}, \code{prec.logy}),
+along with subject-related fields such as \code{Subject} and \code{Subnum}.
+Isotype names are not added by \code{unpack_jags()} itself.
 }
 \description{
-\code{unpack_jags()} takes an MCMC output from run_mod and unpacks it correctly
-for all population parameters.
+\code{unpack_jags()} takes a long-format MCMC sample (typically created by
+applying \code{\link[ggmcmc:ggs]{ggmcmc::ggs()}} to the \code{mcmc} component of \link{run_serodynamics}
+output) and unpacks it into separate rows for individual-level curve
+parameters and population-level hyperparameters/precision terms.
 }
 \author{
 Sam Schildhauer

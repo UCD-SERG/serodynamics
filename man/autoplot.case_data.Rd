@@ -14,7 +14,7 @@
 \item{log_x}{whether to log-transform the x-axis}
 
 \item{...}{
-  Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_path]{ggplot2::geom_line}}
+  Arguments passed on to \code{\link[ggplot2:geom_point]{ggplot2::geom_point}}, \code{\link[ggplot2:geom_line]{ggplot2::geom_line}}
   \describe{
     \item{\code{mapping}}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
 \code{inherit.aes = TRUE} (the default), it is combined with the default mapping
@@ -81,6 +81,9 @@ means use \code{colour} aesthetic.}
 automatically determines the orientation from the aesthetic mapping. In the
 rare event that this fails it can be given explicitly by setting \code{orientation}
 to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
+    \item{\code{direction}}{direction of stairs: 'vh' for vertical then horizontal,
+'hv' for horizontal then vertical, or 'mid' for step half-way between
+adjacent x-values.}
   }}
 }
 \value{

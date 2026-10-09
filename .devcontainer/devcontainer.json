@@ -1,0 +1,39 @@
+{
+  "name": "serodynamics R Development",
+  "build": {
+    "dockerfile": "Dockerfile"
+  },
+  
+  // Features to add to the dev container
+  "features": {
+    "ghcr.io/devcontainers/features/git:1": {}
+  },
+
+  // Configure tool-specific properties
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "REditorSupport.r",
+        "GitHub.copilot"
+      ],
+      "settings": {
+        "r.rterm.linux": "/usr/local/bin/R",
+        "r.rpath.linux": "/usr/local/bin/R"
+      }
+    }
+  },
+
+  // Use 'postCreateCommand' to run commands after the container is created
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  // Set the default shell
+  "remoteUser": "rstudio",
+  
+  // Forward ports for RStudio Server (optional)
+  "forwardPorts": [8787],
+  
+  // Persist command history across container rebuilds
+  "mounts": [
+    "source=serodynamics-bashhistory,target=/commandhistory,type=volume"
+  ]
+}
