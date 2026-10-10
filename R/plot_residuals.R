@@ -187,11 +187,9 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   p <- p +
     ggplot2::geom_text(
-                       data = mae_label_data(to_plot, facet_by_strat),
-                       mapping = ggplot2::aes(x = Inf, y = Inf, 
-                                              label = .data$label),
-                       hjust = 1.1, vjust = 1.5, size = 3.2, 
-                       inherit.aes = FALSE) 
+      data = mae_label_data(to_plot, facet_by_strat),
+      mapping = ggplot2::aes(x = Inf, y = Inf, label = .data$label),
+      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE) 
     
   # ------------------------------------------------------------
   # Theme
