@@ -80,7 +80,7 @@ plot_residuals <- function(model,
 
   fit_res <- calc_fit_mod(
     modeled_dat = model,
-    original_data = original_data,
+    original_data = attr(model, "original_data"),
     strat = strat,
     decay_type = decay_type
   )
