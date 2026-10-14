@@ -27,7 +27,7 @@ get_original_data(
 \item{strat}{The stratification specified in the original
 \code{run_serodynamics()} model.}
 
-\item{color_strat}{The color stratification specified in \code{facet_by_strat}.}
+\item{color_strat}{The color stratification specified in \code{color_by_strat}.}
 
 \item{color_by_strat}{\link{character}; colors residual plot by the specified
 stratification variable. MAE is not calculated by this variable. Must
