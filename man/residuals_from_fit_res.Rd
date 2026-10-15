@@ -11,8 +11,9 @@ residuals_from_fit_res(fit_res, ids, antigen_isos, log_y)
 \code{\link[=calc_fit_mod]{calc_fit_mod()}}.}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
-(and, if \code{connect_lines = TRUE}, lines) are colored by subject; otherwise
-no color is used.}
+(and, if \code{connect_lines = TRUE}, lines) are colored by subject  unless
+\code{color_by_strat} is specified, in which case stratification
+coloring takes precedence.}
 
 \item{antigen_isos}{(Optional) Antigen-isotypes (\code{antigen_iso}) to include.}
 

@@ -32,14 +32,16 @@ get_original_data(
 \item{color_by_strat}{\link{character}; colors residual plot by the specified
 stratification variable. MAE is not calculated by this variable. Must
 include the original data set if not stratifying by \code{strat} variable
-specified in \code{run_serodynamics()}. Default \code{NULL}.}
+specified in \code{run_serodynamics()}. Default \code{NULL}. When both \code{ids} and
+\code{color_by_strat} are supplied, stratification coloring takes precedence
+and a warning is issued..}
 
 \item{facet_strat}{The facet stratification specified in \code{facet_by_strat}.}
 
 \item{facet_by_strat}{\link{character}; facets residual plot and
 calculates MAE by specified stratification variable. Must include the
 original data set if not stratifying by \code{strat} variable specified in
-\code{run_serodynamics()}. Default \code{NULL}.}
+\code{run_serodynamics()}. Default \code{NULL}}
 }
 \description{
 \code{get_original_data} will be used when a \code{facet_by_strat} or \code{color_by_strat}

@@ -11,8 +11,9 @@
 #' `original_data`, `strat`, and `decay_type` attributes (see
 #' [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
-#' (and, if `connect_lines = TRUE`, lines) are colored by subject; otherwise
-#' no color is used.
+#' (and, if `connect_lines = TRUE`, lines) are colored by subject  unless
+#' `color_by_strat` is specified, in which case stratification
+#' coloring takes precedence.
 #' @param antigen_isos (Optional) Antigen-isotypes (`antigen_iso`) to include.
 #' @param log_y [logical]; if `TRUE` (default), plots the residual computed on
 #' the log10 scale (`log10(observed) - log10(fitted)`); if `FALSE`, plots the
@@ -25,11 +26,13 @@
 #' @param facet_by_strat [character]; facets residual plot and 
 #' calculates MAE by specified stratification variable. Must include the 
 #' original data set if not stratifying by `strat` variable specified in 
-#' `run_serodynamics()`. Default `NULL`.
+#' `run_serodynamics()`. Default `NULL`
 #' @param color_by_strat [character]; colors residual plot by the specified
 #' stratification variable. MAE is not calculated by this variable. Must 
 #' include the original data set if not stratifying by `strat` variable 
-#' specified in `run_serodynamics()`. Default `NULL`.
+#' specified in `run_serodynamics()`. Default `NULL`. When both `ids` and 
+#' `color_by_strat` are supplied, stratification coloring takes precedence
+#' and a warning is issued..
 #' @param original_data [data.frame]; the original dataset fed into 
 #' `run_serodynamics()`. Must be included if `facet_by_strat` or 
 #' `color_by_strat` include a variable that was not specified as `strat` in 
@@ -121,12 +124,19 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # Determine color variable
   # ------------------------------------------------------------
-  if (colored) {
-    color_var <- "Subject"
-    legend_position <- "none"
-  } else if (color_strat) {
+
+  if (colored && color_strat) {
+    warning("Both `ids` and `color_by_strat` were specified. ",
+      "Points will be colored by stratification.",
+      call. = FALSE)
+  }
+  
+  if (color_strat) {
     color_var <- color_by_strat
     legend_position <- "top"
+  } else if (colored) {
+    color_var <- "Subject"
+    legend_position <- "none"
   } else {
     color_var <- NULL
     legend_position <- "none"
