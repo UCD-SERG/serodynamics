@@ -118,5 +118,209 @@ testthat::test_that(
 
     plot_exp <- plot_residuals(model)
     testthat::expect_s3_class(plot_exp, "ggplot")
+    
+    # Testing unstratified call
+    plot1 <- plot_residuals(model = model, antigen_isos = c("HlyE_IgA", 
+                                                            "HlyE_IgG"),
+                            original_data = nepal_sees,
+                            color_by_strat = "bldculres",
+                            connect_lines = TRUE)
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
+    
+    plot_residuals(model = model,
+                   color_by_strat = "bldculres") |>
+      expect_error("Must include `original_data`")
+    
+    
   }
 )
+
+
+testthat::test_that(
+  "plot_residuals() facet_by_strat tests",
+  { # Testing for color
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            connect_lines = TRUE,
+                            facet_by_strat = "bldculres")
+    
+    facet_var <- names(plot1$facet$params$facets)
+    testthat::expect_length(facet_var, 2)
+    testthat::expect_identical(facet_var[2], "bldculres")
+  }
+)
+
+
+testthat::test_that(
+  "plot_residuals() color_by_strat tests",
+  {
+    # Testing for color
+    plot1 <- plot_residuals(model = dataset, antigen_isos = c("HlyE_IgA", 
+                                                              "HlyE_IgG"),
+                            connect_lines = TRUE,
+                            color_by_strat = "bldculres")
+    
+    point_layers <- purrr::keep(plot1$layers, ~ inherits(.x$geom, "GeomPoint"))
+    
+    testthat::expect_length(point_layers, 1)
+    color_var <- rlang::as_label(point_layers[[1]]$mapping$colour)
+    testthat::expect_identical(color_var, "bldculres")
+  }
+)
+
+test_that("get_original_data uses model attribute by default", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  original_data <- attr(model, "original_data")
+  
+  expect_false(is.null(original_data))
+  
+  result <- get_original_data(model)
+  
+  expect_identical(result, original_data)
+})
+
+
+test_that("get_original_data requires original_data for new color stratification", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  expect_snapshot(
+    get_original_data(
+      model,
+      original_data = NULL,
+      strat = "existing_strat",
+      color_strat = TRUE,
+      color_by_strat = "new_strat"
+    ),
+    error = TRUE
+  )
+})
+
+
+test_that("get_original_data requires original_data for new facet stratification", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  expect_error(
+    get_original_data(
+      model,
+      original_data = NULL,
+      strat = "existing_strat",
+      facet_strat = TRUE,
+      facet_by_strat = "new_strat"
+    ),
+    "Must include.*original_data"
+  )
+})
+
+
+test_that("get_original_data accepts supplied data for new stratification", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  original_data <- data.frame(
+    Subject = c("subject_1", "subject_2"),
+    new_strat = c("A", "B")
+  )
+  
+  attr(original_data, "id_var") <- "Subject"
+  
+  result <- get_original_data(
+    model,
+    original_data = original_data,
+    strat = "existing_strat",
+    color_strat = TRUE,
+    color_by_strat = "new_strat"
+  )
+  
+  expect_identical(result, original_data)
+})
+
+
+test_that("get_original_data accepts supplied data for new facet stratification", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  original_data <- data.frame(
+    Subject = c("subject_1", "subject_2"),
+    new_strat = c("A", "B")
+  )
+  
+  attr(original_data, "id_var") <- "Subject"
+  
+  result <- get_original_data(
+    model,
+    original_data = original_data,
+    strat = "existing_strat",
+    facet_strat = TRUE,
+    facet_by_strat = "new_strat"
+  )
+  
+  expect_identical(result, original_data)
+})
+
+
+test_that("get_original_data rejects data without id_var attribute", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  original_data <- data.frame(
+    Subject = c("subject_1", "subject_2"),
+    new_strat = c("A", "B")
+  )
+  
+  expect_error(
+    get_original_data(
+      model,
+      original_data = original_data,
+      strat = "existing_strat",
+      color_strat = TRUE,
+      color_by_strat = "new_strat"
+    ),
+    "has no.*id_var"
+  )
+})
+
+
+test_that("get_original_data rejects missing model original_data", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  attr(model, "original_data") <- NULL
+  
+  expect_error(
+    get_original_data(model),
+    "has no.*original_data.*attribute"
+  )
+})
+
+
+test_that("get_original_data uses model data when no new stratification is needed", {
+  
+  model <- serodynamics::nepal_sees_jags_output
+  
+  supplied_data <- data.frame(
+    Subject = "different_subject",
+    new_strat = "A"
+  )
+  
+  attr(supplied_data, "id_var") <- "Subject"
+  
+  result <- get_original_data(
+    model,
+    original_data = supplied_data,
+    color_strat = FALSE
+  )
+  
+  expect_identical(
+    result,
+    attr(model, "original_data")
+  )
+})

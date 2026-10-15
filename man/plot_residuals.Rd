@@ -10,7 +10,10 @@ plot_residuals(
   antigen_isos = NULL,
   log_y = TRUE,
   show_interval = TRUE,
-  connect_lines = FALSE
+  connect_lines = FALSE,
+  facet_by_strat = NULL,
+  color_by_strat = NULL,
+  original_data = NULL
 )
 }
 \arguments{
@@ -19,8 +22,9 @@ plot_residuals(
 \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
-(and, if \code{connect_lines = TRUE}, lines) are colored by subject; otherwise
-no color is used.}
+(and, if \code{connect_lines = TRUE}, lines) are colored by subject  unless
+\code{color_by_strat} is specified, in which case stratification
+coloring takes precedence.}
 
 \item{antigen_isos}{(Optional) Antigen-isotypes (\code{antigen_iso}) to include.}
 
@@ -34,6 +38,23 @@ visualize the precision of the posterior.}
 
 \item{connect_lines}{\link{logical}; if \code{TRUE}, connects each subject's
 residuals over time with a line. Default \code{FALSE}.}
+
+\item{facet_by_strat}{\link{character}; facets residual plot and
+calculates MAE by specified stratification variable. Must include the
+original data set if not stratifying by \code{strat} variable specified in
+\code{run_serodynamics()}. Default \code{NULL}}
+
+\item{color_by_strat}{\link{character}; colors residual plot by the specified
+stratification variable. MAE is not calculated by this variable. Must
+include the original data set if not stratifying by \code{strat} variable
+specified in \code{run_serodynamics()}. Default \code{NULL}. When both \code{ids} and
+\code{color_by_strat} are supplied, stratification coloring takes precedence
+and a warning is issued..}
+
+\item{original_data}{\link{data.frame}; the original dataset fed into
+\code{run_serodynamics()}. Must be included if \code{facet_by_strat} or
+\code{color_by_strat} include a variable that was not specified as \code{strat} in
+\code{run_serodynamics()}.}
 }
 \value{
 A \link[ggplot2:ggplot]{ggplot2::ggplot} object.
