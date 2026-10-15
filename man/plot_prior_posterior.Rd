@@ -10,71 +10,50 @@ plot_prior_posterior(
   param = NULL,
   strat = NULL,
   distributions = c("Prior", "Population posterior", "Posterior predictive"),
-  predictive_transform = list(y0 = identity, t1 = identity, alpha = identity),
+  n_prior = 10000,
   ncol = 3,
-  linewidth = 0.9
+  seed = 123
 )
 }
 \arguments{
-\item{model}{An \code{sr_model} object returned by \code{\link[=run_mod]{run_mod()}}.
-The object must contain the \code{priors} and \code{population_params}
-attributes and posterior draws for \code{Subject == "newperson"}.}
+\item{model}{An sr_model object returned by run_mod().}
 
-\item{iso}{Optional character vector of antigen/isotypes.
-Defaults to all available antigen/isotypes.}
+\item{iso}{Optional antigen/isotype selection.}
 
-\item{param}{Optional character vector of parameters.
-Options are \code{"y0"}, \code{"y1"}, \code{"t1"}, \code{"shape"}, and \code{"alpha"}.}
+\item{param}{Optional parameter selection.}
 
-\item{strat}{Optional character vector of stratification levels.}
+\item{strat}{Optional stratification selection.}
 
-\item{distributions}{Character vector selecting distributions:
-\code{"Prior"}, \code{"Population posterior"}, and
-\code{"Posterior predictive"}.}
+\item{distributions}{Distributions to include.}
 
-\item{predictive_transform}{Named list of functions mapping
-subject-level predictive draws onto the population-mean
-parameter scale. Identity transformations are used for
-\code{y0}, \code{t1}, and \code{alpha} by default. Explicit transformations
-are required for \code{y1} and \code{shape}.}
+\item{n_prior}{Number of prior Monte Carlo draws.}
 
 \item{ncol}{Number of facet columns.}
 
-\item{linewidth}{Width of density curves.}
+\item{seed}{Random seed for prior simulation.}
 }
 \value{
-A \code{ggplot2} object with one panel per parameter,
-antigen/isotype, and stratification.
+A ggplot object.
 }
 \description{
-Compares the prior distribution for the population mean,
-the population-level posterior, and the posterior predictive
-distribution for a new individual.
+Overlays prior, population-level posterior, and posterior
+predictive distributions for serodynamics model parameters.
+All distributions are shown on the original parameter scale.
 }
 \details{
-Priors are Normal distributions with mean \code{mu_hyp_param}
-and precision \code{prec_hyp_param}. They describe uncertainty
-in the population mean, not variation among individuals.
+Population parameters use the transformations:
 
-Population posterior draws come from \code{mu.par}.
-Predictive draws come from the modeled \code{"newperson"}.
+log(y0), log(y1 - y0), log(t1),
+log(alpha), and log(shape - 1).
 
-All distributions are displayed on the population-mean
-parameter scale. Because some subject-level parameters
-are transformed by the model, transformations must be
-verified against the JAGS model before comparison.
+The corresponding original-scale parameters are:
 
-The function uses the exact Normal prior density, rather
-than Monte Carlo samples from that prior.
-}
-\examples{
-\dontrun{
-data(nepal_sees_jags_output, package = "serodynamics")
+y0 = exp(mu1)
+y1 = exp(mu1) + exp(mu2)
+t1 = exp(mu3)
+alpha = exp(mu4)
+shape = 1 + exp(mu5)
 
-plot_prior_posterior(
-  nepal_sees_jags_output,
-  param = "y0"
-)
-}
-
+Prior population means are sampled independently from
+Normal(mu_hyp_param, 1 / prec_hyp_param).
 }
