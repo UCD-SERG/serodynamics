@@ -186,13 +186,10 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # Faceting
   # ------------------------------------------------------------
-  facet_vars <- if (facet_strat) {
-    ggplot2::vars(.data$Iso_type, .data[[facet_by_strat]])
-  } else {
-    ggplot2::vars(.data$Iso_type)
-  }
   p <- p +
-    ggplot2::facet_wrap(facet_vars) 
+    ggplot2::facet_wrap(
+      c("Iso_type", facet_by_strat)
+    )
   
   # ------------------------------------------------------------
   # MAE labels
