@@ -158,27 +158,29 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
   # Points
   # ------------------------------------------------------------
-  if (!is.null(color_var)) {
-    p <- p +
-      ggplot2::geom_point(ggplot2::aes(color = .data[[color_var]]),
-                          alpha = 0.6)
+  color_aes <- if (is.null(color_var)) {
+    ggplot2::aes(group = Subject)
   } else {
-    p <- p +
-      ggplot2::geom_point(alpha = 0.6)
+    ggplot2::aes(
+      color = .data[[color_var]],
+      group = Subject)
   }
   
+  # Add points
+  p <- p +
+    ggplot2::geom_point(
+      mapping = color_aes,
+      alpha = 0.6
+    )
   # ------------------------------------------------------------
   # Connecting lines
   # ------------------------------------------------------------
   if (connect_lines) {
-    if (!is.null(color_var)) {
-      p <- p +
-        ggplot2::geom_line(ggplot2::aes(color = !!rlang::sym(color_var)),
-                           alpha = 0.5)
-    } else {
-      p <- p + 
-        ggplot2::geom_line(alpha = 0.5)
-    }
+    p <- p +
+      ggplot2::geom_line(
+        mapping = color_aes,
+        alpha = 0.5
+      )
   }
   
   # ------------------------------------------------------------
