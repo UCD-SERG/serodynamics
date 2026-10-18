@@ -134,7 +134,9 @@ prior_predict <- function(
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
-  log_x = FALSE) {
+  log_x = FALSE,
+  noise = FALSE
+  ...) {
   
   type <- match.arg(type)
   n_params <- 5L
@@ -149,6 +151,12 @@ prior_predict <- function(
                                             prec_logy_hyp_param,
                                           n = n,
                                           n_params = n_params)
+  
+  # Use the same prior preparation as model fitting.
+  pr <- prep_priors(
+    max_antigens = 1,
+    ...
+  )
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
