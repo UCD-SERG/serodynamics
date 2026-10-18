@@ -1,0 +1,30 @@
+# serodynamics: Modeling Antibody Dynamics for Seroepidemiologic Analysis
+
+Modeling longitudinal immune seroresponses to pathogens.
+
+## See also
+
+Useful links:
+
+- <https://github.com/UCD-SERG/serodynamics>
+
+- <https://ucd-serg.github.io/serodynamics/>
+
+- Report bugs at <https://github.com/UCD-SERG/serodynamics/issues>
+
+## Author
+
+**Maintainer**: Samuel Schildhauer <sschildhauer@ucdavis.edu>
+
+Authors:
+
+- Samuel Schildhauer <sschildhauer@ucdavis.edu>
+
+- Peter Teunis <p.teunis@emory.edu> (Author of the method and original
+  code.) \[copyright holder\]
+
+- Kwan Ho Lee <ksjlee@ucdavis.edu>
+
+- Kristen Aiemjoy <kaiemjoy@ucdavis.edu>
+
+- Douglas Ezra Morrison <demorrison@ucdavis.edu>
