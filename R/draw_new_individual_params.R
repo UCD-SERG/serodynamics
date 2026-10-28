@@ -24,7 +24,9 @@
 #'   as attached to the output of [run_serodynamics()]
 #'   when `with_pop_params = TRUE`.
 #' @param n_draws Optional number of posterior draws to use
-#'   from each isotype and stratification group.
+#'   from each isotype and stratification group,
+#'   chosen at random with [dplyr::slice_sample()].
+#'   Call [set.seed()] first for a reproducible subset.
 #'   The default uses every draw.
 #' @param call The calling environment, for error reporting.
 #'
