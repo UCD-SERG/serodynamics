@@ -277,7 +277,7 @@ plot_prior_posterior <- function(
     )
   ) +
     geom_density(
-      linewidth = 0.7,
+      linewidth = 0.5,
       na.rm = TRUE,
       alpha = 0.6
     ) +
