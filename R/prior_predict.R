@@ -10,9 +10,9 @@
 #' 
 #' Prior draws are generated hierarchically. At the highest level,
 #' hyperparameters define the distribution of the latent model parameters on 
-#' the log scale. Specifically, `mu_hyp_param` describes the prior distribution 
+#' the log scale. Specifically, `mu_hyp` describes the prior distribution 
 #' governing the location `log(mean)` of each latent parameter, while 
-#' `prec_hyp_param` describes the prior distribution governing its precision. 
+#' `prec_hyp` describes the prior distribution governing its precision. 
 #' Draws from these distributions determine the corresponding parameter-level 
 #' distribution, from which the latent parameter vector \eqn{\mathrm{par}} is 
 #' sampled.
@@ -59,24 +59,16 @@
 #' range of transformed parameter values supported by the prior specification. 
 #' Trajectory plots show how uncertainty in the prior distributions 
 #' affect the model's predicted seroresponse.
-#'
-#' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
-#' mean on the log scale for the population level parameters 
-#' (y0, y1, t1, alpha, r) for each  biomarker. Will be 5 values long 
-#' specified by the user, representing the following parameters:
-#'    - y0 = baseline antibody concentration
-#'    - y1 = peak antibody concentration
-#'    - t1 = time to peak
-#'    - alpha = decay rate 
-#'    - r = shape parameter
-#' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
-#' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-#' representing prior covariance of uncertainty around `mu_hyp_param`.
-#' @param omega_param A [numeric] [vector] of 5 values corresponding to the
-#' diagonal entries representing the Wishart hyperprior
-#' distributions of `prec_hyp_param`, describing how much we expect parameters
-#' to vary between individuals.
-#' @inheritParams prep_priors wishdf_param prec_logy_hyp_param
+#' 
+#' @inheritDotParams prep_priors
+#' @param noise Logical. If `TRUE`, simulate observations by
+#'   adding independent Normal observation error on the log
+#'   antibody scale. If `FALSE` (default), plot the latent
+#'   antibody trajectories without observation error.
+#' @param decay_type Character. Antibody decay model used
+#'   to generate trajectories. Defaults to `"power"`.
+#'   Supported values must match the antibody kinetics
+#'   function used internally.
 #' @param n Number of prior draws. Default is 1000.
 #' @param type Character string specifying the output visualization.
 #'   `"curves"` plots prior-predictive antibody trajectories and `"density"`
@@ -124,48 +116,54 @@
 #' )
 #' }
 
+
 prior_predict <- function(
-  mu_hyp_param = NULL,
-  prec_hyp_param = NULL,
-  omega_param = NULL,
-  wishdf_param = NULL,
-  prec_logy_hyp_param = NULL,
-  n = 1000,
-  type = c("curves", "density"),
-  time = seq(0, 200, length.out = 200),
-  log_y = FALSE,
-  log_x = FALSE,
-  noise = FALSE
-  ...) {
+    ...,
+    n = 1000,
+    type = c("curves", "density"),
+    time = seq(0, 200, length.out = 200),
+    log_y = FALSE,
+    log_x = FALSE,
+    noise = FALSE,
+    decay_type = "power") {
   
   type <- match.arg(type)
   n_params <- 5L
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
-  priors <- validate_prior_predict_inputs(mu_hyp_param = mu_hyp_param,
-                                          prec_hyp_param = prec_hyp_param,
-                                          omega_param = omega_param,
-                                          wishdf_param = wishdf_param,
-                                          prec_logy_hyp_param = 
-                                            prec_logy_hyp_param,
-                                          n = n,
-                                          n_params = n_params)
-  
+
   # Use the same prior preparation as model fitting.
   pr <- prep_priors(
     max_antigens = 1,
     ...
   )
   
+  mu_hyp <- pr$mu.hyp[1, ]
+  prec_hyp <- pr$prec.hyp[1, , ]
+  omega <- pr$omega[1, , ]
+  wishdf <- pr$wishdf
+  prec_logy_hyp <- pr$prec.logy.hyp[1, ]
+  
+  validate_prior_predict_inputs(mu_hyp = mu_hyp,
+                                prec_hyp = prec_hyp,
+                                omega = omega,
+                                prec_logy_hyp = prec_logy_hyp,
+                                wishdf = wishdf,
+                                n = n,
+                                n_params = n_params,
+                                noise = noise,
+                                time = time)
+  
+  
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
   ## ---------------------------------------------------------
   # Turning precision matrix into covariance matrix
-  mu_cov <- diag(1 / prec_hyp_param)
+  mu_cov <- diag(1 / prec_hyp)
   
   # Inverting omega precision matrix to covariance matrix
-  wishart_scale <- solve(diag(omega_param))
+  wishart_scale <- solve(diag(omega))
   # Creating empty matrix to store subject level parameter draws
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))
@@ -174,10 +172,10 @@ prior_predict <- function(
   for (i in seq_len(n)) {
     # Drawing population level means using multivariate normal. Represents
     # one possible set of population means. Still on log scale.
-    mu_i <- MASS::mvrnorm(n = 1, mu = mu_hyp_param, Sigma = mu_cov)
+    mu_i <- MASS::mvrnorm(n = 1, mu = mu_hyp, Sigma = mu_cov)
     # Samples 5x5 precision matrix. Variability among individuals and c
     # correlation among parameters. 
-    prec_i <- stats::rWishart(n = 1, df = wishdf_param, Sigma = wishart_scale
+    prec_i <- stats::rWishart(n = 1, df = wishdf, Sigma = wishart_scale
     )[, , 1]
     # Draws an individual. Integrates population variability and between 
     # subject variability.
@@ -187,8 +185,8 @@ prior_predict <- function(
   }
   
   ## Observation precision
-  prec_logy <- stats::rgamma(n, shape = prec_logy_hyp_param[1],
-                             rate = prec_logy_hyp_param[2])
+  prec_logy <- stats::rgamma(n, shape = prec_logy_hyp[1],
+                             rate = prec_logy_hyp[2])
   # Converting precision to sd
   sigma_logy <- sqrt(1 / prec_logy)
   
@@ -250,43 +248,73 @@ prior_predict <- function(
     plot_data <- density_data
   }
   
-  ## ---------------------------------------------------------
-  ## Plot prior predictive antibody curves
-  ## ---------------------------------------------------------
+  # ---------------------------------------------------------
+  # Prior predictive antibody curves
+  # ---------------------------------------------------------
   
   if (type == "curves") {
-    curve_data <- lapply(seq_len(n),
-      function(i) {
-        tt <- time
+    
+    curve_data <- lapply(seq_len(n), function(i) {
+      
+      tt <- time
+      
+      # Noise-free biological trajectory
+      antibody <- ab(
+        t = tt,
+        y0 = y0[i],
+        y1 = y1[i],
+        t1 = t1[i],
+        alpha = alpha[i],
+        shape = shape[i],
+        decay_type = decay_type
+      )
+      
+      # Simulated observations on the log scale
+      if (noise) {
         
-        antibody <- ab(
-          t = tt,
-          y0 = y0[i],
-          y1 = y1[i],
-          t1 = t1[i],
-          alpha = alpha[i],
-          shape = shape[i],
-          decay_type = "power"
-        )
-        data.frame(draw = i, time = tt, antibody = antibody)
+        if (any(!is.finite(antibody)) ||
+            any(antibody <= 0)) {
+          cli::cli_abort(
+            "Observation noise requires positive, finite
+            antibody trajectories."
+          )
+        }
+        
+        antibody <- exp(
+          log(antibody) +
+            stats::rnorm(length(tt), mean = 0, sd = sigma_logy[i]))
       }
-    )
+      
+      data.frame(draw = i, time = tt, antibody = antibody)
+    })
     curve_data <- do.call(rbind, curve_data)
-    # Checking to see if non-finite values were created
     finite <- is.finite(curve_data$antibody)
     
     if (any(!finite)) {
-      cli::cli_warn("{sum(!finite)} prior-predictive values were non-finite and 
-      were omitted from the plot.")
-      curve_data <- curve_data[finite, , drop = FALSE]
+      cli::cli_warn(
+        "{sum(!finite)} prior-predictive values were
+        non-finite and were omitted from the plot."
+      )
+      
+      curve_data <- curve_data[
+        finite, ,
+        drop = FALSE
+      ]
     }
     
-    plot <- ggplot2::ggplot(curve_data,
-                            ggplot2::aes(x = .data$time, y = .data$antibody, 
-                                         group = .data$draw)) +
+    plot <- ggplot2::ggplot(
+      curve_data,
+      ggplot2::aes(x = .data$time, y = .data$antibody, group = .data$draw)) +
       ggplot2::geom_line(alpha = 0.08) +
-      ggplot2::labs(x = "Time", y = "Antibody level",
-                    title = "Prior predictive antibody trajectories") +
+      ggplot2::labs(
+        x = "Time",
+        y = "Antibody level",
+        title = if (noise) {
+          "Prior predictive observations"
+        } else {
+          "Prior biological trajectories"
+        }
+      ) +
       ggplot2::theme_bw()
     if (log_y) {
       plot <- plot +
@@ -295,11 +323,12 @@ prior_predict <- function(
     plot_data <- curve_data
   }
   
-  ## ---------------------------------------------------------
-  ## Construct S3 object
-  ## ---------------------------------------------------------
+  # ---------------------------------------------------------
+  # Construct S3 object
+  # ---------------------------------------------------------
+  
   out <- list(plot = plot, draws = draws, plot_data = plot_data,
-              type = type, priors = priors)
+    type = type, priors = pr)
   class(out) <- "serodynamics_prior_predict"
   attr(out, "prior_summary") <- prior_summary
   out
