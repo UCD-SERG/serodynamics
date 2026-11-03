@@ -118,14 +118,14 @@
 
 
 prior_predict <- function(
-    ...,
-    n = 1000,
-    type = c("curves", "density"),
-    time = seq(0, 200, length.out = 200),
-    log_y = FALSE,
-    log_x = FALSE,
-    noise = FALSE,
-    decay_type = "power") {
+  ...,
+  n = 1000,
+  type = c("curves", "density"),
+  time = seq(0, 200, length.out = 200),
+  log_y = FALSE,
+  log_x = FALSE,
+  noise = FALSE,
+  decay_type = "power") {
   
   type <- match.arg(type)
   n_params <- 5L
@@ -273,16 +273,16 @@ prior_predict <- function(
       if (noise) {
         
         if (any(!is.finite(antibody)) ||
-            any(antibody <= 0)) {
+              any(antibody <= 0)) {
           cli::cli_abort(
             "Observation noise requires positive, finite
             antibody trajectories."
           )
         }
         
-        antibody <- exp(
-          log(antibody) +
-            stats::rnorm(length(tt), mean = 0, sd = sigma_logy[i]))
+        antibody <- exp(log(antibody) +
+                          stats::rnorm(length(tt), mean = 0, 
+                                       sd = sigma_logy[i]))
       }
       
       data.frame(draw = i, time = tt, antibody = antibody)
@@ -302,9 +302,9 @@ prior_predict <- function(
       ]
     }
     
-    plot <- ggplot2::ggplot(
-      curve_data,
-      ggplot2::aes(x = .data$time, y = .data$antibody, group = .data$draw)) +
+    plot <- ggplot2::ggplot(curve_data,
+                            ggplot2::aes(x = .data$time, y = .data$antibody, 
+                                         group = .data$draw)) +
       ggplot2::geom_line(alpha = 0.08) +
       ggplot2::labs(
         x = "Time",
@@ -327,8 +327,8 @@ prior_predict <- function(
   # Construct S3 object
   # ---------------------------------------------------------
   
-  out <- list(plot = plot, draws = draws, plot_data = plot_data,
-    type = type, priors = pr)
+  out <- list(plot = plot, draws = draws, plot_data = plot_data, 
+              type = type, priors = pr)
   class(out) <- "serodynamics_prior_predict"
   attr(out, "prior_summary") <- prior_summary
   out
