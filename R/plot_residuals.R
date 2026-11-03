@@ -126,9 +126,8 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
 
   if (colored && color_strat) {
-    warning("Both `ids` and `color_by_strat` were specified. ",
-      "Points will be colored by stratification.",
-      call. = FALSE)
+    cli::cli_warn("Both `ids` and `color_by_strat` were specified. ",
+                  "Points will be colored by stratification.")
   }
   
   if (color_strat) {
@@ -159,11 +158,10 @@ plot_residuals <- function(model,
   # Points
   # ------------------------------------------------------------
   color_aes <- if (is.null(color_var)) {
-    ggplot2::aes(group = Subject)
+    ggplot2::aes(group = .data$Subject)
   } else {
-    ggplot2::aes(
-      color = .data[[color_var]],
-      group = Subject)
+    ggplot2::aes(color = .data[[color_var]],
+                 group = .data$Subject)
   }
   
   # Add points
@@ -195,10 +193,11 @@ plot_residuals <- function(model,
   # MAE labels
   # ------------------------------------------------------------
   p <- p +
-    ggplot2::geom_text(
-      data = mae_label_data(to_plot, facet_by_strat),
-      mapping = ggplot2::aes(x = Inf, y = Inf, label = .data$label),
-      hjust = 1.1, vjust = 1.5, size = 3.2, inherit.aes = FALSE) 
+    ggplot2::geom_text(data = mae_label_data(to_plot, facet_by_strat),
+                       mapping = ggplot2::aes(x = Inf, y = Inf, 
+                                              label = .data$label),
+                       hjust = 1.1, vjust = 1.5, size = 3.2, 
+                       inherit.aes = FALSE) 
     
   # ------------------------------------------------------------
   # Theme
