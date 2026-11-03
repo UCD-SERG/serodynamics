@@ -80,7 +80,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("`mu_hyp_param` must have")
+    expect_error("Need to specify 5")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -89,7 +89,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("`prec_hyp_param` must have")
+    expect_error("Need to specify 5 priors for `prec_hyp_param`")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -98,7 +98,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("`omega_param` must have")
+    expect_error("Need to specify 5 priors for `omega_param`")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -107,7 +107,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = ,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("Missing: wish")
+    expect_error("Need to specify 1 prior for `wishdf_param`")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -116,7 +116,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4)
   ) |>
-    expect_error("`prec_logy_hyp_param` must contain")
+    expect_error("Need to specify 2 priors for `prec_logy_hyp_param`")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -125,7 +125,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4)
   ) |>
-    expect_error("All values of `prec_hyp_param`")
+    expect_error("Need to specify 2 priors for `prec_logy_hyp_param`")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
@@ -134,7 +134,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1)
   ) |>
-    expect_error("All values of `prec_hyp_param`")
+    expect_error("Invalid prepared population-mean priors")
   
   prior_predict(
     mu_hyp_param = c(0.5, 5, 2, -3, -3),
