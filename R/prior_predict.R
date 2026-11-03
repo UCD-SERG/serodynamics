@@ -160,10 +160,10 @@ prior_predict <- function(
   ## Draw from hierarchical priors
   ## ---------------------------------------------------------
   # Turning precision matrix into covariance matrix
-  mu_cov <- diag(1 / prec_hyp)
+  mu_cov <- solve(prec_hyp)
   
   # Inverting omega precision matrix to covariance matrix
-  wishart_scale <- solve(diag(omega))
+  wishart_scale <- solve(omega)
   # Creating empty matrix to store subject level parameter draws
   par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
   colnames(par_draws) <- paste0("par", seq_len(n_params))

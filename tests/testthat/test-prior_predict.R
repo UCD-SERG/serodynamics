@@ -147,3 +147,5 @@ test_that("Omitting inputs for errors", {
     expect_error("`n` must be a positive")
   
 })
+
+
