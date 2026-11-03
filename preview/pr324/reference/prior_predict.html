@@ -8,9 +8,9 @@ whether the specified priors imply biologically or scientifically plausible
 parameter values and model trajectories.
 Prior draws are generated hierarchically. At the highest level,
 hyperparameters define the distribution of the latent model parameters on
-the log scale. Specifically, mu_hyp_param describes the prior distribution
+the log scale. Specifically, mu_hyp describes the prior distribution
 governing the location log(mean) of each latent parameter, while
-prec_hyp_param describes the prior distribution governing its precision.
+prec_hyp describes the prior distribution governing its precision.
 Draws from these distributions determine the corresponding parameter-level
 distribution, from which the latent parameter vector \(\mathrm{par}\) is
 sampled.
@@ -55,9 +55,9 @@ whether the specified priors imply biologically or scientifically plausible
 parameter values and model trajectories.
 Prior draws are generated hierarchically. At the highest level,
 hyperparameters define the distribution of the latent model parameters on
-the log scale. Specifically, mu_hyp_param describes the prior distribution
+the log scale. Specifically, mu_hyp describes the prior distribution
 governing the location log(mean) of each latent parameter, while
-prec_hyp_param describes the prior distribution governing its precision.
+prec_hyp describes the prior distribution governing its precision.
 Draws from these distributions determine the corresponding parameter-level
 distribution, from which the latent parameter vector \(\mathrm{par}\) is
 sampled.
@@ -149,9 +149,9 @@ whether the specified priors imply biologically or scientifically plausible
 parameter values and model trajectories.</p>
 <p>Prior draws are generated hierarchically. At the highest level,
 hyperparameters define the distribution of the latent model parameters on
-the log scale. Specifically, <code>mu_hyp_param</code> describes the prior distribution
+the log scale. Specifically, <code>mu_hyp</code> describes the prior distribution
 governing the location <code>log(mean)</code> of each latent parameter, while
-<code>prec_hyp_param</code> describes the prior distribution governing its precision.
+<code>prec_hyp</code> describes the prior distribution governing its precision.
 Draws from these distributions determine the corresponding parameter-level
 distribution, from which the latent parameter vector \(\mathrm{par}\) is
 sampled.</p>
@@ -193,16 +193,14 @@ affect the model's predicted seroresponse.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">prior_predict</span><span class="op">(</span></span>
-<span>  mu_hyp_param <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  prec_hyp_param <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  omega_param <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  wishdf_param <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  prec_logy_hyp_param <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">1000</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"curves"</span>, <span class="st">"density"</span><span class="op">)</span>,</span>
 <span>  time <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">200</span>, length.out <span class="op">=</span> <span class="fl">200</span><span class="op">)</span>,</span>
 <span>  log_y <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  log_x <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span>  log_x <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  noise <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  decay_type <span class="op">=</span> <span class="st">"power"</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -210,32 +208,41 @@ affect the model's predicted seroresponse.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-mu-hyp-param">mu_hyp_param<a class="anchor" aria-label="anchor" href="#arg-mu-hyp-param"></a></dt>
+<dl><dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>Arguments passed on to <code><a href="prep_priors.html">prep_priors</a></code></p><dl><dt><code>max_antigens</code></dt>
+<dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> specifying how many
+antigen-isotypes (biomarkers) will be modeled.</p></dd>
+
+    <dt><code>mu_hyp_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values representing the prior
-mean on the log scale for the population level parameters
-(y0, y1, t1, alpha, r) for each  biomarker. Will be 5 values long
+mean for the population level parameters
+parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
 specified by the user, representing the following parameters:</p><ul><li><p>y0 = baseline antibody concentration</p></li>
 <li><p>y1 = peak antibody concentration</p></li>
 <li><p>t1 = time to peak</p></li>
 <li><p>alpha = decay rate</p></li>
-<li><p>r = shape parameter</p></li>
+<li><p>r = shape parameter (If running <code>decay_type == "exponential"</code> no shape
+parameter needs to be specified).
+When <code>decay_type = "exponential"</code> only 4 parameters (y0, y1, t1, alpha) are
+used.</p></li>
 </ul></dd>
 
-
-<dt id="arg-prec-hyp-param">prec_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-hyp-param"></a></dt>
+    <dt><code>prec_hyp_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to
 hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior covariance of uncertainty around <code>mu_hyp_param</code>.</p></dd>
+representing prior covariance of uncertainty around <code>mu_hyp_param</code>.
+Will be 5 values long corresponding to the 5 estimated parameters
+(4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
-
-<dt id="arg-omega-param">omega_param<a class="anchor" aria-label="anchor" href="#arg-omega-param"></a></dt>
+    <dt><code>omega_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 5 values corresponding to the
 diagonal entries representing the Wishart hyperprior
 distributions of <code>prec_hyp_param</code>, describing how much we expect parameters
-to vary between individuals.</p></dd>
+to vary between individuals.
+Will be 5 values long corresponding to the 5 estimated parameters
+(4 values when <code>decay_type = "exponential"</code>).</p></dd>
 
-
-<dt id="arg-wishdf-param">wishdf_param<a class="anchor" aria-label="anchor" href="#arg-wishdf-param"></a></dt>
+    <dt><code>wishdf_param</code></dt>
 <dd><p>An <a href="https://rdrr.io/r/base/integer.html" class="external-link">integer</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 1 value specifying the degrees
 of freedom for the Wishart hyperprior distribution of <code>prec_hyp_param</code>.
 Must be 1 value long.</p><ul><li><p>The value of <code>wishdf_param</code> controls how informative the Wishart prior
@@ -244,12 +251,14 @@ Lower values (e.g., 5–10) make the prior more weakly informative,
 which can help improve convergence if the model is over-regularized.</p></li>
 </ul></dd>
 
-
-<dt id="arg-prec-logy-hyp-param">prec_logy_hyp_param<a class="anchor" aria-label="anchor" href="#arg-prec-logy-hyp-param"></a></dt>
+    <dt><code>prec_logy_hyp_param</code></dt>
 <dd><p>A <a href="https://rdrr.io/r/base/numeric.html" class="external-link">numeric</a> <a href="https://rdrr.io/r/base/vector.html" class="external-link">vector</a> of 2 values corresponding to
 hyperprior diagonal entries on the log-scale for the precision matrix
 (i.e. inverse variance) representing prior beliefs of individual variation.
 Must be 2 values long.</p></dd>
+
+
+</dl></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -278,6 +287,20 @@ Default is <code>FALSE</code>.</p></dd>
 <dd><p>Logical. If <code>TRUE</code>, parameter densities are
 displayed on a log10 x-axis. Only applies when <code>type = "density"</code>.
 Default is <code>FALSE</code>.</p></dd>
+
+
+<dt id="arg-noise">noise<a class="anchor" aria-label="anchor" href="#arg-noise"></a></dt>
+<dd><p>Logical. If <code>TRUE</code>, simulate observations by
+adding independent Normal observation error on the log
+antibody scale. If <code>FALSE</code> (default), plot the latent
+antibody trajectories without observation error.</p></dd>
+
+
+<dt id="arg-decay-type">decay_type<a class="anchor" aria-label="anchor" href="#arg-decay-type"></a></dt>
+<dd><p>Character. Antibody decay model used
+to generate trajectories. Defaults to <code>"power"</code>.
+Supported values must match the antibody kinetics
+function used internally.</p></dd>
 
 </dl></div>
     <div class="section level2">

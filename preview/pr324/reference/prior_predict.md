@@ -10,10 +10,10 @@ model trajectories.
 
 Prior draws are generated hierarchically. At the highest level,
 hyperparameters define the distribution of the latent model parameters
-on the log scale. Specifically, `mu_hyp_param` describes the prior
+on the log scale. Specifically, `mu_hyp` describes the prior
 distribution governing the location `log(mean)` of each latent
-parameter, while `prec_hyp_param` describes the prior distribution
-governing its precision. Draws from these distributions determine the
+parameter, while `prec_hyp` describes the prior distribution governing
+its precision. Draws from these distributions determine the
 corresponding parameter-level distribution, from which the latent
 parameter vector \\\mathrm{par}\\ is sampled.
 
@@ -50,75 +50,91 @@ distributions affect the model's predicted seroresponse.
 
 ``` r
 prior_predict(
-  mu_hyp_param = NULL,
-  prec_hyp_param = NULL,
-  omega_param = NULL,
-  wishdf_param = NULL,
-  prec_logy_hyp_param = NULL,
+  ...,
   n = 1000,
   type = c("curves", "density"),
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
-  log_x = FALSE
+  log_x = FALSE,
+  noise = FALSE,
+  decay_type = "power"
 )
 ```
 
 ## Arguments
 
-- mu_hyp_param:
+- ...:
 
-  A [numeric](https://rdrr.io/r/base/numeric.html)
-  [vector](https://rdrr.io/r/base/vector.html) of 5 values representing
-  the prior mean on the log scale for the population level parameters
-  (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
-  specified by the user, representing the following parameters:
+  Arguments passed on to
+  [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr324/reference/prep_priors.md)
 
-  - y0 = baseline antibody concentration
+  `max_antigens`
 
-  - y1 = peak antibody concentration
+  :   An [integer](https://rdrr.io/r/base/integer.html) specifying how
+      many antigen-isotypes (biomarkers) will be modeled.
 
-  - t1 = time to peak
+  `mu_hyp_param`
 
-  - alpha = decay rate
+  :   A [numeric](https://rdrr.io/r/base/numeric.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 5 values
+      representing the prior mean for the population level parameters
+      parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5
+      values long specified by the user, representing the following
+      parameters:
 
-  - r = shape parameter
+      - y0 = baseline antibody concentration
 
-- prec_hyp_param:
+      - y1 = peak antibody concentration
 
-  A [numeric](https://rdrr.io/r/base/numeric.html)
-  [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
-  to hyperprior diagonal entries for the precision matrix (i.e. inverse
-  variance) representing prior covariance of uncertainty around
-  `mu_hyp_param`.
+      - t1 = time to peak
 
-- omega_param:
+      - alpha = decay rate
 
-  A [numeric](https://rdrr.io/r/base/numeric.html)
-  [vector](https://rdrr.io/r/base/vector.html) of 5 values corresponding
-  to the diagonal entries representing the Wishart hyperprior
-  distributions of `prec_hyp_param`, describing how much we expect
-  parameters to vary between individuals.
+      - r = shape parameter (If running `decay_type == "exponential"` no
+        shape parameter needs to be specified). When
+        `decay_type = "exponential"` only 4 parameters (y0, y1, t1,
+        alpha) are used.
 
-- wishdf_param:
+  `prec_hyp_param`
 
-  An [integer](https://rdrr.io/r/base/integer.html)
-  [vector](https://rdrr.io/r/base/vector.html) of 1 value specifying the
-  degrees of freedom for the Wishart hyperprior distribution of
-  `prec_hyp_param`. Must be 1 value long.
+  :   A [numeric](https://rdrr.io/r/base/numeric.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 5 values
+      corresponding to hyperprior diagonal entries for the precision
+      matrix (i.e. inverse variance) representing prior covariance of
+      uncertainty around `mu_hyp_param`. Will be 5 values long
+      corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
-  - The value of `wishdf_param` controls how informative the Wishart
-    prior is. Higher values lead to tighter priors on individual
-    variation. Lower values (e.g., 5–10) make the prior more weakly
-    informative, which can help improve convergence if the model is
-    over-regularized.
+  `omega_param`
 
-- prec_logy_hyp_param:
+  :   A [numeric](https://rdrr.io/r/base/numeric.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 5 values
+      corresponding to the diagonal entries representing the Wishart
+      hyperprior distributions of `prec_hyp_param`, describing how much
+      we expect parameters to vary between individuals. Will be 5 values
+      long corresponding to the 5 estimated parameters (4 values when
+      `decay_type = "exponential"`).
 
-  A [numeric](https://rdrr.io/r/base/numeric.html)
-  [vector](https://rdrr.io/r/base/vector.html) of 2 values corresponding
-  to hyperprior diagonal entries on the log-scale for the precision
-  matrix (i.e. inverse variance) representing prior beliefs of
-  individual variation. Must be 2 values long.
+  `wishdf_param`
+
+  :   An [integer](https://rdrr.io/r/base/integer.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 1 value specifying
+      the degrees of freedom for the Wishart hyperprior distribution of
+      `prec_hyp_param`. Must be 1 value long.
+
+      - The value of `wishdf_param` controls how informative the Wishart
+        prior is. Higher values lead to tighter priors on individual
+        variation. Lower values (e.g., 5–10) make the prior more weakly
+        informative, which can help improve convergence if the model is
+        over-regularized.
+
+  `prec_logy_hyp_param`
+
+  :   A [numeric](https://rdrr.io/r/base/numeric.html)
+      [vector](https://rdrr.io/r/base/vector.html) of 2 values
+      corresponding to hyperprior diagonal entries on the log-scale for
+      the precision matrix (i.e. inverse variance) representing prior
+      beliefs of individual variation. Must be 2 values long.
 
 - n:
 
@@ -146,6 +162,18 @@ prior_predict(
 
   Logical. If `TRUE`, parameter densities are displayed on a log10
   x-axis. Only applies when `type = "density"`. Default is `FALSE`.
+
+- noise:
+
+  Logical. If `TRUE`, simulate observations by adding independent Normal
+  observation error on the log antibody scale. If `FALSE` (default),
+  plot the latent antibody trajectories without observation error.
+
+- decay_type:
+
+  Character. Antibody decay model used to generate trajectories.
+  Defaults to `"power"`. Supported values must match the antibody
+  kinetics function used internally.
 
 ## Value
 
