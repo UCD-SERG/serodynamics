@@ -126,8 +126,10 @@ plot_residuals <- function(model,
   # ------------------------------------------------------------
 
   if (colored && color_strat) {
-    cli::cli_warn("Both `ids` and `color_by_strat` were specified. ",
-                  "Points will be colored by stratification.")
+    cli::cli_warn(c(
+      "Both {.arg ids} and {.arg color_by_strat} were specified.",
+      "i" = "Points will be colored by stratification."
+    ))
   }
   
   if (color_strat) {
