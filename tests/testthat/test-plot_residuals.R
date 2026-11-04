@@ -86,7 +86,7 @@ testthat::test_that(
       color_by_strat = "bldculres"
     ) |>
       expect_warning("Both `ids` and `color_by_strat` were specified.")
-    }
+  }
 )
 
 testthat::test_that(
@@ -200,7 +200,7 @@ test_that("get_original_data uses model attribute by default", {
 })
 
 
-test_that("get_original_data requires original_data for new color stratification", {
+test_that("get_original_data requires original_data for new color strat", {
   
   model <- serodynamics::nepal_sees_jags_output
   
@@ -217,7 +217,7 @@ test_that("get_original_data requires original_data for new color stratification
 })
 
 
-test_that("get_original_data requires original_data for new facet stratification", {
+test_that("get_original_data requires original_data for new facet strat", {
   
   model <- serodynamics::nepal_sees_jags_output
   
@@ -257,7 +257,7 @@ test_that("get_original_data accepts supplied data for new stratification", {
 })
 
 
-test_that("get_original_data accepts supplied data for new facet stratification", {
+test_that("get_original_data accepts supplied data for new facet strat", {
   
   model <- serodynamics::nepal_sees_jags_output
   
@@ -315,7 +315,7 @@ test_that("get_original_data rejects missing model original_data", {
 })
 
 
-test_that("get_original_data uses model data when no new stratification is needed", {
+test_that("get_original_data uses model data when no new strat is needed", {
   
   model <- serodynamics::nepal_sees_jags_output
   
