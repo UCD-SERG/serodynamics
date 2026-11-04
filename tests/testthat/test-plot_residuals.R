@@ -77,6 +77,19 @@ testthat::test_that(
 )
 
 testthat::test_that(
+  "plot_residuals() gives warning when id and facet supplied",
+  {
+   
+    plot_residuals(
+      model = dataset,
+      ids = c("sees_npl_128", "sees_npl_131"),
+      color_by_strat = "bldculres"
+    ) |>
+      expect_warning("Both `ids` and `color_by_strat` were specified.")
+    }
+)
+
+testthat::test_that(
   "plot_residuals() uses decay_type = 'exponential' from run_serodynamics()",
   {
     testthat::skip_on_cran()
