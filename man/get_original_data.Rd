@@ -41,7 +41,7 @@ and a warning is issued..}
 \item{facet_by_strat}{\link{character}; facets residual plot and
 calculates MAE by specified stratification variable. Must include the
 original data set if not stratifying by \code{strat} variable specified in
-\code{run_serodynamics()}. Default \code{NULL}}
+\code{run_serodynamics()}. Default \code{NULL}.}
 }
 \description{
 \code{get_original_data} will be used when a \code{facet_by_strat} or \code{color_by_strat}

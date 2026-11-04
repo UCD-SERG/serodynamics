@@ -22,7 +22,7 @@ plot_residuals(
 \code{\link[=calc_fit_mod]{calc_fit_mod()}}).}
 
 \item{ids}{(Optional) Participant IDs to include. When supplied, points
-(and, if \code{connect_lines = TRUE}, lines) are colored by subject  unless
+(and, if \code{connect_lines = TRUE}, lines) are colored by subject unless
 \code{color_by_strat} is specified, in which case stratification
 coloring takes precedence.}
 
@@ -42,7 +42,7 @@ residuals over time with a line. Default \code{FALSE}.}
 \item{facet_by_strat}{\link{character}; facets residual plot and
 calculates MAE by specified stratification variable. Must include the
 original data set if not stratifying by \code{strat} variable specified in
-\code{run_serodynamics()}. Default \code{NULL}}
+\code{run_serodynamics()}. Default \code{NULL}.}
 
 \item{color_by_strat}{\link{character}; colors residual plot by the specified
 stratification variable. MAE is not calculated by this variable. Must

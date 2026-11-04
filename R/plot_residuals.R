@@ -11,7 +11,7 @@
 #' `original_data`, `strat`, and `decay_type` attributes (see
 #' [calc_fit_mod()]).
 #' @param ids (Optional) Participant IDs to include. When supplied, points
-#' (and, if `connect_lines = TRUE`, lines) are colored by subject  unless
+#' (and, if `connect_lines = TRUE`, lines) are colored by subject unless
 #' `color_by_strat` is specified, in which case stratification
 #' coloring takes precedence.
 #' @param antigen_isos (Optional) Antigen-isotypes (`antigen_iso`) to include.
@@ -26,7 +26,7 @@
 #' @param facet_by_strat [character]; facets residual plot and 
 #' calculates MAE by specified stratification variable. Must include the 
 #' original data set if not stratifying by `strat` variable specified in 
-#' `run_serodynamics()`. Default `NULL`
+#' `run_serodynamics()`. Default `NULL`.
 #' @param color_by_strat [character]; colors residual plot by the specified
 #' stratification variable. MAE is not calculated by this variable. Must 
 #' include the original data set if not stratifying by `strat` variable 
