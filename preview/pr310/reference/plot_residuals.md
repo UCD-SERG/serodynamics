@@ -72,7 +72,7 @@ plot_residuals(
   include the original data set if not stratifying by `strat` variable
   specified in
   [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
-  Default `NULL`
+  Default `NULL`.
 
 - color_by_strat:
 
