@@ -84,7 +84,7 @@ jags_post <- runjags::run.jags(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Wed Nov  4 17:51:27 2026
+#> Welcome to JAGS 4.3.2 on Thu Nov  5 02:53:04 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
