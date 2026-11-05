@@ -1,4 +1,4 @@
-# get_original_data requires original_data for new color stratification
+# get_original_data requires original_data for new color strat
 
     Code
       get_original_data(model, original_data = NULL, strat = "existing_strat",
