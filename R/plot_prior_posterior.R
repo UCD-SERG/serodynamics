@@ -8,7 +8,6 @@
 #' @param ncol Number of facet columns.
 #' @param log_x Use log10 x-axis.
 #' @param facet_scales Facet scale behavior.
-#' @param seed Optional seed for reproducibility.
 #'
 #' @return A ggplot object with simulation data attached.
 #' @export
@@ -20,8 +19,7 @@ plot_prior_posterior <- function(
     n_prior = 10000,
     ncol = 3,
     log_x = FALSE,
-    facet_scales = "free",
-    seed = NULL
+    facet_scales = "free"
 ) {
   
   params <- c("y0", "y1", "t1", "alpha", "shape")
@@ -47,7 +45,6 @@ plot_prior_posterior <- function(
   prior_draws <- draw_prior_predictive(
     pr = pr,
     n = n_prior,
-    seed = seed
   )
   
   prior_long <- prior_draws |>
@@ -162,14 +159,12 @@ plot_prior_posterior <- function(
       linewidth = 0.7,
       na.rm = TRUE
     ) +
-    ggplot2::facet_wrap(
-      ggplot2::vars(
-        Iso_type,
-        Stratification,
-        Parameter
-      ),
-      scales = facet_scales,
-      ncol = ncol
+    ggh4x::facet_grid2(
+      rows = vars(Iso_type, Stratification),
+      cols = vars(Parameter),
+      scales = "free",
+      independent = "all",
+      switch = "none"
     ) +
     ggplot2::scale_color_manual(
       values = c(

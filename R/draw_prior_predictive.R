@@ -2,15 +2,10 @@
 #'
 #' @param pr Prepared priors returned by prep_priors().
 #' @param n Number of prior draws.
-#' @param seed Optional random seed.
 #'
 #' @return Data frame of individual-level biological parameters.
 #' @keywords internal
-draw_prior_predictive <- function(pr, n = 10000, seed = NULL) {
-  
-  if (!is.null(seed)) {
-    set.seed(seed)
-  }
+draw_prior_predictive <- function(pr, n = 10000) {
   
   stopifnot(length(n) == 1, is.finite(n),
             n >= 1, n == as.integer(n))

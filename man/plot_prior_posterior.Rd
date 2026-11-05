@@ -12,8 +12,7 @@ plot_prior_posterior(
   n_prior = 10000,
   ncol = 3,
   log_x = FALSE,
-  facet_scales = "free",
-  seed = NULL
+  facet_scales = "free"
 )
 }
 \arguments{
@@ -32,8 +31,6 @@ plot_prior_posterior(
 \item{log_x}{Use log10 x-axis.}
 
 \item{facet_scales}{Facet scale behavior.}
-
-\item{seed}{Optional seed for reproducibility.}
 }
 \value{
 A ggplot object with simulation data attached.

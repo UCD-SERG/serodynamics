@@ -4,14 +4,12 @@
 \alias{draw_prior_predictive}
 \title{Simulate Individual-Level Prior Predictive Parameters}
 \usage{
-draw_prior_predictive(pr, n = 10000, seed = NULL)
+draw_prior_predictive(pr, n = 10000)
 }
 \arguments{
 \item{pr}{Prepared priors returned by prep_priors().}
 
 \item{n}{Number of prior draws.}
-
-\item{seed}{Optional random seed.}
 }
 \value{
 Data frame of individual-level biological parameters.
