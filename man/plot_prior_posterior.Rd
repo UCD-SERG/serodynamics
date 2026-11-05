@@ -2,21 +2,22 @@
 % Please edit documentation in R/plot_prior_posterior.R
 \name{plot_prior_posterior}
 \alias{plot_prior_posterior}
-\title{Plot Prior, Population Posterior, and Posterior Predictive Densities}
+\title{Compare Prior and Posterior Predictive Parameter Distributions}
 \usage{
 plot_prior_posterior(
   model,
   iso = NULL,
   param = NULL,
   strat = NULL,
-  distributions = c("Prior", "Population posterior", "Posterior predictive"),
   n_prior = 10000,
   ncol = 3,
-  seed = 123
+  log_x = FALSE,
+  facet_scales = "free",
+  seed = NULL
 )
 }
 \arguments{
-\item{model}{An sr_model object returned by run_mod().}
+\item{model}{Fitted sr_model object.}
 
 \item{iso}{Optional antigen/isotype selection.}
 
@@ -24,36 +25,19 @@ plot_prior_posterior(
 
 \item{strat}{Optional stratification selection.}
 
-\item{distributions}{Distributions to include.}
-
-\item{n_prior}{Number of prior Monte Carlo draws.}
+\item{n_prior}{Number of prior predictive draws.}
 
 \item{ncol}{Number of facet columns.}
 
-\item{seed}{Random seed for prior simulation.}
+\item{log_x}{Use log10 x-axis.}
+
+\item{facet_scales}{Facet scale behavior.}
+
+\item{seed}{Optional seed for reproducibility.}
 }
 \value{
-A ggplot object.
+A ggplot object with simulation data attached.
 }
 \description{
-Overlays prior, population-level posterior, and posterior
-predictive distributions for serodynamics model parameters.
-All distributions are shown on the original parameter scale.
-}
-\details{
-Population parameters use the transformations:
-
-log(y0), log(y1 - y0), log(t1),
-log(alpha), and log(shape - 1).
-
-The corresponding original-scale parameters are:
-
-y0 = exp(mu1)
-y1 = exp(mu1) + exp(mu2)
-t1 = exp(mu3)
-alpha = exp(mu4)
-shape = 1 + exp(mu5)
-
-Prior population means are sampled independently from
-Normal(mu_hyp_param, 1 / prec_hyp_param).
+Compare Prior and Posterior Predictive Parameter Distributions
 }

@@ -1,181 +1,76 @@
-#' Plot Prior, Population Posterior, and Posterior Predictive Densities
+#' Compare Prior and Posterior Predictive Parameter Distributions
 #'
-#' @description
-#' Overlays prior, population-level posterior, and posterior
-#' predictive distributions for serodynamics model parameters.
-#' All distributions are shown on the original parameter scale.
-#'
-#' @param model An sr_model object returned by run_mod().
+#' @param model Fitted sr_model object.
 #' @param iso Optional antigen/isotype selection.
 #' @param param Optional parameter selection.
 #' @param strat Optional stratification selection.
-#' @param distributions Distributions to include.
-#' @param n_prior Number of prior Monte Carlo draws.
+#' @param n_prior Number of prior predictive draws.
 #' @param ncol Number of facet columns.
+#' @param log_x Use log10 x-axis.
+#' @param facet_scales Facet scale behavior.
+#' @param seed Optional seed for reproducibility.
 #'
-#' @details
-#' Population parameters use the transformations:
-#'
-#' log(y0), log(y1 - y0), log(t1),
-#' log(alpha), and log(shape - 1).
-#'
-#' The corresponding original-scale parameters are:
-#'
-#' y0 = exp(mu1)
-#' y1 = exp(mu1) + exp(mu2)
-#' t1 = exp(mu3)
-#' alpha = exp(mu4)
-#' shape = 1 + exp(mu5)
-#'
-#' Prior population means are sampled independently from
-#' Normal(mu_hyp_param, 1 / prec_hyp_param).
-#'
-#' @return A ggplot object.
+#' @return A ggplot object with simulation data attached.
 #' @export
 plot_prior_posterior <- function(
     model,
     iso = NULL,
     param = NULL,
     strat = NULL,
-    distributions = c(
-      "Prior",
-      "Population posterior",
-      "Posterior predictive"
-    ),
     n_prior = 10000,
     ncol = 3,
-    trim_quantiles = c(0.01, 0.99), 
-    log_x = FALSE
+    log_x = FALSE,
+    facet_scales = "free",
+    seed = NULL
 ) {
-  
-  library(dplyr)
-  library(tidyr)
-  library(ggplot2)
   
   params <- c("y0", "y1", "t1", "alpha", "shape")
   
-  transformed <- c(
-    "log(y0)",
-    "log(y1 - y0)",
-    "log(t1)",
-    "log(alpha)",
-    "log(shape - 1)"
+  # Extract original prior specification
+  priors <- attr(model, "priors")
+  
+  if (is.null(priors)) {
+    stop("Model does not contain prior attributes.")
+  }
+  
+  # Prepare priors using same function as model fitting
+  pr <- prep_priors(
+    max_antigens = 1,
+    mu_hyp_param = priors$mu_hyp_param,
+    prec_hyp_param = priors$prec_hyp_param,
+    omega_param = priors$omega_param,
+    wishdf_param = priors$wishdf_param,
+    prec_logy_hyp_param = priors$prec_logy_hyp_param
   )
   
-  # Extract model attributes
-  priors <- attr(model, "priors")
-  pop <- attr(model, "population_params")
+  # Simulate individual-level prior predictive parameters
+  prior_draws <- draw_prior_predictive(
+    pr = pr,
+    n = n_prior,
+    seed = seed
+  )
   
-  if (is.null(priors) || is.null(pop)) {
-    stop("Model must contain priors and population_params.")
-  }
-  
-  # Identify posterior draw column.
-  # This must preserve joint draw alignment.
-  pop <- as.data.frame(pop)
-  
-  if (!"Iteration" %in% names(pop)) {
-    stop(
-      "Population posterior must contain an Iteration ",
-      "column to preserve joint posterior draws."
-    )
-  }
-  
-  # Population mean parameters
-  pop <- as.data.frame(pop) %>%
-    filter(Population_Parameter == "mu.par", Parameter %in% transformed) %>%
-    mutate(value = as.numeric(as.character(value)))
-  
-  # Assign a draw ID within each parameter and group
-  pop <- pop %>%
-    group_by(Iso_type, Stratification, Parameter) %>%
-    mutate(draw_id = row_number()) %>%
-    ungroup()
-  
-  
-  # Convert to wide format
-  pop_wide <- pop %>%
-    select(Iso_type, Stratification, draw_id, Parameter, value) %>%
-    pivot_wider(
-      id_cols = c(Iso_type, Stratification, draw_id),
-      names_from = Parameter,
-      values_from = value
-    )
-  
-  
-  pop_original <- pop_wide %>%
-    transmute(
-      Iso_type,
-      Stratification,
-      draw_id,
-      y0 = exp(.data[["log(y0)"]]),
-      y1 = exp(.data[["log(y0)"]]) +
-        exp(.data[["log(y1 - y0)"]]),
-      t1 = exp(.data[["log(t1)"]]),
-      alpha = exp(.data[["log(alpha)"]]),
-      shape = 1 + exp(.data[["log(shape - 1)"]])
-    ) %>%
-    pivot_longer(
-      cols = c(y0, y1, t1, alpha, shape),
+  prior_long <- prior_draws |>
+    tidyr::pivot_longer(
+      cols = dplyr::all_of(params),
       names_to = "Parameter",
       values_to = "value"
-    ) %>%
-    mutate(
-      Distribution = "Population posterior"
+    ) |>
+    dplyr::mutate(
+      Distribution = "Prior predictive"
     )
   
-  prior_mu <- priors$mu_hyp_param
-  prior_precision <- priors$prec_hyp_param
-  
-  if (length(prior_mu) != 5 ||
-      length(prior_precision) != 5 ||
-      any(prior_precision <= 0)) {
-    stop("Invalid prior hyperparameters.")
-  }
-  
-  prior_draws <- sapply(seq_along(params), function(j) {
-    rnorm(
-      n_prior,
-      mean = prior_mu[j],
-      sd = sqrt(1 / prior_precision[j])
-    )
-  })
-  
-  colnames(prior_draws) <- transformed
-  
-  # Transform priors to original parameter scale
-  prior_original <- tibble(
-    y0 = exp(prior_draws[, 1]),
-    y1 = exp(prior_draws[, 1]) + exp(prior_draws[, 2]),
-    t1 = exp(prior_draws[, 3]),
-    alpha = exp(prior_draws[, 4]),
-    shape = 1 + exp(prior_draws[, 5])
-  ) %>%
-    pivot_longer(
-      everything(),
-      names_to = "Parameter",
-      values_to = "value"
-    )
-  
-  # Replicate prior for each antigen/isotype and stratum
-  groups <- pop_original %>%
-    distinct(Iso_type, Stratification)
-  
-  prior_original <- crossing(
-    groups,
-    prior_original
-  ) %>%
-    mutate(Distribution = "Prior")
-  
-  # Posterior predictive samples
-  predictive <- as.data.frame(model) %>%
-    filter(Subject == "newperson") %>%
-    mutate(
-      Parameter = as.character(Parameter),
+  # Extract individual-level posterior predictive samples
+  posterior_long <- as.data.frame(model) |>
+    dplyr::filter(
+      Subject == "newperson",
+      Parameter %in% params
+    ) |>
+    dplyr::mutate(
+      value = as.numeric(as.character(value)),
       Distribution = "Posterior predictive"
-    ) %>%
-    filter(Parameter %in% params) %>%
-    select(
+    ) |>
+    dplyr::select(
       Iso_type,
       Stratification,
       Parameter,
@@ -183,153 +78,144 @@ plot_prior_posterior <- function(
       Distribution
     )
   
-  # Combine all distributions
-  plot_data <- bind_rows(
-    prior_original,
-    pop_original %>%
-      select(
-        Iso_type,
-        Stratification,
-        Parameter,
-        value,
-        Distribution
-      ),
-    predictive
-  )
-  
-  # Optional filtering
+  # Optional selection
   if (!is.null(iso)) {
-    plot_data <- plot_data %>%
-      filter(Iso_type %in% iso)
+    posterior_long <- posterior_long |>
+      dplyr::filter(Iso_type %in% iso)
   }
   
   if (!is.null(param)) {
-    plot_data <- plot_data %>%
-      filter(Parameter %in% param)
+    posterior_long <- posterior_long |>
+      dplyr::filter(Parameter %in% param)
+    
+    prior_long <- prior_long |>
+      dplyr::filter(Parameter %in% param)
   }
   
   if (!is.null(strat)) {
-    plot_data <- plot_data %>%
-      filter(Stratification %in% strat)
+    posterior_long <- posterior_long |>
+      dplyr::filter(Stratification %in% strat)
   }
   
-  plot_data <- plot_data %>%
-    filter(
-      Distribution %in% distributions,
-      is.finite(value)
-    ) %>%
-    mutate(
+  if (nrow(posterior_long) == 0) {
+    stop("No posterior predictive draws match the selection.")
+  }
+  
+  # Repeat prior for relevant antigen/stratification groups
+  groups <- posterior_long |>
+    dplyr::distinct(Iso_type, Stratification)
+  
+  prior_long <- tidyr::crossing(
+    groups,
+    prior_long
+  )
+  
+  # Combine
+  plot_data <- dplyr::bind_rows(
+    prior_long,
+    posterior_long
+  ) |>
+    dplyr::mutate(
       Distribution = factor(
         Distribution,
         levels = c(
-          "Prior",
-          "Population posterior",
+          "Prior predictive",
           "Posterior predictive"
         )
       ),
-      Parameter = factor(Parameter, levels = params)
+      Parameter = factor(
+        Parameter,
+        levels = params
+      )
     )
   
-  if (log_x) {
-    plot_data <- plot_data %>%
-      filter(value > 0)
+  # Record non-finite draws before filtering
+  invalid_n <- sum(!is.finite(plot_data$value))
+  
+  if (invalid_n > 0) {
+    warning(
+      invalid_n,
+      " non-finite predictive values excluded from density estimation."
+    )
   }
   
-  # Calculate quantiles for each distribution and facet
-  facet_limits <- plot_data %>%
-    group_by(
-      Iso_type,
-      Stratification,
-      Parameter,
-      Distribution
-    ) %>%
-    summarise(
-      xmin = quantile(value, trim_quantiles[1], na.rm = TRUE),
-      xmax = quantile(value, trim_quantiles[2], na.rm = TRUE),
-      .groups = "drop"
-    ) %>%
-    group_by(Iso_type, Stratification, Parameter) %>%
-    summarise(
-      xmin = min(xmin),
-      xmax = max(xmax),
-      .groups = "drop"
-    )
+  plot_data <- plot_data |>
+    dplyr::filter(is.finite(value))
   
-  # Adding limits to plot_data
-  plot_data <- plot_data %>%
-    left_join(
-      facet_limits,
-      by = c("Iso_type", "Stratification", "Parameter")
-    ) %>%
-    filter(
-      value >= xmin,
-      value <= xmax
-    )
+  if (log_x) {
+    plot_data <- plot_data |>
+      dplyr::filter(value > 0)
+  }
   
-  # Create plot
-  p <- ggplot(
+  # Plot
+  p <- ggplot2::ggplot(
     plot_data,
-    aes(
+    ggplot2::aes(
       x = value,
       color = Distribution,
-      fill = Distribution, 
+      fill = Distribution,
       linetype = Distribution
     )
   ) +
-    geom_density(
-      linewidth = 0.5,
-      na.rm = TRUE,
-      alpha = 0.6
+    ggplot2::geom_density(
+      alpha = 0.25,
+      linewidth = 0.7,
+      na.rm = TRUE
     ) +
-    facet_grid(
-      Iso_type + Stratification ~ Parameter,
-      scales = "free"
-    ) +
-    scale_color_manual(
-      values = c(
-        "Prior" = "grey40",
-        "Population posterior" = "dodgerblue3",
-        "Posterior predictive" = "gold3"
+    ggplot2::facet_wrap(
+      ggplot2::vars(
+        Iso_type,
+        Stratification,
+        Parameter
       ),
-      drop = TRUE
+      scales = facet_scales,
+      ncol = ncol
     ) +
-    scale_fill_manual(
+    ggplot2::scale_color_manual(
       values = c(
-        "Prior" = "grey90",
-        "Population posterior" = "dodgerblue3",
-        "Posterior predictive" = "gold3"
-      ),
-      drop = TRUE
+        "Prior predictive" = "grey40",
+        "Posterior predictive" = "dodgerblue3"
+      )
     ) +
-    scale_linetype_manual(
+    ggplot2::scale_fill_manual(
       values = c(
-        "Prior" = "dashed",
-        "Population posterior" = "solid",
+        "Prior predictive" = "grey70",
+        "Posterior predictive" = "dodgerblue3"
+      )
+    ) +
+    ggplot2::scale_linetype_manual(
+      values = c(
+        "Prior predictive" = "dashed",
         "Posterior predictive" = "solid"
-      ),
-      drop = TRUE
+      )
     ) +
-    labs(
+    ggplot2::labs(
       x = "Parameter value",
       y = "Density",
       color = NULL,
-      linetype = NULL
+      fill = NULL,
+      linetype = NULL,
+      title = "Prior vs. posterior predictive distributions"
     ) +
-    theme_bw() +
-    theme(
+    ggplot2::theme_bw() +
+    ggplot2::theme(
       legend.position = "top",
-      panel.grid.minor = element_blank(),
-      strip.background = element_rect(fill = "grey95")
+      panel.grid.minor = ggplot2::element_blank(),
+      strip.background = ggplot2::element_rect(
+        fill = "grey95"
+      )
     )
   
-  # Optional log-scaled x-axis
   if (log_x) {
     p <- p +
-      scale_x_log10(
-        labels = scales::label_number()
-      )
+      ggplot2::scale_x_log10()
   }
+  
+  # Retain draws for diagnostics
+  attr(p, "predictive_data") <- plot_data
   
   return(p)
 }
+
+
   
