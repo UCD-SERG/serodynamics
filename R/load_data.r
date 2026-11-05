@@ -115,7 +115,7 @@ load_data <- function(
   #  will contain logarithms of log(c(y0,  y1,    t1,  alpha, shape-1))
   for (cur_biomarker in 1:n_biomarkers) {
     mu_hyp[cur_biomarker, ] <- c(1.0, 7.0, 1.0, -4.0, -1.0)
-    prec_hyp[cur_biomarker, , ] <- diag(c(1.0, 0.00001, 1.0, 0.001, 1.0))
+    prec_hyp[cur_biomarker, , ] <- diag(c(1.0, 0.0001, 1.0, 0.001, 1.0))
     omega[cur_biomarker, , ] <- diag(c(1.0, 50.0, 1.0, 10.0, 1.0))
     wishdf[cur_biomarker] <- 20
     prec_logy_hyp[cur_biomarker, ] <- c(4.0, 1.0)
