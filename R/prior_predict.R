@@ -155,69 +155,27 @@ prior_predict <- function(
                                 noise = noise,
                                 time = time)
   
-  
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
   ## ---------------------------------------------------------
-  # Turning precision matrix into covariance matrix
-  mu_cov <- solve(prec_hyp)
-  
-  # Inverting omega precision matrix to covariance matrix
-  wishart_scale <- solve(omega)
-  # Creating empty matrix to store subject level parameter draws
-  par_draws <- matrix(NA_real_, nrow = n, ncol = n_params)
-  colnames(par_draws) <- paste0("par", seq_len(n_params))
-  
-  # Repeat the hierarchical prior simulation n times
-  for (i in seq_len(n)) {
-    # Drawing population level means using multivariate normal. Represents
-    # one possible set of population means. Still on log scale.
-    mu_i <- MASS::mvrnorm(n = 1, mu = mu_hyp, Sigma = mu_cov)
-    # Samples 5x5 precision matrix. Variability among individuals and c
-    # correlation among parameters. 
-    prec_i <- stats::rWishart(n = 1, df = wishdf, Sigma = wishart_scale
-    )[, , 1]
-    # Draws an individual. Integrates population variability and between 
-    # subject variability.
-    par_i <- MASS::mvrnorm(n = 1, mu = mu_i, Sigma = solve(prec_i))
-    # Saving the draws
-    par_draws[i, ] <- par_i
-  }
-  
-  ## Observation precision
-  prec_logy <- stats::rgamma(n, shape = prec_logy_hyp[1],
-                             rate = prec_logy_hyp[2])
-  # Converting precision to sd
-  sigma_logy <- sqrt(1 / prec_logy)
-  
-  ## ---------------------------------------------------------
-  ## Transform to biological parameters
-  ## ---------------------------------------------------------
-  # Turning everything into the natural scale
-  y0 <- exp(par_draws[, 1])
-  change_y <- exp(par_draws[, 2])
-  y1 <- y0 + change_y
-  t1 <- exp(par_draws[, 3])
-  alpha <- exp(par_draws[, 4])
-  shape <- exp(par_draws[, 5]) + 1
-  beta <- log(y1 / y0) / t1
-  draws <- data.frame(draw = seq_len(n), y0 = y0, y1 = y1, t1 = t1, 
-                      alpha = alpha, shape = shape, beta = beta,
-                      sigma_logy = sigma_logy)
+  draws <- draw_prior_predictive(pr = pr, n = n)
   
   ## ---------------------------------------------------------
   ## Parameter summaries
   ## ---------------------------------------------------------
   
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
-  # Summarizing parameter summaries
-  prior_summary <- do.call(
-    rbind,
-    lapply(model_parameters, function(x) {
-      qs <- stats::quantile(draws[[x]], probs = c(0.025, 0.5, 0.975),
-                            na.rm = TRUE, names = FALSE)
-      data.frame(parameter = x, q2.5 = qs[1], median = qs[2], q97.5 = qs[3],
-                 row.names = NULL)
+  
+  prior_summary <- do.call(rbind,
+    lapply(model_parameters, function(param) {
+      qs <- stats::quantile(
+        draws[[param]],
+        probs = c(0.025, 0.5, 0.975),
+        na.rm = TRUE,
+        names = FALSE)
+      
+      data.frame(parameter = param, q2.5 = qs[1], median = qs[2], 
+                 q97.5 = qs[3], row.names = NULL)
     })
   )
   
@@ -227,8 +185,7 @@ prior_predict <- function(
   
   if (type == "density") {
     
-    density_data <- data.frame(
-                               parameter = rep(model_parameters, each = n),
+    density_data <- data.frame(parameter = rep(model_parameters, each = n),
                                value = unlist(draws[model_parameters], 
                                               use.names = FALSE))
     
