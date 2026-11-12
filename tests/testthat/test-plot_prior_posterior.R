@@ -1,44 +1,22 @@
 
-# tests/testthat/test-plot-prior-posterior.R
-
-# ---------------------------------------------------------
-# Test fixtures
-# ---------------------------------------------------------
-
-
 # ---------------------------------------------------------
 # Basic output
 # ---------------------------------------------------------
 
-test_that("plot_prior_posterior returns a ggplot", {
-  
-
+test_that("plot_prior_posterior returns a ggplot and has distributions", {
+  withr::local_seed(1)
   p <- plot_prior_posterior(
     nepal_sees_jags_output,
-    n_prior = 100,
-    seed = 123,
-    log_x = TRUE,
-    ncol = 5
+    n_prior = 100
   )
   
   expect_s3_class(p, "ggplot")
-})
-
-
-test_that("plot contains both predictive distributions", {
-  
-  model <- make_test_model()
-  
-  p <- plot_prior_posterior(
-    model,
-    n_prior = 100,
-    seed = 123
-  )
   
   dat <- attr(p, "predictive_data")
   
   expect_true(is.data.frame(dat))
   
+  # Making sure distributions are there
   expect_setequal(
     as.character(unique(dat$Distribution)),
     c(
@@ -46,21 +24,8 @@ test_that("plot contains both predictive distributions", {
       "Posterior predictive"
     )
   )
-})
-
-
-test_that("all five biological parameters are present", {
   
-  model <- make_test_model()
-  
-  p <- plot_prior_posterior(
-    model,
-    n_prior = 100,
-    seed = 123
-  )
-  
-  dat <- attr(p, "predictive_data")
-  
+  # Making sure parameters are there
   expect_setequal(
     as.character(unique(dat$Parameter)),
     c("y0", "y1", "t1", "alpha", "shape")
@@ -73,19 +38,17 @@ test_that("all five biological parameters are present", {
 # ---------------------------------------------------------
 
 test_that("prior predictive draws are reproducible", {
-  
+  withr::local_seed(1)
   model <- make_test_model()
   
   p1 <- plot_prior_posterior(
     model,
-    n_prior = 200,
-    seed = 123
+    n_prior = 200
   )
   
   p2 <- plot_prior_posterior(
     model,
-    n_prior = 200,
-    seed = 123
+    n_prior = 200
   )
   
   dat1 <- attr(p1, "predictive_data")
@@ -133,13 +96,12 @@ test_that("n_prior controls number of prior draws", {
 
 
 test_that("prior predictive parameters satisfy constraints", {
-  
+  withr::local_seed(1)
   model <- make_test_model()
   
   p <- plot_prior_posterior(
     model,
-    n_prior = 200,
-    seed = 123
+    n_prior = 200
   )
   
   dat <- attr(p, "predictive_data")

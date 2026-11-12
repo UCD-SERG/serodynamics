@@ -42,10 +42,7 @@ plot_prior_posterior <- function(
   )
   
   # Simulate individual-level prior predictive parameters
-  prior_draws <- draw_prior_predictive(
-    pr = pr,
-    n = n_prior,
-  )
+  prior_draws <- draw_prior_predictive(pr = pr, n = n_prior)
   
   prior_long <- prior_draws |>
     tidyr::pivot_longer(
@@ -164,7 +161,10 @@ plot_prior_posterior <- function(
       cols = vars(Parameter),
       scales = "free",
       independent = "all",
-      switch = "none"
+      switch = "none",
+      labeller = ggplot2::labeller(
+        Stratification = ggplot2::label_wrap_gen(width = 15)
+      )
     ) +
     ggplot2::scale_color_manual(
       values = c(
@@ -197,7 +197,10 @@ plot_prior_posterior <- function(
       legend.position = "top",
       panel.grid.minor = ggplot2::element_blank(),
       strip.background = ggplot2::element_rect(
-        fill = "grey95"
+        fill = "grey95"),
+      strip.text.y.right = ggplot2::element_text(
+        size = 6,
+        face = "plain"
       )
     )
   
