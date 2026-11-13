@@ -215,16 +215,17 @@ prior_predict <- function(
       
       tt <- time
       
-      # Noise-free biological trajectory
+      # Generate biological trajectory
       antibody <- ab(
         t = tt,
-        y0 = y0[i],
-        y1 = y1[i],
-        t1 = t1[i],
-        alpha = alpha[i],
-        shape = shape[i],
+        y0 = draws$y0[i],
+        y1 = draws$y1[i],
+        t1 = draws$t1[i],
+        alpha = draws$alpha[i],
+        shape = draws$shape[i],
         decay_type = decay_type
       )
+      
       
       # Simulated observations on the log scale
       if (noise) {
@@ -237,9 +238,9 @@ prior_predict <- function(
           )
         }
         
-        antibody <- exp(log(antibody) +
+        antibody <- exp(log(antibody) + 
                           stats::rnorm(length(tt), mean = 0, 
-                                       sd = sigma_logy[i]))
+                                       sd = draws$sigma_logy[i]))
       }
       
       data.frame(draw = i, time = tt, antibody = antibody)
