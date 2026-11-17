@@ -57,7 +57,8 @@ posterior_pred <- function(data,
     pivot_wider(
       names_from = Parameter,
       values_from = value
-    )
+    ) %>%
+    filter(Subject != "newperson")
   
   # ----------------------------------------
   # 3. Prepare observed data
@@ -118,10 +119,12 @@ posterior_pred <- function(data,
       filter(
         Iteration == iter_j,
         Chain == chain_j
-      )
+      ) %>%
+      select(Iso_type, Stratification, prec_logy)
     
     # Match individual parameters to observations
-    pred_dat <- obs_dat %>%
+    pred_dat <- obs_dat |>
+      filter(Subject %in% unique(person_j$Subject)) |>
       left_join(
         person_j,
         by = c(
@@ -129,7 +132,7 @@ posterior_pred <- function(data,
           "Iso_type",
           "Stratification"
         )
-      ) %>%
+      ) |>
       left_join(
         precision_j,
         by = c(
@@ -153,11 +156,7 @@ posterior_pred <- function(data,
     
     # Expected serodynamic response
     pred_dat <- pred_dat %>%
-      mutate(
-        mu_hat = ab(
-          t, y0, y1, t1, alpha, r
-        )
-      )
+      mutate(mu_hat = ab(t, y0, y1, t1, alpha, shape))
     
     if (any(!is.finite(pred_dat$mu_hat) |
             pred_dat$mu_hat <= 0)) {

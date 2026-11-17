@@ -4,65 +4,27 @@
 \alias{posterior_pred}
 \title{Posterior predictive check}
 \usage{
-posterior_pred(data = NA, raw_dat = NA, by_antigen = FALSE, n_sim = 4, ...)
+posterior_pred(data, raw_dat, by_antigen = FALSE, n_sim = 4, ...)
 }
 \arguments{
-\item{data}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.
-\itemize{
-\item MCMC samples of posterior distribution of the person specific
-}}
+\item{data}{Long-format posterior draws containing Subject,
+Iso_type, Stratification, Iteration, Chain, Parameter, and value.
+Parameters must be on the natural scale.}
 
-\item{raw_dat}{A \code{\link[base:data.frame]{base::data.frame()}} with the following columns.
-\itemize{
-\item each row is single OD measurement per ...
-}}
+\item{raw_dat}{Observed antibody data containing Subject,
+Iso_type, Stratification, t, and result after use_att_names().}
 
-\item{by_antigen}{The antigen/isotype combinations to create posterior
-predictive plots for.}
+\item{by_antigen}{Whether to facet by Iso_type.}
 
-\item{n_sim}{The number of simulations to run.}
+\item{n_sim}{Number of posterior predictive simulations.}
 
-\item{n_sample}{The number of simulated samples for posterior predictive
-checks.}
+\item{...}{Additional arguments (currently unused).}
 }
 \value{
-A \link{list} of \link[ggplot2:ggplot]{ggplot2::ggplot} objects of posterior predictive checks.
+A ggplot object showing observed and simulated densities.
 }
 \description{
-\code{posterior_pred()} conducts posterior predictive checks.
-}
-\examples{
-data(nepal_sees_jags_output, package = "serodynamics")
-post_summ(nepal_sees_jags_output)
-
-if (interactive() && !is.element(runjags::findjags(), c("", NULL))) {
-  set.seed(1)
-  strat1 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    dplyr::mutate(strat = "stratum 2")
-  strat2 <- serocalculator::typhoid_curves_nostrat_100 |>
-    sim_case_data(n = 100) |>
-    dplyr::mutate(strat = "stratum 1")
-
-  dataset <- dplyr::bind_rows(strat1, strat2)
-
-  fitted_model <- run_mod(
-    data = dataset, # The data set input
-    file_mod = serodynamics_example("model.jags"),
-    nchain = 4, # Number of mcmc chains to run
-    nadapt = 100, # Number of adaptations to run
-    nburn = 100, # Number of unrecorded samples before sampling begins
-    nmc = 1000,
-    niter = 2000, # Number of iterations
-    strat = "strat", # Variable to be stratified
-    mu_hyp_param = c(1.0, 7.0, 1.0, -4.0, -1.0),
-    prec_hyp_param = c(1.0, 0.00001, 1.0, 0.001, 1.0),
-    omega_param = c(1.0, 50.0, 1.0, 10.0, 1.0),
-    wishdf_param = 20,
-    prec_logy_hyp_param = c(4.0, 1.0)
-  ) 
-}
-}
-\author{
-Sam Schildhauer
+Generate posterior predictive antibody measurements using
+individual-level posterior parameters and the population-level
+observation precision.
 }

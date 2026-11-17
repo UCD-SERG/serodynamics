@@ -21,8 +21,7 @@ test_that(
     posterior_test <- posterior_pred(data = nepal_sees_jags_output,
                    raw_dat = nepal_sees,
                    n_sim = 5,
-                   n_sample = 1000 
-                   )
+                   n_sample = 1000)
     
     results |>
       attributes() |>
