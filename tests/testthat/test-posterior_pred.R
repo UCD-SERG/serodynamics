@@ -6,7 +6,7 @@ test_that(
     withr::local_seed(1)
     dataset <- serodynamics::nepal_sees 
     
-    results <- run_mod(
+    results <- run_serodynamics(
       data = dataset, # The data set input
       file_mod = serodynamics_example("model.jags"),
       nchain = 2, # Number of mcmc chains to run
@@ -18,8 +18,8 @@ test_that(
     ) |>
       suppressWarnings()
     
-    posterior_test <- posterior_pred(data = results,
-                   raw_dat = dataset,
+    posterior_test <- posterior_pred(data = nepal_sees_jags_output,
+                   raw_dat = nepal_sees,
                    n_sim = 5,
                    n_sample = 1000 
                    )
