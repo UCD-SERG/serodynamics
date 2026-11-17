@@ -136,6 +136,7 @@ prior_predict <- function(
   # Use the same prior preparation as model fitting.
   pr <- prep_priors(
     max_antigens = 1,
+    decay_type = decay_type,
     ...
   )
   
