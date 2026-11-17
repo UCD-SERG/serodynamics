@@ -4,7 +4,15 @@
 \alias{posterior_pred}
 \title{Posterior predictive check}
 \usage{
-posterior_pred(data, raw_dat, by_antigen = FALSE, n_sim = 4, ...)
+posterior_pred(
+  data,
+  raw_dat,
+  iso = NULL,
+  strat = NULL,
+  by_antigen = FALSE,
+  n_sim = 4,
+  ...
+)
 }
 \arguments{
 \item{data}{Long-format posterior draws containing Subject,
@@ -12,7 +20,12 @@ Iso_type, Stratification, Iteration, Chain, Parameter, and value.
 Parameters must be on the natural scale.}
 
 \item{raw_dat}{Observed antibody data containing Subject,
-Iso_type, Stratification, t, and result after use_att_names().}
+Iso_type, Stratification, t, and result after \code{use_att_names()}.}
+
+\item{iso}{Specify antigen/isotype to include in posterior predictive check.}
+
+\item{strat}{Specify stratification to be included in posterior predictive
+check.}
 
 \item{by_antigen}{Whether to facet by Iso_type.}
 

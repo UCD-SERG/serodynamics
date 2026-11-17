@@ -8,8 +8,11 @@
 #' @param data Long-format posterior draws containing Subject,
 #'   Iso_type, Stratification, Iteration, Chain, Parameter, and value.
 #'   Parameters must be on the natural scale.
+#' @param iso Specify antigen/isotype to include in posterior predictive check.
+#' @param strat Specify stratification to be included in posterior predictive
+#' check.
 #' @param raw_dat Observed antibody data containing Subject,
-#'   Iso_type, Stratification, t, and result after use_att_names().
+#'   Iso_type, Stratification, t, and result after `use_att_names()`.
 #' @param by_antigen Whether to facet by Iso_type.
 #' @param n_sim Number of posterior predictive simulations.
 #' @param ... Additional arguments (currently unused).
@@ -18,6 +21,8 @@
 #' @export
 posterior_pred <- function(data,
                            raw_dat,
+                           iso = NULL,
+                           strat = NULL,
                            by_antigen = FALSE,
                            n_sim = 4,
                            ...) {
@@ -65,16 +70,58 @@ posterior_pred <- function(data,
   # ----------------------------------------
   
   obs_dat <- raw_dat %>%
-    use_att_names() %>%
-    select(
-      any_of(c("Subject", "Iso_type", attributes(data)$strat,
-      "t", "result"))
-    ) %>%
-    rename("Stratification" = attributes(data)$strat) %>%
-    filter(
-      !is.na(t),
-      !is.na(result)
-    )
+    use_att_names()
+  strat_col <- attr(data, "strat")
+  if (!is.null(strat_col) &&
+      strat_col %in% names(obs_dat)) {
+    obs_dat <- obs_dat %>%
+      rename(Stratification = all_of(strat_col))
+  } else if (!"Stratification" %in% names(obs_dat)) {
+    obs_dat$Stratification <- "All"
+  }
+  obs_dat <- obs_dat %>%
+    select(Subject, Iso_type, Stratification, t, result) %>%
+    filter(!is.na(t), !is.na(result))
+  
+  # ----------------------------------------
+  # 3b. Filter selected antigen/isotype and strata
+  # ----------------------------------------
+  
+  if (!is.null(iso)) {
+    
+    mod_dat <- mod_dat %>%
+      filter(Iso_type %in% iso)
+    
+    mod_prec_logy <- mod_prec_logy %>%
+      filter(Iso_type %in% iso)
+    
+    obs_dat <- obs_dat %>%
+      filter(Iso_type %in% iso)
+  }
+  
+  if (!is.null(strat)) {
+    
+    mod_dat <- mod_dat %>%
+      filter(Stratification %in% strat)
+    
+    mod_prec_logy <- mod_prec_logy %>%
+      filter(Stratification %in% strat)
+    
+    obs_dat <- obs_dat %>%
+      filter(Stratification %in% strat)
+  }
+  
+  # Check that the selected groups contain observations
+  if (nrow(obs_dat) == 0) {
+    stop("No observed data match the selected ",
+      "antigen/isotype or stratification.")
+  }
+  
+  if (nrow(mod_dat) == 0 ||
+      nrow(mod_prec_logy) == 0) {
+    stop("No posterior draws match the selected ",
+      "antigen/isotype or stratification.")
+  }
   
   # ----------------------------------------
   # 4. Identify available posterior draws
@@ -262,9 +309,27 @@ posterior_pred <- function(data,
       y = "Density"
     )
   
+  # ----------------------------------------
+  # 8. Optional faceting
+  # ----------------------------------------
+  
   if (by_antigen) {
-    ppc_plot <- ppc_plot +
-      facet_wrap(~Iso_type, scales = "free_y")
+    
+    if (dplyr::n_distinct(plot_dat$Stratification) > 1) {
+      
+      ppc_plot <- ppc_plot +
+        ggplot2::facet_grid(
+          rows = ggplot2::vars(Stratification),
+          cols = ggplot2::vars(Iso_type),
+          scales = "free_y"
+        )
+    } else {
+      ppc_plot <- ppc_plot +
+        ggplot2::facet_wrap(
+          ~Iso_type,
+          scales = "free_y"
+        )
+    }
   }
   
   return(ppc_plot)
