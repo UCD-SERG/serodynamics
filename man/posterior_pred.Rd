@@ -2,42 +2,87 @@
 % Please edit documentation in R/posterior_pred.R
 \name{posterior_pred}
 \alias{posterior_pred}
-\title{Posterior predictive check}
+\title{Posterior Predictive Check of Antibody Measurements}
 \usage{
 posterior_pred(
   data,
   raw_dat,
   iso = NULL,
   strat = NULL,
-  by_antigen = FALSE,
   n_sim = 4,
+  decay_type = NULL,
+  seed = NULL,
   ...
 )
 }
 \arguments{
 \item{data}{Long-format posterior draws containing Subject,
 Iso_type, Stratification, Iteration, Chain, Parameter, and value.
-Parameters must be on the natural scale.}
+Parameters must be on the natural scale.
+Must contain a \code{population_params} attribute.}
 
-\item{raw_dat}{Observed antibody data containing Subject,
-Iso_type, Stratification, t, and result after \code{use_att_names()}.}
+\item{raw_dat}{Observed antibody data. After \code{use_att_names()},
+the data must contain Subject, Iso_type, t, and result,
+plus the stratification column when applicable.}
 
-\item{iso}{Specify antigen/isotype to include in posterior predictive check.}
+\item{iso}{Optional character vector selecting antigen/isotype
+combinations. NULL includes all available combinations.}
 
-\item{strat}{Specify stratification to be included in posterior predictive
-check.}
+\item{strat}{Optional character vector selecting stratification
+groups. NULL includes all available groups.}
 
-\item{by_antigen}{Whether to facet by Iso_type.}
+\item{n_sim}{Positive integer specifying the number of replicated
+datasets generated per antigen/isotype and stratification group.
+Default is 4.}
 
-\item{n_sim}{Number of posterior predictive simulations.}
+\item{decay_type}{Either "power" or "exponential".
+Defaults to the fitted model's decay_type attribute,
+or "power" if that attribute is absent.}
 
-\item{...}{Additional arguments (currently unused).}
+\item{seed}{Optional integer seed for reproducibility.}
+
+\item{...}{Reserved for future use.}
 }
 \value{
-A ggplot object showing observed and simulated densities.
+A ggplot object containing observed and simulated density
+estimates. The underlying plotting data are available through
+attr(plot, "predictive_data").
 }
 \description{
-Generate posterior predictive antibody measurements using
-individual-level posterior parameters and the population-level
+Generates replicated antibody measurements from individual-level
+posterior kinetic parameters and population-level observation precision.
+Compares observed and simulated antibody distributions using kernel
+density estimates on a log10 assay-value scale.
+
+By default, all available antigen/isotype and stratification
+combinations are included. Each combination receives its own
+posterior predictive simulations.
+}
+\details{
+For each antigen/isotype and stratification combination:
+\enumerate{
+\item Observations are restricted to individuals represented in
+the posterior output.
+\item Complete joint posterior draws are identified using
+Iteration and Chain.
+\item A joint posterior draw is sampled for each simulation.
+\item Expected antibody concentrations are calculated using \code{ab()}.
+\item Lognormal observation error is added using the posterior
 observation precision.
+}
+
+Simulations are evaluated at the observed sampling times.
+Each simulated dataset contains one replicated measurement
+for each retained observed measurement.
+
+Individuals without posterior estimates are excluded from
+both observed and simulated distributions.
+
+The function checks completeness of individual-level parameters
+and observation precision before selecting posterior draws.
+Incomplete joint draws are not sampled.
+
+This posterior predictive check evaluates the marginal
+distribution of antibody measurements. It does not directly
+evaluate the timing of antibody rise or decay.
 }

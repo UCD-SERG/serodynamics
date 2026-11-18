@@ -18,10 +18,12 @@ test_that(
     ) |>
       suppressWarnings()
     
-    posterior_test <- posterior_pred(data = nepal_sees_jags_output,
+    set.seed(1)
+    ppc <- posterior_pred(data = nepal_sees_jags_output,
                    raw_dat = nepal_sees,
-                   n_sim = 5,
-                   n_sample = 1000)
+                   strat = "typhi",
+                   n_sim = 15,
+                   n_sample = 500)
     
     results |>
       attributes() |>
