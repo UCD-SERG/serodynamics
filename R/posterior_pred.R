@@ -113,7 +113,7 @@ posterior_pred <- function(
   # 3. Prepare individual posterior parameters
   # ---------------------------------------------------------
   mod_long <- as.data.frame(data) %>%
-    dplyr::filter(Parameter %in% required, Subject != "newperson") %>%
+    dplyr::filter(Parameter %in% required) %>%
     dplyr::mutate(value = as.numeric(as.character(value))) %>%
     dplyr::select(Subject, Iso_type, Stratification, Iteration, Chain, 
                   Parameter, value)
