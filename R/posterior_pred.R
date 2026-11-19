@@ -77,7 +77,6 @@ posterior_pred <- function(
     strat = NULL,
     n_sim = 4,
     decay_type = NULL,
-    seed = NULL,
     ...
 ) {
   
@@ -94,15 +93,6 @@ posterior_pred <- function(
     stop("n_sim must be a positive integer.")
   }
   
-  if (!is.null(seed)) {
-    if (!is.numeric(seed) ||
-        length(seed) != 1L ||
-        !is.finite(seed) ||
-        seed != floor(seed)) {
-      stop("seed must be a single integer.")
-    }
-    set.seed(seed)
-  }
   
   if (is.null(decay_type)) {
     decay_type <- attr(data, "decay_type")
@@ -142,11 +132,7 @@ posterior_pred <- function(
     dplyr::filter(
       .data$Population_Parameter == "prec.logy"
     ) %>%
-    dplyr::transmute(
-      Iteration,
-      Chain,
-      Iso_type,
-      Stratification,
+    dplyr::transmute(Iteration, Chain, Iso_type, Stratification,
       prec_logy = as.numeric(as.character(value))
     )
   
@@ -159,22 +145,11 @@ posterior_pred <- function(
   # ---------------------------------------------------------
   
   mod_long <- as.data.frame(data) %>%
-    dplyr::filter(
-      Parameter %in% required,
-      Subject != "newperson"
+    dplyr::filter(Parameter %in% required, Subject != "newperson") %>%
+    dplyr::mutate(value = as.numeric(as.character(value))
     ) %>%
-    dplyr::mutate(
-      value = as.numeric(as.character(value))
-    ) %>%
-    dplyr::select(
-      Subject,
-      Iso_type,
-      Stratification,
-      Iteration,
-      Chain,
-      Parameter,
-      value
-    )
+    dplyr::select(Subject, Iso_type, Stratification, Iteration, Chain, 
+                  Parameter, value)
   
   if (nrow(mod_long) == 0) {
     stop("No individual-level posterior parameters found.")
@@ -185,34 +160,21 @@ posterior_pred <- function(
     dplyr::count(
       dplyr::across(
         dplyr::all_of(
-          c(join_keys, draw_keys, "Parameter")
-        )
-      )
-    ) %>%
+          c(join_keys, draw_keys, "Parameter")))) %>%
     dplyr::filter(n > 1)
-  
   if (nrow(duplicates) > 0) {
-    stop(
-      "Duplicate individual posterior parameter records found."
-    )
+    stop("Duplicate individual posterior parameter records found.")
   }
   
   mod_dat <- mod_long %>%
-    tidyr::pivot_wider(
-      id_cols = dplyr::all_of(
-        c(join_keys, draw_keys)
-      ),
-      names_from = Parameter,
-      values_from = value
-    )
+    tidyr::pivot_wider(id_cols = dplyr::all_of(c(join_keys, draw_keys)),
+      names_from = Parameter, values_from = value)
   
   missing_columns <- setdiff(required, names(mod_dat))
   
   if (length(missing_columns) > 0) {
-    stop(
-      "Missing posterior parameter columns: ",
-      paste(missing_columns, collapse = ", ")
-    )
+    stop("Missing posterior parameter columns: ",
+      paste(missing_columns, collapse = ", "))
   }
   
   # ---------------------------------------------------------
@@ -294,9 +256,7 @@ posterior_pred <- function(
   # 6. Match observed individuals to posterior parameters
   # ---------------------------------------------------------
   
-  join_keys <- c(
-    "Subject", "Iso_type", "Stratification"
-  )
+  join_keys <- c("Subject", "Iso_type", "Stratification")
   
   # All antigen/isotype and stratification combinations
   # represented in the fitted model
@@ -356,10 +316,24 @@ posterior_pred <- function(
   # Use all eligible antigen/isotype x stratification groups
   groups <- matched_groups
   
+  
   # ---------------------------------------------------------
-  # 7. Simulate posterior predictive measurements
+  # 7. Preprocess posterior draws and simulate
   # ---------------------------------------------------------
   
+  # Create group identifiers once
+  group_id <- function(x) {
+    paste(x$Iso_type, x$Stratification, sep = "\r")
+  }
+  
+  obs_groups <- split(obs_dat, group_id(obs_dat))
+  person_groups <- split(mod_dat, group_id(mod_dat))
+  precision_groups <- split(
+    mod_prec_logy,
+    group_id(mod_prec_logy)
+  )
+  
+  # Preallocate simulation output
   simulated_list <- vector(
     "list",
     nrow(groups) * n_sim
@@ -372,26 +346,17 @@ posterior_pred <- function(
     iso_g <- groups$Iso_type[g]
     strat_g <- groups$Stratification[g]
     
-    obs_g <- obs_dat %>%
-      dplyr::filter(
-        Iso_type == iso_g,
-        Stratification == strat_g
-      )
+    key <- paste(iso_g, strat_g, sep = "\r")
     
-    person_g <- mod_dat %>%
-      dplyr::filter(
-        Iso_type == iso_g,
-        Stratification == strat_g
-      )
+    # Retrieve pre-split data: no filtering
+    obs_g <- obs_groups[[key]]
+    person_g <- person_groups[[key]]
+    precision_g <- precision_groups[[key]]
     
-    precision_g <- mod_prec_logy %>%
-      dplyr::filter(
-        Iso_type == iso_g,
-        Stratification == strat_g
-      )
-    
-    if (nrow(person_g) == 0 ||
-        nrow(precision_g) == 0) {
+    if (is.null(person_g) ||
+        is.null(precision_g) ||
+        nrow(person_g) == 0L ||
+        nrow(precision_g) == 0L) {
       stop(
         "Missing posterior data for ",
         iso_g, " / ", strat_g
@@ -399,196 +364,186 @@ posterior_pred <- function(
     }
     
     # -------------------------------------------------------
-    # 7a. Identify complete joint posterior draws
+    # 7a. Identify complete joint posterior draws ONCE
     # -------------------------------------------------------
     
-    subjects_g <- obs_g %>%
-      dplyr::distinct(Subject)
+    subjects_g <- unique(obs_g$Subject)
+    expected_n_subjects <- length(subjects_g)
     
-    expected_n_subjects <- nrow(subjects_g)
+    # Only subjects represented in observations
+    person_g <- person_g[
+      person_g$Subject %in% subjects_g,
+      ,
+      drop = FALSE
+    ]
     
-    complete_person_draws <- person_g %>%
-      dplyr::semi_join(
-        subjects_g,
-        by = "Subject"
-      ) %>%
-      dplyr::mutate(
-        complete = dplyr::if_all(
-          dplyr::all_of(required),
-          ~ is.finite(.x)
-        )
-      ) %>%
-      dplyr::group_by(
-        Iteration,
-        Chain
-      ) %>%
-      dplyr::summarise(
-        n_subjects = dplyr::n_distinct(Subject),
-        n_rows = dplyr::n(),
-        n_complete = sum(complete),
-        .groups = "drop"
-      ) %>%
-      dplyr::filter(
-        n_subjects == expected_n_subjects,
-        n_rows == expected_n_subjects,
-        n_complete == expected_n_subjects
+    # Check parameter completeness once
+    person_g$complete <- rowSums(
+      is.finite(
+        as.matrix(person_g[, required, drop = FALSE])
       )
+    ) == length(required)
     
-    # Validate precision: exactly one positive finite value
-    # per iteration/chain/group
-    complete_precision_draws <- precision_g %>%
-      dplyr::group_by(
-        Iteration,
-        Chain
-      ) %>%
-      dplyr::summarise(
-        n_precision = dplyr::n(),
-        valid_precision = all(
-          is.finite(prec_logy) & prec_logy > 0
-        ),
-        .groups = "drop"
-      ) %>%
-      dplyr::filter(
-        n_precision == 1,
-        valid_precision
-      )
+    # Create draw identifiers
+    person_g$draw_id <- paste(
+      person_g$Iteration,
+      person_g$Chain,
+      sep = "\r"
+    )
     
-    available_draws <- complete_person_draws %>%
-      dplyr::inner_join(
-        complete_precision_draws,
-        by = draw_keys
-      ) %>%
-      dplyr::select(
-        Iteration,
-        Chain
-      )
+    precision_g$draw_id <- paste(
+      precision_g$Iteration,
+      precision_g$Chain,
+      sep = "\r"
+    )
     
-    if (nrow(available_draws) == 0) {
+    # Split posterior draws once
+    person_draws <- split(
+      person_g,
+      person_g$draw_id
+    )
+    
+    precision_draws <- split(
+      precision_g,
+      precision_g$draw_id
+    )
+    
+    # Validate complete joint draws once
+    valid_person <- vapply(
+      person_draws,
+      function(x) {
+        nrow(x) == expected_n_subjects &&
+          !anyDuplicated(x$Subject) &&
+          all(x$complete)
+      },
+      logical(1)
+    )
+    
+    valid_precision <- vapply(
+      precision_draws,
+      function(x) {
+        nrow(x) == 1L &&
+          is.finite(x$prec_logy[[1]]) &&
+          x$prec_logy[[1]] > 0
+      },
+      logical(1)
+    )
+    
+    available_draws <- intersect(
+      names(person_draws)[valid_person],
+      names(precision_draws)[valid_precision]
+    )
+    
+    if (length(available_draws) == 0L) {
       stop(
         "No complete posterior draws for ",
-        iso_g, " / ", strat_g,
-        ". Check missing subjects, parameters, ",
-        "and observation precision."
+        iso_g, " / ", strat_g
       )
     }
     
+    # Remove invalid draws from lookup structures
+    person_draws <- person_draws[available_draws]
+    
+    precision_values <- vapply(
+      precision_draws[available_draws],
+      function(x) x$prec_logy[[1]],
+      numeric(1)
+    )
+    
     # -------------------------------------------------------
-    # 7b. Generate n_sim replicated datasets
+    # 7b. Precompute observation-to-subject mapping
+    # -------------------------------------------------------
+    
+    # Every valid draw has the same subjects.
+    # Establish a consistent subject ordering once.
+    subject_order <- subjects_g
+    
+    person_draws <- lapply(
+      person_draws,
+      function(x) {
+        x[match(subject_order, x$Subject), , drop = FALSE]
+      }
+    )
+    
+    # Maps each observation to its subject's parameter row
+    obs_index <- match(obs_g$Subject, subject_order)
+    
+    if (anyNA(obs_index)) {
+      stop("Could not match observations to subjects.")
+    }
+    
+    # Sample all joint draws for this group at once
+    sampled_draws <- sample(
+      available_draws,
+      size = n_sim,
+      replace = TRUE
+    )
+    
+    # -------------------------------------------------------
+    # 7c. Generate replicated datasets
     # -------------------------------------------------------
     
     for (j in seq_len(n_sim)) {
       
-      selected_draw <- available_draws %>%
-        dplyr::slice_sample(n = 1)
+      draw_j <- sampled_draws[[j]]
       
-      iter_j <- selected_draw$Iteration[[1]]
-      chain_j <- selected_draw$Chain[[1]]
+      # Direct lookup: no filtering or joining
+      person_j <- person_draws[[draw_j]]
+      prec_j <- precision_values[[draw_j]]
       
-      person_j <- person_g %>%
-        dplyr::filter(
-          Iteration == iter_j,
-          Chain == chain_j
-        )
+      # Match parameters using precomputed indices
+      params_j <- person_j[
+        obs_index,
+        ,
+        drop = FALSE
+      ]
       
-      precision_j <- precision_g %>%
-        dplyr::filter(
-          Iteration == iter_j,
-          Chain == chain_j
-        )
-      
-      # Join the same observed subjects to their
-      # individual parameters for this joint draw
-      pred_dat <- obs_g %>%
-        dplyr::inner_join(
-          person_j,
-          by = join_keys,
-          relationship = "many-to-one"
-        )
-      
-      if (nrow(pred_dat) != nrow(obs_g)) {
-        stop(
-          "Posterior join lost observations for ",
-          iso_g, " / ", strat_g,
-          " at iteration ", iter_j,
-          ", chain ", chain_j
-        )
-      }
-      
-      # Safety check
-      if (any(
-        !is.finite(
-          as.matrix(
-            pred_dat[, required, drop = FALSE]
-          )
-        )
-      )) {
-        stop(
-          "Invalid individual posterior parameters for ",
-          iso_g, " / ", strat_g,
-          " at iteration ", iter_j,
-          ", chain ", chain_j
-        )
-      }
-      
-      pred_dat$prec_logy <- precision_j$prec_logy[[1]]
-      
-      # -----------------------------------------------------
-      # 7c. Calculate expected antibody concentrations
-      # -----------------------------------------------------
-      
+      # Calculate expected antibody concentrations
       ab_args <- list(
-        t = pred_dat$t,
-        y0 = pred_dat$y0,
-        y1 = pred_dat$y1,
-        t1 = pred_dat$t1,
-        alpha = pred_dat$alpha,
+        t = obs_g$t,
+        y0 = params_j$y0,
+        y1 = params_j$y1,
+        t1 = params_j$t1,
+        alpha = params_j$alpha,
         decay_type = decay_type
       )
       
       if (decay_type == "power") {
-        ab_args$shape <- pred_dat$shape
+        ab_args$shape <- params_j$shape
       }
       
-      pred_dat$mu_hat <- do.call(ab, ab_args)
+      mu_hat <- do.call(ab, ab_args)
       
-      if (any(!is.finite(pred_dat$mu_hat)) ||
-          any(pred_dat$mu_hat <= 0)) {
+      if (any(!is.finite(mu_hat)) ||
+          any(mu_hat <= 0)) {
         stop(
-          "Nonpositive or invalid predicted antibody values for ",
-          iso_g, " / ", strat_g
+          "Nonpositive or invalid predicted antibody ",
+          "values for ", iso_g, " / ", strat_g
         )
       }
       
-      # -----------------------------------------------------
-      # 7d. Simulate lognormal observation error
-      # -----------------------------------------------------
+      # Add lognormal observation error
+      simulated_values <- stats::rlnorm(
+        n = length(mu_hat),
+        meanlog = log(mu_hat),
+        sdlog = 1 / sqrt(prec_j)
+      )
       
-      pred_dat <- pred_dat %>%
-        dplyr::mutate(
-          sd_logy = 1 / sqrt(prec_logy),
-          value = stats::rlnorm(
-            n = dplyr::n(),
-            meanlog = log(mu_hat),
-            sdlog = sd_logy
-          ),
-          estimate = "simulated",
-          simulation = paste0("sim_", j)
-        )
-      
-      simulated_list[[counter]] <- pred_dat %>%
-        dplyr::select(
-          Iso_type,
-          Stratification,
-          Subject,
-          t,
-          value,
-          estimate,
-          simulation
-        )
+      # Store only the columns needed for plotting
+      simulated_list[[counter]] <- data.frame(
+        Iso_type = obs_g$Iso_type,
+        Stratification = obs_g$Stratification,
+        Subject = obs_g$Subject,
+        t = obs_g$t,
+        value = simulated_values,
+        estimate = "simulated",
+        simulation = paste0("sim_", j)
+      )
       
       counter <- counter + 1L
     }
   }
+  
   
   # ---------------------------------------------------------
   # 8. Combine observed and simulated measurements
