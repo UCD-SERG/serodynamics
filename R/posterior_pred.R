@@ -68,51 +68,32 @@ posterior_pred <- function(
     strat = NULL,
     n_sim = 4,
     decay_type = NULL,
-    ...
-) {
+    ...) {
   
   # ---------------------------------------------------------
   # 1. Validate arguments
   # ---------------------------------------------------------
-  
-  if (!is.numeric(n_sim) ||
-      length(n_sim) != 1L ||
-      is.na(n_sim) ||
-      !is.finite(n_sim) ||
-      n_sim < 1 ||
-      n_sim != floor(n_sim)) {
-    stop("n_sim must be a positive integer.")
-  }
-  
+  if (!is.numeric(n_sim) || length(n_sim) != 1L || is.na(n_sim) ||
+      !is.finite(n_sim) || n_sim < 1 || n_sim != floor(n_sim)) {
+    stop("n_sim must be a positive integer.")}
   
   if (is.null(decay_type)) {
     decay_type <- attr(data, "decay_type")
     if (is.null(decay_type)) {
-      decay_type <- "power"
-    }
-  }
+      decay_type <- "power"}}
   
-  decay_type <- match.arg(
-    decay_type,
-    c("power", "exponential")
-  )
+  decay_type <- match.arg(decay_type, c("power", "exponential"))
   
   required <- c("alpha", "t1", "y0", "y1")
   
-  if (decay_type == "power") {
-    required <- c(required, "shape")
-  }
+  if (decay_type == "power") {required <- c(required, "shape")}
   
-  join_keys <- c(
-    "Subject", "Iso_type", "Stratification"
-  )
-  
+  join_keys <- c("Subject", "Iso_type", "Stratification")
   draw_keys <- c("Iteration", "Chain")
   
   # ---------------------------------------------------------
   # 2. Extract population observation precision
   # ---------------------------------------------------------
-  
   pop_params <- attr(data, "population_params")
   
   if (is.null(pop_params)) {
@@ -120,12 +101,9 @@ posterior_pred <- function(
   }
   
   mod_prec_logy <- pop_params %>%
-    dplyr::filter(
-      .data$Population_Parameter == "prec.logy"
-    ) %>%
+    dplyr::filter(.data$Population_Parameter == "prec.logy") %>%
     dplyr::transmute(Iteration, Chain, Iso_type, Stratification,
-      prec_logy = as.numeric(as.character(value))
-    )
+      prec_logy = as.numeric(as.character(value)))
   
   if (nrow(mod_prec_logy) == 0) {
     stop("No observation precision draws were found.")
@@ -134,28 +112,14 @@ posterior_pred <- function(
   # ---------------------------------------------------------
   # 3. Prepare individual posterior parameters
   # ---------------------------------------------------------
-  
   mod_long <- as.data.frame(data) %>%
     dplyr::filter(Parameter %in% required, Subject != "newperson") %>%
-    dplyr::mutate(value = as.numeric(as.character(value))
-    ) %>%
+    dplyr::mutate(value = as.numeric(as.character(value))) %>%
     dplyr::select(Subject, Iso_type, Stratification, Iteration, Chain, 
                   Parameter, value)
   
   if (nrow(mod_long) == 0) {
-    stop("No individual-level posterior parameters found.")
-  }
-  
-  # Prevent duplicate subject/parameter/draw combinations
-  duplicates <- mod_long %>%
-    dplyr::count(
-      dplyr::across(
-        dplyr::all_of(
-          c(join_keys, draw_keys, "Parameter")))) %>%
-    dplyr::filter(n > 1)
-  if (nrow(duplicates) > 0) {
-    stop("Duplicate individual posterior parameter records found.")
-  }
+    stop("No individual-level posterior parameters found.")}
   
   mod_dat <- mod_long %>%
     tidyr::pivot_wider(id_cols = dplyr::all_of(c(join_keys, draw_keys)),
@@ -165,8 +129,7 @@ posterior_pred <- function(
   
   if (length(missing_columns) > 0) {
     stop("Missing posterior parameter columns: ",
-      paste(missing_columns, collapse = ", "))
-  }
+         paste(missing_columns, collapse = ", "))}
   
   # ---------------------------------------------------------
   # 4. Prepare observed data
@@ -175,80 +138,47 @@ posterior_pred <- function(
   
   strat_col <- attr(data, "strat")
   
-  if (!is.null(strat_col) &&
-      length(strat_col) == 1L &&
-      !is.na(strat_col) &&
-      nzchar(strat_col)) {
-    
-    if (strat_col != "Stratification" &&
-        strat_col %in% names(obs_dat)) {
-      
+  if (!is.null(strat_col) && length(strat_col) == 1L && strat_col != "None") {
+    if (strat_col != "Stratification" && strat_col %in% names(obs_dat)) {
       obs_dat <- obs_dat %>%
-        dplyr::rename(
-          Stratification = dplyr::all_of(strat_col)
-        )
+        dplyr::rename(Stratification = dplyr::all_of(strat_col))
     }
-    
   } else if (!"Stratification" %in% names(obs_dat)) {
-    
     obs_dat$Stratification <- "All"
   }
-  
   if (!"Stratification" %in% names(obs_dat)) {
     stop("Could not identify the observed stratification column.")
   }
-  
   obs_dat <- obs_dat %>%
     dplyr::mutate(
       Subject = as.character(Subject),
       Iso_type = as.character(Iso_type),
-      Stratification = trimws(as.character(Stratification))
-    ) %>%
-    dplyr::select(
-      Subject, Iso_type, Stratification, t, result
-    ) %>%
-    dplyr::filter(
-      !is.na(t),
-      !is.na(result)
-    )
+      Stratification = trimws(as.character(Stratification))) %>%
+    dplyr::select(Subject, Iso_type, Stratification, t, result) %>%
+    dplyr::filter(!is.na(t), !is.na(result))
   # ---------------------------------------------------------
   # 5. Optional antigen/isotype and stratification filters
   # ---------------------------------------------------------
-  
   if (!is.null(iso)) {
-    
     obs_dat <- obs_dat %>%
       dplyr::filter(Iso_type %in% iso)
-    
     mod_dat <- mod_dat %>%
       dplyr::filter(Iso_type %in% iso)
-    
     mod_prec_logy <- mod_prec_logy %>%
       dplyr::filter(Iso_type %in% iso)
   }
-  
   if (!is.null(strat)) {
-    
     obs_dat <- obs_dat %>%
       dplyr::filter(Stratification %in% strat)
-    
     mod_dat <- mod_dat %>%
       dplyr::filter(Stratification %in% strat)
-    
     mod_prec_logy <- mod_prec_logy %>%
       dplyr::filter(Stratification %in% strat)
   }
-  
-  if (nrow(obs_dat) == 0) {
-    stop("No observed data match the selected groups.")
-  }
-  
+  if (nrow(obs_dat) == 0) {stop("No observed data match the selected groups.")}
   # ---------------------------------------------------------
   # 6. Match observed individuals to posterior parameters
   # ---------------------------------------------------------
-  
-  join_keys <- c("Subject", "Iso_type", "Stratification")
-  
   # All antigen/isotype and stratification combinations
   # represented in the fitted model
   model_groups <- mod_dat %>%
@@ -262,24 +192,15 @@ posterior_pred <- function(
   
   # Identify unmatched observations
   unmatched <- obs_dat %>%
-    dplyr::anti_join(
-      modeled_subjects,
-      by = join_keys
-    )
+    dplyr::anti_join(modeled_subjects, by = join_keys)
   
   if (nrow(unmatched) > 0) {
-    warning(
-      nrow(unmatched),
-      " observations do not match posterior subjects."
-    )
+    warning( nrow(unmatched), " observations do not match posterior subjects.")
   }
   
   # Keep observations that can be matched to the model
   obs_dat <- obs_dat %>%
-    dplyr::semi_join(
-      modeled_subjects,
-      by = join_keys
-    )
+    dplyr::semi_join(modeled_subjects, by = join_keys)
   
   # Identify groups with matching observed measurements
   matched_groups <- obs_dat %>%
@@ -287,16 +208,11 @@ posterior_pred <- function(
   
   # Report model groups that cannot be simulated
   missing_groups <- model_groups %>%
-    dplyr::anti_join(
-      matched_groups,
-      by = c("Iso_type", "Stratification")
-    )
+    dplyr::anti_join(matched_groups, by = c("Iso_type", "Stratification"))
   
   if (nrow(missing_groups) > 0) {
-    warning(
-      "The following modeled groups have no matching ",
-      "observations and cannot be simulated:"
-    )
+    warning("The following modeled groups have no matching ",
+            "observations and cannot be simulated:")
     print(missing_groups)
   }
   
@@ -307,33 +223,22 @@ posterior_pred <- function(
   # Use all eligible antigen/isotype x stratification groups
   groups <- matched_groups
   
-  
   # ---------------------------------------------------------
   # 7. Preprocess posterior draws and simulate
   # ---------------------------------------------------------
-  
   # Create group identifiers once
-  group_id <- function(x) {
-    paste(x$Iso_type, x$Stratification, sep = "\r")
-  }
+  group_id <- function(x) {paste(x$Iso_type, x$Stratification, sep = "\r")}
   
   obs_groups <- split(obs_dat, group_id(obs_dat))
   person_groups <- split(mod_dat, group_id(mod_dat))
-  precision_groups <- split(
-    mod_prec_logy,
-    group_id(mod_prec_logy)
-  )
+  precision_groups <- split(mod_prec_logy, group_id(mod_prec_logy))
   
   # Preallocate simulation output
-  simulated_list <- vector(
-    "list",
-    nrow(groups) * n_sim
-  )
+  simulated_list <- vector("list",nrow(groups) * n_sim)
   
   counter <- 1L
   
   for (g in seq_len(nrow(groups))) {
-    
     iso_g <- groups$Iso_type[g]
     strat_g <- groups$Stratification[g]
     
@@ -464,20 +369,14 @@ posterior_pred <- function(
     }
     
     # Sample all joint draws for this group at once
-    sampled_draws <- sample(
-      available_draws,
-      size = n_sim,
-      replace = TRUE
-    )
+    sampled_draws <- sample(available_draws, size = n_sim, replace = TRUE)
     
     # -------------------------------------------------------
     # 7c. Generate replicated datasets
     # -------------------------------------------------------
     
     for (j in seq_len(n_sim)) {
-      
       draw_j <- sampled_draws[[j]]
-      
       # Direct lookup: no filtering or joining
       person_j <- person_draws[[draw_j]]
       prec_j <- precision_values[[draw_j]]
@@ -490,14 +389,9 @@ posterior_pred <- function(
       ]
       
       # Calculate expected antibody concentrations
-      ab_args <- list(
-        t = obs_g$t,
-        y0 = params_j$y0,
-        y1 = params_j$y1,
-        t1 = params_j$t1,
-        alpha = params_j$alpha,
-        decay_type = decay_type
-      )
+      ab_args <- list(t = obs_g$t, y0 = params_j$y0, y1 = params_j$y1,
+                      t1 = params_j$t1, alpha = params_j$alpha, 
+                      decay_type = decay_type)
       
       if (decay_type == "power") {
         ab_args$shape <- params_j$shape
@@ -540,71 +434,31 @@ posterior_pred <- function(
   # 8. Combine observed and simulated measurements
   # ---------------------------------------------------------
   
-  simulated_dat <- dplyr::bind_rows(
-    simulated_list
-  )
+  simulated_dat <- dplyr::bind_rows(simulated_list)
   
   observed_dat <- obs_dat %>%
-    dplyr::transmute(
-      Iso_type,
-      Stratification,
-      Subject,
-      t,
-      value = result,
-      estimate = "observed",
-      simulation = "observed"
-    )
+    dplyr::transmute(Iso_type, Stratification, Subject, t, value = result,
+      estimate = "observed", simulation = "observed")
   
-  plot_dat <- dplyr::bind_rows(
-    simulated_dat,
-    observed_dat
-  ) %>%
-    dplyr::filter(
-      is.finite(value),
-      value > 0
-    ) %>%
-    dplyr::mutate(
-      estimate = factor(
-        estimate,
-        levels = c("observed", "simulated")
-      )
-    )
+  plot_dat <- dplyr::bind_rows(simulated_dat, observed_dat) %>%
+    dplyr::filter(is.finite(value), value > 0) %>%
+    dplyr::mutate(estimate = factor(estimate, 
+                                    levels = c("observed", "simulated")))
   
   # ---------------------------------------------------------
   # 9. Plot posterior predictive densities
   # ---------------------------------------------------------
   
-  ppc_plot <- ggplot2::ggplot(
-    plot_dat,
-    ggplot2::aes(
-      x = value,
-      color = estimate,
-      group = interaction(estimate, simulation),
-      linewidth = estimate,
-      alpha = estimate
-    )
-  ) +
-    ggplot2::geom_density(
-      na.rm = TRUE
-    ) +
-    ggplot2::scale_color_manual(
-      values = c(
-        observed = "black",
-        simulated = "dodgerblue"
-      )
-    ) +
-    ggplot2::scale_linewidth_manual(
-      values = c(
-        observed = 0.8,
-        simulated = 0.3
-      )
-    ) +
-    ggplot2::scale_alpha_manual(
-      values = c(
-        observed = 1,
-        simulated = 0.3
-      )
-    ) +
+  ppc_plot <- ggplot2::ggplot(plot_dat,
+    ggplot2::aes(x = value, color = estimate, 
+                 group = interaction(estimate, simulation),
+                 linewidth = estimate, alpha = estimate)) +
+    ggplot2::geom_density(na.rm = TRUE) +
+    ggplot2::scale_color_manual(values = c(observed = "black", 
+                                           simulated = "dodgerblue")) +
+    ggplot2::scale_linewidth_manual(values = c(observed = 0.8, simulated = 0.3)
+                                    ) +
+    ggplot2::scale_alpha_manual(values = c(observed = 1, simulated = 0.3)) +
     ggplot2::scale_x_log10() +
     ggplot2::theme_bw() +
     ggplot2::theme(
