@@ -42,33 +42,24 @@
 #'   Iso_type, Stratification, Iteration, Chain, Parameter, and value.
 #'   Parameters must be on the natural scale.
 #'   Must contain a `population_params` attribute.
-#'
 #' @param raw_dat Observed antibody data. After `use_att_names()`,
 #'   the data must contain Subject, Iso_type, t, and result,
 #'   plus the stratification column when applicable.
-#'
 #' @param iso Optional character vector selecting antigen/isotype
 #'   combinations. NULL includes all available combinations.
-#'
 #' @param strat Optional character vector selecting stratification
 #'   groups. NULL includes all available groups.
-#'
 #' @param n_sim Positive integer specifying the number of replicated
 #'   datasets generated per antigen/isotype and stratification group.
 #'   Default is 4.
-#'
 #' @param decay_type Either "power" or "exponential".
 #'   Defaults to the fitted model's decay_type attribute,
 #'   or "power" if that attribute is absent.
-#'
 #' @param seed Optional integer seed for reproducibility.
-#'
 #' @param ... Reserved for future use.
-#'
 #' @return A ggplot object containing observed and simulated density
 #'   estimates. The underlying plotting data are available through
 #'   attr(plot, "predictive_data").
-#'
 #' @export
 posterior_pred <- function(
     data,

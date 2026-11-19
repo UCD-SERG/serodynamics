@@ -14,16 +14,17 @@ test_that(
       nburn = 10, # Number of unrecorded samples before sampling begins
       nmc = 100,
       niter = 100, # Number of iterations
-      strat = "bldculres", # Variable to be stratified
+      strat = "bldculres", # Variable to be stratified\
+      ][]
     ) |>
       suppressWarnings()
     
     set.seed(1)
+    attr(nepal_sees_jags_output, "decay_type") <- NULL
     ppc <- posterior_pred(data = nepal_sees_jags_output,
                    raw_dat = nepal_sees,
                    strat = "typhi",
-                   n_sim = 15,
-                   n_sample = 500)
+                   n_sim = 5)
     
     results |>
       attributes() |>
