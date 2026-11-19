@@ -89,34 +89,7 @@
 #'   `summary()`.
 #'
 #' @export
-#' 
-#' @examples
-#' \dontrun{
-#' pp <- prior_predict(
-#'   mu_hyp_param = c(0.5, 5, 2, -2, -3),
-#'   prec_hyp_param = rep(1, 5),
-#'   omega_param = c(1, 5, 1, 5, 1),
-#'   wishdf_param = 20,
-#'   prec_logy_hyp_param = c(4, 1),
-#'   n = 500,
-#'   type = "curves"
-#' )
-#'
-#' pp
-#' summary(pp)
-#'
-#' prior_predict(
-#'   mu_hyp_param = c(0.5, 5, 2, -2, -3),
-#'   prec_hyp_param = rep(1, 5),
-#'   omega_param = c(1, 5, 1, 5, 1),
-#'   wishdf_param = 20,
-#'   prec_logy_hyp_param = c(4, 1),
-#'   n = 1000,
-#'   type = "density"
-#' )
-#' }
-
-
+#' @example inst/examples/examples-prior_predict.R
 prior_predict <- function(
   ...,
   n = 1000,
@@ -132,29 +105,17 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
-
   # Use the same prior preparation as model fitting.
-  pr <- prep_priors(
-    max_antigens = 1,
-    decay_type = decay_type,
-    ...
-  )
-  
+  pr <- prep_priors(max_antigens = 1, decay_type = decay_type, ...)
   mu_hyp <- pr$mu.hyp[1, ]
   prec_hyp <- pr$prec.hyp[1, , ]
   omega <- pr$omega[1, , ]
   wishdf <- pr$wishdf
   prec_logy_hyp <- pr$prec.logy.hyp[1, ]
-  
-  validate_prior_predict_inputs(mu_hyp = mu_hyp,
-                                prec_hyp = prec_hyp,
-                                omega = omega,
-                                prec_logy_hyp = prec_logy_hyp,
-                                wishdf = wishdf,
-                                n = n,
-                                n_params = n_params,
-                                noise = noise,
-                                time = time)
+  validate_prior_predict_inputs(mu_hyp = mu_hyp, prec_hyp = prec_hyp,
+                                omega = omega, prec_logy_hyp = prec_logy_hyp,
+                                wishdf = wishdf, n = n, n_params = n_params,
+                                noise = noise, time = time)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
@@ -164,28 +125,21 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   ## Parameter summaries
   ## ---------------------------------------------------------
-  
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
-  
   prior_summary <- do.call(rbind,
     lapply(model_parameters, function(param) {
       qs <- stats::quantile(draws[[param]], probs = c(0.025, 0.5, 0.975),
                             na.rm = TRUE, names = FALSE)
       data.frame(parameter = param, q2.5 = qs[1], median = qs[2], 
                  q97.5 = qs[3], row.names = NULL)
-    })
-  )
-  
+    }))
   ## ---------------------------------------------------------
   ## Plot parameter densities
   ## ---------------------------------------------------------
-  
   if (type == "density") {
-    
     density_data <- data.frame(parameter = rep(model_parameters, each = n),
                                value = unlist(draws[model_parameters], 
                                               use.names = FALSE))
-    
     plot <- ggplot2::ggplot(density_data,
                             ggplot2::aes(x = .data$value)) +
       ggplot2::geom_density() +
@@ -193,87 +147,59 @@ prior_predict <- function(
       ggplot2::labs(x = NULL, y = "Density", 
                     title = "Prior parameter distributions") +
       ggplot2::theme_bw()
-    
     if (log_x) {
       plot <- plot +
         ggplot2::scale_x_log10()
     }
-    
     plot_data <- density_data
   }
   
   # ---------------------------------------------------------
   # Prior predictive antibody curves
   # ---------------------------------------------------------
-  
   if (type == "curves") {
-    
     curve_data <- lapply(seq_len(n), function(i) {
-      
       tt <- time
-      
       # Generate biological trajectory
-      antibody <- ab(
-        t = tt,
-        y0 = draws$y0[i],
-        y1 = draws$y1[i],
-        t1 = draws$t1[i],
-        alpha = draws$alpha[i],
-        shape = draws$shape[i],
-        decay_type = decay_type
-      )
-      
-      
+      antibody <- ab(t = tt, y0 = draws$y0[i], y1 = draws$y1[i], 
+                     t1 = draws$t1[i], alpha = draws$alpha[i], 
+                     shape = draws$shape[i], decay_type = decay_type)
       # Simulated observations on the log scale
       if (noise) {
-        
         if (any(!is.finite(antibody)) ||
               any(antibody <= 0)) {
-          cli::cli_abort(
-            "Observation noise requires positive, finite
-            antibody trajectories."
-          )
+          cli::cli_abort("Observation noise requires positive, finite
+            antibody trajectories.")
         }
-        
         antibody <- exp(log(antibody) + 
                           stats::rnorm(length(tt), mean = 0, 
                                        sd = draws$sigma_logy[i]))
       }
-      
       data.frame(draw = i, time = tt, antibody = antibody)
     })
     curve_data <- do.call(rbind, curve_data)
     finite <- is.finite(curve_data$antibody)
-    
     if (any(!finite)) {
       cli::cli_warn(
         "{sum(!finite)} prior-predictive values were
         non-finite and were omitted from the plot."
       )
-      
-      curve_data <- curve_data[
-        finite, ,
-        drop = FALSE
-      ]
+      curve_data <- curve_data[finite, , drop = FALSE]
     }
     
-    plot <- ggplot2::ggplot(curve_data,
+    plot <- ggplot2::ggplot(curve_data, 
                             ggplot2::aes(x = .data$time, y = .data$antibody, 
                                          group = .data$draw)) +
       ggplot2::geom_line(alpha = 0.08) +
-      ggplot2::labs(
-        x = "Time",
-        y = "Antibody level",
-        title = if (noise) {
-          "Prior predictive observations"
-        } else {
-          "Prior biological trajectories"
-        }
+      ggplot2::labs(x = "Time", y = "Antibody level", title = if (noise) {
+        "Prior predictive observations"
+      } else {
+        "Prior biological trajectories"
+      }
       ) +
       ggplot2::theme_bw()
     if (log_y) {
-      plot <- plot +
-        ggplot2::scale_y_log10()
+      plot <- plot + ggplot2::scale_y_log10()
     }
     plot_data <- curve_data
   }
@@ -281,7 +207,6 @@ prior_predict <- function(
   # ---------------------------------------------------------
   # Construct S3 object
   # ---------------------------------------------------------
-  
   out <- list(plot = plot, draws = draws, plot_data = plot_data, 
               type = type, priors = pr)
   class(out) <- "serodynamics_prior_predict"

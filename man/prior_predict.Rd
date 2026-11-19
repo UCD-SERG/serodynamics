@@ -158,7 +158,7 @@ Trajectory plots show how uncertainty in the prior distributions
 affect the model's predicted seroresponse.
 }
 \examples{
-\dontrun{
+
 pp <- prior_predict(
   mu_hyp_param = c(0.5, 5, 2, -2, -3),
   prec_hyp_param = rep(1, 5),
@@ -181,5 +181,4 @@ prior_predict(
   n = 1000,
   type = "density"
 )
-}
 }
