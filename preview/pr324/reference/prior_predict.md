@@ -186,7 +186,7 @@ in the `"prior_summary"` attribute and can be retrieved with
 ## Examples
 
 ``` r
-if (FALSE) { # \dontrun{
+
 pp <- prior_predict(
   mu_hyp_param = c(0.5, 5, 2, -2, -3),
   prec_hyp_param = rep(1, 5),
@@ -198,7 +198,14 @@ pp <- prior_predict(
 )
 
 pp
+
 summary(pp)
+#>   parameter       q2.5      median       q97.5
+#> 1        y0  0.2233450   1.4723841    9.953641
+#> 2        y1 15.7669887 160.4563670 1339.470211
+#> 3        t1  0.9842316   7.3448409   58.438157
+#> 4     alpha  0.0164884   0.1281143    1.519039
+#> 5     shape  1.0062531   1.0457446    1.344930
 
 prior_predict(
   mu_hyp_param = c(0.5, 5, 2, -2, -3),
@@ -209,5 +216,4 @@ prior_predict(
   n = 1000,
   type = "density"
 )
-} # }
 ```

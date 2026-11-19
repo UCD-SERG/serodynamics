@@ -334,7 +334,7 @@
 <code class="sourceCode R"><span><span class="co"># Full package check (takes several minutes)</span></span>
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co"># or</span></span>
-<span><span class="fu">rcmdcheck</span><span class="fu">::</span><span class="fu">rcmdcheck</span><span class="op">(</span>error_on <span class="op">=</span> <span class="st">"note"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">rcmdcheck</span><span class="fu">::</span><span class="fu"><a href="http://r-lib.github.io/rcmdcheck/reference/rcmdcheck.html" class="external-link">rcmdcheck</a></span><span class="op">(</span>error_on <span class="op">=</span> <span class="st">"note"</span><span class="op">)</span></span></code></pre></div>
 <p><strong>Note</strong>: This runs multiple validation steps including examples, tests, and documentation checks. Allow 5-10 minutes for completion.</p>
 </div>
 <div class="section level3">
@@ -362,7 +362,7 @@
 <h3 id="spelling-check">Spelling Check<a class="anchor" aria-label="anchor" href="#spelling-check"></a></h3>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Check spelling</span></span>
-<span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling/reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
 <p>Custom words are in <code>inst/WORDLIST</code>.</p>
 </div>
 </div>
@@ -637,7 +637,7 @@
 <span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">check</span><span class="op">(</span><span class="op">)</span>              <span class="co"># Full R CMD check (slow)</span></span>
 <span><span class="fu">usethis</span><span class="fu">::</span><span class="fu"><a href="https://usethis.r-lib.org/reference/use_version.html" class="external-link">use_version</a></span><span class="op">(</span><span class="op">)</span>         <span class="co"># Increment version</span></span>
 <span><span class="fu">lintr</span><span class="fu">::</span><span class="fu">lint_package</span><span class="op">(</span><span class="op">)</span>          <span class="co"># Check code style</span></span>
-<span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling//reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
+<span><span class="fu">spelling</span><span class="fu">::</span><span class="fu"><a href="https://docs.ropensci.org/spelling/reference/spell_check_package.html" class="external-link">spell_check_package</a></span><span class="op">(</span><span class="op">)</span> <span class="co"># Check spelling</span></span>
 <span><span class="fu">rmarkdown</span><span class="fu">::</span><span class="fu"><a href="https://pkgs.rstudio.com/rmarkdown/reference/render.html" class="external-link">render</a></span><span class="op">(</span><span class="st">"README.Rmd"</span><span class="op">)</span> <span class="co"># Update README</span></span></code></pre></div>
 </div>
 <div class="section level2">

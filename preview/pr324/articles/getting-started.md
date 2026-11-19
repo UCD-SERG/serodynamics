@@ -242,7 +242,7 @@ fitted_model <- run_serodynamics(
 #> Calling 4 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Nov 13 01:30:09 2026
+#> Welcome to JAGS 4.3.2 on Thu Nov 19 02:01:17 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -461,7 +461,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Nov 13 01:30:17 2026
+#> Welcome to JAGS 4.3.2 on Thu Nov 19 02:01:24 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -496,7 +496,7 @@ fitted_stratified <- run_serodynamics(
 #> Calling 2 simulations using the parallel method...
 #> Following the progress of chain 1 (the program will wait for all chains
 #> to finish before continuing):
-#> Welcome to JAGS 4.3.2 on Fri Nov 13 01:30:19 2026
+#> Welcome to JAGS 4.3.2 on Thu Nov 19 02:01:25 2026
 #> JAGS is free software and comes with ABSOLUTELY NO WARRANTY
 #> Loading module: basemod: ok
 #> Loading module: bugs: ok
@@ -554,7 +554,7 @@ sessioninfo::session_info()
 #>  collate  C.UTF-8
 #>  ctype    C.UTF-8
 #>  tz       UTC
-#>  date     2026-11-13
+#>  date     2026-11-19
 #>  pandoc   3.8.3 @ /opt/hostedtoolcache/pandoc/3.8.3/x64/ (via rmarkdown)
 #>  quarto   1.11.9 @ /usr/local/bin/quarto
 #> 
@@ -574,7 +574,7 @@ sessioninfo::session_info()
 #>  generics         0.1.4      2025-05-09 [1] CRAN (R 4.6.2)
 #>  GGally           2.5.0      2026-11-09 [1] CRAN (R 4.6.2)
 #>  ggmcmc           1.5.1.2    2025-10-02 [1] CRAN (R 4.6.2)
-#>  ggplot2        * 4.0.3      2026-04-22 [1] CRAN (R 4.6.2)
+#>  ggplot2        * 4.0.4      2026-11-14 [1] CRAN (R 4.6.2)
 #>  ggstats          0.14.0     2026-09-02 [1] CRAN (R 4.6.2)
 #>  glue             1.8.1      2026-04-17 [1] CRAN (R 4.6.2)
 #>  gtable           0.3.6      2024-10-25 [1] CRAN (R 4.6.2)
@@ -594,14 +594,15 @@ sessioninfo::session_info()
 #>  R6               2.6.1      2025-02-15 [1] CRAN (R 4.6.2)
 #>  RColorBrewer     1.1-3      2022-04-03 [1] CRAN (R 4.6.2)
 #>  Rcpp             1.1.2      2026-07-05 [1] CRAN (R 4.6.2)
+#>  rjags            4-18       2026-11-01 [1] CRAN (R 4.6.2)
 #>  rlang            1.3.0      2026-07-05 [1] CRAN (R 4.6.2)
 #>  rmarkdown        2.32       2026-09-01 [1] CRAN (R 4.6.2)
 #>  rngtools         1.5.2      2021-09-20 [1] CRAN (R 4.6.2)
-#>  runjags        * 2.2.2-5    2025-04-09 [1] CRAN (R 4.6.2)
+#>  runjags        * 2.3.0-5    2026-11-18 [1] CRAN (R 4.6.2)
 #>  S7               0.2.2      2026-04-22 [1] CRAN (R 4.6.2)
 #>  scales           1.4.0      2025-04-24 [1] CRAN (R 4.6.2)
 #>  serocalculator   1.4.1      2026-03-25 [1] CRAN (R 4.6.2)
-#>  serodynamics   * 0.1.0.9026 2026-11-13 [1] local
+#>  serodynamics   * 0.1.0.9026 2026-11-19 [1] local
 #>  sessioninfo      1.2.4      2026-06-04 [1] CRAN (R 4.6.2)
 #>  tibble           3.3.1      2026-01-11 [1] CRAN (R 4.6.2)
 #>  tidyr            1.3.2      2025-12-19 [1] CRAN (R 4.6.2)
