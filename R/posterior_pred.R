@@ -62,19 +62,19 @@
 #'   attr(plot, "predictive_data").
 #' @export
 posterior_pred <- function(
-    data,
-    raw_dat,
-    iso = NULL,
-    strat = NULL,
-    n_sim = 4,
-    decay_type = NULL,
-    ...) {
+  data,
+  raw_dat,
+  iso = NULL,
+  strat = NULL,
+  n_sim = 4,
+  decay_type = NULL,
+  ...) {
   
   # ---------------------------------------------------------
   # 1. Validate arguments
   # ---------------------------------------------------------
   if (!is.numeric(n_sim) || length(n_sim) != 1L || is.na(n_sim) ||
-      !is.finite(n_sim) || n_sim < 1 || n_sim != floor(n_sim)) {
+        !is.finite(n_sim) || n_sim < 1 || n_sim != floor(n_sim)) {
     stop("n_sim must be a positive integer.")}
   
   if (is.null(decay_type)) {
