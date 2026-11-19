@@ -146,6 +146,17 @@ test_that("Omitting inputs for errors", {
   ) |>
     expect_error("`n` must be a positive")
   
+  prior_predict(
+    mu_hyp_param = c(2.54, 2.54, 1, -2, -3),
+    prec_hyp_param = rep(0.01, 5),
+    omega_param = c(1, 50, 1, 10, 1),
+    wishdf_param = 20,
+    prec_logy_hyp_param = c(4, 1),
+    n = 50, 
+    noise = T
+  ) |>
+  expect_error("Observation noise requires positive")
+  
 })
 
 
