@@ -47,9 +47,8 @@ validate_prior_predict_inputs <- function(mu_hyp,
     )
   }
   
-  if (length(prec_logy_hyp) != 2L ||
-        any(!is.finite(prec_logy_hyp)) ||
-        any(prec_logy_hyp <= 0)) {
+  if (length(prec_logy_hyp) != 2L || any(!is.finite(prec_logy_hyp)) ||
+    any(prec_logy_hyp <= 0)) {
     cli::cli_abort(
       "Observation-precision hyperparameters must be positive."
     )

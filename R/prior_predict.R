@@ -168,8 +168,7 @@ prior_predict <- function(
                      shape = draws$shape[i], decay_type = decay_type)
       # Simulated observations on the log scale
       if (noise) {
-        if (any(!is.finite(antibody)) ||
-              any(antibody <= 0)) {
+        if (any(!is.finite(antibody)) || any(antibody <= 0)) {
           cli::cli_abort("Observation noise requires positive, finite
             antibody trajectories.")
         }
