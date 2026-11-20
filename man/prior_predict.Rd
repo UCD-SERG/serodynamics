@@ -11,16 +11,13 @@ prior_predict(
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   log_x = FALSE,
-  noise = FALSE,
-  decay_type = "power"
+  noise = FALSE
 )
 }
 \arguments{
 \item{...}{
   Arguments passed on to \code{\link{prep_priors}}
   \describe{
-    \item{\code{max_antigens}}{An \link{integer} specifying how many
-antigen-isotypes (biomarkers) will be modeled.}
     \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
 mean for the population level parameters
 parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
@@ -83,11 +80,6 @@ Default is \code{FALSE}.}
 adding independent Normal observation error on the log
 antibody scale. If \code{FALSE} (default), plot the latent
 antibody trajectories without observation error.}
-
-\item{decay_type}{Character. Antibody decay model used
-to generate trajectories. Defaults to \code{"power"}.
-Supported values must match the antibody kinetics
-function used internally.}
 }
 \value{
 An object of class \code{"serodynamics_prior_predict"} containing the
@@ -98,7 +90,7 @@ are stored in the \code{"prior_summary"} attribute and can be retrieved with
 }
 \description{
 Creates prior predictive plots for a specified prior distribution before
-fitting the model to observed data.
+fitting a power-law decay model to observed data.
 The function generates draws from the hierarchical prior distribution and
 propagates these draws through the model to obtain distributions of the
 predictive-level parameters. The resulting plots can be used to assess

@@ -1,7 +1,7 @@
 #' @title Create Prior Predictive Plot
 #' @description
 #' Creates prior predictive plots for a specified prior distribution before 
-#' fitting the model to observed data.
+#' fitting a power-law decay model to observed data. 
 #' The function generates draws from the hierarchical prior distribution and
 #' propagates these draws through the model to obtain distributions of the
 #' predictive-level parameters. The resulting plots can be used to assess
@@ -60,15 +60,11 @@
 #' Trajectory plots show how uncertainty in the prior distributions 
 #' affect the model's predicted seroresponse.
 #' 
-#' @inheritDotParams prep_priors
+#' @inheritDotParams prep_priors -max_antigens -decay_type
 #' @param noise Logical. If `TRUE`, simulate observations by
 #'   adding independent Normal observation error on the log
 #'   antibody scale. If `FALSE` (default), plot the latent
 #'   antibody trajectories without observation error.
-#' @param decay_type Character. Antibody decay model used
-#'   to generate trajectories. Defaults to `"power"`.
-#'   Supported values must match the antibody kinetics
-#'   function used internally.
 #' @param n Number of prior draws. Default is 1000.
 #' @param type Character string specifying the output visualization.
 #'   `"curves"` plots prior-predictive antibody trajectories and `"density"`
@@ -97,16 +93,33 @@ prior_predict <- function(
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   log_x = FALSE,
-  noise = FALSE,
-  decay_type = "power") {
+  noise = FALSE) {
   
   type <- match.arg(type)
+  
+  # Reject arguments managed internally by prior_predict()
+  dots <- list(...)
+  
+  unsupported <- intersect(
+    names(dots),
+    c("max_antigens", "decay_type")
+  )
+  
+  if (length(unsupported) > 0L) {
+    cli::cli_abort(
+      "The following arguments cannot be supplied to
+       {.fn prior_predict}: {paste(unsupported, collapse = ', ')}.
+       {.fn prior_predict} supports one antigen and
+       power-law decay only."
+    )
+  }
+  
   n_params <- 5L
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
   # Use the same prior preparation as model fitting.
-  pr <- prep_priors(max_antigens = 1, decay_type = decay_type, ...)
+  pr <- prep_priors(max_antigens = 1, decay_type = "power", ...)
   mu_hyp <- pr$mu.hyp[1, ]
   prec_hyp <- pr$prec.hyp[1, , ]
   omega <- pr$omega[1, , ]
@@ -165,7 +178,7 @@ prior_predict <- function(
       # Generate biological trajectory
       antibody <- ab(t = tt, y0 = draws$y0[i], y1 = draws$y1[i], 
                      t1 = draws$t1[i], alpha = draws$alpha[i], 
-                     shape = draws$shape[i], decay_type = decay_type)
+                     shape = draws$shape[i], decay_type = "power")
       # Simulated observations on the log scale
       if (noise) {
         if (any(!is.finite(antibody)) || any(antibody <= 0)) {
