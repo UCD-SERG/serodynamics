@@ -97,23 +97,6 @@ prior_predict <- function(
   
   type <- match.arg(type)
   
-  # Reject arguments managed internally by prior_predict()
-  dots <- list(...)
-  
-  unsupported <- intersect(
-    names(dots),
-    c("max_antigens", "decay_type")
-  )
-  
-  if (length(unsupported) > 0L) {
-    cli::cli_abort(
-      "The following arguments cannot be supplied to
-       {.fn prior_predict}: {paste(unsupported, collapse = ', ')}.
-       {.fn prior_predict} supports one antigen and
-       power-law decay only."
-    )
-  }
-  
   n_params <- 5L
   ## ---------------------------------------------------------
   ## Validate inputs
