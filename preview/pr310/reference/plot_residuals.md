@@ -82,7 +82,7 @@ plot_residuals(
   stratifying by `strat` variable specified in
   [`run_serodynamics()`](https:/ucd-serg.github.io/serodynamics/preview/pr310/reference/run_serodynamics.md).
   Default `NULL`. When both `ids` and `color_by_strat` are supplied,
-  stratification coloring takes precedence and a warning is issued..
+  stratification coloring takes precedence and a warning is issued.
 
 - original_data:
 
