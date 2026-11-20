@@ -1,12 +1,12 @@
 # Create Prior Predictive Plot
 
 Creates prior predictive plots for a specified prior distribution before
-fitting the model to observed data. The function generates draws from
-the hierarchical prior distribution and propagates these draws through
-the model to obtain distributions of the predictive-level parameters.
-The resulting plots can be used to assess whether the specified priors
-imply biologically or scientifically plausible parameter values and
-model trajectories.
+fitting a power-law decay model to observed data. The function generates
+draws from the hierarchical prior distribution and propagates these
+draws through the model to obtain distributions of the predictive-level
+parameters. The resulting plots can be used to assess whether the
+specified priors imply biologically or scientifically plausible
+parameter values and model trajectories.
 
 Prior draws are generated hierarchically. At the highest level,
 hyperparameters define the distribution of the latent model parameters
@@ -56,8 +56,7 @@ prior_predict(
   time = seq(0, 200, length.out = 200),
   log_y = FALSE,
   log_x = FALSE,
-  noise = FALSE,
-  decay_type = "power"
+  noise = FALSE
 )
 ```
 
@@ -67,11 +66,6 @@ prior_predict(
 
   Arguments passed on to
   [`prep_priors`](https:/ucd-serg.github.io/serodynamics/preview/pr324/reference/prep_priors.md)
-
-  `max_antigens`
-
-  :   An [integer](https://rdrr.io/r/base/integer.html) specifying how
-      many antigen-isotypes (biomarkers) will be modeled.
 
   `mu_hyp_param`
 
@@ -168,12 +162,6 @@ prior_predict(
   Logical. If `TRUE`, simulate observations by adding independent Normal
   observation error on the log antibody scale. If `FALSE` (default),
   plot the latent antibody trajectories without observation error.
-
-- decay_type:
-
-  Character. Antibody decay model used to generate trajectories.
-  Defaults to `"power"`. Supported values must match the antibody
-  kinetics function used internally.
 
 ## Value
 
