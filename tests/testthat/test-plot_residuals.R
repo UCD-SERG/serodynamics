@@ -77,7 +77,7 @@ testthat::test_that(
 )
 
 testthat::test_that(
-  "plot_residuals() gives warning when id and facet supplied",
+  "plot_residuals() gives warning when id and color supplied",
   {
    
     plot_residuals(
@@ -302,7 +302,7 @@ test_that("get_original_data rejects data without id_var attribute", {
 })
 
 
-test_that("get_original_data rejects missing model original_data", {
+test_that("get_original_data rejects missing original_data", {
   
   model <- serodynamics::nepal_sees_jags_output
   

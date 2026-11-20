@@ -49,7 +49,7 @@ stratification variable. MAE is not calculated by this variable. Must
 include the original data set if not stratifying by \code{strat} variable
 specified in \code{run_serodynamics()}. Default \code{NULL}. When both \code{ids} and
 \code{color_by_strat} are supplied, stratification coloring takes precedence
-and a warning is issued..}
+and a warning is issued.}
 
 \item{original_data}{\link{data.frame}; the original dataset fed into
 \code{run_serodynamics()}. Must be included if \code{facet_by_strat} or

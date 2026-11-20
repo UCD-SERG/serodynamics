@@ -32,7 +32,7 @@
 #' include the original data set if not stratifying by `strat` variable 
 #' specified in `run_serodynamics()`. Default `NULL`. When both `ids` and 
 #' `color_by_strat` are supplied, stratification coloring takes precedence
-#' and a warning is issued..
+#' and a warning is issued.
 #' @param original_data [data.frame]; the original dataset fed into 
 #' `run_serodynamics()`. Must be included if `facet_by_strat` or 
 #' `color_by_strat` include a variable that was not specified as `strat` in 
