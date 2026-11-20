@@ -94,6 +94,10 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+ * Added `prior_predict()` as a function to test different sets of priors in 
+ preparation for `run_serodynamics()`. This function can output prior predictive
+ plots either as a density plot or as displaying the dynamics curves. A 
+ `summary()` can be called to provide an overview of each parameter.
  * Default priors are no longer supplied for `run_serodynamics()`. `prep_priors`
  now takes 4 values for `mu_hyp_param`, `prec_hyp_param` and `omega_param`
  when `decay_type = "exponential"`, and 5 when it is `"power"`.
