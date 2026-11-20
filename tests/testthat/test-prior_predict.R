@@ -153,10 +153,7 @@ test_that("Omitting inputs for errors", {
     wishdf_param = 20,
     prec_logy_hyp_param = c(4, 1),
     n = 50, 
-    noise = T
+    noise = TRUE
   ) |>
-  expect_error("Observation noise requires positive")
-  
+    expect_error("Observation noise requires positive")
 })
-
-
