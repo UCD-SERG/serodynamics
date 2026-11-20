@@ -127,12 +127,14 @@ prior_predict <- function(
   ## ---------------------------------------------------------
   model_parameters <- c("y0", "y1", "t1", "alpha", "shape")
   prior_summary <- do.call(rbind,
-    lapply(model_parameters, function(param) {
-      qs <- stats::quantile(draws[[param]], probs = c(0.025, 0.5, 0.975),
-                            na.rm = TRUE, names = FALSE)
-      data.frame(parameter = param, q2.5 = qs[1], median = qs[2], 
-                 q97.5 = qs[3], row.names = NULL)
-    }))
+                           lapply(model_parameters, function(param) {
+                             qs <- stats::quantile(draws[[param]], 
+                                                   probs = c(0.025, 0.5, 0.975),
+                                                   na.rm = TRUE, names = FALSE)
+                             data.frame(parameter = param, q2.5 = qs[1], 
+                                        median = qs[2], 
+                                        q97.5 = qs[3], row.names = NULL)
+                           }))
   ## ---------------------------------------------------------
   ## Plot parameter densities
   ## ---------------------------------------------------------

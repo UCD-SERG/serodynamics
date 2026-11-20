@@ -17,12 +17,12 @@ validate_prior_predict_inputs <- function(mu_hyp,
   }
   
   if (!is.logical(noise) || length(noise) != 1L ||
-        is.na(noise)) {
+    is.na(noise)) {
     cli::cli_abort("{.arg noise} must be TRUE or FALSE.")
   }
   
   if (!is.numeric(time) || length(time) == 0L ||
-        any(!is.finite(time))) {
+    any(!is.finite(time))) {
     cli::cli_abort(
       "{.arg time} must contain finite numeric values."
     )
@@ -30,10 +30,8 @@ validate_prior_predict_inputs <- function(mu_hyp,
   
   # Check the prepared values
   if (length(mu_hyp) != n_params ||
-        length(diag(prec_hyp)) != n_params ||
-        any(!is.finite(mu_hyp)) ||
-        any(!is.finite(diag(prec_hyp))) ||
-        any(diag(prec_hyp) <= 0)) {
+    length(diag(prec_hyp)) != n_params || any(!is.finite(mu_hyp)) ||
+    any(!is.finite(diag(prec_hyp))) || any(diag(prec_hyp) <= 0)) {
     cli::cli_abort("Invalid prepared population-mean priors.")
   }
   
@@ -43,9 +41,7 @@ validate_prior_predict_inputs <- function(mu_hyp,
     )
   }
   
-  if (length(wishdf) != 1L ||
-        !is.finite(wishdf) ||
-        wishdf < n_params) {
+  if (length(wishdf) != 1L || !is.finite(wishdf) || wishdf < n_params) {
     cli::cli_abort(
       "{.arg wishdf_param} must be at least 5."
     )
