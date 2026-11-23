@@ -15,49 +15,6 @@ prior_predict(
 )
 }
 \arguments{
-\item{...}{
-  Arguments passed on to \code{\link{prep_priors}}
-  \describe{
-    \item{\code{mu_hyp_param}}{A \link{numeric} \link{vector} of 5 values representing the prior
-mean for the population level parameters
-parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
-specified by the user, representing the following parameters:
-\itemize{
-\item y0 = baseline antibody concentration
-\item y1 = peak antibody concentration
-\item t1 = time to peak
-\item alpha = decay rate
-\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
-parameter needs to be specified).
-When \code{decay_type = "exponential"} only 4 parameters (y0, y1, t1, alpha) are
-used.
-}}
-    \item{\code{prec_hyp_param}}{A \link{numeric} \link{vector} of 5 values corresponding to
-hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
-representing prior covariance of uncertainty around \code{mu_hyp_param}.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when \code{decay_type = "exponential"}).}
-    \item{\code{omega_param}}{A \link{numeric} \link{vector} of 5 values corresponding to the
-diagonal entries representing the Wishart hyperprior
-distributions of \code{prec_hyp_param}, describing how much we expect parameters
-to vary between individuals.
-Will be 5 values long corresponding to the 5 estimated parameters
-(4 values when \code{decay_type = "exponential"}).}
-    \item{\code{wishdf_param}}{An \link{integer} \link{vector} of 1 value specifying the degrees
-of freedom for the Wishart hyperprior distribution of \code{prec_hyp_param}.
-Must be 1 value long.
-\itemize{
-\item The value of \code{wishdf_param} controls how informative the Wishart prior
-is. Higher values lead to tighter priors on individual variation.
-Lower values (e.g., 5–10) make the prior more weakly informative,
-which can help improve convergence if the model is over-regularized.
-}}
-    \item{\code{prec_logy_hyp_param}}{A \link{numeric} \link{vector} of 2 values corresponding to
-hyperprior diagonal entries on the log-scale for the precision matrix
-(i.e. inverse variance) representing prior beliefs of individual variation.
-Must be 2 values long.}
-  }}
-
 \item{n}{Number of prior draws. Default is 1000.}
 
 \item{type}{Character string specifying the output visualization.
@@ -80,6 +37,30 @@ Default is \code{FALSE}.}
 adding independent Normal observation error on the log
 antibody scale. If \code{FALSE} (default), plot the latent
 antibody trajectories without observation error.}
+
+\item{mu_hyp_param}{A \link{numeric} \link{vector} of 5 values representing the prior
+mean for the population level parameters
+parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long
+specified by the user, representing the following parameters:
+\itemize{
+\item y0 = baseline antibody concentration
+\item y1 = peak antibody concentration
+\item t1 = time to peak
+\item alpha = decay rate
+\item r = shape parameter (If running \code{decay_type == "exponential"} no shape
+parameter needs to be specified).
+}}
+
+\item{prec_hyp_param}{A \link{numeric} \link{vector} of 5 values corresponding to
+hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+representing prior covariance of uncertainty around \code{mu_hyp_param}.
+Will be 5 values long corresponding to the 5 estimated parameters}
+
+\item{omega_param}{A \link{numeric} \link{vector} of 5 values corresponding to the
+diagonal entries representing the Wishart hyperprior
+distributions of \code{prec_hyp_param}, describing how much we expect parameters
+to vary between individuals.
+Will be 5 values long corresponding to the 5 estimated parameters}
 }
 \value{
 An object of class \code{"serodynamics_prior_predict"} containing the

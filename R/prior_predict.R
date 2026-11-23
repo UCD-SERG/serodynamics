@@ -60,7 +60,26 @@
 #' Trajectory plots show how uncertainty in the prior distributions 
 #' affect the model's predicted seroresponse.
 #' 
-#' @inheritDotParams prep_priors -max_antigens -decay_type
+#' @param mu_hyp_param A [numeric] [vector] of 5 values representing the prior
+#' mean for the population level parameters
+#' parameters (y0, y1, t1, alpha, r) for each biomarker. Will be 5 values long 
+#' specified by the user, representing the following parameters:
+#'    - y0 = baseline antibody concentration
+#'    - y1 = peak antibody concentration
+#'    - t1 = time to peak
+#'    - alpha = decay rate 
+#'    - r = shape parameter (If running `decay_type == "exponential"` no shape
+#'    parameter needs to be specified).
+#' @param prec_hyp_param A [numeric] [vector] of 5 values corresponding to
+#' hyperprior diagonal entries for the precision matrix (i.e. inverse variance)
+#' representing prior covariance of uncertainty around `mu_hyp_param`.
+#' Will be 5 values long corresponding to the 5 estimated parameters 
+#' @param omega_param A [numeric] [vector] of 5 values corresponding to the
+#' diagonal entries representing the Wishart hyperprior
+#' distributions of `prec_hyp_param`, describing how much we expect parameters
+#' to vary between individuals.
+#' Will be 5 values long corresponding to the 5 estimated parameters 
+#' @inheritParams prep_priors wishdf_param prec_logy_hyp_param
 #' @param noise Logical. If `TRUE`, simulate observations by
 #'   adding independent Normal observation error on the log
 #'   antibody scale. If `FALSE` (default), plot the latent
