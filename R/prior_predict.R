@@ -116,7 +116,6 @@ prior_predict <- function(
   
   type <- match.arg(type)
   
-  n_params <- 5L
   ## ---------------------------------------------------------
   ## Validate inputs
   ## ---------------------------------------------------------
@@ -129,8 +128,8 @@ prior_predict <- function(
   prec_logy_hyp <- pr$prec.logy.hyp[1, ]
   validate_prior_predict_inputs(mu_hyp = mu_hyp, prec_hyp = prec_hyp,
                                 omega = omega, prec_logy_hyp = prec_logy_hyp,
-                                wishdf = wishdf, n = n, n_params = n_params,
-                                noise = noise, time = time)
+                                wishdf = wishdf, n = n, noise = noise, 
+                                time = time)
   
   ## ---------------------------------------------------------
   ## Draw from hierarchical priors
