@@ -19,8 +19,9 @@
 #' @export
 #'
 load_data <- function(
-    datapath = "inst/extdata/",
-    datafile = "TypoidCaseData_github_09.30.21.csv") {
+  datapath = "inst/extdata/",
+  datafile = "TypoidCaseData_github_09.30.21.csv"
+) {
   raw <- paste(datapath, datafile, sep = "") |> read.csv(header = TRUE)
   id <- raw$index_id
   age <- raw$age
