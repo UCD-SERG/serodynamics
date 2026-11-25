@@ -35,6 +35,7 @@ jobs:
             any::covr
             any::xml2
             rjags=url::https://cran.r-project.org/src/contrib/Archive/rjags/rjags_4-17.tar.gz
+            runjags=url::https://cran.r-project.org/src/contrib/Archive/runjags/runjags_2.2.2-5.tar.gz
           needs: test, coverage
       
       - name: Verify JAGS installation
