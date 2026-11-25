@@ -1,7 +1,5 @@
 # Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
 # Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
-# GOT THE JAGS INSTALL FROM:
-# https://github.com/lindeloev/mcp/blob/e5b1370879d5be8b45240d86276d9f99bcff4918/.github/workflows/check-standard.yaml
 on:
   push:
     branches: [main, master]
@@ -49,6 +47,12 @@ jobs:
       
       - name: Verify JAGS installation
         run: |
+          if (.Platform$OS.type == "unix" &&
+              (!requireNamespace("rjags", quietly = TRUE) ||
+               utils::packageVersion("rjags") < "5.0")) {
+            install.packages("rjags", repos = "https://cran.r-project.org",
+                             type = "source")
+          }
           print(rjags::jags.version())
           stopifnot(rjags::jags.version() >= "5.0.0")
           runjags::testjags()

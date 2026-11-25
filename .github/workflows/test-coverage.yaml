@@ -19,7 +19,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: ./.github/actions/setup-jags
+      # The heavy tests compare exact draws saved with JAGS 4.
+      - name: Install JAGS 4 for numerical snapshots
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y jags
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -27,13 +31,16 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr, any::xml2
+          extra-packages: |
+            any::covr
+            any::xml2
+            rjags=url::https://cran.r-project.org/src/contrib/Archive/rjags/rjags_4-17.tar.gz
           needs: test, coverage
       
       - name: Verify JAGS installation
         run: |
           print(rjags::jags.version())
-          stopifnot(rjags::jags.version() >= "5.0.0")
+          stopifnot(rjags::jags.version() < "5.0.0")
           runjags::testjags()
         shell: Rscript {0}
       
