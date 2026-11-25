@@ -45,14 +45,17 @@ jobs:
           extra-packages: any::rcmdcheck
           needs: test, check
       
-      - name: Verify JAGS installation
+      - name: Install a JAGS 5-compatible rjags on macOS
+        if: runner.os == 'macOS'
         run: |
-          if (.Platform$OS.type == "unix" &&
-              (!requireNamespace("rjags", quietly = TRUE) ||
-               utils::packageVersion("rjags") < "5.0")) {
+          if (utils::packageVersion("rjags") < "5.0") {
             install.packages("rjags", repos = "https://cran.r-project.org",
                              type = "source")
           }
+        shell: Rscript {0}
+
+      - name: Verify JAGS installation
+        run: |
           print(rjags::jags.version())
           stopifnot(rjags::jags.version() >= "5.0.0")
           runjags::testjags()
