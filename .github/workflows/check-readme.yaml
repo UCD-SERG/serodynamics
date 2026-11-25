@@ -38,6 +38,8 @@ jobs:
           http-user-agent: "release"
           use-public-rspm: true
 
+      - uses: ./.github/actions/setup-jags
+
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
           extra-packages: local::.

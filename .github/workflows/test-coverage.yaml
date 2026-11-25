@@ -17,28 +17,13 @@ jobs:
       RUN_HEAVY_TESTS: "true"
 
     steps:
-      - name: Install JAGS (Windows)
-        if: runner.os == 'Windows'
-        run: |
-          curl.exe -fSL --retry 3 --retry-connrefused -o wjags.exe -k https://downloads.sourceforge.net/project/mcmc-jags/JAGS/4.x/Windows/JAGS-4.3.1.exe
-          start /wait "" wjags.exe /S
-          del wjags.exe
-        shell: cmd
-      
-      # from https://github.com/ku-awdc/runjags/issues/2:
-      - name: Install JAGS (macOS)
-        if: runner.os == 'macOS'
-        run: |
-          sudo curl -fSL --retry 3 --retry-connrefused https://sourceforge.net/projects/mcmc-jags/files/JAGS/4.x/Mac%20OS%20X/JAGS-4.3.1.pkg -o /usr/local/JAGS-4.3.1.pkg
-          sudo installer -pkg /usr/local/JAGS-4.3.1.pkg -target /usr/local/bin/
-      
-      - name: Install JAGS (Ubuntu)
-        if: runner.os == 'Linux'
+      - uses: actions/checkout@v4
+
+      # The heavy tests compare exact draws saved with JAGS 4.
+      - name: Install JAGS 4 for numerical snapshots
         run: |
           sudo apt-get update
           sudo apt-get install -y jags
-      
-      - uses: actions/checkout@v4
 
       - uses: r-lib/actions/setup-r@v2
         with:
@@ -46,27 +31,17 @@ jobs:
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          extra-packages: any::covr, any::xml2
+          extra-packages: |
+            any::covr
+            any::xml2
+            rjags=url::https://cran.r-project.org/src/contrib/Archive/rjags/rjags_4-17.tar.gz
+            runjags=url::https://cran.r-project.org/src/contrib/Archive/runjags/runjags_2.2.2-5.tar.gz
           needs: test, coverage
       
-      - name: "install rjags"
+      - name: Verify JAGS installation
         run: |
-          if (identical(.Platform$OS.type, "windows")) {
-            if (!requireNamespace("rjags", quietly = TRUE)) {
-              install.packages("rjags",
-                               repos = "https://cloud.r-project.org",
-                               verbose = TRUE)
-            }
-          } else {
-            install.packages("rjags",
-                             repos = "https://cloud.r-project.org",
-                             type = "source",
-                             verbose = TRUE)
-          }
-          withr::local_options(warn = 2)
-          library(rjags)
-          library(runjags)
-          runjags::findjags()
+          print(rjags::jags.version())
+          stopifnot(rjags::jags.version() < "5.0.0")
           runjags::testjags()
         shell: Rscript {0}
       

@@ -1,0 +1,42 @@
+name: Set up JAGS 5
+description: Install the JAGS system library and executable for current rjags releases
+runs:
+  using: composite
+  steps:
+    - name: Build JAGS on Linux
+      if: runner.os == 'Linux'
+      shell: bash
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y gfortran libblas-dev liblapack-dev pkg-config
+        work_dir=$(mktemp -d)
+        cd "$work_dir"
+        curl -fLSs --retry 3 --retry-connrefused -o jags.tar.gz \
+          https://downloads.sourceforge.net/project/mcmc-jags/JAGS/5.x/Source/JAGS-5.0.2.tar.gz
+        tar -xzf jags.tar.gz
+        cd JAGS-5.0.2
+        ./configure --prefix=/usr/local
+        make -j"$(nproc)"
+        sudo make install
+        sudo ldconfig
+        echo "PKG_CONFIG_PATH=/usr/local/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" >> "$GITHUB_ENV"
+
+    - name: Install JAGS on macOS
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        pkg_path="$RUNNER_TEMP/JAGS-5.0.2.pkg"
+        curl -fLSs --retry 3 --retry-connrefused -o "$pkg_path" \
+          https://downloads.sourceforge.net/project/mcmc-jags/JAGS/5.x/macOS/JAGS-5.0.2-universal.pkg
+        sudo installer -pkg "$pkg_path" -target /
+        echo "PKG_CONFIG_PATH=/opt/jags/lib/pkgconfig${PKG_CONFIG_PATH:+:$PKG_CONFIG_PATH}" >> "$GITHUB_ENV"
+
+    - name: Install JAGS on Windows
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $installer = Join-Path $env:RUNNER_TEMP 'JAGS-5.0.2.exe'
+        curl.exe -fLSs --retry 3 --retry-connrefused -o $installer https://downloads.sourceforge.net/project/mcmc-jags/JAGS/5.x/Windows/Rtools45/JAGS-5.0.2.exe
+        if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+        $process = Start-Process -FilePath $installer -ArgumentList '/S' -Wait -PassThru
+        if ($process.ExitCode -ne 0) { exit $process.ExitCode }

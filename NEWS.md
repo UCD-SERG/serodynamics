@@ -94,6 +94,9 @@
 * Added a `CLAUDE.md` review-guideline item flagging roxygen doc copy-paste (use `@inheritParams`/`@inheritDotParams`/`@inheritSection` instead) and manual argument relaying (use `...` passthrough instead) (closes #262).
 
 ## New features
+* To support initial value generation in JAGS 5.0.x, the default prior for
+  peak antibody response is slightly less diffuse. The bundled Nepal example
+  fit was regenerated with the new prior, so results based on it can change.
  * Default priors are no longer supplied for `run_serodynamics()`. `prep_priors`
  now takes 4 values for `mu_hyp_param`, `prec_hyp_param` and `omega_param`
  when `decay_type = "exponential"`, and 5 when it is `"power"`.
