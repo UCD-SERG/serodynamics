@@ -17,6 +17,8 @@ jobs:
         with:
           use-public-rspm: true
 
+      - uses: ./.github/actions/setup-jags
+
       - uses: r-lib/actions/setup-r-dependencies@HEAD
         with:
           extra-packages: |
